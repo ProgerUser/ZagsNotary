@@ -52,13 +52,6 @@
 				</excludes>
 			</resource>
 
-			<resource>
-				<directory>docx</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-
 		</resources>
 		<plugins>
 
