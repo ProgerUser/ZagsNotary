@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<sqlMap>
+	<sqls>
+		<entry>
+			<key>QueryForReport</key>
+			<value>
+				<![CDATA[
+with data_ as
+ (select id,
+         old_lastname,
+         old_firstname,
+         old_middlname,
+         new_lastname,
+         new_firstname,
+         new_middlname,
+         (select Date2Str(cus.dcusbirthday)
+            from cus
+           where cus.icusnum = t.cusid) dcusbirthday,
+         (select cus.CCUSPLACE_BIRTH from cus where cus.icusnum = t.cusid) CCUSPLACE_BIRTH,
+         (select act.br_act_id
+            from brn_birth_act act
+           where act.br_act_id = t.brn_act_id) br_act_id,
+         (select Date2Str(trunc(act.br_act_date))
+            from brn_birth_act act
+           where act.br_act_id = t.brn_act_id) br_act_date,
+         (select zags.zags_name from zags where zags.zags_id = t.zags_id) zags_name,
+         (select cit.COUNTRY_NAME
+            from CUS_CITIZEN cit
+           where cit.icusnum = t.cusid
+             and OSN = 'Y') COUNTRY_NAME,
+         (select nat.NAME
+            from NATIONALITY nat
+           where nat.ID = (select cus.CCUSNATIONALITY
+                             from cus
+                            where cus.icusnum = t.cusid)) NATIONALITY,
+         MJCUS.Address(t.cusid) Address,
+         t.svid_seria,
+         t.svid_number
+    from update_name t
+    where t.ID = ?)
+select ID,
+       OLD_LASTNAME,
+       OLD_FIRSTNAME,
+       OLD_MIDDLNAME,
+       NEW_LASTNAME,
+       NEW_FIRSTNAME,
+       NEW_MIDDLNAME,
+       DCUSBIRTHDAY,
+       CCUSPLACE_BIRTH,
+       BR_ACT_ID,
+       BR_ACT_DATE,
+       ZAGS_NAME,
+       COUNTRY_NAME,
+       NATIONALITY,
+       ADDRESS,
+       SVID_SERIA,
+       SVID_NUMBER
+  from data_
+
+]]>
+			</value>
+		</entry>
+	</sqls>
+</sqlMap>

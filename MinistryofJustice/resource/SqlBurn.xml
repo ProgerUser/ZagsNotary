@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<sqlMap>
+	<sqls>
+		<entry>
+			<key>BurnListSel</key>
+			<value>
+				<![CDATA[
+select br_act_id,
+       br_act_date,
+       decode(brn.br_act_ztp,
+              'J',
+              'Организация',
+              'F',
+              'Физ. лицо') br_act_ztp,
+       br_act_brchcnt,
+       decode(brn.br_act_ld,
+              'L',
+              'Живорожденный',
+              'D',
+              'Мертворожденный') br_act_ld,
+       br_act_zgid,
+       br_act_user,
+       decode(brn.br_act_tgrabf,
+              'A',
+              'Свидетельства о заключении брака',
+              'B',
+              'Свидетельства об установлении отцовства',
+              'V',
+              'Заявления матери') br_act_tgrabf,
+       br_act_mzdate,
+       decode(brn.br_act_dbf,
+              'A',
+              'Документ установленной формы о рождении',
+              'B',
+              'Заявление') br_act_dbf,
+       br_act_ch,
+       br_act_f,
+       br_act_m,
+       br_act_medorga,
+       br_act_datedoca,
+       br_act_ndoca,
+       br_act_fiob,
+       br_act_datedocb,
+       br_act_namecourt,
+       br_act_desccourt,
+       br_act_dcourt,
+       br_act_fadfirst_name,
+       br_act_fadlast_name,
+       br_act_fadmiddle_name,
+       br_act_fadlocation,
+       br_act_fadorg_name,
+       br_act_fadreg_adr,
+       br_act_mercer_id,
+       br_act_num,
+       br_act_seria,
+       br_act_patcer,
+       ch.ccusname ChildrenName,
+       f.ccusname FatherName,
+       m.ccusname MotherName
+  from BRN_BIRTH_ACT brn, cus ch, cus f, cus m, zags zg
+ where brn.br_act_ch = ch.icusnum(+)
+   and brn.br_act_m = m.icusnum(+)
+   and brn.br_act_f = f.icusnum(+)
+   and brn.br_act_zgid = zg.zags_id(+)
+   and brn.BR_ACT_ID = ?
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>ForReport</key>
+			<value>
+				<![CDATA[
+select br_act_id,
+       br_act_brchcnt,
+       ch.ccuslast_name LNAME,
+       ch.ccusfirst_name FNAME,
+       ch.ccusmiddle_name MNAME,
+       ch.dcusbirthday,
+       decode(ch.ccussex, 1, 'Мужской', 2, 'Женский') SEX,
+       ch.ccusplace_birth,
+       brn.br_act_brchcnt,
+       decode(brn.br_act_ld,
+              'L',
+              'Живорожденный',
+              'D',
+              'Мертворожденный') br_act_ld,
+       BR_ACT_NDOCA,
+       BR_ACT_DATEDOCA,
+       BR_ACT_MEDORGA,
+       BR_ACT_FIOB,
+       BR_ACT_DATEDOCB,
+       BR_ACT_NAMECOURT,
+       BR_ACT_DESCCOURT,
+       BR_ACT_DCOURT
+  from BRN_BIRTH_ACT brn, cus ch, cus f, cus m, zags zg
+ where brn.br_act_ch = ch.icusnum(+)
+   and brn.br_act_m = m.icusnum(+)
+   and brn.br_act_f = f.icusnum(+)
+   and brn.br_act_zgid = zg.zags_id(+)
+   and brn.BR_ACT_ID = ?
+
+]]>
+			</value>
+		</entry>
+	</sqls>
+</sqlMap>

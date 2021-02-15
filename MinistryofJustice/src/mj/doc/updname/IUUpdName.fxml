@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+      <HBox spacing="5.0">
+         <children>
+          <TitledPane fx:id="Pane1" animated="false" collapsible="false" style="-fx-border-color: BLACK;" text="Гражданин">
+               <content>
+                  <VBox>
+                     <children>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="34.0" minWidth="32.0" prefWidth="32.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="293.0" prefWidth="295.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="30.0" minHeight="1.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ФИО" GridPane.halignment="LEFT" />
+                              <TextField fx:id="CUS_FIO" editable="false" prefWidth="300.0" GridPane.columnIndex="1" />
+                              <TextField fx:id="CUSID" editable="false" maxWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <MenuButton maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" onAction="#FindClient" text="Выбрать из списка" />
+                                    <MenuItem mnemonicParsing="false" onAction="#AddClient" text="Добавить" />
+                                 </items>
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SEARCH" size="18" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </MenuButton>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="№" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </content>
+          </TitledPane>
+            <TitledPane fx:id="Pane4" animated="false" collapsible="false" prefHeight="108.0" style="-fx-border-color: BLACK;" text="Акт о рождении">
+               <content>
+                  <VBox>
+                     <children>
+                        <GridPane>
+                           <children>
+                              <TextField fx:id="BRN_ACT_ID" editable="false" maxWidth="118.0" prefHeight="25.0" prefWidth="118.0" GridPane.columnIndex="1" />
+                              <MenuButton maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" onAction="#FindBrn" text="Выбрать из списка" />
+                                    <MenuItem mnemonicParsing="false" onAction="#AddBrn" text="Добавить" />
+                                 </items>
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SEARCH" size="18" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </MenuButton>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="№" GridPane.halignment="LEFT" />
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="178.0" minWidth="19.0" prefWidth="19.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="108.0" prefWidth="124.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
+         </children>
+      </HBox>
+      <HBox layoutX="20.0" layoutY="20.0" spacing="5.0">
+         <children>
+            <TitledPane fx:id="Pane2" animated="false" collapsible="false" style="-fx-border-color: BLACK;" text="До перемены имени">
+               <content>
+                  <VBox>
+                     <children>
+                        <GridPane>
+                           <children>
+                              <Label text="Фамилия" GridPane.halignment="LEFT" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                              <TextField fx:id="OLD_LASTNAME" GridPane.columnIndex="1" />
+                              <TextField fx:id="OLD_FIRSTNAME" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
+                              <TextField fx:id="OLD_MIDDLNAME" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" prefWidth="58.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="190.0" prefWidth="192.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="Pane3" animated="false" collapsible="false" prefHeight="138.0" prefWidth="335.0" style="-fx-border-color: BLACK;" text="После перемены имени">
+               <content>
+                  <VBox>
+                     <children>
+                        <GridPane>
+                           <children>
+                              <Label text="Фамилия" GridPane.halignment="LEFT" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                              <TextField fx:id="NEW_LASTNAME" GridPane.columnIndex="1" />
+                              <TextField fx:id="NEW_FIRSTNAME" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
+                              <TextField fx:id="NEW_MIDDLNAME" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" prefWidth="58.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="190.0" prefWidth="192.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
+         </children>
+      </HBox>
+      <TitledPane fx:id="Pane5" animated="false" collapsible="false" layoutX="14.0" layoutY="256.0" prefHeight="106.0" prefWidth="592.0" style="-fx-border-color: BLACK;" text="Выдано свидетельство">
+         <content>
+            <VBox>
+               <children>
+                  <GridPane>
+                     <children>
+                        <Label text="Серия" GridPane.halignment="LEFT" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Номер" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                        <TextField fx:id="SVID_SERIA" maxWidth="150.0" prefWidth="249.0" GridPane.columnIndex="1" />
+                        <TextField fx:id="SVID_NUMBER" maxWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </GridPane>
+               </children>
+            </VBox>
+         </content>
+      </TitledPane>
+		<ButtonBar buttonMinWidth="80.0" prefHeight="40.0">
+			<buttons>
+				<Button layoutX="14.0" layoutY="371.0" mnemonicParsing="false" onAction="#Save" text="Сохранить" />
+      <Button layoutX="95.0" layoutY="371.0" mnemonicParsing="false" onAction="#Cencel" prefHeight="25.0" prefWidth="74.0" text="Отмена" />
+		</buttons>
+		</ButtonBar>
+	</children>
+   <padding>
+      <Insets left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

@@ -1,0 +1,774 @@
+package mj.doc.divorce;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Properties;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
+import org.controlsfx.control.table.TableFilter;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.control.ToolBar;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import mj.app.main.Main;
+import mj.app.model.Connect;
+import mj.dbutil.DBUtil;
+import mj.doc.cus.CUS;
+import mj.doc.cus.UtilCus;
+import mj.doc.mercer.MC_MERCER;
+import mj.msg.Msg;
+import mj.util.ConvConst;
+
+public class AddDivorce {
+
+	@FXML
+	private DatePicker DIVC_ZOSCD2;
+
+	@FXML
+	private TextField DIVC_HE_LNAFT;
+
+	@FXML
+	private TextField DIVC_SHE_LNAFT;
+
+	@FXML
+	private TextField HeFio;
+
+	@FXML
+	private DatePicker DIVC_CAD;
+
+	@FXML
+	private TextField DIVC_ZOSFIO2;
+
+	@FXML
+	private TextField DIVC_NUM;
+
+	@FXML
+	private TextField DIVC_TCHNUM;
+
+	@FXML
+	private TextField DIVC_ZPLACE;
+
+	@FXML
+	private GridPane DIV_A;
+
+	@FXML
+	private GridPane DIV_B;
+
+	@FXML
+	private ComboBox<String> DIVC_TYPE;
+
+	@FXML
+	private TextField SheFio;
+
+	@FXML
+	private TextField DIVC_ZOSPRISON;
+
+	@FXML
+	private TextField DIVC_SHE;
+
+	@FXML
+	private GridPane DIV_V2;
+
+	@FXML
+	private TextField DIVC_ZLNAME;
+
+	@FXML
+	private GridPane DIV_V1;
+
+	@FXML
+	private DatePicker DIVC_DT;
+
+	@FXML
+	private DatePicker DIVC_TCHD;
+
+	@FXML
+	private TextField DIVC_MC_MERCER;
+
+	@FXML
+	private TextField DIVC_ZMNAME;
+
+	@FXML
+	private TextField DIVC_ZАNAME;
+
+	@FXML
+	private TextField DIVC_CAN;
+
+	@FXML
+	private DatePicker DIVC_ZOSCD;
+
+	@FXML
+	private TextField DIVC_SERIA;
+
+	@FXML
+	private TextField DIVC_HE_LNBEF;
+
+	@FXML
+	private TextField DIVC_ZOSCN2;
+
+	@FXML
+	private TextField DIVC_SHE_LNBEF;
+
+	@FXML
+	private TextField DIVC_ZOSFIO;
+
+	@FXML
+	private TextField DIVC_ZOSCN;
+
+	@FXML
+	private TextField DIVC_HE;
+
+	// _______________Методы______________________________
+
+	@FXML
+	void FindHe(ActionEvent event) {
+		UtilCus cus = new UtilCus();
+		cus.Find_Cus(HeFio, DIVC_HE, (Stage) DIVC_HE.getScene().getWindow());
+	}
+
+	@FXML
+	void FindShe(ActionEvent event) {
+		UtilCus cus = new UtilCus();
+		cus.Find_Cus(SheFio, DIVC_SHE, (Stage) DIVC_HE.getScene().getWindow());
+	}
+
+	@FXML
+	void AddHe(ActionEvent event) {
+		UtilCus cus = new UtilCus();
+		cus.Find_Cus(HeFio, DIVC_HE, (Stage) DIVC_HE.getScene().getWindow());
+	}
+
+	@FXML
+	void AddShe(ActionEvent event) {
+		UtilCus cus = new UtilCus();
+		cus.Find_Cus(SheFio, DIVC_SHE, (Stage) DIVC_HE.getScene().getWindow());
+	}
+
+	@FXML
+	void FindMercer(ActionEvent event) {
+		Mercer(DIVC_MC_MERCER);
+	}
+
+	void CusList(TextField num, TextField name) {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+			Button Update = new Button();
+			Update.setText("Выбрать");
+			AnchorPane secondaryLayout = new AnchorPane();
+
+			VBox vb = new VBox();
+			ToolBar toolBar = new ToolBar(Update);
+			TableView<CUS> cusllists = new TableView<CUS>();
+			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
+			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
+			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
+			TableColumn<CUS, LocalDate> DCUSBIRTHDAY = new TableColumn<>("Дата рождения");
+			DCUSBIRTHDAY.setCellValueFactory(new PropertyValueFactory<>("DCUSBIRTHDAY"));
+			cusllists.getColumns().add(ICUSNUM);
+			cusllists.getColumns().add(CCUSNAME);
+			cusllists.getColumns().add(DCUSBIRTHDAY);
+
+			vb.getChildren().add(cusllists);
+			vb.getChildren().add(toolBar);
+			vb.setPadding(new Insets(10, 10, 10, 10));
+
+			ICUSNUM.setCellValueFactory(cellData -> cellData.getValue().ICUSNUMProperty().asObject());
+			CCUSNAME.setCellValueFactory(cellData -> cellData.getValue().CCUSNAMEProperty());
+			DCUSBIRTHDAY.setCellValueFactory(cellData -> cellData.getValue().DCUSBIRTHDAYProperty());
+			DCUSBIRTHDAY.setCellFactory(column -> {
+				TableCell<CUS, LocalDate> cell = new TableCell<CUS, LocalDate>() {
+					private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+					@Override
+					protected void updateItem(LocalDate item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setText(null);
+						} else {
+							setText(format.format(item));
+						}
+					}
+				};
+				return cell;
+			});
+			String selectStmt = "select * from cus";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<CUS> cuslist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				CUS cus = new CUS();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+				String DCUSBIRTHDAYt = new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY"));
+				cus.setICUSNUM(rs.getInt("ICUSNUM"));
+				cus.setCCUSNAME(rs.getString("CCUSNAME"));
+				cus.setDCUSBIRTHDAY(LocalDate.parse(DCUSBIRTHDAYt, formatter));
+				cuslist.add(cus);
+			}
+			prepStmt.close();
+			rs.close();
+
+			cusllists.setItems(cuslist);
+
+			cusllists.setPrefWidth(500);
+			cusllists.setPrefHeight(350);
+
+			ICUSNUM.setPrefWidth(100);
+			DCUSBIRTHDAY.setPrefWidth(120);
+			DCUSBIRTHDAY.setPrefWidth(120);
+
+			TableFilter<CUS> CUSFilter = TableFilter.forTableView(cusllists).apply();
+			CUSFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+			Update.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {
+					if (cusllists.getSelectionModel().getSelectedItem() == null) {
+						Msg.Message("Выберите данные из таблицы!");
+					} else {
+						CUS country = cusllists.getSelectionModel().getSelectedItem();
+						num.setText(country.getCCUSNAME());
+						name.setText(String.valueOf(country.getICUSNUM()));
+						((Node) (event.getSource())).getScene().getWindow().hide();
+					}
+				}
+
+			});
+
+			secondaryLayout.getChildren().add(vb);
+
+			Scene secondScene = new Scene(secondaryLayout, Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+			Stage stage = (Stage) DIVC_DT.getScene().getWindow();
+
+			Stage newWindow = new Stage();
+			newWindow.setTitle("Список граждан");
+			newWindow.setScene(secondScene);
+			newWindow.setResizable(false);
+			newWindow.initModality(Modality.WINDOW_MODAL);
+			newWindow.initOwner(stage);
+			newWindow.getIcons().add(new Image("/icon.png"));
+			newWindow.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	@FXML
+	void DIVC_TYPE(ActionEvent event) {
+		if (DIVC_TYPE.getValue()
+				.equals("Совместное заявление супругов, не имеющих общих детей, не достигших совершеннолетия")) {
+			DIV_A.setVisible(true);
+			DIV_B.setVisible(false);
+			DIV_V1.setVisible(false);
+			DIV_V2.setVisible(false);
+			// значения полей
+			DIVC_TCHNUM.setText("");
+			DIVC_TCHD.setValue(null);
+			DIVC_CAD.setValue(null);
+			DIVC_CAN.setText("");
+			DIVC_ZOSCD.setValue(null);
+			DIVC_ZOSFIO.setText("");
+			DIVC_ZOSCN.setText("");
+			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSFIO2.setText("");
+			DIVC_ZOSPRISON.setText("");
+			DIVC_ZOSCD2.setValue(null);
+		} else if (DIVC_TYPE.getValue().equals("Решение суда о расторжении брака")) {
+			DIV_A.setVisible(false);
+			DIV_B.setVisible(true);
+			DIV_V1.setVisible(false);
+			DIV_V2.setVisible(false);
+			// значения полей
+			DIVC_TCHNUM.setText("");
+			DIVC_TCHD.setValue(null);
+			DIVC_CAD.setValue(null);
+			DIVC_CAN.setText("");
+			DIVC_ZOSCD.setValue(null);
+			DIVC_ZOSFIO.setText("");
+			DIVC_ZOSCN.setText("");
+			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSFIO2.setText("");
+			DIVC_ZOSPRISON.setText("");
+			DIVC_ZOSCD2.setValue(null);
+		} else if (DIVC_TYPE.getValue()
+				.equals("Заявление одного из супругов и решение суда о признании безвестно отсутствующим")
+				| DIVC_TYPE.getValue()
+						.equals("Заявление одного из супругов и решение суда о признании недееспособным")) {
+			DIV_A.setVisible(false);
+			DIV_B.setVisible(false);
+			DIV_V1.setVisible(true);
+			DIV_V2.setVisible(false);
+			// значения полей
+			DIVC_TCHNUM.setText("");
+			DIVC_TCHD.setValue(null);
+			DIVC_CAD.setValue(null);
+			DIVC_CAN.setText("");
+			DIVC_ZOSCD.setValue(null);
+			DIVC_ZOSFIO.setText("");
+			DIVC_ZOSCN.setText("");
+			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSFIO2.setText("");
+			DIVC_ZOSPRISON.setText("");
+			DIVC_ZOSCD2.setValue(null);
+		} else if (DIVC_TYPE.getValue().equals("Приговор суда об осуждении и лишении свободы")) {
+			DIV_A.setVisible(false);
+			DIV_B.setVisible(false);
+			DIV_V1.setVisible(false);
+			DIV_V2.setVisible(true);
+			// значения полей
+			DIVC_TCHNUM.setText("");
+			DIVC_TCHD.setValue(null);
+			DIVC_CAD.setValue(null);
+			DIVC_CAN.setText("");
+			DIVC_ZOSCD.setValue(null);
+			DIVC_ZOSFIO.setText("");
+			DIVC_ZOSCN.setText("");
+			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSFIO2.setText("");
+			DIVC_ZOSPRISON.setText("");
+			DIVC_ZOSCD2.setValue(null);
+		}
+	}
+
+	@FXML
+	void Save(ActionEvent event) {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+
+			CallableStatement callStmt = conn.prepareCall(
+					"{ call Divorce.AddDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+			callStmt.registerOutParameter(1, Types.VARCHAR);
+			callStmt.setString(2, DIVC_SERIA.getText());
+			callStmt.setString(3, DIVC_NUM.getText());
+			if (!DIVC_MC_MERCER.getText().equals("")) {
+				callStmt.setInt(4, Integer.valueOf(DIVC_MC_MERCER.getText()));
+			} else {
+				callStmt.setNull(4, java.sql.Types.INTEGER);
+			}
+			if (!DIVC_ZOSPRISON.getText().equals("")) {
+				callStmt.setInt(5, Integer.valueOf(DIVC_ZOSPRISON.getText()));
+			} else {
+				callStmt.setNull(5, java.sql.Types.INTEGER);
+			}
+			callStmt.setString(6, DIVC_ZOSFIO2.getText());
+			callStmt.setDate(7,
+					(DIVC_ZOSCD2.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD2.getValue()) : null);
+			callStmt.setString(8, DIVC_ZOSCN2.getText());
+			callStmt.setString(9, DIVC_ZOSFIO.getText());
+			callStmt.setDate(10, (DIVC_ZOSCD.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD.getValue()) : null);
+			callStmt.setString(11, DIVC_ZOSCN.getText());
+			callStmt.setDate(12, (DIVC_CAD.getValue() != null) ? java.sql.Date.valueOf(DIVC_CAD.getValue()) : null);
+			callStmt.setString(13, DIVC_CAN.getText());
+			callStmt.setString(14, DIVC_TCHNUM.getText());
+			callStmt.setDate(15, (DIVC_TCHD.getValue() != null) ? java.sql.Date.valueOf(DIVC_TCHD.getValue()) : null);
+			callStmt.setString(16, DIVC_TYPE.getValue());
+			callStmt.setDate(17, (DIVC_DT.getValue() != null) ? java.sql.Date.valueOf(DIVC_DT.getValue()) : null);
+			callStmt.setString(18, DIVC_SHE_LNAFT.getText());
+			callStmt.setString(19, DIVC_SHE_LNBEF.getText());
+			callStmt.setString(20, DIVC_HE_LNAFT.getText());
+			callStmt.setString(21, DIVC_HE_LNBEF.getText());
+			if (!DIVC_SHE.getText().equals("")) {
+				callStmt.setInt(22, Integer.valueOf(DIVC_SHE.getText()));
+			} else {
+				callStmt.setNull(22, java.sql.Types.INTEGER);
+			}
+			if (!DIVC_HE.getText().equals("")) {
+				callStmt.setInt(23, Integer.valueOf(DIVC_HE.getText()));
+			} else {
+				callStmt.setNull(23, java.sql.Types.INTEGER);
+			}
+			callStmt.setString(24, DIVC_ZPLACE.getText());
+			callStmt.setString(25, DIVC_ZMNAME.getText());
+			callStmt.setString(26, DIVC_ZАNAME.getText());
+			callStmt.setString(27, DIVC_ZLNAME.getText());
+			callStmt.registerOutParameter(28, Types.INTEGER);
+			callStmt.execute();
+
+			if (callStmt.getString(1) == null) {
+				conn.commit();
+				setStatus(true);
+				setId(callStmt.getInt(28));
+				callStmt.close();
+				onclose();
+			} else {
+				conn.rollback();
+				setStatus(false);
+				Stage stage_ = (Stage) DIVC_HE_LNBEF.getScene().getWindow();
+				Msg.MessageBox(callStmt.getString(1), stage_);
+				callStmt.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	void onclose() {
+		Stage stage = (Stage) DIVC_HE_LNBEF.getScene().getWindow();
+		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+	}
+
+	@FXML
+	void Cencel(ActionEvent event) {
+		onclose();
+	}
+
+	/**
+	 * Найти заключения брака
+	 * 
+	 * @param event
+	 * @param num
+	 * @param name
+	 */
+	void Mercer(TextField ID) {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+			Button Update = new Button();
+			Update.setText("Выбрать");
+			// Update.setLayoutX(30.0);
+			// Update.setLayoutY(450.0);
+			AnchorPane secondaryLayout = new AnchorPane();
+
+			VBox vb = new VBox();
+			ToolBar toolBar = new ToolBar(Update);
+			TableView<MC_MERCER> cusllists = new TableView<MC_MERCER>();
+			TableColumn<MC_MERCER, Integer> MERCER_ID = new TableColumn<>("Номер");
+			MERCER_ID.setCellValueFactory(new PropertyValueFactory<>("MERCER_ID"));
+
+			TableColumn<MC_MERCER, String> HE = new TableColumn<>("Он");
+			TableColumn<MC_MERCER, String> HeFio = new TableColumn<>("ФИО");
+			HeFio.setCellValueFactory(new PropertyValueFactory<>("HeFio"));
+			HE.getColumns().add(HeFio);
+
+			TableColumn<MC_MERCER, String> SHE = new TableColumn<>("Она");
+			TableColumn<MC_MERCER, String> SheFio = new TableColumn<>("ФИО");
+			SheFio.setCellValueFactory(new PropertyValueFactory<>("SheFio"));
+			SHE.getColumns().add(SheFio);
+
+			TableColumn<MC_MERCER, LocalDateTime> MERCER_DATE = new TableColumn<>("Дата документа");
+			MERCER_DATE.setCellValueFactory(new PropertyValueFactory<>("MERCER_DATE"));
+
+			cusllists.getColumns().add(MERCER_ID);
+			cusllists.getColumns().add(HE);
+			cusllists.getColumns().add(SHE);
+			cusllists.getColumns().add(MERCER_DATE);
+
+			vb.getChildren().add(cusllists);
+			vb.getChildren().add(toolBar);
+
+			vb.setPadding(new Insets(10, 10, 10, 10));
+			/**/
+			MERCER_ID.setCellValueFactory(cellData -> cellData.getValue().MERCER_IDProperty().asObject());
+			SheFio.setCellValueFactory(cellData -> cellData.getValue().SHEFIOProperty());
+			HeFio.setCellValueFactory(cellData -> cellData.getValue().HEFIOProperty());
+			MERCER_DATE.setCellValueFactory(cellData -> cellData.getValue().TM$MERCER_DATEProperty());
+
+			MERCER_DATE.setCellFactory(column -> {
+				TableCell<MC_MERCER, LocalDateTime> cell = new TableCell<MC_MERCER, LocalDateTime>() {
+					private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
+					@Override
+					protected void updateItem(LocalDateTime item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setText(null);
+						} else {
+							setText(format.format(item));
+						}
+					}
+				};
+				return cell;
+			});
+			/* SelData */
+			String selectStmt = "select (select g.ccusname from cus g where g.icusnum = t.mercer_he) HeFio,\n"
+					+ "       (select g.ccusname from cus g where g.icusnum = t.mercer_she) SheFio,\n" + "       t.*\n"
+					+ "  from MC_MERCER t\n";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+			DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+			ObservableList<MC_MERCER> cuslist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				MC_MERCER list = new MC_MERCER();
+
+				list.setSHEFIO(rs.getString("SheFio"));
+				list.setHEFIO(rs.getString("HeFio"));
+				list.setMERCER_ID(rs.getInt("MERCER_ID"));
+				list.setMERCER_HE(rs.getInt("MERCER_HE"));
+				list.setMERCER_SHE(rs.getInt("MERCER_SHE"));
+				list.setMERCER_HE_LNBEF(rs.getString("MERCER_HE_LNBEF"));
+				list.setMERCER_HE_LNAFT(rs.getString("MERCER_HE_LNAFT"));
+				list.setMERCER_SHE_LNBEF(rs.getString("MERCER_SHE_LNBEF"));
+				list.setMERCER_SHE_LNBAFT(rs.getString("MERCER_SHE_LNBAFT"));
+				list.setMERCER_HEAGE(rs.getInt("MERCER_HEAGE"));
+				list.setMERCER_SHEAGE(rs.getInt("MERCER_SHEAGE"));
+				list.setTM$MERCER_DATE((rs.getDate("MERCER_DATE") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("MERCER_DATE")), formatterdt)
+						: null);
+				list.setMERCER_USR(rs.getString("MERCER_USR"));
+				list.setMERCER_ZAGS(rs.getInt("MERCER_ZAGS"));
+				list.setMERCER_DIVSHE(rs.getInt("MERCER_DIVSHE"));
+				list.setMERCER_DIVHE(rs.getInt("MERCER_DIVHE"));
+				list.setMERCER_DSPMT_HE(rs.getString("MERCER_DSPMT_HE"));
+				list.setMERCER_NUM(rs.getString("MERCER_NUM"));
+				list.setMERCER_SERIA(rs.getString("MERCER_SERIA"));
+				list.setMERCER_DIESHE(rs.getInt("MERCER_DIESHE"));
+				list.setMERCER_DIEHE(rs.getInt("MERCER_DIEHE"));
+				list.setMERCER_OTHER(rs.getString("MERCER_OTHER"));
+				list.setMERCER_DSPMT_SHE(rs.getString("MERCER_DSPMT_SHE"));
+
+				cuslist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+
+			cusllists.setItems(cuslist);
+
+			// Main.autoResizeColumns(cusllists);
+
+			cusllists.setPrefWidth(500);
+			cusllists.setPrefHeight(350);
+
+			// ICUSNUM.setPrefWidth(100);
+			// DCUSBIRTHDAY.setPrefWidth(120);
+			// DCUSBIRTHDAY.setPrefWidth(120);
+
+			TableFilter<MC_MERCER> CUSFilter = TableFilter.forTableView(cusllists).apply();
+			CUSFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+			/**/
+			Update.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {
+					if (cusllists.getSelectionModel().getSelectedItem() == null) {
+						Msg.Message("Выберите данные из таблицы!");
+					} else {
+						MC_MERCER country = cusllists.getSelectionModel().getSelectedItem();
+						// ID.setText(country.getMERCER_ID());
+						ID.setText(String.valueOf(country.getMERCER_ID()));
+
+						((Node) (event.getSource())).getScene().getWindow().hide();
+					}
+				}
+
+			});
+
+			secondaryLayout.getChildren().add(vb);
+			// secondaryLayout.getChildren().add(cusllists);
+
+			// VBox vbox = new VBox(debtinfo);
+			Scene secondScene = new Scene(secondaryLayout, Control.USE_COMPUTED_SIZE,
+					Control.USE_COMPUTED_SIZE);/* Control.USE_COMPUTED_SIZE */
+			Stage stage = (Stage) DIVC_TYPE.getScene().getWindow();
+
+			Stage newWindow = new Stage();
+			newWindow.setTitle("Акты о заключении брака");
+			newWindow.setScene(secondScene);
+			newWindow.setResizable(false);
+			// Specifies the modality for new window.
+			newWindow.initModality(Modality.WINDOW_MODAL);
+			// Specifies the owner Window (parent) for new window
+			newWindow.initOwner(stage);
+			newWindow.getIcons().add(new Image("/icon.png"));
+			newWindow.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	@FXML
+	private ScrollPane MainScroll;
+
+	@FXML
+	private TitledPane Pane1;
+
+	@FXML
+	private TitledPane Pane2;
+
+	@FXML
+	private TitledPane Pane3;
+
+	@FXML
+	private TitledPane Pane4;
+
+	@FXML
+	private TitledPane Pane5;
+
+	@FXML
+	private TitledPane Pane6;
+
+	@FXML
+	private TitledPane Pane7;
+
+	@FXML
+	private void initialize() {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+
+			Pane1.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
+			Pane2.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
+			Pane3.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
+			Pane4.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
+			Pane5.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
+			Pane6.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
+			Pane7.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
+
+			dbConnect();
+
+			DIVC_TYPE.getItems().addAll(
+					"Совместное заявление супругов, не имеющих общих детей, не достигших совершеннолетия",
+					"Решение суда о расторжении брака",
+					"Заявление одного из супругов и решение суда о признании безвестно отсутствующим",
+					"Заявление одного из супругов и решение суда о признании недееспособным",
+					"Приговор суда об осуждении и лишении свободы");
+			
+			new ConvConst().FormatDatePiker(DIVC_ZOSCD2);
+			new ConvConst().FormatDatePiker(DIVC_CAD);
+			new ConvConst().FormatDatePiker(DIVC_DT);
+			new ConvConst().FormatDatePiker(DIVC_TCHD);
+			new ConvConst().FormatDatePiker(DIVC_ZOSCD);
+			
+		} catch (Exception e) {
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	private Connection conn;
+
+	private void dbConnect() {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+			Class.forName("oracle.jdbc.OracleDriver");
+			Properties props = new Properties();
+			props.put("v$session.program", "AddDivorce");
+			conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
+					props);
+			conn.setAutoCommit(false);
+		} catch (SQLException | ClassNotFoundException e) {
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	public void dbDisconnect() {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+			if (conn != null && !conn.isClosed()) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	private BooleanProperty Status;
+
+	private IntegerProperty Id;
+
+	public void setStatus(Boolean value) {
+		this.Status.set(value);
+	}
+
+	public boolean getStatus() {
+		return this.Status.get();
+	}
+
+	public void setId(Integer value) {
+		this.Id.set(value);
+	}
+
+	public Integer getId() {
+		return this.Id.get();
+	}
+
+	public AddDivorce() {
+		Main.logger = Logger.getLogger(getClass());
+		this.Status = new SimpleBooleanProperty();
+		this.Id = new SimpleIntegerProperty();
+	}
+
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap>
+	<sqls>
+		<entry>
+			<key>SelectBirth</key>
+			<value>
+				<![CDATA[
+select brn.br_act_id,
+       decode(brn.br_act_ld,
+              'L',
+              'Живорожденный',
+              'D',
+              'Мертворожденный') BR_ACT_LD,
+       ch.ccusname BR_ACT_CH,
+       zg.zags_name,
+       brn.br_act_date,
+       f.ccusname
+  from BRN_BIRTH_ACT brn, cus ch, cus f, cus m, zags zg
+ where brn.br_act_ch = ch.icusnum(+)
+   and brn.br_act_m = m.icusnum(+)
+   and brn.br_act_f = f.icusnum(+)
+   and zg.zags_id(+) = brn.br_act_zgid
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>SelcectBirthAferAdd</key>
+			<value>
+				<![CDATA[
+select t.br_act_id,
+       decode(t.br_act_ld,
+              'L',
+              'Живорожденный',
+              'D',
+              'Мертворожденный') BR_ACT_LD,
+       ch.ccusname BR_ACT_CH,
+       zg.zags_name,
+       t.br_act_date
+  from BRN_BIRTH_ACT t, cus ch, cus f, cus m, zags zg
+ where t.br_act_ch = ch.icusnum(+)
+   and t.br_act_m = m.icusnum(+)
+   and t.br_act_f = f.icusnum(+)
+   and zg.zags_id(+) = t.br_act_zgid
+   and t.BR_ACT_ID = ?
+]]>
+			</value>
+		</entry>
+	</sqls>
+</sqlMap>

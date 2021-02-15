@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap>
+	<sqls>
+		<entry>
+			<key>AllDocs</key>
+			<value>
+				<![CDATA[
+with item as
+ (select ? Id from dual),
+unins as
+ (select 'brn_birth_act' table_name,
+         'Свидетельство о рождении' DocName,
+         brn_birth_act.br_act_id doc_ID,
+         brn_birth_act.br_act_date doc_date
+    from brn_birth_act, item
+   where (brn_birth_act.br_act_ch = item.Id or
+         brn_birth_act.br_act_f = item.Id or
+         brn_birth_act.br_act_m = item.Id)
+        --где документ из загса пользователя
+     and (exists (select null
+                    from zags zg_list, usr usr_d
+                   where usr_d.zags_id = zg_list.zags_id
+                     and usr_d.cusrlogname = user
+                     and zg_list.zags_id = brn_birth_act.br_act_zgid)
+         -- или может есть группа
+          or exists (select null
+                       from ODB_GRP_MEMBER mem, usr, ODB_GROUP_USR grp
+                      where mem.iusrid = usr.iusrid
+                        and mem.grp_id = grp.grp_id
+                        and grp.grp_name = 'ZAGS_BRN_ALL'
+                        and usr.cusrlogname = user))
+  union all
+  select 'PATERN_CERT' table_name,
+         'Установление отцовства' DocName,
+         PATERN_CERT.pc_id doc_ID,
+         PATERN_CERT.PС_DATE doc_date
+    from PATERN_CERT, item
+   where (PATERN_CERT.pс_ch = item.Id or PATERN_CERT.pс_f = item.Id or
+         PATERN_CERT.pс_m = item.Id)
+        --где документ из загса пользователя
+     and (exists (select null
+                    from zags zg_list, usr usr_d
+                   where usr_d.zags_id = zg_list.zags_id
+                     and usr_d.cusrlogname = user
+                     and zg_list.zags_id = PATERN_CERT.Pс_Zags)
+         -- или может есть группа
+          or exists (select null
+                       from ODB_GRP_MEMBER mem, usr, ODB_GROUP_USR grp
+                      where mem.iusrid = usr.iusrid
+                        and mem.grp_id = grp.grp_id
+                        and grp.grp_name = 'ZAGS_PATERN_ALL'
+                        and usr.cusrlogname = user))
+  union all
+  select 'mc_mercer' table_name,
+         'Заключение брака' DocName,
+         mc_mercer.mercer_id doc_ID,
+         mc_mercer.mercer_date doc_date
+    from mc_mercer, item
+   where (mc_mercer.MERCER_HE = item.Id or mc_mercer.MERCER_SHE = item.Id)
+        --где документ из загса пользователя
+     and (exists (select null
+                    from zags zg_list, usr usr_d
+                   where usr_d.zags_id = zg_list.zags_id
+                     and usr_d.cusrlogname = user
+                     and zg_list.zags_id = mc_mercer.mercer_zags)
+         -- или может есть группа
+          or exists (select null
+                       from ODB_GRP_MEMBER mem, usr, ODB_GROUP_USR grp
+                      where mem.iusrid = usr.iusrid
+                        and mem.grp_id = grp.grp_id
+                        and grp.grp_name = 'ZAGS_MERCER_ALL'
+                        and usr.cusrlogname = user))
+  union all
+  select 'DIVORCE_CERT' table_name,
+         'Расторжение брака' DocName,
+         DIVORCE_CERT.Divc_Id doc_ID,
+         DIVORCE_CERT.DIVC_DATE doc_date
+    from DIVORCE_CERT, item
+   where (DIVORCE_CERT.DIVC_HE = item.Id or DIVORCE_CERT.DIVC_SHE = item.Id)
+        --где документ из загса пользователя
+     and (exists (select null
+                    from zags zg_list, usr usr_d
+                   where usr_d.zags_id = zg_list.zags_id
+                     and usr_d.cusrlogname = user
+                     and zg_list.zags_id = DIVORCE_CERT.Divc_Zags)
+         -- или может есть группа
+          or exists (select null
+                       from ODB_GRP_MEMBER mem, usr, ODB_GROUP_USR grp
+                      where mem.iusrid = usr.iusrid
+                        and mem.grp_id = grp.grp_id
+                        and grp.grp_name = 'ZAGS_DIVORCE_ALL'
+                        and usr.cusrlogname = user))
+  union all
+  select 'DEATH_CERT' table_name,
+         'Установление акта о смерти' DocName,
+         DEATH_CERT.DC_ID doc_ID,
+         DEATH_CERT.DC_OPEN doc_date
+    from DEATH_CERT, item
+   where DEATH_CERT.DC_CUS = item.Id
+        --где документ из загса пользователя
+     and (exists (select null
+                    from zags zg_list, usr usr_d
+                   where usr_d.zags_id = zg_list.zags_id
+                     and usr_d.cusrlogname = user
+                     and zg_list.zags_id = DEATH_CERT.Dc_Zags)
+         -- или может есть группа
+          or exists (select null
+                       from ODB_GRP_MEMBER mem, usr, ODB_GROUP_USR grp
+                      where mem.iusrid = usr.iusrid
+                        and mem.grp_id = grp.grp_id
+                        and grp.grp_name = 'ZAGS_DEATH_ALL'
+                        and usr.cusrlogname = user))
+  union all
+  select 'UPD_NAME' table_name,
+         'Перемена имени' DocName,
+         update_name.id doc_ID,
+         update_name.doc_date doc_date
+    from update_name, item
+   where update_name.CUSID = item.Id
+        --где документ из загса пользователя
+     and (exists (select null
+                    from zags zg_list, usr usr_d
+                   where usr_d.zags_id = zg_list.zags_id
+                     and usr_d.cusrlogname = user
+                     and zg_list.zags_id = update_name.zags_id)
+         -- или может есть группа
+          or exists (select null
+                       from ODB_GRP_MEMBER mem, usr, ODB_GROUP_USR grp
+                      where mem.iusrid = usr.iusrid
+                        and mem.grp_id = grp.grp_id
+                        and grp.grp_name = 'ZAGS_UPD_NAME_ALL'
+                        and usr.cusrlogname = user))
+  union all
+  select 'UPDATE_ABH_NAME' table_name,
+         'Восстановление абхазской фамилии' DocName,
+         UPDATE_ABH_NAME.ID doc_ID,
+         UPDATE_ABH_NAME.DOC_DATE doc_date
+    from UPDATE_ABH_NAME, item
+   where UPDATE_ABH_NAME.CUSID = item.Id
+        --где документ из загса пользователя
+     and (exists (select null
+                    from zags zg_list, usr usr_d
+                   where usr_d.zags_id = zg_list.zags_id
+                     and usr_d.cusrlogname = user
+                     and zg_list.zags_id = UPDATE_ABH_NAME.Zags_Id)
+         -- или может есть группа
+          or exists (select null
+                       from ODB_GRP_MEMBER mem, usr, ODB_GROUP_USR grp
+                      where mem.iusrid = usr.iusrid
+                        and mem.grp_id = grp.grp_id
+                        and grp.grp_name = 'ZAGS_UPD_ABH_NAME_ALL'
+                        and usr.cusrlogname = user))
+  union all
+  select 'UPD_NAT' table_name,
+         'Перемена национальной принадлежности' DocName,
+         UPD_NAT.ID doc_ID,
+         UPD_NAT.DOC_DATE doc_date
+    from UPD_NAT, item
+   where UPD_NAT.CUSID = item.Id
+        --где документ из загса пользователя
+     and (exists (select null
+                    from zags zg_list, usr usr_d
+                   where usr_d.zags_id = zg_list.zags_id
+                     and usr_d.cusrlogname = user
+                     and zg_list.zags_id = UPD_NAT.Zags_Id)
+         -- или может есть группа
+          or exists (select null
+                       from ODB_GRP_MEMBER mem, usr, ODB_GROUP_USR grp
+                      where mem.iusrid = usr.iusrid
+                        and mem.grp_id = grp.grp_id
+                        and grp.grp_name = 'ZAGS_UPD_NAT_ALL'
+                        and usr.cusrlogname = user))
+  union all
+  select 'ADOPT' table_name,
+         'Усыновление (удочерение)' DocName,
+         ADOPTOIN.ID doc_ID,
+         ADOPTOIN.DOC_DATE doc_date
+    from ADOPTOIN, item
+   where (ADOPTOIN.CUSID_CH = item.Id or ADOPTOIN.CUSID_F = item.Id or
+         ADOPTOIN.CUSID_F_AD = item.Id or ADOPTOIN.CUSID_M = item.Id or
+         ADOPTOIN.CUSID_M_AD = item.Id)
+        --где документ из загса пользователя
+     and (exists (select null
+                    from zags zg_list, usr usr_d
+                   where usr_d.zags_id = zg_list.zags_id
+                     and usr_d.cusrlogname = user
+                     and zg_list.zags_id = ADOPTOIN.Zags_Id)
+         -- или может есть группа
+          or exists (select null
+                       from ODB_GRP_MEMBER mem, usr, ODB_GROUP_USR grp
+                      where mem.iusrid = usr.iusrid
+                        and mem.grp_id = grp.grp_id
+                        and grp.grp_name = 'ZAGS_ADOPT_ALL'
+                        and usr.cusrlogname = user)))
+select upper(table_name) table_name, DocName, doc_ID, doc_date tm$doc_date
+  from unins
+ order by doc_date desc
+
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>DocCnt</key>
+			<value>
+				<![CDATA[
+with item as
+ (select ? Id from dual),
+unins as
+ (select 'brn_birth_act' table_name,
+         'Свидетельство о рождении' DocName,
+         (select count(*)
+            from brn_birth_act g, item
+           where (g.br_act_ch = item.Id or g.br_act_f = item.Id or
+                 g.br_act_m = item.Id)) DocCnt
+    from dual
+  union all
+  select 'PATERN_CERT' table_name,
+         'Установление отцовства' DocName,
+         (select count(*)
+            from PATERN_CERT j, item
+           where (j.pс_ch = item.Id or j.pс_f = item.Id or j.pс_m = item.Id)) DocCnt
+    from dual
+  union all
+  select 'mc_mercer' table_name,
+         'Заключение брака' DocName,
+         (select count(*)
+            from mc_mercer g, item
+           where (g.MERCER_HE = item.Id or g.MERCER_SHE = item.Id)) DocCnt
+    from dual
+  union all
+  select 'DIVORCE_CERT' table_name,
+         'Расторжение брака' DocName,
+         (select count(*)
+            from DIVORCE_CERT g, item
+           where (g.DIVC_HE = item.Id or g.DIVC_SHE = item.Id)) DocCnt
+    from dual
+  union all
+  select 'DEATH_CERT' table_name,
+         'Установление акта о смерти' DocName,
+         (select count(*) from DEATH_CERT g, item where (g.DC_CUS = item.Id)) DocCnt
+    from dual
+  union all
+  select 'UPD_NAME' table_name,
+         'Перемена имени' DocName,
+         (select count(*) from update_name g, item where (g.CUSID = item.Id)) DocCnt
+    from dual
+  union all
+  select 'UPDATE_ABH_NAME' table_name,
+         'Восстановление абхазской фамилии' DocName,
+         (select count(*)
+            from UPDATE_ABH_NAME g, item
+           where (g.CUSID = item.Id)) DocCnt
+    from dual
+  union all
+  select 'UPD_NAT' table_name,
+         'Перемена национальной принадлежности' DocName,
+         (select count(*) from UPD_NAT g, item where (g.CUSID = item.Id)) DocCnt
+    from dual
+  union all
+  select 'ADOPT' table_name,
+         'Усыновление (удочерение)' DocName,
+         (select count(*)
+            from ADOPTOIN g, item
+           where (g.CUSID_CH = item.Id)
+              or (g.CUSID_F = item.Id)
+              or (g.CUSID_F_AD = item.Id)
+              or (g.CUSID_M = item.Id)
+              or (g.CUSID_M_AD = item.Id)) DocCnt
+    from dual)
+select sum(DOCCNT) summ from unins
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>osn_data1c</key>
+			<value>
+				<![CDATA[
+select LAST_NAME,
+       FIRST_NAME,
+       MIDDLE_NAME,
+       to_date(BIRTH_DATE, 'DD.MM.RRRR HH24:MI:SS') BIRTH_DATE,
+       to_number(SEX_CODE) SEX_CODE,
+       TEL_1,
+       TEL_2
+  FROM XMLTABLE('/РодительскийЭлемент/ПерсональныеДанные' PASSING
+                xmltype(?) COLUMNS last_name
+                varchar2(500) PATH '@Фамилия',
+                first_name varchar2(500) PATH '@Имя',
+                middle_name varchar2(500) PATH '@Отчество',
+                birth_date varchar2(500) PATH '@ДатаРождения',
+                sex_code varchar2(500) PATH '@КодПола',
+                tel_1 varchar2(500) PATH '@Телефон1',
+                tel_2 varchar2(500) PATH '@Телефон2')
+	]]>
+			</value>
+		</entry>
+		<entry>
+			<key>address1c</key>
+			<value>
+				<![CDATA[
+select to_number(AREA_CODE) AREA_CODE,
+       AREA_NAME,
+       to_number(CODE_NASPUNCT) CODE_NASPUNCT,
+       NASPUNCT_NAME,
+       STREET,
+       DOM,
+       KORPUS,
+       KV
+  from XMLTABLE('/РодительскийЭлемент/МестоЖительства' PASSING
+                xmltype(?) COLUMNS area_code
+                varchar2(500) PATH '@КодРайона',
+                area_name varchar2(500) PATH '@НаименованиеРайона',
+                code_naspunct varchar2(500) PATH '@КодНасПункта',
+                naspunct_name varchar2(500) PATH '@НаименованиеНасПункта',
+                street varchar2(500) PATH '@Улица',
+                dom varchar2(500) PATH '@Дом',
+                korpus varchar2(500) PATH '@Корпус',
+                kv varchar2(500) PATH '@Квартира')
+	]]>
+			</value>
+		</entry>
+		<entry>
+			<key>docs1c</key>
+			<value>
+<![CDATA[
+select GUID,
+       ciuntry_code,
+       ciuntry_name,
+       doc_type,
+       doc_name,
+       seria,
+       kem_vidan,
+       to_date(date_vid, 'DD.MM.RRRR HH24:MI:SS') date_vid,
+       to_date(date_deist, 'DD.MM.RRRR HH24:MI:SS') date_deist,
+       nomer
+  from XMLTABLE('/РодительскийЭлемент/Паспорта/Паспорт' PASSING
+                xmltype((select regexp_replace(?,
+                                              '<Паспорт[0-9]',
+                                              '<Паспорт')
+                          from dual)) COLUMNS GUID varchar2(500) PATH '@ID',
+                ciuntry_code varchar2(500) PATH '@КодГосударства',
+                ciuntry_name varchar2(500) PATH '@НаименованиеГосударства',
+                doc_type varchar2(500) PATH '@КодВида',
+                doc_name varchar2(500) PATH '@НаименованиеВида',
+                seria varchar2(500) PATH '@Серия',
+                nomer varchar2(500) PATH '@Номер',
+                kem_vidan varchar2(500) PATH '@КемВыдан',
+                date_vid varchar2(500) PATH '@ДатаВыдачи',
+                date_deist varchar2(500) PATH '@СрокДействия')
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>insert_doc_temp</key>
+			<value>
+<![CDATA[
+declare 
+pragma autonomous_transaction;
+begin
+insert into CUS_DOCUM_TEMP
+  (id_doc_tp,
+   doc_num,
+   doc_ser,
+   doc_date,
+   doc_period,
+   GUID,
+   DOC_AGENCY)
+   values 
+   (?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?);
+commit;
+end;
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>doc_list_temp</key>
+			<value>
+<![CDATA[
+select DOC_SUBDIV,
+       DOC_PERIOD,
+       DOC_AGENCY,
+       DOC_DATE,
+       DOC_SER,
+       DOC_NUM,
+       (select doc_types.name from doc_types where doc_types.code = ID_DOC_TP) ID_DOC_TP,
+       decode(PREF, 'Y', 'Да', 'N', 'Нет') PREF,
+       ID_DOC
+  from CUS_DOCUM_TEMP
+
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>CUS_ADDR_LIST</key>
+			<value>
+<![CDATA[
+select CUS_ADDR.*,
+       (select NAME from COUNTRIES t where t.CODE = CUS_ADDR.COUNTRY) CLONGNAMET
+  from CUS_ADDR
+ where ICUSNUM = ?
+
+
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>doc_list</key>
+			<value>
+<![CDATA[
+select DOC_SUBDIV,
+       DOC_PERIOD,
+       DOC_AGENCY,
+       DOC_DATE,
+       DOC_SER,
+       DOC_NUM,
+      (select doc_types.name from doc_types where doc_types.code = ID_DOC_TP) ID_DOC_TP,
+       decode(PREF, 'Y', 'Да', 'N', 'Нет') PREF,
+       ID_DOC
+  from CUS_DOCUM
+ where icusnum = ?
+ ]]>
+			</value>
+		</entry>
+		<entry>
+			<key>FOR_1c</key>
+			<value>
+<![CDATA[
+select /*ПерсональныеДанные*/
+ (select usr.cusrname from usr where usr.cusrlogname = t.CCUSIDOPEN) oper,
+ t.ccuslast_name,
+ t.ccusfirst_name,
+ t.ccusmiddle_name,
+ to_char(t.dcusbirthday, 'dd.mm.yyyy') || ' 0:00:00' br_date,
+ to_char(t.ccussex) ccussex,
+ /*МестоЖительства*/
+ (select to_char(raion.code) from raion where raion.name = g.AREA) code_area,
+ (select raion.name from raion where raion.name = g.AREA) name_area,
+ (select to_char(CODE) from NAS_PUNKT where NAS_PUNKT.NAME = g.PUNCT_NAME) punct_code,
+ (select name from NAS_PUNKT where NAS_PUNKT.NAME = g.PUNCT_NAME) punct_name,
+ g.INFR_NAME street,
+ g.dom,
+ g.korp,
+ g.kv
+  from CUS t, cus_addr g
+ where g.icusnum(+) = t.icusnum
+ and t.ICUSNUM = ?
+ ]]>
+			</value>
+		</entry>
+		<entry>
+			<key>1C_XML</key>
+			<value>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации ИмяБазы="DB_NAME" ДатаПоследнейАвторизации="LAST_AUTH"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="OPERATOR" ID="ID" КодСсылки="REF_CODE" Фамилия="L_NAME" Имя="F_NAME" Отчество="M_NAME" ДатаРождения="B_RDATE" КодПола="SEX_CODE"/>
+		<МестоЖительства КодРайона="AREA_CODE" НаименованиеРайона="AREA_NAME" КодНасПункта="NASPUNCT_CODE" НаименованиеНасПункта="NASPUNCT_NAME" Улица="STREET" Дом="HOME" Корпус="KORPUS" Квартира="KVARTIRA"/>
+ ]]>
+			</value>
+		</entry>
+		<entry>
+			<key>1C_XML_CUS_DOCUM</key>
+			<value>
+<![CDATA[
+select id_doc,
+       icusnum,
+       pref,
+       id_doc_tp,
+       doc_num,
+       doc_ser,
+       to_char(t.doc_date, 'dd.mm.yyyy') || ' 0:00:00' doc_date,
+       doc_agency,
+       to_char(t.doc_period, 'dd.mm.yyyy') || ' 0:00:00' doc_period,
+       doc_subdiv,
+       sys_guid,
+       (select to_char(code)
+          from countries
+         where code =
+               (select CUS.CCUS_OK_SM from cus where cus.icusnum = t.icusnum)) country_code,
+       (select name
+          from countries
+         where code =
+               (select CUS.CCUS_OK_SM from cus where cus.icusnum = t.icusnum)) country_name,
+       (select to_char(code)
+          from DOC_TYPES
+         where DOC_TYPES.CODE = t.id_doc_tp) doc_code,
+       (select NAME from DOC_TYPES where DOC_TYPES.CODE = t.id_doc_tp) doc_name
+  from CUS_DOCUM t
+  where t.icusnum = ?
+ ]]>
+			</value>
+		</entry>
+	</sqls>
+</sqlMap>

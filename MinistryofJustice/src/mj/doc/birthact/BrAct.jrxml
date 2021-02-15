@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.14.0.final using JasperReports Library version 6.14.0-2ab0d8625be255bf609c78e1181801213e51db8f  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Audit" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e0eb380e-5835-4b71-83ad-09c82344b35d">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="BR_ACT_ID" class="java.lang.String"/>
+	<field name="LNAME" class="java.lang.String"/>
+	<field name="FNAME" class="java.lang.String"/>
+	<field name="CHBDATE" class="java.lang.String"/>
+	<field name="CHSEX" class="java.lang.String"/>
+	<field name="MNAME" class="java.lang.String"/>
+	<field name="CHBRNPLACE" class="java.lang.String"/>
+	<field name="CHCNT" class="java.lang.String"/>
+	<field name="LD" class="java.lang.String"/>
+	<field name="NDOCA" class="java.lang.String"/>
+	<field name="DATEDOCA" class="java.lang.String"/>
+	<field name="MEDORGA" class="java.lang.String"/>
+	<field name="FIOB" class="java.lang.String"/>
+	<field name="DATEDOCB" class="java.lang.String"/>
+	<field name="NAMECOURT" class="java.lang.String"/>
+	<field name="DESCCOURT" class="java.lang.String"/>
+	<field name="DCOURT" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="7" width="250" height="16" uuid="adcb5629-70a6-47a8-bd51-71e903aa2a0b"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Аиразы акт аҭаҩра - Запись акта о рождении № ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="330" y="7" width="100" height="16" uuid="9d661673-9631-4403-9dd7-887e6a223c62"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BR_ACT_ID}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="160" height="20" uuid="188bc720-0046-4e98-ac59-a9519e54e468"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ахәыҷы изы адыррақәа
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="160" height="20" uuid="eef0dda8-2c18-4f6b-b15f-229d31e4d71e"/>
+				<textElement>
+					<font isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Сведения о ребенке]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="30" height="30" uuid="43ce4740-17c0-47e6-8458-ceb35947f5b9"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="10" width="230" height="30" uuid="a45c4a8d-7726-4be7-9ece-1b73d6384fba"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Ажәла
+Фамилия]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="10" width="160" height="30" uuid="3f3c3d81-73b9-4dd3-b5aa-a488e4724631"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LNAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="260" y="10" width="30" height="30" uuid="a47355a4-e200-45c6-a2dc-a6d87e9c3c67"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="10" width="260" height="30" uuid="edbee299-259f-48b2-9f18-f496008c826d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Ахьӡ
+Имя]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="330" y="10" width="220" height="30" uuid="c71e99fc-77cc-4606-8311-0dae302cb760"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FNAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="40" width="30" height="30" uuid="599356cb-4b65-404c-9ae1-71fc902301b8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[3.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="40" width="30" height="30" uuid="9069ca14-e4e3-48a8-8a7c-7ed12faecbd3"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[4.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="40" width="260" height="30" uuid="e2bf13de-dc8a-4418-945a-bc36171cc644"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Ахаҵара-аԥҳәысра
+Пол]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="390" y="40" width="160" height="30" uuid="08096641-50d6-4610-a94d-87600fbc2c47"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CHSEX}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="40" width="230" height="30" uuid="7e3210e9-fa4c-430b-96d2-4fdaed3d1a75"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Абхьӡ
+Отчество]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="40" width="160" height="30" uuid="d7a60d63-419e-4a9d-a82b-3b1ec9ba0bf8"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MNAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="523" splitType="Stretch">
+			<staticText>
+				<reportElement x="30" y="0" width="520" height="30" uuid="b26bb722-e2a0-4799-9265-3ce3ef74c00c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Даниз арыцхә
+Дата рождения]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="30" height="30" uuid="64567f53-1036-477f-b02e-6ad8b43b6bea"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[5.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="0" width="160" height="30" uuid="70a5e920-3928-44fc-a898-db15ec826367"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CHBDATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="30" height="30" uuid="a2f01e0c-1a37-40e2-a076-39cbe50eb740"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[6.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="30" width="520" height="30" uuid="a363cbe0-41bd-4c1a-a6ff-1f19e00d1799"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Дахьиз аҭыԥ
+Место рождения]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="30" width="420" height="30" uuid="3e18ec8a-697d-473d-a039-8852428b18be"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CHBRNPLACE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="30" height="64" uuid="3518ae63-3bac-426c-b488-f3e59b9943b5"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[7.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="60" width="260" height="64" uuid="1dccd4c2-f861-42ae-bc5c-42f3fd3a9003"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Ииз ахәыҷқәа рхыԥхьаӡара:
+(аӡәы, ҩыџа, мамзаргьы инареиҳаны ахәҷқәа)
+Количество родившихся детей
+(один, двойня или более детей)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="290" y="61" width="160" height="62" uuid="12628f37-2441-4d3e-bda6-b23874cbf29d"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CHCNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="124" width="30" height="30" uuid="87fdccf9-7e6e-46a5-ac81-bb71f5473daa"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[8.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="124" width="260" height="30" uuid="54f67479-4978-42f4-a5df-0c02bdc0af44"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Зыԥсы ҭаны ииз, мамзаргьы иԥсны ииз
+Жиорожденный или мертворожденный]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="290" y="124" width="240" height="30" uuid="2c3e840d-369c-4a6a-9a7b-63fe6dbea9c7"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LD}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="154" width="30" height="166" uuid="e07fb03a-0dcf-4b90-93a1-a2458b2c4c73"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[9.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="154" width="259" height="166" uuid="2e8970c2-7cf6-4f49-8d50-75e1634ca1eb"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="154" width="250" height="30" uuid="d14df541-c424-428b-b9f6-78788a0dcedd"/>
+				<text><![CDATA[Ахәыҷы дышиз афакт шьақәзарӷәӷәо адокумент
+Документ подтверждающий факт рождения ребенка]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="60" width="260" height="64" uuid="80c2fc5b-ae1b-4027-b406-464a164f3bc0"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="123" width="260" height="30" uuid="6fb83b98-5f1e-476e-b8e3-3f72e7261426"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="154" width="260" height="166" uuid="829f2760-4952-4d06-9924-8aefeec4ee82"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="184" width="248" height="16" uuid="7a604b41-5cb8-4262-9d18-d706077d0819"/>
+				<text><![CDATA[а)ишьақәыргылоу аформала аиразы адокумент.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="200" width="214" height="16" uuid="0e1cf2c3-2bc3-47d0-81ed-9c8fb5cc4913"/>
+				<text><![CDATA[Документ установленной формы о рождении]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="216" width="14" height="22" uuid="814260ea-0951-4bda-8365-f0b2890e79c7"/>
+				<text><![CDATA[№]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="216" width="100" height="22" uuid="6f0ccbbb-cc48-4577-9a4d-af05e6d35404">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1dec955d-a707-4659-9ae6-43b390ab4dda"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NDOCA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="36" y="238" width="14" height="22" uuid="3090bb86-bf39-4bd6-b220-43bcb9235680"/>
+				<text><![CDATA[от]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="238" width="100" height="22" uuid="a889db35-d0f7-4252-85e5-0a01995037da">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="26c89525-0284-4713-907f-2338ff7384cf"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATEDOCA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="36" y="260" width="248" height="18" uuid="473cc98c-e458-4878-9d7b-f95788c630ea">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3f7b78ca-98c7-4d9d-9ed0-2bbab2dd17f4"/>
+				</reportElement>
+				<textElement>
+					<font isItalic="false" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MEDORGA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="52" y="278" width="182" height="20" uuid="f3ed4079-40d0-413a-805b-5a51c47c99fc"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(адокумент рызҭаз амедицинатә еиҿкаара ахьӡ)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="290" width="251" height="22" uuid="7b88e3a2-d36d-4d87-9cfe-7e2cf7f399b0"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[наименование медийинской организации, выдавшей документ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="154" width="100" height="26" uuid="dca10f25-0a22-48e9-b1a9-02444f228634"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[б)арзаҳал
+   заявление]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="200" width="210" height="24" uuid="5dc18903-41c3-4f96-9e21-a1484e055f0e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(ахшараиура аамҭазы иҟаз ахаҿқәа ажәла, ахьӡ, абхьӡ
+Ф.И.О. лица, присутствовавшего во время родов)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="185" width="225" height="14" uuid="ad52ae64-3eb5-4d17-97bf-b23161125d82">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4539675b-7660-499a-8b85-66dbb3926d7e"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FIOB}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="230" width="100" height="15" uuid="da2c37e6-e77a-4df3-a63f-a0b0636ce6e5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a2853193-186c-4cd3-a256-32fa360844cc"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATEDOCB}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="330" y="270" width="150" height="22" uuid="25e646e4-848e-4a4b-8031-7272148302b0"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(анапынҵара-подпись)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="320" width="30" height="90" uuid="9338eeed-4b48-4cf3-9a61-82dd21289f74"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[10.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="320" width="520" height="90" uuid="bb21d0bb-7bdb-4cd2-a2c8-6629cb684b8b"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="320" width="230" height="20" uuid="d5cb9a64-f637-4d09-9f42-d8a7c2221085"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Аира акт аҭаҩра ашьақәыргыларазы ашьаҭа]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="340" width="230" height="20" uuid="42ccf32a-2596-4098-af6f-5eb347ccc067"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Основание восстановления записи акта о рождении]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="380" width="168" height="14" uuid="6ea4431a-809f-4548-af98-024755c3f7a0"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[(аӡбарҭа ахьӡ -наименование суда)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="36" y="360" width="251" height="16" uuid="0ef63c23-1830-493c-9e9e-691d7a7c1998">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="91248a3d-25a9-4ab0-9d41-1e383bad37ad"/>
+				</reportElement>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMECOURT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="300" y="340" width="80" height="30" uuid="6acbdda4-639d-4791-998a-e0468b8ad50b"/>
+				<text><![CDATA[аӡбарҭа аӡбара
+решение суда]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="380" y="340" width="170" height="30" uuid="c453bca5-d4ff-4dcf-819e-0f0c7c7470d5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f8d99c4e-dc97-4bd6-847e-6a3c13649feb"/>
+				</reportElement>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESCCOURT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="370" width="100" height="16" uuid="d66ef094-62f0-4b73-a608-0c47f825b2f7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6ab7ef90-86e2-4bfb-9948-4593e408cff5"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DCOURT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

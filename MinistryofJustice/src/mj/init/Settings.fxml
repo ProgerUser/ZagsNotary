@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jyloo.syntheticafx.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="PANE" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="20.0" text="Параметры подключения к базе">
+			<content>
+				<GridPane>
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="91.0" prefWidth="91.0" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="283.0" minWidth="258.0" prefWidth="283.0" />
+					</columnConstraints>
+					<rowConstraints>
+						<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+					</rowConstraints>
+					<children>
+						<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес сервера:" />
+						<TextField fx:id="URL" promptText="IP:PORT/SID" GridPane.columnIndex="1" />
+					</children>
+				</GridPane>
+			</content>
+		</TitledPane>
+		<TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="105.0" text="Список логинов для быстрого входа">
+			<content>
+				<XTableView fx:id="USERS" layoutX="10.0" layoutY="116.0" prefHeight="200.0" prefWidth="295.0">
+					<columns>
+						<XTableColumn fx:id="ID" prefWidth="84.0" text="ИД" />
+						<XTableColumn fx:id="USR_NAME" prefWidth="197.0" text="Логин" />
+					</columns>
+					<contextMenu>
+						<ContextMenu>
+							<items>
+								<MenuItem mnemonicParsing="false" onAction="#Delete" text="Удалить" />
+							</items>
+						</ContextMenu>
+					</contextMenu>
+				</XTableView>
+			</content>
+		</TitledPane>
+		<Button layoutX="10.0" layoutY="332.0" mnemonicParsing="false" onAction="#Save" prefHeight="25.0" prefWidth="123.0" text="Сохранить" />
+	</children>
+	<padding>
+		<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+	</padding>
+</VBox>

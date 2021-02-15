@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="PANE" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+      <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="14.0" maxHeight="1.7976931348623157E308" text="Параметры подключения">
+         <content>
+            <TabPane styleClass="floating" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Параметры">
+                     <content>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="106.0" prefWidth="115.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес сервера:" />
+                              <TextField fx:id="HostAddress" GridPane.columnIndex="1" />
+                              <CheckBox fx:id="IsSsl" mnemonicParsing="false" textFill="#070707" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Использовать SSL:" GridPane.rowIndex="1" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Порт:" GridPane.rowIndex="2" />
+                              <TextField fx:id="Port" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ресурс:" GridPane.rowIndex="3" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Логин:" GridPane.rowIndex="4" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Пароль:" GridPane.rowIndex="5" />
+                              <PasswordField fx:id="Password" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextField fx:id="Login" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField fx:id="Resource" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Button mnemonicParsing="false" onAction="#TestConnect" text="Тестировать подключение" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </GridPane>
+                     </content>
+                </Tab>
+                <Tab text="HW DATA">
+                     <content>
+                        <VBox>
+                           <children>
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" prefWidth="50.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CPU" />
+                                    <TextField fx:id="CPU_NAME" editable="false" GridPane.columnIndex="1" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="HDD" GridPane.rowIndex="1" />
+                                    <TextField fx:id="HDD_SERIAL" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                     </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="250.0" maxHeight="1.7976931348623157E308" text="Регистрация">
+         <content>
+      		<GridPane>
+      			<columnConstraints>
+      				<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="161.0" prefWidth="166.0" />
+      				<ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="186.0" prefWidth="297.0" />
+      			</columnConstraints>
+      			<rowConstraints>
+      				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      			</rowConstraints>
+      			<children>
+      				<Label text="Имя базы:">
+      					<font>
+      						<Font name="Arial" size="12.0" />
+      					</font>
+      				</Label>
+                  <TextField fx:id="DbName" GridPane.columnIndex="1" />
+                  <Label text="Электронная почта:" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="EMail" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Персональный номер базы:" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="PersonalDbNumber" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#Register" text="Выполнить регистрацию" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      			</children>
+      		</GridPane>
+         </content>
+      </TitledPane>
+      <TextArea editable="false" layoutX="29.0" layoutY="361.0" prefHeight="98.0" prefWidth="718.0" style="-fx-text-fill: #b20000;" text="Внимание!&#10;После успешной регистрации потребуется некоторое время, пока администратор не проверит данные.&#10;Если регистрация будет подтверждена администратором, на указанный выше адрес электронной почты придет письмо с ID.&#10;Этот ID нужно будет ввести в поле, расположенное ниже.&#10;После вставки ID можно выполнить тестирование подключения" />
+      <TitledPane animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="Проверка">
+         <content>
+            <GridPane>
+               <children>
+                  <Label text="ID:">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="ID" GridPane.columnIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#CheckAuth" text="Проверить авторизацию" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="16.0" prefWidth="23.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </content>
+      </TitledPane>
+	</children>
+	<padding>
+		<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+	</padding>
+</VBox>

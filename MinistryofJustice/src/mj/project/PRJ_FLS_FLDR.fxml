@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <SplitPane dividerPositions="0.5">
+         <items>
+            <BorderPane maxWidth="250.0">
+               <center>
+                  <TableView fx:id="Hist" maxWidth="268.0" styleClass="mylistview" stylesheets="/ScrPane.css" BorderPane.alignment="CENTER">
+                    <columns>
+                      <TableColumn fx:id="VERISION" prefWidth="103.0" text="Версия" />
+                      <TableColumn fx:id="DT" prefWidth="137.0" text="Дата обновления" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </center>
+            </BorderPane>
+            <BorderPane>
+               <center>
+                  <TreeView fx:id="PROJECT" editable="true" prefWidth="450.0" styleClass="mylistview" stylesheets="/ScrPane.css" BorderPane.alignment="CENTER">
+                  
+                     <contextMenu>
+                        <ContextMenu fx:id="ContMenu">
+                          <items>
+                              <MenuItem mnemonicParsing="false" onAction="#Add" text="Добавить" />
+                              <MenuItem mnemonicParsing="false" onAction="#Edit" text="Редактировать" />
+                              <MenuItem mnemonicParsing="false" onAction="#Delete" text="Удалить" />
+                          </items>
+                        </ContextMenu>
+                     </contextMenu>
+                      
+                  </TreeView>
+               </center>
+               <top>
+                  <ToolBar BorderPane.alignment="CENTER">
+                    <items>
+                        <Text layoutX="10.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
+                        <TextField fx:id="PRJ_ID" editable="false" prefHeight="25.0" prefWidth="98.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Размер файла" />
+                        <TextField fx:id="FILE_LG" editable="false" layoutX="91.0" layoutY="10.0" prefHeight="25.0" prefWidth="114.0" />
+                        <Text layoutX="10.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка?" />
+                        <TextField fx:id="IsFolder" editable="false" prefWidth="30.0" />
+                    </items>
+                  </ToolBar>
+               </top>
+            </BorderPane>
+         </items>
+      </SplitPane>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</StackPane>

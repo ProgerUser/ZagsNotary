@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import de.jensd.fx.glyphs.weathericons.*?>
+
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<VBox fx:id="Grand" spacing="5.0">
+			<children>
+				<TabPane fx:id="CusTab" styleClass="floating" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+					<tabs>
+						<Tab fx:id="OsnTab" text="Личные данные">
+							<content>
+								<VBox fx:id="OsnVbox" spacing="5.0">
+									<children>
+										<TitledPane fx:id="OSN_DATA" animated="false" collapsible="false" text="Основные данные">
+											<content>
+												<VBox>
+													<children>
+														<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+															<children>
+																<GridPane>
+																	<columnConstraints>
+																		<ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
+																		<ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="300.0" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Фамилия" />
+																		<TextField fx:id="CCUSLAST_NAME" onAction="#EnterLastName" GridPane.columnIndex="1" />
+																		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.rowIndex="1" />
+																		<TextField fx:id="CCUSFIRST_NAME" onAction="#EnterFirstName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
+																		<TextField fx:id="CCUSMIDDLE_NAME" onAction="#EnterMiddleName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата рождения" GridPane.rowIndex="3" />
+																		<DatePicker fx:id="DCUSBIRTHDAY" maxWidth="100.0" onAction="#EnterBirthDate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+																	</children>
+																</GridPane>
+																<GridPane>
+																	<columnConstraints>
+																		<ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
+																		<ColumnConstraints hgrow="SOMETIMES" prefWidth="280.0" />
+																		<ColumnConstraints hgrow="SOMETIMES" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Подразделение" />
+																		<ComboBox fx:id="ICUSOTD" maxWidth="1.7976931348623157E308" onAction="#ICUSOTD" GridPane.columnIndex="1" />
+																		<ComboBox fx:id="CCUSSEX" maxWidth="1.7976931348623157E308" onAction="#CCUSSEX" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Пол" GridPane.rowIndex="2" />
+																		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Национальность" GridPane.rowIndex="3" />
+																		<ComboBox fx:id="CCUSNATIONALITY" editable="true" maxWidth="1.7976931348623157E308" onAction="#CCUSNATIONALITY" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+																		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Страна рождения" GridPane.rowIndex="1" />
+																		<ComboBox fx:id="CombCountry" editable="true" maxWidth="1.7976931348623157E308" onAction="#CombCountry" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																	</children>
+																	<HBox.margin>
+																		<Insets left="10.0" />
+																	</HBox.margin>
+																</GridPane>
+															</children>
+														</HBox>
+														<GridPane>
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="110.0" />
+																<ColumnConstraints hgrow="SOMETIMES" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+															<children>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Место рождения" />
+																<TextField fx:id="CCUSPLACE_BIRTH" onAction="#EnterPlaceBirth" GridPane.columnIndex="1" />
+															</children>
+														</GridPane>
+													</children>
+												</VBox>
+											</content>
+										</TitledPane>
+										<HBox fx:id="CitAdr" spacing="5.0">
+											<children>
+												<TitledPane fx:id="Citizen" animated="false" collapsible="false" text="Гражданство">
+													<content>
+														<VBox>
+															<children>
+																<ToolBar>
+																	<items>
+																		<Button mnemonicParsing="false" onAction="#BtAddCitizen" text="">
+																			<graphic>
+																				<FontAwesomeIconView fill="BLACK" glyphName="PLUS_CIRCLE" size="20.0" />
+																			</graphic>
+																			<tooltip>
+																				<Tooltip text="Добавить" />
+																			</tooltip>
+																		</Button>
+																		<Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtEditCitizen">
+																			<graphic>
+																				<FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="20.0" />
+																			</graphic>
+																			<tooltip>
+																				<Tooltip text="Редактировать" />
+																			</tooltip>
+																		</Button>
+																		<Button layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtDelCitizen" text="">
+																			<graphic>
+																				<FontAwesomeIconView fill="BLACK" glyphName="TRASH_ALT" size="20.0" />
+																			</graphic>
+																			<tooltip>
+																				<Tooltip text="Удалить" />
+																			</tooltip>
+																		</Button>
+																	</items>
+																</ToolBar>
+																<TableView fx:id="CUS_CITIZEN" editable="true" prefHeight="100.0">
+																	<columns>
+																		<!-- <TableColumn fx:id="COUNTRY" prefWidth="75.0" text="Код" 
+																			/> -->
+																		<TableColumn fx:id="CLONGNAME" prefWidth="308.0" text="Наименование" />
+																		<TableColumn fx:id="OSN" prefWidth="41.0" text="Осн." />
+																	</columns>
+																	<contextMenu>
+																		<ContextMenu>
+																			<items>
+																				<MenuItem mnemonicParsing="false" onAction="#CmAddCitizen" text="Добавить" />
+																				<MenuItem mnemonicParsing="false" onAction="#CmEditCitizen" text="Редактировать" />
+																				<MenuItem mnemonicParsing="false" onAction="#DelCitizen" text="Удалить" />
+																			</items>
+																		</ContextMenu>
+																	</contextMenu>
+																	<columnResizePolicy>
+																		<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+																	</columnResizePolicy>
+																</TableView>
+															</children>
+														</VBox>
+													</content>
+												</TitledPane>
+												<TitledPane fx:id="Address" animated="false" collapsible="false" prefHeight="181.0" text="Адрес">
+													<content>
+														<VBox>
+															<children>
+																<HBox>
+																	<children>
+																		<GridPane>
+																			<columnConstraints>
+																				<ColumnConstraints hgrow="SOMETIMES" prefWidth="80.0" />
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																				<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																				<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																				<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<children>
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Страна" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Район" GridPane.rowIndex="1" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Насел. пункт" GridPane.rowIndex="2" />
+																				<ComboBox fx:id="AREA" onAction="#AreaChange" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																				<ComboBox fx:id="PUNCT_NAME" editable="true" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Улица" GridPane.rowIndex="3" />
+																				<TextField fx:id="INFR_NAME" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+																				<ComboBox fx:id="CombCountryAddr" editable="true" prefWidth="200.0" GridPane.columnIndex="1" />
+																			</children>
+																		</GridPane>
+																		<GridPane>
+																			<columnConstraints>
+																				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+																				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																				<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																				<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<children>
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дом" />
+																				<TextField fx:id="DOM" maxWidth="100.0" GridPane.columnIndex="1" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Корпус" GridPane.rowIndex="1" />
+																				<TextField fx:id="KORP" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Кв." GridPane.rowIndex="2" />
+																				<TextField fx:id="KV" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																			</children>
+																			<HBox.margin>
+																				<Insets left="10.0" />
+																			</HBox.margin>
+																		</GridPane>
+																	</children>
+																</HBox>
+															</children>
+														</VBox>
+													</content>
+												</TitledPane>
+											</children>
+										</HBox>
+										<TitledPane fx:id="Docs" animated="false" collapsible="false" text="Документы">
+											<content>
+												<VBox>
+													<children>
+														<ToolBar>
+															<items>
+																<Button fx:id="AddCusDocum" mnemonicParsing="false" onAction="#AddCusDocum" text="">
+																	<graphic>
+																		<FontAwesomeIconView fill="BLACK" glyphName="PLUS_CIRCLE" size="20.0" />
+																	</graphic>
+																	<tooltip>
+																		<Tooltip text="Добавить" />
+																	</tooltip>
+																</Button>
+																<Button fx:id="EditCusDocum" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#EditCusDocum" text="">
+																	<graphic>
+																		<FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="20.0" />
+																	</graphic>
+																	<tooltip>
+																		<Tooltip text="Редактировать" />
+																	</tooltip>
+																</Button>
+																<Button fx:id="BtDelDocum" layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtDelDocum" text="">
+																	<graphic>
+																		<FontAwesomeIconView fill="BLACK" glyphName="TRASH_ALT" size="20.0" />
+																	</graphic>
+																	<tooltip>
+																		<Tooltip text="Удалить" />
+																	</tooltip>
+																</Button>
+															</items>
+														</ToolBar>
+														<TableView fx:id="CUS_DOCUM" maxWidth="1.7976931348623157E308" prefHeight="100.0">
+															<columns>
+																<TableColumn fx:id="ID_DOC_TP" prefWidth="127.0" text="Тип документа" />
+																<TableColumn fx:id="DOC_SER" prefWidth="44.0" text="Серия" />
+																<TableColumn fx:id="DOC_NUM" prefWidth="85.0" text="Номер" />
+																<TableColumn fx:id="DOC_DATE" prefWidth="100.0" text="Дата выдачи" />
+																<TableColumn fx:id="DOC_PERIOD" prefWidth="100.0" text="Срок действия" />
+																<TableColumn fx:id="PREF" prefWidth="45.0" text="Осн." />
+																<TableColumn fx:id="DOC_AGENCY" prefWidth="153.0" text="Кем выдан" />
+																<TableColumn fx:id="DOC_SUBDIV" prefWidth="45.0" text="КП" />
+															</columns>
+															<contextMenu>
+																<ContextMenu>
+																	<items>
+																		<MenuItem mnemonicParsing="false" onAction="#CmDelCusDocum" text="Удалить" />
+																	</items>
+																</ContextMenu>
+															</contextMenu>
+															<columnResizePolicy>
+																<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+															</columnResizePolicy>
+														</TableView>
+													</children>
+												</VBox>
+											</content>
+										</TitledPane>
+                              <TitledPane fx:id="PobTw" animated="false" collapsible="false" layoutX="10.0" layoutY="397.0" text="Возможные совпадения">
+                                 <content>
+                                    <VBox>
+                                       <children>
+                                          <ToolBar>
+                                             <items>
+                              						<Button mnemonicParsing="false" onAction="#NoDubl" text="Дубликатов нет" />
+                                             </items>
+                                          </ToolBar>
+                              				<TableView fx:id="DUBL" editable="true" prefHeight="200.0" styleClass="mylistview" stylesheets="ScrPane.css" tableMenuButtonVisible="true">
+                              					<columns>
+                              						<TableColumn fx:id="LastName" prefWidth="147.0" text="Фамилия" />
+                              						<TableColumn fx:id="FirstName" prefWidth="118.0" text="Имя" />
+                              						<TableColumn fx:id="MiddleName" minWidth="9.0" prefWidth="122.0" text="Отчество" />
+                              						<TableColumn fx:id="BirthDate" minWidth="0.0" prefWidth="115.0" text="Дата рождения" />
+                              					</columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                              				</TableView>
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </TitledPane>
+									</children>
+								</VBox>
+							</content>
+						</Tab>
+						<Tab fx:id="DocTab" text="Документы">
+							<content>
+								<BorderPane>
+									<center>
+										<TableView fx:id="all_docs" styleClass="mylistview" stylesheets="/ScrPane.css" BorderPane.alignment="CENTER">
+											<columns>
+												<TableColumn fx:id="DOC_DATET" prefWidth="112.0" text="Дата документа" />
+												<TableColumn fx:id="DOCNAME" prefWidth="329.0" text="Тип документа" />
+												<TableColumn fx:id="DOC_ID" prefWidth="136.0" text="Номер документа" />
+											</columns>
+											<columnResizePolicy>
+												<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+											</columnResizePolicy>
+											<contextMenu>
+												<ContextMenu>
+													<items>
+														<MenuItem mnemonicParsing="false" onAction="#RefreshAllDocs" text="Обновить" />
+													</items>
+												</ContextMenu>
+											</contextMenu>
+										</TableView>
+									</center>
+									<top>
+										<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+											<items>
+												<MenuButton mnemonicParsing="false" text="Добавить">
+													<items>
+														<MenuItem mnemonicParsing="false" onAction="#BRN_BIRTH_ACT" text="Свидетельство о рождении" />
+														<MenuItem mnemonicParsing="false" onAction="#PATERN_CERT" text="Установление отцовства" />
+														<MenuItem mnemonicParsing="false" onAction="#MC_MERCER" text="Заключение брака" />
+														<MenuItem mnemonicParsing="false" onAction="#DIVORCE_CERT" text="Расторжение брака" />
+														<MenuItem mnemonicParsing="false" onAction="#DEATH_CERT" text="Установление акта о смерти" />
+														<MenuItem mnemonicParsing="false" onAction="#UPD_NAME" text="Перемена имени" />
+														<MenuItem mnemonicParsing="false" onAction="#UPDATE_ABH_NAME" text="Восстановление абхазской фамилии" />
+														<MenuItem mnemonicParsing="false" onAction="#UPD_NAT" text="Перемена национальной принадлежности" />
+														<MenuItem mnemonicParsing="false" onAction="#ADOPT" text="Усыновление (удочерение)" />
+													</items>
+												</MenuButton>
+												<Button layoutX="10.0" layoutY="13.0" mnemonicParsing="false" onAction="#OpenBTN" text="Открыть" />
+											</items>
+										</ToolBar>
+									</top>
+								</BorderPane>
+							</content>
+						</Tab>
+					</tabs>
+				</TabPane>
+				<ButtonBar fx:id="MainTool" buttonMinWidth="80.0">
+					<buttons>
+						<Button fx:id="SaveEditB" mnemonicParsing="false" onAction="#SaveEdit" text="Сохранить" />
+						<Button mnemonicParsing="false" onAction="#Save" text="Сохранить и закрыть" />
+						<Button mnemonicParsing="false" onAction="#Cencel" text="Отменить" />
+					</buttons>
+				</ButtonBar>
+			</children>
+			<StackPane.margin>
+				<Insets />
+			</StackPane.margin>
+			<padding>
+				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+			</padding>
+		</VBox>
+		<ProgressIndicator fx:id="PROGRESS" maxHeight="50.0" maxWidth="50.0" visible="false" />
+	</children>
+</StackPane>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.rootlayout.Root">
+	<top>
+		<MenuBar fx:id="menubar" prefHeight="29.0" prefWidth="688.0" BorderPane.alignment="CENTER">
+			<menus>
+				<Menu fx:id="4" mnemonicParsing="false" text="ЗАГС">
+					<items>
+						<MenuItem fx:id="5" mnemonicParsing="false" onAction="#BIRTH_ACT" text="Записи акта о рождении" />
+						<MenuItem fx:id="6" mnemonicParsing="false" onAction="#MC_MERCER" text="Запись акта о заключении брака" />
+						<MenuItem fx:id="7" mnemonicParsing="false" onAction="#DIVORCE_CERT" text="Свидетельство о расторжении брака" />
+						<MenuItem fx:id="8" mnemonicParsing="false" onAction="#PATERN_CERT" text="Установление отцовства" />
+						<MenuItem fx:id="9" mnemonicParsing="false" onAction="#DEATH_CERT" text="Свидетельство о смерти" />
+						<MenuItem fx:id="10" mnemonicParsing="false" onAction="#UPDATE_NAME" text="Перемена имени" />
+						<MenuItem fx:id="11" mnemonicParsing="false" onAction="#UPD_NAT" text="Перемена нац. принадлежности" />
+						<MenuItem fx:id="12" mnemonicParsing="false" onAction="#UPDATE_ABH_NAME" text="Восстановление абхазской фамилии" />
+						<MenuItem fx:id="13" mnemonicParsing="false" onAction="#ADOPTOIN" text="Усыновление (удочерение)" />
+					</items>
+				</Menu>
+            <Menu fx:id="125" mnemonicParsing="false" text="Нотариус" />
+				<Menu fx:id="14" mnemonicParsing="false" text="Справочники">
+					<items>
+						<MenuItem fx:id="15" mnemonicParsing="false" onAction="#CUSLIST" text="Список граждан" />
+						<MenuItem fx:id="23" mnemonicParsing="false" onAction="#OTD" text="Отделения" />
+						<MenuItem fx:id="24" mnemonicParsing="false" onAction="#ZAGS" text="Список ЗАГС" />
+						<MenuItem fx:id="124" mnemonicParsing="false" onAction="#NOTARY" text="Список Нотариусов" />
+					</items>
+				</Menu>
+				<Menu fx:id="85" mnemonicParsing="false" text="Отчеты">
+					<items>
+						<MenuItem fx:id="85" mnemonicParsing="false" onAction="#reports" text="Печать" />
+					</items>
+				</Menu>
+				<Menu fx:id="16" mnemonicParsing="false" text="Администратор">
+					<items>
+						<MenuItem fx:id="17" mnemonicParsing="false" onAction="#usradmin" text="Пользователи" />
+                  <Menu fx:id="103" mnemonicParsing="false" text="Доступ">
+                     <items>
+      						<MenuItem fx:id="18" mnemonicParsing="false" onAction="#access_menuitems" text="Доступность пунктов меню" />
+      						<MenuItem fx:id="19" mnemonicParsing="false" onAction="#access_3" text="Доступ по действиям" />
+      						<MenuItem fx:id="123" mnemonicParsing="false" onAction="#grp_acces" text="Группы доступа по функционалу" />
+                     </items>
+                  </Menu>
+                  <Menu fx:id="104" mnemonicParsing="false" text="Аудит">
+                     <items>
+      
+      						<MenuItem fx:id="21" mnemonicParsing="false" onAction="#au_setup" text="Найстройка аудита" />
+      
+      						<MenuItem fx:id="20" mnemonicParsing="false" onAction="#auview" text="Просмотр аудита" />
+                     </items>
+                  </Menu>
+
+						<MenuItem fx:id="43" mnemonicParsing="false" onAction="#prglog" text="Лог программы" />
+
+						<MenuItem fx:id="63" mnemonicParsing="false" onAction="#doc1c" text="База паспортов" />
+
+						<MenuItem fx:id="83" mnemonicParsing="false" onAction="#prj" text="Файлы проекта" />
+
+						<MenuItem fx:id="84" mnemonicParsing="false" onAction="#settings" text="Общие настройки" />
+					</items>
+				</Menu>
+			</menus>
+		</MenuBar>
+	</top>
+</BorderPane>

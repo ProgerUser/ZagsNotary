@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<sqlMap>
+	<sqls>
+		<entry>
+			<key>insert_menu</key>
+			<value>
+				<![CDATA[
+insert into access_gr_menu
+  (menu_id, usr_id, gr_id)  
+ values (?,(select IUSRID from usr h where h.CUSRLOGNAME = ?), 1) 
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>insert_action</key>
+			<value>
+				<![CDATA[
+insert into ACCESS_GR_ACT
+  (ACT_ID, usr_id, gr_id)  
+ values (?,(select IUSRID from usr h where h.CUSRLOGNAME = ?), 1) 
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>delete_menu</key>
+			<value>
+				<![CDATA[
+delete from access_gr_menu j
+ where j.menu_id = ?
+   and j.usr_id = (select IUSRID
+                     from usr h
+                    where h.CUSRLOGNAME = ?)
+   and j.gr_id = decode(?, 'Y', 1, 'N', 2)
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>delete_act</key>
+			<value>
+				<![CDATA[
+delete from ACCESS_GR_ACT j
+ where j.ACT_ID = ?
+   and j.usr_id = (select IUSRID
+                     from usr h
+                    where h.CUSRLOGNAME = ?)
+   and j.gr_id = decode(?, 'Y', 1, 'N', 2)
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>change_acc_type</key>
+			<value>
+				<![CDATA[
+update access_gr_menu
+   set GR_ID = decode((select j.gr_id
+                        from access_gr_menu j
+                       where menu_id = ?
+                         and USR_ID =
+                             (select f.iusrid
+                                from usr f
+                               where lower(f.cusrlogname) =
+                                     lower(?))),
+                      1,
+                      2,
+                      1)
+ where menu_id = ?
+   and USR_ID =
+       (select f.iusrid
+          from usr f
+         where lower(f.cusrlogname) = lower(?))
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>change_acc_type2</key>
+			<value>
+				<![CDATA[
+update ACCESS_GR_ACT
+   set GR_ID = decode((select j.gr_id
+                        from ACCESS_GR_ACT j
+                       where ACT_ID = ?
+                         and USR_ID =
+                             (select f.iusrid
+                                from usr f
+                               where lower(f.cusrlogname) =
+                                     lower(?))),
+                      1,
+                      2,
+                      1)
+ where ACT_ID = ?
+   and USR_ID =
+       (select f.iusrid
+          from usr f
+         where lower(f.cusrlogname) = lower(?))
+]]>
+			</value>
+		</entry>
+	</sqls>
+</sqlMap>

@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<SplitPane orientation="VERTICAL">
+			<items>
+				<VBox>
+					<children>
+						<ScrollPane fx:id="MainScroll" pannable="true" prefHeight="500.0" prefWidth="820.0" styleClass="mylistview" stylesheets="/ScrPane.css">
+							<content>
+								<VBox>
+									<children>
+										<TitledPane fx:id="children" animated="false" expanded="false" text="Сведения о ребенке">
+											<content>
+												<VBox>
+													<children>
+														<GridPane>
+															<columnConstraints>
+																<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="110.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="30.0" minHeight="1.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+															<children>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наименование" GridPane.halignment="LEFT" />
+																<TextField fx:id="ChildName" editable="false" GridPane.columnIndex="1" />
+																<MenuButton maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" styleClass="Search" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                                                   <items>
+                                                      <MenuItem mnemonicParsing="false" onAction="#FindChild" text="Выбрать из списка" />
+                                                      <MenuItem mnemonicParsing="false" onAction="#AddChild" text="Добавить" />
+                                                   </items></MenuButton>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="№" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+																<TextField fx:id="ChildCusId" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																<ComboBox fx:id="LD" maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Жив./Мерт." GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Кол-во род. детей" GridPane.rowIndex="3" />
+																<TextField fx:id="ChildCnt" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+															</children>
+														</GridPane>
+													</children>
+												</VBox>
+											</content>
+										</TitledPane>
+										<TitledPane fx:id="father" animated="false" expanded="false" text="Сведения об отце">
+											<content>
+												<VBox>
+													<children>
+														<GridPane>
+															<children>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наименование" GridPane.halignment="LEFT" />
+																<TextField fx:id="FatherName" editable="false" maxWidth="300.0" GridPane.columnIndex="1" />
+																<MenuButton maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" styleClass="Search" GridPane.columnIndex="2">
+                                                   <items>
+                                                      <MenuItem mnemonicParsing="false" onAction="#FindFather" text="Выбрать из списка" />
+                                                      <MenuItem mnemonicParsing="false" onAction="#AddFather" text="Добавить" />
+                                                   </items></MenuButton>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="№" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+																<TextField fx:id="FatherCusId" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+															</children>
+															<columnConstraints>
+																<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="90.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" />
+																<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="30.0" minWidth="10.0" prefWidth="30.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="30.0" minHeight="1.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+														</GridPane>
+													</children>
+												</VBox>
+											</content>
+										</TitledPane>
+										<TitledPane fx:id="mother" animated="false" expanded="false" text="Сведения о матери">
+											<content>
+												<VBox>
+													<children>
+														<GridPane>
+															<children>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наименование" GridPane.halignment="LEFT" />
+																<TextField fx:id="MotherName" editable="false" GridPane.columnIndex="1" />
+																<MenuButton maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" styleClass="Search" GridPane.columnIndex="2">
+                                                   <items>
+                                                      <MenuItem mnemonicParsing="false" onAction="#FindMother" text="Выбрать из списка" />
+                                                      <MenuItem mnemonicParsing="false" onAction="#AddMother" text="Добавить" />
+                                                   </items></MenuButton>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="№" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+																<TextField fx:id="MotherCusId" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+															</children>
+															<columnConstraints>
+																<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="90.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" />
+																<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="30.0" minWidth="10.0" prefWidth="30.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="30.0" minHeight="1.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+														</GridPane>
+													</children>
+												</VBox>
+											</content>
+										</TitledPane>
+										<TitledPane fx:id="osndoc" animated="false" expanded="false" text="Документ подтверждающий факт рождения ребенка">
+											<content>
+												<AnchorPane>
+													<children>
+														<ToolBar>
+															<items>
+																<ComboBox fx:id="BR_ACT_DBF" onAction="#BR_ACT_DBF" prefHeight="25.0" prefWidth="349.0" />
+															</items>
+														</ToolBar>
+														<GridPane fx:id="FIOLPVR" layoutX="10.0" layoutY="40.0" visible="false">
+															<children>
+																<TextField fx:id="FIO_B" maxWidth="300.0" GridPane.columnIndex="1" />
+																<Label text="ФИО лица присутствовавшего во время родов" GridPane.halignment="LEFT" />
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="от" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
+																<DatePicker fx:id="DATEDOCB_B" maxWidth="120.0" promptText="ДД.ММ.ГГГГ" GridPane.columnIndex="3" />
+															</children>
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="276.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="405.0" minWidth="10.0" prefWidth="309.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="288.0" minWidth="0.0" prefWidth="17.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="361.0" minWidth="10.0" prefWidth="160.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+														</GridPane>
+														<GridPane fx:id="DUFOR" layoutX="10.0" layoutY="40.0" visible="false">
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="376.0" minWidth="10.0" prefWidth="277.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="485.0" minWidth="10.0" prefWidth="485.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+															<children>
+																<Label text="Документ установленной формы о рождении №" GridPane.halignment="LEFT" />
+																<GridPane prefWidth="353.0" GridPane.columnIndex="1">
+																	<columnConstraints>
+																		<ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="103.0" />
+																		<ColumnConstraints hgrow="SOMETIMES" maxWidth="167.0" minWidth="0.0" prefWidth="17.0" />
+																		<ColumnConstraints hgrow="SOMETIMES" maxWidth="363.0" minWidth="10.0" prefWidth="363.0" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<TextField fx:id="NDOC_A" maxWidth="100.0" GridPane.halignment="LEFT" />
+																		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="от" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+																		<DatePicker fx:id="DATEDOCB_A" maxWidth="120.0" promptText="ДД.ММ.ГГГГ" GridPane.columnIndex="2" />
+																	</children>
+																</GridPane>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наименование мед. орг. выдавший документ" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+																<TextField fx:id="MEDORG_A" maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+															</children>
+														</GridPane>
+													</children>
+												</AnchorPane>
+											</content>
+										</TitledPane>
+										<TitledPane fx:id="osnvosst" animated="false" expanded="false" text="Основание восстановления записи акта о рождении">
+											<content>
+												<VBox>
+													<children>
+														<GridPane>
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="116.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="469.0" minWidth="10.0" prefWidth="469.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="288.0" minWidth="0.0" prefWidth="17.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="361.0" minWidth="10.0" prefWidth="160.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+															<children>
+																<Label text="Наименование суда" GridPane.halignment="LEFT" />
+																<TextField fx:id="NAME_COURT" maxWidth="300.0" GridPane.columnIndex="1" />
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Решение суда" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="От" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+																<TextField fx:id="DESC_C" maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																<DatePicker fx:id="DCOURT" maxWidth="120.0" promptText="ДД.ММ.ГГГГ" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+															</children>
+														</GridPane>
+													</children>
+												</VBox>
+											</content>
+										</TitledPane>
+										<TitledPane fx:id="sved_thaver" animated="false" expanded="false" text="Сведения об отце указаны на основании:">
+											<content>
+												<AnchorPane>
+													<children>
+														<ToolBar>
+															<items>
+																<ComboBox fx:id="FatherType" onAction="#FatherType" prefHeight="25.0" prefWidth="320.0" />
+															</items>
+														</ToolBar>
+														<GridPane fx:id="IF1" layoutX="10.0" layoutY="40.0" visible="false">
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="104.0" prefWidth="104.0" />
+																<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+																<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="30.0" minWidth="10.0" prefWidth="30.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+															<children>
+																<Label text="Свидетельство о заключении брака" GridPane.halignment="LEFT" />
+																<TextField fx:id="MARR_CER_ID" editable="false" maxWidth="100.0" GridPane.columnIndex="1" />
+																<Button maxWidth="25.0" mnemonicParsing="false" onAction="#FindMerCert" prefHeight="25.0" styleClass="Search" GridPane.columnIndex="2" />
+																<Button maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" onAction="#AddMerCert" styleClass="Add" visible="false" GridPane.columnIndex="3" />
+															</children>
+														</GridPane>
+														<GridPane fx:id="IF2" layoutX="10.0" layoutY="40.0" visible="false">
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="356.0" minWidth="198.0" prefWidth="200.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="283.0" minWidth="99.0" prefWidth="105.0" />
+																<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="212.0" minWidth="14.0" prefWidth="34.0" />
+																<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+															<children>
+																<Label text="Свид. об установлении отцовства" GridPane.halignment="LEFT" />
+																<TextField fx:id="PAT_CER_ID" editable="false" maxWidth="100.0" GridPane.columnIndex="1" />
+																<Button maxWidth="25.0" mnemonicParsing="false" onAction="#FindPat" prefHeight="25.0" styleClass="Search" GridPane.columnIndex="2" />
+																<Button maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" onAction="#AddPat" styleClass="Add" visible="false" GridPane.columnIndex="3" />
+															</children>
+														</GridPane>
+														<GridPane fx:id="IF3" layoutX="10.0" layoutY="40.0" visible="false">
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" prefWidth="110.0" />
+																<ColumnConstraints hgrow="SOMETIMES" prefWidth="130.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+															<children>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Заявление матери" GridPane.halignment="LEFT" />
+																<DatePicker fx:id="BIRTH_ACT_ZM" maxWidth="100.0" promptText="ДД.ММ.ГГГГ" GridPane.columnIndex="1" />
+															</children>
+														</GridPane>
+													</children>
+												</AnchorPane>
+											</content>
+										</TitledPane>
+										<TitledPane fx:id="printdoc" animated="false" expanded="false" text="Печать органа записи актов гражданского состояния">
+											<content>
+												<VBox>
+													<children>
+														<GridPane>
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+															<children>
+																<Label text="Серия" GridPane.halignment="LEFT" />
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Номер" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+																<TextField fx:id="SERIA" maxWidth="150.0" prefWidth="249.0" GridPane.columnIndex="1" />
+																<TextField fx:id="NUM" maxWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+															</children>
+															<VBox.margin>
+																<Insets left="5.0" />
+															</VBox.margin>
+														</GridPane>
+													</children>
+												</VBox>
+											</content>
+										</TitledPane>
+										<TitledPane fx:id="fiozaiav" animated="false" expanded="false" text="ФИО,м.ж. заявителя или юр. адр. орг. заявившей о рожд.реб.">
+											<content>
+												<AnchorPane>
+													<children>
+														<ToolBar>
+															<items>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Тип заявителя" />
+																<ComboBox fx:id="BIRTH_ACT_TYPE" layoutX="10.0" onAction="#BIRTH_ACT_TYPE" prefHeight="25.0" prefWidth="196.0" />
+															</items>
+														</ToolBar>
+														<GridPane fx:id="FIZIK" layoutX="10.0" layoutY="40.0" visible="false">
+															<children>
+																<Label text="Фамилия" GridPane.halignment="LEFT" />
+																<TextField fx:id="FADLAST_NAME" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+																<TextField fx:id="FADFIRST_NAME" layoutX="80.0" layoutY="14.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+																<TextField fx:id="FADMIDDLE_NAME" layoutX="80.0" layoutY="52.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Место жительства" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+																<TextField fx:id="FADLOCATION" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+															</children>
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" prefWidth="110.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" prefWidth="300.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+														</GridPane>
+														<GridPane fx:id="JURIK" layoutX="10.0" layoutY="40.0" visible="false">
+															<children>
+																<Label text="Наименование" GridPane.halignment="LEFT" />
+																<TextField fx:id="FADORG_NAME" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Юр. адрес" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+																<TextField fx:id="FADREG_ADR" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+															</children>
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" prefWidth="110.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" prefWidth="300.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+														</GridPane>
+													</children>
+												</AnchorPane>
+											</content>
+										</TitledPane>
+									</children>
+								</VBox>
+							</content>
+						</ScrollPane>
+						<ToolBar prefHeight="40.0" prefWidth="200.0">
+							<items>
+								<Button fx:id="SAVE" mnemonicParsing="false" onAction="#SAVE" text="Сохранить" />
+								<Button mnemonicParsing="false" onAction="#Cencel" text="Отмена" />
+							</items>
+						</ToolBar>
+					</children>
+				</VBox>
+			</items>
+			<padding>
+				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+			</padding>
+		</SplitPane>
+
+	</children>
+</VBox>

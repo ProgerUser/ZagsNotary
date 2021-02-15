@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jyloo.syntheticafx.XTableColumn?>
+<?import com.jyloo.syntheticafx.XTableView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<BorderPane fx:id="ROOT">
+			<left>
+				<!-- <AnchorPane prefHeight="303.0" prefWidth="10.0" BorderPane.alignment="CENTER" 
+					/> -->
+			</left>
+			<right>
+				<!-- <AnchorPane prefHeight="303.0" prefWidth="10.0" BorderPane.alignment="CENTER" 
+					/> -->
+			</right>
+			<top>
+				<VBox fx:id="VB" BorderPane.alignment="CENTER">
+					<children>
+						<TitledPane fx:id="FILTER" animated="false" expanded="false" text="Фильтр" visible="false">
+							<content>
+								<AnchorPane>
+									<children>
+										<VBox>
+											<children>
+												<GridPane>
+													<columnConstraints>
+														<ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="97.0" />
+														<ColumnConstraints hgrow="SOMETIMES" maxWidth="177.0" minWidth="10.0" prefWidth="132.0" />
+														<ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="202.0" />
+													</columnConstraints>
+													<rowConstraints>
+														<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+													</rowConstraints>
+													<children>
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата заведения" />
+														<DatePicker fx:id="DT1" maxWidth="120.0" promptText="С" GridPane.columnIndex="1" />
+														<DatePicker fx:id="DT2" layoutX="105.0" layoutY="13.0" maxWidth="120.0" promptText="ПО" GridPane.columnIndex="2" />
+													</children>
+												</GridPane>
+											</children>
+										</VBox>
+									</children>
+								</AnchorPane>
+							</content>
+							<VBox.margin>
+								<Insets />
+							</VBox.margin>
+						</TitledPane>
+						<ToolBar>
+							<items>
+								<Button mnemonicParsing="false" onAction="#BtAdd">
+									<tooltip>
+										<Tooltip text="Добавить">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Tooltip>
+									</tooltip>
+									<font>
+										<Font size="10.0" />
+									</font>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="PLUS" size="20" />
+                           </graphic>
+								</Button>
+								<Button mnemonicParsing="false" onAction="#BtEdit">
+									<tooltip>
+										<Tooltip text="Редактировать">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Tooltip>
+									</tooltip>
+									<font>
+										<Font size="10.0" />
+									</font>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="EDIT" size="20" />
+                           </graphic>
+								</Button>
+								<Button mnemonicParsing="false" onAction="#BtDelete">
+									<tooltip>
+										<Tooltip text="Удалить запись">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Tooltip>
+									</tooltip>
+									<font>
+										<Font size="10.0" />
+									</font>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="TIMES" size="20" />
+                           </graphic>
+								</Button>
+								<Button mnemonicParsing="false" onAction="#BtPrint">
+									<tooltip>
+										<Tooltip text="Печать">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Tooltip>
+									</tooltip>
+									<font>
+										<Font size="10.0" />
+									</font>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="PRINT" size="20" />
+                           </graphic>
+								</Button>
+							</items>
+							<VBox.margin>
+								<Insets />
+							</VBox.margin>
+						</ToolBar>
+					</children>
+				</VBox>
+			</top>
+			<center>
+				<XTableView fx:id="DIVORCE_CERT" editable="false" prefHeight="450.0" prefWidth="900.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+					<columns>
+						<XTableColumn fx:id="DIVC_ID" prefWidth="82.0" text="Номер" />
+						<XTableColumn fx:id="OPER" prefWidth="100.0" text="Опер." />
+						<XTableColumn fx:id="CR_DATE" prefWidth="150.0" text="Дата созд. записи" />
+						<XTableColumn fx:id="CR_TIME" prefWidth="150.0" text="Время созд. записи" />
+						<XTableColumn prefWidth="314.0" text="Он">
+							<columns>
+								<XTableColumn fx:id="HeFio" maxWidth="5000.0" minWidth="0.0" prefWidth="180.0" text="ФИО" />
+							</columns>
+						</XTableColumn>
+						<XTableColumn prefWidth="314.0" text="Она">
+							<columns>
+								<XTableColumn fx:id="SheFio" maxWidth="5000.0" minWidth="0.0" prefWidth="180.0" text="ФИО" />
+							</columns>
+						</XTableColumn>
+						<XTableColumn fx:id="DIVC_DT" prefWidth="160.0" text="Дата прекращения брака" />
+					</columns>
+
+					<contextMenu>
+						<ContextMenu>
+							<items>
+								<MenuItem mnemonicParsing="false" onAction="#CmRefresh" text="Обновить" />
+								<MenuItem mnemonicParsing="false" onAction="#CmAdd" text="Добавить" />
+								<MenuItem mnemonicParsing="false" onAction="#CmEdit" text="Редактировать" />
+								<MenuItem mnemonicParsing="false" onAction="#CmPrint" text="Печать" />
+								<MenuItem mnemonicParsing="false" onAction="#CmDelete" text="Удалить" />
+							</items>
+						</ContextMenu>
+					</contextMenu>
+				</XTableView>
+			</center>
+			<StackPane.margin>
+				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+			</StackPane.margin>
+		</BorderPane>
+		<ProgressIndicator fx:id="PB" maxHeight="50.0" maxWidth="50.0" visible="false" />
+	</children>
+</StackPane>

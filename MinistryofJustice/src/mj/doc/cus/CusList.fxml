@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jyloo.syntheticafx.XTableColumn?>
+<?import com.jyloo.syntheticafx.XTableView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="CUS_BORDER" stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+	<top>
+		<VBox BorderPane.alignment="CENTER">
+			<children>
+            <ToolBar>
+               <items>
+                  <Button maxWidth="30.0" mnemonicParsing="false" onAction="#BtAdd">
+                     <tooltip>
+                        <Tooltip text="Добавить" />
+                     </tooltip>
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fill="BLACK" glyphName="PLUS" size="20.0" />
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#BtEdit">
+                     <tooltip>
+                        <Tooltip text="Редактировать" />
+                     </tooltip>
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="EDIT" size="20" />
+                     </graphic>
+                  </Button>
+                  <Button maxWidth="30.0" mnemonicParsing="false" onAction="#BtDelete">
+                     <tooltip>
+                        <Tooltip text="Удалить запись" />
+                     </tooltip>
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="TIMES" size="20" />
+                     </graphic>
+                  </Button>
+						<Button mnemonicParsing="false" onAction="#ViewAllDocs" styleClass="AllDocs" visible="false">
+							<font>
+								<Font size="10.0" />
+							</font>
+							<tooltip>
+								<Tooltip text="Связанные документы" />
+							</tooltip>
+						</Button>
+               </items>
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </ToolBar>
+
+				<TitledPane animated="false" expanded="false" text="Фильтр" visible="true">
+					<content>
+						<HBox>
+							<children>
+								<GridPane prefWidth="406.0">
+									<columnConstraints>
+										<ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="90.0" prefWidth="103.0" />
+										<ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="279.0" prefWidth="281.0" />
+									</columnConstraints>
+									<rowConstraints>
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+									</rowConstraints>
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Фамилия" />
+										<TextField fx:id="CCUSLAST_NAME" GridPane.columnIndex="1" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.rowIndex="1" />
+										<TextField fx:id="CCUSFIRST_NAME" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
+										<TextField fx:id="CCUSMIDDLE_NAME" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата рождения с:" GridPane.rowIndex="3" />
+										<GridPane GridPane.columnIndex="1" GridPane.rowIndex="3">
+											<columnConstraints>
+												<ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="10.0" prefWidth="108.0" />
+												<ColumnConstraints hgrow="SOMETIMES" maxWidth="174.0" minWidth="10.0" prefWidth="19.0" />
+												<ColumnConstraints hgrow="SOMETIMES" maxWidth="174.0" minWidth="10.0" prefWidth="174.0" />
+											</columnConstraints>
+											<rowConstraints>
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+											</rowConstraints>
+											<children>
+												<DatePicker fx:id="DT1" maxWidth="100.0" onAction="#DT1" />
+												<DatePicker fx:id="DT2" maxWidth="100.0" onAction="#DT2" GridPane.columnIndex="2" />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="по:" GridPane.columnIndex="1" />
+											</children>
+										</GridPane>
+										<Button mnemonicParsing="false" onAction="#Clear" text="Очистить" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+									</children>
+								</GridPane>
+							</children>
+						</HBox>
+					</content>
+					<VBox.margin>
+						<Insets left="10.0" right="10.0" />
+					</VBox.margin>
+				</TitledPane>
+
+			</children>
+		</VBox>
+	</top>
+	<center>
+		<StackPane fx:id="StackPane" BorderPane.alignment="CENTER">
+			<children>
+				<XTableView fx:id="CUSLIST" editable="true" prefHeight="450.0" prefWidth="900.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true">
+					<columns>
+						<XTableColumn fx:id="ICUSNUM" prefWidth="100.0" text="Номер" />
+						<XTableColumn fx:id="CCUSIDOPEN" prefWidth="100.0" text="Опер." />
+						<XTableColumn fx:id="CR_DATE" prefWidth="150.0" text="Дата созд. записи" />
+						<XTableColumn fx:id="CR_TIME" prefWidth="150.0" text="Время созд. записи" />
+						<XTableColumn text="Основные данные">
+							<columns>
+								<XTableColumn fx:id="CCUSLAST_NAMET" prefWidth="118.0" text="Фамилия" />
+								<XTableColumn fx:id="CCUSFIRST_NAMET" prefWidth="100.0" text="Имя" />
+								<XTableColumn fx:id="CCUSMIDDLE_NAMET" prefWidth="116.0" text="Отчество" />
+								<XTableColumn fx:id="DCUSBIRTHDAYT" prefWidth="124.0" text="Дата рождения" />
+								<XTableColumn fx:id="CCUSSEX" prefWidth="100.0" text="Пол" />
+								<XTableColumn fx:id="NAME" prefWidth="120.0" text="Национальность" />
+								<XTableColumn fx:id="COUNTRY_NAME" prefWidth="150.0" text="Гражданство" />
+							</columns>
+						</XTableColumn>
+						<XTableColumn prefWidth="75.0" text="Паспортные данные">
+							<columns>
+								<XTableColumn fx:id="ID_DOC_TP" prefWidth="100.0" text="Тип документа" />
+								<XTableColumn fx:id="DOC_SER" prefWidth="100.0" text="Серия" />
+								<XTableColumn fx:id="DOC_NUM" prefWidth="100.0" text="Номер" />
+								<XTableColumn fx:id="DOC_DATE" prefWidth="100.0" text="Дата выдачи" />
+								<XTableColumn fx:id="DOC_PERIOD" prefWidth="100.0" text="Срок действия" />
+								<XTableColumn fx:id="DOC_SUBDIV" prefWidth="100.0" text="Кем выдан" />
+							</columns>
+						</XTableColumn>
+						<XTableColumn prefWidth="100.0" text="Адрес">
+							<columns>
+								<XTableColumn fx:id="COUNTRY" prefWidth="100.0" text="Страна" />
+								<XTableColumn fx:id="AREA" prefWidth="100.0" text="Район" />
+								<!-- <XTableColumn fx:id="CITY" prefWidth="100.0" text="Город" /> -->
+								<XTableColumn fx:id="NAS_PUNCT" prefWidth="75.0" text="Нас. пункт" />
+								<XTableColumn fx:id="INFR_NAME" prefWidth="110.0" text="Улица" />
+								<XTableColumn fx:id="DOM" prefWidth="100.0" text="Дом" />
+								<!-- <XTableColumn prefWidth="75.0" text="Корпус" /> -->
+								<XTableColumn fx:id="KV" prefWidth="100.0" text="Квартира" />
+							</columns>
+						</XTableColumn>
+					</columns>
+
+					<contextMenu>
+						<ContextMenu>
+							<items>
+								<MenuItem mnemonicParsing="false" onAction="#CmRefresh" text="Обновить" />
+								<MenuItem mnemonicParsing="false" onAction="#CmAdd" text="Добавить" />
+								<MenuItem mnemonicParsing="false" onAction="#CmEdit" text="Редактировать" />
+								<MenuItem mnemonicParsing="false" onAction="#CmDelete" text="Удалить" />
+							</items>
+						</ContextMenu>
+					</contextMenu>
+
+					<opaqueInsets>
+						<Insets />
+					</opaqueInsets>
+				</XTableView>
+				<ProgressIndicator fx:id="PB" maxHeight="50.0" maxWidth="50.0" visible="false" />
+			</children>
+			<BorderPane.margin>
+				<Insets bottom="10.0" left="10.0" right="10.0" />
+			</BorderPane.margin>
+		</StackPane>
+	</center>
+</BorderPane>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane styleClass="mylistview"
+	stylesheets="/ScrPane.css" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<VBox>
+			<children>
+				<TableView fx:id="Docs" prefHeight="300.0"
+					prefWidth="400.0">
+					<columns>
+						<TableColumn fx:id="DocType"
+							maxWidth="1.7976931348623157E308" prefWidth="100.0"
+							text="Тип документа" />
+						<TableColumn fx:id="DocCnt"
+							maxWidth="1.7976931348623157E308" text="Количество" />
+					</columns>
+					<contextMenu>
+						<ContextMenu>
+							<items>
+								<MenuItem mnemonicParsing="false"
+									onAction="#RefershDocList" text="Обновить" />
+								<MenuItem mnemonicParsing="false"
+									onAction="#OpenDocList" text="Открыть" />
+							</items>
+						</ContextMenu>
+					</contextMenu>
+				</TableView>
+
+
+				<ToolBar stylesheets="/borderpane.css">
+					<items>
+						<Button fx:id="OpenDocs" mnemonicParsing="false"
+							onAction="#OpenDocs" text="Открыть список" />
+					</items>
+				</ToolBar>
+			</children>
+			<opaqueInsets>
+				<Insets />
+			</opaqueInsets>
+			<padding>
+				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+			</padding>
+		</VBox>
+	</children>
+</AnchorPane>

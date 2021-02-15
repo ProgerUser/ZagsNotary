@@ -1,0 +1,1544 @@
+package mj.doc.cus;
+
+import java.io.Reader;
+import java.sql.CallableStatement;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Properties;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
+import org.controlsfx.control.table.TableFilter;
+
+import com.jyloo.syntheticafx.ComparableColumnFilter;
+import com.jyloo.syntheticafx.DateColumnFilter;
+import com.jyloo.syntheticafx.PatternColumnFilter;
+import com.jyloo.syntheticafx.SyntheticaFX;
+import com.jyloo.syntheticafx.TextFormatterFactory;
+import com.jyloo.syntheticafx.TitledBorderPane;
+import com.jyloo.syntheticafx.XTableColumn;
+import com.jyloo.syntheticafx.XTableView;
+import com.jyloo.syntheticafx.filter.ComparableFilterModel;
+import com.jyloo.syntheticafx.filter.ComparisonType;
+
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import mj.app.main.Main;
+import mj.app.model.Connect;
+import mj.app.model.SqlMap;
+import mj.dbutil.DBUtil;
+import mj.msg.Msg;
+import mj.util.ConvConst;
+
+/**
+ * Контроллер формы "Граждане", позволяет добавлять, редактировать граждан <br>
+ * возможные доработки:<br>
+ * вывод таблицы со всеми документами и переход к ним...<br>
+ * Отредактирован 28.10.2020 <br>
+ * 24.11.2020 изменен метод сопоставления выпад. списка для отслеживания
+ * изменении при закрытии <br>
+ * 04.12.2020 <br>
+ * Синхронизация с удаленной базой 1С
+ * 
+ * @author Said
+ *
+ */
+public class CusList {
+
+	public CusList() {
+		Main.logger = Logger.getLogger(getClass());
+		dbConnect();
+	}
+
+	@FXML
+	private BorderPane CUS_BORDER;
+
+	@FXML
+	private XTableColumn<VCUS, String> COUNTRY_NAME;
+
+	@FXML
+	private XTableColumn<VCUS, String> NAME;
+
+	@FXML
+	private XTableColumn<VCUS, String> CCUSIDOPEN;
+
+	@FXML
+	private XTableColumn<VCUS, String> CR_TIME;
+
+	@FXML
+	private XTableColumn<Object, LocalDate> CR_DATE;
+
+	/*
+	 * @FXML private XTableColumn<VCUS, LocalDateTime> DCUSOPEN;
+	 */
+	/**
+	 * Поле С
+	 */
+	@FXML
+	private DatePicker DT1;
+
+	/**
+	 * Поле ПО
+	 */
+	@FXML
+	private DatePicker DT2;
+
+	/**
+	 * Таблица Граждан
+	 */
+	@FXML
+	private XTableView<VCUS> CUSLIST;
+
+	/**
+	 * Серия документа
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> DOC_SER;
+
+	/**
+	 * Отчество
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> CCUSMIDDLE_NAMET;
+
+	/**
+	 * Фамилия
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> CCUSLAST_NAMET;
+
+	/**
+	 * Дата рождения
+	 */
+	@FXML
+	private XTableColumn<Object, LocalDate> DCUSBIRTHDAYT;
+
+	/**
+	 * Район
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> AREA;
+
+	/**
+	 * Страна
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> COUNTRY;
+
+	/**
+	 * Тип документа
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> ID_DOC_TP;
+
+	/**
+	 * Пол
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> CCUSSEX;
+
+	/**
+	 * Дом
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> DOM;
+
+	/**
+	 * Квартира
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> KV;
+
+	/**
+	 * Номер документа
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> DOC_NUM;
+
+	/**
+	 * Город
+	 */
+	// @FXML
+	// private XTableColumn<VCUS, String> CITY;
+
+	/**
+	 * Орган выдавший документ
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> DOC_SUBDIV;
+
+	/**
+	 * Название инфраструктуры-улицы
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> INFR_NAME;
+
+	/**
+	 * Дата окончания документа
+	 */
+	@FXML
+	private XTableColumn<Object, LocalDate> DOC_PERIOD;
+
+	/**
+	 * Дата выдачи документа
+	 */
+	@FXML
+	private XTableColumn<Object, LocalDate> DOC_DATE;
+
+	/**
+	 * Имя фильтр
+	 */
+	@FXML
+	private TextField CCUSFIRST_NAME;
+
+	/**
+	 * Фамилия фильтр
+	 */
+	@FXML
+	private TextField CCUSLAST_NAME;
+
+	/**
+	 * Отчество фильтр
+	 */
+	@FXML
+	private TextField CCUSMIDDLE_NAME;
+
+	/**
+	 * Имя таблица
+	 */
+	@FXML
+	private XTableColumn<VCUS, String> CCUSFIRST_NAMET;
+
+	/**
+	 * ИД документа
+	 */
+	@FXML
+	private XTableColumn<VCUS, Integer> ICUSNUM;
+
+	@FXML
+	private XTableColumn<VCUS, String> NAS_PUNCT;
+
+	/**
+	 * Добавить Гражданина = Контекстное меню
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void CmAdd(ActionEvent event) {
+		Add();
+	}
+
+	/**
+	 * Удалить Гражданина = Контекстное меню
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void CmDelete(ActionEvent event) {
+		Delete();
+	}
+
+	private Pane createOptionPane(XTableView<?> table) {
+		FlowPane pane = new FlowPane(10, 10);
+		pane.setStyle("-fx-padding: 10 4");
+
+		CheckBox filterVisible = new CheckBox("Показать фильтр");
+		filterVisible.selectedProperty().bindBidirectional(table.filterRowVisibleProperty());
+
+		CheckBox menuButtonVisible = new CheckBox("Показать кнопку меню");
+		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
+
+		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
+		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// table.getColumns().get(0);
+		firstFilterable.selectedProperty().bindBidirectional(ICUSNUM.filterableProperty());
+
+		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
+		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
+
+		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
+		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
+
+		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
+
+		TitledBorderPane p = new TitledBorderPane("Настройки", pane);
+		p.getStyleClass().add("top-border-only");
+		p.setStyle("-fx-border-insets: 10 0 0 0");
+		return p;
+	}
+
+	/**
+	 * Редактировать Гражданина = Контекстное меню
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void CmEdit(ActionEvent event) {
+		if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Выберите документ!");
+		} else {
+			Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
+					(Stage) CUSLIST.getScene().getWindow()/*
+															 * , conn
+															 */);
+		}
+	}
+
+	/**
+	 * Удалить Гражданина <Ссылка>
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void BtDelete(ActionEvent event) {
+		Delete();
+	}
+
+	/**
+	 * Удалить гражданина - вызов из контекстного меню и из кнопок
+	 */
+	void Delete() {
+		try {
+			if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
+				Msg.Message("Выберите троку!");
+			} else {
+				if (DBUtil.OdbAction(29) == 0) {
+					Msg.Message("Нет доступа!");
+					return;
+				}
+				Main.logger = Logger.getLogger(getClass());
+
+				SqlMap sql = new SqlMap().load("/cus/SQL.xml");
+				String readRecordSQL = sql.getSql("DocCnt");
+				PreparedStatement check = conn.prepareStatement(readRecordSQL);
+				check.setInt(1, CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
+				ResultSet rs = check.executeQuery();
+				String txt = "Удалить запись?";
+				int sc_wdth = 200;
+				if (rs.next()) {
+					if (rs.getInt(1) > 0) {
+						txt = "Найдены связанные документы, продолжить удаление?";
+						sc_wdth = 350;
+					}
+				}
+				check.close();
+				rs.close();
+
+				Stage stage = (Stage) CUSLIST.getScene().getWindow();
+				Label alert = new Label(txt);
+				alert.setLayoutX(10.0);
+				alert.setLayoutY(10.0);
+				alert.setPrefHeight(17.0);
+
+				Button no = new Button();
+				no.setText("Нет");
+				no.setLayoutX(111.0);
+				no.setLayoutY(56.0);
+				no.setPrefWidth(72.0);
+				no.setPrefHeight(21.0);
+
+				Button yes = new Button();
+				yes.setText("Да");
+				yes.setLayoutX(14.0);
+				yes.setLayoutY(56.0);
+				yes.setPrefWidth(72.0);
+				yes.setPrefHeight(21.0);
+
+				AnchorPane yn = new AnchorPane();
+				yn.getChildren().add(alert);
+				yn.getChildren().add(no);
+				yn.getChildren().add(yes);
+				Scene ynScene = new Scene(yn, sc_wdth, 100);
+				Stage newWindow_yn = new Stage();
+				no.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						newWindow_yn.close();
+					}
+				});
+				yes.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						try {
+							VCUS cl = CUSLIST.getSelectionModel().getSelectedItem();
+							CallableStatement callStmt = conn.prepareCall("{call MJCUS.DelCus(?,?)}");
+							callStmt.registerOutParameter(1, Types.VARCHAR);
+							callStmt.setInt(2, cl.getICUSNUM());
+							callStmt.execute();
+							if (callStmt.getString(1) != null) {
+								Msg.Message(callStmt.getString(1));
+							}
+							callStmt.close();
+							/*
+							 * PreparedStatement delete = conn .prepareStatement("declare " +
+							 * "pragma autonomous_transaction;" + "begin " +
+							 * " delete from CUS where ICUSNUM = ?;" + "commit;" + "end;"); VCUS cl =
+							 * CUSLIST.getSelectionModel().getSelectedItem(); delete.setInt(1,
+							 * cl.getICUSNUM()); delete.executeUpdate();
+							 */
+							InitVCus(null, null, null, null, null, "null", null);
+						} catch (SQLException e) {
+							try {
+								conn.rollback();
+							} catch (SQLException e1) {
+								Msg.Message(ExceptionUtils.getStackTrace(e1));
+								Main.logger.error(
+										ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+							}
+							Msg.Message(ExceptionUtils.getStackTrace(e));
+							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						}
+						newWindow_yn.close();
+					}
+				});
+				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setScene(ynScene);
+				newWindow_yn.initModality(Modality.WINDOW_MODAL);
+				newWindow_yn.initOwner(stage);
+				newWindow_yn.setResizable(false);
+				newWindow_yn.getIcons().add(new Image("/icon.png"));
+				newWindow_yn.show();
+			}
+		} catch (Exception e) {
+			/*
+			 * DialogFactory.showError(CUSLIST.getScene().getWindow(),
+			 * ExceptionUtils.getStackTrace(e), null, "Ошибка");
+			 */
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	/**
+	 * Добавить Гражданина - кнопка
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void BtAdd(ActionEvent event) {
+		Add();
+	}
+
+	/**
+	 * Обновление Таблицы Граждан
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void CmRefresh(ActionEvent event) {
+		InitVCus(null, null, null, null, null, "null", null);
+	}
+
+	/**
+	 * Индикатор открытия формы редактирования
+	 */
+	boolean isopen = false;
+
+	/**
+	 * CUS xml
+	 */
+	String CusXml;
+	/**
+	 * CusAddr xml
+	 */
+	String CusAddrXml;
+	/**
+	 * CusDocum xml
+	 */
+	String CusDocumXml;
+	/**
+	 * CusCitiz xml
+	 */
+	String CusCitizXml;
+
+	/**
+	 * Сравнение данных
+	 * 
+	 * @return
+	 */
+	int CompareBeforeClose(Integer docid, Connection conn) {
+		int ret = 0;
+		try {
+			Clob cus = conn.createClob();
+			cus.setString(1, CusXml);
+			Clob cusaddr = conn.createClob();
+			cusaddr.setString(1, CusAddrXml);
+			Clob cusdocum = conn.createClob();
+			cusdocum.setString(1, CusDocumXml);
+			Clob cuscit = conn.createClob();
+			cuscit.setString(1, CusCitizXml);
+
+			CallableStatement callStmt = conn.prepareCall("{ call MJCUS.CompareXmls(?,?,?,?,?,?,?)}");
+			callStmt.setInt(1, docid);
+			callStmt.setClob(2, cus);
+			callStmt.setClob(3, cusaddr);
+			callStmt.setClob(4, cuscit);
+			callStmt.setClob(5, cusdocum);
+			callStmt.registerOutParameter(6, Types.VARCHAR);
+			callStmt.registerOutParameter(7, Types.INTEGER);
+			callStmt.execute();
+			if (callStmt.getString(6) == null) {
+				ret = callStmt.getInt(7);
+				System.out.println("ret=" + callStmt.getInt(7));
+			} else {
+				Msg.Message(callStmt.getString(6));
+				Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
+			}
+			callStmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+
+		return ret;
+	}
+
+	/**
+	 * Возврат XML файлов для сравнения
+	 */
+	void XmlsForCompare(Integer docid, Connection conn) {
+		try {
+			CallableStatement callStmt = conn.prepareCall("{ call MJCUS.RetXmls(?,?,?,?,?,?)}");
+			callStmt.setInt(1, docid);
+			callStmt.registerOutParameter(2, Types.VARCHAR);
+			callStmt.registerOutParameter(3, Types.CLOB);
+			callStmt.registerOutParameter(4, Types.CLOB);
+			callStmt.registerOutParameter(5, Types.CLOB);
+			callStmt.registerOutParameter(6, Types.CLOB);
+			callStmt.execute();
+			if (callStmt.getString(2) == null) {
+				// clob
+				Clob cus = callStmt.getClob(3);
+				Clob cus_addr = callStmt.getClob(4);
+				Clob cus_citizen = callStmt.getClob(5);
+				Clob cus_docum = callStmt.getClob(6);
+				// chars
+				char cus_xmls[] = new char[(int) cus.length()];
+				char cus_addr_xmls[] = new char[(int) cus_addr.length()];
+				char cus_cit_xmls[] = new char[(int) cus_citizen.length()];
+				char cus_docum_xmls[] = new char[(int) cus_docum.length()];
+				// read
+
+				Reader r1 = cus.getCharacterStream();
+				r1.read(cus_xmls);
+
+				Reader r2 = cus_addr.getCharacterStream();
+				r2.read(cus_addr_xmls);
+
+				Reader r3 = cus_citizen.getCharacterStream();
+				r3.read(cus_cit_xmls);
+
+				Reader r4 = cus_docum.getCharacterStream();
+				r4.read(cus_docum_xmls);
+
+				// strings
+				CusXml = new String(cus_xmls);
+				CusAddrXml = new String(cus_addr_xmls);
+				CusDocumXml = new String(cus_docum_xmls);
+				CusCitizXml = new String(cus_cit_xmls);
+
+//				System.out.println(CusXml);
+//				System.out.println(CusAddrXml);
+//				System.out.println(CusDocumXml);
+//				System.out.println(CusCitizXml);
+			} else {
+				Msg.Message(callStmt.getString(2));
+				Main.logger.error(callStmt.getString(2) + "~" + Thread.currentThread().getName());
+			}
+			callStmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	String formname = "norm";
+
+	public void setConn(Connection conn, String formname) throws SQLException {
+		this.conn = conn;
+		this.formname = formname;
+		this.conn.setAutoCommit(false);
+	}
+
+	/**
+	 * Вызов формы редактирования
+	 * 
+	 * @param event
+	 */
+	public void Edit(Integer docid, Stage stage_/* , Connection conn */) {
+		try {
+			if (isopen == false) {
+				if (DBUtil.OdbAction(28) == 0) {
+					Msg.Message("Нет доступа!");
+					return;
+				}
+				Main.logger = Logger.getLogger(getClass());
+				PreparedStatement selforupd = conn
+						.prepareStatement("select * from cus where  ICUSNUM = ? /*for update nowait*/");
+				VCUS cl = Init2(docid, conn);
+				selforupd.setInt(1, cl.getICUSNUM());
+				try {
+					selforupd.executeQuery();
+					selforupd.close();
+					{
+						// add lock row
+						String lock = DBUtil.Lock_Row(docid, "CUS");
+						if (lock != null) {// if error add row
+							Msg.Message(lock);
+							conn.rollback();
+							return;
+						}
+						// заполняем xml
+						XmlsForCompare(docid, conn);
+						// -------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus.fxml"));
+
+						EditCus controller = new EditCus();
+						controller.setId(cl.getICUSNUM());
+						controller.setConn(conn);
+						loader.setController(controller);
+
+						Parent root = loader.load();
+						
+						Scene scene = new Scene(root);
+//						Style startingStyle = Style.LIGHT;
+//						JMetro jMetro = new JMetro(startingStyle);
+//						System.setProperty("prism.lcdtext", "false");
+//						jMetro.setScene(scene);
+						
+						stage.setScene(scene);
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Редактирование: " + cl.getCCUSLAST_NAME() + " " + cl.getCCUSFIRST_NAME() + " "
+								+ cl.getCCUSMIDDLE_NAME());
+						stage.initOwner(stage_);
+						stage.setResizable(false);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									// Если нажали сохранить
+									// обновление без сохранения
+									controller.CallSaveToCompare();
+									//XmlsForCompare(docid, conn);
+									if (controller.getStatus()) {
+										if (formname.equals("norm")) {
+											InitVCus(null, null, null, null, null, "edit", controller.getId());
+										}
+										conn.commit();
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										String lock = DBUtil.Lock_Row_Delete(docid, "CUS");
+										if (lock != null) {// if error add row
+											Msg.Message(lock);
+										}
+										isopen = false;
+									} // Если нажали "X" или "Cancel" и до этого что-то меняли
+									else if (!controller.getStatus() & CompareBeforeClose(docid, conn) == 1) {
+										/**
+										 * Проверка выхода без сохранения
+										 */
+										Stage stage = stage_;
+										Label alert = new Label("Закрыть форму без сохранения?");
+										alert.setLayoutX(75.0);
+										alert.setLayoutY(11.0);
+										alert.setPrefHeight(17.0);
+
+										Button no = new Button();
+										no.setText("Нет");
+										no.setLayoutX(111.0);
+										no.setLayoutY(56.0);
+										no.setPrefWidth(72.0);
+										no.setPrefHeight(21.0);
+
+										Button yes = new Button();
+										yes.setText("Да");
+										yes.setLayoutX(14.0);
+										yes.setLayoutY(56.0);
+										yes.setPrefWidth(72.0);
+										yes.setPrefHeight(21.0);
+
+										AnchorPane yn = new AnchorPane();
+										yn.getChildren().add(alert);
+										yn.getChildren().add(no);
+										yn.getChildren().add(yes);
+										Scene ynScene = new Scene(yn, 300, 100);
+										Stage newWindow_yn = new Stage();
+										no.setOnAction(new EventHandler<ActionEvent>() {
+											public void handle(ActionEvent event) {
+												newWindow_yn.close();
+												paramT.consume();
+											}
+										});
+										yes.setOnAction(new EventHandler<ActionEvent>() {
+											public void handle(ActionEvent event) {
+												try {
+													conn.rollback();
+												} catch (SQLException e) {
+													e.printStackTrace();
+												}
+												newWindow_yn.close();
+												isopen = false;
+												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+												String lock = DBUtil.Lock_Row_Delete(docid, "CUS");
+												if (lock != null) {// if error add row
+													Msg.Message(lock);
+												}
+											}
+										});
+										newWindow_yn.setTitle("Внимание");
+										newWindow_yn.setScene(ynScene);
+										newWindow_yn.initModality(Modality.WINDOW_MODAL);
+										newWindow_yn.initOwner(stage);
+										newWindow_yn.setResizable(false);
+										newWindow_yn.getIcons().add(new Image("/icon.png"));
+										newWindow_yn.showAndWait();
+									} // Если нажали "X" или "Cancel" и до этого ничего не меняли
+									else if (!controller.getStatus() & CompareBeforeClose(docid, conn) == 0) {
+										conn.rollback();
+										isopen = false;
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										String lock = DBUtil.Lock_Row_Delete(docid, "CUS");
+										if (lock != null) {// if error add row
+											Msg.Message(lock);
+										}
+									}
+								} catch (SQLException e) {
+									Msg.Message(ExceptionUtils.getStackTrace(e));
+									Main.logger.error(
+											ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e),
+											methodName);
+								}
+							}
+						});
+						stage.show();
+						isopen = true;
+					}
+				} catch (SQLException e) {
+					if (e.getErrorCode() == 54) {
+						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "CUS"));
+						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+					} else {
+						e.printStackTrace();
+						Msg.Message(ExceptionUtils.getStackTrace(e));
+						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+					}
+				}
+
+			} else {
+				Msg.Message("Форма редактирования уже открыта!");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	/**
+	 * Вызов формы добавления
+	 * 
+	 * @param event
+	 */
+	void Add() {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+
+			if (DBUtil.OdbAction(27) == 0) {
+				Msg.Message("Нет доступа!");
+				return;
+			}
+
+			Stage stage = new Stage();
+			Stage stage_ = (Stage) CUSLIST.getScene().getWindow();
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus.fxml"));
+
+			AddCus controller = new AddCus();
+			loader.setController(controller);
+
+			// controller.setConn2(conn);
+			// controller.setConn(conn);
+
+			controller.setStage(CCUSFIRST_NAME);
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Создание записи");
+			stage.initOwner(stage_);
+			stage.setResizable(false);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+					if (controller.getStatus()) {
+						InitVCus(null, null, null, null, null, /* "crud" */"", controller.getId());
+					}
+					controller.dbDisconnect();
+				}
+			});
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	/**
+	 * Форма редактирования
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void BtEdit(ActionEvent event) {
+		if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Выберите документ!");
+		} else {
+			Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
+					(Stage) CUSLIST.getScene().getWindow()/*
+															 * , conn
+															 */);
+		}
+	}
+
+	/**
+	 * Таблица внутри
+	 */
+	@FXML
+	private StackPane StackPane;
+
+	/**
+	 * Для выполнения в другом потоке, позволяет не <br>
+	 * "замораживать" интерфейс при долгом выполнении запроса
+	 * 
+	 * @param lname
+	 * @param fname
+	 * @param mname
+	 * @param dt1
+	 * @param dt2
+	 */
+	void Progress(String lname, String fname, String mname, LocalDate dt1, LocalDate dt2) {
+		try {
+			// Если многопоточность
+			StackPane.setDisable(true);
+			PB.setVisible(true);
+			Task<Object> task = new Task<Object>() {
+				@Override
+				public Object call() throws Exception {
+					InitVCus(lname, fname, mname, dt1, dt2, "filter", null);
+					return null;
+				}
+			};
+			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+			task.setOnSucceeded(e -> BlockMain());
+			exec.execute(task);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	/**
+	 * Результат выполнения процесса
+	 */
+	void BlockMain() {
+		StackPane.setDisable(false);
+		PB.setVisible(false);
+	}
+
+	/**
+	 * Индикатор прогресса
+	 */
+	@FXML
+	private ProgressIndicator PB;
+
+	/**
+	 * Для фильтра
+	 * 
+	 * @param lname Фамилия
+	 * @param fname Имя
+	 * @param mname Отчество
+	 * @param dt1   Дата с
+	 * @param dt2   Дата по
+	 * @param ID    Клиент
+	 */
+	private void InitVCus(String lname, String fname, String mname, LocalDate dt1, LocalDate dt2, String type,
+			Integer ID) {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+			String wlname = "";
+			String wfname = "";
+			String wmname = "";
+			String wdt1 = "";
+			String wdt2 = "";
+			String retid = "";
+			String order = "";
+
+			if (type.equals("filter")) {
+				if (!lname.equals("")) {
+					wlname = "and upper(VCUS.CCUSLAST_NAME) like '" + lname + "%'\r\n";
+				}
+
+				if (!fname.equals("")) {
+					wfname = "and upper(VCUS.CCUSFIRST_NAME) like '" + fname + "%'\r\n";
+				}
+
+				if (!mname.equals("")) {
+					wmname = "and upper(VCUS.CCUSMIDDLE_NAME) like '" + mname + "%'\r\n";
+				}
+
+				if (!mname.equals("")) {
+					wmname = "and upper(VCUS.CCUSMIDDLE_NAME) like '" + mname + "%'\r\n";
+				}
+
+				if (dt1 != null) {
+					wdt1 = "and VCUS.DCUSBIRTHDAY >= to_date('" + dt1.format(formatter) + "','dd.mm.yyyy') \r\n";
+				}
+				if (dt2 != null) {
+					wdt2 = "and VCUS.DCUSBIRTHDAY <= to_date('" + dt2.format(formatter) + "','dd.mm.yyyy') \r\n";
+				}
+			} else if (type.equals("crud")) {
+				retid = " and VCUS.ICUSNUM = " + ID;
+			} else if (type.equals("edit")) {
+				order = " order by case ICUSNUM when " + ID + " then 1 else 2 end\r\n";
+			} else {
+				order = " order by ICUSNUM desc\r\n";
+			}
+
+			String selectStmt = "select * from VCUS where 1=1 \r\n" + wlname + wfname + wmname + wdt1 + wdt2 + retid
+					+ order;
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<VCUS> cus_list = FXCollections.observableArrayList();
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+			while (rs.next()) {
+				VCUS list = new VCUS();
+
+				list.setCOUNTRY(rs.getString("COUNTRY"));
+				list.setDOC_DATE((rs.getDate("DOC_DATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_DATE")), formatter)
+						: null);
+				list.setID_DOC_TP(rs.getString("ID_DOC_TP"));
+				list.setDOC_SER(rs.getString("DOC_SER"));
+				list.setAREA(rs.getString("AREA"));
+				list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
+				list.setDCUSBIRTHDAY((rs.getDate("DCUSBIRTHDAY") != null) ? LocalDate.parse(
+						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY")), formatter) : null);
+				list.setPUNCT_NAME(rs.getString("PUNCT_NAME"));
+				list.setTM$DCUSOPEN((rs.getDate("TM$DCUSOPEN") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DCUSOPEN")), dateFormatter)
+						: null);
+				list.setINFR_NAME(rs.getString("INFR_NAME"));
+				list.setDOM(rs.getString("DOM"));
+				list.setKV(rs.getString("KV"));
+				list.setCR_DATE((rs.getDate("CR_DATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
+						: null);
+				list.setICUSNUM(rs.getInt("ICUSNUM"));
+				list.setCCUSIDOPEN(rs.getString("CCUSIDOPEN"));
+				list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
+				list.setDOC_PERIOD((rs.getDate("DOC_PERIOD") != null) ? LocalDate
+						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_PERIOD")), formatter) : null);
+				list.setCCUSSEX(rs.getString("CCUSSEX"));
+				list.setNAME(rs.getString("NAME"));
+				list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
+				list.setCITY(rs.getString("CITY"));
+				list.setDOC_SUBDIV(rs.getString("DOC_SUBDIV"));
+				list.setDOC_NUM(rs.getString("DOC_NUM"));
+				list.setCR_TIME(rs.getString("CR_TIME"));
+				list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
+
+				cus_list.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+			
+			if (CUSLIST != null) {
+				CUSLIST.setItems(cus_list);
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						TableFilter<VCUS> tableFilter = TableFilter.forTableView(CUSLIST).apply();
+						tableFilter.setSearchStrategy((input, target) -> {
+							try {
+								return target.toLowerCase().contains(input.toLowerCase());
+							} catch (Exception e) {
+								return false;
+							}
+						});
+					}
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	/**
+	 * Возврат для инициализации
+	 * 
+	 * @return {@link VCUS}
+	 */
+	VCUS Init2(Integer cusid, Connection conn) {
+		VCUS list = null;
+		try {
+			Main.logger = Logger.getLogger(getClass());
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+			String selectStmt = "select * from VCUS where VCUS.ICUSNUM = ?  \r\n";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			prepStmt.setInt(1, cusid);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<VCUS> cus_list = FXCollections.observableArrayList();
+			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+			while (rs.next()) {
+				list = new VCUS();
+
+				list.setCOUNTRY(rs.getString("COUNTRY"));
+				list.setDOC_DATE((rs.getDate("DOC_DATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_DATE")), formatter)
+						: null);
+				list.setID_DOC_TP(rs.getString("ID_DOC_TP"));
+				list.setDOC_SER(rs.getString("DOC_SER"));
+				list.setAREA(rs.getString("AREA"));
+				list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
+				list.setDCUSBIRTHDAY((rs.getDate("DCUSBIRTHDAY") != null) ? LocalDate.parse(
+						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY")), formatter) : null);
+				list.setPUNCT_NAME(rs.getString("PUNCT_NAME"));
+				list.setTM$DCUSOPEN((rs.getDate("TM$DCUSOPEN") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DCUSOPEN")), formatterwt)
+						: null);
+				list.setINFR_NAME(rs.getString("INFR_NAME"));
+				list.setDOM(rs.getString("DOM"));
+				list.setKV(rs.getString("KV"));
+				list.setCR_DATE((rs.getDate("CR_DATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
+						: null);
+				list.setICUSNUM(rs.getInt("ICUSNUM"));
+				list.setCCUSIDOPEN(rs.getString("CCUSIDOPEN"));
+				list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
+				list.setDOC_PERIOD((rs.getDate("DOC_PERIOD") != null) ? LocalDate
+						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_PERIOD")), formatter) : null);
+				list.setCCUSSEX(rs.getString("CCUSSEX"));
+				list.setNAME(rs.getString("NAME"));
+				list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
+				list.setCITY(rs.getString("CITY"));
+				list.setDOC_SUBDIV(rs.getString("DOC_SUBDIV"));
+				list.setDOC_NUM(rs.getString("DOC_NUM"));
+				list.setCR_TIME(rs.getString("CR_TIME"));
+				list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
+
+				cus_list.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+		return list;
+	}
+
+	/**
+	 * Сессия
+	 */
+	private Connection conn;
+
+	/**
+	 * Открыть сессию
+	 */
+	private void dbConnect() {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+			Class.forName("oracle.jdbc.OracleDriver");
+			Properties props = new Properties();
+			props.put("v$session.program", "CusList");
+			conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
+					props);
+			conn.setAutoCommit(false);
+		} catch (SQLException | ClassNotFoundException e) {
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	/**
+	 * Отключить сессию
+	 */
+	public void dbDisconnect() {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+			if (conn != null && !conn.isClosed()) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	/**
+	 * Для многопоточности
+	 */
+	private Executor exec;
+
+	/**
+	 * Поле С фильтра
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void DT1(ActionEvent event) {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+			Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
+					DT2.getValue());
+		} catch (Exception e) {
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	/**
+	 * Поле ПО фильтра
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void DT2(ActionEvent event) {
+		try {
+			Main.logger = Logger.getLogger(getClass());
+			Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
+					DT2.getValue());
+		} catch (Exception e) {
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	/**
+	 * Очистить поля
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void Clear(ActionEvent event) {
+		CCUSLAST_NAME.setText("");
+		CCUSFIRST_NAME.setText("");
+		CCUSMIDDLE_NAME.setText("");
+		DT1.setValue(null);
+		DT2.setValue(null);
+	}
+
+	/**
+	 * Инициализация
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@FXML
+	private void initialize() {
+		try {
+
+//			addIfNotPresent(CUS_BORDER.getStyleClass(), JMetroStyleClass.BACKGROUND);
+//			addIfNotPresent(CUS_BORDER.getStyleClass(), JMetroStyleClass.LIGHT_BUTTONS);
+//			addIfNotPresent(CUSLIST.getStyleClass(), JMetroStyleClass.TABLE_GRID_LINES);
+//			addIfNotPresent(CUSLIST.getStyleClass(), JMetroStyleClass.ALTERNATING_ROW_COLORS);
+			
+			// ______Установка фильтра____________
+			CUSLIST.filterRowVisibleProperty();
+			
+
+			CUS_BORDER.setBottom(createOptionPane(CUSLIST));
+
+			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
+
+			CCUSIDOPEN.setColumnFilter(new PatternColumnFilter<>());
+
+			CR_DATE.setColumnFilter(new DateColumnFilter<>()); 
+
+			CR_TIME.setColumnFilter(new PatternColumnFilter<>());
+
+			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
+			ICUSNUM.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
+					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+
+			CCUSLAST_NAMET.setColumnFilter(new PatternColumnFilter<>());
+			CCUSFIRST_NAMET.setColumnFilter(new PatternColumnFilter<>());
+			CCUSMIDDLE_NAMET.setColumnFilter(new PatternColumnFilter<>());
+			CCUSLAST_NAMET.setColumnFilter(new PatternColumnFilter<>());
+			CCUSLAST_NAMET.setColumnFilter(new PatternColumnFilter<>());
+			CCUSSEX.setColumnFilter(new PatternColumnFilter<>());
+			NAME.setColumnFilter(new PatternColumnFilter<>());
+			DCUSBIRTHDAYT.setColumnFilter(new DateColumnFilter<>());
+			COUNTRY_NAME.setColumnFilter(new PatternColumnFilter<>());
+			ID_DOC_TP.setColumnFilter(new PatternColumnFilter<>());
+			DOC_SER.setColumnFilter(new PatternColumnFilter<>());
+			DOC_NUM.setColumnFilter(new PatternColumnFilter<>());
+			DOC_DATE.setColumnFilter(new DateColumnFilter<>());
+			DOC_PERIOD.setColumnFilter(new DateColumnFilter<>());
+			DOC_SUBDIV.setColumnFilter(new PatternColumnFilter<>());
+			COUNTRY.setColumnFilter(new PatternColumnFilter<>());
+			AREA.setColumnFilter(new PatternColumnFilter<>());
+			// CITY.setColumnFilter(new PatternColumnFilter<>());
+			NAS_PUNCT.setColumnFilter(new PatternColumnFilter<>());
+			INFR_NAME.setColumnFilter(new PatternColumnFilter<>());
+			DOM.setColumnFilter(new PatternColumnFilter<>());
+			KV.setColumnFilter(new PatternColumnFilter<>());
+			// _______________
+
+			// DateAutoComma(DT1);
+			// DateAutoComma(DT2);
+			/**
+			 * Для создания многопоточности
+			 */
+			exec = Executors.newCachedThreadPool((runnable) -> {
+				Thread t = new Thread(runnable);
+				t.setDaemon(true);
+				return t;
+			});
+
+			/**
+			 * Только буквы в фильтре
+			 */
+			// OnlyAlpha(CCUSLAST_NAME);
+			// OnlyAlpha(CCUSFIRST_NAME);
+			// OnlyAlpha(CCUSMIDDLE_NAME);
+			new ConvConst().OnlyAlpha(CCUSLAST_NAME);
+			new ConvConst().OnlyAlpha(CCUSFIRST_NAME);
+			new ConvConst().OnlyAlpha(CCUSMIDDLE_NAME);
+
+			/*
+			 * DT1.getEditor().textProperty().addListener(new ChangeListener<String>() {
+			 * 
+			 * @Override public void changed(ObservableValue<? extends String> observable,
+			 * String oldValue, String newValue) { if (newValue.length() == 2) {
+			 * System.out.println(newValue); newValue = newValue+"."; } newValue =
+			 * newValue+"."; } });
+			 */
+
+			// DT1.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			// System.out.println(DT1.getEditor().getText());
+			/*
+			 * if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB ||
+			 * event.getCode() == KeyCode.DOWN) { DT2.requestFocus(); event.consume(); } if
+			 * (event.getCode() == KeyCode.UP) { // do something event.consume(); }
+			 */
+			// });
+
+			new ConvConst().FormatDatePiker(DT1);
+			new ConvConst().FormatDatePiker(DT2);
+
+			/**
+			 * Двойной щелчок по строке
+			 */
+			CUSLIST.setRowFactory(tv -> {
+				TableRow<VCUS> row = new TableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
+							Msg.Message("Выберите документ!");
+						} else {
+							Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
+									(Stage) CUSLIST.getScene().getWindow()/* , conn */);
+						}
+					}
+				});
+				return row;
+			});
+
+			/**
+			 * Создать сессию
+			 */
+			dbConnect();
+
+			/**
+			 * Заполнение данными таблицу
+			 */
+			InitVCus(null, null, null, null, null, "null", null);
+
+			/**
+			 * Инициализация столбцов таблицы
+			 */
+			{
+				new ConvConst().TableColumnDate(CR_DATE);
+
+				CCUSIDOPEN.setCellValueFactory(cellData -> cellData.getValue().CCUSIDOPENProperty());
+
+				CR_DATE.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).CR_DATEProperty());
+				CR_TIME.setCellValueFactory(cellData -> cellData.getValue().CR_TIMEProperty());
+
+				ICUSNUM.setCellValueFactory(cellData -> cellData.getValue().ICUSNUMProperty().asObject());
+				CCUSLAST_NAMET.setCellValueFactory(cellData -> cellData.getValue().CCUSLAST_NAMEProperty());
+				CCUSFIRST_NAMET.setCellValueFactory(cellData -> cellData.getValue().CCUSFIRST_NAMEProperty());
+				CCUSMIDDLE_NAMET.setCellValueFactory(cellData -> cellData.getValue().CCUSMIDDLE_NAMEProperty());
+				DCUSBIRTHDAYT.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).DCUSBIRTHDAYProperty());
+				ID_DOC_TP.setCellValueFactory(cellData -> cellData.getValue().ID_DOC_TPProperty());
+				CCUSSEX.setCellValueFactory(cellData -> cellData.getValue().CCUSSEXProperty());
+				DOC_SER.setCellValueFactory(cellData -> cellData.getValue().DOC_SERProperty());
+				DOC_NUM.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMProperty());
+				DOC_DATE.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).DOC_DATEProperty());
+				DOC_PERIOD.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).DOC_PERIODProperty());
+				DOC_SUBDIV.setCellValueFactory(cellData -> cellData.getValue().DOC_SUBDIVProperty());
+				COUNTRY.setCellValueFactory(cellData -> cellData.getValue().COUNTRYProperty());
+				AREA.setCellValueFactory(cellData -> cellData.getValue().AREAProperty());
+				NAS_PUNCT.setCellValueFactory(cellData -> cellData.getValue().PUNCT_NAMEProperty());
+				INFR_NAME.setCellValueFactory(cellData -> cellData.getValue().INFR_NAMEProperty());
+				DOM.setCellValueFactory(cellData -> cellData.getValue().DOMProperty());
+				KV.setCellValueFactory(cellData -> cellData.getValue().KVProperty());
+				COUNTRY_NAME.setCellValueFactory(cellData -> cellData.getValue().COUNTRY_NAMEProperty());
+				NAME.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
+			}
+
+			/**
+			 * Фильтр поля в верхнем регистре
+			 */
+			{
+				new ConvConst().UpperCase(CCUSLAST_NAME);
+				new ConvConst().UpperCase(CCUSFIRST_NAME);
+				new ConvConst().UpperCase(CCUSMIDDLE_NAME);
+				// UpperCase(CCUSLAST_NAME);
+				// UpperCase(CCUSFIRST_NAME);
+				// UpperCase(CCUSMIDDLE_NAME);
+			}
+			/**
+			 * Форматирование Столбца "Дата рождения"
+			 */
+			{
+				new ConvConst().TableColumnDate(DCUSBIRTHDAYT);
+				new ConvConst().TableColumnDate(DOC_DATE);
+				new ConvConst().TableColumnDate(DOC_PERIOD);
+				// TableColumnLocalDate(DCUSBIRTHDAYT);
+				// TableColumnLocalDate(DOC_DATE);
+				// TableColumnLocalDate(DOC_PERIOD);
+			}
+
+			ICUSNUM.setOnEditCommit(new EventHandler<CellEditEvent<VCUS, Integer>>() {
+				@Override
+				public void handle(CellEditEvent<VCUS, Integer> t) {
+					((VCUS) t.getTableView().getItems().get(t.getTablePosition().getRow())).setICUSNUM(t.getNewValue());
+				}
+			});
+
+			/**
+			 * Listener при нажатии на строку клиентов
+			 */
+			CUSLIST.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+				if (newSelection != null) {
+
+				}
+			});
+
+			/**
+			 * Поиск при вводе
+			 */
+			{
+				CCUSLAST_NAME.textProperty().addListener(new ChangeListener<String>() {
+					@Override
+					public void changed(ObservableValue<? extends String> observable, String oldValue,
+							String newValue) {
+						if (newValue.length() > 0) {
+							Progress(newValue, CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
+									DT2.getValue());
+						} else {
+							Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(),
+									DT1.getValue(), DT2.getValue());
+						}
+					}
+				});
+
+				CCUSFIRST_NAME.textProperty().addListener(new ChangeListener<String>() {
+					@Override
+					public void changed(ObservableValue<? extends String> observable, String oldValue,
+							String newValue) {
+						if (newValue.length() > 0) {
+							Progress(CCUSLAST_NAME.getText(), newValue, CCUSMIDDLE_NAME.getText(), DT1.getValue(),
+									DT2.getValue());
+						} else {
+							Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(),
+									DT1.getValue(), DT2.getValue());
+						}
+					}
+				});
+				CCUSMIDDLE_NAME.textProperty().addListener(new ChangeListener<String>() {
+					@Override
+					public void changed(ObservableValue<? extends String> observable, String oldValue,
+							String newValue) {
+						if (newValue.length() > 0) {
+							Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), newValue, DT1.getValue(),
+									DT2.getValue());
+						} else {
+							Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(),
+									DT1.getValue(), DT2.getValue());
+						}
+					}
+				});
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+
+	/**
+	 * Все документы связанные с гражданином
+	 */
+	@FXML
+	private void ViewAllDocs() {
+		try {
+			if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
+				Msg.Message("Выберите клиента!");
+			} else {
+				Main.logger = Logger.getLogger(getClass());
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) CUSLIST.getScene().getWindow();
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/mj/doc/cus/DocsList.fxml"));
+
+				DocList controller = new DocList();
+				controller.setId(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Список документов");
+				stage.initOwner(stage_);
+				stage.setResizable(false);
+
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+	}
+}

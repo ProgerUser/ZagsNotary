@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<sqlMap>
+	<sqls>
+		<entry>
+			<key>DocsList</key>
+			<value>
+				<![CDATA[
+with item as
+ (select ? Id from dual),
+unins as
+ (select 'brn_birth_act' table_name,
+         'Свидетельство о рождении' DocName,
+         (select count(*)
+            from brn_birth_act g, item
+           where (g.br_act_ch = item.Id or g.br_act_f = item.Id or
+                 g.br_act_m = item.Id)) DocCnt
+    from dual
+  union all
+  select 'PATERN_CERT' table_name,
+         'Установление отцовства' DocName,
+         (select count(*)
+            from PATERN_CERT j, item
+           where (j.pс_ch = item.Id or j.pс_f = item.Id or j.pс_m = item.Id)) DocCnt
+    from dual
+  union all
+  select 'mc_mercer' table_name,
+         'Заключение брака' DocName,
+         (select count(*)
+            from mc_mercer g, item
+           where (g.MERCER_HE = item.Id or g.MERCER_SHE = item.Id)) DocCnt
+    from dual
+  union all
+  select 'DIVORCE_CERT' table_name,
+         'Расторжение брака' DocName,
+         (select count(*)
+            from DIVORCE_CERT g, item
+           where (g.DIVC_HE = item.Id or g.DIVC_SHE = item.Id)) DocCnt
+    from dual
+  union all
+  select 'DEATH_CERT' table_name,
+         'Установление акта о смерти' DocName,
+         (select count(*) from DEATH_CERT g, item where (g.DC_CUS = item.Id)) DocCnt
+    from dual
+  union all
+  select 'DocName' table_name,
+         'Перемена имени' DocName,
+         (select count(*) from update_name g, item where (g.CUSID = item.Id)) DocCnt
+    from dual
+  union all
+  select 'UPDATE_ABH_NAME' table_name,
+         'Восстановление абхазской фамилии' DocName,
+         (select count(*)
+            from UPDATE_ABH_NAME g, item
+           where (g.CUSID = item.Id)) DocCnt
+    from dual
+  union all
+  select 'UPD_NAT' table_name,
+         'Перемена национальной принадлежности' DocName,
+         (select count(*) from UPD_NAT g, item where (g.CUSID = item.Id)) DocCnt
+    from dual
+  union all
+  select 'UPD_NAT' table_name,
+         'Усыновление (удочерение)' DocName,
+         (select count(*)
+            from ADOPTOIN g, item
+           where (g.CUSID_CH = item.Id)
+              or (g.CUSID_F = item.Id)
+              or (g.CUSID_F_AD = item.Id)
+              or (g.CUSID_M = item.Id)
+              or (g.CUSID_M_AD = item.Id)) DocCnt
+    from dual)
+select upper(table_name) table_name, DocName, DocCnt from unins
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>SelPunctWithAreaFirst</key>
+			<value>
+				<![CDATA[
+select a.name
+  from inf a, area b, infandarea c
+ where a.id = c.inf_id
+   and b.id = c.area_id
+   and b.name = ?
+ order by case
+            when a.name = ? then
+             1
+            else
+             2
+          end
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>SelPunctWithAreaFirst</key>
+			<value>
+				<![CDATA[
+select a.name
+  from inf a, area b, infandarea c
+ where a.id = c.inf_id
+   and b.id = c.area_id
+   and b.name = ?
+ order by case
+            when a.name = ? then
+             1
+            else
+             2
+          end
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>SelPunctWithArea</key>
+			<value>
+				<![CDATA[
+select a.name
+  from inf a, area b, infandarea c
+ where a.id = c.inf_id
+   and b.id = c.area_id
+   and b.name = ?
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>SelCityWithAreaFirst</key>
+			<value>
+				<![CDATA[
+select a.name
+  from city a, area b, cityandarea c
+ where a.id = c.city_id
+   and b.id = c.area_id
+   and b.name = ?
+  order by case
+            when a.name = ? then
+             1
+            else
+             2
+          end
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>SelCityWithArea</key>
+			<value>
+				<![CDATA[
+select a.name
+  from city a, area b, cityandarea c
+ where a.id = c.city_id
+   and b.id = c.area_id
+   and b.name = ?
+]]>
+			</value>
+		</entry>
+		<entry>
+			<key>SelCusList</key>
+			<value>
+				<![CDATA[
+with dat as
+ (select ? ID from dual)
+select cus.icusnum,
+       cus.dcusopen,
+       cus.dcusedit,
+       cus.ccusidopen,
+       cus.ccusname,
+       cus.ccuscountry1,
+       cus.ccusname_sh,
+       cus.dcusbirthday,
+       cus.ccuslast_name,
+       cus.ccusfirst_name,
+       cus.ccusmiddle_name,
+       cus.ccussex,
+       cus.ccusplace_birth,
+       cus.icusotd,
+       (select countries.name
+          from countries
+         where countries.code = cus.ccus_ok_sm) ccus_ok_sm,
+       cus.ccusnationality,
+       (select NAME from COUNTRIES t where t.CODE = cus.ccus_ok_sm) BurthCountry,
+       (select otd.cotdname from otd where otd.iotdnum = cus.icusotd) OTD_NAME,
+       (select NATIONALITY.NAME
+          from NATIONALITY
+         where NATIONALITY.ID = cus.ccusnationality) CCUSNATIONALITY2,
+       null CITY2,
+       (select raion.name
+          from raion
+         where raion.name = (select cus_addr.area
+                               from cus_addr
+                              where cus_addr.icusnum = dat.ID)) AREA,
+       (select nas_punkt.name
+          from nas_punkt
+         where nas_punkt.name =
+               (select cus_addr.punct_name
+                  from cus_addr
+                 where cus_addr.icusnum = dat.ID)) INF,
+       (select countries.name
+          from countries
+         where countries.code =
+               (select cus_addr.country
+                  from cus_addr
+                 where cus_addr.icusnum = cus.ICUSNUM)) country
+  from cus, dat
+ where cus.ICUSNUM = dat.ID
+]]>
+			</value>
+		</entry>
+	</sqls>
+</sqlMap>

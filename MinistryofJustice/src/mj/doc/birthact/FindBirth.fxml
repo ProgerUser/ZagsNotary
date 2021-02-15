@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import com.jyloo.syntheticafx.*?>
+
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+   	<BorderPane fx:id="ROOT">
+   	<left>
+		<!-- <AnchorPane prefHeight="303.0" prefWidth="10.0" BorderPane.alignment="CENTER" 
+			/> -->
+	</left>
+   	<right>
+		<!-- <AnchorPane prefHeight="303.0" prefWidth="10.0" BorderPane.alignment="CENTER" 
+			/> -->
+	</right>
+   	<top>
+   		<VBox BorderPane.alignment="CENTER">
+   			<children>
+   				<TitledPane animated="false" collapsible="false" text="Фильтр">
+   					<VBox.margin>
+   						<Insets />
+   					</VBox.margin>
+                     <content>
+								<VBox>
+									<children>
+										<GridPane>
+											<columnConstraints>
+												<ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" />
+												<ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" />
+												<ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" />
+											</columnConstraints>
+											<rowConstraints>
+												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+											</rowConstraints>
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата заведения" />
+												<DatePicker fx:id="DT1" maxWidth="100.0" onAction="#DT1" promptText="С" GridPane.columnIndex="1" />
+												<DatePicker fx:id="DT2" layoutX="105.0" layoutY="13.0" maxWidth="100.0" onAction="#DT2" promptText="ПО" GridPane.columnIndex="2" />
+                                    <Button mnemonicParsing="false" onAction="#ClearFilterDates" text="Очистить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+											</children>
+										</GridPane>
+									</children>
+								</VBox>
+                     </content>
+   				</TitledPane>
+   			</children>
+   		</VBox>
+   	</top>
+         <center>
+				<TableView fx:id="BIRTH_ACT" editable="false" prefHeight="450.0" prefWidth="900.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+					<columns>
+						<TableColumn fx:id="BIRTH_ACT_ID" prefWidth="82.0" text="Номер" />
+						<TableColumn fx:id="BIRTH_ACT_DATE" maxWidth="5000.0" minWidth="10.0" prefWidth="114.0" text="Дата заведения" />
+						<TableColumn prefWidth="274.0" text="Ребенок">
+							<columns>
+								<TableColumn fx:id="ChFio" maxWidth="5000.0" minWidth="0.0" prefWidth="180.0" text="ФИО" />
+								<TableColumn fx:id="BIRTH_ACT_LD" minWidth="7.0" prefWidth="103.0" text="Ж/М" />
+							</columns>
+						</TableColumn>
+                  <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="177.0" resizable="false" text="Отец">
+                     <columns>
+                        <TableColumn fx:id="FFIO" prefWidth="180.0" text="ФИО" />
+                     </columns>
+                  </TableColumn>
+						<TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="177.0" resizable="false" text="Мать">
+							<columns>
+								<TableColumn fx:id="MFIO" prefWidth="180.0" text="ФИО" />
+							</columns>
+						</TableColumn>
+						<TableColumn prefWidth="246.0" resizable="false" text="ЗАГС">
+							<columns>
+								<TableColumn fx:id="BIRTH_ACT_ZAGS" minWidth="7.0" prefWidth="285.0" text="Название" />
+							</columns>
+						</TableColumn>
+					</columns>
+
+					<contextMenu>
+						<ContextMenu>
+							<items>
+								<MenuItem mnemonicParsing="false" onAction="#RefreshBirthList" text="Обновить" />
+								<MenuItem mnemonicParsing="false" onAction="#AddBirth" text="Добавить" />
+								<MenuItem mnemonicParsing="false" onAction="#EditBirth" text="Редактировать" />
+                     <MenuItem mnemonicParsing="false" onAction="#Print" text="Печать" />
+                     <MenuItem mnemonicParsing="false" onAction="#DeleteCont" text="Удалить" />
+							</items>
+						</ContextMenu>
+					</contextMenu>
+				</TableView>
+         </center>
+         <StackPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </StackPane.margin>
+   	</BorderPane>
+      <ProgressIndicator fx:id="PB" maxHeight="50.0" maxWidth="50.0" visible="false" />
+   </children>
+</StackPane>
