@@ -425,7 +425,6 @@ public class Setup {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 
 			Auth1c exdb = new Auth1c();
 			
