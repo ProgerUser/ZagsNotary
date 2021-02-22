@@ -139,7 +139,6 @@ public class Add_Cus_Doc {
 				Msg.Message("Заполните поля");
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
 			Msg.Message(ExceptionUtils.getStackTrace(e));
 			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
@@ -156,7 +155,6 @@ public class Add_Cus_Doc {
 	 */
 	void CRUDDocumTemp(String type, String type2) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn.prepareCall(type);
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, (PREF_T.isSelected()) ? "Y" : "N");
@@ -205,7 +203,6 @@ public class Add_Cus_Doc {
 	 */
 	void CRUDDocum(String type) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn.prepareCall(type);
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, (PREF_T.isSelected()) ? "Y" : "N");

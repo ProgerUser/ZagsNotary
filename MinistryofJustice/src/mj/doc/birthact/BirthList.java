@@ -565,8 +565,8 @@ public class BirthList {
 
 	private void AfterAdd(Integer id) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			// SqlMap sql = new SqlMap().load("/BirthSql.xml");
 			// String readRecordSQL = sql.getSql("SelectBirth");
 			PreparedStatement prepStmt = conn.prepareStatement("select * from SelectBirth t");
@@ -574,15 +574,23 @@ public class BirthList {
 			ObservableList<SELECTBIRTH> cus_list = FXCollections.observableArrayList();
 			while (rs.next()) {
 				SELECTBIRTH list = new SELECTBIRTH();
-				list.setTM$_DOC_DATE((rs.getDate("TM$_DOC_DATE") != null) ? LocalDateTime.parse(
-						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$_DOC_DATE")), formatter)
-						: null);
-				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
-				list.setLIVE_DEAD(rs.getString("LIVE_DEAD"));
-				list.setFFIO(rs.getString("FFIO"));
 				list.setBRN_AC_ID(rs.getInt("BRN_AC_ID"));
-				list.setCHILDREN_FIO(rs.getString("CHILDREN_FIO"));
+				list.setBR_ACT_F(rs.getInt("BR_ACT_F"));
+				list.setBR_ACT_M(rs.getInt("BR_ACT_M"));
+				list.setFFIO(rs.getString("FFIO"));
+				list.setLIVE_DEAD(rs.getString("LIVE_DEAD"));
+				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
+				list.setBR_ACT_CH(rs.getInt("BR_ACT_CH"));
+				list.setBR_ACT_USER(rs.getString("BR_ACT_USER"));
 				list.setMFIO(rs.getString("MFIO"));
+				list.setCR_TIME(rs.getString("CR_TIME"));
+				list.setCHILDREN_FIO(rs.getString("CHILDREN_FIO"));
+				list.setCR_DATE((rs.getDate("CR_DATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
+						: null);
+				list.setTM$_DOC_DATE((rs.getDate("TM$_DOC_DATE") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$_DOC_DATE")), formatterwt)
+						: null);
 				cus_list.add(list);
 			}
 			prepStmt.close();
