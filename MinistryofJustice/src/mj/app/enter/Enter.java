@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -41,6 +42,9 @@ public class Enter {
 		Main.logger = Logger.getLogger(getClass());
 	}
 
+    @FXML
+    private TextField DBIP;
+    
 	@FXML
 	private Button enter_id;
 
@@ -53,7 +57,7 @@ public class Enter {
 	@FXML
 	private PasswordField pass;
 
-	public static String DB;
+	//public static String DB;
 
 	final static String driverClass = "oracle.jdbc.OracleDriver";
 
@@ -179,7 +183,7 @@ public class Enter {
 		try {
 			if (login.getValue() != null & !pass.getText().equals("")) {
 				Main.logger = Logger.getLogger(getClass());
-				Connect.connectionURL = DB;
+				Connect.connectionURL = DBIP.getText();
 				Connect.userID = login.getValue().toString();
 				Connect.userPassword = pass.getText();
 				Check_Enter();
@@ -202,7 +206,7 @@ public class Enter {
 		if (ke.getCode().equals(KeyCode.ENTER)) {
 			try {
 				if (login.getValue() != null & !pass.getText().equals("")) {
-					Connect.connectionURL = DB;
+					Connect.connectionURL = DBIP.getText();
 					Connect.userID = login.getValue().toString();
 					Connect.userPassword = pass.getText();
 					Check_Enter();
@@ -226,7 +230,6 @@ public class Enter {
 	 * @return the Connection object
 	 */
 	private Connection connect() {
-
 		// SQLite connection string
 		String url = "jdbc:sqlite:" + System.getenv("MJ_PATH") + "SqlLite\\log.db";
 		Connection conn = null;
@@ -234,7 +237,7 @@ public class Enter {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection(url);
 		} catch (SQLException | ClassNotFoundException e) {
-			System.out.println(ExceptionUtils.getStackTrace(e));
+			Msg.Message(ExceptionUtils.getStackTrace(e));
 		}
 		return conn;
 	}
@@ -246,7 +249,6 @@ public class Enter {
 	 */
 	void InsertIfNotExists(String logname) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			{
 				sqllite_conn = connect();
 				PreparedStatement stmt = sqllite_conn
@@ -279,12 +281,18 @@ public class Enter {
 	public static Connection sqllite_conn = null;
 
 	@FXML
-	void initialize() {
+	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			sqllite_conn = connect();
-
+			{
+				PreparedStatement prp = sqllite_conn.prepareStatement("select value from props where name = 'url'");
+				ResultSet rs = prp.executeQuery();
+				if(rs.next()) {
+					DBIP.setText(rs.getString("value"));
+				}
+				prp.close();
+			}
+			
 			ObservableList<String> logins = FXCollections.observableArrayList();
 			{
 				PreparedStatement stmt = sqllite_conn.prepareStatement("select * from users");
@@ -296,17 +304,18 @@ public class Enter {
 				stmt.close();
 				rs.close();
 			}
-			ObservableList<String> url = FXCollections.observableArrayList();
-			{
-				PreparedStatement stmt = sqllite_conn.prepareStatement("select * from props where name = 'url'");
-				ResultSet rs = stmt.executeQuery();
-				while (rs.next()) {
-					url.add(rs.getString("VALUE"));
-					DB = rs.getString("VALUE");
-				}
-				stmt.close();
-				rs.close();
-			}
+			
+//			ObservableList<String> url = FXCollections.observableArrayList();
+//			{
+//				PreparedStatement stmt = sqllite_conn.prepareStatement("select * from props where name = 'url'");
+//				ResultSet rs = stmt.executeQuery();
+//				while (rs.next()) {
+//					url.add(rs.getString("VALUE"));
+//					DB = rs.getString("VALUE");
+//				}
+//				stmt.close();
+//				rs.close();
+//			}
 
 			FilteredList<String> filteredlogin = new FilteredList<String>(logins);
 			login.getEditor().textProperty().addListener(new InputFilter<String>(login, filteredlogin, true));
