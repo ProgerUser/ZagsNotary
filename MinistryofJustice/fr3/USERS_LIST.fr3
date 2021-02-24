@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="6.5.1" DotMatrixReport="false" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="39553,4200421296" ReportOptions.Description.Text="" ReportOptions.LastChange="44199,8833731134" ScriptLanguage="PascalScript" ScriptText.Text="Var&#13;&#10;  otd_id :Integer;&#13;&#10;  fire :String;&#13;&#10;&#13;&#10;procedure OKOnClick(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;   otd_id :=&#60;otd.&#34;key&#34;&#62;;&#13;&#10;end;&#13;&#10;&#13;&#10;procedure is_fireOnClick(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  if is_fire.Checked then&#13;&#10;  begin&#13;&#10;    fire := 'Y';&#13;&#10;  end;&#13;&#10;    if not is_fire.Checked then&#13;&#10;  begin&#13;&#10;    fire := 'N';&#13;&#10;  end;&#13;&#10;end;&#13;&#10;&#13;&#10;begin&#13;&#10;  otd.close;&#13;&#10;  otd.open;&#13;&#10;end.">
+  <Datasets>
+    <item DataSet="usr_list" DataSetName="usr_list"/>
+    <item DataSet="otd" DataSetName="otd"/>
+  </Datasets>
+  <Variables>
+    <item Name=" XXI"/>
+    <item Name="SID" Value="'1740905'"/>
+    <item Name="P1" Value="''"/>
+    <item Name="P2" Value="''"/>
+    <item Name="P3" Value="''"/>
+    <item Name="P4" Value="''"/>
+    <item Name="P5" Value="''"/>
+    <item Name="P6" Value="''"/>
+    <item Name="P7" Value="''"/>
+    <item Name="P8" Value="''"/>
+    <item Name="P9" Value="''"/>
+    <item Name="P10" Value="''"/>
+    <item Name="REPORT_TYPE_ID" Value="'1'"/>
+    <item Name="REPORT_ID" Value="'2'"/>
+    <item Name="UserName" Value="'xxi'"/>
+    <item Name="Password" Value="''"/>
+    <item Name="Database" Value="'xe'"/>
+    <item Name="ConnectString" Value="''"/>
+    <item Name="DLL_PATH" Value="'C:\MJ_\bin\'"/>
+  </Variables>
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000">
+    <TfrxODACQuery Name="usr_list" UserName="usr_list" CloseDataSource="true" FieldAliases.Text="IUSRID=IUSRID&#13;&#10;CUSRLOGNAME=CUSRLOGNAME&#13;&#10;CUSRNAME=CUSRNAME&#13;&#10;CUSRPOSITION=CUSRPOSITION&#13;&#10;DUSRHIRE=DUSRHIRE&#13;&#10;IUSRBRANCH=IUSRBRANCH&#13;&#10;DUSRFIRE=DUSRFIRE&#13;&#10;IUSRPWD_LENGTH=IUSRPWD_LENGTH&#13;&#10;IUSRCHR_QUANTITY=IUSRCHR_QUANTITY&#13;&#10;IUSRNUM_QUANTITY=IUSRNUM_QUANTITY&#13;&#10;IUSREXP_DAYS=IUSREXP_DAYS&#13;&#10;CUSROFFPHONE=CUSROFFPHONE&#13;&#10;TWRTSTART=TWRTSTART&#13;&#10;TWRTEND=TWRTEND&#13;&#10;CEMAIL=CEMAIL&#13;&#10;CRESTRICT_TERM=CRESTRICT_TERM&#13;&#10;IUSRPWDREUSE=IUSRPWDREUSE&#13;&#10;IUSRSPEC_QUANTITY=IUSRSPEC_QUANTITY&#13;&#10;WELCOME_MESSAGE=WELCOME_MESSAGE&#13;&#10;SHORT_NAME=SHORT_NAME&#13;&#10;LOCK_DATE_TIME=LOCK_DATE_TIME&#13;&#10;LOCK_INFO=LOCK_INFO&#13;&#10;MUST_CHANGE_PASSWORD=MUST_CHANGE_PASSWORD&#13;&#10;SHORT_POSITION=SHORT_POSITION&#13;&#10;WORKDAY_TIME_END=WORKDAY_TIME_END&#13;&#10;WORKDAY_TIME_BEGIN=WORKDAY_TIME_BEGIN&#13;&#10;ZAGS_ID=ZAGS_ID" BCDToCurrency="false" IgnoreDupParams="false" SQL.Text="select * from usr where usr.iusrbranch = :branch                                                                                     &#13;&#10;                                     " PropData="05704C65667402700470546F7002540A506172616D657465727301010637204E616D653D226272616E6368222044617461547970653D226674496E7465676572222045787072657373696F6E3D226F74645F6964220000"/>
+    <TfrxODACQuery Name="otd" UserName="otd" CloseDataSource="true" FieldAliases.Text="KEY=KEY&#13;&#10;VALUE=VALUE" BCDToCurrency="false" IgnoreDupParams="false" SQL.Text="select IOTDNUM key, IOTDNUM || ' : ' || COTDNAME value from otd order by IOTDNUM&#13;&#10;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 " PropData="05704C65667403A4000470546F7002540A506172616D65746572730100"/>
+  </TfrxDataPage>
+  <TfrxReportPage Name="usr_page" PaperWidth="250" PaperHeight="297" PaperSize="256" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" Frame.Typ="0" MirrorMode="0" HGuides.Text="" VGuides.Text="">
+    <TfrxPageHeader Name="PageHeader1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Frame.Typ="0" Height="34,01577" Left="0" Top="16" Width="869,2919">
+      <TfrxMemoView Name="Memo1" AllowVectorExport="true" Left="347,71676" Top="7,55906" Width="154,96073" Height="18,89765" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="0" ParentFont="false" Text="Список пользователей"/>
+    </TfrxPageHeader>
+    <TfrxMasterData Name="MasterData1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Frame.Typ="0" Height="18,89765" Left="0" Top="128" Width="869,2919" ColumnWidth="0" ColumnGap="0" DataSet="usr_list" DataSetName="usr_list" RowCount="0">
+      <TfrxMemoView Name="Memo3" AllowVectorExport="true" Left="83,14966" Top="0" Width="139,84261" Height="18,89765" StretchMode="smMaxHeight" DataField="CUSRLOGNAME" DataSet="usr_list" DataSetName="usr_list" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" Fill.BackColor="16777215" ParentFont="false" Text="[usr_list.&#34;CUSRLOGNAME&#34;]"/>
+      <TfrxMemoView Name="Memo5" AllowVectorExport="true" Left="222,99227" Top="0" Width="139,84261" Height="18,89765" StretchMode="smMaxHeight" DataField="CUSRNAME" DataSet="usr_list" DataSetName="usr_list" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" Fill.BackColor="16777215" ParentFont="false" Text="[usr_list.&#34;CUSRNAME&#34;]"/>
+      <TfrxMemoView Name="Memo7" AllowVectorExport="true" Left="362,83488" Top="0" Width="94,48825" Height="18,89765" StretchMode="smMaxHeight" DataField="DUSRHIRE" DataSet="usr_list" DataSetName="usr_list" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" Fill.BackColor="16777215" ParentFont="false" Text="[usr_list.&#34;DUSRHIRE&#34;]"/>
+      <TfrxMemoView Name="Memo9" AllowVectorExport="true" Left="0" Top="0" Width="83,14966" Height="18,89765" StretchMode="smMaxHeight" DataField="IUSRID" DataSet="usr_list" DataSetName="usr_list" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" Fill.BackColor="16777215" ParentFont="false" Text="[usr_list.&#34;IUSRID&#34;]"/>
+      <TfrxMemoView Name="Memo11" AllowVectorExport="true" Left="457,32313" Top="0" Width="90,70872" Height="18,89765" StretchMode="smMaxHeight" DataField="DUSRHIRE" DataSet="usr_list" DataSetName="usr_list" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" Fill.BackColor="16777215" ParentFont="false" Text="[usr_list.&#34;DUSRHIRE&#34;]"/>
+    </TfrxMasterData>
+    <TfrxHeader Name="Header1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Frame.Typ="0" Height="34,01577" Left="0" Top="72" Width="869,2919">
+      <TfrxMemoView Name="Memo2" AllowVectorExport="true" Left="83,14966" Top="0" Width="143,62214" Height="34,01577" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" Fill.BackColor="-16777201" HAlign="haCenter" ParentFont="false" Text="Логин"/>
+      <TfrxMemoView Name="Memo4" AllowVectorExport="true" Left="222,99227" Top="0" Width="139,84261" Height="34,01577" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" Fill.BackColor="-16777201" HAlign="haCenter" ParentFont="false" Text="ФИО"/>
+      <TfrxMemoView Name="Memo6" AllowVectorExport="true" Left="362,83488" Top="0" Width="94,48825" Height="34,01577" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" Fill.BackColor="-16777201" HAlign="haCenter" ParentFont="false" Text="Дата приема на работу"/>
+      <TfrxMemoView Name="Memo8" AllowVectorExport="true" Left="0" Top="0" Width="83,14966" Height="34,01577" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" Fill.BackColor="-16777201" HAlign="haCenter" ParentFont="false" Text="ИД"/>
+      <TfrxMemoView Name="Memo10" AllowVectorExport="true" Left="457,32313" Top="0" Width="90,70872" Height="34,01577" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" Fill.BackColor="-16777201" HAlign="haCenter" ParentFont="false" Text="Дата увольнения"/>
+    </TfrxHeader>
+  </TfrxReportPage>
+  <TfrxDialogPage Name="DialogPage1" Font.Charset="1" Font.Color="-16777208" Font.Height="-13" Font.Name="Arial" Font.Style="0" Caption="Выбор отделния" DoubleBuffered="false" Height="179" ClientHeight="140" Left="488" Top="258" Width="273" Scaled="true" ClientWidth="257">
+    <TfrxButtonControl Name="OK" Left="16" Top="88" Width="75" Height="25" ShowHint="true" Caption="OK" ModalResult="1" OnClick="OKOnClick"/>
+    <TfrxButtonControl Name="Cencel" Left="140" Top="88" Width="75" Height="25" ShowHint="true" Caption="Cencel" ModalResult="2"/>
+    <TfrxDBLookupComboBox Name="OTD_LIST" Left="16" Top="16" Width="201" Height="21" ShowHint="true" DataSet="otd" DataSetName="otd" ListField="VALUE" KeyField="KEY" DropDownWidth="0" DropDownRows="7"/>
+    <TfrxCheckBoxControl Name="is_fire" Left="16" Top="52" Width="169" Height="17" ShowHint="true" Caption="Показывать уволенных?" Color="-16777201" OnClick="is_fireOnClick"/>
+  </TfrxDialogPage>
+</TfrxReport>

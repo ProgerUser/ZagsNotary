@@ -1,0 +1,49 @@
+/*Grant to tables*/
+begin
+  for r in (SELECT h.TABLE_NAME FROM all_tables h where owner = 'XXI') loop
+    EXECUTE IMMEDIATE ('GRANT select,insert,update,delete ON ' ||
+                      r.TABLE_NAME || ' TO ODB');
+  end loop;
+end;
+/
+/*Public synonyms to tables*/
+begin
+  for r in (SELECT h.TABLE_NAME FROM all_tables h where owner = 'XXI') loop
+    EXECUTE IMMEDIATE ('create or replace public synonym ' || r.TABLE_NAME ||
+                      ' for XXI.'||r.TABLE_NAME);
+  end loop;
+end;
+/
+/*Public synonyms to fn,pkg,pr,trig,vie*/
+begin
+  for r in (select *
+              from dba_objects
+             where OWNER = 'XXI'
+               and object_type in
+                   ('PROCEDURE', 'PACKAGE', 'FUNCTION', 'TRIGGER', 'VIEW')) loop
+    EXECUTE IMMEDIATE ('create or replace public synonym ' || r.OBJECT_NAME ||
+                      ' for XXI.'||r.OBJECT_NAME);
+  end loop;
+end;
+/
+/*Grant to tables fn,pkg,pr*/
+begin
+  for r in (select *
+              from dba_objects
+             where OWNER = 'XXI'
+               and object_type in ('PROCEDURE', 'PACKAGE', 'FUNCTION')) loop
+    dbms_output.put_line(r.object_name);
+    EXECUTE IMMEDIATE ('grant execute on ' || r.object_name || ' to odb');
+  end loop;
+end;
+/
+/*Grant select to views*/
+begin
+  for r in (select *
+              from dba_objects
+             where OWNER = 'XXI'
+               and object_type in ('VIEW')) loop
+    dbms_output.put_line(r.object_name);
+    EXECUTE IMMEDIATE ('grant select on ' || r.object_name || ' to odb');
+  end loop;
+end;

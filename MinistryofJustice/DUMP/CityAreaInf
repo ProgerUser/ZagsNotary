@@ -1,0 +1,9 @@
+select *
+  from INF a, INFANDAREA b, area c
+ where a.id = b.inf_id
+   and b.area_id = c.id;
+   
+select *
+  from CITY a, area b, cityandarea c
+ where a.id = c.city_id
+   and b.id = c.area_id

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="6.5.1" DotMatrixReport="false" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="39553,4200421296" ReportOptions.Description.Text="" ReportOptions.LastChange="44202,8464237731" ScriptLanguage="PascalScript" ScriptText.Text="Var&#13;&#10;  otd_id :Integer;&#13;&#10;  fire :String;&#13;&#10;&#13;&#10;procedure OKOnClick(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;   otd_id :=&#60;otd.&#34;key&#34;&#62;;&#13;&#10;end;&#13;&#10;&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
+  <Datasets>
+    <item DataSet="query" DataSetName="query"/>
+  </Datasets>
+  <Variables>
+    <item Name=" XXI"/>
+    <item Name="SID" Value="'1780189'"/>
+    <item Name="P1" Value="'61'"/>
+    <item Name="P2" Value="''"/>
+    <item Name="P3" Value="''"/>
+    <item Name="P4" Value="''"/>
+    <item Name="P5" Value="''"/>
+    <item Name="P6" Value="''"/>
+    <item Name="P7" Value="''"/>
+    <item Name="P8" Value="''"/>
+    <item Name="P9" Value="''"/>
+    <item Name="P10" Value="''"/>
+    <item Name="REPORT_TYPE_ID" Value="'3'"/>
+    <item Name="REPORT_ID" Value="'3'"/>
+    <item Name="UserName" Value="'xxi'"/>
+    <item Name="Password" Value="''"/>
+    <item Name="Database" Value="'xe'"/>
+    <item Name="ConnectString" Value="''"/>
+    <item Name="DLL_PATH" Value="'C:\MJ_\bin\'"/>
+  </Variables>
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000">
+    <TfrxODACQuery Name="query" UserName="query" CloseDataSource="true" FieldAliases.Text="ID=ID&#13;&#10;DCUSBIRTHDAY=DCUSBIRTHDAY&#13;&#10;OLD_NAT=OLD_NAT&#13;&#10;NEW_NAT=NEW_NAT&#13;&#10;CCUSPLACE_BIRTH=CCUSPLACE_BIRTH&#13;&#10;BR_ACT_ID=BR_ACT_ID&#13;&#10;BR_ACT_DATE=BR_ACT_DATE&#13;&#10;ZAGS_NAME=ZAGS_NAME&#13;&#10;COUNTRY_NAME=COUNTRY_NAME&#13;&#10;NATIONALITY=NATIONALITY&#13;&#10;ADDRESS=ADDRESS&#13;&#10;SVID_SERIA=SVID_SERIA&#13;&#10;SVID_NUMBER=SVID_NUMBER&#13;&#10;CURDATE=CURDATE&#13;&#10;LASTNAME=LASTNAME&#13;&#10;FIRSTNAME=FIRSTNAME&#13;&#10;MIDDLNAME=MIDDLNAME" BCDToCurrency="false" IgnoreDupParams="false" SQL.Text="select * from V_REP_UPD_NAT t&#13;&#10;where t.ID = :p1                                       " PropData="05704C65667402700470546F7002540A506172616D657465727301010638204E616D653D227031222044617461547970653D226674537472696E67222045787072657373696F6E3D22262336303B5031262336323B220000"/>
+  </TfrxDataPage>
+  <TfrxReportPage Name="usr_page" PaperWidth="210" PaperHeight="297" PaperSize="256" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" Frame.Typ="0" MirrorMode="0" HGuides.Text="" VGuides.Text="">
+    <TfrxMasterData Name="MasterData1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Frame.Typ="0" Height="873,07143" Left="0" Top="16" Width="718,1107" ColumnWidth="0" ColumnGap="0" DataSet="query" DataSetName="query" RowCount="0">
+      <TfrxTableObject Name="TableObject1" AllowVectorExport="true" Left="3,77953" Top="11,33859">
+        <TfrxTableColumn Name="TableColumn1" Width="34,0945580000003" MinWidth="0" MaxWidth="75,5906"/>
+        <TfrxTableColumn Name="TableColumn2" Width="327,261224666667" MinWidth="0" MaxWidth="75,5906"/>
+        <TfrxTableColumn Name="TableColumn3" Width="345,427891333333" MinWidth="0" MaxWidth="75,5906"/>
+        <TfrxTableRow Name="TableRow7" MinHeight="0" MaxHeight="0" Height="68,89765">
+          <TfrxTableCell Name="TableCell24" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="0" HAlign="haCenter" ParentFont="false" ColSpan="3" Text="АМИЛАҬРА АԤСАХРАЗЫ АҬАҨРА&#13;&#10;ЗАПИСЬ АКТА О ПЕРЕМЕНЕ НАЦИОНАЛЬНОЙ ПРИНАДЛЕЖНОСТИ &#60;b&#62;&#60;i&#62;&#60;u&#62;№ [query.&#34;ID&#34;]&#60;/u&#62;&#60;/b&#62;&#60;/i&#62;&#13;&#10;от &#60;b&#62;&#60;i&#62;&#60;u&#62;[query.&#34;CURDATE&#34;]&#60;/u&#62;&#60;/b&#62;&#60;/i&#62; ш.г.&#13;&#10;(аҩбатәи аекземплиар – второй экземпляр)">
+            <Formats>
+              <item/>
+              <item/>
+            </Formats>
+          </TfrxTableCell>
+          <TfrxTableCell Name="TableCell25" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+          <TfrxTableCell Name="TableCell26" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow1" MinHeight="0" MaxHeight="0" Height="39,3018553333333">
+          <TfrxTableCell Name="TableCell1" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text=""/>
+          <TfrxTableCell Name="TableCell2" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="Амилаҭра иԥсахаанӡа&#13;&#10;До перемены национальности"/>
+          <TfrxTableCell Name="TableCell3" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="Амилаҭра аниԥсах анаҩс&#13;&#10;После перемены национальности"/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow2" MinHeight="0" MaxHeight="0" Height="36,6351886666666">
+          <TfrxTableCell Name="TableCell6" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="1"/>
+          <TfrxTableCell Name="TableCell7" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" ColSpan="2" Text="Амилаҭра&#13;&#10;Национальность"/>
+          <TfrxTableCell Name="TableCell8" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow3" MinHeight="0" MaxHeight="0" Height="27,968522">
+          <TfrxTableCell Name="TableCell11" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text=""/>
+          <TfrxTableCell Name="TableCell12" AllowVectorExport="true" Restrictions="8" DataField="OLD_NAT" DataSet="query" DataSetName="query" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="3" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="[query.&#34;OLD_NAT&#34;]"/>
+          <TfrxTableCell Name="TableCell13" AllowVectorExport="true" Restrictions="8" DataField="NEW_NAT" DataSet="query" DataSetName="query" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="3" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="[query.&#34;NEW_NAT&#34;]"/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow4" MinHeight="0" MaxHeight="0" Height="34,6351886666667">
+          <TfrxTableCell Name="TableCell16" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="2"/>
+          <TfrxTableCell Name="TableCell17" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Frame.Typ="15" ColSpan="2" Text="Ажәла&#13;&#10;Фамилия &#60;b&#62;&#60;i&#62;[query.&#34;LASTNAME&#34;]&#60;/b&#62;&#60;/i&#62;"/>
+          <TfrxTableCell Name="TableCell18" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow5" MinHeight="0" MaxHeight="0" Height="33,968522">
+          <TfrxTableCell Name="TableCell21" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="3"/>
+          <TfrxTableCell Name="TableCell22" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Frame.Typ="15" ColSpan="2" Text="Ахьӡ-&#13;&#10;Имя &#60;b&#62;&#60;i&#62;[query.&#34;FIRSTNAME&#34;]&#60;/b&#62;&#60;/i&#62;"/>
+          <TfrxTableCell Name="TableCell23" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow6" MinHeight="0" MaxHeight="0" Height="35,5643166666667">
+          <TfrxTableCell Name="TableCell14" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="4"/>
+          <TfrxTableCell Name="TableCell19" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Frame.Typ="15" ColSpan="2" Text="Абьӡ-&#13;&#10;Отчество &#60;b&#62;&#60;i&#62;[query.&#34;MIDDLNAME&#34;]&#60;/b&#62;&#60;/i&#62;"/>
+          <TfrxTableCell Name="TableCell20" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow8" MinHeight="0" MaxHeight="0" Height="32,89765">
+          <TfrxTableCell Name="TableCell27" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="5"/>
+          <TfrxTableCell Name="TableCell28" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Frame.Typ="15" ColSpan="2" Text="Даниз арыцхә&#13;&#10;Дата рождения &#60;b&#62;&#60;i&#62;[query.&#34;DCUSBIRTHDAY&#34;]&#60;/b&#62;&#60;/i&#62;"/>
+          <TfrxTableCell Name="TableCell29" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow9" MinHeight="0" MaxHeight="0" Height="35,5643166666667">
+          <TfrxTableCell Name="TableCell30" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="6"/>
+          <TfrxTableCell Name="TableCell31" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Frame.Typ="15" ColSpan="2" Text="Дахьиз аҭыԥ&#13;&#10;Место рождения &#60;b&#62;&#60;i&#62;[query.&#34;CCUSPLACE_BIRTH&#34;]&#60;/b&#62;&#60;/i&#62;"/>
+          <TfrxTableCell Name="TableCell32" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow10" MinHeight="0" MaxHeight="0" Height="34,2309833333333">
+          <TfrxTableCell Name="TableCell33" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" RowSpan="4" Text="7"/>
+          <TfrxTableCell Name="TableCell34" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" ColSpan="2" Text="Аиразы акт аҭаҩреи арыцхә ашьақәаргылареи аномери&#13;&#10;Дата составления и номер записи акта о рождении"/>
+          <TfrxTableCell Name="TableCell35" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow12" MinHeight="0" MaxHeight="0" Height="38,89765">
+          <TfrxTableCell Name="TableCell39" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+          <TfrxTableCell Name="TableCell40" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="7" ParentFont="false" ColSpan="2" Text="Акт аҭаҩра&#13;&#10;Запись акта &#60;b&#62;&#60;i&#62;№ [query.&#34;BR_ACT_ID&#34;]&#60;/b&#62;&#60;/i&#62; от &#60;b&#62;&#60;i&#62;[query.&#34;BR_ACT_DATE&#34;]&#60;/b&#62;&#60;/i&#62;"/>
+          <TfrxTableCell Name="TableCell41" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow13" MinHeight="0" MaxHeight="0" Height="18,89765">
+          <TfrxTableCell Name="TableCell42" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+          <TfrxTableCell Name="TableCell43" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="3" Frame.Typ="11" HAlign="haCenter" ParentFont="false" ColSpan="2" Text="[query.&#34;ZAGS_NAME&#34;]"/>
+          <TfrxTableCell Name="TableCell44" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow11" MinHeight="0" MaxHeight="0" Height="19,5643166666666">
+          <TfrxTableCell Name="TableCell36" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+          <TfrxTableCell Name="TableCell37" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="0" Frame.Typ="11" HAlign="haCenter" ParentFont="false" ColSpan="2" Text="(АҬАР аусбарҭа – наименование органа ЗАГСа)"/>
+          <TfrxTableCell Name="TableCell38" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow14" MinHeight="0" MaxHeight="0" Height="33,39765">
+          <TfrxTableCell Name="TableCell45" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="8"/>
+          <TfrxTableCell Name="TableCell46" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Frame.Typ="15" ColSpan="2" Text="Атәылауаҩра&#13;&#10;Гражданство &#60;b&#62;&#60;i&#62;[query.&#34;COUNTRY_NAME&#34;]&#60;/b&#62;&#60;/i&#62;"/>
+          <TfrxTableCell Name="TableCell47" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow15" MinHeight="0" MaxHeight="0" Height="32,89765">
+          <TfrxTableCell Name="TableCell48" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="9"/>
+          <TfrxTableCell Name="TableCell49" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Frame.Typ="15" ColSpan="2" Text="Амилаҭра&#13;&#10;Национальность &#60;b&#62;&#60;i&#62;[query.&#34;NATIONALITY&#34;]&#60;/b&#62;&#60;/i&#62;"/>
+          <TfrxTableCell Name="TableCell50" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow16" MinHeight="0" MaxHeight="0" Height="36,89765">
+          <TfrxTableCell Name="TableCell51" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="10"/>
+          <TfrxTableCell Name="TableCell52" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Frame.Typ="15" ColSpan="2" Text="Анхарҭа ҭыԥ -&#13;&#10;Место жительства &#60;b&#62;&#60;i&#62;[query.&#34;ADDRESS&#34;]&#60;/b&#62;&#60;/i&#62;"/>
+          <TfrxTableCell Name="TableCell53" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow18" MinHeight="0" MaxHeight="0" Height="53,39765">
+          <TfrxTableCell Name="TableCell57" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="11"/>
+          <TfrxTableCell Name="TableCell58" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="13" ParentFont="false" Text="Зыхьӡ зыԥсахыз ахаҿы инапыпҵара&#13;&#10;Подпись лица, переменившего имя"/>
+          <TfrxTableCell Name="TableCell59" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="14" HAlign="haCenter" ParentFont="false" Text="&#13;&#10;________________________________&#13;&#10;          (анапынҵара - подпись)"/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow17" MinHeight="0" MaxHeight="0" Height="35,39765">
+          <TfrxTableCell Name="TableCell54" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" Text="12"/>
+          <TfrxTableCell Name="TableCell55" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text="Ирыҭоуп аршаҳаҭга&#13;&#10;Выдано свидетельство"/>
+          <TfrxTableCell Name="TableCell56" AllowVectorExport="true" Restrictions="8" AllowHTMLTags="true" Frame.Typ="15" Text="асериа&#13;&#10;серия &#60;b&#62;&#60;i&#62;[query.&#34;SVID_SERIA&#34;]&#60;/b&#62;&#60;/i&#62; № &#60;b&#62;&#60;i&#62;[query.&#34;SVID_NUMBER&#34;]&#60;/b&#62;&#60;/i&#62;">
+            <Formats>
+              <item/>
+              <item/>
+            </Formats>
+          </TfrxTableCell>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow19" MinHeight="0" MaxHeight="0" Height="41,39765">
+          <TfrxTableCell Name="TableCell60" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="false" RowSpan="5" Text="13"/>
+          <TfrxTableCell Name="TableCell61" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" ColSpan="2" Text="Егьырҭ адыррақәеи амаҵурать згәаҭақәеи&#13;&#10;Иные сведения и служебные пометки"/>
+          <TfrxTableCell Name="TableCell62" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow20" MinHeight="0" MaxHeight="0" Height="35,39765">
+          <TfrxTableCell Name="TableCell63" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+          <TfrxTableCell Name="TableCell64" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="7" ParentFont="false" ColSpan="2" Text="Атәылаҩратә ҭагылазашьа ашәҟәқәа ранҵарҭа аусбарҭа амҳәар-&#13;&#10;Печать органа записи актов гражданского состояния"/>
+          <TfrxTableCell Name="TableCell65" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow21" MinHeight="0" MaxHeight="0" Height="49,89765">
+          <TfrxTableCell Name="TableCell66" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+          <TfrxTableCell Name="TableCell67" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="1" HAlign="haCenter" ParentFont="false" Text=""/>
+          <TfrxTableCell Name="TableCell68" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="2" ParentFont="false" Text="Азанааҭуаҩ - &#13;&#10;Специалист ________________________&#13;&#10;                       (анапынҵара - подпись)"/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow22" MinHeight="0" MaxHeight="0" Height="42,89765">
+          <TfrxTableCell Name="TableCell69" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+          <TfrxTableCell Name="TableCell70" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="3" HAlign="haRight" ParentFont="false" ColSpan="2" Text="Атәылауаҩратә ҭагылазаашьа ашәҟәқәа ранҵарҭа аусбарҭа анапхгаҩы-&#13;&#10;Руководитель органа записи актов гражданского состояния"/>
+          <TfrxTableCell Name="TableCell71" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+        </TfrxTableRow>
+        <TfrxTableRow Name="TableRow23" MinHeight="0" MaxHeight="0" Height="30,89765">
+          <TfrxTableCell Name="TableCell72" AllowVectorExport="true" Restrictions="8" Frame.Typ="15" Text=""/>
+          <TfrxTableCell Name="TableCell73" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="9" ParentFont="false" Text=""/>
+          <TfrxTableCell Name="TableCell74" AllowVectorExport="true" Restrictions="8" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="10" HAlign="haCenter" ParentFont="false" Text="________________________&#13;&#10;   (анапынҵара - подпись)"/>
+        </TfrxTableRow>
+      </TfrxTableObject>
+    </TfrxMasterData>
+  </TfrxReportPage>
+</TfrxReport>

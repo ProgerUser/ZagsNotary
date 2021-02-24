@@ -1,0 +1,114 @@
+select * from table(ret_class(upper(&table)));
+select * from table(ret_fields(upper(&table)));
+select * from table(ret_docx(upper(&table)));
+select *
+  from table(ret_callable_statment(PACKAGE_NAME_ => &packname,
+                                   OBJECT_NAME_  => &objname));
+
+
+
+SELECT 'nvl(' || COLUMN_NAME || q'[,' ') "]' || COLUMN_NAME || '",'
+  FROM all_tab_cols h
+ WHERE upper(table_name) = upper(&table);
+
+
+/*****************/
+SELECT COLUMN_NAME || ' ' || DATA_TYPE || '(' || h.DATA_LENGTH || '),/*' ||
+       AUP_UTIL.Get_Col_Comment(Tab_Name   => upper(&table),
+                                Tab_Owner  => OWNER,
+                                Field_Name => COLUMN_NAME) || '*/'
+  FROM all_tab_cols h
+ WHERE table_name = upper(&table);
+/****************/
+SELECT COLUMN_NAME || '_ ' || DATA_TYPE || ',/*' ||
+       AUP_UTIL.Get_Col_Comment(Tab_Name   => upper(&table),
+                                Tab_Owner  => OWNER,
+                                Field_Name => COLUMN_NAME) || '*/'
+  FROM all_tab_cols h
+ WHERE table_name = upper(&table);
+
+SELECT COLUMN_NAME || '_, /*' ||
+       AUP_UTIL.Get_Col_Comment(Tab_Name   => upper(&table),
+                                Tab_Owner  => OWNER,
+                                Field_Name => COLUMN_NAME) || '*/'
+  FROM all_tab_cols h
+ WHERE table_name = upper(&table);
+
+SELECT COLUMN_NAME || ' ' || DATA_TYPE ||
+       
+       case
+         when DATA_TYPE not in ('DATE', 'NUMBER') then
+          '(' || DATA_LENGTH || ')'
+       end || ' PATH ''' || COLUMN_NAME || ''',/*' ||
+       AUP_UTIL.Get_Col_Comment(Tab_Name   => upper(&table),
+                                Tab_Owner  => OWNER,
+                                Field_Name => COLUMN_NAME) || '*/'
+  FROM all_tab_columns h
+ WHERE table_name = upper(&table);
+
+-------
+/*Exec PATH*/
+SELECT COLUMN_NAME || ' ' || DATA_TYPE || case
+         when DATA_TYPE not in ('DATE', 'NUMBER') then
+          '(' || DATA_LENGTH || ')'
+       end || ' PATH ''' || COLUMN_NAME || ''',/*' ||
+       AUP_UTIL.Get_Col_Comment(Tab_Name   => upper(&table),
+                                Tab_Owner  => OWNER,
+                                Field_Name => COLUMN_NAME) || '*/'
+  FROM all_tab_columns h
+ WHERE upper(table_name) = upper(&table);
+/*Sel column with comment*/
+SELECT COLUMN_NAME || ', /*' ||
+       AUP_UTIL.Get_Col_Comment(Tab_Name   => upper(&table),
+                                Tab_Owner  => OWNER,
+                                Field_Name => COLUMN_NAME) || '*/'
+  FROM all_tab_cols h
+ WHERE upper(table_name) = upper(&table);
+
+
+/*update*/
+SELECT COLUMN_NAME || ' = ' || COLUMN_NAME || '_,'
+  FROM all_tab_cols h
+ WHERE table_name = upper(&table);
+ 
+ /*stored program*/
+ select cast( listagg_clob('?') as varchar2(4000)) marams
+  from ALL_ARGUMENTS
+ where owner = 'SAIDP'
+   and PACKAGE_NAME = upper(&packname)
+   and OBJECT_NAME = upper(&objname)
+ order by POSITION;
+ 
+ select case
+         when IN_OUT = 'OUT' then
+          'callStmt.registerOutParameter(' || POSITION || ',Types.' || case
+            when DATA_TYPE like '%CHAR%' THEN
+             'VARCHAR);'
+            when DATA_TYPE = 'NUMBER' THEN
+             'INTEGER);'
+            when DATA_TYPE = 'DATE' THEN
+             'DATE);'
+          END
+         when IN_OUT = 'IN' then
+          CASE
+            WHEN DATA_TYPE like '%CHAR%' THEN
+             'callStmt.setString(' || POSITION || ',' ||
+             TRIM(TRAILING '_' FROM ARGUMENT_NAME) || '.getText());'
+            WHEN DATA_TYPE = 'NUMBER' THEN
+             'if (!' || TRIM(TRAILING '_' FROM ARGUMENT_NAME) ||
+             '.getText().equals("")) { callStmt.setInt(' || POSITION ||
+             ',Integer.valueOf(' || TRIM(TRAILING '_' FROM ARGUMENT_NAME) ||
+             '.getText())); } else { callStmt.setNull(' || POSITION ||
+             ',java.sql.Types.INTEGER);}'
+            when DATA_TYPE = 'DATE' THEN
+             'callStmt.setDate(' || POSITION || ',(' ||
+             TRIM(TRAILING '_' FROM ARGUMENT_NAME) ||
+             '.getValue() != null) ? java.sql.Date.valueOf(' ||
+             TRIM(TRAILING '_' FROM ARGUMENT_NAME) || '.getValue()) : null);'
+          END
+       end
+  from ALL_ARGUMENTS
+ where owner = 'SAIDP'
+   and PACKAGE_NAME = upper(&packname)
+   and OBJECT_NAME = upper(&objname)
+ order by POSITION asc;

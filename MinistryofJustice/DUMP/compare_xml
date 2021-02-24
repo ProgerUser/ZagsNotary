@@ -1,0 +1,30 @@
+declare
+
+  cus         clob;
+  cus_addr    clob;
+  cus_citizen clob;
+  cus_docum   clob;
+
+  error varchar2(4000);
+  res   number;
+begin
+  MJCUS.RetXmls(CUSID       => 89,
+                error       => :error1,
+                cus         => cus,
+                cus_addr    => cus_addr,
+                cus_citizen => cus_citizen,
+                cus_docum   => cus_docum);
+
+  dbms_output.put_line(cus);
+  dbms_output.put_line(cus_addr);
+  dbms_output.put_line(cus_citizen);
+  dbms_output.put_line(cus_docum);
+  
+  MJCUS.CompareXmls(CUSID       => 89,
+                    cus         => cus,
+                    cus_addr    => cus_addr,
+                    cus_citizen => cus_citizen,
+                    cus_docum   => cus_docum,
+                    error       => :error2,
+                    res         => :res);
+end;

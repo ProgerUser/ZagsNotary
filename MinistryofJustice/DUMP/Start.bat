@@ -1,0 +1,1 @@
+start javaw -splash:%MJ_PATH%SPLASH\splash.gif -jar %MJ_PATH%MJ.jar 

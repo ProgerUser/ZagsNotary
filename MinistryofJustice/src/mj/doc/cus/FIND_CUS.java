@@ -617,6 +617,7 @@ public class FIND_CUS {
 		});
 	}
 	
+	@SuppressWarnings("unused")
 	private Pane createOptionPane(XTableView<?> table) {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");
@@ -661,9 +662,8 @@ public class FIND_CUS {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			
-			VB.getChildren().remove(FILTER);
+
+			//VB.getChildren().remove(FILTER);
 			
 			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
 			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
@@ -674,7 +674,7 @@ public class FIND_CUS {
 
 			CR_TIME.setColumnFilter(new PatternColumnFilter<>());
 
-			CUS_BORDER.setBottom(createOptionPane(CUSLIST));
+			//CUS_BORDER.setBottom(createOptionPane(CUSLIST));
 
 			ICUSNUM.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
 					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));

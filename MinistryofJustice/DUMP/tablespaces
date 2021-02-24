@@ -1,0 +1,72 @@
+CREATE SMALLFILE TABLESPACE TS_AUDIT
+DATAFILE 'C:\oraclexe\app\oracle\oradata\XE\ts_audit_odb_01.dbf' SIZE 1G AUTOEXTEND ON
+EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO;
+/
+CREATE SMALLFILE TABLESPACE INDEXES 
+DATAFILE 'C:\oraclexe\app\oracle\oradata\XE\indexes_odb_01.dbf' SIZE 2G AUTOEXTEND ON
+EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO;
+/
+CREATE BIGFILE TABLESPACE USERS
+DATAFILE '/home/oracle/app/oradata/odb/users_odb_01.dbf' SIZE 2G AUTOEXTEND ON
+EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO;
+/
+DECLARE
+  l_sql_stmt VARCHAR2(1000);
+BEGIN
+  FOR i IN (SELECT * FROM all_all_tables WHERE OWNER = 'SAIDP' and TABLESPACE_NAME = 'USERS') LOOP
+    l_sql_stmt := 'ALTER table ' || i.TABLE_NAME ||' MOVE TABLESPACE USERS1';
+    EXECUTE IMMEDIATE l_sql_stmt;
+  END LOOP;
+END;
+/
+DECLARE
+  l_sql_stmt VARCHAR2(1000);
+BEGIN
+  FOR i IN (SELECT *
+              FROM all_all_tables
+             WHERE OWNER = 'SAIDP'
+               and TABLESPACE_NAME = 'SYSTEM') LOOP
+    l_sql_stmt := 'ALTER table ' || i.TABLE_NAME ||
+                  ' MOVE TABLESPACE USERS1';
+    EXECUTE IMMEDIATE l_sql_stmt;
+  END LOOP;
+END;
+/ 
+DECLARE l_sql_stmt VARCHAR2(1000);
+BEGIN
+  FOR i IN (SELECT *
+              FROM all_all_tables G
+             WHERE OWNER = 'SAIDP'
+               and TABLESPACE_NAME = 'USERS1'
+               AND G.table_name LIKE 'AU_%') LOOP
+    l_sql_stmt := 'ALTER table ' || i.TABLE_NAME ||
+                  ' MOVE TABLESPACE USERS1';
+    EXECUTE IMMEDIATE l_sql_stmt;
+  END LOOP;
+END;
+/ 
+DECLARE l_sql_stmt VARCHAR2(1000);
+BEGIN
+  FOR i IN (SELECT owner, index_name
+              FROM all_indexes G
+             WHERE G.OWNER = 'SAIDP'
+               and g.TEMPORARY = 'N') LOOP
+    l_sql_stmt := 'ALTER INDEX ' || i.owner || '.' || i.index_name ||
+                  '  REBUILD TABLESPACE INDEXES';
+    EXECUTE IMMEDIATE l_sql_stmt;
+  END LOOP;
+END;
+/
+DECLARE l_sql_stmt VARCHAR2(1000);
+BEGIN
+  FOR i IN (SELECT owner, index_name
+              FROM all_indexes G
+             WHERE G.OWNER = 'SAIDP'
+             and g.TEMPORARY = 'N') LOOP
+    l_sql_stmt := 'ALTER INDEX ' || i.index_name ||
+                  '  REBUILD ';
+    EXECUTE IMMEDIATE l_sql_stmt;
+  END LOOP;
+END;
+/
+ALTER DATABASE DEFAULT TABLESPACE "USERS";

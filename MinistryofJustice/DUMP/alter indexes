@@ -1,0 +1,12 @@
+DECLARE
+  l_sql_stmt VARCHAR2(1000);
+BEGIN
+  FOR i IN (SELECT * FROM all_indexes WHERE OWNER = 'SAIDP' and TEMPORARY = 'N') LOOP
+    l_sql_stmt := 'ALTER INDEX ' || i.owner || '.' || i.index_name ||
+                  '  REBUILD TABLESPACE INDEXES';
+    EXECUTE IMMEDIATE l_sql_stmt;
+  END LOOP;
+END;
+
+/
+select * from all_all_tables WHERE OWNER = 'SAIDP'
