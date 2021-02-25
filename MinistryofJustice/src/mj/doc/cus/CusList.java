@@ -346,7 +346,7 @@ public class CusList {
 				}
 				Main.logger = Logger.getLogger(getClass());
 
-				SqlMap sql = new SqlMap().load("/cus/SQL.xml");
+				SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
 				String readRecordSQL = sql.getSql("DocCnt");
 				PreparedStatement check = conn.prepareStatement(readRecordSQL);
 				check.setInt(1, CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
