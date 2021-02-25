@@ -3,7 +3,6 @@ package mj.project;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.CallableStatement;
@@ -27,12 +26,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class PRJ_ADD {
 
@@ -97,14 +96,17 @@ public class PRJ_ADD {
 				Path path = Paths.get(FilePath.getText());
 				bArray = java.nio.file.Files.readAllBytes(path);
 				InputStream is = new ByteArrayInputStream(bArray);
-				long bytes = Files.size(path);
+				//long bytes = Files.size(path);
+				
+				File f = new File(FilePath.getText());
+				long file_size= f.length();
 				// параметры
 				callStmt.setString(2, FolderName.getText());
 				callStmt.setString(3, path.getFileName().toString());
 				callStmt.setString(4, "N");
 				callStmt.setBlob(5, is, bArray.length);
 				callStmt.setInt(6, getId());
-				callStmt.setLong(7, bytes);
+				callStmt.setLong(7, file_size);
 
 			} else {
 				callStmt.setString(2, FolderName.getText());
