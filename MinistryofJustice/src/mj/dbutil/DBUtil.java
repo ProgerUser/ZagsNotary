@@ -327,6 +327,29 @@ public class DBUtil {
 		return ret;
 	}
 
+	public static Integer ODB_MNU_GRP(Integer grpid, Integer actid) {
+		Integer ret = 0;
+		Connection conn = DBUtil.conn;
+		try {
+			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuAccessGrp(?,?)}");
+			callStmt.registerOutParameter(1, Types.INTEGER);
+			callStmt.setInt(2, grpid);
+			callStmt.setInt(3, actid);
+			callStmt.execute();
+			ret = callStmt.getInt(1);
+			callStmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}
+		return ret;
+	}
+	
 	public static Integer ODB_MNU2(Integer actid) {
 		Main.logger = Logger.getLogger(DBUtil.class);
 		Integer ret = 0;

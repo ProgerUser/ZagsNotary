@@ -87,7 +87,7 @@ public class OdbMNU {
 				Msg.Message("Нет доступа!");
 				return;
 			}
-			Main.logger = Logger.getLogger(getClass());
+			
 			if (Users.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите пользователя");
 			} else {
@@ -391,7 +391,7 @@ public class OdbMNU {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
+			
 			Login.setCellValueFactory(cellData -> cellData.getValue().CUSRLOGNAMEProperty());
 			Fio.setCellValueFactory(cellData -> cellData.getValue().CUSRNAMEProperty());
 

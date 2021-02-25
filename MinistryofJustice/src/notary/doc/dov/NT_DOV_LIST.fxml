@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<BorderPane fx:id="ROOT">
 			<left>
@@ -42,7 +42,7 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="PLUS" size="15" />
+                              <FontAwesomeIconView glyphName="PLUS" size="20" />
                            </graphic>
 								</Button>
 								<Button mnemonicParsing="false" onAction="#BtEdit">
@@ -56,7 +56,7 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="EDIT" size="15" />
+                              <FontAwesomeIconView glyphName="EDIT" size="20" />
                            </graphic>
 								</Button>
 								<Button mnemonicParsing="false" onAction="#BtDelete">
@@ -70,7 +70,7 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="TIMES" size="15" />
+                              <FontAwesomeIconView glyphName="TIMES" size="20" />
                            </graphic>
 								</Button>
 								<Button mnemonicParsing="false" onAction="#BtPrint">
@@ -84,7 +84,7 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="PRINT" size="15" />
+                              <FontAwesomeIconView glyphName="PRINT" size="20" />
                            </graphic>
 								</Button>
 							</items>

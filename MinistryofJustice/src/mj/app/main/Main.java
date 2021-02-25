@@ -275,18 +275,17 @@ public class Main extends Application {
 			 * закрыть сессию с sqlite SQLIETEDisconnect(); }
 			 */
 
-			 Enter();
+			 //Enter();
 
 //
 //	Fast enter
 //			
-//			Connect.connectionURL = "194.87.237.206:1521/XE";
-//			Connect.connectionURL = "localhost:1522/ORCL";
-//			Connect.userID = "xxi";
-//			Connect.userPassword = "";
-//			DBUtil.dbConnect();
-//			initRootLayout();
-//			RT();
+			Connect.connectionURL = "localhost:1522/ORCL";
+			Connect.userID = "xxi";
+			Connect.userPassword = "mj_pass_123";
+			DBUtil.dbConnect();
+			initRootLayout();
+			RT();
 //
 //	END 		
 //			
