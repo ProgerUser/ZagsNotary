@@ -12,6 +12,8 @@
 #define SqlLite "SqlLite"
 #define Logs "Logs"
 #define ufs "UFS"
+#define stunnel "stunnel"
+#define stunnel_exe "stunnel.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -37,12 +39,16 @@ ChangesEnvironment=true
 Name: russian; MessagesFile: compiler:Languages\Russian.isl
 
 [Tasks]
-Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons};
+;Flags: checked
+Name: desktopicon_stun; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; 
+;Flags: checked
 
 [Files]
 Source: C:\MJ_\{#MyAppExeName}; DestDir: {app}; Flags: ignoreversion
 Source: OutReports\*; DestDir: {app}\{#OutReports}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: Reports\*; DestDir: {app}\{#Reports}; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: stunnel\*; DestDir: {app}\{#stunnel}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: SqlLite\*; DestDir: {app}\{#SqlLite}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: Logs\*; DestDir: {app}\{#Logs}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: bin\*; DestDir: {app}\{#bin}; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -68,7 +74,9 @@ Source: C:\MJ_\UFS\USERS_LIST.fr3; DestDir: {app}\{#ufs}; Flags: ignoreversion
 
 [Icons]
 Name: {autoprograms}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
+Name: {autodesktop}\{#stunnel}; Filename: {app}\{#stunnel}\bin\{#stunnel_exe}; Tasks: desktopicon_stun
 Name: {autodesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
+
 
 [Registry]
 Root: HKCU; Subkey: "Environment"; ValueType:string; ValueName: "MJ_PATH"; \
