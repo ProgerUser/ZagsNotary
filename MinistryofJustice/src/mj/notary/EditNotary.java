@@ -40,6 +40,12 @@ public class EditNotary {
 	@FXML
 	private TextField NOT_ID;
 
+	@FXML
+    private TextField ADDRESS;
+
+    @FXML
+    private TextField TELEPHONE;
+    
 	/**
 	 * Для отделения
 	 */
@@ -61,14 +67,22 @@ public class EditNotary {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			PreparedStatement oper = conn.prepareStatement(
-					"update NOTARY set NOT_ID = ? , NOT_OTD = ?,NOT_NAME = ?, NOT_RUK = ? where NOT_ID = ?");
+					"update NOTARY "
+					+ "set NOT_ID = ? ,"
+					+ "NOT_OTD = ?, "
+					+ "NOT_NAME = ?, "
+					+ "NOT_RUK = ?, "
+					+ "NOT_ADDRESS = ?, "
+					+ "NOT_TELEPHONE = ? "
+					+ "where NOT_ID = ?");
 			oper.setInt(1, Integer.valueOf(NOT_ID.getText()));
 			oper.setInt(2, NOT_OTD.getValue().getIOTDNUM());
 			oper.setString(3, NOT_NAME.getText());
 			oper.setString(4, NOT_RUK.getText());
-			oper.setInt(5, Integer.valueOf(NOT_ID.getText()));
+			oper.setString(5, ADDRESS.getText());
+			oper.setString(6, TELEPHONE.getText());
+			oper.setInt(7, Integer.valueOf(NOT_ID.getText()));
 			oper.executeUpdate();
 			oper.close();
 
@@ -98,10 +112,11 @@ public class EditNotary {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 
 			NOT_NAME.setText(notary.getNOT_NAME());
 			NOT_RUK.setText(notary.getNOT_RUK());
+			ADDRESS.setText(notary.getNOT_ADDRESS());
+			TELEPHONE.setText(notary.getNOT_TELEPHONE());
 			NOT_ID.setText(String.valueOf(notary.getNOT_ID()));
 
 			// Отделение
