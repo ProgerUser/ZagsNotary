@@ -29,7 +29,7 @@
 			<top>
 				<VBox fx:id="VB" BorderPane.alignment="CENTER">
 					<children>
-						<ToolBar>
+						<ToolBar style="-fx-border-color: silver;">
 							<items>
 								<Button mnemonicParsing="false" onAction="#BtAdd">
 									<tooltip>
@@ -95,7 +95,10 @@
 					</children>
 				</VBox>
 			</top>
-			<center>
+			<StackPane.margin>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+			</StackPane.margin>
+         <center>
 				<XTableView fx:id="DIVORCE_CERT" editable="false" prefHeight="450.0" prefWidth="900.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
 					<columns>
 						<XTableColumn fx:id="ID" prefWidth="82.0" text="Номер" />
@@ -104,7 +107,7 @@
 						<XTableColumn fx:id="CR_TIME" prefWidth="150.0" text="Время созд. записи" />
 					</columns>
 
-					<contextMenu>
+      					<contextMenu>
 						<ContextMenu>
 							<items>
 								<MenuItem mnemonicParsing="false" onAction="#CmRefresh" text="Обновить" />
@@ -119,10 +122,7 @@
                   <Insets />
                </BorderPane.margin>
 				</XTableView>
-			</center>
-			<StackPane.margin>
-				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-			</StackPane.margin>
+         </center>
 		</BorderPane>
 		<ProgressIndicator fx:id="PB" maxHeight="50.0" maxWidth="50.0" visible="false" />
 	</children>
