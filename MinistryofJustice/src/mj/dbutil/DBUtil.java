@@ -43,26 +43,8 @@ public class DBUtil {
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
 			conn.setAutoCommit(false);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, className, ExceptionUtils.getStackTrace(e), methodName);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error("error=" + ExceptionUtils.getStackTrace(e) + ";LineNumber = " + lineNumber + ";className="
-					+ className + ";methodName=" + methodName);
-		} catch (Exception e) {
-			e.printStackTrace();
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, className, ExceptionUtils.getStackTrace(e), methodName);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error("error=" + ExceptionUtils.getStackTrace(e) + ";LineNumber = " + lineNumber + ";className="
-					+ className + ";methodName=" + methodName);
+		}catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -74,15 +56,22 @@ public class DBUtil {
 				conn.close();
 			}
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
+	public static boolean CheckConnect() {
+		boolean ret = true;
+		try {
+			Class.forName(JDBC_DRIVER);
+			Connection conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL);
+			conn.close();
+		} catch (Exception e) {
+			ret = false;
+		}
+		return ret;
+	}
 	/**
 	 * Запись лога
 	 */
@@ -91,7 +80,6 @@ public class DBUtil {
 			if (linenumber != null & (classname != null && !classname.equals("")) & (error != null && !error.equals(""))
 					& (METHODNAME != null && !METHODNAME.equals(""))) {
 				Class.forName(JDBC_DRIVER);
-				Main.logger = Logger.getLogger(DBUtil.class);
 				Properties props = new Properties();
 				props.put("v$session.program", "LogToDb");
 				Connection conn = DriverManager.getConnection(
@@ -103,20 +91,16 @@ public class DBUtil {
 						+ "values\n" + "(?,?,?,?);\n" + "commit;\n" + "end;");
 				stmt.setInt(1, linenumber);
 				stmt.setString(2, classname);
-
 				Clob lob = conn.createClob();
 				lob.setString(1, error);
-
 				stmt.setClob(3, lob);
-
 				stmt.setString(4, METHODNAME);
 				stmt.executeUpdate();
 				stmt.close();
 				conn.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -139,16 +123,28 @@ public class DBUtil {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
 
+	
+	public static void LOG_ERROR(Exception e) {
+		//Если есть соединение или пока нет
+		if(conn != null || CheckConnect()) {
+			e.printStackTrace();
+			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e));
+			LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}else {
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+			Main.logger.error(ExceptionUtils.getStackTrace(e));
+		}
+	}
+	
 	/**
 	 * Кто залочил
 	 */
@@ -170,12 +166,7 @@ public class DBUtil {
 					Msg.Message(error);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -198,12 +189,7 @@ public class DBUtil {
 				// System.out.println("~~~~~~~~~~");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -240,12 +226,7 @@ public class DBUtil {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					Msg.Message(ExceptionUtils.getStackTrace(e));
-					Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-					String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-					String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-					int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-					DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+					DBUtil.LOG_ERROR(e);
 				}
 			}
 		}
@@ -266,13 +247,7 @@ public class DBUtil {
 			ret = callStmt.getInt(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -292,13 +267,7 @@ public class DBUtil {
 			ret = callStmt.getString(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -316,13 +285,7 @@ public class DBUtil {
 			ret = callStmt.getInt(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -339,13 +302,7 @@ public class DBUtil {
 			ret = callStmt.getInt(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -362,13 +319,7 @@ public class DBUtil {
 			ret = callStmt.getInt(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -385,13 +336,7 @@ public class DBUtil {
 			ret = callStmt.getInt(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -420,12 +365,7 @@ public class DBUtil {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -438,20 +378,10 @@ public class DBUtil {
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
-				Msg.Message(ExceptionUtils.getStackTrace(e));
-				Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+				DBUtil.LOG_ERROR(e);
 			}
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -462,12 +392,7 @@ public class DBUtil {
 		try {
 			conn.commit();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -488,25 +413,14 @@ public class DBUtil {
 			conn.commit();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		} finally {
 			if (stmt != null) {
 				// Close statement
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					Msg.Message(ExceptionUtils.getStackTrace(e));
-					Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-					String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-					String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-					int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-					DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+					DBUtil.LOG_ERROR(e);
 				}
 			}
 		}

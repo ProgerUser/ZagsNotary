@@ -6,10 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -42,9 +39,9 @@ public class Enter {
 		Main.logger = Logger.getLogger(getClass());
 	}
 
-    @FXML
-    private TextField DBIP;
-    
+	@FXML
+	private TextField DBIP;
+
 	@FXML
 	private Button enter_id;
 
@@ -57,7 +54,7 @@ public class Enter {
 	@FXML
 	private PasswordField pass;
 
-	//public static String DB;
+	// public static String DB;
 
 	final static String driverClass = "oracle.jdbc.OracleDriver";
 
@@ -101,12 +98,7 @@ public class Enter {
 			});
 			stage.show();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -116,60 +108,50 @@ public class Enter {
 	void Check_Enter() {
 		// Выполнить проверку соединения с базой
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			// __________________Проверки____________
-
 			DBUtil.dbConnect();
 			conn = DBUtil.conn;
-			String sql = "SELECT count(*) cnt FROM usr where usr.DUSRFIRE is null and CUSRLOGNAME = ?";
-			sqlStatement = conn.prepareStatement(sql);
-			sqlStatement.setString(1, Connect.userID);
-			ResultSet myResultSet = sqlStatement.executeQuery();
-			if (!myResultSet.next()) {
-				Msg.Message("Ошибка ввода логина или пароля");
-				Main.logger.error("Ошибка ввода логина или пароля" + "~" + Thread.currentThread().getName());
-			} else {
-				if (myResultSet.getInt("cnt") > 0) {
-					PreparedStatement stsmt = conn.prepareStatement("select null from usr "
-							+ "where upper(usr.CUSRLOGNAME) = ? " + "and MUST_CHANGE_PASSWORD = 'Y'");
-					stsmt.setString(1, Connect.userID.toUpperCase());
-					ResultSet rs = stsmt.executeQuery();
-					if (rs.next()) {
-						Msg.Message("Необходимо изменить пароль!");
-						// изменить пароль, если установлена настройка
-						Set_Up_Pass();
-					} else {
-						Main.initRootLayout();
-						Main.RT();
-						InsertIfNotExists(Connect.userID.toUpperCase());
-					}
-					stsmt.close();
-					rs.close();
+			if (conn != null) {
+				String sql = "SELECT count(*) cnt FROM usr where usr.DUSRFIRE is null and CUSRLOGNAME = ?";
+				sqlStatement = conn.prepareStatement(sql);
+				sqlStatement.setString(1, Connect.userID);
+				ResultSet myResultSet = sqlStatement.executeQuery();
+				if (!myResultSet.next()) {
+					Msg.Message("Ошибка ввода логина или пароля");
+					Main.logger.error("Ошибка ввода логина или пароля" + "~" + Thread.currentThread().getName());
 				} else {
-					Msg.Message("Пользователь заблокирован!");
-				}
+					if (myResultSet.getInt("cnt") > 0) {
+						PreparedStatement stsmt = conn.prepareStatement("select null from usr "
+								+ "where upper(usr.CUSRLOGNAME) = ? " + "and MUST_CHANGE_PASSWORD = 'Y'");
+						stsmt.setString(1, Connect.userID.toUpperCase());
+						ResultSet rs = stsmt.executeQuery();
+						if (rs.next()) {
+							Msg.Message("Необходимо изменить пароль!");
+							// изменить пароль, если установлена настройка
+							Set_Up_Pass();
+						} else {
+							Main.initRootLayout();
+							Main.RT();
+							InsertIfNotExists(Connect.userID.toUpperCase());
+						}
+						stsmt.close();
+						rs.close();
+					} else {
+						Msg.Message("Пользователь заблокирован!");
+					}
 
+				}
+				myResultSet.close();
+				sqlStatement.close();
 			}
-			myResultSet.close();
-			sqlStatement.close();
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		} finally {
 			if (sqlStatement != null) {
 				try {
 					sqlStatement.close();
 				} catch (SQLException e) {
-					Msg.Message(ExceptionUtils.getStackTrace(e));
-					Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-					String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-					String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-					int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-					DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+					DBUtil.LOG_ERROR(e);
 				}
 			}
 			if (conn != null) {
@@ -178,8 +160,7 @@ public class Enter {
 		}
 	}
 
-	@FXML
-	void enter(ActionEvent event) {
+	void EnterMeth() {
 		try {
 			if (login.getValue() != null & !pass.getText().equals("")) {
 				Main.logger = Logger.getLogger(getClass());
@@ -191,36 +172,19 @@ public class Enter {
 				Msg.Message("Введите данные!");
 			}
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
+	}
 
+	@FXML
+	void enter(ActionEvent event) {
+		EnterMeth();
 	}
 
 	@FXML
 	void enter_(KeyEvent ke) {
 		if (ke.getCode().equals(KeyCode.ENTER)) {
-			try {
-				if (login.getValue() != null & !pass.getText().equals("")) {
-					Connect.connectionURL = DBIP.getText();
-					Connect.userID = login.getValue().toString();
-					Connect.userPassword = pass.getText();
-					Check_Enter();
-				} else {
-					Msg.Message("Введите данные!");
-				}
-			} catch (Exception e) {
-				Msg.Message(ExceptionUtils.getStackTrace(e));
-				Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
-			}
+			EnterMeth();
 		}
 	}
 
@@ -237,7 +201,7 @@ public class Enter {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection(url);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
+			DBUtil.LOG_ERROR(e);
 		}
 		return conn;
 	}
@@ -269,12 +233,7 @@ public class Enter {
 				sqllite_conn.close();
 			}
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -287,12 +246,12 @@ public class Enter {
 			{
 				PreparedStatement prp = sqllite_conn.prepareStatement("select value from props where name = 'url'");
 				ResultSet rs = prp.executeQuery();
-				if(rs.next()) {
+				if (rs.next()) {
 					DBIP.setText(rs.getString("value"));
 				}
 				prp.close();
 			}
-			
+
 			ObservableList<String> logins = FXCollections.observableArrayList();
 			{
 				PreparedStatement stmt = sqllite_conn.prepareStatement("select * from users");
@@ -304,7 +263,7 @@ public class Enter {
 				stmt.close();
 				rs.close();
 			}
-			
+
 //			ObservableList<String> url = FXCollections.observableArrayList();
 //			{
 //				PreparedStatement stmt = sqllite_conn.prepareStatement("select * from props where name = 'url'");
@@ -327,13 +286,7 @@ public class Enter {
 			}
 			sqllite_conn.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 }

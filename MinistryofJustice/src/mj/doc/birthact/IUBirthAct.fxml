@@ -20,13 +20,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<ScrollPane fx:id="MainScroll" prefHeight="514.0" prefWidth="851.0" styleClass="mylistview" stylesheets="/ScrPane.css">
 			<content>
 				<AnchorPane>
 					<children>
-						<TitledPane fx:id="printdoc" animated="false" collapsible="false" layoutX="400.0" layoutY="595.0" prefHeight="116.0" prefWidth="408.0" text="Печать органа записи актов гражданского состояния">
+						<TitledPane fx:id="printdoc" alignment="CENTER" animated="false" collapsible="false" layoutX="400.0" layoutY="595.0" prefHeight="116.0" prefWidth="408.0" style="-fx-border-color: black;" text="Печать органа записи актов гражданского состояния">
 							<content>
 								<VBox>
 									<children>
@@ -53,7 +53,7 @@
 								</VBox>
 							</content>
 						</TitledPane>
-						<TitledPane fx:id="osndoc" animated="false" collapsible="false" layoutX="400.0" layoutY="10.0" prefHeight="231.0" prefWidth="382.0" text="Документ подтверждающий факт рождения ребенка">
+						<TitledPane fx:id="osndoc" alignment="CENTER" animated="false" collapsible="false" layoutX="400.0" layoutY="10.0" prefHeight="231.0" prefWidth="382.0" style="-fx-border-color: black;" text="Документ подтверждающий факт рождения ребенка">
 							<content>
 								<AnchorPane>
 									<children>
@@ -105,7 +105,7 @@
 								</AnchorPane>
 							</content>
 						</TitledPane>
-						<TitledPane fx:id="mother" animated="false" collapsible="false" layoutX="10.0" layoutY="254.0" prefHeight="106.0" prefWidth="382.0" text="Сведения о матери">
+						<TitledPane fx:id="mother" alignment="CENTER" animated="false" collapsible="false" layoutX="10.0" layoutY="254.0" prefHeight="106.0" prefWidth="382.0" style="-fx-border-color: black;" text="Сведения о матери">
 							<content>
 								<VBox>
 									<children>
@@ -139,7 +139,7 @@
 								</VBox>
 							</content>
 						</TitledPane>
-						<TitledPane fx:id="father" animated="false" collapsible="false" layoutX="400.0" layoutY="254.0" prefHeight="106.0" prefWidth="408.0" text="Сведения об отце">
+						<TitledPane fx:id="father" alignment="CENTER" animated="false" collapsible="false" layoutX="400.0" layoutY="254.0" prefHeight="106.0" prefWidth="408.0" style="-fx-border-color: black;" text="Сведения об отце">
 							<content>
 								<VBox>
 									<children>
@@ -173,7 +173,7 @@
 								</VBox>
 							</content>
 						</TitledPane>
-						<TitledPane fx:id="children" animated="false" collapsible="false" layoutX="10.0" layoutY="10.0" prefHeight="231.0" prefWidth="382.0" text="Сведения о ребенке">
+						<TitledPane fx:id="children" alignment="CENTER" animated="false" collapsible="false" layoutX="10.0" layoutY="10.0" prefHeight="231.0" prefWidth="382.0" style="-fx-border-color: black;" text="Сведения о ребенке">
 							<content>
 								<VBox>
 									<children>
@@ -213,7 +213,7 @@
 								</VBox>
 							</content>
 						</TitledPane>
-						<TitledPane fx:id="osnvosst" animated="false" collapsible="false" layoutX="10.0" layoutY="369.0" prefHeight="218.0" prefWidth="334.0" text="Основание восстановления записи акта о рождении">
+						<TitledPane fx:id="osnvosst" alignment="CENTER" animated="false" collapsible="false" layoutX="10.0" layoutY="369.0" prefHeight="218.0" prefWidth="334.0" style="-fx-border-color: black;" text="Основание восстановления записи акта о рождении">
 							<content>
 								<VBox>
 									<children>
@@ -242,7 +242,7 @@
 								</VBox>
 							</content>
 						</TitledPane>
-						<TitledPane fx:id="sved_thaver" animated="false" collapsible="false" layoutX="10.0" layoutY="595.0" prefHeight="116.0" prefWidth="382.0" text="Сведения об отце указаны на основании:">
+						<TitledPane fx:id="sved_thaver" alignment="CENTER" animated="false" collapsible="false" layoutX="10.0" layoutY="595.0" prefHeight="116.0" prefWidth="382.0" style="-fx-border-color: black;" text="Сведения об отце указаны на основании:">
 							<content>
 								<AnchorPane>
 									<children>
@@ -298,7 +298,7 @@
 								</AnchorPane>
 							</content>
 						</TitledPane>
-						<TitledPane fx:id="fiozaiav" animated="false" collapsible="false" layoutX="352.0" layoutY="369.0" prefHeight="218.0" prefWidth="456.0" text="ФИО,м.ж. заявителя или юр. адр. орг. заявившей о рожд.реб.">
+						<TitledPane fx:id="fiozaiav" alignment="CENTER" animated="false" collapsible="false" layoutX="352.0" layoutY="369.0" prefHeight="218.0" prefWidth="456.0" style="-fx-border-color: black;" text="ФИО,м.ж. заявителя или юр. адр. орг. заявившей о рожд.реб.">
 							<content>
 								<AnchorPane>
 									<children>

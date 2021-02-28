@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox styleClass="FirstPane" stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.enter.Enter">
+<VBox styleClass="FirstPane" stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.enter.Enter">
    <children>
       <GridPane>
         <columnConstraints>
@@ -43,10 +43,10 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="DBIP" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="DBIP" editable="false" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <ButtonBar prefHeight="40.0" prefWidth="200.0">
+      <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0">
          <buttons>
           <Button fx:id="enter_id" mnemonicParsing="false" onAction="#enter" text="Войти" />
          </buttons>
