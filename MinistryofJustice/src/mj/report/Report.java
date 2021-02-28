@@ -7,9 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
+
 import com.jyloo.syntheticafx.ComparableColumnFilter;
 import com.jyloo.syntheticafx.PatternColumnFilter;
 import com.jyloo.syntheticafx.SyntheticaFX;
@@ -32,10 +34,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.TableRow;
-import javafx.scene.control.ToolBar;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -132,7 +134,9 @@ public class Report {
 		try {
 			FRREPRunner runner = new FRREPRunner();
 			dbConnect();
-			String port = "1521";
+			String port = Connect.connectionURL.substring(Connect.connectionURL.indexOf(":")+1,
+					Connect.connectionURL.indexOf("/"));
+			//System.out.println(port);
 			String sid = "";
 			String host = "";
 			{
@@ -184,7 +188,12 @@ public class Report {
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
 			VBox vb = new VBox();
-			ToolBar toolBar = new ToolBar(Update);
+			//ToolBar toolBar = new ToolBar(Update);
+			
+			ButtonBar bb = new ButtonBar();
+			bb.setPrefHeight(40);
+			bb.getButtons().addAll(Update);
+			
 			XTableView<AP_REPORT_CAT> cusllists = new XTableView<AP_REPORT_CAT>();
 			XTableColumn<AP_REPORT_CAT, Integer> REPORT_ID = new XTableColumn<>("Код");
 			REPORT_ID.setCellValueFactory(new PropertyValueFactory<>("REPORT_ID"));
@@ -200,12 +209,12 @@ public class Report {
 			REPORT_NAME.setColumnFilter(new PatternColumnFilter<>());
 
 			vb.getChildren().add(cusllists);
-			vb.getChildren().add(toolBar);
+			vb.getChildren().add(bb);
 
 			cusllists.getStyleClass().add("mylistview");
 			cusllists.getStylesheets().add("/ScrPane.css");
 
-			vb.setPadding(new Insets(10, 10, 10, 10));
+			vb.setPadding(new Insets(5, 5, 5, 5));
 			/**/
 			REPORT_ID.setCellValueFactory(cellData -> cellData.getValue().REPORT_IDProperty().asObject());
 			REPORT_NAME.setCellValueFactory(cellData -> cellData.getValue().REPORT_NAMEProperty());

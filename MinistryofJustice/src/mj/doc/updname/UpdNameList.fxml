@@ -22,7 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<BorderPane fx:id="ROOT">
 			<left>
@@ -36,7 +36,37 @@
 			<top>
 				<VBox fx:id="VB" BorderPane.alignment="CENTER">
 					<children>
-						<ToolBar>
+						<TitledPane fx:id="FILTER" animated="false" expanded="false" text="Фильтр" visible="false">
+							<content>
+								<AnchorPane>
+									<children>
+										<VBox>
+											<children>
+												<GridPane>
+													<columnConstraints>
+														<ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="97.0" />
+														<ColumnConstraints hgrow="SOMETIMES" maxWidth="177.0" minWidth="10.0" prefWidth="132.0" />
+														<ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="202.0" />
+													</columnConstraints>
+													<rowConstraints>
+														<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+													</rowConstraints>
+													<children>
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата заведения" />
+														<DatePicker fx:id="DT1" maxWidth="120.0" promptText="С" GridPane.columnIndex="1" />
+														<DatePicker fx:id="DT2" layoutX="105.0" layoutY="13.0" maxWidth="120.0" promptText="ПО" GridPane.columnIndex="2" />
+													</children>
+												</GridPane>
+											</children>
+										</VBox>
+									</children>
+								</AnchorPane>
+							</content>
+							<VBox.margin>
+								<Insets />
+							</VBox.margin>
+						</TitledPane>
+						<ToolBar style="-fx-border-color: silver;">
 							<items>
 								<Button mnemonicParsing="false" onAction="#BtAdd">
 									<tooltip>
@@ -87,36 +117,6 @@
 								<Insets />
 							</VBox.margin>
 						</ToolBar>
-						<TitledPane fx:id="FILTER" animated="false" expanded="false" text="Фильтр" visible="false">
-							<content>
-								<AnchorPane>
-									<children>
-										<VBox>
-											<children>
-												<GridPane>
-													<columnConstraints>
-														<ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="97.0" />
-														<ColumnConstraints hgrow="SOMETIMES" maxWidth="177.0" minWidth="10.0" prefWidth="132.0" />
-														<ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="202.0" />
-													</columnConstraints>
-													<rowConstraints>
-														<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-													</rowConstraints>
-													<children>
-														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата заведения" />
-														<DatePicker fx:id="DT1" maxWidth="120.0" promptText="С" GridPane.columnIndex="1" />
-														<DatePicker fx:id="DT2" layoutX="105.0" layoutY="13.0" maxWidth="120.0" promptText="ПО" GridPane.columnIndex="2" />
-													</children>
-												</GridPane>
-											</children>
-										</VBox>
-									</children>
-								</AnchorPane>
-							</content>
-							<VBox.margin>
-								<Insets />
-							</VBox.margin>
-						</TitledPane>
 					</children>
 				</VBox>
 			</top>
@@ -157,7 +157,7 @@
 				</XTableView>
 			</center>
 			<StackPane.margin>
-				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 			</StackPane.margin>
 		</BorderPane>
 		<ProgressIndicator fx:id="PB" maxHeight="50.0" maxWidth="50.0" visible="false" />

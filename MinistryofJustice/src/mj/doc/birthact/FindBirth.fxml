@@ -85,10 +85,10 @@
 						<ContextMenu>
 							<items>
 								<MenuItem mnemonicParsing="false" onAction="#RefreshBirthList" text="Обновить" />
-								<MenuItem mnemonicParsing="false" onAction="#AddBirth" text="Добавить" />
-								<MenuItem mnemonicParsing="false" onAction="#EditBirth" text="Редактировать" />
-                     <MenuItem mnemonicParsing="false" onAction="#Print" text="Печать" />
-                     <MenuItem mnemonicParsing="false" onAction="#DeleteCont" text="Удалить" />
+<!-- 								<MenuItem mnemonicParsing="false" onAction="#AddBirth" text="Добавить" /> -->
+<!-- 								<MenuItem mnemonicParsing="false" onAction="#EditBirth" text="Редактировать" /> -->
+<!--                                 <MenuItem mnemonicParsing="false" onAction="#Print" text="Печать" /> -->
+<!--                                 <MenuItem mnemonicParsing="false" onAction="#DeleteCont" text="Удалить" /> -->
 							</items>
 						</ContextMenu>
 					</contextMenu>

@@ -280,7 +280,7 @@ public class Main extends Application {
 //
 //	Fast enter
 //			
-			Connect.connectionURL = "localhost:1522/ORCL";
+			Connect.connectionURL = "localhost:1522/orcl";
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DBUtil.dbConnect();
