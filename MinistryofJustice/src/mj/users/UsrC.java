@@ -544,50 +544,6 @@ public class UsrC {
 		convertComboDisplayList();
 		INIT();
 
-		String pattern = "dd.MM.yyyy";
-		DUSRFIRE.setConverter(new StringConverter<LocalDate>() {
-			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-
-			@Override
-			public String toString(LocalDate date) {
-				if (date != null) {
-					return dateFormatter.format(date);
-				} else {
-					return "";
-				}
-			}
-
-			@Override
-			public LocalDate fromString(String string) {
-				if (string != null && !string.isEmpty()) {
-					return LocalDate.parse(string, dateFormatter);
-				} else {
-					return null;
-				}
-			}
-		});
-		DUSRHIRE.setConverter(new StringConverter<LocalDate>() {
-			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-
-			@Override
-			public String toString(LocalDate date) {
-				if (date != null) {
-					return dateFormatter.format(date);
-				} else {
-					return "";
-				}
-			}
-
-			@Override
-			public LocalDate fromString(String string) {
-				if (string != null && !string.isEmpty()) {
-					return LocalDate.parse(string, dateFormatter);
-				} else {
-					return null;
-				}
-			}
-		});
-
 		USRID.setCellValueFactory(cellData -> cellData.getValue().IUSRIDProperty().asObject());
 		LOGNAME.setCellValueFactory(cellData -> cellData.getValue().CUSRLOGNAMEProperty());
 		CUSRNAMEC.setCellValueFactory(cellData -> cellData.getValue().CUSRNAMEProperty());
@@ -628,6 +584,7 @@ public class UsrC {
 				}
 			}
 		});
+
 		new ConvConst().FormatDatePiker(DUSRHIRE);
 		new ConvConst().FormatDatePiker(DUSRFIRE);
 	}
@@ -635,7 +592,6 @@ public class UsrC {
 	boolean userfire(String user) {
 		boolean ret = true;
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			PreparedStatement prepStmt = conn
 					.prepareStatement("select null from usr where CUSRLOGNAME = ? and DUSRFIRE is not null");
 			prepStmt.setString(1, user);
@@ -646,19 +602,13 @@ public class UsrC {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
 
 	public void InitFields() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			USR usr = USRLST.getSelectionModel().getSelectedItem();
 			if (usr != null) {
 				CUSRNAME.setText(usr.getCUSRNAME());
@@ -676,7 +626,7 @@ public class UsrC {
 					stsmt.close();
 					rs.close();
 					IUSRBRANCH.setItems(combolist);
-					//System.out.println("IUSRBRANCH=" + usr.getIUSRBRANCH());
+					// System.out.println("IUSRBRANCH=" + usr.getIUSRBRANCH());
 					for (OTD ld : IUSRBRANCH.getItems()) {
 						if (usr.getIUSRBRANCH().equals(ld.getIOTDNUM())) {
 							IUSRBRANCH.getSelectionModel().select(ld);
@@ -762,13 +712,7 @@ public class UsrC {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -889,16 +833,9 @@ public class UsrC {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(
-										ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								DBUtil.LOG_ERROR(e1);
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
@@ -912,13 +849,7 @@ public class UsrC {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
-
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.x/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 <log4j:configuration
 	xmlns:log4j="http://jakarta.apache.org/log4j/">
 
@@ -15,12 +14,12 @@
 	<appender name="File"
 		class="org.apache.log4j.RollingFileAppender">
 		<param name="append" value="true" />
-		<param name="maxFileSize" value="10MB" />
+		<param name="maxFileSize" value="100MB" />
 		<param name="maxBackupIndex" value="10" />
 		<param name="file" value="Logs/text.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="[%d{dd-MM-yyyy HH:mm:ss}] [%c{1}] %-5p:%L - %m%n" />
+				value="[%d{dd.MM.yyyy HH:mm:ss}] [%c{1}] %-5p:%L - %m%n" />
 		</layout>
 	</appender>
 
