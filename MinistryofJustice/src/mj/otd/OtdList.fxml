@@ -11,12 +11,12 @@
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="BP" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="BP" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<padding>
-		<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
 	<top>
-		<ToolBar BorderPane.alignment="CENTER">
+		<ToolBar style="-fx-border-color: silver;" BorderPane.alignment="CENTER">
 			<items>
 				<Button mnemonicParsing="false" onAction="#Add" text="">
 					<graphic>
@@ -63,4 +63,5 @@
 			</columnResizePolicy>
 		</TableView>
 	</center>
+	
 </BorderPane>

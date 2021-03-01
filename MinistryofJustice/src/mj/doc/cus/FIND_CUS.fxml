@@ -24,7 +24,7 @@
 	<top>
 		<VBox fx:id="VB" BorderPane.alignment="CENTER">
 			<children>
-				<TitledPane fx:id="FILTER" animated="false" text="Фильтр">
+				<TitledPane fx:id="FILTER" animated="false" collapsible="false" text="Фильтр">
                <content>
                   <HBox>
                      <children>

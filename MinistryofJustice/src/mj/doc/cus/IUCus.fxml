@@ -27,6 +27,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
@@ -55,7 +56,7 @@
                                        <children>
                                           <VBox fx:id="OsnVbox" spacing="5.0">
                                              <children>
-                                                <TitledPane fx:id="OSN_DATA" animated="false" collapsible="false" style="-fx-border-color: black;" text="Основные данные">
+                                                <TitledPane fx:id="OSN_DATA" alignment="CENTER" animated="false" collapsible="false" style="-fx-border-color: black;" text="Основные данные">
                                                    <content>
                                                       <VBox>
                                                          <children>
@@ -130,31 +131,37 @@
                                                 </TitledPane>
                                                 <HBox spacing="5.0">
                                                    <children>
-                                                    <TitledPane fx:id="Citizen" animated="false" collapsible="false" style="-fx-border-color: black;" text="Гражданство">
+                                                    <TitledPane fx:id="Citizen" alignment="CENTER" animated="false" collapsible="false" style="-fx-border-color: black;" text="Гражданство">
                                                          <content>
                                                             <VBox>
                                                                <children>
-                                                                  <ToolBar>
+                                                                  <ToolBar style="-fx-border-color: silver;">
                                                                      <items>
                                                                         <Button mnemonicParsing="false" onAction="#BtAddCitizen" text="">
                                                                            <graphic>
-                                                                              <FontAwesomeIconView fill="BLACK" glyphName="PLUS_CIRCLE" size="20.0" />
+                                                                              <FontAwesomeIconView fill="BLACK" glyphName="PLUS_CIRCLE" size="18" />
                                                                            </graphic>
                                                                            <tooltip>
                                                                               <Tooltip text="Добавить" />
                                                                            </tooltip>
+                                                                           <font>
+                                                                              <Font size="10.0" />
+                                                                           </font>
                                                                         </Button>
                                                                         <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtEditCitizen">
                                                                            <graphic>
-                                                                              <FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="20.0" />
+                                                                              <FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="18" />
                                                                            </graphic>
                                                                            <tooltip>
                                                                               <Tooltip text="Редактировать" />
                                                                            </tooltip>
+                                                                           <font>
+                                                                              <Font size="10.0" />
+                                                                           </font>
                                                                         </Button>
                                                                         <Button layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtDelCitizen" text="">
                                                                            <graphic>
-                                                                              <FontAwesomeIconView fill="BLACK" glyphName="TRASH_ALT" size="20.0" />
+                                                                              <FontAwesomeIconView fill="BLACK" glyphName="TRASH_ALT" size="18" />
                                                                            </graphic>
                                                                            <tooltip>
                                                                               <Tooltip text="Удалить" />
@@ -190,7 +197,7 @@
                                                             </VBox>
                                                          </content>
                                                     </TitledPane>
-                                                    <TitledPane fx:id="Address" animated="false" collapsible="false" prefHeight="187.0" style="-fx-border-color: black;" text="Адрес">
+                                                    <TitledPane fx:id="Address" alignment="CENTER" animated="false" collapsible="false" prefHeight="187.0" style="-fx-border-color: black;" text="Адрес">
                                                       <content>
                                                         <AnchorPane>
                                                                <children>
@@ -252,35 +259,44 @@
                                                     </TitledPane>
                                                    </children>
                                                 </HBox>
-                                              <TitledPane fx:id="Docs" animated="false" collapsible="false" style="-fx-border-color: black;" text="Документы ЗАГС">
+                                              <TitledPane fx:id="Docs" alignment="CENTER" animated="false" collapsible="false" style="-fx-border-color: black;" text="Паспортные данные">
                                                    <content>
                                                       <VBox>
                                                          <children>
-                                                            <ToolBar>
+                                                            <ToolBar style="-fx-border-color: silver;">
                                                                <items>
                                                                   <Button fx:id="AddCusDocum" mnemonicParsing="false" onAction="#AddCusDocum" text="">
                                                                      <graphic>
-                                                                        <FontAwesomeIconView fill="BLACK" glyphName="PLUS_CIRCLE" size="20.0" />
+                                                                        <FontAwesomeIconView fill="BLACK" glyphName="PLUS_CIRCLE" size="18" />
                                                                      </graphic>
                                                                      <tooltip>
                                                                         <Tooltip text="Добавить" />
                                                                      </tooltip>
+                                                                     <font>
+                                                                        <Font size="10.0" />
+                                                                     </font>
                                                                   </Button>
                                                                   <Button fx:id="EditCusDocum" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#EditCusDocum" text="">
                                                                      <graphic>
-                                                                        <FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="20.0" />
+                                                                        <FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="18" />
                                                                      </graphic>
                                                                      <tooltip>
                                                                         <Tooltip text="Редактировать" />
                                                                      </tooltip>
+                                                                     <font>
+                                                                        <Font size="10.0" />
+                                                                     </font>
                                                                   </Button>
                                                                   <Button fx:id="BtDelDocum" layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtDelDocum" text="">
                                                                      <graphic>
-                                                                        <FontAwesomeIconView fill="BLACK" glyphName="TRASH_ALT" size="20.0" />
+                                                                        <FontAwesomeIconView fill="BLACK" glyphName="TRASH_ALT" size="18" />
                                                                      </graphic>
                                                                      <tooltip>
                                                                         <Tooltip text="Удалить" />
                                                                      </tooltip>
+                                                                     <font>
+                                                                        <Font size="10.0" />
+                                                                     </font>
                                                                   </Button>
                                                                </items>
                                                             </ToolBar>

@@ -63,7 +63,7 @@
 								</VBox>
 							</content>
 						</TitledPane>
-                  <ToolBar>
+                  <ToolBar style="-fx-border-color: silver;">
                      <items>
 								<Button fx:id="BIRTH_ACT_ADD" mnemonicParsing="false" onAction="#BIRTH_ACT_ADD">
 									<tooltip>
@@ -141,7 +141,7 @@
 				</VBox>
 			</top>
 			<StackPane.margin>
-				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 			</StackPane.margin>
          <center>
 				<XTableView fx:id="BIRTH_ACT" editable="false" prefHeight="450.0" prefWidth="900.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">

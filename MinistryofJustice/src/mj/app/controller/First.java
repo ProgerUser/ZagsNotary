@@ -6,6 +6,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
@@ -18,10 +20,12 @@ public class First {
 	}
 
 	@FXML
+	private ImageView imageView;
+
+	@FXML
 	private void initialize() {
 		try {
 
-			Main.logger = Logger.getLogger(getClass());
 			if (Main.enterdtage != null)
 				Main.enterdtage.close();
 
@@ -32,6 +36,16 @@ public class First {
 
 			Main.primaryStage.setTitle(Connect.userID + "/" + Connect.connectionURL);
 
+			Image image = new Image(ClassLoader.class.getResourceAsStream("/logo.png"));
+			imageView.setImage(image);
+			// Setting the image view parameters
+			imageView.setX(500);
+			imageView.setY(50);
+			imageView.setFitWidth(500);
+			imageView.setFitHeight(500);
+			imageView.setPreserveRatio(true);
+			imageView.setPickOnBounds(true);
+		
 		} catch (Exception e) {
 			Msg.Message(ExceptionUtils.getStackTrace(e));
 			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());

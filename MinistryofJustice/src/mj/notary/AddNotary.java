@@ -43,6 +43,12 @@ public class AddNotary {
 	@FXML
 	private TextField NOT_ID;
 
+	@FXML
+    private TextField ADDRESS;
+
+    @FXML
+    private TextField TELEPHONE;
+    
 	/**
 	 * Для отделения
 	 */
@@ -66,11 +72,15 @@ public class AddNotary {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			PreparedStatement oper = conn
-					.prepareStatement("insert into NOTARY (NOT_ID, NOT_OTD,NOT_NAME,NOT_RUK) values (?,?,?,?)");
+					.prepareStatement("insert into NOTARY "
+							+ "(NOT_ID, NOT_OTD,NOT_NAME,NOT_RUK,NOT_ADDRESS,NOT_TELEPHONE)"
+							+ " values (?,?,?,?,?,?)");
 			oper.setInt(1, Integer.valueOf(NOT_ID.getText()));
 			oper.setInt(2, NOT_OTD.getValue().getIOTDNUM());
 			oper.setString(3, NOT_NAME.getText());
 			oper.setString(4, NOT_RUK.getText());
+			oper.setString(5, ADDRESS.getText());
+			oper.setString(6, TELEPHONE.getText());
 			oper.executeUpdate();
 			oper.close();
 

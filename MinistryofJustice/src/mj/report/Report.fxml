@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -24,11 +25,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="PANE" prefHeight="360.0" prefWidth="640.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="PANE" prefHeight="360.0" prefWidth="640.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<HBox alignment="CENTER_LEFT" spacing="5.0">
 			<children>
-				<Label minWidth="-Infinity" text="Отчёт" />
+				<Label minWidth="-Infinity" text="Отчёт">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
 				<ComboBox fx:id="ComboList" maxWidth="1.7976931348623157E308" onAction="#ComboList" HBox.hgrow="ALWAYS" />
 				<Button fx:id="List" mnemonicParsing="false" onAction="#List">
 					<tooltip>
@@ -38,9 +42,12 @@
 							</font>
 						</Tooltip>
 					</tooltip>
-					<graphic>
-						<FontAwesomeIconView fill="BLACK" glyphName="TABLE" size="20" />
-					</graphic>
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <graphic>
+                  <MaterialDesignIconView glyphName="TABLE_LARGE" size="18" />
+               </graphic>
 				</Button>
 			</children>
 		</HBox>

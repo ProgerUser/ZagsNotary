@@ -67,9 +67,9 @@
 								<Insets />
 							</VBox.margin>
 						</TitledPane>
-						<ToolBar>
+						<ToolBar style="-fx-border-color: silver;">
 							<items>
-								<Button mnemonicParsing="false" onAction="#BtAdd" prefHeight="30.0" prefWidth="30.0">
+								<Button mnemonicParsing="false" onAction="#BtAdd">
 									<tooltip>
 										<Tooltip text="Добавить">
                                  <font>
@@ -83,7 +83,7 @@
                               <FontAwesomeIconView glyphName="PLUS" size="20" />
                            </graphic>
 								</Button>
-								<Button minHeight="30.0" mnemonicParsing="false" onAction="#BtEdit" prefWidth="30.0">
+								<Button mnemonicParsing="false" onAction="#BtEdit">
 									<tooltip>
 										<Tooltip text="Редактировать">
                                  <font>
@@ -97,7 +97,7 @@
                               <FontAwesomeIconView glyphName="EDIT" size="20" />
                            </graphic>
 								</Button>
-								<Button minHeight="30.0" mnemonicParsing="false" onAction="#BtDelete" prefWidth="30.0">
+								<Button mnemonicParsing="false" onAction="#BtDelete">
 									<tooltip>
 										<Tooltip text="Удалить запись">
                                  <font>
@@ -111,7 +111,7 @@
                               <FontAwesomeIconView glyphName="TIMES" size="20" />
                            </graphic>
 								</Button>
-								<Button minHeight="30.0" mnemonicParsing="false" onAction="#BtPrint" prefWidth="30.0">
+								<Button mnemonicParsing="false" onAction="#BtPrint">
 									<tooltip>
 										<Tooltip text="Печать">
                                  <font>
@@ -173,7 +173,7 @@
 				</XTableView>
 			</center>
 			<StackPane.margin>
-				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 			</StackPane.margin>
 		</BorderPane>
 		<ProgressIndicator fx:id="PB" maxHeight="50.0" maxWidth="50.0" visible="false" />

@@ -5,9 +5,9 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.rootlayout.Root">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.rootlayout.Root">
 	<top>
-		<MenuBar fx:id="menubar" prefHeight="29.0" prefWidth="688.0" style="-fx-border-color: silver;" BorderPane.alignment="CENTER">
+		<MenuBar fx:id="menubar" prefHeight="29.0" prefWidth="688.0" BorderPane.alignment="CENTER">
 			<menus>
 				<Menu fx:id="4" mnemonicParsing="false" text="ЗАГС">
 					<items>

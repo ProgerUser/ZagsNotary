@@ -51,6 +51,12 @@ public class NotaryList {
 
 	@FXML
 	private TableView<VNOTARY> NOTARY;
+	
+    @FXML
+    private TableColumn<VNOTARY, String> ADDRESS;
+
+    @FXML
+    private TableColumn<VNOTARY, String> TELEPHONE;
 
 	@FXML
 	private TableColumn<VNOTARY, Integer> NOT_ID;
@@ -64,7 +70,7 @@ public class NotaryList {
 		}
 
 		try {
-			Main.logger = Logger.getLogger(getClass());
+
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) NOTARY.getScene().getWindow();
 
@@ -80,6 +86,7 @@ public class NotaryList {
 			stage.setTitle("Добавить новую запись");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
+			stage.initModality(Modality.WINDOW_MODAL);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
 				public void handle(WindowEvent paramT) {
@@ -238,6 +245,7 @@ public class NotaryList {
 						stage.setTitle("Редактирование: " + VNOTARY.getNOT_NAME());
 						stage.initOwner(stage_);
 						stage.setResizable(false);
+						stage.initModality(Modality.WINDOW_MODAL);
 						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 							@Override
 							public void handle(WindowEvent paramT) {
@@ -307,6 +315,8 @@ public class NotaryList {
 			NOT_OTD.setCellValueFactory(cellData -> cellData.getValue().COTDNAMEProperty());
 			NOT_RUK.setCellValueFactory(cellData -> cellData.getValue().NOT_RUKProperty());
 			NOT_ID.setCellValueFactory(cellData -> cellData.getValue().NOT_IDProperty().asObject());
+			ADDRESS.setCellValueFactory(cellData -> cellData.getValue().NOT_ADDRESSProperty());
+			TELEPHONE.setCellValueFactory(cellData -> cellData.getValue().NOT_TELEPHONEProperty());
 
 			// двойной щелчок
 			NOTARY.setRowFactory(tv -> {
@@ -344,8 +354,10 @@ public class NotaryList {
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				list = new VNOTARY();
-				list.setCOTDNAME(rs.getString("COTDNAME"));
 				list.setNOT_NAME(rs.getString("NOT_NAME"));
+				list.setNOT_ADDRESS(rs.getString("NOT_ADDRESS"));
+				list.setNOT_TELEPHONE(rs.getString("NOT_TELEPHONE"));
+				list.setCOTDNAME(rs.getString("COTDNAME"));
 				list.setNOT_ID(rs.getInt("NOT_ID"));
 				list.setNOT_RUK(rs.getString("NOT_RUK"));
 			}
@@ -374,9 +386,11 @@ public class NotaryList {
 			ObservableList<VNOTARY> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				VNOTARY list = new VNOTARY();
-				list.setNOT_ID(rs.getInt("NOT_ID"));
-				list.setCOTDNAME(rs.getString("COTDNAME"));
 				list.setNOT_NAME(rs.getString("NOT_NAME"));
+				list.setNOT_ADDRESS(rs.getString("NOT_ADDRESS"));
+				list.setNOT_TELEPHONE(rs.getString("NOT_TELEPHONE"));
+				list.setCOTDNAME(rs.getString("COTDNAME"));
+				list.setNOT_ID(rs.getInt("NOT_ID"));
 				list.setNOT_RUK(rs.getString("NOT_RUK"));
 				dlist.add(list);
 			}
@@ -428,7 +442,6 @@ public class NotaryList {
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}

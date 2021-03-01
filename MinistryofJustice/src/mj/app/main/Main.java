@@ -239,50 +239,14 @@ public class Main extends Application {
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("ћинистерство юстиции");
 
-			/*
-			 * { // открыть сессию с sqlite SQLIETEConnect(); PreparedStatement stsmt =
-			 * SQLIETE.prepareStatement("select value from props where name = 'init'");
-			 * ResultSet rs = stsmt.executeQuery(); if (rs.next()) { // если перва€
-			 * инициализаци€ if (rs.getString(1).equals("N")) { Stage stage = new Stage();
-			 * Stage stage_ = primaryStage; FXMLLoader loader = new FXMLLoader();
-			 * loader.setLocation(getClass().getResource("/init/Setup.fxml"));
-			 * 
-			 * Setup controller = new Setup(); loader.setController(controller);
-			 * 
-			 * Parent root = loader.load(); stage.setScene(new Scene(root));
-			 * stage.getIcons().add(new Image("/icon.png"));
-			 * stage.setTitle("»нициализаци€"); stage.initOwner(stage_);
-			 * stage.setResizable(false); stage.setOnCloseRequest(new
-			 * EventHandler<WindowEvent>() {
-			 * 
-			 * @Override public void handle(WindowEvent paramT) { if
-			 * (controller.getStatus()) { try { SQLIETEDisconnect(); SQLIETEConnect();
-			 * PreparedStatement update = SQLIETE
-			 * .prepareStatement("update props set value = 'Y' where name = 'init'");
-			 * update.executeUpdate(); SQLIETEDisconnect(); SQLIETEConnect();
-			 * PreparedStatement update2 = SQLIETE
-			 * .prepareStatement("update props set value = ? where name = 'dbname'");
-			 * update2.setString(1, controller.getUUID()); update2.executeUpdate(); } catch
-			 * (SQLException e) { e.printStackTrace(); String fullClassName =
-			 * Thread.currentThread().getStackTrace()[2].getClassName(); String className =
-			 * fullClassName.substring(fullClassName.lastIndexOf(".") + 1); String
-			 * methodName = Thread.currentThread().getStackTrace()[2].getMethodName(); int
-			 * lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			 * Msg.Message(ExceptionUtils.getStackTrace(e)); Main.logger.error("error=" +
-			 * ExceptionUtils.getStackTrace(e) + ";LineNumber = " + lineNumber +
-			 * ";className=" + className + ";methodName=" + methodName); } } } });
-			 * stage.show(); } else if (rs.getString(1).equals("Y")) { //Enter(); } } //
-			 * закрыть сессию с sqlite SQLIETEDisconnect(); }
-			 */
-
-			 Enter();
+			Enter();
 
 //
 //	Fast enter
 //			
-//			Connect.connectionURL = "localhost:1522/ORCL";
+//			Connect.connectionURL = "localhost:1522/orcl";
 //			Connect.userID = "xxi";
-//			Connect.userPassword = "";
+//			Connect.userPassword = "xxx";
 //			DBUtil.dbConnect();
 //			initRootLayout();
 //			RT();
@@ -293,15 +257,7 @@ public class Main extends Application {
 				try {
 					killProcess();
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-					String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
-					String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-					int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-					Msg.Message(ExceptionUtils.getStackTrace(e1));
-					Main.logger.error("error=" + ExceptionUtils.getStackTrace(e1) + ";LineNumber = " + lineNumber
-							+ ";className=" + className + ";methodName=" + methodName);
+					DBUtil.LOG_ERROR(e1);
 				}
 				DBUtil.dbDisconnect();
 				SQLIETEDisconnect();
@@ -311,14 +267,7 @@ public class Main extends Application {
 			/* ћаксимально раст€нуть окно */
 			// primaryStage.setMaximized(true);
 		} catch (Exception e) {
-			e.printStackTrace();
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error("error=" + ExceptionUtils.getStackTrace(e) + ";LineNumber = " + lineNumber + ";className="
-					+ className + ";methodName=" + methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -343,14 +292,7 @@ public class Main extends Application {
 			primaryStage.show(); // Display the primary stage
 
 		} catch (Exception e) {
-			logger = Logger.getLogger(Main.class);
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -361,17 +303,10 @@ public class Main extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("/First.fxml"));
-			AnchorPane employeeOperationsView = (AnchorPane) loader.load();
+			BorderPane employeeOperationsView = (BorderPane) loader.load();
 			rootLayout.setCenter(employeeOperationsView);
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -390,12 +325,7 @@ public class Main extends Application {
 			String url = "jdbc:sqlite:" + System.getenv("MJ_PATH") + "SqlLite\\log.db";
 			SQLIETE = DriverManager.getConnection(url);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -409,12 +339,7 @@ public class Main extends Application {
 				SQLIETE.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -426,14 +351,7 @@ public class Main extends Application {
 		try {
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -459,14 +377,7 @@ public class Main extends Application {
 			});
 			enterdtage = stage;
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -496,14 +407,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -536,14 +440,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 	
@@ -578,14 +475,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -620,14 +510,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -660,14 +543,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -703,14 +579,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -749,14 +618,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -789,14 +651,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 	
@@ -826,14 +681,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -863,14 +711,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -900,14 +741,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -940,14 +774,7 @@ public class Main extends Application {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -978,14 +805,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1015,14 +835,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1053,14 +866,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1091,14 +897,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1126,14 +925,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1171,14 +963,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1209,14 +994,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1245,14 +1023,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1284,14 +1055,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1323,14 +1087,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1362,14 +1119,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1401,14 +1151,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger = Logger.getLogger(Main.class);
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

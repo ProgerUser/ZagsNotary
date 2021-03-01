@@ -301,6 +301,8 @@ public class OtdList {
 	@FXML
 	private void initialize() {
 		try {
+			
+			
 //			addIfNotPresent(BP.getStyleClass(), JMetroStyleClass.BACKGROUND);
 //			addIfNotPresent(OTD.getStyleClass(), JMetroStyleClass.TABLE_GRID_LINES);
 //			addIfNotPresent(OTD.getStyleClass(), JMetroStyleClass.ALTERNATING_ROW_COLORS);
