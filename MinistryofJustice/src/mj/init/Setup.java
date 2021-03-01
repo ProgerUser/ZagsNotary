@@ -16,7 +16,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
@@ -124,9 +123,7 @@ public class Setup {
 				Msg.Message("Заполните поля!");
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -151,10 +148,7 @@ public class Setup {
 			SQLIETEDisconnect();
 
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -176,10 +170,7 @@ public class Setup {
 			}
 			SQLIETEDisconnect();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -210,10 +201,7 @@ public class Setup {
 				Msg.Message("Заполните поля!");
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -258,10 +246,7 @@ public class Setup {
 				ID.requestFocus();
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -288,12 +273,7 @@ public class Setup {
 			String url = "jdbc:sqlite:" + System.getenv("MJ_PATH") + "SqlLite\\log.db";
 			SQLIETE = DriverManager.getConnection(url);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -307,12 +287,7 @@ public class Setup {
 				SQLIETE.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -378,9 +353,7 @@ public class Setup {
 			// update property sqlitedb
 			setStatus(true);
 		} catch (MessagingException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -416,8 +389,7 @@ public class Setup {
 
 			SQLIETEDisconnect();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -434,8 +406,7 @@ public class Setup {
 			Init();
 
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
