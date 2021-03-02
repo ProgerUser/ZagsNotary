@@ -433,8 +433,7 @@ public class Auth1c {
 			String theString = IOUtils.toString(inputStream, "UTF-8");
 			ret = theString;
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}

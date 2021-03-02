@@ -1,5 +1,6 @@
 package mj.doc.cus;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Clob;
@@ -426,9 +427,10 @@ public class AddCus {
 	 * При вводе даты рождения
 	 * 
 	 * @param event
+	 * @throws MalformedURLException 
 	 */
 	@FXML
-	void EnterBirthDate(ActionEvent event) {
+	void EnterBirthDate(ActionEvent event) throws MalformedURLException {
 		// ScrollPaneCus.vvalueProperty().bind(OsnVbox.heightProperty());
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 		if (!CCUSFIRST_NAME.getText().equals("") & !CCUSLAST_NAME.getText().equals("")
@@ -438,11 +440,11 @@ public class AddCus {
 			System.out.println("~" + exists);
 			if (exists == false) {
 				// Если многопоточность
-				BP.setDisable(true);
-				PROGRESS.setVisible(true);
-				Task<Object> task = new Task<Object>() {
-					@Override
-					public Object call() throws Exception {
+//				BP.setDisable(true);
+//				PROGRESS.setVisible(true);
+//				Task<Object> task = new Task<Object>() {
+//					@Override
+//					public Object call() throws Exception {
 						// разрешить любые сертификаты
 						new HttpsTrustManager().allowAllSSL();
 						Auth1c exdb = new Auth1c();
@@ -581,18 +583,18 @@ public class AddCus {
 						} else {
 							setUnDisable();
 						}
-						return null;
-					}
-				};
-				task.setOnFailed(e -> {
-					Msg.Message(task.getException().getMessage());
-					task.getException().printStackTrace();
-				});
-				task.setOnSucceeded(e -> {
-					BP.setDisable(false);
-					PROGRESS.setVisible(false);
-				});
-				exec.execute(task);
+//						return null;
+//					}
+//				};
+//				task.setOnFailed(e -> {
+//					Msg.Message(task.getException().getMessage());
+//					task.getException().printStackTrace();
+//				});
+//				task.setOnSucceeded(e -> {
+//					BP.setDisable(false);
+//					PROGRESS.setVisible(false);
+//				});
+//				exec.execute(task);
 			} else {
 				// setUnDisable();
 			}
