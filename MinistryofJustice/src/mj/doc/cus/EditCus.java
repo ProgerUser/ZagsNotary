@@ -193,14 +193,7 @@ public class EditCus {
 				}
 			});
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1846,6 +1839,7 @@ public class EditCus {
 		});
 	}
 	
+	private CUS ForAddFioAndId;
 	@FXML
 	private MenuButton ZAGS_MENU_BUT;
 	/**
@@ -1913,14 +1907,7 @@ public class EditCus {
 							});
 							stage.show();
 						} catch (Exception e) {
-							Main.logger = Logger.getLogger(getClass());
-							e.printStackTrace();
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 					}
 				});
@@ -2094,6 +2081,7 @@ public class EditCus {
 			 * Заполнение данными *****************************
 			 */
 			CUS cus = INIT_CUS();
+			ForAddFioAndId = cus;
 
 			// страна рождения
 			{
@@ -2340,21 +2328,9 @@ public class EditCus {
 			new ConvConst().FormatDatePiker(DCUSBIRTHDAY);
 			new ConvConst().FormatDatePiker(DOC_PERIOD_T);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 
 	}
@@ -2403,13 +2379,7 @@ public class EditCus {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return cus;
 	}
@@ -2673,11 +2643,15 @@ public class EditCus {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/mj/doc/birthact/IUBirthAct.fxml"));
 			AddBirthAct controller = new AddBirthAct();
+			
+			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
+			controller.setCusId(ForAddFioAndId.getICUSNUM());
+			
 			loader.setController(controller);
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить акт о рождении");
+			stage.setTitle("Свидетельство о рождении");
 			stage.setResizable(false);
 			stage.initOwner(stage_);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2714,11 +2688,14 @@ public class EditCus {
 			AddPatern controller = new AddPatern();
 			controller.setConn(conn);
 			loader.setController(controller);
-
+			
+			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
+			controller.setCusId(ForAddFioAndId.getICUSNUM());
+			
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Установление отцовства");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2755,10 +2732,14 @@ public class EditCus {
 			AddMercer controller = new AddMercer();
 			loader.setController(controller);
 
+			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
+			controller.setCusId(ForAddFioAndId.getICUSNUM());
+			controller.setCusGen(ForAddFioAndId.getCCUSSEX());
+			
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Заключение брака");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2772,14 +2753,7 @@ public class EditCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2795,10 +2769,14 @@ public class EditCus {
 			AddDivorce controller = new AddDivorce();
 			loader.setController(controller);
 
+			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
+			controller.setCusId(ForAddFioAndId.getICUSNUM());
+			controller.setCusGen(ForAddFioAndId.getCCUSSEX());
+			
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Расторжение брака");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2812,14 +2790,7 @@ public class EditCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2835,10 +2806,14 @@ public class EditCus {
 			AddDeath controller = new AddDeath();
 			loader.setController(controller);
 
+			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
+			controller.setCusId(ForAddFioAndId.getICUSNUM());
+			controller.setCusGen(ForAddFioAndId.getCCUSSEX());
+			
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Установление акта о смерти");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2852,14 +2827,7 @@ public class EditCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2892,7 +2860,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Перемена имени");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2945,7 +2913,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Восстановление абхазской фамилии");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2999,7 +2967,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Перемена национальной принадлежности");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -3037,10 +3005,18 @@ public class EditCus {
 			controller.setConn(conn);
 			loader.setController(controller);
 
+			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
+			controller.setCusId(ForAddFioAndId.getICUSNUM());
+			
+			controller.setCusFname(ForAddFioAndId.getCCUSFIRST_NAME());
+			controller.setCusLname(ForAddFioAndId.getCCUSLAST_NAME());
+			controller.setCusMname(ForAddFioAndId.getCCUSMIDDLE_NAME());
+			controller.setCusBrdate(ForAddFioAndId.getDCUSBIRTHDAY());
+			
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Усыновление (удочерение)");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -3054,14 +3030,7 @@ public class EditCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

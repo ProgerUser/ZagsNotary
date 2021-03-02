@@ -8,7 +8,6 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -19,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -91,9 +91,7 @@ public class GrpController {
 					callStmt.setInt(3, odb_act.getMNU_ID());
 					callStmt.execute();
 					String ret = callStmt.getString(1);
-
 					callStmt.close();
-
 					if (ret.equals("ok")) {
 						DBUtil.conn.commit();
 						fillTreeMnu();
@@ -107,20 +105,54 @@ public class GrpController {
 			try {
 				DBUtil.conn.rollback();
 			} catch (SQLException e1) {
-				Msg.Message(ExceptionUtils.getStackTrace(e1));
+				DBUtil.LOG_ERROR(e1);
 			}
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void DeleteMnu(ActionEvent event) {
+		try {
+			if (DBUtil.OdbAction(157) == 0) {
+				Msg.Message("Нет доступа!");
+				return;
+			}
+			if (grp.getSelectionModel().getSelectedItem() == null) {
+				Msg.Message("Выберите пользователя");
+			} else {
+				if (MNU.getSelectionModel().getSelectedItem() == null) {
+					Msg.Message("Выберите действие");
+				} else {
+					ODB_GROUP_USR grp_ = grp.getSelectionModel().getSelectedItem();
+					ODB_MNU odb_act = MNU.getSelectionModel().getSelectedItem().getValue();
+					// String acts = MNU.getSelectionModel().getSelectedItem().getValue();
+					// Integer act = Integer.valueOf(acts.substring(0, acts.indexOf(":")));
 
+					CallableStatement callStmt = DBUtil.conn.prepareCall("{ ? = call MJUsers.OdbMnuGrpDelete(?,?)}");
+					callStmt.registerOutParameter(1, Types.VARCHAR);
+					callStmt.setInt(2, grp_.getGRP_ID());
+					callStmt.setInt(3, odb_act.getMNU_ID());
+					callStmt.execute();
+					String ret = callStmt.getString(1);
+					callStmt.close();
+					if (ret.equals("ok")) {
+						DBUtil.conn.commit();
+						fillTreeMnu();
+					} else {
+						DBUtil.conn.rollback();
+						Msg.Message(ret);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			try {
+				DBUtil.conn.rollback();
+			} catch (SQLException e1) {
+				DBUtil.LOG_ERROR(e1);
+			}
+			DBUtil.LOG_ERROR(e);
+		}
 	}
 
 	@FXML
@@ -131,10 +163,16 @@ public class GrpController {
 				ODB_GROUP_USR grp_act = grp.getSelectionModel().getSelectedItem();
 				USR_IN_OUT usr = usrout.getSelectionModel().getSelectedItem();
 				PreparedStatement prp = DBUtil.conn
-						.prepareStatement("declare\n" + "  usr_id number;\n" + "  pragma autonomous_transaction;\n"
-								+ "begin\n" + "  select usr.iusrid into usr_id from usr where usr.cusrlogname = ?;\n"
-								+ "  insert into ODB_GRP_MEMBER (GRP_ID, IUSRID) values (?, usr_id);\n" + "  commit;\n"
-								+ "end;\n" + "");
+						.prepareStatement(
+								"declare\n" + 
+								"  pragma autonomous_transaction;\n" + 
+								"  usr_id number;\n" + 
+								"begin\n" + 
+								"  select usr.iusrid into usr_id from usr where usr.cusrlogname = ?;\n" + 
+								"  insert into ODB_GRP_MEMBER (GRP_ID, IUSRID) values (?, usr_id);\n" + 
+								"  commit;\n" + 
+								"end;\n" + 
+								"");
 				prp.setString(1, usr.getLOGIN());
 				prp.setInt(2, grp_act.getGRP_ID());
 				prp.executeUpdate();
@@ -144,12 +182,7 @@ public class GrpController {
 				InitUsrOut(grp_act.getGRP_ID());
 			}
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -174,12 +207,7 @@ public class GrpController {
 				InitUsrOut(grp_act.getGRP_ID());
 			}
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -198,11 +226,22 @@ public class GrpController {
 
 	}
 
+	
+	@FXML
+	private TextField ActionID;
+	
 	@FXML
 	private void initialize() {
 		try {
 			fillTreeMnu();
 
+			MNU.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+				TreeItem<ODB_MNU> act = MNU.getSelectionModel().getSelectedItem();
+				if (act != null) {
+					ActionID.setText(String.valueOf(act.getValue().getMNU_ID()));
+				}
+			});
+			
 			// Меню_________________________--
 			MNU.setCellFactory(tv -> {
 				TreeCell<ODB_MNU> cell = new TreeCell<ODB_MNU>() {
@@ -250,12 +289,7 @@ public class GrpController {
 				InitUsrOut(grp_act.getGRP_ID());
 			});
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -337,13 +371,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -376,13 +404,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -416,13 +438,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 }

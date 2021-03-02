@@ -21,6 +21,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -698,7 +700,16 @@ public class AddMercer {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
+
+			if (getCusGen() == 1) {
+				HeFio.setText(getCusFio());
+				MERCER_HE.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
+			} else if (getCusGen() == 2) {
+				SheFio.setText(getCusFio());
+				MERCER_SHE.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
+			}
+
+			
 			dbConnect();
 
 			ShePane.heightProperty().addListener(
@@ -785,10 +796,48 @@ public class AddMercer {
 		return this.Id.get();
 	}
 
+	//
+	// если открыт от гражданина
+	//
+	private IntegerProperty CusId;
+	private IntegerProperty CusGen;
+	private StringProperty CusFio;
+
+	public void setCusGen(Integer value) {
+		this.CusGen.set(value);
+	}
+	
+	public Integer getCusGen() {
+		return this.CusGen.get();
+	}
+	
+	public void setCusId(Integer value) {
+		this.CusId.set(value);
+	}
+
+	public void setCusFio(String value) {
+		this.CusFio.set(value);
+	}
+
+	public Integer getCusId() {
+		return this.CusId.get();
+	}
+
+	public String getCusFio() {
+		return this.CusFio.get();
+	}
+
+	//
+	// ---------------------------------------
+	//
+	
 	public AddMercer() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 		this.Id = new SimpleIntegerProperty();
+		this.CusId = new SimpleIntegerProperty();
+		this.CusFio = new SimpleStringProperty();
+		this.CusGen = new SimpleIntegerProperty();
 	}
 
 }

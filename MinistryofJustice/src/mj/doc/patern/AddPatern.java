@@ -21,6 +21,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -667,7 +669,8 @@ public class AddPatern {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
+			PС_CH_NAME.setText(getCusFio());
+			PС_CH.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
 
 			Pane1.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
@@ -765,6 +768,31 @@ public class AddPatern {
 		this.Status.set(value);
 	}
 
+	//
+	// если открыт от гражданина
+	//
+	private IntegerProperty CusId;
+	private StringProperty CusFio;
+
+	public void setCusId(Integer value) {
+		this.CusId.set(value);
+	}
+
+	public void setCusFio(String value) {
+		this.CusFio.set(value);
+	}
+
+	public Integer getCusId() {
+		return this.CusId.get();
+	}
+
+	public String getCusFio() {
+		return this.CusFio.get();
+	}
+
+	//
+	// ---------------------------------------
+	//
 	public void setConn(Connection conn) throws SQLException {
 		this.conn = conn;
 		this.conn.setAutoCommit(false);
@@ -786,6 +814,8 @@ public class AddPatern {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 		this.Id = new SimpleIntegerProperty();
+		this.CusId = new SimpleIntegerProperty();
+		this.CusFio = new SimpleStringProperty();
 	}
 
 }

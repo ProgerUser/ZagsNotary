@@ -21,6 +21,9 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -733,8 +736,23 @@ public class AddAdopt {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
+			
+			ChildrenFio.setText(getCusFio());
+			//
+			OLD_LASTNAME.setText(getCusLname());
+			OLD_FIRSTNAME.setText(getCusFname());
+			OLD_MIDDLNAME.setText(getCusMname());
+			OLD_BRTH.setValue(getCusBrdate() != null ? getCusBrdate() : null);
+			//
+			NEW_LASTNAME.setText(getCusLname());
+			NEW_FIRSTNAME.setText(getCusFname());
+			NEW_MIDDLNAME.setText(getCusMname());
+			
+			NEW_BRTH.setValue(getCusBrdate() != null ? getCusBrdate() : null);
+			//
+			CUSID_CH.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
 
+			
 			Pane1.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Pane2.heightProperty().addListener(
@@ -765,12 +783,7 @@ public class AddAdopt {
 			new ConvConst().FormatDatePiker(ZAP_DATE);
 			new ConvConst().FormatDatePiker(NEW_BRTH);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -837,9 +850,77 @@ public class AddAdopt {
 		return this.Id.get();
 	}
 
+	//
+	// если открыт от гражданина
+	//
+	private IntegerProperty CusId;
+	private StringProperty CusFio;
+	
+	private StringProperty CusLname;
+	private StringProperty CusFname;
+	private StringProperty CusMname;
+	private SimpleObjectProperty<LocalDate> CusBrdate;
+
+	public void setCusBrdate(LocalDate value) {
+		this.CusBrdate.set(value);
+	}
+	
+	public LocalDate getCusBrdate() {
+		return CusBrdate.get();
+	}
+	
+	public void setCusLname(String value) {
+		this.CusLname.set(value);
+	}
+	public void setCusFname(String value) {
+		this.CusFname.set(value);
+	}
+	public void setCusMname(String value) {
+		this.CusMname.set(value);
+	}
+	
+	public String getCusLname() {
+		return this.CusLname.get();
+	}
+	public String getCusFname() {
+		return this.CusFname.get();
+	}
+	public String getCusMname() {
+		return this.CusMname.get();
+	}
+	
+	public void setCusId(Integer value) {
+		this.CusId.set(value);
+	}
+
+	public void setCusFio(String value) {
+		this.CusFio.set(value);
+	}
+
+	public Integer getCusId() {
+		return this.CusId.get();
+	}
+
+	public String getCusFio() {
+		return this.CusFio.get();
+	}
+
+	//
+	// ---------------------------------------
+	//
+	
 	public AddAdopt() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 		this.Id = new SimpleIntegerProperty();
+		
+		this.CusBrdate = new SimpleObjectProperty<>();
+		
+		this.CusId = new SimpleIntegerProperty();
+		this.CusFio = new SimpleStringProperty();
+		this.CusLname = new SimpleStringProperty();
+		this.CusFname = new SimpleStringProperty();
+		this.CusMname = new SimpleStringProperty();
+		
 	}
 }

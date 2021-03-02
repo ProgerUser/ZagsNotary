@@ -145,7 +145,6 @@ public class OdbMNU {
 				Msg.Message("Нет доступа!");
 				return;
 			}
-			Main.logger = Logger.getLogger(getClass());
 			if (Users.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите пользователя");
 			} else {
@@ -177,21 +176,9 @@ public class OdbMNU {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				e.printStackTrace();
-				Msg.Message(ExceptionUtils.getStackTrace(e));
-				Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+				DBUtil.LOG_ERROR(e1);
 			}
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -207,7 +194,6 @@ public class OdbMNU {
 				Msg.Message("Нет доступа!");
 				return;
 			}
-			Main.logger = Logger.getLogger(getClass());
 			Stage stage = (Stage) Users.getScene().getWindow();
 			Label alert = new Label("Удалить запись?");
 			alert.setLayoutX(75.0);
@@ -253,15 +239,9 @@ public class OdbMNU {
 						try {
 							conn.rollback();
 						} catch (SQLException e1) {
-							Msg.Message(ExceptionUtils.getStackTrace(e1));
-							Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+							DBUtil.LOG_ERROR(e1);
 						}
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 					newWindow_yn.close();
 				}
@@ -275,13 +255,7 @@ public class OdbMNU {
 			newWindow_yn.show();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -458,13 +432,7 @@ public class OdbMNU {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

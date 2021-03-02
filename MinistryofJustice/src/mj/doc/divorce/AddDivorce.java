@@ -21,6 +21,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -665,8 +667,15 @@ public class AddDivorce {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
+			
+			if (getCusGen() == 1) {
+				HeFio.setText(getCusFio());
+				DIVC_HE.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
+			} else if (getCusGen() == 2) {
+				SheFio.setText(getCusFio());
+				DIVC_SHE.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
+			}
+			
 			Pane1.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Pane2.heightProperty().addListener(
@@ -764,11 +773,50 @@ public class AddDivorce {
 	public Integer getId() {
 		return this.Id.get();
 	}
+	
+	//
+	// если открыт от гражданина
+	//
+	private IntegerProperty CusId;
+	private IntegerProperty CusGen;
+	private StringProperty CusFio;
+
+	public void setCusGen(Integer value) {
+		this.CusGen.set(value);
+	}
+	
+	public Integer getCusGen() {
+		return this.CusGen.get();
+	}
+	
+	public void setCusId(Integer value) {
+		this.CusId.set(value);
+	}
+
+	public void setCusFio(String value) {
+		this.CusFio.set(value);
+	}
+
+	public Integer getCusId() {
+		return this.CusId.get();
+	}
+
+	public String getCusFio() {
+		return this.CusFio.get();
+	}
+
+	//
+	// ---------------------------------------
+	//
 
 	public AddDivorce() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 		this.Id = new SimpleIntegerProperty();
+		
+		this.CusId = new SimpleIntegerProperty();
+		this.CusFio = new SimpleStringProperty();
+		this.CusGen = new SimpleIntegerProperty();
 	}
 
 }
