@@ -22,7 +22,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,7 +30,6 @@ import org.w3c.dom.NodeList;
 
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 
 public class Auth1c {
 
@@ -80,9 +78,7 @@ public class Auth1c {
 				throw new RuntimeException("Cannot find computer SN");
 			}
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			e.printStackTrace();
+			DBUtil.LOG_ERROR(e);
 		}
 		return sn.trim();
 	}
@@ -132,9 +128,7 @@ public class Auth1c {
 				throw new RuntimeException("Cannot find CPU NAME");
 			}
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			e.printStackTrace();
+			DBUtil.LOG_ERROR(e);
 		}
 		return cpu.trim();
 	}
@@ -179,9 +173,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -204,9 +196,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -229,9 +219,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -254,9 +242,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -279,9 +265,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -304,9 +288,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -329,9 +311,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -388,8 +368,7 @@ public class Auth1c {
 			String theString = IOUtils.toString(inputStream, "UTF-8");
 			ret = theString;
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -397,7 +376,10 @@ public class Auth1c {
 	public String Call1cHttpService(String xml, String username, String password, URL url) {
 		String ret = "";
 		try {
-
+			Main.logger.info(xml);
+			Main.logger.info(username);
+			Main.logger.info(password);
+			Main.logger.info(url);
 			Authenticator.setDefault(new Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
 					return new PasswordAuthentication(username, password.toCharArray());
@@ -433,7 +415,8 @@ public class Auth1c {
 			String theString = IOUtils.toString(inputStream, "UTF-8");
 			ret = theString;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			//DBUtil.LOG_ERROR(e);
+			Main.logger.error(e);
 		}
 		return ret;
 	}
@@ -452,9 +435,7 @@ public class Auth1c {
 			stmt.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -489,9 +470,7 @@ public class Auth1c {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -527,9 +506,7 @@ public class Auth1c {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -545,16 +522,10 @@ public class Auth1c {
 	private void dbConnect() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			Main.logger = Logger.getLogger(getClass());
 			String url = "jdbc:sqlite:" + System.getenv("MJ_PATH") + "SqlLite\\log.db";
 			conn = DriverManager.getConnection(url);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -563,17 +534,11 @@ public class Auth1c {
 	 */
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -626,9 +591,7 @@ public class Auth1c {
 
 			ret = theString;
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -684,9 +647,7 @@ public class Auth1c {
 
 			ret = theString;
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -741,9 +702,7 @@ public class Auth1c {
 			encrypt_str = end2 + encrypt_str + start2;
 			ret = encrypt_str;
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return ret;
 	}
@@ -779,9 +738,7 @@ public class Auth1c {
 			HDD_SERIAL = getSerialNumber();
 
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			e.printStackTrace();
+			DBUtil.LOG_ERROR(e);
 		}
 		return HDD_SERIAL;
 	}
@@ -816,9 +773,7 @@ public class Auth1c {
 			CPU_NAME = getCpuNumber();
 			System.out.println("CPU_NAME:" + CPU_NAME);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 		return CPU_NAME;
 	}

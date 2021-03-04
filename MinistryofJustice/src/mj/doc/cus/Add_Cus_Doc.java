@@ -128,7 +128,7 @@ public class Add_Cus_Doc {
 			if (ID_DOC_TP_T.getValue() != null & (DOC_SER_T.getText() != null && !DOC_SER_T.getText().equals(""))
 					& (DOC_NUM_T.getText() != null && !DOC_NUM_T.getText().equals(""))
 					/*& (DOC_SUBDIV_T.getText() != null && !DOC_SUBDIV_T.getText().equals(""))*/
-					& (DOC_AGENCY_T.getText() != null && !DOC_AGENCY_T.getText().equals(""))
+					/*& (DOC_AGENCY_T.getText() != null && !DOC_AGENCY_T.getText().equals(""))*/
 					& DOC_DATE_T.getValue() != null) {
 				if (istemp) {
 					CRUDDocumTemp("{ ? = call MJCUS.ADD_CUS_DOCUM_TEMP(?,?,?,?,?,?,?,?)}", "add");
@@ -139,12 +139,7 @@ public class Add_Cus_Doc {
 				Msg.Message("Заполните поля");
 			}
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -257,8 +252,6 @@ public class Add_Cus_Doc {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			
 			SaveAdd.setText("Добавить");
 			{
 				PreparedStatement sqlStatement = conn.prepareStatement("select * from VPUD");
@@ -284,12 +277,7 @@ public class Add_Cus_Doc {
 			new ConvConst().FormatDatePiker(DOC_PERIOD_T);
 			
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 }

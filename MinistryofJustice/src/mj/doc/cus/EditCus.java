@@ -35,7 +35,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -1193,13 +1192,12 @@ public class EditCus {
 	 */
 	void Save1c(Integer dbid) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			// Если многопоточность
-			BP.setDisable(true);
-			PROGRESS.setVisible(true);
-			Task<Object> task = new Task<Object>() {
-				@Override
-				public Object call() throws Exception {
+//			BP.setDisable(true);
+//			PROGRESS.setVisible(true);
+//			Task<Object> task = new Task<Object>() {
+//				@Override
+//				public Object call() throws Exception {
 					// разрешить любые сертификаты
 					new HttpsTrustManager().allowAllSSL();
 					Auth1c exdb = new Auth1c();
@@ -1301,33 +1299,28 @@ public class EditCus {
 						doc.executeUpdate();
 						doc.close();
 					}
-					return null;
-				}
-			};
-			task.setOnFailed(e -> {
-				Msg.Message(task.getException().getMessage());
-				task.getException().printStackTrace();
-			});
-			task.setOnSucceeded(e -> {
-				BP.setDisable(false);
-				PROGRESS.setVisible(false);
-				onclose();
-			});
-			exec.execute(task);
+//					return null;
+//				}
+//			};
+//			task.setOnFailed(e -> {
+//				Msg.Message(task.getException().getMessage());
+//				task.getException().printStackTrace();
+//			});
+//			task.setOnSucceeded(e -> {
+//				BP.setDisable(false);
+//				PROGRESS.setVisible(false);
+//				onclose();
+//			});
+//			exec.execute(task);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
 	 * Для многопоточности
 	 */
+	@SuppressWarnings("unused")
 	private Executor exec;
 	/**
 	 * Сессия текущая
@@ -1339,7 +1332,6 @@ public class EditCus {
 	 */
 	void CallSave() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn
 					.prepareCall("{ ? = call MJCUS.UPDATE_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -1388,13 +1380,7 @@ public class EditCus {
 			}
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1508,7 +1494,9 @@ public class EditCus {
 					if (empty) {
 						setText(null);
 					} else {
-						setText(format.format(item));
+						if (item != null) {
+							setText(format.format(item));
+						}
 					}
 				}
 			};

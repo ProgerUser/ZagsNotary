@@ -120,7 +120,9 @@ public class ConvConst {
 						if (empty) {
 							setText(null);
 						} else {
-							setText(DateFormat.format(item));
+							if(item!=null) {
+								setText(DateFormat.format(item));
+							}
 						}
 					}
 				};
@@ -148,7 +150,9 @@ public class ConvConst {
 						if (empty) {
 							setText(null);
 						} else {
-							setText(DateTimeFormat.format(item));
+							if(item!=null) {
+								setText(DateTimeFormat.format(item));
+							}
 						}
 					}
 				};

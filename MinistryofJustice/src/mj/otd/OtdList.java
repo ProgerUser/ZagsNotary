@@ -371,7 +371,6 @@ public class OtdList {
 
 	void Init() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			String selectStmt = "select * from otd";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();

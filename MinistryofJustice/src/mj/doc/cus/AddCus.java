@@ -462,6 +462,9 @@ public class AddCus {
 								+ "\"/>\r\n" + "</Контейнер>\r\n";
 						URL url = new URL(exdb.FullAddress() + "/Authorization");
 						String AuthReturn = exdb.Call1cHttpService(auth, exdb.LOGIN(), exdb.PASSWORD(), url);
+						Main.logger.info("~~~~~~~~~~~~~~~");
+						Main.logger.info("AuthReturn=<"+AuthReturn+">");
+						Main.logger.info("~~~~~~~~~~~~~~~");
 						String xml_last_auth = exdb.XML(AuthReturn);
 						exdb.SAVE_AUTH_1C_DATE(xml_last_auth);
 						String request;
@@ -1803,7 +1806,7 @@ public class AddCus {
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) CombCountryAddr.getScene().getWindow();
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/cus/IUCus_Doc.fxml"));
+				loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus_Doc.fxml"));
 
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 

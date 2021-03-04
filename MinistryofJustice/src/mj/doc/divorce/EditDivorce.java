@@ -439,13 +439,7 @@ public class EditDivorce {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -799,7 +793,7 @@ public class EditDivorce {
 				list.setMERCER_HEAGE(rs.getInt("MERCER_HEAGE"));
 				list.setMERCER_SHEAGE(rs.getInt("MERCER_SHEAGE"));
 				list.setTM$MERCER_DATE((rs.getDate("TM$MERCER_DATE") != null) ? LocalDateTime.parse(
-						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("MERCER_DATE")), formatterdt)
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$MERCER_DATE")), formatterdt)
 						: null);
 				list.setMERCER_USR(rs.getString("MERCER_USR"));
 				list.setMERCER_ZAGS(rs.getInt("MERCER_ZAGS"));

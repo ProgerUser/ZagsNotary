@@ -733,3 +733,855 @@ Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующ
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Unknown Source)
 
+[03.03.2021 10:36:38] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="1605503054840546105503054830548305466054850549605483054700548805488054830546605463054630546305463054630548105493054840544805498055370553805517055260544805467054480546605466054640546405487054480553505521055320552005448054980551305516055170552705526054480550205517055190551305448054870553005513055280552005521055150553105463054630546305463054630646306456064590647305448064730645606464064600544806472064560645706470064740645654" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[03.03.2021 10:36:38] [Auth1c] INFO :401 - User
+[03.03.2021 10:36:38] [Auth1c] INFO :402 - User
+[03.03.2021 10:36:38] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs//Authorization
+[03.03.2021 10:36:39] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="03.03.2021 10:37:19"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Пачулия" Имя="Саид" Отчество="Викторович" ДатаРождения="30.04.1996 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[03.03.2021 10:36:39] [Auth1c] INFO :401 - User
+[03.03.2021 10:36:39] [Auth1c] INFO :402 - User
+[03.03.2021 10:36:39] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[03.03.2021 11:04:45] [ConvConst] ERROR:140 - java.lang.NullPointerException: temporal
+	at java.util.Objects.requireNonNull(Unknown Source)
+	at java.time.format.DateTimeFormatter.formatTo(Unknown Source)
+	at java.time.format.DateTimeFormatter.format(Unknown Source)
+	at mj.util.ConvConst$1.updateItem(ConvConst.java:123)
+	at mj.util.ConvConst$1.updateItem(ConvConst.java:1)
+	at javafx.scene.control.TableCell.updateItem(TableCell.java:663)
+	at javafx.scene.control.TableCell.indexChanged(TableCell.java:468)
+	at javafx.scene.control.IndexedCell.updateIndex(IndexedCell.java:116)
+	at com.sun.javafx.scene.control.skin.TableRowSkinBase.updateCells(TableRowSkinBase.java:533)
+	at com.sun.javafx.scene.control.skin.TableRowSkinBase.init(TableRowSkinBase.java:147)
+	at com.sun.javafx.scene.control.skin.TableRowSkin.<init>(TableRowSkin.java:64)
+	at javafx.scene.control.TableRow.createDefaultSkin(TableRow.java:212)
+	at javafx.scene.control.Control.impl_processCSS(Control.java:872)
+	at javafx.scene.Node.processCSS(Node.java:9056)
+	at javafx.scene.Node.applyCss(Node.java:9153)
+	at com.sun.javafx.scene.control.skin.VirtualFlow.setCellIndex(VirtualFlow.java:1964)
+	at com.sun.javafx.scene.control.skin.VirtualFlow.getCell(VirtualFlow.java:1797)
+	at com.sun.javafx.scene.control.skin.VirtualFlow.getCellLength(VirtualFlow.java:1879)
+	at com.sun.javafx.scene.control.skin.VirtualFlow.computeViewportOffset(VirtualFlow.java:2528)
+	at com.sun.javafx.scene.control.skin.VirtualFlow.layoutChildren(VirtualFlow.java:1189)
+	at javafx.scene.Parent.layout(Parent.java:1087)
+	at javafx.scene.Parent.layout(Parent.java:1093)
+	at javafx.scene.Parent.layout(Parent.java:1093)
+	at javafx.scene.Parent.layout(Parent.java:1093)
+	at javafx.scene.Scene.doLayoutPass(Scene.java:552)
+	at javafx.scene.Scene.preferredSize(Scene.java:1646)
+	at javafx.scene.Scene.impl_preferredSize(Scene.java:1720)
+	at javafx.stage.Window$9.invalidated(Window.java:864)
+	at javafx.beans.property.BooleanPropertyBase.markInvalid(BooleanPropertyBase.java:109)
+	at javafx.beans.property.BooleanPropertyBase.set(BooleanPropertyBase.java:144)
+	at javafx.stage.Window.setShowing(Window.java:940)
+	at javafx.stage.Window.show(Window.java:955)
+	at javafx.stage.Stage.show(Stage.java:259)
+	at mj.app.main.Main.CUSLIST(Main.java:962)
+	at mj.app.rootlayout.Root.CUSLIST(Root.java:344)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.reflect.misc.Trampoline.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.reflect.misc.MethodUtil.invoke(Unknown Source)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.control.MenuItem.fire(MenuItem.java:462)
+	at com.sun.javafx.scene.control.skin.ContextMenuContent$MenuItemContainer.doSelect(ContextMenuContent.java:1405)
+	at com.sun.javafx.scene.control.skin.ContextMenuContent$MenuItemContainer.lambda$createChildren$6(ContextMenuContent.java:1358)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+
+[03.03.2021 12:09:01] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="3606423064040638106423064030640306386064050641606403063900640806408064030638606383063830638306383063830640106413064040636806418064570645806437064460636806387063680638606386063840638406407063680645506441064520644006368064180643306436064370644706446063680642206437064390643306368064070645006433064480644006441064350645106383063830638306383063830738307376073790739306368073930737607384073800636807392073760737707390073940737663" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[03.03.2021 12:09:01] [Auth1c] INFO :401 - User
+[03.03.2021 12:09:01] [Auth1c] INFO :402 - User
+[03.03.2021 12:09:01] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs//Authorization
+[03.03.2021 12:09:02] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="03.03.2021 12:09:42"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Sdfsf" Имя="Sdfsdf" Отчество="Sdfs" ДатаРождения="30.04.1996 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[03.03.2021 12:09:02] [Auth1c] INFO :401 - User
+[03.03.2021 12:09:02] [Auth1c] INFO :402 - User
+[03.03.2021 12:09:02] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[03.03.2021 12:10:06] [AddCus] ERROR:1835 - java.lang.IllegalStateException: Location is not set.
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2434)
+	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:2409)
+	at mj.doc.cus.AddCus.EditCusDocum(AddCus.java:1815)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.reflect.misc.Trampoline.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.reflect.misc.MethodUtil.invoke(Unknown Source)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+~JavaFX Application Thread
+[03.03.2021 12:18:54] [Enter] ERROR:144 - java.sql.SQLException: Задан неверный URL Oracle
+	at oracle.jdbc.driver.PhysicalConnection.parseUrl(PhysicalConnection.java:1213)
+	at oracle.jdbc.driver.PhysicalConnection.readConnectionProperties(PhysicalConnection.java:982)
+	at oracle.jdbc.driver.PhysicalConnection.<init>(PhysicalConnection.java:646)
+	at oracle.jdbc.driver.T4CConnection.<init>(T4CConnection.java:428)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:38)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at mj.dbutil.DBUtil.dbConnect(DBUtil.java:42)
+	at mj.app.enter.Enter.Check_Enter(Enter.java:112)
+	at mj.app.enter.Enter.EnterMeth(Enter.java:170)
+	at mj.app.enter.Enter.enter(Enter.java:181)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.reflect.misc.Trampoline.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.reflect.misc.MethodUtil.invoke(Unknown Source)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+
+[03.03.2021 12:19:16] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="6308150081310810808150081300813008113081320814308130081170813508135081300811308110081100811008110081100812808140081310809508145081840818508164081730809508114080950811308113081110811108134080950818208168081790816708095081450816008163081640817408173080950814908164081660816008095081340817708160081750816708168081620817808110081100811008110081100911009103091060912008095091200910309111091070809509119091030910409117091210910380" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[03.03.2021 12:19:16] [Auth1c] INFO :401 - User
+[03.03.2021 12:19:16] [Auth1c] INFO :402 - User
+[03.03.2021 12:19:16] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs//Authorization
+[03.03.2021 12:19:17] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="03.03.2021 12:19:57"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД РАБОТА/Агрба Инара И." ID="" КодСсылки="" Фамилия="Пачулия" Имя="Саид" Отчество="Викторович" ДатаРождения="30.04.1996 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="8" НаименованиеРайона="г. Сухум" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9E643A-C9E8-6789-E053-4740470A034A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.03.2021 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[03.03.2021 12:19:17] [Auth1c] INFO :401 - User
+[03.03.2021 12:19:17] [Auth1c] INFO :402 - User
+[03.03.2021 12:19:17] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[03.03.2021 12:27:19] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="9101378013590133601378013580135801341013600137101358013450136301363013580134101338013380133801338013380135601368013590132301373014120141301392014010132301342013230134101341013390133901362013230141001396014070139501323013730138801391013920140201401013230137701392013940138801323013620140501388014030139501396013900140601338013380133801338013380233802331023340234801323023480233102339023350132302347023310233202345023490233112" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[03.03.2021 12:27:19] [Auth1c] INFO :401 - User
+[03.03.2021 12:27:19] [Auth1c] INFO :402 - User
+[03.03.2021 12:27:19] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs//Authorization
+[03.03.2021 12:27:21] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="03.03.2021 12:28:01"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД РАБОТА/Агрба Инара И." ID="" КодСсылки="" Фамилия="Пачулия" Имя="Саид" Отчество="Викторович" ДатаРождения="30.04.1996 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="8" НаименованиеРайона="г. Сухум" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9F745B-2CC7-7C46-E053-4740470A0AC7" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="22" Номер="22" КемВыдан="null" ДатаВыдачи="03.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+			<Паспорт2 ID="BC9E643A-C9E8-6789-E053-4740470A034A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.03.2021 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[03.03.2021 12:27:21] [Auth1c] INFO :401 - User
+[03.03.2021 12:27:21] [Auth1c] INFO :402 - User
+[03.03.2021 12:27:21] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[03.03.2021 12:28:00] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="4402131021120208902131021110211102094021130212402111020980211602116021110209402091020910209102091020910210902121021120207602126021650216602145021540207602095020760209402094020920209202115020760216302149021600214802076021260214102144021450215502154020760213002145021470214102076021150215802141021560214802149021430215902091020910209102091020910309103084030870310102076031010308403092030880207603100030840308503098031020308420" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[03.03.2021 12:28:00] [Auth1c] INFO :401 - User
+[03.03.2021 12:28:00] [Auth1c] INFO :402 - User
+[03.03.2021 12:28:00] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs//Authorization
+[03.03.2021 12:28:01] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="03.03.2021 12:28:41"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД РАБОТА/Агрба Инара И." ID="" КодСсылки="" Фамилия="Пачулия " Имя="Леван" Отчество="Теймуразович" ДатаРождения="02.01.2021 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="8" НаименованиеРайона="г. Сухум" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9F711E-CAC1-7B8C-E053-4740470A9572" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="120071" КемВыдан="null" ДатаВыдачи="09.02.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[03.03.2021 12:28:01] [Auth1c] INFO :401 - User
+[03.03.2021 12:28:01] [Auth1c] INFO :402 - User
+[03.03.2021 12:28:01] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[03.03.2021 14:34:00] [Enter] ERROR:144 - java.sql.SQLException: ORA-01017: invalid username/password; logon denied
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:441)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:436)
+	at oracle.jdbc.driver.T4CTTIfun.processError(T4CTTIfun.java:1061)
+	at oracle.jdbc.driver.T4CTTIoauthenticate.processError(T4CTTIoauthenticate.java:550)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4CTTIoauthenticate.doOAUTH(T4CTTIoauthenticate.java:499)
+	at oracle.jdbc.driver.T4CTTIoauthenticate.doOAUTH(T4CTTIoauthenticate.java:1279)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:663)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at mj.dbutil.DBUtil.dbConnect(DBUtil.java:42)
+	at mj.app.enter.Enter.Check_Enter(Enter.java:112)
+	at mj.app.enter.Enter.EnterMeth(Enter.java:170)
+	at mj.app.enter.Enter.enter_(Enter.java:187)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.reflect.misc.Trampoline.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.reflect.misc.MethodUtil.invoke(Unknown Source)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$KeyHandler.process(Scene.java:3964)
+	at javafx.scene.Scene$KeyHandler.access$1800(Scene.java:3910)
+	at javafx.scene.Scene.impl_processKeyEvent(Scene.java:2040)
+	at javafx.scene.Scene$ScenePeerListener.keyEvent(Scene.java:2501)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:217)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:149)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleKeyEvent$1(GlassViewEventHandler.java:248)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleKeyEvent(GlassViewEventHandler.java:247)
+	at com.sun.glass.ui.View.handleKeyEvent(View.java:546)
+	at com.sun.glass.ui.View.notifyKey(View.java:966)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+
+[03.03.2021 14:35:08] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="6605653056340561105653056330563305616056350564605633056200563805638056330561605613056130561305613056130563105643056340559805648056870568805667056760559805617055980561605616056140561405637055980568505671056820567005598056480566305666056670567705676055980565205667056690566305598056370568005663056780567005671056650568105613056130561305613056130661306606066090662305598066230660606614066100559806622066060660706620066240660655" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[03.03.2021 14:35:08] [Auth1c] INFO :401 - User
+[03.03.2021 14:35:08] [Auth1c] INFO :402 - User
+[03.03.2021 14:35:08] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs//Authorization
+[03.03.2021 14:35:10] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="03.03.2021 14:35:50"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Иванов" Имя="Иван" Отчество="Иванович" ДатаРождения="01.01.1980 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[03.03.2021 14:35:10] [Auth1c] INFO :401 - User
+[03.03.2021 14:35:10] [Auth1c] INFO :402 - User
+[03.03.2021 14:35:10] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[03.03.2021 14:40:51] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="4006027060080598506027060070600705990060090602006007059940601206012060070599005987059870598705987059870600506017060080597206022060610606206041060500597205991059720599005990059880598806011059720605906045060560604405972060220603706040060410605106050059720602606041060430603705972060110605406037060520604406045060390605505987059870598705987059870698706980069830699705972069970698006988069840597206996069800698106994069980698059" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[03.03.2021 14:40:51] [Auth1c] INFO :401 - User
+[03.03.2021 14:40:51] [Auth1c] INFO :402 - User
+[03.03.2021 14:40:51] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs//Authorization
+[03.03.2021 14:40:52] [Auth1c] INFO :400 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="03.03.2021 14:41:33"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Иванов" Имя="Иван" Отчество="Иванович" ДатаРождения="01.01.1980 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[03.03.2021 14:40:52] [Auth1c] INFO :401 - User
+[03.03.2021 14:40:52] [Auth1c] INFO :402 - User
+[03.03.2021 14:40:52] [Auth1c] INFO :403 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[03.03.2021 15:22:45] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="2503812037930377003812037920379203775037940380503792037790379703797037920377503772037720377203772037720379003802037930375703807038460384703826038350375703776037570377503775037730377303796037570384403830038410382903757038070382203825038260383603835037570381103826038280382203757037960383903822038370382903830038240384003772037720377203772037720477204765047680478203757047820476504773047690375704781047650476604779047830476537" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[03.03.2021 15:22:45] [Auth1c] INFO :380 - User
+[03.03.2021 15:22:45] [Auth1c] INFO :381 - User
+[03.03.2021 15:22:45] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[03.03.2021 15:22:46] [Auth1c] INFO :465 - ~~~~~~~~~~~~~~~
+[03.03.2021 15:22:46] [Auth1c] INFO :466 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="03.03.2021 15:23:27"/>>
+[03.03.2021 15:22:46] [Auth1c] INFO :467 - ~~~~~~~~~~~~~~~
+[03.03.2021 15:22:46] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="03.03.2021 15:23:27"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Фыв" Имя="Фыв" Отчество="Фв" ДатаРождения="04.03.2021 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[03.03.2021 15:22:46] [Auth1c] INFO :380 - User
+[03.03.2021 15:22:46] [Auth1c] INFO :381 - User
+[03.03.2021 15:22:46] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[03.03.2021 15:24:49] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="8810075100561003310075100551005510038100571006810055100421006010060100551003810035100351003510035100351005310065100561002010070101091011010089100981002010039100201003810038100361003610059100201010710093101041009210020100701008510088100891009910098100201007410089100911008510020100591010210085101001009210093100871010310035100351003510035100351103511028110311104510020110451102811036110321002011044110281102911042110461102899" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[03.03.2021 15:24:49] [Auth1c] INFO :380 - User
+[03.03.2021 15:24:49] [Auth1c] INFO :381 - User
+[03.03.2021 15:24:49] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[03.03.2021 15:24:50] [Auth1c] INFO :465 - ~~~~~~~~~~~~~~~
+[03.03.2021 15:24:50] [Auth1c] INFO :466 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="03.03.2021 15:25:30"/>>
+[03.03.2021 15:24:50] [Auth1c] INFO :467 - ~~~~~~~~~~~~~~~
+[03.03.2021 15:24:50] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="03.03.2021 15:25:30"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Иванов" Имя="Иван" Отчество="Иванович" ДатаРождения="01.01.1980 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[03.03.2021 15:24:50] [Auth1c] INFO :380 - User
+[03.03.2021 15:24:50] [Auth1c] INFO :381 - User
+[03.03.2021 15:24:50] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[04.03.2021 12:16:19] [EditDivorce] ERROR:444 - java.sql.SQLException: ORA-04068: существующее состояние пакетов было сброшено
+ORA-04061: существующее состояния package body "XXI.DIVORCE" стало неприемлемым
+ORA-04065: не выполнено, package body "XXI.DIVORCE" изменено или удалено
+ORA-06508: PL/SQL: невозможно найти вызываемый блок программы: "XXI.DIVORCE"
+ORA-06512: на  line 1
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:446)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1054)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:612)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:223)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:56)
+	at oracle.jdbc.driver.T4CCallableStatement.executeForRows(T4CCallableStatement.java:907)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1119)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3780)
+	at oracle.jdbc.driver.T4CCallableStatement.executeInternal(T4CCallableStatement.java:1300)
+	at oracle.jdbc.driver.OraclePreparedStatement.execute(OraclePreparedStatement.java:3887)
+	at oracle.jdbc.driver.OracleCallableStatement.execute(OracleCallableStatement.java:4230)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.execute(OraclePreparedStatementWrapper.java:1079)
+	at mj.doc.divorce.EditDivorce.Save(EditDivorce.java:428)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.reflect.misc.Trampoline.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at sun.reflect.misc.MethodUtil.invoke(Unknown Source)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: Error : 4068, Position : 0, Sql = BEGIN Divorce.EditDivorce(:1 ,:2 ,:3 ,:4 ,:5 ,:6 ,:7 ,:8 ,:9 ,:10 ,:11 ,:12 ,:13 ,:14 ,:15 ,:16 ,:17 ,:18 ,:19 ,:20 ,:21 ,:22 ,:23 ,:24 ,:25 ,:26 ,:27 ,:28 ) ; END;, OriginalSql = { call Divorce.EditDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }, Error Msg = ORA-04068: существующее состояние пакетов было сброшено
+ORA-04061: существующее состояния package body "XXI.DIVORCE" стало неприемлемым
+ORA-04065: не выполнено, package body "XXI.DIVORCE" изменено или удалено
+ORA-06508: PL/SQL: невозможно найти вызываемый блок программы: "XXI.DIVORCE"
+ORA-06512: на  line 1
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:498)
+	... 81 more
+~JavaFX Application Thread
+[04.03.2021 12:17:18] [DivorceList] ERROR:1118 - java.sql.SQLException: ORA-04068: существующее состояние пакетов было сброшено
+ORA-04061: существующее состояния package body "XXI.DIVORCE" стало неприемлемым
+ORA-04065: не выполнено, package body "XXI.DIVORCE" изменено или удалено
+ORA-06508: PL/SQL: невозможно найти вызываемый блок программы: "XXI.DIVORCE"
+ORA-06512: на  line 1
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:446)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1054)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:612)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:223)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:56)
+	at oracle.jdbc.driver.T4CCallableStatement.executeForRows(T4CCallableStatement.java:907)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1119)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3780)
+	at oracle.jdbc.driver.T4CCallableStatement.executeInternal(T4CCallableStatement.java:1300)
+	at oracle.jdbc.driver.OraclePreparedStatement.execute(OraclePreparedStatement.java:3887)
+	at oracle.jdbc.driver.OracleCallableStatement.execute(OracleCallableStatement.java:4230)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.execute(OraclePreparedStatementWrapper.java:1079)
+	at mj.doc.divorce.DivorceList.XmlsForCompare(DivorceList.java:1097)
+	at mj.doc.divorce.DivorceList.Edit(DivorceList.java:289)
+	at mj.doc.divorce.DivorceList.lambda$14(DivorceList.java:1009)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3470)
+	at javafx.scene.Scene$ClickGenerator.access$8100(Scene.java:3398)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3766)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: Error : 4068, Position : 0, Sql = BEGIN Divorce.RetXmls(:1 ,:2 ,:3 ); END;, OriginalSql = { call Divorce.RetXmls(?,?,?)}, Error Msg = ORA-04068: существующее состояние пакетов было сброшено
+ORA-04061: существующее состояния package body "XXI.DIVORCE" стало неприемлемым
+ORA-04065: не выполнено, package body "XXI.DIVORCE" изменено или удалено
+ORA-06508: PL/SQL: невозможно найти вызываемый блок программы: "XXI.DIVORCE"
+ORA-06512: на  line 1
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:498)
+	... 51 more
+~JavaFX Application Thread
+[04.03.2021 14:56:54] [Main] ERROR:144 - java.sql.SQLRecoverableException: Ошибка ввода/вывода: Удаленный хост принудительно разорвал существующее подключение, connect lapse 10016 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:794)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at mj.dbutil.DBUtil.dbConnect(DBUtil.java:42)
+	at mj.app.main.Main.start(Main.java:250)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 10016 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:790)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 10016 ms.
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:138)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:317)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1438)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:518)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+	at sun.nio.ch.IOUtil.read(Unknown Source)
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+	at oracle.net.nt.TimeoutSocketChannel.read(TimeoutSocketChannel.java:144)
+	at oracle.net.ns.NIOHeader.readHeaderBuffer(NIOHeader.java:82)
+	at oracle.net.ns.NIOPacket.readNIOPacket(NIOPacket.java:252)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:118)
+	... 19 more
+
+[04.03.2021 14:57:51] [Main] ERROR:144 - java.sql.SQLRecoverableException: Ошибка ввода/вывода: Удаленный хост принудительно разорвал существующее подключение, connect lapse 10008 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:794)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at mj.dbutil.DBUtil.dbConnect(DBUtil.java:42)
+	at mj.app.main.Main.start(Main.java:250)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 10008 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:790)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 10008 ms.
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:138)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:317)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1438)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:518)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+	at sun.nio.ch.IOUtil.read(Unknown Source)
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+	at oracle.net.nt.TimeoutSocketChannel.read(TimeoutSocketChannel.java:144)
+	at oracle.net.ns.NIOHeader.readHeaderBuffer(NIOHeader.java:82)
+	at oracle.net.ns.NIOPacket.readNIOPacket(NIOPacket.java:252)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:118)
+	... 19 more
+
+[04.03.2021 15:10:42] [Main] ERROR:144 - java.sql.SQLRecoverableException: Ошибка ввода/вывода: Удаленный хост принудительно разорвал существующее подключение, connect lapse 9997 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:794)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at mj.dbutil.DBUtil.dbConnect(DBUtil.java:42)
+	at mj.app.main.Main.start(Main.java:250)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 9997 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:790)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 9997 ms.
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:138)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:317)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1438)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:518)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+	at sun.nio.ch.IOUtil.read(Unknown Source)
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+	at oracle.net.nt.TimeoutSocketChannel.read(TimeoutSocketChannel.java:144)
+	at oracle.net.ns.NIOHeader.readHeaderBuffer(NIOHeader.java:82)
+	at oracle.net.ns.NIOPacket.readNIOPacket(NIOPacket.java:252)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:118)
+	... 19 more
+
+[04.03.2021 15:12:09] [Main] ERROR:144 - java.sql.SQLRecoverableException: Ошибка ввода/вывода: Удаленный хост принудительно разорвал существующее подключение, connect lapse 9989 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:794)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at mj.dbutil.DBUtil.dbConnect(DBUtil.java:42)
+	at mj.app.main.Main.start(Main.java:250)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 9989 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:790)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 9989 ms.
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:138)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:317)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1438)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:518)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+	at sun.nio.ch.IOUtil.read(Unknown Source)
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+	at oracle.net.nt.TimeoutSocketChannel.read(TimeoutSocketChannel.java:144)
+	at oracle.net.ns.NIOHeader.readHeaderBuffer(NIOHeader.java:82)
+	at oracle.net.ns.NIOPacket.readNIOPacket(NIOPacket.java:252)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:118)
+	... 19 more
+
+[04.03.2021 15:39:03] [Main] ERROR:144 - java.sql.SQLRecoverableException: Ошибка ввода/вывода: Удаленный хост принудительно разорвал существующее подключение, connect lapse 9994 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:794)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at mj.dbutil.DBUtil.dbConnect(DBUtil.java:42)
+	at mj.app.main.Main.start(Main.java:250)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 9994 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:790)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 9994 ms.
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:138)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:317)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1438)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:518)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+	at sun.nio.ch.IOUtil.read(Unknown Source)
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+	at oracle.net.nt.TimeoutSocketChannel.read(TimeoutSocketChannel.java:144)
+	at oracle.net.ns.NIOHeader.readHeaderBuffer(NIOHeader.java:82)
+	at oracle.net.ns.NIOPacket.readNIOPacket(NIOPacket.java:252)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:118)
+	... 19 more
+

@@ -521,7 +521,9 @@ public class FIND_CUS {
 					if (empty) {
 						setText(null);
 					} else {
-						setText(format.format(item));
+						if(item != null) {
+							setText(format.format(item));
+						}
 					}
 				}
 			};

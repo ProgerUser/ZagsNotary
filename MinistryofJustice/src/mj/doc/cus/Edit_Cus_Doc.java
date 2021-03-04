@@ -133,7 +133,7 @@ public class Edit_Cus_Doc {
 					& (DOC_SER_T.getText() != null && !DOC_SER_T.getText().equals(""))
 					& (DOC_NUM_T.getText() != null && !DOC_NUM_T.getText().equals(""))
 					/*& (DOC_SUBDIV_T.getText() != null && !DOC_SUBDIV_T.getText().equals(""))*/
-					& (DOC_AGENCY_T.getText() != null && !DOC_AGENCY_T.getText().equals(""))
+					/*& (DOC_AGENCY_T.getText() != null && !DOC_AGENCY_T.getText().equals(""))*/
 					& DOC_DATE_T.getValue() != null) {
 				if (istemp) {
 					CRUDDocumTemp("{ ? = call MJCUS.EDIT_CUS_DOCUM_TEMP(?,?,?,?,?,?,?,?,?)}");
