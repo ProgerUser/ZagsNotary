@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -49,6 +50,10 @@ import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
 import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -618,147 +623,142 @@ public class UpdNameList {
 
 	void Print() {
 		try {
-			if (UPDATE_NAME.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите строку!");
-			} else {
-				ROOT.setDisable(true);
-				PB.setVisible(true);
-				Task<Object> task = new Task<Object>() {
-
-					@Override
-					public Object call() throws Exception {
-						Main.logger = Logger.getLogger(getClass());
-
-						Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/UPDATE_NAME.docx");
-						docx.setVariablePattern(new VariablePattern("#{", "}"));
-
-						// preparing variables
-						Variables variables = new Variables();
-						// SqlMap sql = new SqlMap().load("/updname/sql.xml");
-						// String readRecordSQL = sql.getSql("QueryForReport");
-						PreparedStatement prepStmt = conn
-								.prepareStatement("select * from v_rep_update_name where ID = ?");
-						prepStmt.setInt(1, UPDATE_NAME.getSelectionModel().getSelectedItem().getID());
-						ResultSet rs = prepStmt.executeQuery();
-						V_REP_UPDATE_NAME list = null;
-						if (rs.next()) {
-							list = new V_REP_UPDATE_NAME();
-							list.setID(rs.getInt("ID"));
-							list.setDCUSBIRTHDAY(rs.getString("DCUSBIRTHDAY"));
-							list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
-							list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
-							list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
-							list.setNEW_MIDDLNAME(rs.getString("NEW_MIDDLNAME"));
-							list.setADDRESS(rs.getString("ADDRESS"));
-							list.setOLD_MIDDLNAME(rs.getString("OLD_MIDDLNAME"));
-							list.setBR_ACT_ID(rs.getInt("BR_ACT_ID"));
-							list.setBR_ACT_DATE(rs.getString("BR_ACT_DATE"));
-							list.setCCUSPLACE_BIRTH(rs.getString("CCUSPLACE_BIRTH"));
-							list.setNEW_LASTNAME(rs.getString("NEW_LASTNAME"));
-							list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
-							list.setSVID_SERIA(rs.getString("SVID_SERIA"));
-							list.setNATIONALITY(rs.getString("NATIONALITY"));
-							list.setCURDATE(rs.getString("CURDATE"));
-							list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
-							list.setOLD_FIRSTNAME(rs.getString("OLD_FIRSTNAME"));
-						}
-						prepStmt.close();
-						rs.close();
-
-						variables.addTextVariable(new TextVariable("#{DCUSBIRTHDAY}", list.getDCUSBIRTHDAY()));
-						variables.addTextVariable(new TextVariable("#{ZAGS_NAME}", list.getZAGS_NAME()));
-						variables.addTextVariable(new TextVariable("#{COUNTRY_NAME}", list.getCOUNTRY_NAME()));
-						variables.addTextVariable(new TextVariable("#{OLD_LASTNAME}", list.getOLD_LASTNAME()));
-						variables.addTextVariable(new TextVariable("#{NEW_MIDDLNAME}", list.getNEW_MIDDLNAME()));
-						variables.addTextVariable(new TextVariable("#{ADDRESS}", list.getADDRESS()));
-						variables.addTextVariable(new TextVariable("#{BR_ACT_ID}",
-								(list.getBR_ACT_ID() != null) ? String.valueOf(list.getBR_ACT_ID()) : ""));
-						variables.addTextVariable(new TextVariable("#{BR_ACT_DATE}", list.getBR_ACT_DATE()));
-						variables.addTextVariable(new TextVariable("#{CCUSPLACE_BIRTH}", list.getCCUSPLACE_BIRTH()));
-						variables.addTextVariable(new TextVariable("#{NEW_LASTNAME}", list.getNEW_LASTNAME()));
-						variables.addTextVariable(new TextVariable("#{NEW_FIRSTNAME}", list.getNEW_FIRSTNAME()));
-						variables.addTextVariable(new TextVariable("#{SVID_SERIA}", list.getSVID_SERIA()));
-						variables.addTextVariable(new TextVariable("#{NATIONALITY}", list.getNATIONALITY()));
-						variables.addTextVariable(new TextVariable("#{SVID_NUMBER}", list.getSVID_NUMBER()));
-						variables.addTextVariable(new TextVariable("#{OLD_FIRSTNAME}", list.getOLD_FIRSTNAME()));
-						variables.addTextVariable(new TextVariable("#{CURDATE}", list.getCURDATE()));
-						variables.addTextVariable(new TextVariable("#{OLD_MIDDLNAME}", list.getOLD_MIDDLNAME()));
-						variables.addTextVariable(
-								new TextVariable("#{ID}", (list.getID() != null) ? String.valueOf(list.getID()) : ""));
-
-						// find all variables satisfying the pattern #{...}
-						// List<String> findVariables = docx.findVariables();
-
-						// and display it
-						// for (String var : findVariables) {
-						// System.out.println("VARIABLE => " + var);
-						// }
-
-						// fill template
-						docx.fillTemplate(variables);
-						File tempFile = File.createTempFile("UPDATE_ABH_NAME", ".docx",
-								new File(System.getenv("MJ_PATH") + "OutReports"));
-						FileOutputStream str = new FileOutputStream(tempFile);
-						docx.save(str);
-						str.close();
-						tempFile.deleteOnExit();
-						if (Desktop.isDesktopSupported()) {
-							Desktop.getDesktop().open(tempFile);
-						}
-						/*
-						 * // save filled .docx file UUID uuid = UUID.randomUUID(); String filename =
-						 * System.getenv("MJ_PATH") + "OutReports/UPDATE_NAME_" + uuid.toString() +
-						 * ".docx"; docx.save(filename);
-						 * 
-						 * if (Desktop.isDesktopSupported()) { Desktop.getDesktop().open(new
-						 * File(filename)); }
-						 */
-//						ByteArrayOutputStream out = new ByteArrayOutputStream();
+//			if (UPDATE_NAME.getSelectionModel().getSelectedItem() == null) {
+//				Msg.Message("Выберите строку!");
+//			} else {
+//				ROOT.setDisable(true);
+//				PB.setVisible(true);
+//				Task<Object> task = new Task<Object>() {
 //
-//						PdfOptions options = PdfOptions.create();
-//						PdfConverter.getInstance().convert(docx.getXWPFDocument(), out, options);
+//					@Override
+//					public Object call() throws Exception {
 //
-//						byte[] xwpfDocumentBytes = out.toByteArray();
+//						Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/UPDATE_NAME.docx");
+//						docx.setVariablePattern(new VariablePattern("#{", "}"));
 //
-//						// build a component controller
-//						SwingController controller = new SwingController();
+//						// preparing variables
+//						Variables variables = new Variables();
+//						// SqlMap sql = new SqlMap().load("/updname/sql.xml");
+//						// String readRecordSQL = sql.getSql("QueryForReport");
+//						PreparedStatement prepStmt = conn
+//								.prepareStatement("select * from v_rep_update_name where ID = ?");
+//						prepStmt.setInt(1, UPDATE_NAME.getSelectionModel().getSelectedItem().getID());
+//						ResultSet rs = prepStmt.executeQuery();
+//						V_REP_UPDATE_NAME list = null;
+//						if (rs.next()) {
+//							list = new V_REP_UPDATE_NAME();
+//							list.setID(rs.getInt("ID"));
+//							list.setDCUSBIRTHDAY(rs.getString("DCUSBIRTHDAY"));
+//							list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
+//							list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
+//							list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
+//							list.setNEW_MIDDLNAME(rs.getString("NEW_MIDDLNAME"));
+//							list.setADDRESS(rs.getString("ADDRESS"));
+//							list.setOLD_MIDDLNAME(rs.getString("OLD_MIDDLNAME"));
+//							list.setBR_ACT_ID(rs.getInt("BR_ACT_ID"));
+//							list.setBR_ACT_DATE(rs.getString("BR_ACT_DATE"));
+//							list.setCCUSPLACE_BIRTH(rs.getString("CCUSPLACE_BIRTH"));
+//							list.setNEW_LASTNAME(rs.getString("NEW_LASTNAME"));
+//							list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
+//							list.setSVID_SERIA(rs.getString("SVID_SERIA"));
+//							list.setNATIONALITY(rs.getString("NATIONALITY"));
+//							list.setCURDATE(rs.getString("CURDATE"));
+//							list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
+//							list.setOLD_FIRSTNAME(rs.getString("OLD_FIRSTNAME"));
+//						}
+//						prepStmt.close();
+//						rs.close();
 //
-//						SwingViewBuilder factory = new SwingViewBuilder(controller);
+//						variables.addTextVariable(new TextVariable("#{DCUSBIRTHDAY}", list.getDCUSBIRTHDAY()));
+//						variables.addTextVariable(new TextVariable("#{ZAGS_NAME}", list.getZAGS_NAME()));
+//						variables.addTextVariable(new TextVariable("#{COUNTRY_NAME}", list.getCOUNTRY_NAME()));
+//						variables.addTextVariable(new TextVariable("#{OLD_LASTNAME}", list.getOLD_LASTNAME()));
+//						variables.addTextVariable(new TextVariable("#{NEW_MIDDLNAME}", list.getNEW_MIDDLNAME()));
+//						variables.addTextVariable(new TextVariable("#{ADDRESS}", list.getADDRESS()));
+//						variables.addTextVariable(new TextVariable("#{BR_ACT_ID}",
+//								(list.getBR_ACT_ID() != null) ? String.valueOf(list.getBR_ACT_ID()) : ""));
+//						variables.addTextVariable(new TextVariable("#{BR_ACT_DATE}", list.getBR_ACT_DATE()));
+//						variables.addTextVariable(new TextVariable("#{CCUSPLACE_BIRTH}", list.getCCUSPLACE_BIRTH()));
+//						variables.addTextVariable(new TextVariable("#{NEW_LASTNAME}", list.getNEW_LASTNAME()));
+//						variables.addTextVariable(new TextVariable("#{NEW_FIRSTNAME}", list.getNEW_FIRSTNAME()));
+//						variables.addTextVariable(new TextVariable("#{SVID_SERIA}", list.getSVID_SERIA()));
+//						variables.addTextVariable(new TextVariable("#{NATIONALITY}", list.getNATIONALITY()));
+//						variables.addTextVariable(new TextVariable("#{SVID_NUMBER}", list.getSVID_NUMBER()));
+//						variables.addTextVariable(new TextVariable("#{OLD_FIRSTNAME}", list.getOLD_FIRSTNAME()));
+//						variables.addTextVariable(new TextVariable("#{CURDATE}", list.getCURDATE()));
+//						variables.addTextVariable(new TextVariable("#{OLD_MIDDLNAME}", list.getOLD_MIDDLNAME()));
+//						variables.addTextVariable(
+//								new TextVariable("#{ID}", (list.getID() != null) ? String.valueOf(list.getID()) : ""));
 //
-//						JPanel viewerComponentPanel = factory.buildViewerPanel();
+//						// find all variables satisfying the pattern #{...}
+//						// List<String> findVariables = docx.findVariables();
 //
-//						// add interactive mouse link annotation support via callback
-//						controller.getDocumentViewController().setAnnotationCallback(
-//								new org.icepdf.ri.common.MyAnnotationCallback(controller.getDocumentViewController()));
+//						// and display it
+//						// for (String var : findVariables) {
+//						// System.out.println("VARIABLE => " + var);
+//						// }
 //
-//						JFrame applicationFrame = new JFrame();
-//						// applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//						applicationFrame.getContentPane().add(viewerComponentPanel);
-//
-//						// Now that the GUI is all in place, we can try openning a PDF
-//						// controller.openDocument(filename);
-//						// controller.openDocument(arg0, arg1, arg2);
-//						controller.openDocument(xwpfDocumentBytes, 0, xwpfDocumentBytes.length, "", "");
-//						controller.isDocumentViewMode(0);
-//						// show the component
-//						applicationFrame.pack();
-//						applicationFrame.setVisible(true);
-//						out.close();
-						return null;
-					}
-				};
-				task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
-				task.setOnSucceeded(e -> BlockMain());
-				exec.execute(task);
-			}
+//						// fill template
+//						docx.fillTemplate(variables);
+//						File tempFile = File.createTempFile("UPDATE_ABH_NAME", ".docx",
+//								new File(System.getenv("MJ_PATH") + "OutReports"));
+//						FileOutputStream str = new FileOutputStream(tempFile);
+//						docx.save(str);
+//						str.close();
+//						tempFile.deleteOnExit();
+//						if (Desktop.isDesktopSupported()) {
+//							Desktop.getDesktop().open(tempFile);
+//						}
+//						/*
+//						 * // save filled .docx file UUID uuid = UUID.randomUUID(); String filename =
+//						 * System.getenv("MJ_PATH") + "OutReports/UPDATE_NAME_" + uuid.toString() +
+//						 * ".docx"; docx.save(filename);
+//						 * 
+//						 * if (Desktop.isDesktopSupported()) { Desktop.getDesktop().open(new
+//						 * File(filename)); }
+//						 */
+////						ByteArrayOutputStream out = new ByteArrayOutputStream();
+////
+////						PdfOptions options = PdfOptions.create();
+////						PdfConverter.getInstance().convert(docx.getXWPFDocument(), out, options);
+////
+////						byte[] xwpfDocumentBytes = out.toByteArray();
+////
+////						// build a component controller
+////						SwingController controller = new SwingController();
+////
+////						SwingViewBuilder factory = new SwingViewBuilder(controller);
+////
+////						JPanel viewerComponentPanel = factory.buildViewerPanel();
+////
+////						// add interactive mouse link annotation support via callback
+////						controller.getDocumentViewController().setAnnotationCallback(
+////								new org.icepdf.ri.common.MyAnnotationCallback(controller.getDocumentViewController()));
+////
+////						JFrame applicationFrame = new JFrame();
+////						// applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+////						applicationFrame.getContentPane().add(viewerComponentPanel);
+////
+////						// Now that the GUI is all in place, we can try openning a PDF
+////						// controller.openDocument(filename);
+////						// controller.openDocument(arg0, arg1, arg2);
+////						controller.openDocument(xwpfDocumentBytes, 0, xwpfDocumentBytes.length, "", "");
+////						controller.isDocumentViewMode(0);
+////						// show the component
+////						applicationFrame.pack();
+////						applicationFrame.setVisible(true);
+////						out.close();
+//						return null;
+//					}
+//				};
+//				task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+//				task.setOnSucceeded(e -> BlockMain());
+//				exec.execute(task);
+//			}
+			manipulatePdf("C:\\Users\\saidp.SBRA\\Desktop\\ЗАГС\\upd_name.pdf","C:\\Users\\saidp.SBRA\\Desktop\\ЗАГС\\upd_name_.pdf");
+			Desktop.getDesktop().open(new File("C:\\Users\\saidp.SBRA\\Desktop\\ЗАГС\\upd_name_.pdf"));
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1131,6 +1131,57 @@ public class UpdNameList {
     @FXML
     private TitledPane FILTER;
 
+    public void manipulatePdf(String src, String dest) throws DocumentException, IOException {
+        PdfReader reader = new PdfReader(src);
+        PdfStamper stamper = new PdfStamper(reader,
+                new FileOutputStream(dest));
+        AcroFields fields = stamper.getAcroFields();
+        System.out.print(fields.getFields());
+        fields.setField("Текст20", "$20");
+        fields.setField("Текст21", "$21");
+        fields.setField("Текст40", "$40");
+        fields.setField("Текст41", "$41");
+        fields.setField("Текст24", "$24");
+        fields.setField("Текст25", "$25");
+        fields.setField("Текст22", "$22");
+        fields.setField("Текст23", "$23");
+        fields.setField("Текст28", "$28");
+        fields.setField("Текст29", "$29");
+        fields.setField("Текст26", "$26");
+        fields.setField("Текст27", "$27");
+        fields.setField("Текст4", "$4");
+        fields.setField("Текст5", "$5");
+        fields.setField("Текст6", "$6");
+        fields.setField("Текст7", "$7");
+        fields.setField("Текст31", "$31");
+        fields.setField("Текст1", "$1");
+        fields.setField("Текст10", "$10");
+        fields.setField("Текст32", "$32");
+        fields.setField("Текст3", "$3");
+        fields.setField("Текст30", "$30");
+        fields.setField("Текст13", "$13");
+        fields.setField("Текст35", "$35");
+        fields.setField("Текст14", "$14");
+        fields.setField("Текст36", "$36");
+        fields.setField("Текст11", "$11");
+        fields.setField("Текст33", "$33");
+        fields.setField("Текст12", "$12");
+        fields.setField("Текст34", "$34");
+        fields.setField("Текст17", "$17");
+        fields.setField("Текст39", "$39");
+        fields.setField("Текст18", "$18");
+        fields.setField("Текст15", "$15");
+        fields.setField("Текст37", "$37");
+        fields.setField("Текст16", "$16");
+        fields.setField("Текст38", "$38");
+        fields.setField("Текст19", "$19");
+        fields.setField("Текст8", "$8");
+        fields.setField("Текст9", "$9");
+        //stamper.setFormFlattening(true);
+        stamper.close();
+        reader.close();
+    }
+    
 	/**
 	 * Инициализация
 	 */
