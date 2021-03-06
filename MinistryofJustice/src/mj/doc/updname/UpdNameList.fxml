@@ -22,7 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<BorderPane fx:id="ROOT">
 			<left>
@@ -112,6 +112,21 @@
                               <Font size="10.0" />
                            </font>
 								</Button>
+                        <Button layoutX="116.0" layoutY="10.0" minHeight="30.0" mnemonicParsing="false" onAction="#BtPrintBlank" prefWidth="30.0">
+                           <tooltip>
+                              <Tooltip text="Печать бланка">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <graphic>
+                              <FontAwesomeIconView fill="#3b55eb" glyphName="PRINT" size="20" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
 							</items>
 							<VBox.margin>
 								<Insets />

@@ -469,6 +469,7 @@ public class Main extends Application {
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
 						GrpAccessWin = true;
 					}
 				});

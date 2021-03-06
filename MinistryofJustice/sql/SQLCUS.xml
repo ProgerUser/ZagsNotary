@@ -197,9 +197,14 @@ select cus.icusnum,
          where countries.code =
                (select cus_addr.country
                   from cus_addr
-                 where cus_addr.icusnum = cus.ICUSNUM)) country
+                 where cus_addr.icusnum = cus.ICUSNUM)) country,
+       cus.ab_first_name,
+       cus.ab_middle_name,
+       cus.ab_last_name,
+       cus.ab_place_birth
   from cus, dat
  where cus.ICUSNUM = dat.ID
+
 ]]>
 			</value>
 		</entry>

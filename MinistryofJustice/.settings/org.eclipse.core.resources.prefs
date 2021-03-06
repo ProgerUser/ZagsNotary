@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/mj/audit/view/Audit.jrxml=UTF-8
 encoding//src/mj/doc/birthact/BrAct.jrxml=UTF-8
+encoding//src/mj/doc/cus/AddCus.java=UTF-8
+encoding//src/mj/doc/cus/EditCus.java=UTF-8

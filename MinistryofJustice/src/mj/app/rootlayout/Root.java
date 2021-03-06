@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.app.model.SqlMap;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 
@@ -421,9 +420,9 @@ public class Root {
 		int ret = 0;
 		Connection conn = DBUtil.conn;
 		try {
-			SqlMap sql = new SqlMap().load("/SQL.xml");
-			String readRecordSQL = sql.getSql("acces_menu");
-			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
+			//SqlMap sql = new SqlMap().load("/SQL.xml");
+			//String readRecordSQL = sql.getSql("acces_menu");
+			PreparedStatement prepStmt = conn.prepareStatement("SELECT MJUsers.MNU_ACCESS(MNU_ID => ?, USR_LOGIN => ?) CNT FROM DUAL");
 			prepStmt.setInt(1, FORM_NAME);
 			prepStmt.setString(2, CUSRLOGNAME);
 			ResultSet rs = prepStmt.executeQuery();

@@ -10,6 +10,7 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -30,7 +31,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
       <VBox />
       <BorderPane fx:id="BP">
@@ -56,152 +57,150 @@
                                        <children>
                                           <VBox fx:id="OsnVbox" spacing="5.0">
                                              <children>
-                                                <TitledPane fx:id="OSN_DATA" alignment="CENTER" animated="false" collapsible="false" style="-fx-border-color: black;" text="Основные данные">
-                                                   <content>
-                                                      <VBox>
-                                                         <children>
-                                                            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                                               <children>
-                                                                  <GridPane>
+                                                <TabPane styleClass="floating" tabClosingPolicy="UNAVAILABLE">
+                                                  <tabs>
+                                                    <Tab text="На Рус.">
+                                                         <content>
+                                                            <TitledPane fx:id="OSN_DATA" alignment="CENTER" animated="false" collapsible="false" style="-fx-border-color: black;" text="Основные данные">
+                                                               <content>
+                                                                  <VBox>
                                                                      <children>
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Фамилия" />
-                                                                        <TextField fx:id="CCUSLAST_NAME" onAction="#EnterLastName" GridPane.columnIndex="1" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.rowIndex="1" />
-                                                                        <TextField fx:id="CCUSFIRST_NAME" onAction="#EnterFirstName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
-                                                                        <TextField fx:id="CCUSMIDDLE_NAME" onAction="#EnterMiddleName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата рождения" GridPane.rowIndex="3" />
-                                                                        <DatePicker fx:id="DCUSBIRTHDAY" maxWidth="100.0" onAction="#EnterBirthDate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                                                           <children>
+                                                                              <GridPane>
+                                                                                 <children>
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Фамилия" />
+                                                                                    <TextField fx:id="CCUSLAST_NAME" onAction="#EnterLastName" GridPane.columnIndex="1" />
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.rowIndex="1" />
+                                                                                    <TextField fx:id="CCUSFIRST_NAME" onAction="#EnterFirstName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
+                                                                                    <TextField fx:id="CCUSMIDDLE_NAME" onAction="#EnterMiddleName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата рождения" GridPane.rowIndex="3" />
+                                                                                    <DatePicker fx:id="DCUSBIRTHDAY" maxWidth="100.0" onAction="#EnterBirthDate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                                 </children>
+                                                                                 <columnConstraints>
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="300.0" />
+                                                                                 </columnConstraints>
+                                                                                 <rowConstraints>
+                                                                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                 </rowConstraints>
+                                                                              </GridPane>
+                                                                              <GridPane>
+                                                                                 <children>
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Подразделение" />
+                                                                                    <ComboBox fx:id="ICUSOTD" maxWidth="1.7976931348623157E308" onAction="#ICUSOTD" GridPane.columnIndex="1" />
+                                                                                    <ComboBox fx:id="CCUSSEX" maxWidth="1.7976931348623157E308" onAction="#CCUSSEX" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Пол" GridPane.rowIndex="2" />
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Национальность" GridPane.rowIndex="3" />
+                                                                                    <ComboBox fx:id="CCUSNATIONALITY" editable="true" maxWidth="1.7976931348623157E308" onAction="#CCUSNATIONALITY" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Страна рождения" GridPane.rowIndex="1" />
+                                                                                    <ComboBox fx:id="CombCountry" editable="true" maxWidth="1.7976931348623157E308" onAction="#CombCountry" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                                 </children>
+                                                                                 <columnConstraints>
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" prefWidth="280.0" />
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" />
+                                                                                 </columnConstraints>
+                                                                                 <rowConstraints>
+                                                                                    <RowConstraints maxHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                 </rowConstraints>
+                                                                                 <HBox.margin>
+                                                                                    <Insets left="10.0" />
+                                                                                 </HBox.margin>
+                                                                              </GridPane>
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <GridPane>
+                                                                           <children>
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Место рождения" />
+                                                                              <TextField fx:id="CCUSPLACE_BIRTH" maxWidth="1.7976931348623157E308" onAction="#EnterPlaceBirth" GridPane.columnIndex="1" />
+                                                                           </children>
+                                                                           <columnConstraints>
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="110.0" />
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="700.0" prefWidth="700.0" />
+                                                                           </columnConstraints>
+                                                                           <rowConstraints>
+                                                                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                           </rowConstraints>
+                                                                        </GridPane>
                                                                      </children>
-                                                                     <columnConstraints>
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="300.0" />
-                                                                     </columnConstraints>
-                                                                     <rowConstraints>
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                     </rowConstraints>
-                                                                  </GridPane>
-                                                                  <GridPane>
+                                                                  </VBox>
+                                                               </content>
+                                                            </TitledPane>
+                                                         </content>
+                                                    </Tab>
+                                                    <Tab text="На Абх.">
+                                                         <content>
+                                                            <TitledPane fx:id="OSN_DATA_ABH" alignment="CENTER" animated="false" collapsible="false" style="-fx-border-color: black;" text="Основные данные на Абхазском">
+                                                               <content>
+                                                                  <VBox>
                                                                      <children>
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Подразделение" />
-                                                                        <ComboBox fx:id="ICUSOTD" maxWidth="1.7976931348623157E308" onAction="#ICUSOTD" GridPane.columnIndex="1" />
-                                                                        <ComboBox fx:id="CCUSSEX" maxWidth="1.7976931348623157E308" onAction="#CCUSSEX" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Пол" GridPane.rowIndex="2" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Национальность" GridPane.rowIndex="3" />
-                                                                        <ComboBox fx:id="CCUSNATIONALITY" editable="true" maxWidth="1.7976931348623157E308" onAction="#CCUSNATIONALITY" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Страна рождения" GridPane.rowIndex="1" />
-                                                                        <ComboBox fx:id="CombCountry" editable="true" maxWidth="1.7976931348623157E308" onAction="#CombCountry" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+                                                                           <children>
+                                                                              <GridPane>
+                                                                                 <children>
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ажәла" />
+                                                                                    <TextField fx:id="AB_LAST_NAME" maxWidth="300.0" GridPane.columnIndex="1" />
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ахьӡ" GridPane.rowIndex="1" />
+                                                                                    <TextField fx:id="AB_FIRST_NAME" maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Абхьӡы" GridPane.rowIndex="2" />
+                                                                                    <TextField fx:id="AB_MIDDLE_NAME" maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                                 </children>
+                                                                                 <columnConstraints>
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="300.0" />
+                                                                                 </columnConstraints>
+                                                                                 <rowConstraints>
+                                                                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                 </rowConstraints>
+                                                                              </GridPane>
+                                                                              <GridPane>
+                                                                                <columnConstraints>
+                                                                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="300.0" />
+                                                                                </columnConstraints>
+                                                                                <rowConstraints>
+                                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                </rowConstraints>
+                                                                                 <children>
+                                                                                    <RadioButton fx:id="AB_SUN" mnemonicParsing="false" onAction="#AB_SUN" text="Иԥа" GridPane.rowIndex="2" />
+                                                                                    <RadioButton fx:id="AB_DOUTH" mnemonicParsing="false" onAction="#AB_DOUTH" text="Иԥҳа" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                                 </children>
+                                                                              </GridPane>
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <GridPane>
+                                                                           <children>
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дахьиз аҭыԥ" />
+                                                                              <TextField fx:id="AB_PLACE_BIRTH" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+                                                                           </children>
+                                                                           <columnConstraints>
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="110.0" />
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="700.0" prefWidth="700.0" />
+                                                                           </columnConstraints>
+                                                                           <rowConstraints>
+                                                                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                           </rowConstraints>
+                                                                        </GridPane>
                                                                      </children>
-                                                                     <columnConstraints>
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="280.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" />
-                                                                     </columnConstraints>
-                                                                     <rowConstraints>
-                                                                        <RowConstraints maxHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                     </rowConstraints>
-                                                                     <HBox.margin>
-                                                                        <Insets left="10.0" />
-                                                                     </HBox.margin>
-                                                                  </GridPane>
-                                                               </children>
-                                                            </HBox>
-                                                            <GridPane>
-                                                               <children>
-                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Место рождения" />
-                                                                  <TextField fx:id="CCUSPLACE_BIRTH" maxWidth="1.7976931348623157E308" onAction="#EnterPlaceBirth" GridPane.columnIndex="1" />
-                                                               </children>
-                                                               <columnConstraints>
-                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="110.0" />
-                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="700.0" prefWidth="700.0" />
-                                                               </columnConstraints>
-                                                               <rowConstraints>
-                                                                  <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                               </rowConstraints>
-                                                            </GridPane>
-                                                         </children>
-                                                      </VBox>
-                                                   </content>
-                                                </TitledPane>
-                                                <TitledPane fx:id="OSN_DATA1" alignment="CENTER" animated="false" collapsible="false" layoutX="10.0" layoutY="10.0" style="-fx-border-color: black;" text="Основные данные на Абхазском">
-                                                   <content>
-                                                      <VBox>
-                                                         <children>
-                                                            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                                               <children>
-                                                                  <GridPane>
-                                                                     <children>
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ажәла" />
-                                                                        <TextField fx:id="CCUSLAST_NAME1" onAction="#EnterLastName" GridPane.columnIndex="1" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ахьӡ" GridPane.rowIndex="1" />
-                                                                        <TextField fx:id="CCUSFIRST_NAME1" onAction="#EnterFirstName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Абхьӡы" GridPane.rowIndex="2" />
-                                                                        <TextField fx:id="CCUSMIDDLE_NAME1" onAction="#EnterMiddleName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата рождения" GridPane.rowIndex="3" />
-                                                                        <DatePicker fx:id="DCUSBIRTHDAY1" maxWidth="100.0" onAction="#EnterBirthDate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                                     </children>
-                                                                     <columnConstraints>
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="300.0" />
-                                                                     </columnConstraints>
-                                                                     <rowConstraints>
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                     </rowConstraints>
-                                                                  </GridPane>
-                                                                  <GridPane>
-                                                                     <children>
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Подразделение" />
-                                                                        <ComboBox fx:id="ICUSOTD1" maxWidth="1.7976931348623157E308" onAction="#ICUSOTD" GridPane.columnIndex="1" />
-                                                                        <ComboBox fx:id="CCUSSEX1" maxWidth="1.7976931348623157E308" onAction="#CCUSSEX" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Пол" GridPane.rowIndex="2" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Атәалауаҩра" GridPane.rowIndex="3" />
-                                                                        <ComboBox fx:id="CCUSNATIONALITY1" editable="true" maxWidth="1.7976931348623157E308" onAction="#CCUSNATIONALITY" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Страна рождения" GridPane.rowIndex="1" />
-                                                                        <ComboBox fx:id="CombCountry1" editable="true" maxWidth="1.7976931348623157E308" onAction="#CombCountry" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                                     </children>
-                                                                     <columnConstraints>
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="280.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" />
-                                                                     </columnConstraints>
-                                                                     <rowConstraints>
-                                                                        <RowConstraints maxHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                     </rowConstraints>
-                                                                     <HBox.margin>
-                                                                        <Insets left="10.0" />
-                                                                     </HBox.margin>
-                                                                  </GridPane>
-                                                               </children>
-                                                            </HBox>
-                                                            <GridPane>
-                                                               <children>
-                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дахьиз аҭыԥ" />
-                                                                  <TextField fx:id="CCUSPLACE_BIRTH1" maxWidth="1.7976931348623157E308" onAction="#EnterPlaceBirth" GridPane.columnIndex="1" />
-                                                               </children>
-                                                               <columnConstraints>
-                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="110.0" />
-                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="700.0" prefWidth="700.0" />
-                                                               </columnConstraints>
-                                                               <rowConstraints>
-                                                                  <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                               </rowConstraints>
-                                                            </GridPane>
-                                                         </children>
-                                                      </VBox>
-                                                   </content>
-                                                </TitledPane>
+                                                                  </VBox>
+                                                               </content>
+                                                            </TitledPane>
+                                                         </content>
+                                                    </Tab>
+                                                  </tabs>
+                                                </TabPane>
                                                 <HBox spacing="5.0">
                                                    <children>
                                                     <TitledPane fx:id="Citizen" alignment="CENTER" animated="false" collapsible="false" style="-fx-border-color: black;" text="Гражданство">
@@ -391,9 +390,6 @@
                                                                     </items>
                                                                   </ContextMenu>
                                                                </contextMenu>
-                                                               <columnResizePolicy>
-                                                                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                               </columnResizePolicy>
                                                             </TableView>
                                                          </children>
                                                       </VBox>

@@ -43,8 +43,27 @@ public class UPDATE_NAME {
 	private IntegerProperty ID;
 	/** Нет данных */
 	private StringProperty FIO;
+	/** Фамилия до перемены АБХ */
+	private StringProperty OLD_LASTNAME_AB;
+	/** Имя до перемены АБХ */
+	private StringProperty OLD_FIRSTNAME_AB;
+	/** Отчество до перемены АБХ */
+	private StringProperty OLD_MIDDLNAME_AB;
+	/** Фамилия после перемены АБХ */
+	private StringProperty NEW_LASTNAME_AB;
+	/** Имя после перемены АБХ */
+	private StringProperty NEW_FIRSTNAME_AB;
+	/** Отчество после перемены АБХ */
+	private StringProperty NEW_MIDDLNAME_AB;
 
 	public UPDATE_NAME() {
+		this.OLD_LASTNAME_AB = new SimpleStringProperty();
+		this.OLD_FIRSTNAME_AB = new SimpleStringProperty();
+		this.OLD_MIDDLNAME_AB = new SimpleStringProperty();
+		this.NEW_LASTNAME_AB = new SimpleStringProperty();
+		this.NEW_FIRSTNAME_AB = new SimpleStringProperty();
+		this.NEW_MIDDLNAME_AB = new SimpleStringProperty();
+
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.SVID_SERIA = new SimpleStringProperty();
@@ -62,6 +81,78 @@ public class UPDATE_NAME {
 		this.OLD_LASTNAME = new SimpleStringProperty();
 		this.ID = new SimpleIntegerProperty();
 		this.FIO = new SimpleStringProperty();
+	}
+
+	public void setOLD_LASTNAME_AB(String OLD_LASTNAME_AB) {
+		this.OLD_LASTNAME_AB.set(OLD_LASTNAME_AB);
+	}
+
+	public void setOLD_FIRSTNAME_AB(String OLD_FIRSTNAME_AB) {
+		this.OLD_FIRSTNAME_AB.set(OLD_FIRSTNAME_AB);
+	}
+
+	public void setOLD_MIDDLNAME_AB(String OLD_MIDDLNAME_AB) {
+		this.OLD_MIDDLNAME_AB.set(OLD_MIDDLNAME_AB);
+	}
+
+	public void setNEW_LASTNAME_AB(String NEW_LASTNAME_AB) {
+		this.NEW_LASTNAME_AB.set(NEW_LASTNAME_AB);
+	}
+
+	public void setNEW_FIRSTNAME_AB(String NEW_FIRSTNAME_AB) {
+		this.NEW_FIRSTNAME_AB.set(NEW_FIRSTNAME_AB);
+	}
+
+	public void setNEW_MIDDLNAME_AB(String NEW_MIDDLNAME_AB) {
+		this.NEW_MIDDLNAME_AB.set(NEW_MIDDLNAME_AB);
+	}
+
+	public String getOLD_LASTNAME_AB() {
+		return OLD_LASTNAME_AB.get();
+	}
+
+	public String getOLD_FIRSTNAME_AB() {
+		return OLD_FIRSTNAME_AB.get();
+	}
+
+	public String getOLD_MIDDLNAME_AB() {
+		return OLD_MIDDLNAME_AB.get();
+	}
+
+	public String getNEW_LASTNAME_AB() {
+		return NEW_LASTNAME_AB.get();
+	}
+
+	public String getNEW_FIRSTNAME_AB() {
+		return NEW_FIRSTNAME_AB.get();
+	}
+
+	public String getNEW_MIDDLNAME_AB() {
+		return NEW_MIDDLNAME_AB.get();
+	}
+
+	public StringProperty OLD_LASTNAME_ABProperty() {
+		return OLD_LASTNAME_AB;
+	}
+
+	public StringProperty OLD_FIRSTNAME_ABProperty() {
+		return OLD_FIRSTNAME_AB;
+	}
+
+	public StringProperty OLD_MIDDLNAME_ABProperty() {
+		return OLD_MIDDLNAME_AB;
+	}
+
+	public StringProperty NEW_LASTNAME_ABProperty() {
+		return NEW_LASTNAME_AB;
+	}
+
+	public StringProperty NEW_FIRSTNAME_ABProperty() {
+		return NEW_FIRSTNAME_AB;
+	}
+
+	public StringProperty NEW_MIDDLNAME_ABProperty() {
+		return NEW_MIDDLNAME_AB;
 	}
 
 	public void setCR_TIME(String CR_TIME) {
