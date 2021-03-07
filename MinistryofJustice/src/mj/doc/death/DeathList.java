@@ -876,9 +876,9 @@ public class DeathList {
 				fields.setField("Текст10", rs.getString(""));
 				fields.setField("Текст11", rs.getString(""));
 				fields.setField("Текст12", rs.getString(""));
-				fields.setField("Текст13", rs.getString(""));
-				fields.setField("Текст14", rs.getString(""));
-				fields.setField("Текст15", rs.getString(""));
+				fields.setField("Текст13", rs.getString("DETH_OPEN_YYYY"));
+				fields.setField("Текст14", rs.getString("DETH_OPEN_MM"));
+				fields.setField("Текст15", rs.getString("DETH_OPEN_DD"));
 				fields.setField("Текст16", rs.getString(""));
 				fields.setField("Текст17", rs.getString(""));
 				fields.setField("Текст18", rs.getString(""));
