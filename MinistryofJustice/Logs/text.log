@@ -2362,3 +2362,62 @@ Caused by: Error : 942, Position : 18, Sql = select * from xxi.BLANK_UPDATE_NAME
 [06.03.2021 23:06:45] [Auth1c] INFO :380 - User
 [06.03.2021 23:06:45] [Auth1c] INFO :381 - User
 [06.03.2021 23:06:45] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 13:17:25] [ConvConst] ERROR:140 - java.sql.SQLSyntaxErrorException: ORA-04045: ошибки во время перекомпиляции/перепроверки XXI.LOGOFF_AUDIT_TRIGGER
+ORA-01031: привилегий недостаточно
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:441)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:436)
+	at oracle.jdbc.driver.T4C7Ocommoncall.processError(T4C7Ocommoncall.java:86)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C7Ocommoncall.doOLOGOFF(T4C7Ocommoncall.java:62)
+	at oracle.jdbc.driver.T4CConnection.logoff(T4CConnection.java:908)
+	at oracle.jdbc.driver.PhysicalConnection.close(PhysicalConnection.java:2005)
+	at mj.users.UsrC.dbDisconnect(UsrC.java:289)
+	at mj.app.main.Main$21.handle(Main.java:1021)
+	at mj.app.main.Main$21.handle(Main.java:1)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at com.sun.javafx.stage.WindowPeerListener.closing(WindowPeerListener.java:88)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.run(GlassWindowEventHandler.java:122)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.run(GlassWindowEventHandler.java:40)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.lambda$handleWindowEvent$3(GlassWindowEventHandler.java:151)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.handleWindowEvent(GlassWindowEventHandler.java:149)
+	at com.sun.glass.ui.Window.handleWindowEvent(Window.java:1273)
+	at com.sun.glass.ui.Window.notifyClose(Window.java:1177)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+[07.03.2021 19:29:32] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="75079620794307920079620794207942079250794407929079500796507930079310794007928079220792207922079220792207948079850799107976079830791507957079160790707942079860798907976079150795907952079160790707980079280792007927079280793207923079070794207955079600790707939079070792607921079260792307946079470799707922079220792207922079220892208915089180893207907089320891508923089190790708919089290892778" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 19:29:32] [Auth1c] INFO :380 - User
+[07.03.2021 19:29:32] [Auth1c] INFO :381 - User
+[07.03.2021 19:29:32] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 19:29:33] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 19:32:02"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Хибба" Имя="Юрий" Отчество="Азизович" ДатаРождения="16.06.1937 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCA078A1-4718-10C7-E053-4740470A5E25" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="01" КемВыдан="null" ДатаВыдачи="16.06.1937 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 19:29:33] [Auth1c] INFO :380 - User
+[07.03.2021 19:29:33] [Auth1c] INFO :381 - User
+[07.03.2021 19:29:33] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority

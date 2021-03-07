@@ -15,12 +15,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
+
 import com.jyloo.syntheticafx.PatternColumnFilter;
 import com.jyloo.syntheticafx.SyntheticaFX;
 import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
+
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -1765,8 +1768,15 @@ public class EditCus {
 	 */
 	@FXML
 	private void initialize() {
-		try {
-			
+		try {	
+//			final KeyCombination kb = new KeyCodeCombination(KeyCode.BACK_QUOTE, KeyCombination.CONTROL_DOWN);
+//			AB_MIDDLE_NAME.setOnKeyReleased(event -> {
+//				System.out.println(event.getCode());
+//				if (kb.match(event)) {
+//					System.out.println("Pressed!!");
+//				}
+//			});
+
 			ToggleGroup toggleGroup = new ToggleGroup();
 
 			AB_SUN.setToggleGroup(toggleGroup);

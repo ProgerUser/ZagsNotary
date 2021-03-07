@@ -118,17 +118,15 @@ public class EditZags {
 	@FXML
 	private void initialize() {
 		try {
-			
+			ZAGS_ID.setEditable(false);
 			ZAGS_RUK_ABH.setText(zags.getZAGS_RUK_ABH());
 			ADDR.setText(zags.getADDR());
 			ZAGS_ADR_ABH.setText(zags.getZAGS_ADR_ABH());
 			ZAGS_CITY_ABH.setText(zags.getZAGS_CITY_ABH());
 			ZAGS_ADR.setText(zags.getZAGS_ADR());
-			
 			ZAGS_NAME.setText(zags.getZAGS_NAME());
 			ZAGS_RUK.setText(zags.getZAGS_RUK());
 			ZAGS_ID.setText(String.valueOf(zags.getZAGS_ID()));
-
 			// Отделение
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from otd");
@@ -155,9 +153,7 @@ public class EditZags {
 				}
 				rs.close();
 			}
-
 			convertComboDisplayList();
-
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

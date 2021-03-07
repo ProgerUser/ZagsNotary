@@ -34,6 +34,9 @@ import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
 import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -210,13 +213,7 @@ public class DeathList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -305,13 +302,7 @@ public class DeathList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -381,13 +372,7 @@ public class DeathList {
 			rs.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return list;
 	}
@@ -527,14 +512,7 @@ public class DeathList {
 										}
 									}
 								} catch (SQLException e) {
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(
-											ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e),
-											methodName);
+									DBUtil.LOG_ERROR(e);
 								}
 							}
 						});
@@ -544,19 +522,9 @@ public class DeathList {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "DEATH_CERT"));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					} else {
-						e.printStackTrace();
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 				}
 			} else {
@@ -564,13 +532,7 @@ public class DeathList {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -579,7 +541,6 @@ public class DeathList {
 	 */
 	void Print() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите строку!");
 			} else {
@@ -706,13 +667,7 @@ public class DeathList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -728,8 +683,6 @@ public class DeathList {
 	 */
 	void Refresh() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			String selectStmt = "select * from vdeath_cert t " + ((getWhere() != null) ? getWhere() : "");
@@ -794,13 +747,7 @@ public class DeathList {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -903,7 +850,92 @@ public class DeathList {
 	void BtPrint(ActionEvent event) {
 		Print();
 	}
+	
+	public void manipulatePdf(String src, String dest) throws Exception{
+		if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Выберите строку!");
+		} else {
+			PdfReader reader = new PdfReader(src);
+			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+			AcroFields fields = stamper.getAcroFields();
+		    //System.out.print(fields.getFields());
 
+			PreparedStatement prp = conn.prepareStatement("select * from BLANK_DEATH_CERT where DC_ID = ?");
+			prp.setInt(1, DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID());
+			ResultSet rs = prp.executeQuery();
+			while (rs.next()) {
+				fields.setField("Текст1", rs.getString("AB_LAST_NAME"));
+				fields.setField("Текст2", rs.getString("ABH_FMNAME"));
+				fields.setField("Текст3", rs.getString("ABH_COUNTRY"));
+				fields.setField("Текст4", rs.getString("BR_DD"));
+				fields.setField("Текст5", rs.getString("ABH_MM"));
+				fields.setField("Текст6", rs.getString("BR_YYYY"));
+				fields.setField("Текст7", rs.getString("ABH_BRTH_PLC"));
+				fields.setField("Текст8", rs.getString("FIO_ABH_SH"));
+				fields.setField("Текст9", rs.getString("DETH_DATE"));
+				fields.setField("Текст10", rs.getString(""));
+				fields.setField("Текст11", rs.getString(""));
+				fields.setField("Текст12", rs.getString(""));
+				fields.setField("Текст13", rs.getString(""));
+				fields.setField("Текст14", rs.getString(""));
+				fields.setField("Текст15", rs.getString(""));
+				fields.setField("Текст16", rs.getString(""));
+				fields.setField("Текст17", rs.getString(""));
+				fields.setField("Текст18", rs.getString(""));
+				fields.setField("Текст19", rs.getString(""));
+				fields.setField("Текст20", rs.getString(""));
+				fields.setField("Текст21", rs.getString(""));
+				fields.setField("Текст22", rs.getString(""));
+				fields.setField("Текст23", rs.getString(""));
+				fields.setField("Текст24", rs.getString(""));
+				fields.setField("Текст25", rs.getString(""));
+				fields.setField("Текст26", rs.getString(""));
+				fields.setField("Текст27", rs.getString(""));
+				fields.setField("Текст28", rs.getString(""));
+				fields.setField("Текст29", rs.getString(""));
+				fields.setField("Текст30", rs.getString(""));
+				fields.setField("Текст31", rs.getString(""));
+				fields.setField("Текст32", rs.getString(""));
+				fields.setField("Текст33", rs.getString(""));
+				fields.setField("Текст34", rs.getString(""));
+				fields.setField("Текст35", rs.getString(""));
+				fields.setField("Текст36", rs.getString(""));
+				fields.setField("Текст37", rs.getString(""));
+				fields.setField("Текст38", rs.getString(""));
+				fields.setField("Текст39", rs.getString(""));
+				fields.setField("Текст40", rs.getString(""));
+				fields.setField("Текст41", rs.getString(""));
+				fields.setField("Текст42", rs.getString(""));
+				fields.setField("Текст43", rs.getString(""));
+				fields.setField("Текст44", rs.getString(""));
+				fields.setField("Текст45", rs.getString(""));
+				fields.setField("Текст46", rs.getString(""));
+				fields.setField("Текст47", rs.getString(""));
+			}
+			prp.close();
+			rs.close();
+			
+			stamper.close();
+			reader.close();
+		}
+	}
+
+	/**
+	 * Кнопка печать бланка
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void BtPrintBlank(ActionEvent event) {
+		try {
+			manipulatePdf(System.getenv("MJ_PATH") + "/Reports/DEATH_CERT.pdf",
+					System.getenv("MJ_PATH") + "/OutReports/DEATH_CERT.pdf");
+			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/DEATH_CERT.pdf"));
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	/**
 	 * Подключение к базе
 	 */
@@ -914,7 +946,6 @@ public class DeathList {
 	 */
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "DeathList");
@@ -923,12 +954,7 @@ public class DeathList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -937,17 +963,11 @@ public class DeathList {
 	 */
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1103,12 +1123,7 @@ public class DeathList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1152,13 +1167,7 @@ public class DeathList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 
 		return ret;
@@ -1193,14 +1202,7 @@ public class DeathList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
