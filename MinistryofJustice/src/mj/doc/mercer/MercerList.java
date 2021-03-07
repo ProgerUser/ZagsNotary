@@ -20,7 +20,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -34,6 +33,9 @@ import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
 import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -114,10 +116,9 @@ public class MercerList {
 
 	void Add() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 
 			if (DBUtil.OdbAction(95) == 0) {
-				Msg.Message("Нет доступа!");
+				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 				return;
 			}
 
@@ -133,7 +134,7 @@ public class MercerList {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -147,13 +148,7 @@ public class MercerList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -161,30 +156,30 @@ public class MercerList {
 		try {
 
 			if (DBUtil.OdbAction(97) == 0) {
-				Msg.Message("Нет доступа!");
+				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 				return;
 			}
 
 			if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите строку!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 			} else {
 				Main.logger = Logger.getLogger(getClass());
 
 				Stage stage = (Stage) MC_MERCER.getScene().getWindow();
-				Label alert = new Label("Удалить запись?");
+				Label alert = new Label("РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ?");
 				alert.setLayoutX(75.0);
 				alert.setLayoutY(11.0);
 				alert.setPrefHeight(17.0);
 
 				Button no = new Button();
-				no.setText("Нет");
+				no.setText("РќРµС‚");
 				no.setLayoutX(111.0);
 				no.setLayoutY(56.0);
 				no.setPrefWidth(72.0);
 				no.setPrefHeight(21.0);
 
 				Button yes = new Button();
-				yes.setText("Да");
+				yes.setText("Р”Р°");
 				yes.setLayoutX(14.0);
 				yes.setLayoutY(56.0);
 				yes.setPrefWidth(72.0);
@@ -216,20 +211,14 @@ public class MercerList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								DBUtil.LOG_ERROR(e1);
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
 				});
-				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 				newWindow_yn.setScene(ynScene);
 				newWindow_yn.initModality(Modality.WINDOW_MODAL);
 				newWindow_yn.initOwner(stage);
@@ -238,13 +227,7 @@ public class MercerList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -253,8 +236,7 @@ public class MercerList {
 	MC_MERCER Initialize2(Integer docid) {
 		MC_MERCER list = null;
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
+			
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
@@ -295,19 +277,15 @@ public class MercerList {
 				list.setMERCER_HE_LNBEF(rs.getString("MERCER_HE_LNBEF"));
 				list.setMERCER_ZAGS(rs.getInt("MERCER_ZAGS"));
 				list.setMERCER_HE_LNAFT(rs.getString("MERCER_HE_LNAFT"));
-
+				list.setMC_DATE((rs.getDate("MC_DATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MC_DATE")), formatter)
+						: null);
 				dlist.add(list);
 			}
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return list;
 	}
@@ -316,10 +294,8 @@ public class MercerList {
 		try {
 			if (isopen == false) {
 
-				Main.logger = Logger.getLogger(getClass());
-
 				if (DBUtil.OdbAction(96) == 0) {
-					Msg.Message("Нет доступа!");
+					Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 					return;
 				}
 
@@ -352,7 +328,7 @@ public class MercerList {
 						Parent root = loader.load();
 						stage.setScene(new Scene(root));
 						stage.getIcons().add(new Image("/icon.png"));
-						stage.setTitle("Редактирование: ");
+						stage.setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ: ");
 						stage.initOwner(stage_);
 						stage.setResizable(false);
 						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -365,32 +341,32 @@ public class MercerList {
 										if (from == null) {
 											Refresh();
 										}
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 										String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER");
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 										isopen = false;
-									} // Если нажали "X" или "Cancel" и до этого что-то меняли
+									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ С‡С‚Рѕ-С‚Рѕ РјРµРЅСЏР»Рё
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 1) {
 										/**
-										 * Проверка выхода без сохранения
+										 * РџСЂРѕРІРµСЂРєР° РІС‹С…РѕРґР° Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
 										 */
 										Stage stage = stage_;
-										Label alert = new Label("Закрыть форму без сохранения?");
+										Label alert = new Label("Р—Р°РєСЂС‹С‚СЊ С„РѕСЂРјСѓ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ?");
 										alert.setLayoutX(75.0);
 										alert.setLayoutY(11.0);
 										alert.setPrefHeight(17.0);
 
 										Button no = new Button();
-										no.setText("Нет");
+										no.setText("РќРµС‚");
 										no.setLayoutX(111.0);
 										no.setLayoutY(56.0);
 										no.setPrefWidth(72.0);
 										no.setPrefHeight(21.0);
 
 										Button yes = new Button();
-										yes.setText("Да");
+										yes.setText("Р”Р°");
 										yes.setLayoutX(14.0);
 										yes.setLayoutY(56.0);
 										yes.setPrefWidth(72.0);
@@ -416,7 +392,7 @@ public class MercerList {
 													e.printStackTrace();
 												}
 												newWindow_yn.close();
-												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+												// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 												String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER");
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
@@ -424,30 +400,25 @@ public class MercerList {
 												isopen = false;
 											}
 										});
-										newWindow_yn.setTitle("Внимание");
+										newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 										newWindow_yn.setScene(ynScene);
 										newWindow_yn.initModality(Modality.WINDOW_MODAL);
 										newWindow_yn.initOwner(stage);
 										newWindow_yn.setResizable(false);
 										newWindow_yn.getIcons().add(new Image("/icon.png"));
 										newWindow_yn.showAndWait();
-									}// Если нажали "X" или "Cancel" и до этого ничего не меняли
+									}// Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ РЅРёС‡РµРіРѕ РЅРµ РјРµРЅСЏР»Рё
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										conn.rollback();
 										isopen = false;
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 										String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER");
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+									DBUtil.LOG_ERROR(e);
 								}
 							}
 						});
@@ -456,34 +427,18 @@ public class MercerList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "MC_MERCER"));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						Msg.Message("Р—Р°РїРёСЃСЊ СЂРµРґР°РєС‚РёСЂСѓРµС‚СЃСЏ " + DBUtil.Lock_Row_View(docid, "MC_MERCER"));
+						DBUtil.LOG_ERROR(e);
 					} else {
-						e.printStackTrace();
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 				}
 
 			} else {
-				Msg.Message("Форма редактирования уже открыта!");
+				Msg.Message("Р¤РѕСЂРјР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СѓР¶Рµ РѕС‚РєСЂС‹С‚Р°!");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -491,14 +446,14 @@ public class MercerList {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите строку!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 			} else {
 				ROOT.setDisable(true);
 				PB.setVisible(true);
 				Task<Object> task = new Task<Object>() {
 					@Override
 					public Object call() throws Exception {
-						// Вызов
+						// Р’С‹Р·РѕРІ
 						Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/MC_MERCER.docx");
 						docx.setVariablePattern(new VariablePattern("#{", "}"));
 						// preparing variables
@@ -653,13 +608,7 @@ public class MercerList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -672,7 +621,6 @@ public class MercerList {
 
 	void Refresh() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
@@ -712,7 +660,9 @@ public class MercerList {
 				list.setMERCER_HE_LNBEF(rs.getString("MERCER_HE_LNBEF"));
 				list.setMERCER_ZAGS(rs.getInt("MERCER_ZAGS"));
 				list.setMERCER_HE_LNAFT(rs.getString("MERCER_HE_LNAFT"));
-
+				list.setMC_DATE((rs.getDate("MC_DATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MC_DATE")), formatter)
+						: null);
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -729,13 +679,7 @@ public class MercerList {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -752,7 +696,7 @@ public class MercerList {
 	@FXML
 	void CmEdit(ActionEvent event) {
 		if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 		} else {
 			Edit(MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID(),
 					(Stage) MC_MERCER.getScene().getWindow());
@@ -777,7 +721,7 @@ public class MercerList {
 	@FXML
 	void BtEdit(ActionEvent event) {
 		if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 		} else {
 			Edit(MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID(),
 					(Stage) MC_MERCER.getScene().getWindow());
@@ -788,7 +732,104 @@ public class MercerList {
 	void BtDelete(ActionEvent event) {
 		Delete();
 	}
+	
+	public void manipulatePdf(String src, String dest) throws Exception {
+		if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+		} else {
+			PdfReader reader = new PdfReader(src);
+			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+			AcroFields fields = stamper.getAcroFields();
 
+//			Iterator it = fields.getFields().entrySet().iterator();
+//			while (it.hasNext()) {
+//				Map.Entry pair = (Map.Entry) it.next();
+//				System.out.println(pair.getKey() + " = " + pair.getValue());
+//				it.remove(); // avoids a ConcurrentModificationException
+//			}
+
+			PreparedStatement prp = conn.prepareStatement("select * from BLANK_MC_MERCER where MERCER_ID = ?");
+			prp.setInt(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
+			ResultSet rs = prp.executeQuery();
+			while (rs.next()) {
+				fields.setField("РўРµРєСЃС‚1", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚2", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚3", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚6", rs.getString("F6"));
+				fields.setField("РўРµРєСЃС‚7", rs.getString("F7"));
+				fields.setField("РўРµРєСЃС‚9", rs.getString("F9"));
+				fields.setField("РўРµРєСЃС‚10", rs.getString("F10"));
+				fields.setField("РўРµРєСЃС‚11", rs.getString("F11"));
+				fields.setField("РўРµРєСЃС‚12", rs.getString("F12"));
+				fields.setField("РўРµРєСЃС‚13", rs.getString("F13"));
+				fields.setField("РўРµРєСЃС‚14", rs.getString("F14"));
+				fields.setField("РўРµРєСЃС‚15", rs.getString("F15"));
+				fields.setField("РўРµРєСЃС‚16", rs.getString("F16"));
+				fields.setField("РўРµРєСЃС‚17", rs.getString("F17"));
+				fields.setField("РўРµРєСЃС‚18", rs.getString("F18"));
+				fields.setField("РўРµРєСЃС‚19", rs.getString("F19"));
+				fields.setField("РўРµРєСЃС‚20", rs.getString("F20"));
+				fields.setField("РўРµРєСЃС‚21", rs.getString("F21"));
+//				fields.setField("РўРµРєСЃС‚22", rs.getString(""));
+//				fields.setField("РўРµРєСЃС‚24", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚25", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚26", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚27", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚28", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚30", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚31", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚33", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚34", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚35", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚36", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚37", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚38", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚39", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚40", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚41", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚42", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚43", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚44", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚45", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚46", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚47", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚48", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚49", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚51", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚52", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚53", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚54", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚55", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚56", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚57", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚58", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚59", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚61", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚63", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚64", rs.getString("F64"));
+				fields.setField("РўРµРєСЃС‚65", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚66", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚67", rs.getString("F67"));
+			}
+			prp.close();
+			rs.close();
+
+			stamper.close();
+			reader.close();
+		}
+	}
+	
+	@FXML
+	void BtPrintBlank(ActionEvent event) {
+		try {
+			manipulatePdf(System.getenv("MJ_PATH") + "/Reports/MC_MERCER.pdf",
+					System.getenv("MJ_PATH") + "/OutReports/MC_MERCER.pdf");
+			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/MC_MERCER.pdf"));
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	@FXML
 	void BtPrint(ActionEvent event) {
 		Print();
@@ -798,7 +839,6 @@ public class MercerList {
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "MercerList");
@@ -807,28 +847,17 @@ public class MercerList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -876,26 +905,26 @@ public class MercerList {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");
 
-		CheckBox filterVisible = new CheckBox("Показать фильтр");
+		CheckBox filterVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ С„РёР»СЊС‚СЂ");
 		filterVisible.selectedProperty().bindBidirectional(table.filterRowVisibleProperty());
 
-		CheckBox menuButtonVisible = new CheckBox("Показать кнопку меню");
+		CheckBox menuButtonVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ РєРЅРѕРїРєСѓ РјРµРЅСЋ");
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
-		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
+		CheckBox firstFilterable = new CheckBox("Р¤РёР»СЊС‚СЂСѓРµРјС‹Р№ РїРµСЂРІС‹Р№ СЃС‚РѕР»Р±РµС†");
 		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(MERCER_ID.filterableProperty());
 
-		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
+		CheckBox includeHidden = new CheckBox("Р’РєР»СЋС‡РёС‚СЊ СЃРєСЂС‹С‚С‹Рµ СЃС‚РѕР»Р±С†С‹");
 		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
+		CheckBox andFilters = new CheckBox("РСЃРїРѕР»СЊР·СѓР№С‚Рµ РѕРїРµСЂР°С†РёСЋ \"Р\" РґР»СЏ РјРЅРѕРіРѕРєРѕР»РѕРЅРѕС‡РЅРѕРіРѕ С„РёР»СЊС‚СЂР°");
 		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
 		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
 
-		TitledBorderPane p = new TitledBorderPane("Настройки", pane);
+		TitledBorderPane p = new TitledBorderPane("РќР°СЃС‚СЂРѕР№РєРё", pane);
 		p.getStyleClass().add("top-border-only");
 		p.setStyle("-fx-border-insets: 10 0 0 0");
 		return p;
@@ -934,7 +963,7 @@ public class MercerList {
 			dbConnect();
 			Refresh();
 			/**
-			 * Столбцы таблицы
+			 * РЎС‚РѕР»Р±С†С‹ С‚Р°Р±Р»РёС†С‹
 			 */
 			{
 				CR_DATE.setCellValueFactory(cellData -> cellData.getValue().CR_DATEProperty());
@@ -945,13 +974,13 @@ public class MercerList {
 				OPER.setCellValueFactory(cellData -> cellData.getValue().MERCER_USRProperty());
 			}
 
-			// двойной щелчок
+			// РґРІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє
 			MC_MERCER.setRowFactory(tv -> {
 				TableRow<MC_MERCER> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
 						if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-							Msg.Message("Выберите строку!");
+							Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 						} else {
 							Edit(MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID(),
 									(Stage) MC_MERCER.getScene().getWindow());
@@ -961,7 +990,7 @@ public class MercerList {
 				return row;
 			});
 			/**
-			 * ФД
+			 * Р¤Р”
 			 */
 			{
 				CellDateFormatD(CR_DATE);
@@ -969,12 +998,7 @@ public class MercerList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -994,7 +1018,7 @@ public class MercerList {
 	}
 
 	/**
-	 * Сравнение данных
+	 * РЎСЂР°РІРЅРµРЅРёРµ РґР°РЅРЅС‹С…
 	 * 
 	 * @return
 	 */
@@ -1018,13 +1042,7 @@ public class MercerList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 
 		return ret;
@@ -1033,7 +1051,7 @@ public class MercerList {
 	String RetXml;
 
 	/**
-	 * Возврат XML файлов для сравнения
+	 * Р’РѕР·РІСЂР°С‚ XML С„Р°Р№Р»РѕРІ РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ
 	 */
 	void XmlsForCompare(Integer docid) {
 		try {
@@ -1059,14 +1077,7 @@ public class MercerList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

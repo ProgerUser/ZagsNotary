@@ -271,7 +271,6 @@ public class BirthList {
 				fields.setField("Текст113", rs.getString("F113"));
 				fields.setField("Текст115", rs.getString("F80"));
 				fields.setField("Текст116", rs.getString("F101"));
-
 			}
 			prp.close();
 			rs.close();
