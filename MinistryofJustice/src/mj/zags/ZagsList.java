@@ -35,7 +35,7 @@ import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 
 public class ZagsList {
-	
+
 	public ZagsList() {
 		Main.logger = Logger.getLogger(getClass());
 	}
@@ -91,9 +91,7 @@ public class ZagsList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -166,17 +164,22 @@ public class ZagsList {
 							delete.setInt(1, cl.getZAGS_ID());
 							delete.executeUpdate();
 							delete.close();
-							
+
 							Init();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
 								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								Main.logger.error(
+										ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 							}
 							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 						}
 						newWindow_yn.close();
 					}
@@ -190,9 +193,7 @@ public class ZagsList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -236,8 +237,7 @@ public class ZagsList {
 										conn.rollback();
 									isopen = false;
 								} catch (SQLException e) {
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+									DBUtil.LOG_ERROR(e);
 								}
 
 							}
@@ -248,11 +248,9 @@ public class ZagsList {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Клиент редактируется другим пользователем!");
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					} else {
-						e.printStackTrace();
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 				}
 
@@ -260,16 +258,13 @@ public class ZagsList {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
 
 			ZAGS_NAME.setCellValueFactory(cellData -> cellData.getValue().ZAGS_NAMEProperty());
@@ -294,8 +289,7 @@ public class ZagsList {
 			});
 			Init();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -309,19 +303,22 @@ public class ZagsList {
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				list = new VZAGS();
-				list.setCOTDNAME(rs.getString("COTDNAME"));
-				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
 				list.setZAGS_RUK(rs.getString("ZAGS_RUK"));
+				list.setZAGS_CITY_ABH(rs.getString("ZAGS_CITY_ABH"));
+				list.setZAGS_ADR(rs.getString("ZAGS_ADR"));
+				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
+				list.setADDR(rs.getString("ADDR"));
+				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
+				list.setCOTDNAME(rs.getString("COTDNAME"));
+				list.setZAGS_RUK_ABH(rs.getString("ZAGS_RUK_ABH"));
+				list.setZAGS_ADR_ABH(rs.getString("ZAGS_ADR_ABH"));
+				list.setZAGS_OTD(rs.getInt("ZAGS_OTD"));
 			}
-			
 			prepStmt.close();
 			rs.close();
-			
+
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return list;
 	}
@@ -335,10 +332,16 @@ public class ZagsList {
 			ObservableList<VZAGS> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				VZAGS list = new VZAGS();
-				list.setCOTDNAME(rs.getString("COTDNAME"));
-				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
 				list.setZAGS_RUK(rs.getString("ZAGS_RUK"));
+				list.setZAGS_CITY_ABH(rs.getString("ZAGS_CITY_ABH"));
+				list.setZAGS_ADR(rs.getString("ZAGS_ADR"));
+				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
+				list.setADDR(rs.getString("ADDR"));
+				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
+				list.setCOTDNAME(rs.getString("COTDNAME"));
+				list.setZAGS_RUK_ABH(rs.getString("ZAGS_RUK_ABH"));
+				list.setZAGS_ADR_ABH(rs.getString("ZAGS_ADR_ABH"));
+				list.setZAGS_OTD(rs.getInt("ZAGS_OTD"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -355,9 +358,7 @@ public class ZagsList {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -365,7 +366,6 @@ public class ZagsList {
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "VZAGSList");
@@ -374,8 +374,7 @@ public class ZagsList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -386,9 +385,7 @@ public class ZagsList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
-
 }

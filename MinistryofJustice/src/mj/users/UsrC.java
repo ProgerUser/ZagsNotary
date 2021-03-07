@@ -43,6 +43,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
+import mj.access.grp.ODB_GROUP_USR;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
@@ -62,6 +63,24 @@ public class UsrC {
 		Main.logger = Logger.getLogger(getClass());
 	}
 
+    @FXML
+    private TableView<ODB_GROUP_USR> USR_GRP;
+    
+    @FXML
+    private TableColumn<ODB_GROUP_USR, Integer> GRP_ID;
+
+    @FXML
+    private TableColumn<ODB_GROUP_USR, String> GRP_NAME;
+    
+	@FXML
+	private TextField FIO_SH;
+
+	@FXML
+	private TextField FIO_ABH;
+
+	@FXML
+	private TextField FIO_ABH_SH;
+	    
 	@FXML
 	private RadioButton zags_w;
 
@@ -164,7 +183,6 @@ public class UsrC {
 
 	void Add() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 
 			if (DBUtil.OdbAction(3) == 0) {
 				Msg.Message("Нет доступа!");
@@ -196,20 +214,13 @@ public class UsrC {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void Set_UP_Pass(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 
 			if (USRLST.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите пользователя!");
@@ -248,13 +259,7 @@ public class UsrC {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -273,7 +278,6 @@ public class UsrC {
 	 */
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "USR");
@@ -282,12 +286,7 @@ public class UsrC {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -296,17 +295,11 @@ public class UsrC {
 	 */
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -323,7 +316,7 @@ public class UsrC {
 				// Msg.Message("Выберите пользователя!");
 			} else {
 				CallableStatement callStmt = conn
-						.prepareCall("{ ? = call MJUsers.UpdateUser(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+						.prepareCall("{ ? = call MJUsers.UpdateUser(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 				callStmt.registerOutParameter(1, Types.VARCHAR);
 
 				if (IUSRBRANCH.getSelectionModel().getSelectedItem() != null) {
@@ -374,7 +367,11 @@ public class UsrC {
 					callStmt.setString(15, "ADM");
 				else
 					callStmt.setString(15, null);
-
+				
+				callStmt.setString(16, FIO_SH.getText());
+				callStmt.setString(17, FIO_ABH_SH.getText());
+				callStmt.setString(18, FIO_ABH.getText());
+				
 				callStmt.execute();
 				String ret = callStmt.getString(1);
 				callStmt.close();
@@ -389,13 +386,7 @@ public class UsrC {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -403,8 +394,6 @@ public class UsrC {
 
 	void INIT() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
 			String selectStmt = "select * from usr " + where + " order by CUSRLOGNAME";
@@ -454,6 +443,9 @@ public class UsrC {
 				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
 				list.setNOTARY_ID(rs.getInt("NOTARY_ID"));
 				list.setACCESS_LEVEL(rs.getString("access_level"));
+				list.setFIO_SH(rs.getString("FIO_SH"));
+				list.setFIO_ABH_SH(rs.getString("FIO_ABH_SH"));
+				list.setFIO_ABH(rs.getString("FIO_ABH"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -476,13 +468,7 @@ public class UsrC {
 			});
 			// autoResizeColumns(USRLST);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -533,12 +519,14 @@ public class UsrC {
 
 	@FXML
 	private void initialize() {
+		
 		ToggleGroup group = new ToggleGroup();
 		zags_w.setToggleGroup(group);
 		notary_w.setToggleGroup(group);
 		all_w.setToggleGroup(group);
 
 		dbConnect();
+	
 		ZagsCombo();
 		NotaryCombo();
 		convertComboDisplayList();
@@ -548,10 +536,14 @@ public class UsrC {
 		LOGNAME.setCellValueFactory(cellData -> cellData.getValue().CUSRLOGNAMEProperty());
 		CUSRNAMEC.setCellValueFactory(cellData -> cellData.getValue().CUSRNAMEProperty());
 
+		GRP_ID.setCellValueFactory(cellData -> cellData.getValue().GRP_IDProperty().asObject());
+		GRP_NAME.setCellValueFactory(cellData -> cellData.getValue().GRP_NAMEProperty());
+		
 		/* Listener */
 		USRLST.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
 				InitFields();
+				InitGrp();
 				LOG.setText("");
 			}
 		});
@@ -607,6 +599,48 @@ public class UsrC {
 		return ret;
 	}
 
+	/**
+	 * Обновить таблицу с группами
+	 */
+	void InitGrp() {
+		try {
+			PreparedStatement prepStmt = conn
+					.prepareStatement("SELECT GRP_ID, GRP_NAME, NOTATION_EXTEND_ID\n" + 
+							"  FROM ODB_GROUP_USR\n" + 
+							" WHERE EXISTS\n" + 
+							" (SELECT NULL\n" + 
+							"          FROM ODB_GRP_MEMBER G\n" + 
+							"         WHERE G.IUSRID =\n" + 
+							"               (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = ?))\n" + 
+							"");
+			prepStmt.setString(1, USRLST.getSelectionModel().getSelectedItem().getCUSRLOGNAME());
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<ODB_GROUP_USR> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				ODB_GROUP_USR list = new ODB_GROUP_USR();
+				list.setGRP_ID(rs.getInt("GRP_ID"));
+				list.setGRP_NAME(rs.getString("GRP_NAME"));
+				list.setNOTATION_EXTEND_ID(rs.getInt("NOTATION_EXTEND_ID"));
+				dlist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+
+			USR_GRP.setItems(dlist);
+
+			TableFilter<ODB_GROUP_USR> tableFilter = TableFilter.forTableView(USR_GRP).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	public void InitFields() {
 		try {
 			USR usr = USRLST.getSelectionModel().getSelectedItem();
@@ -696,6 +730,11 @@ public class UsrC {
 				IUSRCHR_QUANTITY.setText(String.valueOf(usr.getIUSRCHR_QUANTITY().toString()));
 				IUSRNUM_QUANTITY.setText(String.valueOf(usr.getIUSRNUM_QUANTITY()));
 				IUSRSPEC_QUANTITY.setText(String.valueOf(usr.getIUSRSPEC_QUANTITY()));
+				
+				FIO_SH.setText(usr.getFIO_SH());
+				FIO_ABH.setText(usr.getFIO_ABH());
+				FIO_ABH_SH.setText(usr.getFIO_ABH_SH());
+				
 				MUST_CHANGE_PASSWORD.setSelected((usr.getMUST_CHANGE_PASSWORD().equals("Y")) ? true : false);
 
 				if (usr.getACCESS_LEVEL() != null) {
@@ -780,7 +819,6 @@ public class UsrC {
 					Msg.Message("Нет доступа!");
 					return;
 				}
-				Main.logger = Logger.getLogger(getClass());
 
 				Stage stage = (Stage) USRLST.getScene().getWindow();
 				Label alert = new Label("Удалить запись?");

@@ -430,7 +430,7 @@
                            <top>
                               <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                 <items>
-                                    <MenuButton fx:id="ZAGS_MENU_BUT" mnemonicParsing="false" text="Добавить">
+                                    <MenuButton fx:id="ZAGS_MENU_BUT" mnemonicParsing="false">
                                       <items>
                                         <MenuItem fx:id="5" mnemonicParsing="false" onAction="#BRN_BIRTH_ACT" text="Свидетельство о рождении" />
                                         <MenuItem fx:id="8" mnemonicParsing="false" onAction="#PATERN_CERT" text="Установление отцовства" />
@@ -442,8 +442,31 @@
                                         <MenuItem fx:id="11" mnemonicParsing="false" onAction="#UPD_NAT" text="Перемена национальной принадлежности" />
                                         <MenuItem fx:id="13" mnemonicParsing="false" onAction="#ADOPT" text="Усыновление (удочерение)" />
                                       </items>
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="PLUS" size="18" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                       <tooltip>
+                                          <Tooltip text="Добавить">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Tooltip>
+                                       </tooltip>
                                     </MenuButton>
-                                    <Button layoutX="10.0" layoutY="13.0" mnemonicParsing="false" onAction="#OpenBTN" text="Открыть" />
+                                    <Button layoutX="10.0" layoutY="13.0" mnemonicParsing="false" onAction="#OpenBTN">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="FOLDER_OPEN_ALT" size="18" />
+                                       </graphic>
+                                       <tooltip>
+                                          <Tooltip text="Открыть">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Tooltip>
+                                       </tooltip></Button>
                                 </items>
                               </ToolBar>
                            </top>

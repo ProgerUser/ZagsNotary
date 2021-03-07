@@ -184,13 +184,7 @@ public class AddCus {
 					prpstmt.close();
 					rs.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
-					Msg.Message(ExceptionUtils.getStackTrace(e));
-					Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-					String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-					String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-					int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-					DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+					DBUtil.LOG_ERROR(e);
 				}
 			});
 
@@ -244,13 +238,7 @@ public class AddCus {
 				setUnDisable();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -432,14 +420,7 @@ public class AddCus {
 				}
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -593,14 +574,7 @@ public class AddCus {
 									InitCusDocum();
 									setUnDisable();
 								} catch (Exception e) {
-									Main.logger = Logger.getLogger(getClass());
-									e.printStackTrace();
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+									DBUtil.LOG_ERROR(e);
 								}
 							});
 						} else {
@@ -736,13 +710,7 @@ public class AddCus {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return exists;
 	}
@@ -1122,16 +1090,9 @@ public class AddCus {
 	@FXML
 	void AddAddressCountry(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CitizenList("address");
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1140,7 +1101,6 @@ public class AddCus {
 	 */
 	void InitCitizen() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			String selectStmt = "select ID,COUNTRY_CODE,COUNTRY_NAME,osn from CUS_CITIZEN_TEMP";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
@@ -1166,13 +1126,7 @@ public class AddCus {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1211,13 +1165,7 @@ public class AddCus {
 			}
 			InitCitizen();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1229,16 +1177,9 @@ public class AddCus {
 	@FXML
 	void BtAddCitizen(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CitizenList("add");
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1260,13 +1201,7 @@ public class AddCus {
 				CitizenList("edit");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1278,7 +1213,6 @@ public class AddCus {
 	@FXML
 	void BtDelCitizen(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (CUS_CITIZEN.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите сначала данные из таблицы!");
 			} else {
@@ -1291,13 +1225,7 @@ public class AddCus {
 				InitCitizen();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1309,7 +1237,6 @@ public class AddCus {
 	@FXML
 	void BtDelDocum(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (CUS_DOCUM.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите сначала данные из таблицы!");
 			} else {
@@ -1325,13 +1252,7 @@ public class AddCus {
 				InitCusDocum();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1342,7 +1263,6 @@ public class AddCus {
 	 */
 	void CitizenList(String type) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -1501,13 +1421,7 @@ public class AddCus {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1519,16 +1433,9 @@ public class AddCus {
 	@FXML
 	void CmAddCitizen(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CitizenList("add");
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1550,13 +1457,7 @@ public class AddCus {
 				CitizenList("edit");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1568,16 +1469,9 @@ public class AddCus {
 	@FXML
 	void BtBurnCountry(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CitizenList("brn");
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1589,7 +1483,6 @@ public class AddCus {
 	@FXML
 	void AreaChange(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			/**
 			 * Нас. пункты
 			 */
@@ -1612,13 +1505,7 @@ public class AddCus {
 				rs.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1662,13 +1549,7 @@ public class AddCus {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1696,13 +1577,7 @@ public class AddCus {
 				InitCusDocum();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1713,7 +1588,6 @@ public class AddCus {
 	 */
 	void CRUDDocum(String type, String type2) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn.prepareCall(type);
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, (PREF_T.isSelected()) ? "Y" : "N");
@@ -1752,13 +1626,7 @@ public class AddCus {
 				Msg.ErrorView(stage_, "CUS_DOCUM_TEMP", conn);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1770,8 +1638,6 @@ public class AddCus {
 	@FXML
 	void AddCusDocum(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) CombCountryAddr.getScene().getWindow();
 			FXMLLoader loader = new FXMLLoader();
@@ -1797,13 +1663,7 @@ public class AddCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1852,14 +1712,7 @@ public class AddCus {
 				stage.show();
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1886,7 +1739,6 @@ public class AddCus {
 	 */
 	void Save1c(Integer dbid, String edit) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			// Если многопоточность
 			BP.setDisable(true);
 			PROGRESS.setVisible(true);
@@ -2016,13 +1868,7 @@ public class AddCus {
 			});
 			exec.execute(task);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2113,13 +1959,7 @@ public class AddCus {
 			}
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2131,7 +1971,6 @@ public class AddCus {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Statement sqlStatement = conn.createStatement();
 			String readRecordSQL = "select count(*) from NATIONALITY where name = '" + CCUSNATIONALITY.getValue() + "'";
 			ResultSet rs = sqlStatement.executeQuery(readRecordSQL);
@@ -2153,13 +1992,7 @@ public class AddCus {
 			sqlStatement.close();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2262,14 +2095,7 @@ public class AddCus {
 						: CCUSLAST_NAME.getScene().getWindow())/*, ConnToDublOpenEdit*/);
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2353,9 +2179,7 @@ public class AddCus {
 			rs.close();
 			CombCountry.requestFocus();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2398,13 +2222,7 @@ public class AddCus {
 			sqlStatement.close();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2457,28 +2275,21 @@ public class AddCus {
 							});
 							stage.show();
 						} catch (Exception e) {
-							Main.logger = Logger.getLogger(getClass());
-							e.printStackTrace();
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 					}
 				});
 				return row;
 			});
 
-			Docs.heightProperty().addListener(
-					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
-			Address.heightProperty().addListener(
-					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
-			Citizen.heightProperty().addListener(
-					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
-			OSN_DATA.heightProperty().addListener(
-					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
+//			Docs.heightProperty().addListener(
+//					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
+//			Address.heightProperty().addListener(
+//					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
+//			Citizen.heightProperty().addListener(
+//					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
+//			OSN_DATA.heightProperty().addListener(
+//					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
 
 			// Button SaveClose = new Button("Сохранить");
 			// MainTool.getItems().add(SaveClose);
@@ -2803,24 +2614,9 @@ public class AddCus {
 			new ConvConst().FormatDatePiker(DOC_DATE_T);
 			new ConvConst().FormatDatePiker(DCUSBIRTHDAY);
 			new ConvConst().FormatDatePiker(DOC_PERIOD_T);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		}catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
-
 	}
 
 	/**
@@ -2844,13 +2640,7 @@ public class AddCus {
 				InitCitizen();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2885,7 +2675,6 @@ public class AddCus {
 	 */
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "AddCus");
@@ -2894,12 +2683,7 @@ public class AddCus {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2908,17 +2692,11 @@ public class AddCus {
 	 */
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

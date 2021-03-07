@@ -38,7 +38,7 @@
 							<items>
 								<Button fx:id="ADD_USR" mnemonicParsing="false" onAction="#AddUser">
                            <graphic>
-                              <FontAwesomeIconView glyphName="USER" size="20" />
+                              <FontAwesomeIconView glyphName="USER" size="15" />
                            </graphic>
                            <font>
                               <Font size="10.0" />
@@ -55,7 +55,7 @@
                               <Font size="10.0" />
                            </font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="SAVE" size="20" />
+                              <FontAwesomeIconView glyphName="SAVE" size="15" />
                            </graphic>
                            <tooltip>
                               <Tooltip text="Сохранить">
@@ -69,7 +69,7 @@
                               <Font size="10.0" />
                            </font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="EDIT" size="20" />
+                              <FontAwesomeIconView glyphName="EDIT" size="15" />
                            </graphic>
                            <tooltip>
                               <Tooltip text="Изменить пароль">
@@ -78,11 +78,15 @@
                                  </font>
                               </Tooltip>
                            </tooltip></Button>
+								<Button mnemonicParsing="false">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="CLONE" size="15" />
+                           </graphic></Button>
+            								<CheckBox fx:id="ViewFire" mnemonicParsing="false" onAction="#ViewFire" text="Показывать уволенных" />
 								<Text fx:id="LOG" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font></Text>
-								<Button mnemonicParsing="false" text="Клонировать" visible="false" />
 							</items>
 						</ToolBar>
 					</top>
@@ -108,9 +112,6 @@
 											</contextMenu>
 										</TableView>
 									</center>
-									<top>
-										<ToolBar BorderPane.alignment="CENTER" />
-									</top>
 								</BorderPane>
 								<BorderPane>
 									<center>
@@ -135,6 +136,9 @@
 																							</columnConstraints>
 																							<rowConstraints>
 																								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																								<RowConstraints maxHeight="55.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
@@ -143,15 +147,15 @@
 																							<children>
 																								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ф.И.О." />
 																								<TextField fx:id="CUSRNAME" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
-																								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отделение" GridPane.rowIndex="1" />
-																								<ComboBox fx:id="IUSRBRANCH" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-																								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Должность" GridPane.rowIndex="2" />
-																								<TextField fx:id="CUSRPOSITION" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-																								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата приема на работу" wrappingWidth="134.974609375" GridPane.rowIndex="3" />
-																								<DatePicker fx:id="DUSRHIRE" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-																								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата увольнения" GridPane.rowIndex="4" />
-																								<DatePicker fx:id="DUSRFIRE" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-																								<Button mnemonicParsing="false" onAction="#ClearOtd" GridPane.columnIndex="3" GridPane.rowIndex="1">
+																								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отделение" GridPane.rowIndex="4" />
+																								<ComboBox fx:id="IUSRBRANCH" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+																								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Должность" GridPane.rowIndex="5" />
+																								<TextField fx:id="CUSRPOSITION" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+																								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата приема на работу" wrappingWidth="134.974609375" GridPane.rowIndex="6" />
+																								<DatePicker fx:id="DUSRHIRE" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+																								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата увольнения" GridPane.rowIndex="7" />
+																								<DatePicker fx:id="DUSRFIRE" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+																								<Button mnemonicParsing="false" onAction="#ClearOtd" GridPane.columnIndex="3" GridPane.rowIndex="4">
 																									<graphic>
 																										<FontAwesomeIconView fill="BLACK" glyphName="TIMES" size="18" />
 																									</graphic>
@@ -162,6 +166,12 @@
                                                                               <Font size="10.0" />
                                                                            </font>
 																								</Button>
+                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ф.И.О. сокр." GridPane.rowIndex="1" />
+                                                                        <TextField fx:id="FIO_SH" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ф.И.О. на Абх." GridPane.rowIndex="2" />
+                                                                        <TextField fx:id="FIO_ABH" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ф.И.О. сокр. на Абх." GridPane.rowIndex="3" />
+                                                                        <TextField fx:id="FIO_ABH_SH" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																							</children>
 																							<VBox.margin>
 																								<Insets />
@@ -277,23 +287,44 @@
 														</ScrollPane>
 													</content>
 												</Tab>
+                                    <Tab text="Группы доступа">
+                                       <content>
+                                          <VBox>
+                                             <children>
+                                                <ToolBar style="-fx-border-color: silver;">
+                                                  <items>
+                                                    <Button mnemonicParsing="false">
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="PLUS" size="15" />
+                                                         </graphic>
+                                                      </Button>
+                                                      <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false">
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="TIMES" size="15" />
+                                                         </graphic>
+                                                      </Button>
+                                                  </items>
+                                                </ToolBar>
+                                                <TableView fx:id="USR_GRP" prefHeight="200.0" prefWidth="200.0">
+                                                  <columns>
+                                                    <TableColumn fx:id="GRP_ID" prefWidth="108.0" text="ID" />
+                                                    <TableColumn fx:id="GRP_NAME" prefWidth="478.0" text="Название" />
+                                                  </columns>
+                                                   <columnResizePolicy>
+                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                   </columnResizePolicy>
+                                                </TableView>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </Tab>
 											</tabs>
 										</TabPane>
 									</center>
-									<top>
-										<ToolBar BorderPane.alignment="CENTER" />
-									</top>
 								</BorderPane>
 							</items>
 						</SplitPane>
 					</center>
-					<bottom>
-						<ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-							<items>
-								<CheckBox fx:id="ViewFire" mnemonicParsing="false" onAction="#ViewFire" text="Показывать уволенных" />
-							</items>
-						</ToolBar>
-					</bottom>
 				</BorderPane>
 			</items>
 			<StackPane.margin>

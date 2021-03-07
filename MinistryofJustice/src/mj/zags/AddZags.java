@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
@@ -26,7 +25,6 @@ import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 import mj.users.OTD;
 
 public class AddZags {
@@ -34,6 +32,9 @@ public class AddZags {
 	@FXML
 	private TextField ZAGS_NAME;
 
+    @FXML
+    private TextField ZAGS_ADR;
+    
 	@FXML
 	private ComboBox<OTD> ZAGS_OTD;
 
@@ -43,6 +44,18 @@ public class AddZags {
 	@FXML
 	private TextField ZAGS_ID;
 
+    @FXML
+    private TextField ZAGS_RUK_ABH;
+
+    @FXML
+    private TextField ADDR;
+
+    @FXML
+    private TextField ZAGS_ADR_ABH;
+
+    @FXML
+    private TextField ZAGS_CITY_ABH;
+    
 	/**
 	 * Для отделения
 	 */
@@ -64,32 +77,30 @@ public class AddZags {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			PreparedStatement oper = conn
-					.prepareStatement("insert into zags (ZAGS_ID, ZAGS_OTD,ZAGS_NAME,ZAGS_RUK) values (?,?,?,?)");
+					.prepareStatement("insert into zags (ZAGS_ID, ZAGS_OTD,ZAGS_NAME,ZAGS_RUK,ZAGS_ADR,ZAGS_CITY_ABH,ZAGS_ADR_ABH,ZAGS_RUK_ABH,ADDR) values (?,?,?,?,?,?,?,?,?)");
 			oper.setInt(1, Integer.valueOf(ZAGS_ID.getText()));
 			oper.setInt(2, ZAGS_OTD.getValue().getIOTDNUM());
 			oper.setString(3, ZAGS_NAME.getText());
 			oper.setString(4, ZAGS_RUK.getText());
+			oper.setString(5, ZAGS_ADR.getText());
+			oper.setString(6, ZAGS_CITY_ABH.getText());
+			oper.setString(7, ZAGS_ADR_ABH.getText());
+			oper.setString(8, ZAGS_RUK_ABH.getText());
+			oper.setString(9, ADDR.getText());
 			oper.executeUpdate();
 			oper.close();
 			
 			conn.commit();
 			setStatus(true);
 			onclose();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				e1.printStackTrace();
-				Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+				DBUtil.LOG_ERROR(e1);
 			}
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -107,7 +118,6 @@ public class AddZags {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
 
 			/* Отделение */
@@ -129,12 +139,7 @@ public class AddZags {
 			}
 			convertComboDisplayList();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -142,7 +147,6 @@ public class AddZags {
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "AddZags");
@@ -150,29 +154,18 @@ public class AddZags {
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
 			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
-		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
