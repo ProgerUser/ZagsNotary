@@ -313,6 +313,7 @@ public class ZagsList {
 				list.setZAGS_RUK_ABH(rs.getString("ZAGS_RUK_ABH"));
 				list.setZAGS_ADR_ABH(rs.getString("ZAGS_ADR_ABH"));
 				list.setZAGS_OTD(rs.getInt("ZAGS_OTD"));
+				list.setADDR_ABH(rs.getString("ADDR_ABH"));
 			}
 			prepStmt.close();
 			rs.close();
@@ -325,7 +326,6 @@ public class ZagsList {
 
 	void Init() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			String selectStmt = "select * from VZAGS";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
@@ -342,6 +342,7 @@ public class ZagsList {
 				list.setZAGS_RUK_ABH(rs.getString("ZAGS_RUK_ABH"));
 				list.setZAGS_ADR_ABH(rs.getString("ZAGS_ADR_ABH"));
 				list.setZAGS_OTD(rs.getInt("ZAGS_OTD"));
+				list.setADDR_ABH(rs.getString("ADDR_ABH"));
 				dlist.add(list);
 			}
 			prepStmt.close();

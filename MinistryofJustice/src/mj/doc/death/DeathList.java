@@ -78,8 +78,8 @@ import pl.jsolve.templ4docx.variable.TextVariable;
 import pl.jsolve.templ4docx.variable.Variables;
 
 /**
- * Контроллер документа о смерти,<br>
- * добавление, редактирование
+ * РљРѕРЅС‚СЂРѕР»Р»РµСЂ РґРѕРєСѓРјРµРЅС‚Р° Рѕ СЃРјРµСЂС‚Рё,<br>
+ * РґРѕР±Р°РІР»РµРЅРёРµ, СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ
  * 
  * @author Said
  *
@@ -93,19 +93,19 @@ public class DeathList {
 	private TitledPane FILTER;
 
 	/**
-	 * с
+	 * СЃ
 	 */
 	@FXML
 	private DatePicker DT1;
 
 	/**
-	 * прогресс индикатор
+	 * РїСЂРѕРіСЂРµСЃСЃ РёРЅРґРёРєР°С‚РѕСЂ
 	 */
 	@FXML
 	private ProgressIndicator PB;
 
 	/**
-	 * по
+	 * РїРѕ
 	 */
 	@FXML
 	private DatePicker DT2;
@@ -117,7 +117,7 @@ public class DeathList {
 	private BorderPane ROOT;
 
 	/**
-	 * ид документа
+	 * РёРґ РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	@FXML
 	private XTableColumn<DEATH_CERT, Integer> DC_ID;
@@ -132,37 +132,37 @@ public class DeathList {
 	private XTableColumn<DEATH_CERT, String> OPER;
 
 	/**
-	 * причина смерти
+	 * РїСЂРёС‡РёРЅР° СЃРјРµСЂС‚Рё
 	 */
 	@FXML
 	private XTableColumn<DEATH_CERT, String> DC_DPL;
 
 	/**
-	 * дата создания документа
+	 * РґР°С‚Р° СЃРѕР·РґР°РЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	// @FXML
 	// private XTableColumn<DEATH_CERT, LocalDateTime> DC_OPEN;
 
 	/**
-	 * фио
+	 * С„РёРѕ
 	 */
 	@FXML
 	private XTableColumn<DEATH_CERT, String> DFIO;
 
 	/**
-	 * дата рождения
+	 * РґР°С‚Р° СЂРѕР¶РґРµРЅРёСЏ
 	 */
 	@FXML
 	private XTableColumn<DEATH_CERT, LocalDate> DBDATE;
 
 	/**
-	 * таблица
+	 * С‚Р°Р±Р»РёС†Р°
 	 */
 	@FXML
 	private XTableView<DEATH_CERT> DEATH_CERT;
 
 	/**
-	 * дата смерти
+	 * РґР°С‚Р° СЃРјРµСЂС‚Рё
 	 */
 	@FXML
 	private XTableColumn<DEATH_CERT, LocalDate> DC_DD;
@@ -176,14 +176,14 @@ public class DeathList {
 	}
 
 	/**
-	 * добавить
+	 * РґРѕР±Р°РІРёС‚СЊ
 	 */
 	void Add() {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 
 			if (DBUtil.OdbAction(104) == 0) {
-				Msg.Message("Нет доступа!");
+				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 				return;
 			}
 
@@ -199,7 +199,7 @@ public class DeathList {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -218,35 +218,35 @@ public class DeathList {
 	}
 
 	/**
-	 * удалить
+	 * СѓРґР°Р»РёС‚СЊ
 	 */
 	void Delete() {
 		try {
 			if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите строку!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 			} else {
 				Main.logger = Logger.getLogger(getClass());
 
 				if (DBUtil.OdbAction(106) == 0) {
-					Msg.Message("Нет доступа!");
+					Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 					return;
 				}
 
 				Stage stage = (Stage) DEATH_CERT.getScene().getWindow();
-				Label alert = new Label("Удалить запись?");
+				Label alert = new Label("РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ?");
 				alert.setLayoutX(75.0);
 				alert.setLayoutY(11.0);
 				alert.setPrefHeight(17.0);
 
 				Button no = new Button();
-				no.setText("Нет");
+				no.setText("РќРµС‚");
 				no.setLayoutX(111.0);
 				no.setLayoutY(56.0);
 				no.setPrefWidth(72.0);
 				no.setPrefHeight(21.0);
 
 				Button yes = new Button();
-				yes.setText("Да");
+				yes.setText("Р”Р°");
 				yes.setLayoutX(14.0);
 				yes.setLayoutY(56.0);
 				yes.setPrefWidth(72.0);
@@ -293,7 +293,7 @@ public class DeathList {
 						newWindow_yn.close();
 					}
 				});
-				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 				newWindow_yn.setScene(ynScene);
 				newWindow_yn.initModality(Modality.WINDOW_MODAL);
 				newWindow_yn.initOwner(stage);
@@ -307,8 +307,8 @@ public class DeathList {
 	}
 
 	/**
-	 * Открыта ли форма редактирования <br>
-	 * Возможен только один экземпляр формы
+	 * РћС‚РєСЂС‹С‚Р° Р»Рё С„РѕСЂРјР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ <br>
+	 * Р’РѕР·РјРѕР¶РµРЅ С‚РѕР»СЊРєРѕ РѕРґРёРЅ СЌРєР·РµРјРїР»СЏСЂ С„РѕСЂРјС‹
 	 */
 	boolean isopen = false;
 
@@ -378,7 +378,7 @@ public class DeathList {
 	}
 
 	/**
-	 * Редактировать
+	 * Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ
 	 */
 	public void Edit(Integer docid, Stage stage_) {
 		try {
@@ -386,7 +386,7 @@ public class DeathList {
 				Main.logger = Logger.getLogger(getClass());
 
 				if (DBUtil.OdbAction(105) == 0) {
-					Msg.Message("Нет доступа!");
+					Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 					return;
 				}
 
@@ -419,47 +419,47 @@ public class DeathList {
 						Parent root = loader.load();
 						stage.setScene(new Scene(root));
 						stage.getIcons().add(new Image("/icon.png"));
-						stage.setTitle("Редактирование: " + cl.getDFIO());
+						stage.setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ: " + cl.getDFIO());
 						stage.initOwner(stage_);
 						stage.setResizable(false);
 						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 							@Override
 							public void handle(WindowEvent paramT) {
 								try {
-									// Если нажали сохранить
-									// обновить без сохранения
+									// Р•СЃР»Рё РЅР°Р¶Р°Р»Рё СЃРѕС…СЂР°РЅРёС‚СЊ
+									// РѕР±РЅРѕРІРёС‚СЊ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
 									controller.SaveToCompare();
 									if (controller.getStatus()) {
 										conn.commit();
 										if (from == null) {
 											Refresh();
 										}
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 										String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT");
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 										isopen = false;
-									} // Если нажали "X" или "Cancel" и до этого что-то меняли
+									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ С‡С‚Рѕ-С‚Рѕ РјРµРЅСЏР»Рё
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 1) {
 										/**
-										 * Проверка выхода без сохранения
+										 * РџСЂРѕРІРµСЂРєР° РІС‹С…РѕРґР° Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
 										 */
 										Stage stage = stage_;
-										Label alert = new Label("Закрыть форму без сохранения?");
+										Label alert = new Label("Р—Р°РєСЂС‹С‚СЊ С„РѕСЂРјСѓ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ?");
 										alert.setLayoutX(75.0);
 										alert.setLayoutY(11.0);
 										alert.setPrefHeight(17.0);
 
 										Button no = new Button();
-										no.setText("Нет");
+										no.setText("РќРµС‚");
 										no.setLayoutX(111.0);
 										no.setLayoutY(56.0);
 										no.setPrefWidth(72.0);
 										no.setPrefHeight(21.0);
 
 										Button yes = new Button();
-										yes.setText("Да");
+										yes.setText("Р”Р°");
 										yes.setLayoutX(14.0);
 										yes.setLayoutY(56.0);
 										yes.setPrefWidth(72.0);
@@ -485,7 +485,7 @@ public class DeathList {
 													e.printStackTrace();
 												}
 												newWindow_yn.close();
-												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+												// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 												String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT");
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
@@ -493,7 +493,7 @@ public class DeathList {
 												isopen = false;
 											}
 										});
-										newWindow_yn.setTitle("Внимание");
+										newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 										newWindow_yn.setScene(ynScene);
 										newWindow_yn.initModality(Modality.WINDOW_MODAL);
 										newWindow_yn.initOwner(stage);
@@ -501,11 +501,11 @@ public class DeathList {
 										newWindow_yn.getIcons().add(new Image("/icon.png"));
 										newWindow_yn.showAndWait();
 									}
-									// Если нажали "X" или "Cancel" и до этого ничего не меняли
+									// Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ РЅРёС‡РµРіРѕ РЅРµ РјРµРЅСЏР»Рё
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										conn.rollback();
 										isopen = false;
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 										String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT");
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
@@ -521,14 +521,14 @@ public class DeathList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "DEATH_CERT"));
+						Msg.Message("Р—Р°РїРёСЃСЊ СЂРµРґР°РєС‚РёСЂСѓРµС‚СЃСЏ " + DBUtil.Lock_Row_View(docid, "DEATH_CERT"));
 						DBUtil.LOG_ERROR(e);
 					} else {
 						DBUtil.LOG_ERROR(e);
 					}
 				}
 			} else {
-				Msg.Message("Форма редактирования уже открыта!");
+				Msg.Message("Р¤РѕСЂРјР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СѓР¶Рµ РѕС‚РєСЂС‹С‚Р°!");
 			}
 
 		} catch (Exception e) {
@@ -537,19 +537,19 @@ public class DeathList {
 	}
 
 	/**
-	 * Печать
+	 * РџРµС‡Р°С‚СЊ
 	 */
 	void Print() {
 		try {
 			if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите строку!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 			} else {
 				ROOT.setDisable(true);
 				PB.setVisible(true);
 				Task<Object> task = new Task<Object>() {
 					@Override
 					public Object call() throws Exception {
-						// Вызов
+						// Р’С‹Р·РѕРІ
 						Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/DEATH_CERT.docx");
 						docx.setVariablePattern(new VariablePattern("#{", "}"));
 						// preparing variables
@@ -679,7 +679,7 @@ public class DeathList {
 	private Executor exec;
 
 	/**
-	 * Обновить таблицу
+	 * РћР±РЅРѕРІРёС‚СЊ С‚Р°Р±Р»РёС†Сѓ
 	 */
 	void Refresh() {
 		try {
@@ -752,7 +752,7 @@ public class DeathList {
 	}
 
 	/**
-	 * км обновить
+	 * РєРј РѕР±РЅРѕРІРёС‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -762,7 +762,7 @@ public class DeathList {
 	}
 
 	/**
-	 * кс добавить
+	 * РєСЃ РґРѕР±Р°РІРёС‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -772,14 +772,14 @@ public class DeathList {
 	}
 
 	/**
-	 * км редактировать
+	 * РєРј СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void CmEdit(ActionEvent event) {
 		if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 		} else {
 			Edit(DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID(),
 					(Stage) DEATH_CERT.getScene().getWindow());
@@ -787,7 +787,7 @@ public class DeathList {
 	}
 
 	/**
-	 * км печать
+	 * РєРј РїРµС‡Р°С‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -797,7 +797,7 @@ public class DeathList {
 	}
 
 	/**
-	 * км удалить
+	 * РєРј СѓРґР°Р»РёС‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -807,7 +807,7 @@ public class DeathList {
 	}
 
 	/**
-	 * добавть
+	 * РґРѕР±Р°РІС‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -817,14 +817,14 @@ public class DeathList {
 	}
 
 	/**
-	 * кн редактировать
+	 * РєРЅ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void BtEdit(ActionEvent event) {
 		if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 		} else {
 			Edit(DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID(),
 					(Stage) DEATH_CERT.getScene().getWindow());
@@ -832,7 +832,7 @@ public class DeathList {
 	}
 
 	/**
-	 * Кн удалить
+	 * РљРЅ СѓРґР°Р»РёС‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -842,7 +842,7 @@ public class DeathList {
 	}
 
 	/**
-	 * Кнопка печать
+	 * РљРЅРѕРїРєР° РїРµС‡Р°С‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -853,7 +853,7 @@ public class DeathList {
 	
 	public void manipulatePdf(String src, String dest) throws Exception{
 		if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 		} else {
 			PdfReader reader = new PdfReader(src);
 			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
@@ -864,53 +864,53 @@ public class DeathList {
 			prp.setInt(1, DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
-				fields.setField("Текст1", rs.getString("AB_LAST_NAME"));
-				fields.setField("Текст2", rs.getString("ABH_FMNAME"));
-				fields.setField("Текст3", rs.getString("ABH_COUNTRY"));
-				fields.setField("Текст4", rs.getString("BR_DD"));
-				fields.setField("Текст5", rs.getString("ABH_MM"));
-				fields.setField("Текст6", rs.getString("BR_YYYY"));
-				fields.setField("Текст7", rs.getString("ABH_BRTH_PLC"));
-				fields.setField("Текст8", rs.getString("FIO_ABH_SH"));
-				fields.setField("Текст9", rs.getString("DETH_DATE"));
-				fields.setField("Текст10", rs.getString(""));
-				fields.setField("Текст11", rs.getString(""));
-				fields.setField("Текст12", rs.getString(""));
-				fields.setField("Текст13", rs.getString("DETH_OPEN_YYYY"));
-				fields.setField("Текст14", rs.getString("DETH_OPEN_MM"));
-				fields.setField("Текст15", rs.getString("DETH_OPEN_DD"));
-				fields.setField("Текст16", rs.getString(""));
-				fields.setField("Текст17", rs.getString(""));
-				fields.setField("Текст18", rs.getString(""));
-				fields.setField("Текст19", rs.getString(""));
-				fields.setField("Текст20", rs.getString(""));
-				fields.setField("Текст21", rs.getString(""));
-				fields.setField("Текст22", rs.getString(""));
-				fields.setField("Текст23", rs.getString(""));
-				fields.setField("Текст24", rs.getString(""));
-				fields.setField("Текст25", rs.getString(""));
-				fields.setField("Текст26", rs.getString(""));
-				fields.setField("Текст27", rs.getString(""));
-				fields.setField("Текст28", rs.getString(""));
-				fields.setField("Текст29", rs.getString(""));
-				fields.setField("Текст30", rs.getString(""));
-				fields.setField("Текст31", rs.getString(""));
-				fields.setField("Текст32", rs.getString(""));
-				fields.setField("Текст33", rs.getString(""));
-				fields.setField("Текст34", rs.getString(""));
-				fields.setField("Текст35", rs.getString(""));
-				fields.setField("Текст36", rs.getString(""));
-				fields.setField("Текст37", rs.getString(""));
-				fields.setField("Текст38", rs.getString(""));
-				fields.setField("Текст39", rs.getString(""));
-				fields.setField("Текст40", rs.getString(""));
-				fields.setField("Текст41", rs.getString(""));
-				fields.setField("Текст42", rs.getString(""));
-				fields.setField("Текст43", rs.getString(""));
-				fields.setField("Текст44", rs.getString(""));
-				fields.setField("Текст45", rs.getString(""));
-				fields.setField("Текст46", rs.getString(""));
-				fields.setField("Текст47", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚1", rs.getString("AB_LAST_NAME"));
+				fields.setField("РўРµРєСЃС‚2", rs.getString("ABH_FMNAME"));
+				fields.setField("РўРµРєСЃС‚3", rs.getString("ABH_COUNTRY"));
+				fields.setField("РўРµРєСЃС‚4", rs.getString("BR_DD"));
+				fields.setField("РўРµРєСЃС‚5", rs.getString("ABH_MM"));
+				fields.setField("РўРµРєСЃС‚6", rs.getString("BR_YYYY"));
+				fields.setField("РўРµРєСЃС‚7", rs.getString("ABH_BRTH_PLC"));
+				fields.setField("РўРµРєСЃС‚8", rs.getString("FIO_ABH_SH"));
+				fields.setField("РўРµРєСЃС‚9", rs.getString("DETH_DATE"));
+//				fields.setField("РўРµРєСЃС‚10", rs.getString(""));
+//				fields.setField("РўРµРєСЃС‚11", rs.getString(""));
+//				fields.setField("РўРµРєСЃС‚12", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚13", rs.getString("DETH_OPEN_YYYY"));
+				fields.setField("РўРµРєСЃС‚14", rs.getString("DETH_OPEN_MM"));
+				fields.setField("РўРµРєСЃС‚15", rs.getString("DETH_OPEN_DD"));
+				fields.setField("РўРµРєСЃС‚16", rs.getString("ADDR_ABH"));
+				fields.setField("РўРµРєСЃС‚17", "РђФҐСЃРЅС‹ РђТіУ™С‹РЅТ­Т›Р°СЂСЂР°");
+//				fields.setField("РўРµРєСЃС‚18", "");
+				fields.setField("РўРµРєСЃС‚19", rs.getString("DETH_OPEN_DD"));
+				fields.setField("РўРµРєСЃС‚20", rs.getString("ABH_DC_OPEN"));
+				fields.setField("РўРµРєСЃС‚21", rs.getString("DETH_OPEN_YYYY"));
+				fields.setField("РўРµРєСЃС‚22", rs.getString("ZAGS_CITY_ABH"));
+				fields.setField("РўРµРєСЃС‚23", rs.getString("F23"));
+				fields.setField("РўРµРєСЃС‚24", rs.getString("F24"));	
+				fields.setField("РўРµРєСЃС‚25", rs.getString("F25"));
+				fields.setField("РўРµРєСЃС‚26", rs.getString("F26"));
+				fields.setField("РўРµРєСЃС‚27", rs.getString("F27"));
+				fields.setField("РўРµРєСЃС‚28", rs.getString("BR_DD"));
+				fields.setField("РўРµРєСЃС‚29", rs.getString("F29"));
+				fields.setField("РўРµРєСЃС‚30", rs.getString("BR_YYYY"));
+				fields.setField("РўРµРєСЃС‚31", rs.getString("F31"));
+				fields.setField("РўРµРєСЃС‚32", rs.getString("F32"));
+				fields.setField("РўРµРєСЃС‚33", rs.getString("F33"));
+				fields.setField("РўРµРєСЃС‚34", rs.getString("F34"));
+				fields.setField("РўРµРєСЃС‚35", rs.getString("F35"));
+				fields.setField("РўРµРєСЃС‚36", rs.getString("DETH_OPEN_YYYY"));
+				fields.setField("РўРµРєСЃС‚37", rs.getString("F37"));
+				fields.setField("РўРµРєСЃС‚38", rs.getString("F38"));
+//				fields.setField("РўРµРєСЃС‚39", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚40", rs.getString("F40"));
+				fields.setField("РўРµРєСЃС‚41", "Р РµСЃРїСѓР±Р»РёРєРё РђР±С…Р°Р·РёСЏ");
+//				fields.setField("РўРµРєСЃС‚42", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚43", "Р—РђР“РЎ");
+				fields.setField("РўРµРєСЃС‚44", rs.getString("F44"));
+				fields.setField("РўРµРєСЃС‚45", "Р РµСЃРїСѓР±Р»РёРєРё РђР±С…Р°Р·РёСЏ");
+				fields.setField("РўРµРєСЃС‚46", rs.getString("F38"));
+				fields.setField("РўРµРєСЃС‚47", rs.getString("F46"));
 			}
 			prp.close();
 			rs.close();
@@ -921,7 +921,7 @@ public class DeathList {
 	}
 
 	/**
-	 * Кнопка печать бланка
+	 * РљРЅРѕРїРєР° РїРµС‡Р°С‚СЊ Р±Р»Р°РЅРєР°
 	 * 
 	 * @param event
 	 */
@@ -937,12 +937,12 @@ public class DeathList {
 	}
 	
 	/**
-	 * Подключение к базе
+	 * РџРѕРґРєР»СЋС‡РµРЅРёРµ Рє Р±Р°Р·Рµ
 	 */
 	private Connection conn;
 
 	/**
-	 * Открыть сессию
+	 * РћС‚РєСЂС‹С‚СЊ СЃРµСЃСЃРёСЋ
 	 */
 	private void dbConnect() {
 		try {
@@ -959,7 +959,7 @@ public class DeathList {
 	}
 
 	/**
-	 * Закрыть сессию
+	 * Р—Р°РєСЂС‹С‚СЊ СЃРµСЃСЃРёСЋ
 	 */
 	public void dbDisconnect() {
 		try {
@@ -972,7 +972,7 @@ public class DeathList {
 	}
 
 	/**
-	 * Форматирование даты и времени
+	 * Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ РґР°С‚С‹ Рё РІСЂРµРјРµРЅРё
 	 * 
 	 * @param tc
 	 */
@@ -996,7 +996,7 @@ public class DeathList {
 	}
 
 	/**
-	 * Форматирование даты
+	 * Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ РґР°С‚С‹
 	 * 
 	 * @param tc
 	 */
@@ -1025,33 +1025,33 @@ public class DeathList {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");
 
-		CheckBox filterVisible = new CheckBox("Показать фильтр");
+		CheckBox filterVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ С„РёР»СЊС‚СЂ");
 		filterVisible.selectedProperty().bindBidirectional(table.filterRowVisibleProperty());
 
-		CheckBox menuButtonVisible = new CheckBox("Показать кнопку меню");
+		CheckBox menuButtonVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ РєРЅРѕРїРєСѓ РјРµРЅСЋ");
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
-		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
+		CheckBox firstFilterable = new CheckBox("Р¤РёР»СЊС‚СЂСѓРµРјС‹Р№ РїРµСЂРІС‹Р№ СЃС‚РѕР»Р±РµС†");
 		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(DC_ID.filterableProperty());
 
-		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
+		CheckBox includeHidden = new CheckBox("Р’РєР»СЋС‡РёС‚СЊ СЃРєСЂС‹С‚С‹Рµ СЃС‚РѕР»Р±С†С‹");
 		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
+		CheckBox andFilters = new CheckBox("РСЃРїРѕР»СЊР·СѓР№С‚Рµ РѕРїРµСЂР°С†РёСЋ \"Р\" РґР»СЏ РјРЅРѕРіРѕРєРѕР»РѕРЅРѕС‡РЅРѕРіРѕ С„РёР»СЊС‚СЂР°");
 		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
 		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
 
-		TitledBorderPane p = new TitledBorderPane("Настройки", pane);
+		TitledBorderPane p = new TitledBorderPane("РќР°СЃС‚СЂРѕР№РєРё", pane);
 		p.getStyleClass().add("top-border-only");
 		p.setStyle("-fx-border-insets: 10 0 0 0");
 		return p;
 	}
 
 	/**
-	 * Инициализация
+	 * РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
@@ -1083,7 +1083,7 @@ public class DeathList {
 			dbConnect();
 			Refresh();
 			/**
-			 * Столбцы таблицы
+			 * РЎС‚РѕР»Р±С†С‹ С‚Р°Р±Р»РёС†С‹
 			 */
 			{
 				OPER.setCellValueFactory(cellData -> cellData.getValue().DC_USRProperty());
@@ -1096,13 +1096,13 @@ public class DeathList {
 				DC_DD.setCellValueFactory(cellData -> cellData.getValue().DC_DDProperty());
 			}
 
-			// двойной щелчок
+			// РґРІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє
 			DEATH_CERT.setRowFactory(tv -> {
 				TableRow<DEATH_CERT> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
 						if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
-							Msg.Message("Выберите строку!");
+							Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 						} else {
 							Edit(DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID(),
 									(Stage) DEATH_CERT.getScene().getWindow());
@@ -1112,7 +1112,7 @@ public class DeathList {
 				return row;
 			});
 			/**
-			 * ФД
+			 * Р¤Р”
 			 */
 			{
 				// CellDateFormatDT(DC_OPEN);
@@ -1143,7 +1143,7 @@ public class DeathList {
 	}
 
 	/**
-	 * Сравнение данных
+	 * РЎСЂР°РІРЅРµРЅРёРµ РґР°РЅРЅС‹С…
 	 * 
 	 * @return
 	 */
@@ -1176,7 +1176,7 @@ public class DeathList {
 	String RetXml;
 
 	/**
-	 * Возврат XML файлов для сравнения
+	 * Р’РѕР·РІСЂР°С‚ XML С„Р°Р№Р»РѕРІ РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ
 	 */
 	void XmlsForCompare(Integer docid) {
 		try {

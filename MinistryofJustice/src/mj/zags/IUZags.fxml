@@ -31,6 +31,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Номер" />
@@ -45,12 +46,14 @@
             <TextField fx:id="ZAGS_RUK_ABH" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес" GridPane.rowIndex="5" />
             <TextField fx:id="ADDR" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наим. для бланк." GridPane.rowIndex="7" />
-            <TextField fx:id="ZAGS_ADR_ABH" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Город на Абх." GridPane.rowIndex="8" />
-            <TextField fx:id="ZAGS_CITY_ABH" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес полн." GridPane.rowIndex="6" />
-            <TextField fx:id="ZAGS_ADR" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наим. для бланк." GridPane.rowIndex="8" />
+            <TextField fx:id="ZAGS_ADR_ABH" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Город на Абх." GridPane.rowIndex="9" />
+            <TextField fx:id="ZAGS_CITY_ABH" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес полн." GridPane.rowIndex="7" />
+            <TextField fx:id="ZAGS_ADR" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес на Абх." GridPane.rowIndex="6" />
+            <TextField fx:id="ADDR_ABH" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>
    </center>

@@ -26,8 +26,11 @@ public class VZAGS {
 	private StringProperty ZAGS_RUK_ABH;
 	/** Нет данных */
 	private StringProperty ADDR;
+	/** Нет данных */
+	private StringProperty ADDR_ABH;
 
 	public VZAGS() {
+		this.ADDR_ABH = new SimpleStringProperty();
 		this.COTDNAME = new SimpleStringProperty();
 		this.ZAGS_ID = new SimpleIntegerProperty();
 		this.ZAGS_OTD = new SimpleIntegerProperty();
@@ -38,6 +41,18 @@ public class VZAGS {
 		this.ZAGS_ADR_ABH = new SimpleStringProperty();
 		this.ZAGS_RUK_ABH = new SimpleStringProperty();
 		this.ADDR = new SimpleStringProperty();
+	}
+
+	public void setADDR_ABH(String ADDR_ABH) {
+		this.ADDR_ABH.set(ADDR_ABH);
+	}
+
+	public String getADDR_ABH() {
+		return ADDR_ABH.get();
+	}
+
+	public StringProperty ADDR_ABHProperty() {
+		return ADDR_ABH;
 	}
 
 	public void setCOTDNAME(String COTDNAME) {

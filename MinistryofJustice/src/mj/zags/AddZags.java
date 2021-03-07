@@ -28,7 +28,9 @@ import mj.dbutil.DBUtil;
 import mj.users.OTD;
 
 public class AddZags {
-
+    @FXML
+    private TextField ADDR_ABH;
+    
 	@FXML
 	private TextField ZAGS_NAME;
 
@@ -78,7 +80,7 @@ public class AddZags {
 	void Save(ActionEvent event) {
 		try {
 			PreparedStatement oper = conn
-					.prepareStatement("insert into zags (ZAGS_ID, ZAGS_OTD,ZAGS_NAME,ZAGS_RUK,ZAGS_ADR,ZAGS_CITY_ABH,ZAGS_ADR_ABH,ZAGS_RUK_ABH,ADDR) values (?,?,?,?,?,?,?,?,?)");
+					.prepareStatement("insert into zags (ZAGS_ID, ZAGS_OTD,ZAGS_NAME,ZAGS_RUK,ZAGS_ADR,ZAGS_CITY_ABH,ZAGS_ADR_ABH,ZAGS_RUK_ABH,ADDR,ADDR_ABH) values (?,?,?,?,?,?,?,?,?,?)");
 			oper.setInt(1, Integer.valueOf(ZAGS_ID.getText()));
 			oper.setInt(2, ZAGS_OTD.getValue().getIOTDNUM());
 			oper.setString(3, ZAGS_NAME.getText());
@@ -88,6 +90,7 @@ public class AddZags {
 			oper.setString(7, ZAGS_ADR_ABH.getText());
 			oper.setString(8, ZAGS_RUK_ABH.getText());
 			oper.setString(9, ADDR.getText());
+			oper.setString(10, ADDR_ABH.getText());
 			oper.executeUpdate();
 			oper.close();
 			

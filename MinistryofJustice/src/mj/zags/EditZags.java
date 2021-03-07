@@ -50,6 +50,9 @@ public class EditZags {
     @FXML
     private TextField ZAGS_ADR;
     
+    @FXML
+    private TextField ADDR_ABH;
+    
 	/**
 	 * Для отделения
 	 */
@@ -82,7 +85,8 @@ public class EditZags {
 					"ZAGS_CITY_ABH = ?,\n" + 
 					"ZAGS_ADR_ABH = ?,\n" + 
 					"ZAGS_RUK_ABH = ?,\n" + 
-					"ADDR = ?"
+					"ADDR = ?,"+ 
+					"ADDR_ABH = ?"
 					+ " where ZAGS_ID = ?");
 			oper.setInt(1, Integer.valueOf(ZAGS_ID.getText()));
 			oper.setInt(2, ZAGS_OTD.getValue().getIOTDNUM());
@@ -93,7 +97,8 @@ public class EditZags {
 			oper.setString(7, ZAGS_ADR_ABH.getText());
 			oper.setString(8, ZAGS_RUK_ABH.getText());
 			oper.setString(9, ADDR.getText());
-			oper.setInt(10, Integer.valueOf(ZAGS_ID.getText()));
+			oper.setString(10, ADDR_ABH.getText());
+			oper.setInt(11, Integer.valueOf(ZAGS_ID.getText()));
 			oper.executeUpdate();
 			oper.close();
 			
@@ -121,6 +126,7 @@ public class EditZags {
 			ZAGS_ID.setEditable(false);
 			ZAGS_RUK_ABH.setText(zags.getZAGS_RUK_ABH());
 			ADDR.setText(zags.getADDR());
+			ADDR_ABH.setText(zags.getADDR_ABH());
 			ZAGS_ADR_ABH.setText(zags.getZAGS_ADR_ABH());
 			ZAGS_CITY_ABH.setText(zags.getZAGS_CITY_ABH());
 			ZAGS_ADR.setText(zags.getZAGS_ADR());
