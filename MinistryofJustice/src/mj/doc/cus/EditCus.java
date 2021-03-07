@@ -496,7 +496,7 @@ public class EditCus {
 	/**
 	 * Добавить национальность, если отсутствует
 	 */
-	void AddNationalityIfNotExist() {
+	void AddNationalityIfNotExist(boolean if_save) {
 		Stage stage = (Stage) CCUSNATIONALITY.getScene().getWindow();
 		Label alert = new Label("Национальность отсутствует в списке, добавить?");
 		alert.setLayoutX(75.0);
@@ -537,7 +537,11 @@ public class EditCus {
 					delete.setString(1, CCUSNATIONALITY.getValue());
 					delete.executeUpdate();
 					delete.close();
-					CallSave();
+					if(if_save) {
+						CallSaveToCompare();
+					}else {
+						CallSave();
+					}
 				} catch (SQLException e) {
 					DBUtil.LOG_ERROR(e);
 				}
@@ -1326,7 +1330,6 @@ public class EditCus {
 				{
 					Save1c(getId());
 				}
-				
 			} else {
 				conn.rollback();
 				setStatus(false);
@@ -1400,7 +1403,7 @@ public class EditCus {
 			if (CCUSNATIONALITY.getValue() != null) {
 				if (rs.next()) {
 					if (rs.getInt(1) == 0) {
-						AddNationalityIfNotExist();
+						AddNationalityIfNotExist(false);
 					} else {
 						CallSave();
 					}
@@ -1726,8 +1729,30 @@ public class EditCus {
 	@FXML
 	private void SaveEdit() {
 		try {
-			
+			Statement sqlStatement = conn.createStatement();
+			String readRecordSQL = "select count(*) from NATIONALITY where name = '" + CCUSNATIONALITY.getValue() + "'";
+			ResultSet rs = sqlStatement.executeQuery(readRecordSQL);
+			//Проверка существования национальности
+			if (CCUSNATIONALITY.getValue() != null) {
+				if (rs.next()) {
+					if (rs.getInt(1) == 0) {
+						AddNationalityIfNotExist(true);
+					} else {
+						CallSaveToCompare();
+						conn.commit();
+					}
+				}
+			} else {
+				Msg.Message("Выберите национальность");
+			}
+			rs.close();
+			sqlStatement.close();
 		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				DBUtil.LOG_ERROR(e1);
+			}
 			DBUtil.LOG_ERROR(e);
 		}
 	}

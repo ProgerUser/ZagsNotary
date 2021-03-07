@@ -160,7 +160,7 @@
 								<XTableColumn fx:id="DFIO" maxWidth="5000.0" minWidth="0.0" prefWidth="180.0" text="ФИО" />
                         <XTableColumn fx:id="DBDATE" prefWidth="120.0" text="Дата рождения" />
                         <XTableColumn fx:id="DC_DD" prefWidth="120.0" text="Дата смерти" />
-                        <XTableColumn fx:id="DC_DPL" prefWidth="200.0" text="Причина смерти" />
+                        <XTableColumn fx:id="DC_DPL" prefWidth="200.0" text="Место смерти" />
 							</columns>
 						</XTableColumn>
 					</columns>

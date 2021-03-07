@@ -211,7 +211,7 @@
                                                                      <items>
                                                                         <Button mnemonicParsing="false" onAction="#BtAddCitizen" text="">
                                                                            <graphic>
-                                                                              <FontAwesomeIconView fill="BLACK" glyphName="PLUS_CIRCLE" size="18" />
+                                                                              <FontAwesomeIconView fill="BLACK" glyphName="PLUS" size="18" />
                                                                            </graphic>
                                                                            <tooltip>
                                                                               <Tooltip text="Добавить" />
@@ -233,11 +233,14 @@
                                                                         </Button>
                                                                         <Button layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtDelCitizen" text="">
                                                                            <graphic>
-                                                                              <FontAwesomeIconView fill="BLACK" glyphName="TRASH_ALT" size="18" />
+                                                                              <FontAwesomeIconView fill="BLACK" glyphName="TIMES" size="18" />
                                                                            </graphic>
                                                                            <tooltip>
                                                                               <Tooltip text="Удалить" />
                                                                            </tooltip>
+                                                                           <font>
+                                                                              <Font size="10.0" />
+                                                                           </font>
                                                                         </Button>
                                                                      </items>
                                                                   </ToolBar>
@@ -339,7 +342,7 @@
                                                                <items>
                                                                   <Button fx:id="AddCusDocum" mnemonicParsing="false" onAction="#AddCusDocum" text="">
                                                                      <graphic>
-                                                                        <FontAwesomeIconView fill="BLACK" glyphName="PLUS_CIRCLE" size="18" />
+                                                                        <FontAwesomeIconView fill="BLACK" glyphName="PLUS" size="18" />
                                                                      </graphic>
                                                                      <tooltip>
                                                                         <Tooltip text="Добавить" />
@@ -361,7 +364,7 @@
                                                                   </Button>
                                                                   <Button fx:id="BtDelDocum" layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtDelDocum" text="">
                                                                      <graphic>
-                                                                        <FontAwesomeIconView fill="BLACK" glyphName="TRASH_ALT" size="18" />
+                                                                        <FontAwesomeIconView fill="BLACK" glyphName="TIMES" size="18" />
                                                                      </graphic>
                                                                      <tooltip>
                                                                         <Tooltip text="Удалить" />

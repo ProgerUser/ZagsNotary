@@ -341,6 +341,11 @@ public class DBUtil {
 		return ret;
 	}
 
+	/**
+	 * Проверка доступа к действию
+	 * @param actid
+	 * @return
+	 */
 	public static Integer OdbAction(Integer actid) {
 		Integer ret = 0;
 		Connection conn = DBUtil.conn;

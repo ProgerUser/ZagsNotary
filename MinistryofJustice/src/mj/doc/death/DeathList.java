@@ -132,7 +132,7 @@ public class DeathList {
 	private XTableColumn<DEATH_CERT, String> OPER;
 
 	/**
-	 * причина смерти
+	 * Место смерти
 	 */
 	@FXML
 	private XTableColumn<DEATH_CERT, String> DC_DPL;
