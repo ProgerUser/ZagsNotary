@@ -241,17 +241,17 @@ public class Main extends Application {
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
 
-//			Enter();
+			Enter();
 
 //
 //	Fast enter
 //			
-			Connect.connectionURL = "localhost:1522/orcl";
-			Connect.userID = "xxi";
-			Connect.userPassword = "mj_pass_123";
-			DBUtil.dbConnect();
-			initRootLayout();
-			RT();
+//			Connect.connectionURL = "localhost:1522/orcl";
+//			Connect.userID = "xxi";
+//			Connect.userPassword = "xxx";
+//			DBUtil.dbConnect();
+//			initRootLayout();
+//			RT();
 //
 //	END 		
 //			
