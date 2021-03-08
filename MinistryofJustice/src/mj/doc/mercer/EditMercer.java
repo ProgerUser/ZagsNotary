@@ -400,15 +400,15 @@ public class EditMercer {
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_TCHD")), formatter)
 						: null);
 				list.setDIVC_TCHNUM(rs.getString("DIVC_TCHNUM"));
-				list.setDIVC_CAN(rs.getString("DIVC_CAN"));
+				list.setDIVC_CAN(rs.getInt("DIVC_CAN"));
 				list.setDIVC_CAD((rs.getDate("DIVC_CAD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_CAD")), formatter)
 						: null);
-				list.setDIVC_ZOSCN(rs.getString("DIVC_ZOSCN"));
+				list.setDIVC_ZOSCN(rs.getInt("DIVC_ZOSCN"));
 				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
 				list.setDIVC_ZOSFIO(rs.getString("DIVC_ZOSFIO"));
-				list.setDIVC_ZOSCN2(rs.getString("DIVC_ZOSCN2"));
+				list.setDIVC_ZOSCN2(rs.getInt("DIVC_ZOSCN2"));
 				list.setDIVC_ZOSCD2((rs.getDate("DIVC_ZOSCD2") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD2")), formatter) : null);
 				list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));

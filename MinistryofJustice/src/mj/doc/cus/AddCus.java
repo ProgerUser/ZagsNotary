@@ -2406,7 +2406,7 @@ public class AddCus {
 				new ConvConst().FirstWUpp(CCUSLAST_NAME);
 				new ConvConst().FirstWUpp(CCUSFIRST_NAME);
 				new ConvConst().FirstWUpp(CCUSMIDDLE_NAME);
-				new ConvConst().FirstWUpp(CCUSPLACE_BIRTH);
+				//new ConvConst().FirstWUpp(CCUSPLACE_BIRTH);
 				new ConvConst().FirstWUpp(INFR_NAME);
 				// UpperCase(DOC_SUBDIV_T);
 				// UpperCase(DOC_AGENCY_T);

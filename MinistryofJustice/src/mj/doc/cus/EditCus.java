@@ -1971,7 +1971,7 @@ public class EditCus {
 				FirstWUpp(CCUSLAST_NAME);
 				FirstWUpp(CCUSFIRST_NAME);
 				FirstWUpp(CCUSMIDDLE_NAME);
-				FirstWUpp(CCUSPLACE_BIRTH);
+				//FirstWUpp(CCUSPLACE_BIRTH);
 				FirstWUpp(INFR_NAME);
 				// UpperCase(DOC_SUBDIV_T);
 				// UpperCase(DOC_AGENCY_T);
