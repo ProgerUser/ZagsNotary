@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
@@ -18,7 +17,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 import mj.users.OTD;
 
 public class EditOtd {
@@ -43,12 +41,7 @@ public class EditOtd {
 			setStatus(true);
 			onclose();
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -66,18 +59,11 @@ public class EditOtd {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			COTDNAME.setText(otd.getCOTDNAME());
 			IOTDNUM.setText(String.valueOf(otd.getIOTDNUM()));
 
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

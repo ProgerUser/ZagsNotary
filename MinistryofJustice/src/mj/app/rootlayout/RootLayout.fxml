@@ -29,6 +29,7 @@
 						<MenuItem fx:id="23" mnemonicParsing="false" onAction="#OTD" text="Отделения" />
 						<MenuItem fx:id="24" mnemonicParsing="false" onAction="#ZAGS" text="Список ЗАГС" />
 						<MenuItem fx:id="124" mnemonicParsing="false" onAction="#NOTARY" text="Список Нотариусов" />
+						<MenuItem fx:id="143" mnemonicParsing="false" onAction="#COURTS" text="Список судов" />
 					</items>
 				</Menu>
 				<Menu fx:id="85" mnemonicParsing="false" text="Отчеты">

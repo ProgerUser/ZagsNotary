@@ -36,17 +36,17 @@ public class DIVORCE_CERT {
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> DIVC_ZOSCD2;
 	/** Нет данных */
-	private StringProperty DIVC_ZOSCN2;
+	private IntegerProperty DIVC_ZOSCN2;
 	/** Нет данных */
 	private StringProperty DIVC_ZOSFIO;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> DIVC_ZOSCD;
 	/** Нет данных */
-	private StringProperty DIVC_ZOSCN;
+	private IntegerProperty DIVC_ZOSCN;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> DIVC_CAD;
 	/** Нет данных */
-	private StringProperty DIVC_CAN;
+	private IntegerProperty DIVC_CAN;
 	/** Нет данных */
 	private StringProperty DIVC_TCHNUM;
 	/** Нет данных */
@@ -92,12 +92,12 @@ public class DIVORCE_CERT {
 		this.DIVC_ZOSPRISON = new SimpleIntegerProperty();
 		this.DIVC_ZOSFIO2 = new SimpleStringProperty();
 		this.DIVC_ZOSCD2 = new SimpleObjectProperty<>();
-		this.DIVC_ZOSCN2 = new SimpleStringProperty();
+		this.DIVC_ZOSCN2 = new SimpleIntegerProperty();
 		this.DIVC_ZOSFIO = new SimpleStringProperty();
 		this.DIVC_ZOSCD = new SimpleObjectProperty<>();
-		this.DIVC_ZOSCN = new SimpleStringProperty();
+		this.DIVC_ZOSCN = new SimpleIntegerProperty();
 		this.DIVC_CAD = new SimpleObjectProperty<>();
-		this.DIVC_CAN = new SimpleStringProperty();
+		this.DIVC_CAN = new SimpleIntegerProperty();
 		this.DIVC_TCHNUM = new SimpleStringProperty();
 		this.DIVC_TCHD = new SimpleObjectProperty<>();
 		this.DIVC_TYPE = new SimpleStringProperty();
@@ -167,7 +167,7 @@ public class DIVORCE_CERT {
 		this.DIVC_ZOSCD2.set(DIVC_ZOSCD2);
 	}
 
-	public void setDIVC_ZOSCN2(String DIVC_ZOSCN2) {
+	public void setDIVC_ZOSCN2(Integer DIVC_ZOSCN2) {
 		this.DIVC_ZOSCN2.set(DIVC_ZOSCN2);
 	}
 
@@ -179,7 +179,7 @@ public class DIVORCE_CERT {
 		this.DIVC_ZOSCD.set(DIVC_ZOSCD);
 	}
 
-	public void setDIVC_ZOSCN(String DIVC_ZOSCN) {
+	public void setDIVC_ZOSCN(Integer DIVC_ZOSCN) {
 		this.DIVC_ZOSCN.set(DIVC_ZOSCN);
 	}
 
@@ -187,7 +187,7 @@ public class DIVORCE_CERT {
 		this.DIVC_CAD.set(DIVC_CAD);
 	}
 
-	public void setDIVC_CAN(String DIVC_CAN) {
+	public void setDIVC_CAN(Integer DIVC_CAN) {
 		this.DIVC_CAN.set(DIVC_CAN);
 	}
 
@@ -303,7 +303,7 @@ public class DIVORCE_CERT {
 		return DIVC_ZOSCD2.get();
 	}
 
-	public String getDIVC_ZOSCN2() {
+	public Integer getDIVC_ZOSCN2() {
 		return DIVC_ZOSCN2.get();
 	}
 
@@ -315,7 +315,7 @@ public class DIVORCE_CERT {
 		return DIVC_ZOSCD.get();
 	}
 
-	public String getDIVC_ZOSCN() {
+	public Integer getDIVC_ZOSCN() {
 		return DIVC_ZOSCN.get();
 	}
 
@@ -323,7 +323,7 @@ public class DIVORCE_CERT {
 		return DIVC_CAD.get();
 	}
 
-	public String getDIVC_CAN() {
+	public Integer getDIVC_CAN() {
 		return DIVC_CAN.get();
 	}
 
@@ -439,7 +439,7 @@ public class DIVORCE_CERT {
 		return DIVC_ZOSCD2;
 	}
 
-	public StringProperty DIVC_ZOSCN2Property() {
+	public IntegerProperty DIVC_ZOSCN2Property() {
 		return DIVC_ZOSCN2;
 	}
 
@@ -451,7 +451,7 @@ public class DIVORCE_CERT {
 		return DIVC_ZOSCD;
 	}
 
-	public StringProperty DIVC_ZOSCNProperty() {
+	public IntegerProperty DIVC_ZOSCNProperty() {
 		return DIVC_ZOSCN;
 	}
 
@@ -459,7 +459,7 @@ public class DIVORCE_CERT {
 		return DIVC_CAD;
 	}
 
-	public StringProperty DIVC_CANProperty() {
+	public IntegerProperty DIVC_CANProperty() {
 		return DIVC_CAN;
 	}
 

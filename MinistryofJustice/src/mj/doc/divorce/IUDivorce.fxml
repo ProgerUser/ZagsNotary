@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
       <SplitPane orientation="VERTICAL">
         <items>
@@ -155,13 +155,13 @@
                                           <GridPane fx:id="DIV_B" layoutX="10.0" layoutY="40.0" visible="false">
                                              <children>
                                                 <Label text="Наименование суда" GridPane.halignment="LEFT" />
-                                                <TextField fx:id="DIVC_CAN" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+                                                <ComboBox fx:id="DIVC_CAN" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="от" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                                                 <DatePicker fx:id="DIVC_CAD" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                              </children>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" prefWidth="300.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" prefWidth="350.0" />
                                              </columnConstraints>
                                              <rowConstraints>
                                                 <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -171,7 +171,7 @@
                                           <GridPane fx:id="DIV_V1" layoutX="10.0" layoutY="40.0" visible="false">
                                              <children>
                                                 <Label text="Наименование суда" GridPane.halignment="LEFT" />
-                                                <TextField fx:id="DIVC_ZOSCN" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+                                                <ComboBox fx:id="DIVC_ZOSCN" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="от" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                                                 <DatePicker fx:id="DIVC_ZOSCD" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ФИО" GridPane.rowIndex="2" />
@@ -179,7 +179,7 @@
                                              </children>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" prefWidth="300.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" prefWidth="350.0" />
                                              </columnConstraints>
                                              <rowConstraints>
                                                 <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -190,7 +190,7 @@
                                           <GridPane fx:id="DIV_V2" layoutX="10.0" layoutY="40.0" visible="false">
                                              <children>
                                                 <Label text="Наименование суда" GridPane.halignment="LEFT" />
-                                                <TextField fx:id="DIVC_ZOSCN2" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+                                                <ComboBox fx:id="DIVC_ZOSCN2" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="от" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                                                 <DatePicker fx:id="DIVC_ZOSCD2" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ФИО" GridPane.rowIndex="2" />
@@ -200,7 +200,7 @@
                                              </children>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" prefWidth="300.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" prefWidth="350.0" />
                                              </columnConstraints>
                                              <rowConstraints>
                                                 <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
