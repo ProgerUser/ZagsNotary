@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -61,33 +60,60 @@ import mj.util.ConvConst;
 
 public class AddAdopt {
 
-	@FXML private TextField CUSID_F;
-	@FXML private TextField NEW_FIRSTNAME;
-	@FXML private DatePicker OLD_BRTH;
-	@FXML private TextField OLD_LASTNAME;
-	@FXML private TextField CUSID_M;
-	@FXML private TextField AdMotherFio;
-	@FXML private TextField NEW_LASTNAME;
-	@FXML private TextField ZAP_NUMBER;
-	@FXML private TextField AdFatherFio;
-	@FXML private TextField ChildrenFio;
-	@FXML private DatePicker ZAP_DATE;
-	@FXML private DatePicker NEW_BRTH;
-	@FXML private TextField OLD_FIRSTNAME;
-	@FXML private TextField CUSID_F_AD;
-	@FXML private TextField FatherFio;
-	@FXML private TextField NEW_MIDDLNAME;
-	@FXML private TextField SVID_SERIA;
-	@FXML private TextField CUSID_CH;
-	@FXML private TextField BRN_CITY;
-	@FXML private TextField BRN_AREA;
-	@FXML private TextField BRN_OBL_RESP;
-	@FXML private TextField MotherFio;
-	@FXML private TextField SVID_NOMER;
-	@FXML private TextField BRNACT;
-	@FXML private TextField ZAP_ISPOLKOM_RESH;
-	@FXML private TextField CUSID_M_AD;
-	@FXML private CheckBox ADOPT_PARENTS;
+	@FXML
+	private TextField CUSID_F;
+	@FXML
+	private TextField NEW_FIRSTNAME;
+	@FXML
+	private DatePicker OLD_BRTH;
+	@FXML
+	private TextField OLD_LASTNAME;
+	@FXML
+	private TextField CUSID_M;
+	@FXML
+	private TextField AdMotherFio;
+	@FXML
+	private TextField NEW_LASTNAME;
+	@FXML
+	private TextField ZAP_NUMBER;
+	@FXML
+	private TextField AdFatherFio;
+	@FXML
+	private TextField ChildrenFio;
+	@FXML
+	private DatePicker ZAP_DATE;
+	@FXML
+	private DatePicker NEW_BRTH;
+	@FXML
+	private TextField OLD_FIRSTNAME;
+	@FXML
+	private TextField CUSID_F_AD;
+	@FXML
+	private TextField FatherFio;
+	@FXML
+	private TextField NEW_MIDDLNAME;
+	@FXML
+	private TextField SVID_SERIA;
+	@FXML
+	private TextField CUSID_CH;
+	@FXML
+	private TextField BRN_CITY;
+	@FXML
+	private TextField BRN_AREA;
+	@FXML
+	private TextField BRN_OBL_RESP;
+	@FXML
+	private TextField MotherFio;
+	@FXML
+	private TextField SVID_NOMER;
+	@FXML
+	private TextField BRNACT;
+	@FXML
+	private TextField ZAP_ISPOLKOM_RESH;
+	@FXML
+	private TextField CUSID_M_AD;
+	@FXML
+	private CheckBox ADOPT_PARENTS;
 
 	@FXML
 	private TextField ZAP_SOVET_DEP_TRUD;
@@ -169,7 +195,6 @@ public class AddAdopt {
 	 */
 	void ActList(TextField number) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -315,19 +340,12 @@ public class AddAdopt {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void CusList2(TextField num, TextField name) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -461,13 +479,7 @@ public class AddAdopt {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -597,21 +609,13 @@ public class AddAdopt {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			CallableStatement callStmt = conn
 					.prepareCall("{ call ADOPT.AddAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
@@ -683,13 +687,7 @@ public class AddAdopt {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -791,7 +789,6 @@ public class AddAdopt {
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "AddAdoption");
@@ -800,28 +797,17 @@ public class AddAdopt {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -911,6 +897,7 @@ public class AddAdopt {
 	
 	public AddAdopt() {
 		Main.logger = Logger.getLogger(getClass());
+		
 		this.Status = new SimpleBooleanProperty();
 		this.Id = new SimpleIntegerProperty();
 		

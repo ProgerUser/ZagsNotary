@@ -1172,8 +1172,8 @@ public class UpdNameList {
 				fields.setField("Текст14", rs.getString("RU_DD"));
 				fields.setField("Текст36", "Республика Абхазия");
 				fields.setField("Текст11", rs.getString("ABH_FMNAME_NEW"));
-				fields.setField("Текст33", "");
-				fields.setField("Текст12", "");
+				fields.setField("Текст33", "-");
+				fields.setField("Текст12", "-");
 				fields.setField("Текст34", "ЗАГС");
 				fields.setField("Текст17", rs.getString("ZAGS_ADR_ABH"));
 				fields.setField("Текст39", rs.getString("RU_YYYY"));
