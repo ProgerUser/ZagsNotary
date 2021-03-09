@@ -423,8 +423,6 @@ public class EditDeath {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			CallableStatement callStmt = conn
 					.prepareCall("{ ? = call Deatch.EditDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -467,20 +465,12 @@ public class EditDeath {
 				Msg.ErrorView(stage_, "EditDeath", conn);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void SaveToCompare() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			CallableStatement callStmt = conn
 					.prepareCall("{ ? = call Deatch.EditDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -512,13 +502,7 @@ public class EditDeath {
 			callStmt.execute();
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -631,8 +615,7 @@ public class EditDeath {
 
 				if (death.getDC_ZTP() != null) {
 					if (death.getDC_ZTP().equals("F")) {
-						DC_ZTP.getItems().addAll("Физ. лицо", "Организация");
-
+						DC_ZTP.getSelectionModel().select("Физ. лицо");
 						FIZIK.setVisible(true);
 						DC_FADLAST_NAME.setText(death.getDC_FADLAST_NAME());
 						DC_FADFIRST_NAME.setText(death.getDC_FADFIRST_NAME());
@@ -640,9 +623,7 @@ public class EditDeath {
 						DC_FADLOCATION.setText(death.getDC_FADLOCATION());
 					} else if (death.getDC_ZTP().equals("J")) {
 						DC_ZTP.getSelectionModel().select("Организация");
-
 						JURIK.setVisible(true);
-
 						DC_FADORG_NAME.setText(death.getDC_FADORG_NAME());
 						DC_FADREG_ADR.setText(death.getDC_FADREG_ADR());
 					}
@@ -656,12 +637,7 @@ public class EditDeath {
 			new ConvConst().FormatDatePiker(DC_DD);
 			new ConvConst().FormatDatePiker(DC_FD);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

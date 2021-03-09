@@ -16,7 +16,6 @@ import java.time.format.DateTimeParseException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -53,6 +52,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -64,6 +64,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -107,15 +108,33 @@ import mj.msg.Msg;
 import mj.util.ConvConst;
 
 /**
- * Редактирование Гражданина 29.10.2020 Переработка
+ * Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ Р“СЂР°Р¶РґР°РЅРёРЅР° 29.10.2020 РџРµСЂРµСЂР°Р±РѕС‚РєР°
  * 
  * @author Said
  *
  */
 public class EditCus {
 
+    @FXML
+    private RadioButton AB_SUN;
+
+    @FXML
+    private RadioButton AB_DOUTH;
+    
+    @FXML
+    private TextField AB_LAST_NAME;
+
+    @FXML
+    private TextField AB_FIRST_NAME;
+
+    @FXML
+    private TextField AB_MIDDLE_NAME;
+
+    @FXML
+    private TextField AB_PLACE_BIRTH;
+    
 	/**
-	 * При изменении "Страна рождения"
+	 * РџСЂРё РёР·РјРµРЅРµРЅРёРё "РЎС‚СЂР°РЅР° СЂРѕР¶РґРµРЅРёСЏ"
 	 */
 	@FXML
 	private void CombCountry() {
@@ -123,7 +142,7 @@ public class EditCus {
 	}
 
 	/**
-	 * При изменении "Пол"
+	 * РџСЂРё РёР·РјРµРЅРµРЅРёРё "РџРѕР»"
 	 */
 	@FXML
 	private void CCUSSEX() {
@@ -131,7 +150,7 @@ public class EditCus {
 	}
 
 	/**
-	 * При изменении "Пол"
+	 * РџСЂРё РёР·РјРµРЅРµРЅРёРё "РџРѕР»"
 	 */
 	@FXML
 	private void CCUSNATIONALITY() {
@@ -139,7 +158,7 @@ public class EditCus {
 	}
 
 	/**
-	 * При изменении подразделения
+	 * РџСЂРё РёР·РјРµРЅРµРЅРёРё РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ
 	 */
 	@FXML
 	private void ICUSOTD() {
@@ -155,9 +174,7 @@ public class EditCus {
 			rs.close();
 			CombCountry.requestFocus();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -202,7 +219,7 @@ public class EditCus {
 	}
 
 	/**
-	 * заглушка, не используется
+	 * Р·Р°РіР»СѓС€РєР°, РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ
 	 * 
 	 * @param event
 	 */
@@ -233,205 +250,205 @@ public class EditCus {
 	private TitledPane DublicateBorder;
 
 	/**
-	 * Корпус
+	 * РљРѕСЂРїСѓСЃ
 	 */
 	@FXML
 	private TextField KORP;
 
 	/**
-	 * Таблица документов
+	 * РўР°Р±Р»РёС†Р° РґРѕРєСѓРјРµРЅС‚РѕРІ
 	 */
 	@FXML
 	private TableView<CUS_DOCUM> CUS_DOCUM;
 
 	/**
-	 * Основной ли документ
+	 * РћСЃРЅРѕРІРЅРѕР№ Р»Рё РґРѕРєСѓРјРµРЅС‚
 	 */
 	@FXML
 	private TableColumn<CUS_DOCUM, String> PREF;
 
 	/**
-	 * Дата выдачи документа TextField
+	 * Р”Р°С‚Р° РІС‹РґР°С‡Рё РґРѕРєСѓРјРµРЅС‚Р° TextField
 	 */
 	@FXML
 	private DatePicker DOC_DATE_T;
 
 	/**
-	 * Серия документа
+	 * РЎРµСЂРёСЏ РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	@FXML
 	private TableColumn<CUS_DOCUM, String> DOC_SER;
 
 	/**
-	 * Тип документа
+	 * РўРёРї РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	@FXML
 	private ComboBox<VPUD> ID_DOC_TP_T;
 
 	/**
-	 * Для добавления и редактирования документа
+	 * Р”Р»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ Рё СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	@FXML
 	private TitledPane TitledCRUDCusDocum;
 
 	/**
-	 * Район
+	 * Р Р°Р№РѕРЅ
 	 */
 	@FXML
 	private ComboBox<String> AREA;
 
 	/**
-	 * Имя
+	 * РРјСЏ
 	 */
 	@FXML
 	private TextField CCUSFIRST_NAME;
 
 	/**
-	 * Страна таблицы Гражданства
+	 * РЎС‚СЂР°РЅР° С‚Р°Р±Р»РёС†С‹ Р“СЂР°Р¶РґР°РЅСЃС‚РІР°
 	 */
 	// @FXML
 	// private TableColumn<CUS_CITIZEN, String> COUNTRY;
 
 	/**
-	 * Серия документа
+	 * РЎРµСЂРёСЏ РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	@FXML
 	private TextField DOC_SER_T;
 
 	/**
-	 * Отделение
+	 * РћС‚РґРµР»РµРЅРёРµ
 	 */
 	@FXML
 	private ComboBox<String> ICUSOTD;
 
 	/**
-	 * Дата рождения
+	 * Р”Р°С‚Р° СЂРѕР¶РґРµРЅРёСЏ
 	 */
 	@FXML
 	private DatePicker DCUSBIRTHDAY;
 
 	/**
-	 * Место рождения
+	 * РњРµСЃС‚Рѕ СЂРѕР¶РґРµРЅРёСЏ
 	 */
 	@FXML
 	private TextField CCUSPLACE_BIRTH;
 
 	/**
-	 * Основной ли документ
+	 * РћСЃРЅРѕРІРЅРѕР№ Р»Рё РґРѕРєСѓРјРµРЅС‚
 	 */
 	@FXML
 	private CheckBox PREF_T;
 
 	/**
-	 * Тип документа таблицы
+	 * РўРёРї РґРѕРєСѓРјРµРЅС‚Р° С‚Р°Р±Р»РёС†С‹
 	 */
 	@FXML
 	private TableColumn<CUS_DOCUM, String> ID_DOC_TP;
 
 	/**
-	 * Пол
+	 * РџРѕР»
 	 */
 	@FXML
 	private ComboBox<String> CCUSSEX;
 
 	/**
-	 * Дом
+	 * Р”РѕРј
 	 */
 	@FXML
 	private TextField DOM;
 
 	/**
-	 * Кнопка добавить документ
+	 * РљРЅРѕРїРєР° РґРѕР±Р°РІРёС‚СЊ РґРѕРєСѓРјРµРЅС‚
 	 */
 	@FXML
 	private Button AddCusDocum;
 
 	/**
-	 * Кнопка редактирования документа
+	 * РљРЅРѕРїРєР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	@FXML
 	private Button EditCusDocum;
 
 	/**
-	 * Код подразделения
+	 * РљРѕРґ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ
 	 */
 	@FXML
 	private TableColumn<CUS_DOCUM, String> DOC_SUBDIV;
 
 	/**
-	 * Основной ли тип гражданства
+	 * РћСЃРЅРѕРІРЅРѕР№ Р»Рё С‚РёРї РіСЂР°Р¶РґР°РЅСЃС‚РІР°
 	 */
 	@FXML
 	private TableColumn<CUS_CITIZEN, Boolean> OSN;
 
 	/**
-	 * Квартира
+	 * РљРІР°СЂС‚РёСЂР°
 	 */
 	@FXML
 	private TextField KV;
 
 	/**
-	 * Номер документа
+	 * РќРѕРјРµСЂ РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	@FXML
 	private TableColumn<CUS_DOCUM, String> DOC_NUM;
 
 	/**
-	 * Населенные пункты
+	 * РќР°СЃРµР»РµРЅРЅС‹Рµ РїСѓРЅРєС‚С‹
 	 */
 	@FXML
 	private ComboBox<String> PUNCT_NAME;
 
 	/**
-	 * Номер документа
+	 * РќРѕРјРµСЂ РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	@FXML
 	private TextField DOC_NUM_T;
 
 	/**
-	 * Национальность
+	 * РќР°С†РёРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ
 	 */
 	@FXML
 	private ComboBox<String> CCUSNATIONALITY;
 
 	/**
-	 * Кем выдан
+	 * РљРµРј РІС‹РґР°РЅ
 	 */
 	@FXML
 	private TextField DOC_AGENCY_T;
 
 	/**
-	 * Фамилия
+	 * Р¤Р°РјРёР»РёСЏ
 	 */
 	@FXML
 	private TextField CCUSLAST_NAME;
 
 	/**
-	 * Отчество
+	 * РћС‚С‡РµСЃС‚РІРѕ
 	 */
 	@FXML
 	private TextField CCUSMIDDLE_NAME;
 
 	/**
-	 * Таблица гражданства
+	 * РўР°Р±Р»РёС†Р° РіСЂР°Р¶РґР°РЅСЃС‚РІР°
 	 */
 	@FXML
 	private TableView<CUS_CITIZEN> CUS_CITIZEN;
 
 	/**
-	 * Кем выдан
+	 * РљРµРј РІС‹РґР°РЅ
 	 */
 	@FXML
 	private TableColumn<CUS_DOCUM, String> DOC_AGENCY;
 
 	/**
-	 * Инфраструктура - улица
+	 * РРЅС„СЂР°СЃС‚СЂСѓРєС‚СѓСЂР° - СѓР»РёС†Р°
 	 */
 	@FXML
 	private TextField INFR_NAME;
 
 	/**
-	 * Код подразделения
+	 * РљРѕРґ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ
 	 */
 	@FXML
 	private TextField DOC_SUBDIV_T;
@@ -443,7 +460,7 @@ public class EditCus {
 	private ScrollPane ScrollPaneCus;
 
 	/**
-	 * Дата окончания документа
+	 * Р”Р°С‚Р° РѕРєРѕРЅС‡Р°РЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	@FXML
 	private TableColumn<CUS_DOCUM, LocalDate> DOC_PERIOD;
@@ -455,19 +472,19 @@ public class EditCus {
 	private DatePicker DOC_PERIOD_T;
 
 	/**
-	 * Дата выдачи документа
+	 * Р”Р°С‚Р° РІС‹РґР°С‡Рё РґРѕРєСѓРјРµРЅС‚Р°
 	 */
 	@FXML
 	private TableColumn<CUS_DOCUM, LocalDate> DOC_DATE;
 
 	/**
-	 * Наименование страны
+	 * РќР°РёРјРµРЅРѕРІР°РЅРёРµ СЃС‚СЂР°РЅС‹
 	 */
 	@FXML
 	private TableColumn<CUS_CITIZEN, String> CLONGNAME;
 
 	/**
-	 * Отмена редактирования
+	 * РћС‚РјРµРЅР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
 	 * 
 	 * @param event
 	 */
@@ -477,24 +494,24 @@ public class EditCus {
 	}
 
 	/**
-	 * Добавить национальность, если отсутствует
+	 * Р”РѕР±Р°РІРёС‚СЊ РЅР°С†РёРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ, РµСЃР»Рё РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚
 	 */
-	void AddNationalityIfNotExist() {
+	void AddNationalityIfNotExist(boolean if_save) {
 		Stage stage = (Stage) CCUSNATIONALITY.getScene().getWindow();
-		Label alert = new Label("Национальность отсутствует в списке, добавить?");
+		Label alert = new Label("РќР°С†РёРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РІ СЃРїРёСЃРєРµ, РґРѕР±Р°РІРёС‚СЊ?");
 		alert.setLayoutX(75.0);
 		alert.setLayoutY(11.0);
 		alert.setPrefHeight(17.0);
 
 		Button no = new Button();
-		no.setText("Нет");
+		no.setText("РќРµС‚");
 		no.setLayoutX(111.0);
 		no.setLayoutY(56.0);
 		no.setPrefWidth(72.0);
 		no.setPrefHeight(21.0);
 
 		Button yes = new Button();
-		yes.setText("Да");
+		yes.setText("Р”Р°");
 		yes.setLayoutX(14.0);
 		yes.setLayoutY(56.0);
 		yes.setPrefWidth(72.0);
@@ -520,19 +537,18 @@ public class EditCus {
 					delete.setString(1, CCUSNATIONALITY.getValue());
 					delete.executeUpdate();
 					delete.close();
-					CallSave();
+					if(if_save) {
+						CallSaveToCompare();
+					}else {
+						CallSave();
+					}
 				} catch (SQLException e) {
-					Msg.Message(ExceptionUtils.getStackTrace(e));
-					Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-					String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-					String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-					int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-					DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+					DBUtil.LOG_ERROR(e);
 				}
 				newWindow_yn.close();
 			}
 		});
-		newWindow_yn.setTitle("Внимание");
+		newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 		newWindow_yn.setScene(ynScene);
 		// Specifies the modality for new window.
 		newWindow_yn.initModality(Modality.WINDOW_MODAL);
@@ -543,33 +559,51 @@ public class EditCus {
 		newWindow_yn.show();
 	}
 
+	@FXML
+	void AB_DOUTH(ActionEvent event) {
+		try {
+			if ((CCUSSEX.getValue().equals("Р–РµРЅСЃРєРёР№") & AB_MIDDLE_NAME.getText() != null)
+					&& (!AB_MIDDLE_NAME.getText().toLowerCase().contains("РёФҐР°")
+							& !AB_MIDDLE_NAME.getText().toLowerCase().contains("РёФҐТіР°"))) {
+				AB_MIDDLE_NAME.setText(AB_MIDDLE_NAME.getText() + "-РёФҐТіР°");
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void AB_SUN(ActionEvent event) {
+		try {
+			if ((CCUSSEX.getValue().equals("РњСѓР¶СЃРєРѕР№") & AB_MIDDLE_NAME.getText() != null)
+					&& (!AB_MIDDLE_NAME.getText().toLowerCase().contains("РёФҐР°")
+							& !AB_MIDDLE_NAME.getText().toLowerCase().contains("РёФҐТіР°"))) {
+				AB_MIDDLE_NAME.setText(AB_MIDDLE_NAME.getText() + "-РёФҐР°");
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	/**
-	 * Добавить страну - Адрес
+	 * Р”РѕР±Р°РІРёС‚СЊ СЃС‚СЂР°РЅСѓ - РђРґСЂРµСЃ
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void AddAddressCountry(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CitizenList("address");
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Инициализация гражданства
+	 * РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РіСЂР°Р¶РґР°РЅСЃС‚РІР°
 	 */
 	void InitCitizen() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			String selectStmt = "select ID,COUNTRY_CODE,COUNTRY_NAME, osn from CUS_CITIZEN where icusnum = ?";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			prepStmt.setInt(1, getId());
@@ -596,18 +630,12 @@ public class EditCus {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Добавить и редактировать гражданства
+	 * Р”РѕР±Р°РІРёС‚СЊ Рё СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РіСЂР°Р¶РґР°РЅСЃС‚РІР°
 	 * 
 	 * @param COUNTRY_I
 	 * @param CLONGNAME_I
@@ -637,38 +665,31 @@ public class EditCus {
 			}
 			InitCitizen();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Показать список стран - в адресе, в гражданстве
+	 * РџРѕРєР°Р·Р°С‚СЊ СЃРїРёСЃРѕРє СЃС‚СЂР°РЅ - РІ Р°РґСЂРµСЃРµ, РІ РіСЂР°Р¶РґР°РЅСЃС‚РІРµ
 	 * 
 	 * @param type
 	 */
 	void CitizenList(String type) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
-			Update.setText("Выбрать");
+			Update.setText("Р’С‹Р±СЂР°С‚СЊ");
 			AnchorPane secondaryLayout = new AnchorPane();
 			VBox vb = new VBox();
 
 			CheckBox osn = new CheckBox();
-			osn.setText("Основное");
-			osn.setVisible(false);// убрать галочку
+			osn.setText("РћСЃРЅРѕРІРЅРѕРµ");
+			osn.setVisible(false);// СѓР±СЂР°С‚СЊ РіР°Р»РѕС‡РєСѓ
 			if (type.equals("address") | type.equals("brn")) {
 				osn.setVisible(false);
 			}
 			ToolBar toolBar = new ToolBar(Update, osn);
 			XTableView<COUNTRIES> debtinfo = new XTableView<COUNTRIES>();
-			XTableColumn<COUNTRIES, String> NAME = new XTableColumn<>("Название");
+			XTableColumn<COUNTRIES, String> NAME = new XTableColumn<>("РќР°Р·РІР°РЅРёРµ");
 			NAME.setCellValueFactory(new PropertyValueFactory<>("NAME"));
 			debtinfo.getColumns().add(NAME);
 			vb.getChildren().add(debtinfo);
@@ -709,17 +730,17 @@ public class EditCus {
 			});
 
 			/**
-			 * двойной щелчок
+			 * РґРІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє
 			 */
 			debtinfo.setRowFactory(tv -> {
 				TableRow<COUNTRIES> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
 						if (debtinfo.getSelectionModel().getSelectedItem() == null) {
-							Msg.Message("Выберите сначала данные из таблицы!");
+							Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃРЅР°С‡Р°Р»Р° РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹!");
 						} else {
 							COUNTRIES country = debtinfo.getSelectionModel().getSelectedItem();
-							// По типу вызова
+							// РџРѕ С‚РёРїСѓ РІС‹Р·РѕРІР°
 							if (type.equals("add")) {
 								CRUDCitizen(country.getCODE(), country.getNAME(), (osn.isSelected()) ? "Y" : "N",
 										"{ ? = call MJCUS.ADD_CUS_CITIZEN(?,?,?,?)}", "add");
@@ -744,7 +765,7 @@ public class EditCus {
 			});
 
 			/**
-			 * Фокусировка при редактировании
+			 * Р¤РѕРєСѓСЃРёСЂРѕРІРєР° РїСЂРё СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРё
 			 */
 			if (type.equals("edit")) {
 				Platform.runLater(new Runnable() {
@@ -768,10 +789,10 @@ public class EditCus {
 
 				public void handle(ActionEvent event) {
 					if (debtinfo.getSelectionModel().getSelectedItem() == null) {
-						Msg.Message("Выберите сначала данные из таблицы!");
+						Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃРЅР°С‡Р°Р»Р° РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹!");
 					} else {
 						COUNTRIES country = debtinfo.getSelectionModel().getSelectedItem();
-						// По типу вызова
+						// РџРѕ С‚РёРїСѓ РІС‹Р·РѕРІР°
 						if (type.equals("add")) {
 							CRUDCitizen(country.getCODE(), country.getNAME(), (osn.isSelected()) ? "Y" : "N",
 									"{ ? = call MJCUS.ADD_CUS_CITIZEN(?,?,?,?)}", "add");
@@ -797,107 +818,79 @@ public class EditCus {
 			Scene secondScene = new Scene(secondaryLayout, Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
 			Stage stage = (Stage) CUS_CITIZEN.getScene().getWindow();
 			Stage newWindow = new Stage();
-			newWindow.setTitle("Список стран");
+			newWindow.setTitle("РЎРїРёСЃРѕРє СЃС‚СЂР°РЅ");
 			newWindow.setScene(secondScene);
 			newWindow.initModality(Modality.WINDOW_MODAL);
 			newWindow.initOwner(stage);
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Добавить гражданство
+	 * Р”РѕР±Р°РІРёС‚СЊ РіСЂР°Р¶РґР°РЅСЃС‚РІРѕ
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void CmAddCitizen(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CitizenList("add");
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Редактировать гражданство
+	 * Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РіСЂР°Р¶РґР°РЅСЃС‚РІРѕ
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void CmEditCitizen(ActionEvent event) {
 		try {
-			// Если количество строк равно 1, то выбрать первую строку
+			// Р•СЃР»Рё РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє СЂР°РІРЅРѕ 1, С‚Рѕ РІС‹Р±СЂР°С‚СЊ РїРµСЂРІСѓСЋ СЃС‚СЂРѕРєСѓ
 			if (CUS_CITIZEN.getItems().size() == 1) {
 				CUS_CITIZEN.getSelectionModel().select(0);
 			}
 			// ---------------
 			if (CUS_CITIZEN.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите сначала данные из таблицы!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃРЅР°С‡Р°Р»Р° РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹!");
 			} else {
 				Main.logger = Logger.getLogger(getClass());
 				CitizenList("edit");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Список стран рождения
+	 * РЎРїРёСЃРѕРє СЃС‚СЂР°РЅ СЂРѕР¶РґРµРЅРёСЏ
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void BtBurnCountry(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CitizenList("brn");
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * При изменении района
+	 * РџСЂРё РёР·РјРµРЅРµРЅРёРё СЂР°Р№РѕРЅР°
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void AreaChange(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			/**
-			 * Нас. пункты
+			 * РќР°СЃ. РїСѓРЅРєС‚С‹
 			 */
 			{
 				PreparedStatement sqlStatement = conn.prepareStatement("select * from NAS_PUNKT t where t.AREA = ?");
@@ -919,18 +912,12 @@ public class EditCus {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Заполнить данными таблицу с документами
+	 * Р—Р°РїРѕР»РЅРёС‚СЊ РґР°РЅРЅС‹РјРё С‚Р°Р±Р»РёС†Сѓ СЃ РґРѕРєСѓРјРµРЅС‚Р°РјРё
 	 */
 	void InitCusDocum() {
 		try {
@@ -970,27 +957,20 @@ public class EditCus {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Удалить документ
+	 * РЈРґР°Р»РёС‚СЊ РґРѕРєСѓРјРµРЅС‚
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void CmDelCusDocum(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (CUS_DOCUM.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите сначала данные из таблицы!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃРЅР°С‡Р°Р»Р° РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹!");
 			} else {
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("delete from cus_docum where ID_DOC = ?");
@@ -998,29 +978,22 @@ public class EditCus {
 				delete.executeUpdate();
 				delete.close();
 				/**
-				 * Обновление после удаления
+				 * РћР±РЅРѕРІР»РµРЅРёРµ РїРѕСЃР»Рµ СѓРґР°Р»РµРЅРёСЏ
 				 */
 				InitCusDocum();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Добавление и редактирование документа
+	 * Р”РѕР±Р°РІР»РµРЅРёРµ Рё СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РґРѕРєСѓРјРµРЅС‚Р°
 	 * 
 	 * @param type
 	 */
 	void CRUDDocum(String type, String type2) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn.prepareCall(type);
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, (PREF_T.isSelected()) ? "Y" : "N");
@@ -1048,7 +1021,7 @@ public class EditCus {
 			callStmt.close();
 			if (ret.equals("ok")) {
 				/**
-				 * Обновить
+				 * РћР±РЅРѕРІРёС‚СЊ
 				 */
 				InitCusDocum();
 			} else {
@@ -1056,31 +1029,24 @@ public class EditCus {
 				Msg.ErrorView(stage_, "CUS_DOCUM", conn);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Кнопка удалить документ
+	 * РљРЅРѕРїРєР° СѓРґР°Р»РёС‚СЊ РґРѕРєСѓРјРµРЅС‚
 	 */
 	@FXML
 	private Button BtDelDocum;
 
 	/**
-	 * Добавить документ
+	 * Р”РѕР±Р°РІРёС‚СЊ РґРѕРєСѓРјРµРЅС‚
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void AddCusDocum(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) CombCountryAddr.getScene().getWindow();
 			FXMLLoader loader = new FXMLLoader();
@@ -1094,44 +1060,38 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить паспортные данные");
+			stage.setTitle("Р”РѕР±Р°РІРёС‚СЊ РїР°СЃРїРѕСЂС‚РЅС‹Рµ РґР°РЅРЅС‹Рµ");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
 				public void handle(WindowEvent paramT) {
-					// обновим таблицу при закрытии
+					// РѕР±РЅРѕРІРёРј С‚Р°Р±Р»РёС†Сѓ РїСЂРё Р·Р°РєСЂС‹С‚РёРё
 					InitCusDocum();
 				}
 			});
 			stage.show();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Редактировать документ
+	 * Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РґРѕРєСѓРјРµРЅС‚
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void EditCusDocum(ActionEvent event) {
 		try {
-			// Если количество строк равно 1, то выбрать первую строку
+			// Р•СЃР»Рё РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє СЂР°РІРЅРѕ 1, С‚Рѕ РІС‹Р±СЂР°С‚СЊ РїРµСЂРІСѓСЋ СЃС‚СЂРѕРєСѓ
 			if (CUS_DOCUM.getItems().size() == 1) {
 				CUS_DOCUM.getSelectionModel().select(0);
 			}
 			if (CUS_DOCUM.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите сначала данные из таблицы!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃРЅР°С‡Р°Р»Р° РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹!");
 			} else {
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) CombCountryAddr.getScene().getWindow();
@@ -1148,33 +1108,26 @@ public class EditCus {
 				Parent root = loader.load();
 				stage.setScene(new Scene(root));
 				stage.getIcons().add(new Image("/icon.png"));
-				stage.setTitle("Редактировать паспортные данные");
+				stage.setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РїР°СЃРїРѕСЂС‚РЅС‹Рµ РґР°РЅРЅС‹Рµ");
 				stage.initOwner(stage_);
 				stage.setResizable(false);
 				stage.initModality(Modality.WINDOW_MODAL);
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {
-						// обновим таблицу при закрытии
+						// РѕР±РЅРѕРІРёРј С‚Р°Р±Р»РёС†Сѓ РїСЂРё Р·Р°РєСЂС‹С‚РёРё
 						InitCusDocum();
 					}
 				});
 				stage.show();
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Закрытие формы
+	 * Р—Р°РєСЂС‹С‚РёРµ С„РѕСЂРјС‹
 	 */
 	void onclose() {
 		Stage stage = (Stage) CUS_CITIZEN.getScene().getWindow();
@@ -1188,17 +1141,17 @@ public class EditCus {
 	private BorderPane BP;
 
 	/**
-	 * Отправить данные в 1с
+	 * РћС‚РїСЂР°РІРёС‚СЊ РґР°РЅРЅС‹Рµ РІ 1СЃ
 	 */
 	void Save1c(Integer dbid) {
 		try {
-			// Если многопоточность
+			// Р•СЃР»Рё РјРЅРѕРіРѕРїРѕС‚РѕС‡РЅРѕСЃС‚СЊ
 //			BP.setDisable(true);
 //			PROGRESS.setVisible(true);
 //			Task<Object> task = new Task<Object>() {
 //				@Override
 //				public Object call() throws Exception {
-					// разрешить любые сертификаты
+					// СЂР°Р·СЂРµС€РёС‚СЊ Р»СЋР±С‹Рµ СЃРµСЂС‚РёС„РёРєР°С‚С‹
 					new HttpsTrustManager().allowAllSSL();
 					Auth1c exdb = new Auth1c();
 					String CPU_NAME = exdb.CPU_NAME();
@@ -1207,10 +1160,10 @@ public class EditCus {
 					// String LAST_AUTH = exdb.LAST_AUTH();
 					String ENCRYPT = exdb.ENCRYPT(DB_NAME, HDD_SERIAL, CPU_NAME);
 
-					// Обращение к сервису
-					String auth = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
-							+ "<ДанныеДляАвторизации КодДоступа=\"" + ENCRYPT + "\" IDБазы=\"" + exdb.ID() + "\"/>\r\n"
-							+ "</Контейнер>\r\n";
+					// РћР±СЂР°С‰РµРЅРёРµ Рє СЃРµСЂРІРёСЃСѓ
+					String auth = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<РљРѕРЅС‚РµР№РЅРµСЂ>\r\n"
+							+ "<Р”Р°РЅРЅС‹РµР”Р»СЏРђРІС‚РѕСЂРёР·Р°С†РёРё РљРѕРґР”РѕСЃС‚СѓРїР°=\"" + ENCRYPT + "\" IDР‘Р°Р·С‹=\"" + exdb.ID() + "\"/>\r\n"
+							+ "</РљРѕРЅС‚РµР№РЅРµСЂ>\r\n";
 					URL url = new URL(exdb.FullAddress() + "/Authorization");
 					String AuthReturn = exdb.Call1cHttpService(auth, exdb.LOGIN(), exdb.PASSWORD(), url);
 					System.out.println(AuthReturn);
@@ -1242,25 +1195,25 @@ public class EditCus {
 							 * rs.getString("DOM")); XML.replace("\"KORPUS\"", rs.getString("KORP"));
 							 * XML.replace("\"KVARTIRA\"", rs.getString("KV"));
 							 */
-							XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
-									+ "	<ДанныеАвторизации IDБазы=\"" + exdb.ID() + "\" ДатаПоследнейАвторизации=\""
-									+ xml_last_auth + "\"/>\r\n" + "	<РодительскийЭлемент>\r\n"
-									+ "		<ПерсональныеДанные Оператор=\"" + DB_NAME + "/" + rs.getString("OPER")
-									+ "\" ID=\"\" КодСсылки=\"\" Фамилия=\"" + rs.getString("CCUSLAST_NAME")
-									+ "\" Имя=\"" + rs.getString("CCUSFIRST_NAME") + "\" Отчество=\""
-									+ rs.getString("CCUSMIDDLE_NAME") + "\" ДатаРождения=\"" + rs.getString("BR_DATE")
-									+ "\" КодПола=\"" + rs.getString("CCUSSEX") + "\"/>\r\n"
-									+ "		<МестоЖительства КодРайона=\"" + rs.getString("CODE_AREA")
-									+ "\" НаименованиеРайона=\"" + rs.getString("NAME_AREA") + "\" КодНасПункта=\""
-									+ rs.getString("PUNCT_CODE") + "\" НаименованиеНасПункта=\""
-									+ rs.getString("PUNCT_NAME") + "\" Улица=\"" + rs.getString("STREET") + "\" Дом=\""
-									+ rs.getString("DOM") + "\" Корпус=\"" + rs.getString("KORP") + "\" Квартира=\""
+							XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<РљРѕРЅС‚РµР№РЅРµСЂ>\r\n"
+									+ "	<Р”Р°РЅРЅС‹РµРђРІС‚РѕСЂРёР·Р°С†РёРё IDР‘Р°Р·С‹=\"" + exdb.ID() + "\" Р”Р°С‚Р°РџРѕСЃР»РµРґРЅРµР№РђРІС‚РѕСЂРёР·Р°С†РёРё=\""
+									+ xml_last_auth + "\"/>\r\n" + "	<Р РѕРґРёС‚РµР»СЊСЃРєРёР№Р­Р»РµРјРµРЅС‚>\r\n"
+									+ "		<РџРµСЂСЃРѕРЅР°Р»СЊРЅС‹РµР”Р°РЅРЅС‹Рµ РћРїРµСЂР°С‚РѕСЂ=\"" + DB_NAME + "/" + rs.getString("OPER")
+									+ "\" ID=\"\" РљРѕРґРЎСЃС‹Р»РєРё=\"\" Р¤Р°РјРёР»РёСЏ=\"" + rs.getString("CCUSLAST_NAME")
+									+ "\" РРјСЏ=\"" + rs.getString("CCUSFIRST_NAME") + "\" РћС‚С‡РµСЃС‚РІРѕ=\""
+									+ rs.getString("CCUSMIDDLE_NAME") + "\" Р”Р°С‚Р°Р РѕР¶РґРµРЅРёСЏ=\"" + rs.getString("BR_DATE")
+									+ "\" РљРѕРґРџРѕР»Р°=\"" + rs.getString("CCUSSEX") + "\"/>\r\n"
+									+ "		<РњРµСЃС‚РѕР–РёС‚РµР»СЊСЃС‚РІР° РљРѕРґР Р°Р№РѕРЅР°=\"" + rs.getString("CODE_AREA")
+									+ "\" РќР°РёРјРµРЅРѕРІР°РЅРёРµР Р°Р№РѕРЅР°=\"" + rs.getString("NAME_AREA") + "\" РљРѕРґРќР°СЃРџСѓРЅРєС‚Р°=\""
+									+ rs.getString("PUNCT_CODE") + "\" РќР°РёРјРµРЅРѕРІР°РЅРёРµРќР°СЃРџСѓРЅРєС‚Р°=\""
+									+ rs.getString("PUNCT_NAME") + "\" РЈР»РёС†Р°=\"" + rs.getString("STREET") + "\" Р”РѕРј=\""
+									+ rs.getString("DOM") + "\" РљРѕСЂРїСѓСЃ=\"" + rs.getString("KORP") + "\" РљРІР°СЂС‚РёСЂР°=\""
 									+ rs.getString("KV") + "\"/>\r\n";
 						}
 						rs.close();
 						select.close();
 					}
-					XML = XML + "		<Паспорта>\r\n";
+					XML = XML + "		<РџР°СЃРїРѕСЂС‚Р°>\r\n";
 					String docs = "";
 					int cnt_doc = 0;
 					{
@@ -1270,31 +1223,31 @@ public class EditCus {
 						ResultSet rs = doc.executeQuery();
 						while (rs.next()) {
 							cnt_doc++;
-							docs = docs + "			<Паспорт" + String.valueOf(cnt_doc) + " ID=\""
-									+ rs.getString("SYS_GUID") + "\" Просрочен=\"0\" КодГосударства=\""
-									+ rs.getString("COUNTRY_CODE") + "\" НаименованиеГосударства=\""
-									+ rs.getString("COUNTRY_NAME") + "\" КодВида=\"" + rs.getString("DOC_CODE")
-									+ "\" НаименованиеВида=\"" + rs.getString("DOC_NAME") + "\" Серия=\""
-									+ rs.getString("DOC_SER") + "\" Номер=\"" + rs.getString("DOC_NUM")
-									+ "\" КемВыдан=\"" + rs.getString("DOC_AGENCY") + "\" ДатаВыдачи=\""
-									+ rs.getString("DOC_DATE") + "\" СрокДействия=\"" + rs.getString("DOC_PERIOD")
+							docs = docs + "			<РџР°СЃРїРѕСЂС‚" + String.valueOf(cnt_doc) + " ID=\""
+									+ rs.getString("SYS_GUID") + "\" РџСЂРѕСЃСЂРѕС‡РµРЅ=\"0\" РљРѕРґР“РѕСЃСѓРґР°СЂСЃС‚РІР°=\""
+									+ rs.getString("COUNTRY_CODE") + "\" РќР°РёРјРµРЅРѕРІР°РЅРёРµР“РѕСЃСѓРґР°СЂСЃС‚РІР°=\""
+									+ rs.getString("COUNTRY_NAME") + "\" РљРѕРґР’РёРґР°=\"" + rs.getString("DOC_CODE")
+									+ "\" РќР°РёРјРµРЅРѕРІР°РЅРёРµР’РёРґР°=\"" + rs.getString("DOC_NAME") + "\" РЎРµСЂРёСЏ=\""
+									+ rs.getString("DOC_SER") + "\" РќРѕРјРµСЂ=\"" + rs.getString("DOC_NUM")
+									+ "\" РљРµРјР’С‹РґР°РЅ=\"" + rs.getString("DOC_AGENCY") + "\" Р”Р°С‚Р°Р’С‹РґР°С‡Рё=\""
+									+ rs.getString("DOC_DATE") + "\" РЎСЂРѕРєР”РµР№СЃС‚РІРёСЏ=\"" + rs.getString("DOC_PERIOD")
 									+ "\"/>\r\n";
 						}
 						doc.close();
 						rs.close();
 					}
-					XML = XML + docs + "		</Паспорта>\r\n	</РодительскийЭлемент>\r\n</Контейнер>";
+					XML = XML + docs + "		</РџР°СЃРїРѕСЂС‚Р°>\r\n	</Р РѕРґРёС‚РµР»СЊСЃРєРёР№Р­Р»РµРјРµРЅС‚>\r\n</РљРѕРЅС‚РµР№РЅРµСЂ>";
 					System.out.println(XML);
 					URL url2 = new URL(exdb.FullAddress() + "Sync/ClientPriority");
 					String save_ret_1c = // exdb.SAVEFIO_1C(XML);
 							exdb.Call1cHttpService(XML, exdb.LOGIN(), exdb.PASSWORD(), url2);
 					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 					System.out.println(save_ret_1c);
-					if (!save_ret_1c.equals("Неудачная попытка авторизации")) {
-						// обновим id-шник
+					if (!save_ret_1c.equals("РќРµСѓРґР°С‡РЅР°СЏ РїРѕРїС‹С‚РєР° Р°РІС‚РѕСЂРёР·Р°С†РёРё") & !save_ret_1c.contains("{") & save_ret_1c.matches(".*\\d.*")) {
+						// РѕР±РЅРѕРІРёРј id-С€РЅРёРє
 						PreparedStatement doc = conn
 								.prepareStatement("update cus set cus.ID1C = ? where cus.ICUSNUM = ?");
-						doc.setInt(1, Integer.valueOf(save_ret_1c.replace(" ", "")));
+						doc.setInt(1, Integer.valueOf(save_ret_1c.replace("В ", "")));
 						doc.setInt(2, dbid);
 						doc.executeUpdate();
 						doc.close();
@@ -1312,28 +1265,29 @@ public class EditCus {
 //				onclose();
 //			});
 //			exec.execute(task);
+			onclose();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Для многопоточности
+	 * Р”Р»СЏ РјРЅРѕРіРѕРїРѕС‚РѕС‡РЅРѕСЃС‚Рё
 	 */
 	@SuppressWarnings("unused")
 	private Executor exec;
 	/**
-	 * Сессия текущая
+	 * РЎРµСЃСЃРёСЏ С‚РµРєСѓС‰Р°СЏ
 	 */
 	private Connection conn = null;
 
 	/**
-	 * Вызов пакета редактирования клиента
+	 * Р’С‹Р·РѕРІ РїР°РєРµС‚Р° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РєР»РёРµРЅС‚Р°
 	 */
 	void CallSave() {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call MJCUS.UPDATE_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					.prepareCall("{ ? = call MJCUS.UPDATE_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setDate(2,
 					(DCUSBIRTHDAY.getValue() != null) ? java.sql.Date.valueOf(DCUSBIRTHDAY.getValue()) : null);
@@ -1362,13 +1316,17 @@ public class EditCus {
 			callStmt.setString(17, KORP.getText());
 			callStmt.setString(18, KV.getText());
 			callStmt.setInt(19, getId());
+			callStmt.setString(20, AB_FIRST_NAME.getText());
+			callStmt.setString(21, AB_MIDDLE_NAME.getText());
+			callStmt.setString(22, AB_LAST_NAME.getText());
+			callStmt.setString(23, AB_PLACE_BIRTH.getText());
 			callStmt.execute();
 			String ret = callStmt.getString(1);
 			callStmt.close();
 			if (ret.equals("ok")) {
 				conn.commit();
 				setStatus(true);
-				// сохранить, обновить
+				// СЃРѕС…СЂР°РЅРёС‚СЊ, РѕР±РЅРѕРІРёС‚СЊ
 				{
 					Save1c(getId());
 				}
@@ -1385,13 +1343,12 @@ public class EditCus {
 	}
 
 	/**
-	 * Вызов пакета редактирования клиента, для сравнения
+	 * Р’С‹Р·РѕРІ РїР°РєРµС‚Р° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РєР»РёРµРЅС‚Р°, РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ
 	 */
 	void CallSaveToCompare() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call MJCUS.UPDATE_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					.prepareCall("{ ? = call MJCUS.UPDATE_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setDate(2,
 					(DCUSBIRTHDAY.getValue() != null) ? java.sql.Date.valueOf(DCUSBIRTHDAY.getValue()) : null);
@@ -1420,66 +1377,54 @@ public class EditCus {
 			callStmt.setString(17, KORP.getText());
 			callStmt.setString(18, KV.getText());
 			callStmt.setInt(19, getId());
+			callStmt.setString(20, AB_FIRST_NAME.getText());
+			callStmt.setString(21, AB_MIDDLE_NAME.getText());
+			callStmt.setString(22, AB_LAST_NAME.getText());
+			callStmt.setString(23, AB_PLACE_BIRTH.getText());
 			callStmt.execute();
 			callStmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * При нажатии кнопки сохранить
+	 * РџСЂРё РЅР°Р¶Р°С‚РёРё РєРЅРѕРїРєРё СЃРѕС…СЂР°РЅРёС‚СЊ
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Statement sqlStatement = conn.createStatement();
 			String readRecordSQL = "select count(*) from NATIONALITY where name = '" + CCUSNATIONALITY.getValue() + "'";
 			ResultSet rs = sqlStatement.executeQuery(readRecordSQL);
-			/**
-			 * Проверка существования национальности
-			 */
+			//РџСЂРѕРІРµСЂРєР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ РЅР°С†РёРѕРЅР°Р»СЊРЅРѕСЃС‚Рё
 			if (CCUSNATIONALITY.getValue() != null) {
 				if (rs.next()) {
 					if (rs.getInt(1) == 0) {
-						AddNationalityIfNotExist();
+						AddNationalityIfNotExist(false);
 					} else {
 						CallSave();
 					}
 				}
 			} else {
-				Msg.Message("Выберите национальность");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РЅР°С†РёРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ");
 			}
 			rs.close();
 			sqlStatement.close();
-
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Форматирование даты ДД.ММ.ГГГГ
+	 * Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ РґР°С‚С‹ Р”Р”.РњРњ.Р“Р“Р“Р“
 	 */
 	DateTimeFormatter DTFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
 	/**
-	 * Форматирование столбцов
+	 * Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ СЃС‚РѕР»Р±С†РѕРІ
 	 * 
 	 * @param TC
 	 */
@@ -1524,7 +1469,7 @@ public class EditCus {
 	}
 
 	/**
-	 * Форматирование DatePiker
+	 * Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ DatePiker
 	 * 
 	 * @param DP
 	 */
@@ -1553,7 +1498,7 @@ public class EditCus {
 	}
 
 	/**
-	 * Первая буква заглавная
+	 * РџРµСЂРІР°СЏ Р±СѓРєРІР° Р·Р°РіР»Р°РІРЅР°СЏ
 	 * 
 	 * @param value
 	 * @return
@@ -1572,7 +1517,7 @@ public class EditCus {
 	}
 
 	/**
-	 * Первая буква заглавная
+	 * РџРµСЂРІР°СЏ Р±СѓРєРІР° Р·Р°РіР»Р°РІРЅР°СЏ
 	 * 
 	 * @param TxtFld
 	 */
@@ -1585,7 +1530,7 @@ public class EditCus {
 	}
 
 	/**
-	 * В верхнем регистре
+	 * Р’ РІРµСЂС…РЅРµРј СЂРµРіРёСЃС‚СЂРµ
 	 * 
 	 * @param tf
 	 */
@@ -1607,13 +1552,13 @@ public class EditCus {
 	boolean UPDATE_ABH_NAME = false;
 
 	/**
-	 * Открыть документ
+	 * РћС‚РєСЂС‹С‚СЊ РґРѕРєСѓРјРµРЅС‚
 	 * ************************************************************************************
 	 */
 	void OpenDocument() {
 		try {
 			if (all_docs.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите документ!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РґРѕРєСѓРјРµРЅС‚!");
 			} else {
 				String tablename = all_docs.getSelectionModel().getSelectedItem().getTABLE_NAME();
 				Integer doc_id = all_docs.getSelectionModel().getSelectedItem().getDOC_ID();
@@ -1659,24 +1604,17 @@ public class EditCus {
 					doc.setConn(conn);
 					doc.Edit(doc_id, (Stage) all_docs.getScene().getWindow());
 					/*
-					 * } else { Msg.Message("Форма редактирования уже открыта!"); }
+					 * } else { Msg.Message("Р¤РѕСЂРјР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СѓР¶Рµ РѕС‚РєСЂС‹С‚Р°!"); }
 					 */
 				}
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * При вводе фамилии
+	 * РџСЂРё РІРІРѕРґРµ С„Р°РјРёР»РёРё
 	 * 
 	 * @param event
 	 */
@@ -1686,7 +1624,7 @@ public class EditCus {
 	}
 
 	/**
-	 * При вводе имени
+	 * РџСЂРё РІРІРѕРґРµ РёРјРµРЅРё
 	 * 
 	 * @param event
 	 */
@@ -1696,7 +1634,7 @@ public class EditCus {
 	}
 
 	/**
-	 * При вводе имени
+	 * РџСЂРё РІРІРѕРґРµ РёРјРµРЅРё
 	 * 
 	 * @param event
 	 */
@@ -1706,7 +1644,7 @@ public class EditCus {
 	}
 
 	/**
-	 * При вводе "Место рождения"
+	 * РџСЂРё РІРІРѕРґРµ "РњРµСЃС‚Рѕ СЂРѕР¶РґРµРЅРёСЏ"
 	 * 
 	 * @param event
 	 */
@@ -1716,7 +1654,7 @@ public class EditCus {
 	}
 
 	/**
-	 * При вводе даты рождения
+	 * РџСЂРё РІРІРѕРґРµ РґР°С‚С‹ СЂРѕР¶РґРµРЅРёСЏ
 	 * 
 	 * @param event
 	 */
@@ -1727,7 +1665,7 @@ public class EditCus {
 
 	@FXML
 	private AnchorPane AP;
-	// _______Для_Блокировки___________
+	// _______Р”Р»СЏ_Р‘Р»РѕРєРёСЂРѕРІРєРё___________
 	@FXML
 	private TableView<CUS> DUBL;
 
@@ -1735,13 +1673,13 @@ public class EditCus {
 	private ToolBar DUBLIC_TOOL;
 
 	/**
-	 * Страна рождения
+	 * РЎС‚СЂР°РЅР° СЂРѕР¶РґРµРЅРёСЏ
 	 */
 	@FXML
 	private ComboBox<COUNTRIES> CombCountry;
 
 	/**
-	 * Для стран
+	 * Р”Р»СЏ СЃС‚СЂР°РЅ
 	 */
 	private void CombCountry(ComboBox<COUNTRIES> cmb) {
 		cmb.setConverter(new StringConverter<COUNTRIES>() {
@@ -1759,7 +1697,7 @@ public class EditCus {
 	}
 
 	/**
-	 * Страна
+	 * РЎС‚СЂР°РЅР°
 	 */
 	@FXML
 	private ComboBox<COUNTRIES> CombCountryAddr;
@@ -1774,7 +1712,7 @@ public class EditCus {
 	private TitledPane Docs;
 
 	/**
-	 * Основные данные
+	 * РћСЃРЅРѕРІРЅС‹Рµ РґР°РЅРЅС‹Рµ
 	 */
 	@FXML
 	private TitledPane OSN_DATA;
@@ -1786,21 +1724,41 @@ public class EditCus {
 	private Button SaveEditB;
 
 	/**
-	 * Закрыть и открыть на редактирование
+	 * Р—Р°РєСЂС‹С‚СЊ Рё РѕС‚РєСЂС‹С‚СЊ РЅР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ
 	 */
 	@FXML
 	private void SaveEdit() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
+			Statement sqlStatement = conn.createStatement();
+			String readRecordSQL = "select count(*) from NATIONALITY where name = '" + CCUSNATIONALITY.getValue() + "'";
+			ResultSet rs = sqlStatement.executeQuery(readRecordSQL);
+			//РџСЂРѕРІРµСЂРєР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ РЅР°С†РёРѕРЅР°Р»СЊРЅРѕСЃС‚Рё
+			if (CCUSNATIONALITY.getValue() != null) {
+				if (rs.next()) {
+					if (rs.getInt(1) == 0) {
+						AddNationalityIfNotExist(true);
+					} else {
+						CallSaveToCompare();
+						conn.commit();
+					}
+				}
+			} else {
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РЅР°С†РёРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ");
+			}
+			rs.close();
+			sqlStatement.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				DBUtil.LOG_ERROR(e1);
+			}
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Быстрый способ заполнения даты
+	 * Р‘С‹СЃС‚СЂС‹Р№ СЃРїРѕСЃРѕР± Р·Р°РїРѕР»РЅРµРЅРёСЏ РґР°С‚С‹
 	 * 
 	 * @param dp
 	 */
@@ -1831,11 +1789,24 @@ public class EditCus {
 	@FXML
 	private MenuButton ZAGS_MENU_BUT;
 	/**
-	 * Инициализация
+	 * РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
 	 */
 	@FXML
 	private void initialize() {
-		try {
+		try {	
+//			final KeyCombination kb = new KeyCodeCombination(KeyCode.BACK_QUOTE, KeyCombination.CONTROL_DOWN);
+//			AB_MIDDLE_NAME.setOnKeyReleased(event -> {
+//				System.out.println(event.getCode());
+//				if (kb.match(event)) {
+//					System.out.println("Pressed!!");
+//				}
+//			});
+
+			ToggleGroup toggleGroup = new ToggleGroup();
+
+			AB_SUN.setToggleGroup(toggleGroup);
+			AB_DOUTH.setToggleGroup(toggleGroup);
+			
 			Root rt = new Root();
 			ZAGS_MENU_BUT.getItems().forEach(menuItem -> {
 				if (rt.chk_menu(Integer.valueOf(menuItem.getId()), Connect.userID) == 1) {
@@ -1844,7 +1815,7 @@ public class EditCus {
 					menuItem.setVisible(false);
 				}
 			});
-			//Проверка, работает ли пользователь в загсе, нотариате или админ
+			//РџСЂРѕРІРµСЂРєР°, СЂР°Р±РѕС‚Р°РµС‚ Р»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РІ Р·Р°РіСЃРµ, РЅРѕС‚Р°СЂРёР°С‚Рµ РёР»Рё Р°РґРјРёРЅ
 			if(DBUtil.ACC_LEV().equals("NOT"))
 				DocTab.getTabPane().getTabs().remove(DocTab);
 //			addIfNotPresent(BP.getStyleClass(), JMetroStyleClass.BACKGROUND);
@@ -1859,7 +1830,7 @@ public class EditCus {
 			
 			//DateAutoComma(DCUSBIRTHDAY);
 			/**
-			 * Двойной щелчок по строке
+			 * Р”РІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє РїРѕ СЃС‚СЂРѕРєРµ
 			 */
 			CUS_DOCUM.setRowFactory(tv -> {
 				TableRow<CUS_DOCUM> row = new TableRow<>();
@@ -1882,14 +1853,14 @@ public class EditCus {
 							Parent root = loader.load();
 							stage.setScene(new Scene(root));
 							stage.getIcons().add(new Image("/icon.png"));
-							stage.setTitle("Редактировать паспортные данные");
+							stage.setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РїР°СЃРїРѕСЂС‚РЅС‹Рµ РґР°РЅРЅС‹Рµ");
 							stage.initOwner(stage_);
 							stage.setResizable(false);
 							stage.initModality(Modality.WINDOW_MODAL);
 							stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 								@Override
 								public void handle(WindowEvent paramT) {
-									// обновим таблицу при закрытии
+									// РѕР±РЅРѕРІРёРј С‚Р°Р±Р»РёС†Сѓ РїСЂРё Р·Р°РєСЂС‹С‚РёРё
 									InitCusDocum();
 								}
 							});
@@ -1903,21 +1874,21 @@ public class EditCus {
 			});
 
 			//MainTool.getItems().remove(SaveEditB);
-			SaveEditB.setVisible(false);;
-			
-			Docs.heightProperty().addListener(
-					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
-			Address.heightProperty().addListener(
-					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
-
-			Citizen.heightProperty().addListener(
-					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
-
-			OSN_DATA.heightProperty().addListener(
-					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
+//			SaveEditB.setVisible(false);;
+//			
+//			Docs.heightProperty().addListener(
+//					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
+//			Address.heightProperty().addListener(
+//					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
+//
+//			Citizen.heightProperty().addListener(
+//					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
+//
+//			OSN_DATA.heightProperty().addListener(
+//					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
 
 			/**
-			 * Для создания многопоточности
+			 * Р”Р»СЏ СЃРѕР·РґР°РЅРёСЏ РјРЅРѕРіРѕРїРѕС‚РѕС‡РЅРѕСЃС‚Рё
 			 */
 			exec = Executors.newCachedThreadPool((runnable) -> {
 				Thread t = new Thread(runnable);
@@ -1932,14 +1903,14 @@ public class EditCus {
 			//DublicateBorder.getChildren().remove(DUBLIC_TOOL);
 
 			DocTab.setDisable(false);
-			//DocTab.setText("Документы");
+			//DocTab.setText("Р”РѕРєСѓРјРµРЅС‚С‹");
 			// CusTab.setMaxWidth(800);
 			// DublicateBorder.setVisible(false);
 			DOC_DATET.setCellValueFactory(cellData -> cellData.getValue().TM$DOC_DATEProperty());
 			DOCNAME.setCellValueFactory(cellData -> cellData.getValue().DOCNAMEProperty());
 			DOC_ID.setCellValueFactory(cellData -> cellData.getValue().DOC_IDProperty().asObject());
 
-			// Двойной щелчок по строке для открытия документа
+			// Р”РІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє РїРѕ СЃС‚СЂРѕРєРµ РґР»СЏ РѕС‚РєСЂС‹С‚РёСЏ РґРѕРєСѓРјРµРЅС‚Р°
 			all_docs.setRowFactory(tv -> {
 				TableRow<ALL_DOCS> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
@@ -1949,13 +1920,13 @@ public class EditCus {
 				});
 				return row;
 			});
-			// форматировать дату создания документа
+			// С„РѕСЂРјР°С‚РёСЂРѕРІР°С‚СЊ РґР°С‚Сѓ СЃРѕР·РґР°РЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р°
 			DateFormatColDT(DOC_DATET);
 
-			// заполнить таблицу с документами данными
+			// Р·Р°РїРѕР»РЅРёС‚СЊ С‚Р°Р±Р»РёС†Сѓ СЃ РґРѕРєСѓРјРµРЅС‚Р°РјРё РґР°РЅРЅС‹РјРё
 			FillAllDocs();
 			/**
-			 * Установить пол по окончанию отчества - "ич"-м, "на"-ж
+			 * РЈСЃС‚Р°РЅРѕРІРёС‚СЊ РїРѕР» РїРѕ РѕРєРѕРЅС‡Р°РЅРёСЋ РѕС‚С‡РµСЃС‚РІР° - "РёС‡"-Рј, "РЅР°"-Р¶
 			 * 
 			 * @param event
 			 */
@@ -1968,21 +1939,21 @@ public class EditCus {
 						if (!CCUSMIDDLE_NAME.getText().equals("")) {
 							String sex = CCUSMIDDLE_NAME.getText().substring(CCUSMIDDLE_NAME.getText().length() - 2,
 									CCUSMIDDLE_NAME.getText().length());
-							if (sex.toLowerCase().equals("ич")) {
+							if (sex.toLowerCase().equals("РёС‡")) {
 								// CCUSSEX.getItems().addAll("");
-								// CCUSSEX.getItems().addAll("Мужской", "Женский");
+								// CCUSSEX.getItems().addAll("РњСѓР¶СЃРєРѕР№", "Р–РµРЅСЃРєРёР№");
 								for (String ss : CCUSSEX.getItems()) {
-									if (ss.equals("Мужской")) {
+									if (ss.equals("РњСѓР¶СЃРєРѕР№")) {
 										CCUSSEX.getItems().addAll("");
 										CCUSSEX.getSelectionModel().select(ss);
 										break;
 									}
 								}
-							} else if (sex.toLowerCase().equals("на")) {
+							} else if (sex.toLowerCase().equals("РЅР°")) {
 								// CCUSSEX.getItems().addAll("");
-								// CCUSSEX.getItems().addAll("Мужской", "Женский");
+								// CCUSSEX.getItems().addAll("РњСѓР¶СЃРєРѕР№", "Р–РµРЅСЃРєРёР№");
 								for (String ss : CCUSSEX.getItems()) {
-									if (ss.equals("Женский")) {
+									if (ss.equals("Р–РµРЅСЃРєРёР№")) {
 										CCUSSEX.getSelectionModel().select(ss);
 										break;
 									}
@@ -1994,19 +1965,19 @@ public class EditCus {
 			});
 
 			/**
-			 * Первая буква заглавная
+			 * РџРµСЂРІР°СЏ Р±СѓРєРІР° Р·Р°РіР»Р°РІРЅР°СЏ
 			 */
 			{
 				FirstWUpp(CCUSLAST_NAME);
 				FirstWUpp(CCUSFIRST_NAME);
 				FirstWUpp(CCUSMIDDLE_NAME);
-				FirstWUpp(CCUSPLACE_BIRTH);
+				//FirstWUpp(CCUSPLACE_BIRTH);
 				FirstWUpp(INFR_NAME);
 				// UpperCase(DOC_SUBDIV_T);
 				// UpperCase(DOC_AGENCY_T);
 			}
 			/**
-			 * Инициализация столбцов
+			 * РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃС‚РѕР»Р±С†РѕРІ
 			 */
 			ID_DOC_TP.setCellValueFactory(cellData -> cellData.getValue().ID_DOC_TPProperty());
 			DOC_SER.setCellValueFactory(cellData -> cellData.getValue().DOC_SERProperty());
@@ -2017,12 +1988,12 @@ public class EditCus {
 			DOC_AGENCY.setCellValueFactory(cellData -> cellData.getValue().DOC_AGENCYProperty());
 			DOC_SUBDIV.setCellValueFactory(cellData -> cellData.getValue().DOC_SUBDIVProperty());
 			/**
-			 * Форматирование дат
+			 * Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ РґР°С‚
 			 */
 			DateFormatCol(DOC_DATE);
 			DateFormatCol(DOC_PERIOD);
 			/**
-			 * Инициализация столбцов таблицы-Гражданства
+			 * РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃС‚РѕР»Р±С†РѕРІ С‚Р°Р±Р»РёС†С‹-Р“СЂР°Р¶РґР°РЅСЃС‚РІР°
 			 */
 			// COUNTRY.setCellValueFactory(cellData ->
 			// cellData.getValue().COUNTRY_CODEProperty());
@@ -2066,12 +2037,21 @@ public class EditCus {
 				}
 			});
 			/**
-			 * Заполнение данными *****************************
+			 * Р—Р°РїРѕР»РЅРµРЅРёРµ РґР°РЅРЅС‹РјРё *****************************
 			 */
 			CUS cus = INIT_CUS();
 			ForAddFioAndId = cus;
 
-			// страна рождения
+			//РќР° Р°Р±С…Р°Р·СЃРєРѕРј
+			//05.03.2021
+			{
+				AB_FIRST_NAME.setText(cus.getAB_FIRST_NAME());
+				AB_MIDDLE_NAME.setText(cus.getAB_MIDDLE_NAME());
+				AB_LAST_NAME.setText(cus.getAB_LAST_NAME());
+				AB_PLACE_BIRTH.setText(cus.getAB_PLACE_BIRTH());
+			}
+			
+			// СЃС‚СЂР°РЅР° СЂРѕР¶РґРµРЅРёСЏ
 			{
 				Statement sqlStatement = conn.createStatement();
 				String readRecordSQL = "select * from COUNTRIES";
@@ -2099,7 +2079,7 @@ public class EditCus {
 				}
 			}
 
-			// страна
+			// СЃС‚СЂР°РЅР°
 			{
 				Statement sqlStatement = conn.createStatement();
 				String readRecordSQL = "select * from COUNTRIES";
@@ -2143,7 +2123,7 @@ public class EditCus {
 			// BurthCountry.setText(cus.getBurthCountry());
 			CCUSPLACE_BIRTH.setText(cus.getCCUSPLACE_BIRTH());
 			/**
-			 * Районы
+			 * Р Р°Р№РѕРЅС‹
 			 */
 			{
 				Statement sqlStatement = conn.createStatement();
@@ -2164,7 +2144,7 @@ public class EditCus {
 				rs.close();
 			}
 			/**
-			 * Нас. пункты
+			 * РќР°СЃ. РїСѓРЅРєС‚С‹
 			 */
 			{
 				// SqlMap sql = new SqlMap().load("/SQLCUS.xml");
@@ -2193,7 +2173,7 @@ public class EditCus {
 				rs.close();
 			}
 			/**
-			 * Пол
+			 * РџРѕР»
 			 */
 			{
 				Statement sqlStatement = conn.createStatement();
@@ -2212,7 +2192,7 @@ public class EditCus {
 				
 			}
 			/**
-			 * ОТДЕЛЕНИЯ
+			 * РћРўР”Р•Р›Р•РќРРЇ
 			 */
 			{
 				Statement sqlStatement = conn.createStatement();
@@ -2238,7 +2218,7 @@ public class EditCus {
 				
 			}
 			/**
-			 * Адрес
+			 * РђРґСЂРµСЃ
 			 */
 			{
 				CUS_ADDR addr = INIT_CUS_ADDR();
@@ -2250,21 +2230,21 @@ public class EditCus {
 				KV.setText(addr.getKV());
 			}
 			/**
-			 * Гражданства
+			 * Р“СЂР°Р¶РґР°РЅСЃС‚РІР°
 			 */
 			{
 				InitCitizen();
 			}
 
 			/**
-			 * Документы
+			 * Р”РѕРєСѓРјРµРЅС‚С‹
 			 */
 			{
 				InitCusDocum();
 			}
 
 			/**
-			 * Национальность
+			 * РќР°С†РёРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ
 			 */
 			{
 				Statement sqlStatement = conn.createStatement();
@@ -2284,7 +2264,7 @@ public class EditCus {
 			}
 
 			/**
-			 * Действия с документами
+			 * Р”РµР№СЃС‚РІРёСЏ СЃ РґРѕРєСѓРјРµРЅС‚Р°РјРё
 			 */
 			/*
 			 * CUS_DOCUM.getSelectionModel().selectedItemProperty().addListener((obs,
@@ -2307,7 +2287,7 @@ public class EditCus {
 			 * DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName); }
 			 * DOC_SER_T.setText(cd.getDOC_SER()); DOC_NUM_T.setText(cd.getDOC_NUM());
 			 * DOC_DATE_T.setValue(cd.getDOC_DATE());
-			 * DOC_PERIOD_T.setValue(cd.getDOC_PERIOD()); if (cd.getPREF().equals("Да"))
+			 * DOC_PERIOD_T.setValue(cd.getDOC_PERIOD()); if (cd.getPREF().equals("Р”Р°"))
 			 * PREF_T.setSelected(true); else PREF_T.setSelected(false);
 			 * DOC_AGENCY_T.setText(cd.getDOC_AGENCY());
 			 * DOC_SUBDIV_T.setText(cd.getDOC_SUBDIV()); } });
@@ -2324,7 +2304,7 @@ public class EditCus {
 	}
 
 	/**
-	 * Возврат класса CUS
+	 * Р’РѕР·РІСЂР°С‚ РєР»Р°СЃСЃР° CUS
 	 * 
 	 * @return
 	 */
@@ -2362,6 +2342,12 @@ public class EditCus {
 				cus.setAREA(rs.getString("AREA"));
 				cus.setINF(rs.getString("INF"));
 				cus.setBurthCountry(rs.getString("BurthCountry"));
+				
+				cus.setAB_FIRST_NAME(rs.getString("AB_FIRST_NAME"));
+				cus.setAB_MIDDLE_NAME(rs.getString("AB_MIDDLE_NAME"));
+				cus.setAB_LAST_NAME(rs.getString("AB_LAST_NAME"));
+				cus.setAB_PLACE_BIRTH(rs.getString("AB_PLACE_BIRTH"));
+
 				cus_list.add(cus);
 			}
 			prepStmt.close();
@@ -2373,7 +2359,7 @@ public class EditCus {
 	}
 
 	/**
-	 * Возврат адресов
+	 * Р’РѕР·РІСЂР°С‚ Р°РґСЂРµСЃРѕРІ
 	 * 
 	 * @return
 	 */
@@ -2413,19 +2399,13 @@ public class EditCus {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return addr;
 	}
 
 	/**
-	 * Редактировать документ кнопка
+	 * Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РґРѕРєСѓРјРµРЅС‚ РєРЅРѕРїРєР°
 	 * 
 	 * @param event
 	 */
@@ -2436,33 +2416,26 @@ public class EditCus {
 				CUS_CITIZEN.getSelectionModel().select(0);
 			}
 			if (CUS_CITIZEN.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите сначала данные из таблицы!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃРЅР°С‡Р°Р»Р° РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹!");
 			} else {
 				Main.logger = Logger.getLogger(getClass());
 				CitizenList("edit");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Удалить документ кнопка
+	 * РЈРґР°Р»РёС‚СЊ РґРѕРєСѓРјРµРЅС‚ РєРЅРѕРїРєР°
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void BtDelCitizen(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (CUS_CITIZEN.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите сначала данные из таблицы!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃРЅР°С‡Р°Р»Р° РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹!");
 			} else {
 				CUS_CITIZEN cd = CUS_CITIZEN.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("delete from cus_citizen where id = ?");
@@ -2472,48 +2445,34 @@ public class EditCus {
 				InitCitizen();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Добавить документ кнопка
+	 * Р”РѕР±Р°РІРёС‚СЊ РґРѕРєСѓРјРµРЅС‚ РєРЅРѕРїРєР°
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void BtAddCitizen(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CitizenList("add");
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Удалить документ кнопка
+	 * РЈРґР°Р»РёС‚СЊ РґРѕРєСѓРјРµРЅС‚ РєРЅРѕРїРєР°
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void BtDelDocum(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (CUS_DOCUM.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите сначала данные из таблицы!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃРЅР°С‡Р°Р»Р° РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹!");
 			} else {
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("delete from cus_docum where ID_DOC = ?");
@@ -2521,23 +2480,17 @@ public class EditCus {
 				delete.executeUpdate();
 				delete.close();
 				/**
-				 * Обновление после удаления
+				 * РћР±РЅРѕРІР»РµРЅРёРµ РїРѕСЃР»Рµ СѓРґР°Р»РµРЅРёСЏ
 				 */
 				InitCusDocum();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Удалить гражданство
+	 * РЈРґР°Р»РёС‚СЊ РіСЂР°Р¶РґР°РЅСЃС‚РІРѕ
 	 * 
 	 * @param event
 	 */
@@ -2546,7 +2499,7 @@ public class EditCus {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			if (CUS_CITIZEN.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите сначала данные из таблицы!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃРЅР°С‡Р°Р»Р° РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹!");
 			} else {
 				CUS_CITIZEN cd = CUS_CITIZEN.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("delete from cus_citizen where id = ?");
@@ -2556,18 +2509,12 @@ public class EditCus {
 				InitCitizen();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Авто расширение
+	 * РђРІС‚Рѕ СЂР°СЃС€РёСЂРµРЅРёРµ
 	 * 
 	 * @param table
 	 */
@@ -2639,7 +2586,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Свидетельство о рождении");
+			stage.setTitle("РЎРІРёРґРµС‚РµР»СЊСЃС‚РІРѕ Рѕ СЂРѕР¶РґРµРЅРёРё");
 			stage.setResizable(false);
 			stage.initOwner(stage_);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2653,14 +2600,7 @@ public class EditCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2683,7 +2623,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Установление отцовства");
+			stage.setTitle("РЈСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РѕС‚С†РѕРІСЃС‚РІР°");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2697,14 +2637,7 @@ public class EditCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2727,7 +2660,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Заключение брака");
+			stage.setTitle("Р—Р°РєР»СЋС‡РµРЅРёРµ Р±СЂР°РєР°");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2764,7 +2697,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Расторжение брака");
+			stage.setTitle("Р Р°СЃС‚РѕСЂР¶РµРЅРёРµ Р±СЂР°РєР°");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2801,7 +2734,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Установление акта о смерти");
+			stage.setTitle("РЈСЃС‚Р°РЅРѕРІР»РµРЅРёРµ Р°РєС‚Р° Рѕ СЃРјРµСЂС‚Рё");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2848,7 +2781,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Перемена имени");
+			stage.setTitle("РџРµСЂРµРјРµРЅР° РёРјРµРЅРё");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2862,14 +2795,7 @@ public class EditCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2901,7 +2827,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Восстановление абхазской фамилии");
+			stage.setTitle("Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ Р°Р±С…Р°Р·СЃРєРѕР№ С„Р°РјРёР»РёРё");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2915,14 +2841,7 @@ public class EditCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -2955,7 +2874,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Перемена национальной принадлежности");
+			stage.setTitle("РџРµСЂРµРјРµРЅР° РЅР°С†РёРѕРЅР°Р»СЊРЅРѕР№ РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚Рё");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -2969,14 +2888,7 @@ public class EditCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -3004,7 +2916,7 @@ public class EditCus {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Усыновление (удочерение)");
+			stage.setTitle("РЈСЃС‹РЅРѕРІР»РµРЅРёРµ (СѓРґРѕС‡РµСЂРµРЅРёРµ)");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {

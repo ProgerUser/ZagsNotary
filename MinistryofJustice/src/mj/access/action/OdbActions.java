@@ -59,6 +59,7 @@ public class OdbActions {
 	TreeItem<ODB_ACTION> root = null;
 
 	ODB_ACTION adb_act;
+	
 	@FXML
 	private TableView<USR> Users;
 
@@ -355,21 +356,9 @@ public class OdbActions {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				e.printStackTrace();
-				Msg.Message(ExceptionUtils.getStackTrace(e));
-				Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+				DBUtil.LOG_ERROR(e1);
 			}
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -443,7 +432,6 @@ public class OdbActions {
 			// Actions.setCellFactory((TreeView<String> p) -> new TextFieldTreeCellImpl());
 
 			Actions.setCellFactory(tv -> {
-
 				TreeCell<ODB_ACTION> cell = new TreeCell<ODB_ACTION>() {
 					@Override
 					public void updateItem(ODB_ACTION item, boolean empty) {
@@ -663,7 +651,6 @@ public class OdbActions {
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "AccessAction");
@@ -672,28 +659,17 @@ public class OdbActions {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

@@ -307,6 +307,23 @@ public class DBUtil {
 		return ret;
 	}
 	
+	public static Integer ODB_ACT_GRP(Integer grpid, Integer actid) {
+		Integer ret = 0;
+		Connection conn = DBUtil.conn;
+		try {
+			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ODB_ACT_ACCESS_GRP(?,?)}");
+			callStmt.registerOutParameter(1, Types.INTEGER);
+			callStmt.setInt(2, grpid);
+			callStmt.setInt(3, actid);
+			callStmt.execute();
+			ret = callStmt.getInt(1);
+			callStmt.close();
+		} catch (SQLException e) {
+			DBUtil.LOG_ERROR(e);
+		}
+		return ret;
+	}
+	
 	public static Integer ODB_MNU2(Integer actid) {
 		Main.logger = Logger.getLogger(DBUtil.class);
 		Integer ret = 0;
@@ -324,12 +341,16 @@ public class DBUtil {
 		return ret;
 	}
 
+	/**
+	 * Проверка доступа к действию
+	 * @param actid
+	 * @return
+	 */
 	public static Integer OdbAction(Integer actid) {
-		Main.logger = Logger.getLogger(DBUtil.class);
 		Integer ret = 0;
 		Connection conn = DBUtil.conn;
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbAccess(?)}");
+			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ACT_ACCESS(?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
 			callStmt.setInt(2, actid);
 			callStmt.execute();

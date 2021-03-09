@@ -22,7 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <children>
    	<BorderPane fx:id="ROOT">
    	<left>
@@ -68,7 +68,7 @@
    				</TitledPane>
    				<ToolBar style="-fx-border-color: silver;">
    					<items>
-   						<Button mnemonicParsing="false" onAction="#BtAdd" prefHeight="30.0" prefWidth="30.0">
+   						<Button mnemonicParsing="false" onAction="#BtAdd">
    							<tooltip>
    								<Tooltip text="Добавить">
                                  <font>
@@ -79,10 +79,10 @@
    								<Font size="10.0" />
    							</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="PLUS" size="20" />
+                              <FontAwesomeIconView glyphName="PLUS" size="18" />
                            </graphic>
    						</Button>
-   						<Button minHeight="30.0" mnemonicParsing="false" onAction="#BtEdit" prefWidth="30.0">
+   						<Button mnemonicParsing="false" onAction="#BtEdit">
    							<tooltip>
    								<Tooltip text="Редактировать">
                                  <font>
@@ -93,10 +93,10 @@
    								<Font size="10.0" />
    							</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="EDIT" size="20" />
+                              <FontAwesomeIconView glyphName="EDIT" size="18" />
                            </graphic>
    						</Button>
-   						<Button minHeight="30.0" mnemonicParsing="false" onAction="#BtDelete" prefWidth="30.0">
+   						<Button mnemonicParsing="false" onAction="#BtDelete">
    							<tooltip>
    								<Tooltip text="Удалить запись">
                                  <font>
@@ -107,10 +107,10 @@
    								<Font size="10.0" />
    							</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="TIMES" size="20" />
+                              <FontAwesomeIconView glyphName="TIMES" size="18" />
                            </graphic>
    						</Button>
-   						<Button minHeight="30.0" mnemonicParsing="false" onAction="#BtPrint" prefWidth="30.0">
+   						<Button mnemonicParsing="false" onAction="#BtPrint">
    							<tooltip>
    								<Tooltip text="Печать">
                                  <font>
@@ -121,9 +121,24 @@
    								<Font size="10.0" />
    							</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="PRINT" size="20" />
+                              <FontAwesomeIconView glyphName="PRINT" size="18" />
                            </graphic>
    						</Button>
+                        <Button layoutX="112.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtPrintBlank">
+                           <tooltip>
+                              <Tooltip text="Печать бланка">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIconView fill="#2c2ff2" glyphName="PRINT" size="18" />
+                           </graphic>
+                        </Button>
    					</items>
    					<VBox.margin>
    						<Insets />
@@ -145,7 +160,7 @@
 								<XTableColumn fx:id="DFIO" maxWidth="5000.0" minWidth="0.0" prefWidth="180.0" text="ФИО" />
                         <XTableColumn fx:id="DBDATE" prefWidth="120.0" text="Дата рождения" />
                         <XTableColumn fx:id="DC_DD" prefWidth="120.0" text="Дата смерти" />
-                        <XTableColumn fx:id="DC_DPL" prefWidth="200.0" text="Причина смерти" />
+                        <XTableColumn fx:id="DC_DPL" prefWidth="200.0" text="Место смерти" />
 							</columns>
 						</XTableColumn>
 					</columns>

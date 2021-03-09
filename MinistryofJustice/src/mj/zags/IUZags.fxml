@@ -11,19 +11,25 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets left="10.0" right="10.0" top="10.0" />
    </padding>
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="88.0" prefWidth="90.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="239.0" prefWidth="300.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
@@ -36,6 +42,18 @@
             <TextField fx:id="ZAGS_NAME" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Руководитель" GridPane.rowIndex="3" />
             <TextField fx:id="ZAGS_RUK" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Text layoutX="10.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Рук. Абх." GridPane.rowIndex="4" />
+            <TextField fx:id="ZAGS_RUK_ABH" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес" GridPane.rowIndex="5" />
+            <TextField fx:id="ADDR" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наим. для бланк." GridPane.rowIndex="8" />
+            <TextField fx:id="ZAGS_ADR_ABH" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Город на Абх." GridPane.rowIndex="9" />
+            <TextField fx:id="ZAGS_CITY_ABH" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес полн." GridPane.rowIndex="7" />
+            <TextField fx:id="ZAGS_ADR" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес на Абх." GridPane.rowIndex="6" />
+            <TextField fx:id="ADDR_ABH" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>
    </center>

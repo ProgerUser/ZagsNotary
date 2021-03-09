@@ -20,11 +20,8 @@ import java.time.format.DateTimeParseException;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
-
 import com.jyloo.syntheticafx.ComparableColumnFilter;
 import com.jyloo.syntheticafx.DateColumnFilter;
 import com.jyloo.syntheticafx.PatternColumnFilter;
@@ -36,6 +33,9 @@ import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
 import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -147,13 +147,7 @@ public class BirthList {
 			/*******/
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -172,7 +166,7 @@ public class BirthList {
 			Logger.getLogger(getClass());
 
 			if (DBUtil.OdbAction(82) == 0) {
-				Msg.Message("Нет доступа!");
+				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 				return;
 			}
 
@@ -193,7 +187,7 @@ public class BirthList {
 			stage.setScene(new Scene(rp));
 			// stage.initStyle(StageStyle.DECORATED);
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить акт о рождении");
+			stage.setTitle("Р”РѕР±Р°РІРёС‚СЊ Р°РєС‚ Рѕ СЂРѕР¶РґРµРЅРёРё");
 			stage.setResizable(false);
 			stage.setIconified(false);
 			stage.initOwner(stage_);
@@ -211,16 +205,92 @@ public class BirthList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
+	public void manipulatePdf(String src, String dest) throws Exception {
+		if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+		} else {
+			PdfReader reader = new PdfReader(src);
+			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+			AcroFields fields = stamper.getAcroFields();
+			// System.out.print(fields.getFields());
+			PreparedStatement prp = conn.prepareStatement("select * from BLANK_BRN_BIRTH_ACT where BR_ACT_ID = ?");
+			prp.setInt(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
+			ResultSet rs = prp.executeQuery();
+			while (rs.next()) {
+				fields.setField("РўРµРєСЃС‚1", rs.getString("F79"));
+//				fields.setField("Text1", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚2", rs.getString("F79"));
+				fields.setField("Text2", rs.getString("TEXT2"));
+				fields.setField("РўРµРєСЃС‚3", rs.getString("F3"));
+				fields.setField("РўРµРєСЃС‚4", rs.getString("F4"));
+				fields.setField("РўРµРєСЃС‚72", rs.getString("F72"));
+				fields.setField("РўРµРєСЃС‚73", rs.getString("F73"));
+				fields.setField("РўРµРєСЃС‚74", rs.getString("F74"));
+//				fields.setField("РўРµРєСЃС‚75", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚76", rs.getString("F76"));
+				fields.setField("РўРµРєСЃС‚77", rs.getString("F77"));
+//				fields.setField("РўРµРєСЃС‚78", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚79", rs.getString("F79"));
+				fields.setField("РўРµРєСЃС‚80", rs.getString("F80"));
+				fields.setField("РўРµРєСЃС‚81", rs.getString("F81"));
+				fields.setField("РўРµРєСЃС‚82", rs.getString("F82"));
+				fields.setField("РўРµРєСЃС‚83", rs.getString("F83") + " Р°С‚У™С‹Р»Р°СѓР°Т©С‹");
+				fields.setField("РўРµРєСЃС‚84", rs.getString("F84"));
+				fields.setField("РўРµРєСЃС‚85", rs.getString("F85"));
+				fields.setField("РўРµРєСЃС‚86", rs.getString("F86"));
+				fields.setField("РўРµРєСЃС‚87", rs.getString("F87") + " Р°С‚У™С‹Р»Р°СѓР°Т©С‹");
+				fields.setField("РўРµРєСЃС‚88", rs.getString("F88"));
+				fields.setField("РўРµРєСЃС‚89", rs.getString("F89"));
+				fields.setField("РўРµРєСЃС‚90", rs.getString("F90"));
+				fields.setField("РўРµРєСЃС‚91", rs.getString("F80"));
+				fields.setField("РўРµРєСЃС‚92", rs.getString("TEXT2"));
+				fields.setField("РўРµРєСЃС‚93", rs.getString("F93"));
+				fields.setField("РўРµРєСЃС‚94", rs.getString("F94"));
+				fields.setField("РўРµРєСЃС‚95", rs.getString("F95"));
+				fields.setField("РўРµРєСЃС‚96", rs.getString("F96"));
+				fields.setField("РўРµРєСЃС‚97", rs.getString("F97"));
+				fields.setField("РўРµРєСЃС‚98", rs.getString("F98"));
+				fields.setField("РўРµРєСЃС‚99", rs.getString("F99"));
+				fields.setField("РўРµРєСЃС‚100", rs.getString("F79"));
+				fields.setField("РўРµРєСЃС‚101", rs.getString("F101"));
+				fields.setField("РўРµРєСЃС‚102", rs.getString("F80"));
+//				fields.setField("РўРµРєСЃС‚103", rs.getString(""));
+				fields.setField("РўРµРєСЃС‚104", rs.getString("F104"));
+				fields.setField("РўРµРєСЃС‚105", rs.getString("F105"));
+				fields.setField("РўРµРєСЃС‚106", rs.getString("F106"));
+				fields.setField("РўРµРєСЃС‚107", rs.getString("F107"));
+				fields.setField("РўРµРєСЃС‚108", rs.getString("F108"));
+				fields.setField("РўРµРєСЃС‚109", rs.getString("F109"));
+				fields.setField("РўРµРєСЃС‚110", rs.getString("F110"));
+				fields.setField("РўРµРєСЃС‚111", rs.getString("F111"));
+				fields.setField("РўРµРєСЃС‚112", "Р—РђР“РЎ");
+				fields.setField("РўРµРєСЃС‚113", rs.getString("F113"));
+				fields.setField("РўРµРєСЃС‚115", rs.getString("F80"));
+				fields.setField("РўРµРєСЃС‚116", rs.getString("F101"));
+			}
+			prp.close();
+			rs.close();
+
+			stamper.close();
+			reader.close();
+		}
+	}
+
+    @FXML
+    void PrintBlank(ActionEvent event) {
+    	try {
+			manipulatePdf(System.getenv("MJ_PATH") + "/Reports/BRN_BIRTH_ACT.pdf",
+					System.getenv("MJ_PATH") + "/OutReports/BRN_BIRTH_ACT.pdf");
+			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/BRN_BIRTH_ACT.pdf"));
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+    }
+    
 	@FXML
 	void BIRTH_ACT_ADD(ActionEvent event) {
 		Add((Stage) BIRTH_ACT.getScene().getWindow());
@@ -229,7 +299,7 @@ public class BirthList {
 	@FXML
 	void BIRTH_ACT_EDIT(ActionEvent event) {
 		if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите документ!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РґРѕРєСѓРјРµРЅС‚!");
 		} else {
 			Edit(BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID(),
 					(Stage) BIRTH_ACT.getScene().getWindow());
@@ -250,8 +320,9 @@ public class BirthList {
 
 	public void Edit(Integer docid, Stage stage_) {
 		try {
+			//РџСЂРѕРІРµСЂРєР° РґРѕСЃС‚СѓРїР° Рє РґРµР№СЃС‚РІРёСЋ
 			if (DBUtil.OdbAction(83) == 0) {
-				Msg.Message("Нет доступа!");
+				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 				return;
 			}
 			if (isopen == false) {
@@ -286,47 +357,47 @@ public class BirthList {
 						Parent root = loader.load();
 						stage.setScene(new Scene(root));
 						stage.getIcons().add(new Image("/icon.png"));
-						stage.setTitle("Редактирование:");
+						stage.setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ:");
 						stage.initOwner(stage_);
 						stage.setResizable(false);
 						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 							@Override
 							public void handle(WindowEvent paramT) {
 								try {
-									// обновить без сохранения
+									// РѕР±РЅРѕРІРёС‚СЊ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
 									controller.SAVECOMPARE();
-									// Если нажали сохранить
+									// Р•СЃР»Рё РЅР°Р¶Р°Р»Рё СЃРѕС…СЂР°РЅРёС‚СЊ
 									if (controller.getStatus()) {
 										if (from == null) {
 											AfterAdd(controller.getId());
 										}
 										conn.commit();
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 										String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act");
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 										isopen = false;
-									} // Если нажали "X" или "Cancel" и до этого что-то меняли
+									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ С‡С‚Рѕ-С‚Рѕ РјРµРЅСЏР»Рё
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 1) {
 										/**
-										 * Проверка выхода без сохранения
+										 * РџСЂРѕРІРµСЂРєР° РІС‹С…РѕРґР° Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
 										 */
 										Stage stage = stage_;
-										Label alert = new Label("Закрыть форму без сохранения?");
+										Label alert = new Label("Р—Р°РєСЂС‹С‚СЊ С„РѕСЂРјСѓ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ?");
 										alert.setLayoutX(75.0);
 										alert.setLayoutY(11.0);
 										alert.setPrefHeight(17.0);
 
 										Button no = new Button();
-										no.setText("Нет");
+										no.setText("РќРµС‚");
 										no.setLayoutX(111.0);
 										no.setLayoutY(56.0);
 										no.setPrefWidth(72.0);
 										no.setPrefHeight(21.0);
 
 										Button yes = new Button();
-										yes.setText("Да");
+										yes.setText("Р”Р°");
 										yes.setLayoutX(14.0);
 										yes.setLayoutY(56.0);
 										yes.setPrefWidth(72.0);
@@ -352,7 +423,7 @@ public class BirthList {
 													e.printStackTrace();
 												}
 												newWindow_yn.close();
-												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+												// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 												String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act");
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
@@ -360,31 +431,24 @@ public class BirthList {
 												isopen = false;
 											}
 										});
-										newWindow_yn.setTitle("Внимание");
+										newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 										newWindow_yn.setScene(ynScene);
 										newWindow_yn.initModality(Modality.WINDOW_MODAL);
 										newWindow_yn.initOwner(stage);
 										newWindow_yn.setResizable(false);
 										newWindow_yn.getIcons().add(new Image("/icon.png"));
 										newWindow_yn.showAndWait();
-									} // Если нажали "X" или "Cancel" и до этого ничего не меняли
+									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ РЅРёС‡РµРіРѕ РЅРµ РјРµРЅСЏР»Рё
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										isopen = false;
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
+										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"
 										String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act");
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(
-											ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e),
-											methodName);
+									DBUtil.LOG_ERROR(e);
 								}
 							}
 						});
@@ -393,41 +457,24 @@ public class BirthList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "brn_birth_act"));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						Msg.Message("Р—Р°РїРёСЃСЊ СЂРµРґР°РєС‚РёСЂСѓРµС‚СЃСЏ " + DBUtil.Lock_Row_View(docid, "brn_birth_act"));
+						DBUtil.LOG_ERROR(e);
 					} else {
-						e.printStackTrace();
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 				}
-
 			} else {
-				Msg.Message("Форма редактирования уже открыта!");
+				Msg.Message("Р¤РѕСЂРјР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СѓР¶Рµ РѕС‚РєСЂС‹С‚Р°!");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void EditBirth(ActionEvent event) {
 		if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите документ!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РґРѕРєСѓРјРµРЅС‚!");
 		} else {
 			Edit(BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID(),
 					(Stage) BIRTH_ACT.getScene().getWindow());
@@ -442,7 +489,6 @@ public class BirthList {
 
 	private void InitBirths2() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			// SqlMap sql = new SqlMap().load("/BirthSql.xml");
@@ -491,13 +537,7 @@ public class BirthList {
 			});
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -553,13 +593,7 @@ public class BirthList {
 			});
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -605,43 +639,29 @@ public class BirthList {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void RefreshBirthList(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			InitBirths();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Сессия BirtchList.fxml
+	 * РЎРµСЃСЃРёСЏ BirtchList.fxml
 	 */
 	Connection conn = null;
 
 	/**
-	 * Открыть сессию BirtchList.fxml
+	 * РћС‚РєСЂС‹С‚СЊ СЃРµСЃСЃРёСЋ BirtchList.fxml
 	 */
 	void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(BirthList.class);
-
 			Properties props = new Properties();
 			props.put("v$session.program", "BirthList");
 
@@ -651,59 +671,48 @@ public class BirthList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Отключить сессию BirtchList.fxml
+	 * РћС‚РєР»СЋС‡РёС‚СЊ СЃРµСЃСЃРёСЋ BirtchList.fxml
 	 */
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(BirthList.class);
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void Delete() {
 		try {
 			if (DBUtil.OdbAction(84) == 0) {
-				Msg.Message("Нет доступа!");
+				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 				return;
 			}
 			if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите документ!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РґРѕРєСѓРјРµРЅС‚!");
 			} else {
 
 				Stage stage = (Stage) BIRTH_ACT.getScene().getWindow();
-				Label alert = new Label("Удалить запись?");
+				Label alert = new Label("РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ?");
 				alert.setLayoutX(75.0);
 				alert.setLayoutY(11.0);
 				alert.setPrefHeight(17.0);
 
 				Button no = new Button();
-				no.setText("Нет");
+				no.setText("РќРµС‚");
 				no.setLayoutX(111.0);
 				no.setLayoutY(56.0);
 				no.setPrefWidth(72.0);
 				no.setPrefHeight(21.0);
 
 				Button yes = new Button();
-				yes.setText("Да");
+				yes.setText("Р”Р°");
 				yes.setLayoutX(14.0);
 				yes.setLayoutY(56.0);
 				yes.setPrefWidth(72.0);
@@ -735,21 +744,14 @@ public class BirthList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(
-										ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								DBUtil.LOG_ERROR(e1);
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
 				});
-				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 				newWindow_yn.setScene(ynScene);
 				// Specifies the modality for new window.
 				newWindow_yn.initModality(Modality.WINDOW_MODAL);
@@ -761,13 +763,7 @@ public class BirthList {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -787,42 +783,30 @@ public class BirthList {
 	}
 
 	/**
-	 * Поле С фильтра
+	 * РџРѕР»Рµ РЎ С„РёР»СЊС‚СЂР°
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void DT1(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			InitBirths2();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Поле ПО фильтра
+	 * РџРѕР»Рµ РџРћ С„РёР»СЊС‚СЂР°
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void DT2(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			InitBirths2();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -831,7 +815,6 @@ public class BirthList {
 	@FXML
 	void Print_Old(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			ROOT.setDisable(true);
 			PB.setVisible(true);
 			Task<Object> task = new Task<Object>() {
@@ -847,22 +830,14 @@ public class BirthList {
 			exec.execute(task);
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void Print() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите строку!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 			} else {
 
 				ROOT.setDisable(true);
@@ -872,7 +847,7 @@ public class BirthList {
 					@Override
 					public Object call() throws Exception {
 
-						// Вызов
+						// Р’С‹Р·РѕРІ
 						Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/BRN_BIRTH_ACT.docx");
 						docx.setVariablePattern(new VariablePattern("#{", "}"));
 						// preparing variables
@@ -1011,9 +986,9 @@ public class BirthList {
 						// byte[] xwpfDocumentBytes = out.toByteArray();
 
 						// ___________________________________
-						// Метод 1, сформировать файл в C:\Users\<UserName>\AppData\Local\Temp\
-						// который будет удален jvm при закрытии программы
-						// не очень нравится
+						// РњРµС‚РѕРґ 1, СЃС„РѕСЂРјРёСЂРѕРІР°С‚СЊ С„Р°Р№Р» РІ C:\Users\<UserName>\AppData\Local\Temp\
+						// РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ СѓРґР°Р»РµРЅ jvm РїСЂРё Р·Р°РєСЂС‹С‚РёРё РїСЂРѕРіСЂР°РјРјС‹
+						// РЅРµ РѕС‡РµРЅСЊ РЅСЂР°РІРёС‚СЃСЏ
 						{
 							/*
 							 * File tempFile = File.createTempFile("BRN_BIRTH_ACT", ".docx");
@@ -1026,8 +1001,8 @@ public class BirthList {
 							 */
 						}
 
-						// метод 2
-						// конвертировать в pdf и открыть в view-ере
+						// РјРµС‚РѕРґ 2
+						// РєРѕРЅРІРµСЂС‚РёСЂРѕРІР°С‚СЊ РІ pdf Рё РѕС‚РєСЂС‹С‚СЊ РІ view-РµСЂРµ
 						{
 //							ByteArrayOutputStream out = new ByteArrayOutputStream();
 //
@@ -1078,13 +1053,7 @@ public class BirthList {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1104,26 +1073,26 @@ public class BirthList {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");
 
-		CheckBox filterVisible = new CheckBox("Показать фильтр");
+		CheckBox filterVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ С„РёР»СЊС‚СЂ");
 		filterVisible.selectedProperty().bindBidirectional(table.filterRowVisibleProperty());
 
-		CheckBox menuButtonVisible = new CheckBox("Показать кнопку меню");
+		CheckBox menuButtonVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ РєРЅРѕРїРєСѓ РјРµРЅСЋ");
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
-		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
+		CheckBox firstFilterable = new CheckBox("Р¤РёР»СЊС‚СЂСѓРµРјС‹Р№ РїРµСЂРІС‹Р№ СЃС‚РѕР»Р±РµС†");
 		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(BIRTH_ACT_ID.filterableProperty());
 
-		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
+		CheckBox includeHidden = new CheckBox("Р’РєР»СЋС‡РёС‚СЊ СЃРєСЂС‹С‚С‹Рµ СЃС‚РѕР»Р±С†С‹");
 		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
+		CheckBox andFilters = new CheckBox("РСЃРїРѕР»СЊР·СѓР№С‚Рµ РѕРїРµСЂР°С†РёСЋ \"Р\" РґР»СЏ РјРЅРѕРіРѕРєРѕР»РѕРЅРѕС‡РЅРѕРіРѕ С„РёР»СЊС‚СЂР°");
 		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
 		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
 
-		TitledBorderPane p = new TitledBorderPane("Настройки", pane);
+		TitledBorderPane p = new TitledBorderPane("РќР°СЃС‚СЂРѕР№РєРё", pane);
 		p.getStyleClass().add("top-border-only");
 		p.setStyle("-fx-border-insets: 10 0 0 0");
 		return p;
@@ -1143,7 +1112,7 @@ public class BirthList {
 	}
 
 	/**
-	 * Быстрый способ заполнения даты
+	 * Р‘С‹СЃС‚СЂС‹Р№ СЃРїРѕСЃРѕР± Р·Р°РїРѕР»РЅРµРЅРёСЏ РґР°С‚С‹
 	 * 
 	 * @param dp
 	 */
@@ -1171,13 +1140,13 @@ public class BirthList {
 	}
 
 	/**
-	 * Поле С
+	 * РџРѕР»Рµ РЎ
 	 */
 	@FXML
 	private DatePicker DT1;
 
 	/**
-	 * Поле ПО
+	 * РџРѕР»Рµ РџРћ
 	 */
 	@FXML
 	private DatePicker DT2;
@@ -1186,7 +1155,7 @@ public class BirthList {
     private VBox VB;
     
 	/**
-	 * Инициализация
+	 * РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
@@ -1222,13 +1191,13 @@ public class BirthList {
 				return t;
 			});
 			InitBirths();
-			// двойной щелчок
+			// РґРІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє
 			BIRTH_ACT.setRowFactory(tv -> {
 				TableRow<SELECTBIRTH> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
 						if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-							Msg.Message("Выберите документ!");
+							Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РґРѕРєСѓРјРµРЅС‚!");
 						} else {
 							Edit(BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID(),
 									(Stage) BIRTH_ACT.getScene().getWindow());
@@ -1281,12 +1250,7 @@ public class BirthList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1306,7 +1270,7 @@ public class BirthList {
 	}
 
 	/**
-	 * Сравнение данных
+	 * РЎСЂР°РІРЅРµРЅРёРµ РґР°РЅРЅС‹С…
 	 * 
 	 * @return
 	 */
@@ -1331,22 +1295,15 @@ public class BirthList {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
-
 		return ret;
 	}
 
 	String RetXml;
 
 	/**
-	 * Возврат XML файлов для сравнения
+	 * Р’РѕР·РІСЂР°С‚ XML С„Р°Р№Р»РѕРІ РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ
 	 */
 	void XmlsForCompare(Integer docid) {
 		try {
@@ -1373,15 +1330,7 @@ public class BirthList {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
-
 }

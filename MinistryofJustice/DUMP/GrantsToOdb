@@ -42,7 +42,14 @@ begin
   for r in (select *
               from dba_objects
              where OWNER = 'XXI'
-               and object_type in ('VIEW')) loop
+               and object_type in ('VIEW')
+               and OBJECT_NAME not in ('ALL_TABLE',
+                                       'LOCKS_OBJ',
+                                       'MJ_ALL_OBJ',
+                                       'V_AU_CUR_TRIGGERS',
+                                       'V_AU_TRIGGER',
+                                       'V_AU_TRIGGER2')
+             order by OBJECT_NAME) loop
     dbms_output.put_line(r.object_name);
     EXECUTE IMMEDIATE ('grant select on ' || r.object_name || ' to odb');
   end loop;

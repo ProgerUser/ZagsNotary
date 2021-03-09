@@ -135,6 +135,21 @@
       										<FontAwesomeIconView glyphName="PRINT" size="20" />
       									</graphic>
       								</Button>
+                        <Button layoutX="152.0" layoutY="10.0" maxWidth="30.0" mnemonicParsing="false" onAction="#PrintBlank">
+                           <tooltip>
+                              <Tooltip text="Печать">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIconView fill="#2c2ff2" glyphName="PRINT" size="20" />
+                           </graphic>
+                        </Button>
                      </items>
                   </ToolBar>
 					</children>

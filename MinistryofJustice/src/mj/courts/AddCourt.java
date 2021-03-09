@@ -1,4 +1,4 @@
-package mj.zags;
+package mj.courts;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,82 +27,38 @@ import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import mj.users.OTD;
 
-public class AddZags {
-    @FXML
-    private TextField ADDR_ABH;
-    
-	@FXML
-	private TextField ZAGS_NAME;
-
-    @FXML
-    private TextField ZAGS_ADR;
-    
-	@FXML
-	private ComboBox<OTD> ZAGS_OTD;
+public class AddCourt {
 
 	@FXML
-	private TextField ZAGS_RUK;
+	private TextField ID;
 
 	@FXML
-	private TextField ZAGS_ID;
+	private TextField NAME;
 
-    @FXML
-    private TextField ZAGS_RUK_ABH;
+	@FXML
+	private TextField ABH_NAME;
 
-    @FXML
-    private TextField ADDR;
+	@FXML
+	private TextField NAME_ROD;
 
-    @FXML
-    private TextField ZAGS_ADR_ABH;
-
-    @FXML
-    private TextField ZAGS_CITY_ABH;
-    
-	/**
-	 * Для отделения
-	 */
-	private void convertComboDisplayList() {
-		ZAGS_OTD.setConverter(new StringConverter<OTD>() {
-			@Override
-			public String toString(OTD product) {
-				return product.getCOTDNAME();
-			}
-
-			@Override
-			public OTD fromString(final String string) {
-				return ZAGS_OTD.getItems().stream().filter(product -> product.getCOTDNAME().equals(string)).findFirst()
-						.orElse(null);
-			}
-		});
-	}
+	@FXML
+	private ComboBox<OTD> OTD;
 
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			PreparedStatement oper = conn
-					.prepareStatement("insert into zags (ZAGS_ID, ZAGS_OTD,ZAGS_NAME,ZAGS_RUK,ZAGS_ADR,ZAGS_CITY_ABH,ZAGS_ADR_ABH,ZAGS_RUK_ABH,ADDR,ADDR_ABH) values (?,?,?,?,?,?,?,?,?,?)");
-			oper.setInt(1, Integer.valueOf(ZAGS_ID.getText()));
-			oper.setInt(2, ZAGS_OTD.getValue().getIOTDNUM());
-			oper.setString(3, ZAGS_NAME.getText());
-			oper.setString(4, ZAGS_RUK.getText());
-			oper.setString(5, ZAGS_ADR.getText());
-			oper.setString(6, ZAGS_CITY_ABH.getText());
-			oper.setString(7, ZAGS_ADR_ABH.getText());
-			oper.setString(8, ZAGS_RUK_ABH.getText());
-			oper.setString(9, ADDR.getText());
-			oper.setString(10, ADDR_ABH.getText());
+			PreparedStatement oper = conn.prepareStatement("insert into  courts (ID, NAME, OTD,ABH_NAME,NAME_ROD) values (?,?,?,?,?)");
+			oper.setInt(1, Integer.valueOf(ID.getText()));
+			oper.setString(2, ID.getText());
+			oper.setInt(3, OTD.getSelectionModel().getSelectedItem().getIOTDNUM());
+			oper.setString(4, ABH_NAME.getText());
+			oper.setString(5, NAME_ROD.getText());
 			oper.executeUpdate();
 			oper.close();
-			
 			conn.commit();
 			setStatus(true);
 			onclose();
 		} catch (Exception e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				DBUtil.LOG_ERROR(e1);
-			}
 			DBUtil.LOG_ERROR(e);
 		}
 	}
@@ -114,7 +70,7 @@ public class AddZags {
 	}
 
 	void onclose() {
-		Stage stage = (Stage) ZAGS_NAME.getScene().getWindow();
+		Stage stage = (Stage) ID.getScene().getWindow();
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
@@ -123,7 +79,7 @@ public class AddZags {
 		try {
 			dbConnect();
 
-			/* Отделение */
+			// Отделение
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from otd");
 				ResultSet rs = stsmt.executeQuery();
@@ -134,16 +90,31 @@ public class AddZags {
 					list.setCOTDNAME(rs.getString("COTDNAME"));
 					combolist.add(list);
 				}
+				OTD.setItems(combolist);
 				stsmt.close();
-				rs.close();
-				
-				ZAGS_OTD.setItems(combolist);
 				rs.close();
 			}
 			convertComboDisplayList();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
+	}
+	/**
+	 * Для отделения
+	 */
+	private void convertComboDisplayList() {
+		OTD.setConverter(new StringConverter<OTD>() {
+			@Override
+			public String toString(OTD product) {
+				return product.getCOTDNAME();
+			}
+
+			@Override
+			public OTD fromString(final String string) {
+				return OTD.getItems().stream().filter(product -> product.getCOTDNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
 	}
 
 	Connection conn;
@@ -152,12 +123,12 @@ public class AddZags {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "AddZags");
+			props.put("v$session.program", "AddCourt");
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
 			conn.setAutoCommit(false);
-		} catch (Exception e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
@@ -167,7 +138,7 @@ public class AddZags {
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
@@ -192,7 +163,7 @@ public class AddZags {
 		return this.Id.get();
 	}
 
-	public AddZags() {
+	public AddCourt() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 		this.Id = new SimpleIntegerProperty();

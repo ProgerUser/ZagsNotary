@@ -57,6 +57,24 @@ import mj.msg.Msg;
 public class AddUpdName {
 
 	@FXML
+	private TextField OLD_LASTNAME_AB;
+
+	@FXML
+	private TextField OLD_FIRSTNAME_AB;
+
+	@FXML
+	private TextField OLD_MIDDLNAME_AB;
+
+	@FXML
+	private TextField NEW_LASTNAME_AB;
+
+	@FXML
+	private TextField NEW_FIRSTNAME_AB;
+
+	@FXML
+	private TextField NEW_MIDDLNAME_AB;
+
+	@FXML
 	private TextField NEW_LASTNAME;
 
 	@FXML
@@ -421,10 +439,7 @@ public class AddUpdName {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
-			CallableStatement callStmt = conn.prepareCall("{ call UpdName.AddUpdName(?,?,?,?,?,?,?,?,?,?,?,?) }");
-
+			CallableStatement callStmt = conn.prepareCall("{ call UpdName.AddUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
 			callStmt.setString(3, OLD_LASTNAME.getText());
@@ -445,7 +460,18 @@ public class AddUpdName {
 			}
 			callStmt.setString(11, SVID_NUMBER.getText());
 			callStmt.setString(12, SVID_SERIA.getText());
-
+			//Фамилия до перемены АБХ
+			callStmt.setString(13,OLD_LASTNAME_AB.getText());
+			//Имя до перемены АБХ
+			callStmt.setString(14,OLD_FIRSTNAME_AB.getText());
+			//Отчество до перемены АБХ
+			callStmt.setString(15,OLD_MIDDLNAME_AB.getText());
+			//Фамилия после перемены АБХ
+			callStmt.setString(16,NEW_LASTNAME_AB.getText());
+			//Имя после перемены АБХ
+			callStmt.setString(17,NEW_FIRSTNAME_AB.getText());
+			//Отчество после перемены АБХ
+			callStmt.setString(18,NEW_MIDDLNAME_AB.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -461,14 +487,8 @@ public class AddUpdName {
 				Msg.MessageBox(callStmt.getString(1), stage_);
 				callStmt.close();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

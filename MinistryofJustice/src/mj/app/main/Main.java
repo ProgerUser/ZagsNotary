@@ -38,6 +38,7 @@ import mj.access.menu.OdbMNU;
 import mj.app.model.Connect;
 import mj.audit.trigger.AuList;
 import mj.audit.view.Audit;
+import mj.courts.CourtList;
 import mj.dbutil.DBUtil;
 import mj.doc.adoptoin.AdoptList;
 import mj.doc.birthact.BirthList;
@@ -158,6 +159,7 @@ public class Main extends Application {
 	 * Отделения
 	 */
 	public static boolean OtdWin = true;
+	public static boolean CourtsWin = true;
 	/**
 	 * ЗАГС-ы
 	 */
@@ -239,17 +241,17 @@ public class Main extends Application {
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
 
-//			Enter();
+			Enter();
 
 //
 //	Fast enter
 //			
-			Connect.connectionURL = "localhost:1522/orcl";
-			Connect.userID = "xxi";
-			Connect.userPassword = "mj_pass_123";
-			DBUtil.dbConnect();
-			initRootLayout();
-			RT();
+//			Connect.connectionURL = "localhost:1522/orcl";
+//			Connect.userID = "xxi";
+//			Connect.userPassword = "xxx";
+//			DBUtil.dbConnect();
+//			initRootLayout();
+//			RT();
 //
 //	END 		
 //			
@@ -469,6 +471,7 @@ public class Main extends Application {
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
 						GrpAccessWin = true;
 					}
 				});
@@ -586,6 +589,42 @@ public class Main extends Application {
 	/**
 	 * Отделение
 	 */
+	public static void COURTS() {
+		try {
+			if (CourtsWin) {
+				CourtsWin = false;
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/courts/CourtList.fxml"));
+
+				CourtList controller = new CourtList();
+				loader.setController(controller);
+				Parent root = loader.load();
+				Scene scene = new Scene(root);
+						
+//				Style startingStyle = Style.LIGHT;
+//				JMetro jMetro = new JMetro(startingStyle);
+//				System.setProperty("prism.lcdtext", "false");
+//				jMetro.setScene(scene);
+				stage.setScene(scene);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Список судов");
+				stage.initOwner(primaryStage);
+
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						CourtsWin = true;
+					}
+				});
+
+				stage.show();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	public static void OTD() {
 		try {
 			if (OtdWin) {
@@ -621,7 +660,7 @@ public class Main extends Application {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-
+	
 	/**
 	 * ЗАГС
 	 */

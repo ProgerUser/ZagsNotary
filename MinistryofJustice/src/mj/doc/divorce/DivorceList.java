@@ -34,6 +34,9 @@ import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
 import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -121,10 +124,119 @@ public class DivorceList {
 	@FXML
 	private XTableColumn<DIVORCE_CERT, String> OPER;
 
+	public void manipulatePdf(String src, String dest) throws Exception {
+		if (DIVORCE_CERT.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Выберите строку!");
+		} else {
+			PdfReader reader = new PdfReader(src);
+			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+			AcroFields fields = stamper.getAcroFields();
+			
+//			Iterator it = fields.getFields().entrySet().iterator();
+//			while (it.hasNext()) {
+//				Map.Entry pair = (Map.Entry) it.next();
+//				System.out.println(pair.getKey());
+//				it.remove(); // avoids a ConcurrentModificationException
+//			}
+
+			PreparedStatement prp = conn.prepareStatement("select * from BLANK_DIVORCE_CERT where DIVC_ID = ?");
+			prp.setInt(1, DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID());
+			ResultSet rs = prp.executeQuery();
+			while (rs.next()) {
+				fields.setField("Текст1", rs.getString("F1"));
+				fields.setField("Текст2", rs.getString("F2"));
+				fields.setField("Текст3", rs.getString("F3"));
+				fields.setField("Текст4", rs.getString("F4"));
+				fields.setField("Текст5", rs.getString("F5"));
+				fields.setField("Текст6", rs.getString("F6"));
+				fields.setField("Текст7", rs.getString("F7"));
+				fields.setField("Текст8", rs.getString("F8"));
+				fields.setField("Текст9", rs.getString("F9"));
+				fields.setField("Текст10", rs.getString("F10"));
+				fields.setField("Текст11", rs.getString("F11"));
+				fields.setField("Текст12", rs.getString("F12"));
+				fields.setField("Текст13", rs.getString("F13"));
+				fields.setField("Текст14", rs.getString("F14"));
+				fields.setField("Текст15", rs.getString("F15"));
+				fields.setField("Текст16", rs.getString("F16"));
+				fields.setField("Текст17", rs.getString("F17"));
+				fields.setField("Текст18", "-");
+				fields.setField("Текст19", "-");
+				fields.setField("Текст20", rs.getString("F20"));
+				fields.setField("Текст21", "-");
+				fields.setField("Текст22", "-");
+				fields.setField("Текст23", rs.getString("F23"));
+				fields.setField("Текст24", rs.getString("F24"));
+				fields.setField("Текст25", rs.getString("F25"));
+				fields.setField("Текст26", rs.getString("F26"));
+				fields.setField("Текст27", "-");
+				fields.setField("Текст28", rs.getString("F28"));
+				fields.setField("Текст29", rs.getString("F29"));
+				fields.setField("Текст30", rs.getString("F30"));
+				fields.setField("Текст31", rs.getString("F31"));
+				fields.setField("Текст32", rs.getString("F32"));
+				fields.setField("Текст33", rs.getString("F33"));
+				fields.setField("Текст34", rs.getString("F34"));
+				fields.setField("Текст35", rs.getString("F35"));
+				fields.setField("Текст36", rs.getString("F36"));
+				fields.setField("Текст37", rs.getString("F5"));
+				fields.setField("Текст38", rs.getString("F38"));
+				fields.setField("Текст39", rs.getString("F7"));
+				fields.setField("Текст40", rs.getString("F40"));
+				fields.setField("Текст41", rs.getString("F41"));
+				fields.setField("Текст42", rs.getString("F42"));
+				fields.setField("Текст43", rs.getString("F43"));
+				fields.setField("Текст44", rs.getString("F44"));
+				fields.setField("Текст45", rs.getString("F13"));
+				fields.setField("Текст46", rs.getString("F46"));
+				fields.setField("Текст47", rs.getString("F15"));
+				fields.setField("Текст48", rs.getString("F48"));
+				fields.setField("Текст49", rs.getString("F49"));
+				fields.setField("Текст50", rs.getString("F50"));
+				fields.setField("Текст51", rs.getString("F51"));
+				fields.setField("Текст52", rs.getString("F52"));
+				fields.setField("Текст53", "-");
+				fields.setField("Текст54", rs.getString("F54"));
+				fields.setField("Текст55", rs.getString("F55"));
+				fields.setField("Текст56", rs.getString("F56"));
+				fields.setField("Текст57", rs.getString("F72"));
+				fields.setField("Текст58", rs.getString("F58"));
+				fields.setField("Текст59", rs.getString("F24"));
+				fields.setField("Текст60", rs.getString("F60"));
+				fields.setField("Текст61", "-");
+				fields.setField("Текст62", rs.getString("F62"));
+				fields.setField("Текст63", rs.getString("F63"));
+				fields.setField("Текст64", "ЗАГС");
+				fields.setField("Текст65", rs.getString("F65"));
+				fields.setField("Текст66", "Республики Абхазия");
+				fields.setField("Текст67", "-");
+				fields.setField("Текст68", rs.getString("F68"));
+				fields.setField("Текст69", rs.getString("F69"));
+				fields.setField("Текст70", rs.getString("F58"));
+				fields.setField("Текст71", rs.getString("F72"));
+				fields.setField("Текст72", rs.getString("F72"));
+			}
+			prp.close();
+			rs.close();
+
+			stamper.close();
+			reader.close();
+		}
+	}
+	
+    @FXML
+    void BtPrintBlank(ActionEvent event) {
+    	try {
+			manipulatePdf(System.getenv("MJ_PATH") + "/Reports/DIVORCE_CERT.pdf",
+					System.getenv("MJ_PATH") + "/OutReports/DIVORCE_CERT.pdf");
+			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/DIVORCE_CERT.pdf"));
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+    }
+    
 	void Add() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			if (DBUtil.OdbAction(98) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
@@ -156,13 +268,7 @@ public class DivorceList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -247,13 +353,7 @@ public class DivorceList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -391,12 +491,7 @@ public class DivorceList {
 										}
 									}
 								} catch (SQLException e) {
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+									DBUtil.LOG_ERROR(e);
 								}
 							}
 						});
@@ -406,34 +501,16 @@ public class DivorceList {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "DIVORCE_CERT"));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					} else {
-						e.printStackTrace();
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 				}
-
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
-
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -442,7 +519,6 @@ public class DivorceList {
 	 */
 	void Print() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (DIVORCE_CERT.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите строку!");
 			} else {
@@ -614,13 +690,7 @@ public class DivorceList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -633,8 +703,6 @@ public class DivorceList {
 
 	void Refresh() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
@@ -648,7 +716,7 @@ public class DivorceList {
 
 				list.setDIVC_SHE_LNBEF(rs.getString("DIVC_SHE_LNBEF"));
 				list.setDIVC_ZMNAME(rs.getString("DIVC_ZMNAME"));
-				list.setDIVC_ZOSCN2(rs.getString("DIVC_ZOSCN2"));
+				list.setDIVC_ZOSCN2(rs.getInt("DIVC_ZOSCN2"));
 				list.setDIVC_NUM(rs.getString("DIVC_NUM"));
 				list.setSHEFIO(rs.getString("SHEFIO"));
 				list.setDIVC_ZOSPRISON(rs.getInt("DIVC_ZOSPRISON"));
@@ -661,7 +729,7 @@ public class DivorceList {
 				list.setDIVC_ZLNAME(rs.getString("DIVC_ZLNAME"));
 				list.setDIVC_ID(rs.getInt("DIVC_ID"));
 				list.setDIVC_USR(rs.getString("DIVC_USR"));
-				list.setDIVC_CAN(rs.getString("DIVC_CAN"));
+				list.setDIVC_CAN(rs.getInt("DIVC_CAN"));
 				list.setDIVC_MC_MERCER(rs.getInt("DIVC_MC_MERCER"));
 				list.setDIVC_HE_LNBEF(rs.getString("DIVC_HE_LNBEF"));
 				list.setDIVC_SHE_LNAFT(rs.getString("DIVC_SHE_LNAFT"));
@@ -674,7 +742,7 @@ public class DivorceList {
 				list.setDIVC_DT((rs.getDate("DIVC_DT") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_DT")), formatter)
 						: null);
-				list.setDIVC_ZOSCN(rs.getString("DIVC_ZOSCN"));
+				list.setDIVC_ZOSCN(rs.getInt("DIVC_ZOSCN"));
 				list.setDIVC_TYPE(rs.getString("DIVC_TYPE"));
 				list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));
 				list.setDIVC_ZPLACE(rs.getString("DIVC_ZPLACE"));
@@ -709,13 +777,7 @@ public class DivorceList {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -779,7 +841,6 @@ public class DivorceList {
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "DivorceList");
@@ -788,12 +849,7 @@ public class DivorceList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -815,7 +871,7 @@ public class DivorceList {
 				list = new DIVORCE_CERT();
 				list.setDIVC_SHE_LNBEF(rs.getString("DIVC_SHE_LNBEF"));
 				list.setDIVC_ZMNAME(rs.getString("DIVC_ZMNAME"));
-				list.setDIVC_ZOSCN2(rs.getString("DIVC_ZOSCN2"));
+				list.setDIVC_ZOSCN2(rs.getInt("DIVC_ZOSCN2"));
 				list.setDIVC_NUM(rs.getString("DIVC_NUM"));
 				list.setSHEFIO(rs.getString("SHEFIO"));
 				list.setDIVC_ZOSPRISON(rs.getInt("DIVC_ZOSPRISON"));
@@ -828,7 +884,7 @@ public class DivorceList {
 				list.setDIVC_ZLNAME(rs.getString("DIVC_ZLNAME"));
 				list.setDIVC_ID(rs.getInt("DIVC_ID"));
 				list.setDIVC_USR(rs.getString("DIVC_USR"));
-				list.setDIVC_CAN(rs.getString("DIVC_CAN"));
+				list.setDIVC_CAN(rs.getInt("DIVC_CAN"));
 				list.setDIVC_MC_MERCER(rs.getInt("DIVC_MC_MERCER"));
 				list.setDIVC_HE_LNBEF(rs.getString("DIVC_HE_LNBEF"));
 				list.setDIVC_SHE_LNAFT(rs.getString("DIVC_SHE_LNAFT"));
@@ -841,7 +897,7 @@ public class DivorceList {
 				list.setDIVC_DT((rs.getDate("DIVC_DT") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_DT")), formatter)
 						: null);
-				list.setDIVC_ZOSCN(rs.getString("DIVC_ZOSCN"));
+				list.setDIVC_ZOSCN(rs.getInt("DIVC_ZOSCN"));
 				list.setDIVC_TYPE(rs.getString("DIVC_TYPE"));
 				list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));
 				list.setDIVC_ZPLACE(rs.getString("DIVC_ZPLACE"));
@@ -859,37 +915,24 @@ public class DivorceList {
 				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
 				list.setHEFIO(rs.getString("HEFIO"));
-
 				dlist.add(list);
 			}
 			prepStmt.close();
 			rs.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return list;
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1021,13 +1064,7 @@ public class DivorceList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1071,13 +1108,7 @@ public class DivorceList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 
 		return ret;
@@ -1112,14 +1143,7 @@ public class DivorceList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1130,5 +1154,4 @@ public class DivorceList {
 		this.from = 1;
 		this.conn.setAutoCommit(false);
 	}
-
 }

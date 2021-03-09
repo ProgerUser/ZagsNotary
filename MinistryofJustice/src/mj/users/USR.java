@@ -66,8 +66,18 @@ public class USR {
 	private StringProperty ACCESS_LEVEL;
 	/** ID Нотариуса */
 	private IntegerProperty NOTARY_ID;
+	/** ФИО короткое */
+	private StringProperty FIO_SH;
+	/** ФИО короткое на Абх */
+	private StringProperty FIO_ABH_SH;
+	/** ФИО на абх */
+	private StringProperty FIO_ABH;
 
 	public USR() {
+		this.FIO_SH = new SimpleStringProperty();
+		this.FIO_ABH_SH = new SimpleStringProperty();
+		this.FIO_ABH = new SimpleStringProperty();
+
 		this.ZAGS_ID = new SimpleIntegerProperty();
 		this.WORKDAY_TIME_BEGIN = new SimpleObjectProperty<>();
 		this.WORKDAY_TIME_END = new SimpleObjectProperty<>();
@@ -97,6 +107,42 @@ public class USR {
 		this.IUSRID = new SimpleIntegerProperty();
 		this.ACCESS_LEVEL = new SimpleStringProperty();
 		this.NOTARY_ID = new SimpleIntegerProperty();
+	}
+
+	public void setFIO_SH(String FIO_SH) {
+		this.FIO_SH.set(FIO_SH);
+	}
+
+	public void setFIO_ABH_SH(String FIO_ABH_SH) {
+		this.FIO_ABH_SH.set(FIO_ABH_SH);
+	}
+
+	public void setFIO_ABH(String FIO_ABH) {
+		this.FIO_ABH.set(FIO_ABH);
+	}
+
+	public String getFIO_SH() {
+		return FIO_SH.get();
+	}
+
+	public String getFIO_ABH_SH() {
+		return FIO_ABH_SH.get();
+	}
+
+	public String getFIO_ABH() {
+		return FIO_ABH.get();
+	}
+
+	public StringProperty FIO_SHProperty() {
+		return FIO_SH;
+	}
+
+	public StringProperty FIO_ABH_SHProperty() {
+		return FIO_ABH_SH;
+	}
+
+	public StringProperty FIO_ABHProperty() {
+		return FIO_ABH;
 	}
 
 	public void setZAGS_ID(Integer ZAGS_ID) {

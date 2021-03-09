@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -30,6 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -52,33 +52,59 @@ import mj.doc.cus.UtilCus;
 import mj.doc.death.DEATH_CERT;
 import mj.doc.divorce.DIVORCE_CERT;
 import mj.msg.Msg;
+import mj.util.ConvConst;
 
 public class EditMercer {
 
-	@FXML private GridPane SheTypeB;
-	@FXML private TextField MERCER_NUM;
-	@FXML private TextField MERCER_SHEAGE;
-	@FXML private TextField MERCER_OTHER;
-	@FXML private TextField HeFio;
-	@FXML private TextField MERCER_HE_LNAFT;
-	@FXML private TextField MERCER_DIVHE;
-	@FXML private TextField MERCER_HE;
-	@FXML private GridPane SheTypeA;
-	@FXML private TextField MERCER_DIESHE;
-	@FXML private TextField MERCER_SERIA;
-	@FXML private ComboBox<String> MERCER_DSPMT_HE;
-	@FXML private TextField MERCER_DIVSHE;
-	@FXML private TextField MERCER_HE_LNBEF;
-	@FXML private TextField SheFio;
-	@FXML private TextField MERCER_SHE_LNBEF;
-	@FXML private GridPane HeTypeA;
-	@FXML private ComboBox<String> MERCER_DSPMT_SHE;
-	@FXML private GridPane HeTypeB;
-	@FXML private TextField MERCER_SHE_LNBAFT;
-	@FXML private TextField MERCER_DIEHE;
-	@FXML private TextField MERCER_HEAGE;
-	@FXML private TextField MERCER_SHE;
-	
+	@FXML
+	private GridPane SheTypeB;
+	@FXML
+	private TextField MERCER_NUM;
+	@FXML
+	private TextField MERCER_SHEAGE;
+	@FXML
+	private TextField MERCER_OTHER;
+	@FXML
+	private TextField HeFio;
+	@FXML
+	private TextField MERCER_HE_LNAFT;
+	@FXML
+	private TextField MERCER_DIVHE;
+	@FXML
+	private TextField MERCER_HE;
+	@FXML
+	private GridPane SheTypeA;
+	@FXML
+	private TextField MERCER_DIESHE;
+	@FXML
+	private TextField MERCER_SERIA;
+	@FXML
+	private ComboBox<String> MERCER_DSPMT_HE;
+	@FXML
+	private TextField MERCER_DIVSHE;
+	@FXML
+	private TextField MERCER_HE_LNBEF;
+	@FXML
+	private TextField SheFio;
+	@FXML
+	private TextField MERCER_SHE_LNBEF;
+	@FXML
+	private GridPane HeTypeA;
+	@FXML
+	private ComboBox<String> MERCER_DSPMT_SHE;
+	@FXML
+	private GridPane HeTypeB;
+	@FXML
+	private TextField MERCER_SHE_LNBAFT;
+	@FXML
+	private TextField MERCER_DIEHE;
+	@FXML
+	private TextField MERCER_HEAGE;
+	@FXML
+	private TextField MERCER_SHE;
+    @FXML
+    private DatePicker MC_DATE;
+    
 	@FXML
 	void FindHe(ActionEvent event) {
 		UtilCus cus = new UtilCus();
@@ -288,19 +314,12 @@ public class EditMercer {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void DivorceList(TextField number) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -381,15 +400,15 @@ public class EditMercer {
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_TCHD")), formatter)
 						: null);
 				list.setDIVC_TCHNUM(rs.getString("DIVC_TCHNUM"));
-				list.setDIVC_CAN(rs.getString("DIVC_CAN"));
+				list.setDIVC_CAN(rs.getInt("DIVC_CAN"));
 				list.setDIVC_CAD((rs.getDate("DIVC_CAD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_CAD")), formatter)
 						: null);
-				list.setDIVC_ZOSCN(rs.getString("DIVC_ZOSCN"));
+				list.setDIVC_ZOSCN(rs.getInt("DIVC_ZOSCN"));
 				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
 				list.setDIVC_ZOSFIO(rs.getString("DIVC_ZOSFIO"));
-				list.setDIVC_ZOSCN2(rs.getString("DIVC_ZOSCN2"));
+				list.setDIVC_ZOSCN2(rs.getInt("DIVC_ZOSCN2"));
 				list.setDIVC_ZOSCD2((rs.getDate("DIVC_ZOSCD2") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD2")), formatter) : null);
 				list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));
@@ -453,13 +472,7 @@ public class EditMercer {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -567,13 +580,7 @@ public class EditMercer {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -582,7 +589,7 @@ public class EditMercer {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn
-					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
 			callStmt.setString(3, MERCER_OTHER.getText());
@@ -634,6 +641,7 @@ public class EditMercer {
 				callStmt.setNull(18, java.sql.Types.INTEGER);
 			}
 			callStmt.setString(19, MERCER_DSPMT_SHE.getValue());
+			callStmt.setDate(20, (MC_DATE.getValue() != null) ? java.sql.Date.valueOf(MC_DATE.getValue()) : null);
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -650,13 +658,7 @@ public class EditMercer {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -664,7 +666,7 @@ public class EditMercer {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn
-					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setInt(2, mercer.getMERCER_ID());
 			callStmt.setString(3, MERCER_OTHER.getText());
@@ -716,16 +718,12 @@ public class EditMercer {
 				callStmt.setNull(18, java.sql.Types.INTEGER);
 			}
 			callStmt.setString(19, MERCER_DSPMT_SHE.getValue());
+			//Дата заключения брака
+			callStmt.setDate(20, (MC_DATE.getValue() != null) ? java.sql.Date.valueOf(MC_DATE.getValue()) : null);
 			callStmt.execute();
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -763,8 +761,7 @@ public class EditMercer {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
+			new ConvConst().FormatDatePiker(MC_DATE);
 			ShePane.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			HePane.heightProperty().addListener(
@@ -814,14 +811,11 @@ public class EditMercer {
 			MERCER_SERIA.setText(mercer.getMERCER_SERIA());
 			MERCER_NUM.setText(mercer.getMERCER_NUM());
 			MERCER_OTHER.setText(mercer.getMERCER_OTHER());
+			
+			MC_DATE.setValue(mercer.getMC_DATE());
+			
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -829,17 +823,11 @@ public class EditMercer {
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

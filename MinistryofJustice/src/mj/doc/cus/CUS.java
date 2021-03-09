@@ -32,8 +32,21 @@ public class CUS {
 	private StringProperty AREA;/* Нет данных */
 	private StringProperty INF;/* Нет данных */
 	private StringProperty Country;/* Нет данных */
+	/** Имя Абх */
+	private StringProperty AB_FIRST_NAME;
+	/** Отчество Абх */
+	private StringProperty AB_MIDDLE_NAME;
+	/** Фамилия Абх */
+	private StringProperty AB_LAST_NAME;
+	/** Место рождения Абх */
+	private StringProperty AB_PLACE_BIRTH;
 
 	public CUS() {
+		this.AB_FIRST_NAME = new SimpleStringProperty();
+		this.AB_MIDDLE_NAME = new SimpleStringProperty();
+		this.AB_LAST_NAME = new SimpleStringProperty();
+		this.AB_PLACE_BIRTH = new SimpleStringProperty();
+
 		this.BurthCountry = new SimpleStringProperty();
 		this.Country = new SimpleStringProperty();
 		this.CCUSMIDDLE_NAME = new SimpleStringProperty();
@@ -58,6 +71,54 @@ public class CUS {
 		this.INF = new SimpleStringProperty();
 	}
 
+	public void setAB_FIRST_NAME(String AB_FIRST_NAME) {
+		this.AB_FIRST_NAME.set(AB_FIRST_NAME);
+	}
+
+	public void setAB_MIDDLE_NAME(String AB_MIDDLE_NAME) {
+		this.AB_MIDDLE_NAME.set(AB_MIDDLE_NAME);
+	}
+
+	public void setAB_LAST_NAME(String AB_LAST_NAME) {
+		this.AB_LAST_NAME.set(AB_LAST_NAME);
+	}
+
+	public void setAB_PLACE_BIRTH(String AB_PLACE_BIRTH) {
+		this.AB_PLACE_BIRTH.set(AB_PLACE_BIRTH);
+	}
+
+	public String getAB_FIRST_NAME() {
+		return AB_FIRST_NAME.get();
+	}
+
+	public String getAB_MIDDLE_NAME() {
+		return AB_MIDDLE_NAME.get();
+	}
+
+	public String getAB_LAST_NAME() {
+		return AB_LAST_NAME.get();
+	}
+
+	public String getAB_PLACE_BIRTH() {
+		return AB_PLACE_BIRTH.get();
+	}
+
+	public StringProperty AB_FIRST_NAMEProperty() {
+		return AB_FIRST_NAME;
+	}
+
+	public StringProperty AB_MIDDLE_NAMEProperty() {
+		return AB_MIDDLE_NAME;
+	}
+
+	public StringProperty AB_LAST_NAMEProperty() {
+		return AB_LAST_NAME;
+	}
+
+	public StringProperty AB_PLACE_BIRTHProperty() {
+		return AB_PLACE_BIRTH;
+	}
+
 	public void setCountry(String Country) {
 		this.Country.set(Country);
 	}
@@ -65,11 +126,11 @@ public class CUS {
 	public String getCountry() {
 		return Country.get();
 	}
-	
+
 	public StringProperty CountryProperty() {
 		return Country;
 	}
-	
+
 	public void setINF(String INF) {
 		this.INF.set(INF);
 	}

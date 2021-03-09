@@ -12,11 +12,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -52,6 +49,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
+import mj.courts.VCOURTS;
 import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
@@ -131,7 +129,7 @@ public class AddDivorce {
 	private TextField DIVC_ZÀNAME;
 
 	@FXML
-	private TextField DIVC_CAN;
+	private ComboBox<VCOURTS> DIVC_CAN;
 
 	@FXML
 	private DatePicker DIVC_ZOSCD;
@@ -143,7 +141,7 @@ public class AddDivorce {
 	private TextField DIVC_HE_LNBEF;
 
 	@FXML
-	private TextField DIVC_ZOSCN2;
+	private ComboBox<VCOURTS> DIVC_ZOSCN2;
 
 	@FXML
 	private TextField DIVC_SHE_LNBEF;
@@ -152,7 +150,7 @@ public class AddDivorce {
 	private TextField DIVC_ZOSFIO;
 
 	@FXML
-	private TextField DIVC_ZOSCN;
+	private ComboBox<VCOURTS> DIVC_ZOSCN;
 
 	@FXML
 	private TextField DIVC_HE;
@@ -190,7 +188,6 @@ public class AddDivorce {
 
 	void CusList(TextField num, TextField name) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Âûáðàòü");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -292,13 +289,7 @@ public class AddDivorce {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -314,11 +305,11 @@ public class AddDivorce {
 			DIVC_TCHNUM.setText("");
 			DIVC_TCHD.setValue(null);
 			DIVC_CAD.setValue(null);
-			DIVC_CAN.setText("");
+			DIVC_CAN.setValue(null);
 			DIVC_ZOSCD.setValue(null);
 			DIVC_ZOSFIO.setText("");
-			DIVC_ZOSCN.setText("");
-			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSCN.setValue(null);
+			DIVC_ZOSCN2.setValue(null);
 			DIVC_ZOSFIO2.setText("");
 			DIVC_ZOSPRISON.setText("");
 			DIVC_ZOSCD2.setValue(null);
@@ -331,11 +322,11 @@ public class AddDivorce {
 			DIVC_TCHNUM.setText("");
 			DIVC_TCHD.setValue(null);
 			DIVC_CAD.setValue(null);
-			DIVC_CAN.setText("");
+			DIVC_CAN.setValue(null);
 			DIVC_ZOSCD.setValue(null);
 			DIVC_ZOSFIO.setText("");
-			DIVC_ZOSCN.setText("");
-			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSCN.setValue(null);
+			DIVC_ZOSCN2.setValue(null);
 			DIVC_ZOSFIO2.setText("");
 			DIVC_ZOSPRISON.setText("");
 			DIVC_ZOSCD2.setValue(null);
@@ -351,11 +342,11 @@ public class AddDivorce {
 			DIVC_TCHNUM.setText("");
 			DIVC_TCHD.setValue(null);
 			DIVC_CAD.setValue(null);
-			DIVC_CAN.setText("");
+			DIVC_CAN.setValue(null);
 			DIVC_ZOSCD.setValue(null);
 			DIVC_ZOSFIO.setText("");
-			DIVC_ZOSCN.setText("");
-			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSCN.setValue(null);
+			DIVC_ZOSCN2.setValue(null);
 			DIVC_ZOSFIO2.setText("");
 			DIVC_ZOSPRISON.setText("");
 			DIVC_ZOSCD2.setValue(null);
@@ -368,11 +359,11 @@ public class AddDivorce {
 			DIVC_TCHNUM.setText("");
 			DIVC_TCHD.setValue(null);
 			DIVC_CAD.setValue(null);
-			DIVC_CAN.setText("");
+			DIVC_CAN.setValue(null);
 			DIVC_ZOSCD.setValue(null);
 			DIVC_ZOSFIO.setText("");
-			DIVC_ZOSCN.setText("");
-			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSCN.setValue(null);
+			DIVC_ZOSCN2.setValue(null);
 			DIVC_ZOSFIO2.setText("");
 			DIVC_ZOSPRISON.setText("");
 			DIVC_ZOSCD2.setValue(null);
@@ -382,8 +373,6 @@ public class AddDivorce {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			CallableStatement callStmt = conn.prepareCall(
 					"{ call Divorce.AddDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -402,12 +391,24 @@ public class AddDivorce {
 			callStmt.setString(6, DIVC_ZOSFIO2.getText());
 			callStmt.setDate(7,
 					(DIVC_ZOSCD2.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD2.getValue()) : null);
-			callStmt.setString(8, DIVC_ZOSCN2.getText());
+			if (DIVC_ZOSCN2.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(8, DIVC_ZOSCN2.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(8, java.sql.Types.INTEGER);
+			}
 			callStmt.setString(9, DIVC_ZOSFIO.getText());
 			callStmt.setDate(10, (DIVC_ZOSCD.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD.getValue()) : null);
-			callStmt.setString(11, DIVC_ZOSCN.getText());
+			if (DIVC_ZOSCN.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(11, DIVC_ZOSCN.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(11, java.sql.Types.INTEGER);
+			}
 			callStmt.setDate(12, (DIVC_CAD.getValue() != null) ? java.sql.Date.valueOf(DIVC_CAD.getValue()) : null);
-			callStmt.setString(13, DIVC_CAN.getText());
+			if (DIVC_CAN.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(13, DIVC_CAN.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(13, java.sql.Types.INTEGER);
+			}
 			callStmt.setString(14, DIVC_TCHNUM.getText());
 			callStmt.setDate(15, (DIVC_TCHD.getValue() != null) ? java.sql.Date.valueOf(DIVC_TCHD.getValue()) : null);
 			callStmt.setString(16, DIVC_TYPE.getValue());
@@ -447,13 +448,7 @@ public class AddDivorce {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -630,13 +625,7 @@ public class AddDivorce {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -707,12 +696,7 @@ public class AddDivorce {
 			new ConvConst().FormatDatePiker(DIVC_ZOSCD);
 			
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -720,7 +704,6 @@ public class AddDivorce {
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "AddDivorce");
@@ -729,28 +712,17 @@ public class AddDivorce {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

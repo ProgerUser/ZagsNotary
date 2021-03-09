@@ -1,4 +1,4 @@
-package mj.zags;
+package mj.courts;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -26,6 +25,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -34,50 +34,52 @@ import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 
-public class ZagsList {
+public class CourtList {
 
-	public ZagsList() {
+	public CourtList() {
 		Main.logger = Logger.getLogger(getClass());
 	}
-
+	
 	@FXML
-	private TableColumn<VZAGS, String> ZAGS_NAME;
+	private BorderPane BP;
+	
+	  @FXML
+	    private TableView<VCOURTS> COURTS;
 
-	@FXML
-	private TableColumn<VZAGS, String> ZAGS_OTD;
+	    @FXML
+	    private TableColumn<VCOURTS, Integer> ID;
 
-	@FXML
-	private TableColumn<VZAGS, String> ZAGS_RUK;
+	    @FXML
+	    private TableColumn<VCOURTS, String> NAME;
 
-	@FXML
-	private TableView<VZAGS> ZAGS;
+	    @FXML
+	    private TableColumn<VCOURTS, String> ABH_NAME;
 
-	@FXML
-	private TableColumn<VZAGS, Integer> ZAGS_ID;
+	    @FXML
+	    private TableColumn<VCOURTS, String> OTD;
 
 	@FXML
 	void Add(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(126) == 0) {
+		if (DBUtil.OdbAction(202) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
 
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Stage stage = new Stage();
-			Stage stage_ = (Stage) ZAGS.getScene().getWindow();
+			Stage stage_ = (Stage) COURTS.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/zags/IUZags.fxml"));
+			loader.setLocation(getClass().getResource("/mj/courts/IUCourt.fxml"));
 
-			AddZags controller = new AddZags();
+			AddCourt controller = new AddCourt();
 			loader.setController(controller);
 
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Добавить суд");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -98,32 +100,30 @@ public class ZagsList {
 	@FXML
 	void Edit(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(127) == 0) {
+		if (DBUtil.OdbAction(123) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
-		if (ZAGS.getSelectionModel().getSelectedItem() == null) {
+		if (COURTS.getSelectionModel().getSelectedItem() == null) {
 			Msg.Message("Выберите строку!");
 		} else {
-			Edit(ZAGS.getSelectionModel().getSelectedItem().getZAGS_ID(), (Stage) ZAGS.getScene().getWindow());
+			Edit(COURTS.getSelectionModel().getSelectedItem().getID(), (Stage) COURTS.getScene().getWindow());
 		}
 	}
 
 	@FXML
 	void Delete(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(128) == 0) {
+		if (DBUtil.OdbAction(204) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
 
 		try {
-			if (ZAGS.getSelectionModel().getSelectedItem() == null) {
+			if (COURTS.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите строку!");
 			} else {
-				Main.logger = Logger.getLogger(getClass());
-
-				Stage stage = (Stage) ZAGS.getScene().getWindow();
+				Stage stage = (Stage) COURTS.getScene().getWindow();
 				Label alert = new Label("Удалить запись?");
 				alert.setLayoutX(75.0);
 				alert.setLayoutY(11.0);
@@ -159,27 +159,19 @@ public class ZagsList {
 						try {
 							PreparedStatement delete = conn
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
-											+ " delete from ZAGS where ZAGS_ID = ?;" + "commit;" + "end;");
-							VZAGS cl = ZAGS.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getZAGS_ID());
+											+ " delete from COURTS where ID = ?;" + "commit;" + "end;");
+							VCOURTS cl = COURTS.getSelectionModel().getSelectedItem();
+							delete.setInt(1, cl.getID());
 							delete.executeUpdate();
 							delete.close();
-
 							Init();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(
-										ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								DBUtil.LOG_ERROR(e);
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
@@ -202,28 +194,27 @@ public class ZagsList {
 	public void Edit(Integer docid, Stage stage_) {
 		try {
 			if (isopen == false) {
-				Main.logger = Logger.getLogger(getClass());
 				PreparedStatement selforupd = conn
-						.prepareStatement("select * from ZAGS where ZAGS_ID = ? /*for update nowait*/");
-				VZAGS VZAGS = Init2(docid);
-				selforupd.setInt(1, VZAGS.getZAGS_ID());
+						.prepareStatement("select * from VCOURTS where  ID = ? /*for update nowait*/");
+				VCOURTS courts = Init2(docid);
+				selforupd.setInt(1, courts.getID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
 					{
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/zags/IUZags.fxml"));
+						loader.setLocation(getClass().getResource("/mj/courts/IUCourt.fxml"));
 
-						EditZags controller = new EditZags();
-						controller.setId(VZAGS.getZAGS_ID());
-						controller.setConn(conn, VZAGS);
+						EditCourt controller = new EditCourt();
+						controller.setId(courts.getID());
+						controller.setConn(conn, courts);
 
 						loader.setController(controller);
 						Parent root = loader.load();
 						stage.setScene(new Scene(root));
 						stage.getIcons().add(new Image("/icon.png"));
-						stage.setTitle("Редактирование: " + VZAGS.getZAGS_NAME());
+						stage.setTitle("Редактирование: " + courts.getNAME());
 						stage.initOwner(stage_);
 						stage.setResizable(false);
 						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -263,26 +254,39 @@ public class ZagsList {
 	}
 
 	@FXML
+	private Button TEST;
+
+	 
+	@FXML
 	private void initialize() {
 		try {
+			
+			
+//			addIfNotPresent(BP.getStyleClass(), JMetroStyleClass.BACKGROUND);
+//			addIfNotPresent(OTD.getStyleClass(), JMetroStyleClass.TABLE_GRID_LINES);
+//			addIfNotPresent(OTD.getStyleClass(), JMetroStyleClass.ALTERNATING_ROW_COLORS);
 			dbConnect();
-
-			ZAGS_NAME.setCellValueFactory(cellData -> cellData.getValue().ZAGS_NAMEProperty());
-			ZAGS_OTD.setCellValueFactory(cellData -> cellData.getValue().COTDNAMEProperty());
-			ZAGS_RUK.setCellValueFactory(cellData -> cellData.getValue().ZAGS_RUKProperty());
-			ZAGS_ID.setCellValueFactory(cellData -> cellData.getValue().ZAGS_IDProperty().asObject());
-
+//			Platform.runLater(() -> {
+//			});
+		
+//			MaterialDesignIconView materialDesignIconView = new MaterialDesignIconView(MaterialDesignIcon.THUMB_UP);
+//			materialDesignIconView.setSize("4em");
+		    ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
+		    NAME.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
+		    ABH_NAME.setCellValueFactory(cellData -> cellData.getValue().ABH_NAMEProperty());
+		    OTD.setCellValueFactory(cellData -> cellData.getValue().COTDNAMEProperty());
+		    
 			// двойной щелчок
-			ZAGS.setRowFactory(tv -> {
-				TableRow<VZAGS> row = new TableRow<>();
+			COURTS.setRowFactory(tv -> {
+				TableRow<VCOURTS> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
-					if (DBUtil.OdbAction(127) == 0) {
+					if (DBUtil.OdbAction(203) == 0) {
 						Msg.Message("Нет доступа!");
 						return;
 					}
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
-						Edit(ZAGS.getSelectionModel().getSelectedItem().getZAGS_ID(),
-								(Stage) ZAGS.getScene().getWindow());
+						Edit(COURTS.getSelectionModel().getSelectedItem().getID(),
+								(Stage) COURTS.getScene().getWindow());
 					}
 				});
 				return row;
@@ -293,31 +297,26 @@ public class ZagsList {
 		}
 	}
 
-	VZAGS Init2(Integer id) {
-		VZAGS list = null;
+	VCOURTS Init2(Integer id) {
+		VCOURTS list = null;
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			String selectStmt = "select * from VZAGS where ZAGS_ID = ? ";
+			String selectStmt = "select * from VCOURTS where ID = ? ";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			prepStmt.setInt(1, id);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
-				list = new VZAGS();
-				list.setZAGS_RUK(rs.getString("ZAGS_RUK"));
-				list.setZAGS_CITY_ABH(rs.getString("ZAGS_CITY_ABH"));
-				list.setZAGS_ADR(rs.getString("ZAGS_ADR"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
-				list.setADDR(rs.getString("ADDR"));
-				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
+				list = new VCOURTS();
 				list.setCOTDNAME(rs.getString("COTDNAME"));
-				list.setZAGS_RUK_ABH(rs.getString("ZAGS_RUK_ABH"));
-				list.setZAGS_ADR_ABH(rs.getString("ZAGS_ADR_ABH"));
-				list.setZAGS_OTD(rs.getInt("ZAGS_OTD"));
-				list.setADDR_ABH(rs.getString("ADDR_ABH"));
+				list.setID(rs.getInt("ID"));
+				list.setABH_NAME(rs.getString("ABH_NAME"));
+				list.setNAME_ROD(rs.getString("NAME_ROD"));
+				list.setNAME(rs.getString("NAME"));
+				list.setAREA_ID(rs.getInt("AREA_ID"));
+				list.setOTD(rs.getInt("OTD"));
+				list.setIOTDNUM(rs.getInt("IOTDNUM"));
 			}
 			prepStmt.close();
 			rs.close();
-
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -326,31 +325,28 @@ public class ZagsList {
 
 	void Init() {
 		try {
-			String selectStmt = "select * from VZAGS";
+			String selectStmt = "select * from VCOURTS";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
-			ObservableList<VZAGS> dlist = FXCollections.observableArrayList();
+			ObservableList<VCOURTS> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
-				VZAGS list = new VZAGS();
-				list.setZAGS_RUK(rs.getString("ZAGS_RUK"));
-				list.setZAGS_CITY_ABH(rs.getString("ZAGS_CITY_ABH"));
-				list.setZAGS_ADR(rs.getString("ZAGS_ADR"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
-				list.setADDR(rs.getString("ADDR"));
-				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
+				VCOURTS list = new VCOURTS();
 				list.setCOTDNAME(rs.getString("COTDNAME"));
-				list.setZAGS_RUK_ABH(rs.getString("ZAGS_RUK_ABH"));
-				list.setZAGS_ADR_ABH(rs.getString("ZAGS_ADR_ABH"));
-				list.setZAGS_OTD(rs.getInt("ZAGS_OTD"));
-				list.setADDR_ABH(rs.getString("ADDR_ABH"));
+				list.setID(rs.getInt("ID"));
+				list.setABH_NAME(rs.getString("ABH_NAME"));
+				list.setNAME_ROD(rs.getString("NAME_ROD"));
+				list.setNAME(rs.getString("NAME"));
+				list.setAREA_ID(rs.getInt("AREA_ID"));
+				list.setOTD(rs.getInt("OTD"));
+				list.setIOTDNUM(rs.getInt("IOTDNUM"));
 				dlist.add(list);
 			}
 			prepStmt.close();
 			rs.close();
 
-			ZAGS.setItems(dlist);
+			COURTS.setItems(dlist);
 
-			TableFilter<VZAGS> tableFilter = TableFilter.forTableView(ZAGS).apply();
+			TableFilter<VCOURTS> tableFilter = TableFilter.forTableView(COURTS).apply();
 			tableFilter.setSearchStrategy((input, target) -> {
 				try {
 					return target.toLowerCase().contains(input.toLowerCase());
@@ -369,7 +365,7 @@ public class ZagsList {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "VZAGSList");
+			props.put("v$session.program", "CourtsList");
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
@@ -381,7 +377,6 @@ public class ZagsList {
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}

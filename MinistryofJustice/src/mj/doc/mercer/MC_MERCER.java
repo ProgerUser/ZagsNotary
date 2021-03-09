@@ -59,8 +59,11 @@ public class MC_MERCER {
 	private StringProperty SHEFIO;
 	/** Нет данных */
 	private StringProperty HEFIO;
+	/** Дата заключения брака */
+	private SimpleObjectProperty<LocalDate> MC_DATE;
 
 	public MC_MERCER() {
+		this.MC_DATE = new SimpleObjectProperty<>();
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.MERCER_DSPMT_SHE = new SimpleStringProperty();
@@ -86,6 +89,18 @@ public class MC_MERCER {
 		this.MERCER_ID = new SimpleIntegerProperty();
 		this.SHEFIO = new SimpleStringProperty();
 		this.HEFIO = new SimpleStringProperty();
+	}
+
+	public void setMC_DATE(LocalDate MC_DATE) {
+		this.MC_DATE.set(MC_DATE);
+	}
+
+	public LocalDate getMC_DATE() {
+		return MC_DATE.get();
+	}
+
+	public SimpleObjectProperty<LocalDate> MC_DATEProperty() {
+		return MC_DATE;
 	}
 
 	public void setCR_TIME(String CR_TIME) {

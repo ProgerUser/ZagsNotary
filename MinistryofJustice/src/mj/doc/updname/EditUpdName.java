@@ -52,6 +52,25 @@ import mj.msg.Msg;
 
 public class EditUpdName {
 
+
+    @FXML
+    private TextField OLD_LASTNAME_AB;
+
+    @FXML
+    private TextField OLD_FIRSTNAME_AB;
+
+    @FXML
+    private TextField OLD_MIDDLNAME_AB;
+    
+    @FXML
+    private TextField NEW_LASTNAME_AB;
+
+    @FXML
+    private TextField NEW_FIRSTNAME_AB;
+
+    @FXML
+    private TextField NEW_MIDDLNAME_AB;
+    
 	@FXML
 	private TextField NEW_LASTNAME;
 
@@ -393,7 +412,7 @@ public class EditUpdName {
 	void Save(ActionEvent event) {
 		try {
 			Main.logger = Logger.getLogger(getClass());
-			CallableStatement callStmt = conn.prepareCall("{ call UpdName.EditUpdName(?,?,?,?,?,?,?,?,?,?,?,?) }");
+			CallableStatement callStmt = conn.prepareCall("{ call UpdName.EditUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setInt(2, updname.getID());
 			callStmt.setString(3, OLD_LASTNAME.getText());
@@ -414,7 +433,20 @@ public class EditUpdName {
 			}
 			callStmt.setString(11, SVID_NUMBER.getText());
 			callStmt.setString(12, SVID_SERIA.getText());
-
+			
+			//Фамилия до перемены АБХ
+			callStmt.setString(13,OLD_LASTNAME_AB.getText());
+			//Имя до перемены АБХ
+			callStmt.setString(14,OLD_FIRSTNAME_AB.getText());
+			//Отчество до перемены АБХ
+			callStmt.setString(15,OLD_MIDDLNAME_AB.getText());
+			//Фамилия после перемены АБХ
+			callStmt.setString(16,NEW_LASTNAME_AB.getText());
+			//Имя после перемены АБХ
+			callStmt.setString(17,NEW_FIRSTNAME_AB.getText());
+			//Отчество после перемены АБХ
+			callStmt.setString(18,NEW_MIDDLNAME_AB.getText());
+			
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -430,22 +462,16 @@ public class EditUpdName {
 				Msg.MessageBox(callStmt.getString(1), stage_);
 				callStmt.close();
 			}
-			System.out.println(callStmt.getString(1));
+			//System.out.println(callStmt.getString(1));
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void SaveWtOtCommit() {
 		try {
 			Main.logger = Logger.getLogger(getClass());
-			CallableStatement callStmt = conn.prepareCall("{ call UpdName.EditUpdName(?,?,?,?,?,?,?,?,?,?,?,?) }");
+			CallableStatement callStmt = conn.prepareCall("{ call UpdName.EditUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setInt(2, updname.getID());
 			callStmt.setString(3, OLD_LASTNAME.getText());
@@ -466,16 +492,23 @@ public class EditUpdName {
 			}
 			callStmt.setString(11, SVID_NUMBER.getText());
 			callStmt.setString(12, SVID_SERIA.getText());
+			
+			//Фамилия до перемены АБХ
+			callStmt.setString(13,OLD_LASTNAME_AB.getText());
+			//Имя до перемены АБХ
+			callStmt.setString(14,OLD_FIRSTNAME_AB.getText());
+			//Отчество до перемены АБХ
+			callStmt.setString(15,OLD_MIDDLNAME_AB.getText());
+			//Фамилия после перемены АБХ
+			callStmt.setString(16,NEW_LASTNAME_AB.getText());
+			//Имя после перемены АБХ
+			callStmt.setString(17,NEW_FIRSTNAME_AB.getText());
+			//Отчество после перемены АБХ
+			callStmt.setString(18,NEW_MIDDLNAME_AB.getText());
 			callStmt.execute();
 			callStmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -510,7 +543,6 @@ public class EditUpdName {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 /*
 			Pane1.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
@@ -527,6 +559,14 @@ public class EditUpdName {
 			if (updname.getCUSID() != 0) {
 				CUSID.setText(String.valueOf(updname.getCUSID()));
 			}
+			
+			OLD_LASTNAME_AB.setText(updname.getOLD_LASTNAME_AB());
+			OLD_FIRSTNAME_AB.setText(updname.getOLD_FIRSTNAME_AB());
+			OLD_MIDDLNAME_AB.setText(updname.getOLD_MIDDLNAME_AB());
+			NEW_LASTNAME_AB.setText(updname.getNEW_LASTNAME_AB());
+			NEW_FIRSTNAME_AB.setText(updname.getNEW_FIRSTNAME_AB());
+			NEW_MIDDLNAME_AB.setText(updname.getNEW_MIDDLNAME_AB());
+
 			OLD_LASTNAME.setText(updname.getOLD_LASTNAME());
 			OLD_FIRSTNAME.setText(updname.getOLD_FIRSTNAME());
 			OLD_MIDDLNAME.setText(updname.getOLD_MIDDLNAME());
@@ -541,12 +581,7 @@ public class EditUpdName {
 			SVID_SERIA.setText(updname.getSVID_SERIA());
 			SVID_NUMBER.setText(updname.getSVID_NUMBER());
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

@@ -118,7 +118,29 @@
                         </VBox>
                      </content>
                 </Tab>
-                  <Tab text="Функции" />
+                  <Tab text="Функции">
+                     <content>
+                        <VBox>
+                           <children>
+                              <ToolBar>
+                                 <items>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID действия" />
+                                    <TextField fx:id="ActionID_ACT" />
+                                 </items>
+                              </ToolBar>
+                              <TreeView fx:id="Actions" editable="true" styleClass="mylistview" stylesheets="/ScrPane.css">
+                                 <contextMenu>
+                                    <ContextMenu fx:id="ContMenu1">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" onAction="#AddAct" text="Разрешить" />
+                                          <MenuItem mnemonicParsing="false" onAction="#DeleteAct" text="Запретить" />
+                                       </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TreeView>
+                           </children>
+                        </VBox>
+                     </content></Tab>
                   <Tab text="Меню">
                      <content>
                         <VBox>

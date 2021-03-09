@@ -1,0 +1,165 @@
+package mj.courts;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.apache.log4j.Logger;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
+import mj.app.main.Main;
+import mj.dbutil.DBUtil;
+import mj.users.OTD;
+
+public class EditCourt {
+
+	@FXML
+	private TextField ID;
+
+	@FXML
+	private TextField NAME;
+
+	@FXML
+	private TextField ABH_NAME;
+
+	@FXML
+	private TextField NAME_ROD;
+
+	@FXML
+	private ComboBox<OTD> OTD;
+
+	@FXML
+	void Save(ActionEvent event) {
+		try {
+			PreparedStatement oper = conn
+					.prepareStatement("update courts set NAME = ? , OTD = ?, ABH_NAME = ?,NAME_ROD=? where ID = ?");
+			oper.setString(1, NAME.getText());
+			oper.setInt(2, OTD.getSelectionModel().getSelectedItem().getIOTDNUM());
+			oper.setString(3, ABH_NAME.getText());
+			oper.setString(4, NAME_ROD.getText());
+			oper.setInt(5, courts.getID());
+			oper.executeUpdate();
+			oper.close();
+			setStatus(true);
+			onclose();
+		} catch (SQLException e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void Cencel(ActionEvent event) {
+		onclose();
+		setStatus(false);
+	}
+
+	void onclose() {
+		Stage stage = (Stage) ID.getScene().getWindow();
+		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+	}
+
+	/**
+	 * Для отделения
+	 */
+	private void convertComboDisplayList() {
+		OTD.setConverter(new StringConverter<OTD>() {
+			@Override
+			public String toString(OTD product) {
+				return product.getCOTDNAME();
+			}
+
+			@Override
+			public OTD fromString(final String string) {
+				return OTD.getItems().stream().filter(product -> product.getCOTDNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
+
+	@FXML
+	private void initialize() {
+		try {
+			ID.setEditable(false);
+
+			ID.setText(String.valueOf(courts.getID()));
+			NAME.setText(courts.getNAME());
+			ABH_NAME.setText(courts.getABH_NAME());
+			NAME_ROD.setText(courts.getNAME_ROD());
+
+			// Отделение
+			{
+				PreparedStatement stsmt = conn.prepareStatement("select * from otd");
+				ResultSet rs = stsmt.executeQuery();
+				ObservableList<OTD> combolist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					OTD list = new OTD();
+					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					list.setCOTDNAME(rs.getString("COTDNAME"));
+					combolist.add(list);
+				}
+
+				stsmt.close();
+				rs.close();
+
+				OTD.setItems(combolist);
+				if (courts.getCOTDNAME() != null) {
+					for (OTD ld : OTD.getItems()) {
+						if (courts.getCOTDNAME().equals(ld.getCOTDNAME())) {
+							OTD.getSelectionModel().select(ld);
+							break;
+						}
+					}
+				}
+				rs.close();
+			}
+			convertComboDisplayList();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	Connection conn;
+
+	VCOURTS courts;
+	private BooleanProperty Status;
+
+	private IntegerProperty Id;
+
+	public void setStatus(Boolean value) {
+		this.Status.set(value);
+	}
+
+	public boolean getStatus() {
+		return this.Status.get();
+	}
+
+	public void setId(Integer value) {
+		this.Id.set(value);
+	}
+
+	public void setConn(Connection conn, VCOURTS value) {
+		this.courts = value;
+		this.conn = conn;
+	}
+
+	public Integer getId() {
+		return this.Id.get();
+	}
+
+	public EditCourt() {
+		Main.logger = Logger.getLogger(getClass());
+		this.Status = new SimpleBooleanProperty();
+		this.Id = new SimpleIntegerProperty();
+	}
+}

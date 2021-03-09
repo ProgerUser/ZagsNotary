@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -46,7 +45,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import mj.app.main.Main;
+import mj.courts.VCOURTS;
 import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
@@ -126,7 +127,7 @@ public class EditDivorce {
 	private TextField DIVC_ZАNAME;
 
 	@FXML
-	private TextField DIVC_CAN;
+	private ComboBox<VCOURTS> DIVC_CAN;
 
 	@FXML
 	private DatePicker DIVC_ZOSCD;
@@ -138,7 +139,7 @@ public class EditDivorce {
 	private TextField DIVC_HE_LNBEF;
 
 	@FXML
-	private TextField DIVC_ZOSCN2;
+	private ComboBox<VCOURTS> DIVC_ZOSCN2;
 
 	@FXML
 	private TextField DIVC_SHE_LNBEF;
@@ -147,10 +148,55 @@ public class EditDivorce {
 	private TextField DIVC_ZOSFIO;
 
 	@FXML
-	private TextField DIVC_ZOSCN;
+	private ComboBox<VCOURTS> DIVC_ZOSCN;
 
 	@FXML
 	private TextField DIVC_HE;
+
+	
+	private void convert_DIVC_ZOSCN2() {
+		DIVC_ZOSCN2.setConverter(new StringConverter<VCOURTS>() {
+			@Override
+			public String toString(VCOURTS product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public VCOURTS fromString(final String string) {
+				return DIVC_ZOSCN2.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
+	
+	private void convert_DIVC_ZOSCN() {
+		DIVC_ZOSCN.setConverter(new StringConverter<VCOURTS>() {
+			@Override
+			public String toString(VCOURTS product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public VCOURTS fromString(final String string) {
+				return DIVC_ZOSCN.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
+	private void convert_DIVC_CAN() {
+		DIVC_CAN.setConverter(new StringConverter<VCOURTS>() {
+			@Override
+			public String toString(VCOURTS product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public VCOURTS fromString(final String string) {
+				return DIVC_CAN.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
 
 	// _______________Методы______________________________
 	@FXML
@@ -184,7 +230,6 @@ public class EditDivorce {
 
 	void CusList(TextField num, TextField name) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -286,13 +331,7 @@ public class EditDivorce {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -308,11 +347,11 @@ public class EditDivorce {
 			DIVC_TCHNUM.setText("");
 			DIVC_TCHD.setValue(null);
 			DIVC_CAD.setValue(null);
-			DIVC_CAN.setText("");
+			DIVC_CAN.setValue(null);
 			DIVC_ZOSCD.setValue(null);
 			DIVC_ZOSFIO.setText("");
-			DIVC_ZOSCN.setText("");
-			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSCN.setValue(null);
+			DIVC_ZOSCN2.setValue(null);
 			DIVC_ZOSFIO2.setText("");
 			DIVC_ZOSPRISON.setText("");
 			DIVC_ZOSCD2.setValue(null);
@@ -325,11 +364,11 @@ public class EditDivorce {
 			DIVC_TCHNUM.setText("");
 			DIVC_TCHD.setValue(null);
 			DIVC_CAD.setValue(null);
-			DIVC_CAN.setText("");
+			DIVC_CAN.setValue(null);
 			DIVC_ZOSCD.setValue(null);
 			DIVC_ZOSFIO.setText("");
-			DIVC_ZOSCN.setText("");
-			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSCN.setValue(null);
+			DIVC_ZOSCN2.setValue(null);
 			DIVC_ZOSFIO2.setText("");
 			DIVC_ZOSPRISON.setText("");
 			DIVC_ZOSCD2.setValue(null);
@@ -345,11 +384,11 @@ public class EditDivorce {
 			DIVC_TCHNUM.setText("");
 			DIVC_TCHD.setValue(null);
 			DIVC_CAD.setValue(null);
-			DIVC_CAN.setText("");
+			DIVC_CAN.setValue(null);
 			DIVC_ZOSCD.setValue(null);
 			DIVC_ZOSFIO.setText("");
-			DIVC_ZOSCN.setText("");
-			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSCN.setValue(null);
+			DIVC_ZOSCN2.setValue(null);
 			DIVC_ZOSFIO2.setText("");
 			DIVC_ZOSPRISON.setText("");
 			DIVC_ZOSCD2.setValue(null);
@@ -362,11 +401,11 @@ public class EditDivorce {
 			DIVC_TCHNUM.setText("");
 			DIVC_TCHD.setValue(null);
 			DIVC_CAD.setValue(null);
-			DIVC_CAN.setText("");
+			DIVC_CAN.setValue(null);
 			DIVC_ZOSCD.setValue(null);
 			DIVC_ZOSFIO.setText("");
-			DIVC_ZOSCN.setText("");
-			DIVC_ZOSCN2.setText("");
+			DIVC_ZOSCN.setValue(null);
+			DIVC_ZOSCN2.setValue(null);
 			DIVC_ZOSFIO2.setText("");
 			DIVC_ZOSPRISON.setText("");
 			DIVC_ZOSCD2.setValue(null);
@@ -376,8 +415,6 @@ public class EditDivorce {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			CallableStatement callStmt = conn.prepareCall(
 					"{ call Divorce.EditDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -396,12 +433,31 @@ public class EditDivorce {
 			callStmt.setString(6, DIVC_ZOSFIO2.getText());
 			callStmt.setDate(7,
 					(DIVC_ZOSCD2.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD2.getValue()) : null);
-			callStmt.setString(8, DIVC_ZOSCN2.getText());
+			
+			if (DIVC_ZOSCN2.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(8, DIVC_ZOSCN2.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(8, java.sql.Types.INTEGER);
+			}
+			
 			callStmt.setString(9, DIVC_ZOSFIO.getText());
 			callStmt.setDate(10, (DIVC_ZOSCD.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD.getValue()) : null);
-			callStmt.setString(11, DIVC_ZOSCN.getText());
+			
+			if (DIVC_ZOSCN.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(11, DIVC_ZOSCN.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(11, java.sql.Types.INTEGER);
+			}
+			
 			callStmt.setDate(12, (DIVC_CAD.getValue() != null) ? java.sql.Date.valueOf(DIVC_CAD.getValue()) : null);
-			callStmt.setString(13, DIVC_CAN.getText());
+			
+			
+			if (DIVC_CAN.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(13, DIVC_CAN.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(13, java.sql.Types.INTEGER);
+			}
+
 			callStmt.setString(14, DIVC_TCHNUM.getText());
 			callStmt.setDate(15, (DIVC_TCHD.getValue() != null) ? java.sql.Date.valueOf(DIVC_TCHD.getValue()) : null);
 			callStmt.setString(16, DIVC_TYPE.getValue());
@@ -445,8 +501,6 @@ public class EditDivorce {
 
 	void SaveTocompare() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			CallableStatement callStmt = conn.prepareCall(
 					"{ call Divorce.EditDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -465,12 +519,24 @@ public class EditDivorce {
 			callStmt.setString(6, DIVC_ZOSFIO2.getText());
 			callStmt.setDate(7,
 					(DIVC_ZOSCD2.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD2.getValue()) : null);
-			callStmt.setString(8, DIVC_ZOSCN2.getText());
+			if (DIVC_ZOSCN2.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(8, DIVC_ZOSCN2.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(8, java.sql.Types.INTEGER);
+			}
 			callStmt.setString(9, DIVC_ZOSFIO.getText());
 			callStmt.setDate(10, (DIVC_ZOSCD.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD.getValue()) : null);
-			callStmt.setString(11, DIVC_ZOSCN.getText());
+			if (DIVC_ZOSCN.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(11, DIVC_ZOSCN.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(11, java.sql.Types.INTEGER);
+			}
 			callStmt.setDate(12, (DIVC_CAD.getValue() != null) ? java.sql.Date.valueOf(DIVC_CAD.getValue()) : null);
-			callStmt.setString(13, DIVC_CAN.getText());
+			if (DIVC_CAN.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(13, DIVC_CAN.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(13, java.sql.Types.INTEGER);
+			}
 			callStmt.setString(14, DIVC_TCHNUM.getText());
 			callStmt.setDate(15, (DIVC_TCHD.getValue() != null) ? java.sql.Date.valueOf(DIVC_TCHD.getValue()) : null);
 			callStmt.setString(16, DIVC_TYPE.getValue());
@@ -497,13 +563,7 @@ public class EditDivorce {
 			callStmt.execute();
 			callStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -544,8 +604,67 @@ public class EditDivorce {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
+			
+			// Суды
+			{
+				PreparedStatement stsmt = conn.prepareStatement("select * from VCOURTS");
+				ResultSet rs = stsmt.executeQuery();
+				ObservableList<VCOURTS> combolist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					VCOURTS list = new VCOURTS();
+					list.setCOTDNAME(rs.getString("COTDNAME"));
+					list.setID(rs.getInt("ID"));
+					list.setABH_NAME(rs.getString("ABH_NAME"));
+					list.setNAME_ROD(rs.getString("NAME_ROD"));
+					list.setNAME(rs.getString("NAME"));
+					list.setAREA_ID(rs.getInt("AREA_ID"));
+					list.setOTD(rs.getInt("OTD"));
+					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					combolist.add(list);
+				}
 
+				stsmt.close();
+				rs.close();
+
+				DIVC_CAN.setItems(combolist);
+				DIVC_ZOSCN2.setItems(combolist);
+				DIVC_ZOSCN.setItems(combolist);
+				
+				if (div_cer.getDIVC_CAN() != null) {
+					for (VCOURTS ld : DIVC_ZOSCN2.getItems()) {
+						if (div_cer.getDIVC_ZOSCN2().equals(ld.getID())) {
+							DIVC_ZOSCN2.getSelectionModel().select(ld);
+							break;
+						}
+					}
+				}
+				
+				if (div_cer.getDIVC_CAN() != null) {
+					for (VCOURTS ld : DIVC_ZOSCN.getItems()) {
+						if (div_cer.getDIVC_ZOSCN().equals(ld.getID())) {
+							DIVC_ZOSCN.getSelectionModel().select(ld);
+							break;
+						}
+					}
+				}
+				
+				if (div_cer.getDIVC_CAN() != null) {
+					for (VCOURTS ld : DIVC_CAN.getItems()) {
+						if (div_cer.getDIVC_CAN().equals(ld.getID())) {
+							DIVC_CAN.getSelectionModel().select(ld);
+							break;
+						}
+					}
+				}
+				
+				//НАИМЕНОВАНИЯ СУДА, ЕСЛИ ЕСТЬ
+				convert_DIVC_CAN();
+				convert_DIVC_ZOSCN2();
+				convert_DIVC_ZOSCN();
+				
+				rs.close();
+			}
+						
 			Pane1.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Pane2.heightProperty().addListener(
@@ -597,7 +716,7 @@ public class EditDivorce {
 					DIV_B.setVisible(true);
 
 					DIVC_CAD.setValue(div_cer.getDIVC_CAD());
-					DIVC_CAN.setText(div_cer.getDIVC_CAN());
+					//DIVC_CAN.setValue(div_cer.getDIVC_CAN());
 
 				} else if (div_cer.getDIVC_TYPE().equals("V1")) {
 					DIVC_TYPE.getSelectionModel()
@@ -605,7 +724,7 @@ public class EditDivorce {
 					DIV_V1.setVisible(true);
 
 					DIVC_ZOSCD.setValue(div_cer.getDIVC_ZOSCD());
-					DIVC_ZOSCN.setText(div_cer.getDIVC_ZOSCN());
+					//DIVC_ZOSCN.setText(div_cer.getDIVC_ZOSCN());
 					DIVC_ZOSFIO.setText(div_cer.getDIVC_ZOSFIO());
 
 				} else if (div_cer.getDIVC_TYPE().equals("V2")) {
@@ -615,14 +734,14 @@ public class EditDivorce {
 					DIV_V1.setVisible(true);
 
 					DIVC_ZOSCD.setValue(div_cer.getDIVC_ZOSCD());
-					DIVC_ZOSCN.setText(div_cer.getDIVC_ZOSCN());
+					//DIVC_ZOSCN.setText(div_cer.getDIVC_ZOSCN());
 					DIVC_ZOSFIO.setText(div_cer.getDIVC_ZOSFIO());
 
 				} else if (div_cer.getDIVC_TYPE().equals("V3")) {
 					DIVC_TYPE.getSelectionModel().select("Приговор суда об осуждении и лишении свободы");
 					DIV_V2.setVisible(true);
 
-					DIVC_ZOSCN2.setText(div_cer.getDIVC_ZOSCN2());
+					//DIVC_ZOSCN2.setText(div_cer.getDIVC_ZOSCN2());
 					DIVC_ZOSFIO2.setText(div_cer.getDIVC_ZOSFIO2());
 					if (div_cer.getDIVC_ZOSPRISON() != 0) {
 						DIVC_ZOSPRISON.setText(String.valueOf(div_cer.getDIVC_ZOSPRISON()));
@@ -648,14 +767,10 @@ public class EditDivorce {
 			new ConvConst().FormatDatePiker(DIVC_DT);
 			new ConvConst().FormatDatePiker(DIVC_TCHD);
 			new ConvConst().FormatDatePiker(DIVC_ZOSCD);
+			
+			
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -663,17 +778,11 @@ public class EditDivorce {
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -714,7 +823,6 @@ public class EditDivorce {
 	 */
 	void Mercer(TextField ID) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			// Update.setLayoutX(30.0);
@@ -866,13 +974,7 @@ public class EditDivorce {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

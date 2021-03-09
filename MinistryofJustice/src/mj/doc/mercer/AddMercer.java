@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -34,6 +33,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -57,6 +57,7 @@ import mj.doc.cus.UtilCus;
 import mj.doc.death.DEATH_CERT;
 import mj.doc.divorce.DIVORCE_CERT;
 import mj.msg.Msg;
+import mj.util.ConvConst;
 
 public class AddMercer {
 
@@ -83,7 +84,8 @@ public class AddMercer {
 	@FXML private TextField MERCER_DIEHE;
 	@FXML private TextField MERCER_HEAGE;
 	@FXML private TextField MERCER_SHE;
-
+    @FXML
+    private DatePicker MC_DATE;
 	@FXML
 	void FindHe(ActionEvent event) {
 		UtilCus cus = new UtilCus();
@@ -294,19 +296,12 @@ public class AddMercer {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void DivorceList(TextField number) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -387,15 +382,15 @@ public class AddMercer {
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_TCHD")), formatter)
 						: null);
 				list.setDIVC_TCHNUM(rs.getString("DIVC_TCHNUM"));
-				list.setDIVC_CAN(rs.getString("DIVC_CAN"));
+				list.setDIVC_CAN(rs.getInt("DIVC_CAN"));
 				list.setDIVC_CAD((rs.getDate("DIVC_CAD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_CAD")), formatter)
 						: null);
-				list.setDIVC_ZOSCN(rs.getString("DIVC_ZOSCN"));
+				list.setDIVC_ZOSCN(rs.getInt("DIVC_ZOSCN"));
 				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
 				list.setDIVC_ZOSFIO(rs.getString("DIVC_ZOSFIO"));
-				list.setDIVC_ZOSCN2(rs.getString("DIVC_ZOSCN2"));
+				list.setDIVC_ZOSCN2(rs.getInt("DIVC_ZOSCN2"));
 				list.setDIVC_ZOSCD2((rs.getDate("DIVC_ZOSCD2") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD2")), formatter) : null);
 				list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));
@@ -459,19 +454,12 @@ public class AddMercer {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void CusList(TextField num, TextField name) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -573,22 +561,15 @@ public class AddMercer {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn
-					.prepareCall("{ call Mercer.AddMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call Mercer.AddMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
 			callStmt.setString(3, MERCER_OTHER.getText());
@@ -640,6 +621,7 @@ public class AddMercer {
 				callStmt.setNull(18, java.sql.Types.INTEGER);
 			}
 			callStmt.setString(19, MERCER_DSPMT_SHE.getValue());
+			callStmt.setDate(20, (MC_DATE.getValue() != null) ? java.sql.Date.valueOf(MC_DATE.getValue()) : null);
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -656,13 +638,7 @@ public class AddMercer {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -700,7 +676,7 @@ public class AddMercer {
 	@FXML
 	private void initialize() {
 		try {
-
+			new ConvConst().FormatDatePiker(MC_DATE);
 			if (getCusGen() == 1) {
 				HeFio.setText(getCusFio());
 				MERCER_HE.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
@@ -729,12 +705,7 @@ public class AddMercer {
 			MERCER_DSPMT_SHE.getItems().addAll("Свидетельство о расторжении брака", "Свидетельство о смерти");
 
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -742,7 +713,6 @@ public class AddMercer {
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "AddMercer");
@@ -751,28 +721,17 @@ public class AddMercer {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

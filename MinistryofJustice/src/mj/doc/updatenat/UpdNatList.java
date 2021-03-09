@@ -20,7 +20,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -34,6 +33,9 @@ import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
 import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -69,7 +71,6 @@ import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
-import mj.report.Report;
 import mj.util.ConvConst;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
@@ -164,13 +165,7 @@ public class UpdNatList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -179,7 +174,6 @@ public class UpdNatList {
 			if (UPD_NAT.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите строку!");
 			} else {
-				Main.logger = Logger.getLogger(getClass());
 
 				if (DBUtil.OdbAction(112) == 0) {
 					Msg.Message("Нет доступа!");
@@ -233,15 +227,9 @@ public class UpdNatList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								DBUtil.LOG_ERROR(e);
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
@@ -255,13 +243,7 @@ public class UpdNatList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -278,7 +260,6 @@ public class UpdNatList {
 	public void Edit(Integer docid, Stage stage_) {
 		try {
 			if (isopen == false) {
-				Main.logger = Logger.getLogger(getClass());
 
 				if (DBUtil.OdbAction(111) == 0) {
 					Msg.Message("Нет доступа!");
@@ -409,12 +390,7 @@ public class UpdNatList {
 										}
 									}
 								} catch (SQLException e) {
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+									DBUtil.LOG_ERROR(e);
 								}
 							}
 						});
@@ -424,32 +400,16 @@ public class UpdNatList {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "UPD_NAT"));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					} else {
-						e.printStackTrace();
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 				}
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -619,13 +579,7 @@ public class UpdNatList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -689,13 +643,7 @@ public class UpdNatList {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -731,13 +679,7 @@ public class UpdNatList {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return list;
 	}
@@ -795,11 +737,109 @@ public class UpdNatList {
 		Print();
 	}
 
+	public void manipulatePdf(String src, String dest) throws Exception{
+		if (UPD_NAT.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Выберите строку!");
+		} else {
+			PdfReader reader = new PdfReader(src);
+			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+			AcroFields fields = stamper.getAcroFields();
+		    //System.out.print(fields.getFields());
+			fields.setField("Текст1", "1");
+			fields.setField("Текст2", "2");
+			fields.setField("Текст3", "3");
+			fields.setField("Текст4", "4");
+			fields.setField("Текст5", "5");
+			fields.setField("Текст6", "6");
+			fields.setField("Текст8", "8");
+			fields.setField("Текст9", "9");
+			fields.setField("Текст10", "10");
+			fields.setField("Текст11", "11");
+			fields.setField("Текст12", "12");
+			fields.setField("Текст13", "13");
+			fields.setField("Текст14", "14");
+			fields.setField("Текст15", "15");
+			fields.setField("Текст16", "16");
+			fields.setField("Текст17", "17");
+			fields.setField("Текст18", "18");
+			fields.setField("Текст19", "19");
+			fields.setField("Текст20", "20");
+			fields.setField("Текст21", "21");
+			fields.setField("Текст22", "22");
+			fields.setField("Текст23", "23");
+			fields.setField("Текст24", "24");
+			fields.setField("Текст25", "25");
+			fields.setField("Текст26", "26");
+			fields.setField("Текст27", "27");
+			fields.setField("Текст28", "28");
+			fields.setField("Текст29", "29");
+			fields.setField("Текст30", "30");
+			fields.setField("Текст31", "31");
+			fields.setField("Текст32", "32");
+			fields.setField("Текст33", "33");
+			fields.setField("Текст34", "34");
+			fields.setField("Текст36", "36");
+			fields.setField("Текст69", "69");
+			fields.setField("Текст71", "71");
+			fields.setField("Текст72", "72");
+
+			PreparedStatement prp = conn.prepareStatement("select * from BLANK_UPD_NAT where ID = ?");
+			prp.setInt(1, UPD_NAT.getSelectionModel().getSelectedItem().getID());
+			ResultSet rs = prp.executeQuery();
+			while (rs.next()) {
+				fields.setField("Текст1", rs.getString("ABH_LNAME"));
+				fields.setField("Текст2", rs.getString("ABH_FMNAME"));
+				fields.setField("Текст3", rs.getString("ABH_COUNTRY"));
+				fields.setField("Текст4", rs.getString("ABH_OLD_NAT"));
+				fields.setField("Текст5", rs.getString("DD_BIRTH"));
+				fields.setField("Текст6", rs.getString("ABH_MM_BIRTH") + " " + rs.getString("YYYY_BIRTH") + " ш. "
+						+ rs.getString("AB_PLACE_BIRTH"));
+				fields.setField("Текст8", rs.getString("ABH_NEW_NAT"));
+				fields.setField("Текст9","");
+				fields.setField("Текст10", rs.getString("RU_YYYY"));
+				fields.setField("Текст11", rs.getString("MM"));
+				fields.setField("Текст12", rs.getString("DD"));
+				fields.setField("Текст13", rs.getString("ZAGS_CITY_ABH"));
+				fields.setField("Текст14", rs.getString("ZAGS_ADR_ABH"));
+				fields.setField("Текст15", rs.getString("ABH"));
+				fields.setField("Текст16", rs.getString("DD"));
+				fields.setField("Текст17", rs.getString("DOC_DATE"));
+				fields.setField("Текст18", rs.getString("RU_LNAME"));
+				fields.setField("Текст19", rs.getString("RU_FMNAME"));
+				fields.setField("Текст20", rs.getString("RU_COUNTRY"));
+				
+				fields.setField("Текст21", rs.getString("HE"));
+				fields.setField("Текст22", rs.getString("DD_BIRTH"));
+				fields.setField("Текст23", rs.getString("RU_MM_BIRTH"));
+				fields.setField("Текст24", rs.getString("YYYY_BIRTH"));
+				fields.setField("Текст25", rs.getString("RU_BRTH_PLC"));
+				fields.setField("Текст26", rs.getString("NAME_FULL"));
+				fields.setField("Текст27", rs.getString("RU_NAT"));
+				fields.setField("Текст28", rs.getString("RU_YYYY"));
+				fields.setField("Текст29", rs.getString("RU_MM"));
+				fields.setField("Текст30", rs.getString("RU_DD"));
+				fields.setField("Текст31", "");
+				fields.setField("Текст32", "ЗАГС");
+				fields.setField("Текст33", rs.getString("ADDR"));
+				fields.setField("Текст34", rs.getString("NAME_FULL"));
+				fields.setField("Текст36", rs.getString("RU_MM"));
+				
+				fields.setField("Текст69", rs.getString("RU_YYYY"));
+				fields.setField("Текст71", rs.getString("ZAGS_RUK_ABH"));
+				fields.setField("Текст72", rs.getString("ZAGS_RUK"));
+			}
+			prp.close();
+			rs.close();
+			
+			stamper.close();
+			reader.close();
+		}
+	}
+	
 	Connection conn;
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "UpdNatList");
@@ -808,28 +848,17 @@ public class UpdNatList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -879,42 +908,38 @@ public class UpdNatList {
 			if (UPD_NAT.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите строку!");
 			} else {
-				VUPD_NAT cl = UPD_NAT.getSelectionModel().getSelectedItem();
-				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/report/Report.fxml"));
-
-				Report controller = new Report();
-				controller.setId(3);
-				controller.setRecId(cl.getID());
-				loader.setController(controller);
-
-				Stage stage_ = (Stage) UPD_NAT.getScene().getWindow();
-				Parent root = loader.load();
-				stage.setScene(new Scene(root));
-				stage.getIcons().add(new Image("/icon.png"));
-				stage.setResizable(false);
-				stage.initModality(Modality.WINDOW_MODAL);
-				stage.setTitle("Печать (" + controller.getId() + ")");
-				stage.initOwner(stage_);
-
-				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-					@Override
-					public void handle(WindowEvent paramT) {
-						controller.dbDisconnect();
-					}
-				});
-				stage.show();
+//				VUPD_NAT cl = UPD_NAT.getSelectionModel().getSelectedItem();
+//				Stage stage = new Stage();
+//				FXMLLoader loader = new FXMLLoader(getClass().getResource("/mj/report/Report.fxml"));
+//
+//				Report controller = new Report();
+//				controller.setId(3);
+//				controller.setRecId(cl.getID());
+//				loader.setController(controller);
+//
+//				Stage stage_ = (Stage) UPD_NAT.getScene().getWindow();
+//				Parent root = loader.load();
+//				stage.setScene(new Scene(root));
+//				stage.getIcons().add(new Image("/icon.png"));
+//				stage.setResizable(false);
+//				stage.initModality(Modality.WINDOW_MODAL);
+//				stage.setTitle("Печать (" + controller.getId() + ")");
+//				stage.initOwner(stage_);
+//
+//				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+//					@Override
+//					public void handle(WindowEvent paramT) {
+//						controller.dbDisconnect();
+//					}
+//				});
+//				stage.show();
+				manipulatePdf(System.getenv("MJ_PATH") + "/Reports/UPD_NAT.pdf",
+						System.getenv("MJ_PATH") + "/OutReports/UPD_NAT.pdf");
+				Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/UPD_NAT.pdf"));
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
-
 	}
 
 	private Pane createOptionPane(XTableView<?> table) {
@@ -1010,12 +1035,7 @@ public class UpdNatList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1059,15 +1079,8 @@ public class UpdNatList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
-
 		return ret;
 	}
 
@@ -1100,14 +1113,7 @@ public class UpdNatList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 }

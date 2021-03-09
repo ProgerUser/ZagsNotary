@@ -1585,6 +1585,7 @@ Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующ
 	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:118)
 	... 19 more
 
+<<<<<<< HEAD
 [05.03.2021 15:08:13] [ConvConst] ERROR:140 - java.io.FileNotFoundException:  (Result too large)
 	at java.io.FileOutputStream.open0(Native Method)
 	at java.io.FileOutputStream.open(Unknown Source)
@@ -1819,3 +1820,1641 @@ Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующ
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Unknown Source)
 
+=======
+[05.03.2021 21:19:36] [EditUpdName] ERROR:140 - java.io.IOException: C:/ZAGS/upd_name.pdf not found as file or resource.
+	at com.lowagie.text.pdf.RandomAccessFileOrArray.<init>(Unknown Source)
+	at com.lowagie.text.pdf.RandomAccessFileOrArray.<init>(Unknown Source)
+	at com.lowagie.text.pdf.PRTokeniser.<init>(Unknown Source)
+	at com.lowagie.text.pdf.PdfReader.<init>(Unknown Source)
+	at com.lowagie.text.pdf.PdfReader.<init>(Unknown Source)
+	at mj.doc.updname.UpdNameList.manipulatePdf(UpdNameList.java:1135)
+	at mj.doc.updname.UpdNameList.Print(UpdNameList.java:758)
+	at mj.doc.updname.UpdNameList.BtPrint(UpdNameList.java:1009)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+[05.03.2021 21:55:10] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="61055480552905506055480552805528055110553005515055360555105516055170552605514055080550805508055080550805534055710557705562055690550105543055020549305528055720557505562055010554505538055020549305566055140550605513055140551805509054930552805541055460549305525054930551205507055120550905532055330558305508055080550805508055080650806501065040651805493065180650106509065050549306505065150651354" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 21:55:10] [Auth1c] INFO :380 - User
+[05.03.2021 21:55:10] [Auth1c] INFO :381 - User
+[05.03.2021 21:55:10] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 21:55:11] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 21:57:35"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Чамагуа " Имя="Лаша" Отчество="Виталиевич " ДатаРождения="30.01.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="Ардзинба  В. Г. " Дом="5" Корпус="null" Квартира="17"/>
+		<Паспорта>
+			<Паспорт1 ID="BCA8F67A-6C46-3424-E053-4740470A84EF" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="1" НаименованиеВида="Внутренний паспорт" Серия="АВК-121" Номер="01010538" КемВыдан="ПГ по г. Новый Афон " ДатаВыдачи="23.02.2017 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 21:55:11] [Auth1c] INFO :380 - User
+[05.03.2021 21:55:11] [Auth1c] INFO :381 - User
+[05.03.2021 21:55:11] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:04:52] [EditCus] ERROR:1444 - java.sql.SQLException: ORA-06550: Строка 1, столбец 13:
+PLS-00306: ошибочно число или типы аргументов при обращении к 'UPDATE_CUS'
+ORA-06550: Строка 1, столбец 7:
+PL/SQL: Statement ignored
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:446)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1054)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:612)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:223)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:56)
+	at oracle.jdbc.driver.T4CCallableStatement.executeForRows(T4CCallableStatement.java:907)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1119)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3780)
+	at oracle.jdbc.driver.T4CCallableStatement.executeInternal(T4CCallableStatement.java:1300)
+	at oracle.jdbc.driver.OraclePreparedStatement.execute(OraclePreparedStatement.java:3887)
+	at oracle.jdbc.driver.OracleCallableStatement.execute(OracleCallableStatement.java:4230)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.execute(OraclePreparedStatementWrapper.java:1079)
+	at mj.doc.cus.EditCus.CallSaveToCompare(EditCus.java:1439)
+	at mj.doc.cus.CusList$3.handle(CusList.java:678)
+	at mj.doc.cus.CusList$3.handle(CusList.java:1)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at com.sun.javafx.stage.WindowPeerListener.closing(WindowPeerListener.java:88)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.run(GlassWindowEventHandler.java:122)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.run(GlassWindowEventHandler.java:40)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.lambda$handleWindowEvent$3(GlassWindowEventHandler.java:151)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.handleWindowEvent(GlassWindowEventHandler.java:149)
+	at com.sun.glass.ui.Window.handleWindowEvent(Window.java:1273)
+	at com.sun.glass.ui.Window.notifyClose(Window.java:1177)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: Error : 6550, Position : 12, Sql = BEGIN :1 := MJCUS.UPDATE_CUS(:2 ,:3 ,:4 ,:5 ,:6 ,:7 ,:8 ,:9 ,:10 ,:11 ,:12 ,:13 ,:14 ,:15 ,:16 ,:17 ,:18 ,:19 ); END;, OriginalSql = { ? = call MJCUS.UPDATE_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}, Error Msg = ORA-06550: Строка 1, столбец 13:
+PLS-00306: ошибочно число или типы аргументов при обращении к 'UPDATE_CUS'
+ORA-06550: Строка 1, столбец 7:
+PL/SQL: Statement ignored
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:498)
+	... 38 more
+~JavaFX Application Thread
+[05.03.2021 22:24:18] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="16069030688406861069030688306883068660688506870068910690606871068720688106869068630686306863068630686306889069260693206917069240685606898068570684806883069270693006917068560690006893068570684806921068690686106868068690687306864068480688306896069010684806880068480686706862068670686406887068880693806863068630686306863068630786307856078590787306848078730785607864078600684807860078700786868" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:24:18] [Auth1c] INFO :380 - User
+[05.03.2021 22:24:18] [Auth1c] INFO :381 - User
+[05.03.2021 22:24:18] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:24:18] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:26:42"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Большукин" Имя="Алексей" Отчество="Геннадиевич" ДатаРождения="30.12.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="Ардзинба " Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCB3AA56-AE1C-7F74-E053-4740470A217D" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="01" КемВыдан="null" ДатаВыдачи="15.04.1993 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:24:18] [Auth1c] INFO :380 - User
+[05.03.2021 22:24:18] [Auth1c] INFO :381 - User
+[05.03.2021 22:24:18] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:26:09] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="77036640364503622036640364403644036270364603631036520366703632036330364203630036240362403624036240362403650036870369303678036850361703659036180360903644036880369103678036170366103654036180360903682036300362203629036300363403625036090364403657036620360903641036090362803623036280362503648036490369903624036240362403624036240462404617046200463403609046340461704625046210360904621046310462935" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:26:09] [Auth1c] INFO :380 - User
+[05.03.2021 22:26:09] [Auth1c] INFO :381 - User
+[05.03.2021 22:26:09] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:26:09] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:28:33"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Бенидзе" Имя="Ираклий " Отчество="Николаевич " ДатаРождения="12.12.1984 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="4" НаименованиеРайона="Гулрыпшский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCCB2F4F-4AB8-1355-E053-4740470AE6B8" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="1-ДТ" Номер="251196" КемВыдан="null" ДатаВыдачи="15.12.1986 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:26:09] [Auth1c] INFO :380 - User
+[05.03.2021 22:26:09] [Auth1c] INFO :381 - User
+[05.03.2021 22:26:09] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:26:24] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="14015010148201459015010148101481014640148301468014890150401469014700147901467014610146101461014610146101487015240153001515015220145401496014550144601481015250152801515014540149801491014550144601519014670145901466014670147101462014460148101494014990144601478014460146501460014650146201485014860153601461014610146101461014610246102454024570247101446024710245402462024580144602458024680246614" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:26:24] [Auth1c] INFO :380 - User
+[05.03.2021 22:26:24] [Auth1c] INFO :381 - User
+[05.03.2021 22:26:24] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:26:24] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:28:48"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Бенидзе" Имя="Ираклий " Отчество="Николаевич " ДатаРождения="12.12.1984 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="4" НаименованиеРайона="Гулрыпшский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCCB2F4F-4AB8-1355-E053-4740470AE6B8" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="1-ДТ" Номер="251196" КемВыдан="null" ДатаВыдачи="15.12.1986 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:26:24] [Auth1c] INFO :380 - User
+[05.03.2021 22:26:24] [Auth1c] INFO :381 - User
+[05.03.2021 22:26:24] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:28:17] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="28056150559605573056150559505595055780559705582056030561805583055840559305581055750557505575055750557505601056380564405629056360556805610055690556005595056390564205629055680561205605055690556005633055810557305580055810558505576055600559505608056130556005592055600557905574055790557605599056000565005575055750557505575055750657506568065710658505560065850656806576065720556006572065820658055" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:28:17] [Auth1c] INFO :380 - User
+[05.03.2021 22:28:17] [Auth1c] INFO :381 - User
+[05.03.2021 22:28:17] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:28:17] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:30:41"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Бенидзе" Имя="Ираклий " Отчество="Николаевич " ДатаРождения="12.12.1984 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="4" НаименованиеРайона="Гулрыпшский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCCB2F4F-4AB8-1355-E053-4740470AE6B8" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="1-ДТ" Номер="251196" КемВыдан="null" ДатаВыдачи="15.12.1986 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:28:17] [Auth1c] INFO :380 - User
+[05.03.2021 22:28:17] [Auth1c] INFO :381 - User
+[05.03.2021 22:28:17] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:28:29] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="41078280780907786078280780807808077910781007795078160783107796077970780607794077880778807788077880778807814078510785707842078490778107823077820777307808078520785507842077810782507818077820777307846077940778607793077940779807789077730780807821078260777307805077730779207787077920778907812078130786307788077880778807788077880878808781087840879807773087980878108789087850777308785087950879377" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:28:29] [Auth1c] INFO :380 - User
+[05.03.2021 22:28:29] [Auth1c] INFO :381 - User
+[05.03.2021 22:28:29] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:28:29] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:30:53"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Пачулия" Имя="Саид" Отчество="Викторович" ДатаРождения="30.04.1996 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="8" НаименованиеРайона="г. Сухум" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9F745B-2CC7-7C46-E053-4740470A0AC7" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="22" Номер="22" КемВыдан="null" ДатаВыдачи="03.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+			<Паспорт2 ID="BC9E643A-C9E8-6789-E053-4740470A034A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.03.2021 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:28:29] [Auth1c] INFO :380 - User
+[05.03.2021 22:28:29] [Auth1c] INFO :381 - User
+[05.03.2021 22:28:29] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:28:35] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="20090070898808965090070898708987089700898908974089950901008975089760898508973089670896708967089670896708993090300903609021090280896009002089610895208987090310903409021089600900408997089610895209025089730896508972089730897708968089520898709000090050895208984089520897108966089710896808991089920904208967089670896708967089670996709960099630997708952099770996009968099640895209964099740997289" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:28:35] [Auth1c] INFO :380 - User
+[05.03.2021 22:28:35] [Auth1c] INFO :381 - User
+[05.03.2021 22:28:35] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:28:35] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:30:59"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Каличава" Имя="Лаша" Отчество="Мурманович" ДатаРождения="20.01.1979 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="4" НаименованиеРайона="Гулрыпшский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="Null" Дом="null" Корпус="null" Квартира="nul"/>
+		<Паспорта>
+			<Паспорт1 ID="c68b3104-aea0-41bc-8815-e65128533235" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="1" НаименованиеВида="Внутренний паспорт" Серия="123" Номер="123" КемВыдан="ПВС по Гулрыпшскому р-ону" ДатаВыдачи="06.10.2020 0:00:00" СрокДействия="31.12.2020 0:00:00"/>
+			<Паспорт2 ID="ea810ed2-9360-4b1c-b868-66b16308651f" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="1" НаименованиеВида="Внутренний паспорт" Серия="фыв" Номер="фывфыв" КемВыдан="фывафывафв" ДатаВыдачи="14.12.2020 0:00:00" СрокДействия="15.12.2020 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:28:35] [Auth1c] INFO :380 - User
+[05.03.2021 22:28:35] [Auth1c] INFO :381 - User
+[05.03.2021 22:28:35] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:30:04] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="67036540363503612036540363403634036170363603621036420365703622036230363203620036140361403614036140361403640036770368303668036750360703649036080359903634036780368103668036070365103644036080359903672036200361203619036200362403615035990363403647036520359903631035990361803613036180361503638036390368903614036140361403614036140461404607046100462403599046240460704615046110359904611046210461935" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:30:04] [Auth1c] INFO :380 - User
+[05.03.2021 22:30:04] [Auth1c] INFO :381 - User
+[05.03.2021 22:30:04] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:30:04] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:32:28"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Бенидзе" Имя="Ираклий " Отчество="Николаевич " ДатаРождения="12.12.1984 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="4" НаименованиеРайона="Гулрыпшский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCCB2F4F-4AB8-1355-E053-4740470AE6B8" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="1-ДТ" Номер="251196" КемВыдан="null" ДатаВыдачи="15.12.1986 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:30:04] [Auth1c] INFO :380 - User
+[05.03.2021 22:30:04] [Auth1c] INFO :381 - User
+[05.03.2021 22:30:04] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:30:55] [Audit] INFO :110 - select * from VAU_ACTION 
+ where 1=1 
+
+ and upper(CTABLE) = 'CUS' 
+ order by DAUDDATE desc
+[05.03.2021 22:32:44] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="08034950347603453034950347503475034580347703462034830349803463034640347303461034550345503455034550345503481035180352403509035160344803490034490344003475035190352203509034480349203485034490344003513034610345303460034610346503456034400347503488034930344003472034400345903454034590345603479034800353003455034550345503455034550445504448044510446503440044650444804456044520344004452044620446034" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:32:44] [Auth1c] INFO :380 - User
+[05.03.2021 22:32:44] [Auth1c] INFO :381 - User
+[05.03.2021 22:32:44] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:32:45] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:35:08"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Бенидзе" Имя="Ираклий " Отчество="Николаевич " ДатаРождения="12.12.1984 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="4" НаименованиеРайона="Гулрыпшский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCCB2F4F-4AB8-1355-E053-4740470AE6B8" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="1-ДТ" Номер="251196" КемВыдан="null" ДатаВыдачи="15.12.1986 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:32:45] [Auth1c] INFO :380 - User
+[05.03.2021 22:32:45] [Auth1c] INFO :381 - User
+[05.03.2021 22:32:45] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:35:00] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="59089460892708904089460892608926089090892808913089340894908914089150892408912089060890608906089060890608932089690897508960089670889908941089000889108926089700897308960088990894308936089000889108964089120890408911089120891608907088910892608939089440889108923088910891008905089100890708930089310898108906089060890608906089060990609899099020991608891099160989909907099030889109903099130991188" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:35:00] [Auth1c] INFO :380 - User
+[05.03.2021 22:35:00] [Auth1c] INFO :381 - User
+[05.03.2021 22:35:00] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:35:00] [Auth1c] INFO :485 - ~~~~~~~~~~~~~~~
+[05.03.2021 22:35:00] [Auth1c] INFO :486 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="05.03.2021 22:37:24"/>>
+[05.03.2021 22:35:00] [Auth1c] INFO :487 - ~~~~~~~~~~~~~~~
+[05.03.2021 22:35:00] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:37:24"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Курикба" Имя="Сулико" Отчество="Махмедовна" ДатаРождения="29.06.0019 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:35:00] [Auth1c] INFO :380 - User
+[05.03.2021 22:35:00] [Auth1c] INFO :381 - User
+[05.03.2021 22:35:00] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[05.03.2021 22:35:07] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="55094420942309400094420942209422094050942409409094300944509410094110942009408094020940209402094020940209428094650947109456094630939509437093960938709422094660946909456093950943909432093960938709460094080940009407094080941209403093870942209435094400938709419093870940609401094060940309426094270947709402094020940209402094021040210395103981041209387104121039510403103990938710399104091040793" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:35:07] [Auth1c] INFO :380 - User
+[05.03.2021 22:35:07] [Auth1c] INFO :381 - User
+[05.03.2021 22:35:07] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:35:07] [Auth1c] INFO :485 - ~~~~~~~~~~~~~~~
+[05.03.2021 22:35:07] [Auth1c] INFO :486 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="05.03.2021 22:37:31"/>>
+[05.03.2021 22:35:07] [Auth1c] INFO :487 - ~~~~~~~~~~~~~~~
+[05.03.2021 22:35:07] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:37:31"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Курикба" Имя="Сулико" Отчество="Махмедовна" ДатаРождения="29.06.1959 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:35:07] [Auth1c] INFO :380 - User
+[05.03.2021 22:35:07] [Auth1c] INFO :381 - User
+[05.03.2021 22:35:07] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[05.03.2021 22:37:01] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="11038980387903856038980387803878038610388003865038860390103866038670387603864038580385803858038580385803884039210392703912039190385103893038520384303878039220392503912038510389503888038520384303916038640385603863038640386803859038430387803891038960384303875038430386203857038620385903882038830393303858038580385803858038580485804851048540486803843048680485104859048550384304855048650486338" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:37:01] [Auth1c] INFO :380 - User
+[05.03.2021 22:37:01] [Auth1c] INFO :381 - User
+[05.03.2021 22:37:01] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:37:01] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:39:25"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Администратор" ID="" КодСсылки="" Фамилия="Курикба" Имя="Сулико" Отчество="Махмедовна" ДатаРождения="29.06.1959 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="219" НаименованиеНасПункта="с. Ачандара" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCD03A5A-CFD6-7256-E053-4740470A4BCB" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.01.0001 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:37:01] [Auth1c] INFO :380 - User
+[05.03.2021 22:37:01] [Auth1c] INFO :381 - User
+[05.03.2021 22:37:01] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:39:50] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="67013540133501312013540133401334013170133601321013420135701322013230133201320013140131401314013140131401340013770138301368013750130701349013080129901334013780138101368013070135101344013080129901372013200131201319013200132401315012990133401347013520129901331012990131801313013180131501338013390138901314013140131401314013140231402307023100232401299023240230702315023110129902311023210231912" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:39:50] [Auth1c] INFO :380 - User
+[05.03.2021 22:39:50] [Auth1c] INFO :381 - User
+[05.03.2021 22:39:50] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:39:50] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:42:14"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Администратор" ID="" КодСсылки="" Фамилия="Курикба" Имя="Сулико" Отчество="Махмедовна" ДатаРождения="29.06.1959 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="219" НаименованиеНасПункта="с. Ачандара" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCD03A5A-CFD6-7256-E053-4740470A4BCB" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:39:50] [Auth1c] INFO :380 - User
+[05.03.2021 22:39:50] [Auth1c] INFO :381 - User
+[05.03.2021 22:39:50] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[05.03.2021 22:39:58] [Audit] INFO :110 - select * from VAU_ACTION 
+ where 1=1 
+
+ and upper(CTABLE) = 'CUS' 
+ order by DAUDDATE desc
+[05.03.2021 22:51:42] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="56028430282402801028430282302823028060282502810028310284602811028120282102809028030280302803028030280302829028660287202857028640279602838027970278802823028670287002857027960284002833027970278802861028090280102808028090281302804027880282302836028410278802820027880280702802028070280402827028280287802803028030280302803028030380303796037990381302788038130379603804038000278803800038100380827" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[05.03.2021 22:51:42] [Auth1c] INFO :380 - User
+[05.03.2021 22:51:42] [Auth1c] INFO :381 - User
+[05.03.2021 22:51:42] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[05.03.2021 22:51:42] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="05.03.2021 22:54:06"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Администратор" ID="" КодСсылки="" Фамилия="Курикба" Имя="Сулико" Отчество="Махмедовна" ДатаРождения="29.06.1959 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="219" НаименованиеНасПункта="с. Ачандара" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCD03A5A-CFD6-7256-E053-4740470A4BCB" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[05.03.2021 22:51:42] [Auth1c] INFO :380 - User
+[05.03.2021 22:51:42] [Auth1c] INFO :381 - User
+[05.03.2021 22:51:42] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[06.03.2021 11:56:40] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="54037410372203699037410372103721037040372303708037290374403709037100371903707037010370103701037010370103727037640377003755037620369403736036950368603721037650376803755036940373803731036950368603759037070369903706037070371103702036860372103734037390368603718036860370503700037050370203725037260377603701037010370103701037010470104694046970471103686047110469404702046980368604698047080470636" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[06.03.2021 11:56:40] [Auth1c] INFO :380 - User
+[06.03.2021 11:56:40] [Auth1c] INFO :381 - User
+[06.03.2021 11:56:40] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[06.03.2021 11:56:41] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="06.03.2021 11:59:06"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Администратор" ID="" КодСсылки="" Фамилия="Курикба" Имя="Сулико" Отчество="Махмедовна" ДатаРождения="29.06.1959 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="219" НаименованиеНасПункта="с. Ачандара" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCD03A5A-CFD6-7256-E053-4740470A4BCB" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[06.03.2021 11:56:41] [Auth1c] INFO :380 - User
+[06.03.2021 11:56:41] [Auth1c] INFO :381 - User
+[06.03.2021 11:56:41] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[06.03.2021 17:16:20] [EditUpdName] ERROR:140 - java.sql.SQLException: В индексе отсутствует параметр IN или OUT:: 13
+	at oracle.jdbc.driver.OraclePreparedStatement.processCompletedBindRow(OraclePreparedStatement.java:2258)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3772)
+	at oracle.jdbc.driver.T4CCallableStatement.executeInternal(T4CCallableStatement.java:1300)
+	at oracle.jdbc.driver.OraclePreparedStatement.execute(OraclePreparedStatement.java:3887)
+	at oracle.jdbc.driver.OracleCallableStatement.execute(OracleCallableStatement.java:4230)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.execute(OraclePreparedStatementWrapper.java:1079)
+	at mj.doc.updname.EditUpdName.Save(EditUpdName.java:437)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+[06.03.2021 18:33:40] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="94096810966209639096810966109661096440966309648096690968409649096500965909647096410964109641096410964109667097040971009695097020963409676096350962609661097050970809695096340967809671096350962609699096470963909646096470965109642096260966109674096790962609658096260964509640096450964209665096660971609641096410964109641096411064110634106371065109626106511063410642106380962610638106481064695" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[06.03.2021 18:33:40] [Auth1c] INFO :380 - User
+[06.03.2021 18:33:40] [Auth1c] INFO :381 - User
+[06.03.2021 18:33:40] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[06.03.2021 18:33:41] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="06.03.2021 18:36:08"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Администратор" ID="" КодСсылки="" Фамилия="Ахба" Имя="Сулико" Отчество="Махмедовна" ДатаРождения="26.06.1959 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="219" НаименованиеНасПункта="с. Ачандара" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCD03A5A-CFD6-7256-E053-4740470A4BCB" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[06.03.2021 18:33:41] [Auth1c] INFO :380 - User
+[06.03.2021 18:33:41] [Auth1c] INFO :381 - User
+[06.03.2021 18:33:41] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[06.03.2021 18:56:17] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="69021560213702114021560213602136021190213802123021440215902124021250213402122021160211602116021160211602142021790218502170021770210902151021100210102136021800218302170021090215302146021100210102174021220211402121021220212602117021010213602149021540210102133021010212002115021200211702140021410219102116021160211602116021160311603109031120312602101031260310903117031130210103113031230312120" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[06.03.2021 18:56:17] [Auth1c] INFO :380 - User
+[06.03.2021 18:56:17] [Auth1c] INFO :381 - User
+[06.03.2021 18:56:17] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[06.03.2021 18:56:17] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="06.03.2021 18:58:44"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Администратор" ID="" КодСсылки="" Фамилия="Ахба" Имя="Сулико" Отчество="Махмедовна" ДатаРождения="26.06.1959 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="219" НаименованиеНасПункта="с. Ачандара" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCD03A5A-CFD6-7256-E053-4740470A4BCB" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[06.03.2021 18:56:17] [Auth1c] INFO :380 - User
+[06.03.2021 18:56:17] [Auth1c] INFO :381 - User
+[06.03.2021 18:56:17] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[06.03.2021 22:36:26] [ConvConst] ERROR:140 - java.sql.SQLSyntaxErrorException: ORA-00942: таблица или представление пользователя не существует
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:446)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1054)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:612)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:226)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:59)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForDescribe(T4CPreparedStatement.java:747)
+	at oracle.jdbc.driver.OracleStatement.executeMaybeDescribe(OracleStatement.java:904)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1082)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3780)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeInternal(T4CPreparedStatement.java:1343)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeQuery(OraclePreparedStatement.java:3822)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeQuery(OraclePreparedStatementWrapper.java:1165)
+	at mj.doc.updname.UpdNameList.manipulatePdf(UpdNameList.java:1146)
+	at mj.doc.updname.UpdNameList.BtPrintBlank(UpdNameList.java:1006)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: Error : 942, Position : 18, Sql = select * from xxi.BLANK_UPDATE_NAME where ID = :1 , OriginalSql = select * from xxi.BLANK_UPDATE_NAME where ID = ?, Error Msg = ORA-00942: таблица или представление пользователя не существует
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:498)
+	... 78 more
+
+[06.03.2021 22:50:21] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="27053140529505272053140529405294052770529605281053020531705282052830529205280052740527405274052740527405300053370534305328053350526705309052680525905294053380534105328052670531105304052680525905332052800527205279052800528405275052590529405307053120525905291052590527805273052780527505298052990534905274052740527405274052740627406267062700628405259062840626706275062710525906271062810627952" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[06.03.2021 22:50:21] [Auth1c] INFO :380 - User
+[06.03.2021 22:50:21] [Auth1c] INFO :381 - User
+[06.03.2021 22:50:21] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[06.03.2021 22:50:22] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="06.03.2021 22:52:49"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Большукин" Имя="Алексей" Отчество="Геннадиевич" ДатаРождения="30.12.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="Ардзинба " Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCB3AA56-AE1C-7F74-E053-4740470A217D" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="01" КемВыдан="null" ДатаВыдачи="15.04.1993 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[06.03.2021 22:50:22] [Auth1c] INFO :380 - User
+[06.03.2021 22:50:22] [Auth1c] INFO :381 - User
+[06.03.2021 22:50:22] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[06.03.2021 22:52:44] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="07047940477504752047940477404774047570477604761047820479704762047630477204760047540475404754047540475404780048170482304808048150474704789047480473904774048180482104808047470479104784047480473904812047600475204759047600476404755047390477404787047920473904771047390475804753047580475504778047790482904754047540475404754047540575405747057500576404739057640574705755057510473905751057610575947" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[06.03.2021 22:52:44] [Auth1c] INFO :380 - User
+[06.03.2021 22:52:44] [Auth1c] INFO :381 - User
+[06.03.2021 22:52:44] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[06.03.2021 22:52:44] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="06.03.2021 22:55:11"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Большукин" Имя="Алексей" Отчество="Геннадиевич" ДатаРождения="30.12.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="Ардзинба " Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCB3AA56-AE1C-7F74-E053-4740470A217D" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="01" КемВыдан="null" ДатаВыдачи="15.04.1993 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[06.03.2021 22:52:44] [Auth1c] INFO :380 - User
+[06.03.2021 22:52:44] [Auth1c] INFO :381 - User
+[06.03.2021 22:52:44] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[06.03.2021 22:53:16] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="47019340191501892019340191401914018970191601901019220193701902019030191201900018940189401894018940189401920019570196301948019550188701929018880187901914019580196101948018870193101924018880187901952019000189201899019000190401895018790191401927019320187901911018790189801893018980189501918019190196901894018940189401894018940289402887028900290401879029040288702895028910187902891029010289918" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[06.03.2021 22:53:16] [Auth1c] INFO :380 - User
+[06.03.2021 22:53:16] [Auth1c] INFO :381 - User
+[06.03.2021 22:53:16] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[06.03.2021 22:53:16] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="06.03.2021 22:55:43"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Большукин" Имя="Алексей" Отчество="Геннадиевич" ДатаРождения="30.12.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="Ардзинба " Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCB3AA56-AE1C-7F74-E053-4740470A217D" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="01" КемВыдан="null" ДатаВыдачи="15.04.1993 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[06.03.2021 22:53:16] [Auth1c] INFO :380 - User
+[06.03.2021 22:53:16] [Auth1c] INFO :381 - User
+[06.03.2021 22:53:16] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[06.03.2021 22:56:23] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="07042940427504252042940427404274042570427604261042820429704262042630427204260042540425404254042540425404280043170432304308043150424704289042480423904274043180432104308042470429104284042480423904312042600425204259042600426404255042390427404287042920423904271042390425804253042580425504278042790432904254042540425404254042540525405247052500526404239052640524705255052510423905251052610525942" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[06.03.2021 22:56:23] [Auth1c] INFO :380 - User
+[06.03.2021 22:56:23] [Auth1c] INFO :381 - User
+[06.03.2021 22:56:23] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[06.03.2021 22:56:23] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="06.03.2021 22:58:50"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Большукин" Имя="Алексей" Отчество="Геннадиевич" ДатаРождения="30.12.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="Ардзинба " Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCB3AA56-AE1C-7F74-E053-4740470A217D" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="01" КемВыдан="null" ДатаВыдачи="15.04.1993 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[06.03.2021 22:56:23] [Auth1c] INFO :380 - User
+[06.03.2021 22:56:23] [Auth1c] INFO :381 - User
+[06.03.2021 22:56:23] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[06.03.2021 23:06:45] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="79086660864708624086660864608646086290864808633086540866908634086350864408632086260862608626086260862608652086890869508680086870861908661086200861108646086900869308680086190866308656086200861108684086320862408631086320863608627086110864608659086640861108643086110863008625086300862708650086510870108626086260862608626086260962609619096220963608611096360961909627096230861109623096330963185" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[06.03.2021 23:06:45] [Auth1c] INFO :380 - User
+[06.03.2021 23:06:45] [Auth1c] INFO :381 - User
+[06.03.2021 23:06:45] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[06.03.2021 23:06:45] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="06.03.2021 23:09:12"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Большукин" Имя="Алексей" Отчество="Геннадиевич" ДатаРождения="30.12.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="Ардзинба " Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCB3AA56-AE1C-7F74-E053-4740470A217D" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="01" КемВыдан="null" ДатаВыдачи="15.04.1993 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[06.03.2021 23:06:45] [Auth1c] INFO :380 - User
+[06.03.2021 23:06:45] [Auth1c] INFO :381 - User
+[06.03.2021 23:06:45] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 13:17:25] [ConvConst] ERROR:140 - java.sql.SQLSyntaxErrorException: ORA-04045: ошибки во время перекомпиляции/перепроверки XXI.LOGOFF_AUDIT_TRIGGER
+ORA-01031: привилегий недостаточно
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:441)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:436)
+	at oracle.jdbc.driver.T4C7Ocommoncall.processError(T4C7Ocommoncall.java:86)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C7Ocommoncall.doOLOGOFF(T4C7Ocommoncall.java:62)
+	at oracle.jdbc.driver.T4CConnection.logoff(T4CConnection.java:908)
+	at oracle.jdbc.driver.PhysicalConnection.close(PhysicalConnection.java:2005)
+	at mj.users.UsrC.dbDisconnect(UsrC.java:289)
+	at mj.app.main.Main$21.handle(Main.java:1021)
+	at mj.app.main.Main$21.handle(Main.java:1)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at com.sun.javafx.stage.WindowPeerListener.closing(WindowPeerListener.java:88)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.run(GlassWindowEventHandler.java:122)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.run(GlassWindowEventHandler.java:40)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.lambda$handleWindowEvent$3(GlassWindowEventHandler.java:151)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.handleWindowEvent(GlassWindowEventHandler.java:149)
+	at com.sun.glass.ui.Window.handleWindowEvent(Window.java:1273)
+	at com.sun.glass.ui.Window.notifyClose(Window.java:1177)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+[07.03.2021 19:29:32] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="75079620794307920079620794207942079250794407929079500796507930079310794007928079220792207922079220792207948079850799107976079830791507957079160790707942079860798907976079150795907952079160790707980079280792007927079280793207923079070794207955079600790707939079070792607921079260792307946079470799707922079220792207922079220892208915089180893207907089320891508923089190790708919089290892778" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 19:29:32] [Auth1c] INFO :380 - User
+[07.03.2021 19:29:32] [Auth1c] INFO :381 - User
+[07.03.2021 19:29:32] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 19:29:33] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 19:32:02"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Хибба" Имя="Юрий" Отчество="Азизович" ДатаРождения="16.06.1937 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCA078A1-4718-10C7-E053-4740470A5E25" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="01" КемВыдан="null" ДатаВыдачи="16.06.1937 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 19:29:33] [Auth1c] INFO :380 - User
+[07.03.2021 19:29:33] [Auth1c] INFO :381 - User
+[07.03.2021 19:29:33] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 20:31:11] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="34052210520205179052210520105201051840520305188052090522405189051900519905187051810518105181051810518105207052440525005235052420517405216051750516605201052450524805235051740521805211051750516605239051870517905186051870519105182051660520105214052190516605198051660518505180051850518205205052060525605181051810518105181051810618106174061770619105166061910617406182061780516606178061880618651" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 20:31:11] [Auth1c] INFO :380 - User
+[07.03.2021 20:31:11] [Auth1c] INFO :381 - User
+[07.03.2021 20:31:11] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 20:31:11] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 20:33:40"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Хибба" Имя="Юрий" Отчество="Азизович" ДатаРождения="16.06.1937 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCA078A1-4718-10C7-E053-4740470A5E25" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="01" КемВыдан="null" ДатаВыдачи="16.06.1937 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 20:31:11] [Auth1c] INFO :380 - User
+[07.03.2021 20:31:11] [Auth1c] INFO :381 - User
+[07.03.2021 20:31:11] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 21:54:03] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="17092040918509162092040918409184091670918609171091920920709172091730918209170091640916409164091640916409190092270923309218092250915709199091580914909184092280923109218091570920109194091580914909222091700916209169091700917409165091490918409197092020914909181091490916809163091680916509188091890923909164091640916409164091641016410157101601017409149101741015710165101610914910161101711016991" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 21:54:03] [Auth1c] INFO :380 - User
+[07.03.2021 21:54:03] [Auth1c] INFO :381 - User
+[07.03.2021 21:54:03] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 21:54:03] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 21:56:33"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Малия" Имя="Аполлон" Отчество="Данилович" ДатаРождения="14.02.2021 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="8" НаименованиеРайона="г. Сухум" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9FB6DF-999B-01EF-E053-4740470AE4CE" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="120072" КемВыдан="null" ДатаВыдачи="18.02.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 21:54:03] [Auth1c] INFO :380 - User
+[07.03.2021 21:54:03] [Auth1c] INFO :381 - User
+[07.03.2021 21:54:03] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 21:54:59] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="06062930627406251062930627306273062560627506260062810629606261062620627106259062530625306253062530625306279063160632206307063140624606288062470623806273063170632006307062460629006283062470623806311062590625106258062590626306254062380627306286062910623806270062380625706252062570625406277062780632806253062530625306253062530725307246072490726306238072630724607254072500623807250072600725862" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 21:54:59] [Auth1c] INFO :380 - User
+[07.03.2021 21:54:59] [Auth1c] INFO :381 - User
+[07.03.2021 21:54:59] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 21:54:59] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 21:57:28"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Малия" Имя="Аполлон" Отчество="Данилович" ДатаРождения="14.02.2021 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="8" НаименованиеРайона="г. Сухум" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9FB6DF-999B-01EF-E053-4740470AE4CE" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="120072" КемВыдан="null" ДатаВыдачи="18.02.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 21:54:59] [Auth1c] INFO :380 - User
+[07.03.2021 21:54:59] [Auth1c] INFO :381 - User
+[07.03.2021 21:54:59] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 22:01:07] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="78024650244602423024650244502445024280244702432024530246802433024340244302431024250242502425024250242502451024880249402479024860241802460024190241002445024890249202479024180246202455024190241002483024310242302430024310243502426024100244502458024630241002442024100242902424024290242602449024500250002425024250242502425024250342503418034210343502410034350341803426034220241003422034320343023" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 22:01:07] [Auth1c] INFO :380 - User
+[07.03.2021 22:01:07] [Auth1c] INFO :381 - User
+[07.03.2021 22:01:07] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 22:01:07] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 22:03:37"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Малия" Имя="Аполлон" Отчество="Данилович" ДатаРождения="14.02.2021 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="8" НаименованиеРайона="г. Сухум" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9FB6DF-999B-01EF-E053-4740470AE4CE" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="120072" КемВыдан="null" ДатаВыдачи="18.02.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 22:01:07] [Auth1c] INFO :380 - User
+[07.03.2021 22:01:07] [Auth1c] INFO :381 - User
+[07.03.2021 22:01:07] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 22:17:16] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="06061930617406151061930617306173061560617506160061810619606161061620617106159061530615306153061530615306179062160622206207062140614606188061470613806173062170622006207061460619006183061470613806211061590615106158061590616306154061380617306186061910613806170061380615706152061570615406177061780622806153061530615306153061530715307146071490716306138071630714607154071500613807150071600715861" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 22:17:16] [Auth1c] INFO :380 - User
+[07.03.2021 22:17:16] [Auth1c] INFO :381 - User
+[07.03.2021 22:17:16] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 22:17:17] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 22:19:46"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Малия" Имя="Данил" Отчество="Анзорович" ДатаРождения="22.07.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="Ул. Курортная " Дом="5" Корпус="null" Квартира="383"/>
+		<Паспорта>
+			<Паспорт1 ID="BCA037FC-1108-0B96-E053-4740470AC666" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="01" КемВыдан="null" ДатаВыдачи="22.07.1992 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 22:17:17] [Auth1c] INFO :380 - User
+[07.03.2021 22:17:17] [Auth1c] INFO :381 - User
+[07.03.2021 22:17:17] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 22:32:22] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="32057190570005677057190569905699056820570105686057070572205687056880569705685056790567905679056790567905705057420574805733057400567205714056730566405699057430574605733056720571605709056730566405737056850567705684056850568905680056640569905712057170566405696056640568305678056830568005703057040575405679056790567905679056790667906672066750668905664066890667206680066760566406676066860668456" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 22:32:22] [Auth1c] INFO :380 - User
+[07.03.2021 22:32:22] [Auth1c] INFO :381 - User
+[07.03.2021 22:32:22] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 22:32:22] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 22:34:52"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Тарнава " Имя="Алиса " Отчество="Аликовна" ДатаРождения="04.11.1989 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="214" НаименованиеНасПункта="с. Лыхны" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCA02525-43C7-0A82-E053-4740470AC0AB" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="04.11.1989 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 22:32:22] [Auth1c] INFO :380 - User
+[07.03.2021 22:32:22] [Auth1c] INFO :381 - User
+[07.03.2021 22:32:22] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 22:52:26] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="97084840846508442084840846408464084470846608451084720848708452084530846208450084440844408444084440844408470085070851308498085050843708479084380842908464085080851108498084370848108474084380842908502084500844208449084500845408445084290846408477084820842908461084290844808443084480844508468084690851908444084440844408444084440944409437094400945408429094540943709445094410842909441094510944983" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 22:52:26] [Auth1c] INFO :380 - User
+[07.03.2021 22:52:26] [Auth1c] INFO :381 - User
+[07.03.2021 22:52:26] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 22:52:26] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 22:54:56"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Малия" Имя="Аполлон" Отчество="Данилович" ДатаРождения="14.02.2021 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="8" НаименованиеРайона="г. Сухум" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9FB6DF-999B-01EF-E053-4740470AE4CE" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="120072" КемВыдан="null" ДатаВыдачи="18.02.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 22:52:26] [Auth1c] INFO :380 - User
+[07.03.2021 22:52:26] [Auth1c] INFO :381 - User
+[07.03.2021 22:52:26] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 23:12:55] [ConvConst] ERROR:140 - java.sql.SQLSyntaxErrorException: ORA-00904: "BRN_AC_ID": недопустимый идентификатор
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:446)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1054)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:612)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:226)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:59)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForDescribe(T4CPreparedStatement.java:747)
+	at oracle.jdbc.driver.OracleStatement.executeMaybeDescribe(OracleStatement.java:904)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1082)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3780)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeInternal(T4CPreparedStatement.java:1343)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeQuery(OraclePreparedStatement.java:3822)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeQuery(OraclePreparedStatementWrapper.java:1165)
+	at mj.doc.birthact.BirthList.manipulatePdf(BirthList.java:222)
+	at mj.doc.birthact.BirthList.PrintBlank(BirthList.java:287)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:187)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: Error : 904, Position : 40, Sql = select * from BLANK_BRN_BIRTH_ACT where BRN_AC_ID = :1 , OriginalSql = select * from BLANK_BRN_BIRTH_ACT where BRN_AC_ID = ?, Error Msg = ORA-00904: "BRN_AC_ID": недопустимый идентификатор
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:498)
+	... 78 more
+
+[07.03.2021 23:43:29] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="96018830186401841018830186301863018460186501850018710188601851018520186101849018430184301843018430184301869019060191201897019040183601878018370182801863019070191001897018360188001873018370182801901018490184101848018490185301844018280186301876018810182801860018280184701842018470184401867018680191801843018430184301843018430284302836028390285301828028530283602844028400182802840028500284817" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 23:43:29] [Auth1c] INFO :380 - User
+[07.03.2021 23:43:29] [Auth1c] INFO :381 - User
+[07.03.2021 23:43:29] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 23:43:29] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 23:45:59"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Чамагуа " Имя="Лаша" Отчество="Виталиевич " ДатаРождения="30.01.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="Ардзинба  В. Г. " Дом="5" Корпус="null" Квартира="17"/>
+		<Паспорта>
+			<Паспорт1 ID="BCA8F67A-6C46-3424-E053-4740470A84EF" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="1" НаименованиеВида="Внутренний паспорт" Серия="АВК-121" Номер="01010538" КемВыдан="ПГ по г. Новый Афон " ДатаВыдачи="23.02.2017 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 23:43:29] [Auth1c] INFO :380 - User
+[07.03.2021 23:43:29] [Auth1c] INFO :381 - User
+[07.03.2021 23:43:29] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 23:51:30] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="48022350221602193022350221502215021980221702202022230223802203022040221302201021950219502195021950219502221022580226402249022560218802230021890218002215022590226202249021880223202225021890218002253022010219302200022010220502196021800221502228022330218002212021800219902194021990219602219022200227002195021950219502195021950319503188031910320502180032050318803196031920218003192032020320021" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 23:51:30] [Auth1c] INFO :380 - User
+[07.03.2021 23:51:30] [Auth1c] INFO :381 - User
+[07.03.2021 23:51:30] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 23:51:30] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 23:54:00"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Чамагуа " Имя="Лаша" Отчество="Виталиевич " ДатаРождения="30.01.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="202" НаименованиеНасПункта="г. Н. Афон" Улица="Ардзинба  В. Г. " Дом="5" Корпус="null" Квартира="17"/>
+		<Паспорта>
+			<Паспорт1 ID="BCA8F67A-6C46-3424-E053-4740470A84EF" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="1" НаименованиеВида="Внутренний паспорт" Серия="АВК-121" Номер="01010538" КемВыдан="ПГ по г. Новый Афон " ДатаВыдачи="23.02.2017 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 23:51:30] [Auth1c] INFO :380 - User
+[07.03.2021 23:51:30] [Auth1c] INFO :381 - User
+[07.03.2021 23:51:30] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[07.03.2021 23:54:20] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="95081820816308140081820816208162081450816408149081700818508150081510816008148081420814208142081420814208168082050821108196082030813508177081360812708162082060820908196081350817908172081360812708200081480814008147081480815208143081270816208175081800812708159081270814608141081460814308166081670821708142081420814208142081420914209135091380915208127091520913509143091390812709139091490914780" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[07.03.2021 23:54:20] [Auth1c] INFO :380 - User
+[07.03.2021 23:54:20] [Auth1c] INFO :381 - User
+[07.03.2021 23:54:20] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[07.03.2021 23:54:20] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="07.03.2021 23:56:50"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Авидзба " Имя="Виктория " Отчество="Дмитриевна" ДатаРождения="27.01.1998 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="1" НаименованиеРайона="Гагрский р-он" КодНасПункта="111" НаименованиеНасПункта="п. Бзыбь" Улица="Эшба " Дом="57" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BCB332E1-1390-7564-E053-4740470A222A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="1" НаименованиеВида="Внутренний паспорт" Серия="АВК-140" Номер="01137316" КемВыдан="П. отд. по Сухумскому району " ДатаВыдачи="09.08.2019 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[07.03.2021 23:54:20] [Auth1c] INFO :380 - User
+[07.03.2021 23:54:20] [Auth1c] INFO :381 - User
+[07.03.2021 23:54:20] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[08.03.2021 12:26:28] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="04095910957209549095910957109571095540957309558095790959409559095600956909557095510955109551095510955109577096140962009605096120954409586095450953609571096150961809605095440958809581095450953609609095570954909556095570956109552095360957109584095890953609568095360955509550095550955209575095760962609551095510955109551095511055110544105471056109536105611054410552105480953610548105581055695" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[08.03.2021 12:26:28] [Auth1c] INFO :380 - User
+[08.03.2021 12:26:28] [Auth1c] INFO :381 - User
+[08.03.2021 12:26:28] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[08.03.2021 12:26:28] [Auth1c] INFO :466 - ~~~~~~~~~~~~~~~
+[08.03.2021 12:26:28] [Auth1c] INFO :467 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="08.03.2021 12:29:00"/>>
+[08.03.2021 12:26:28] [Auth1c] INFO :468 - ~~~~~~~~~~~~~~~
+[08.03.2021 12:26:28] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="08.03.2021 12:29:00"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Аншба" Имя="Михаил" Отчество="Анатольевич" ДатаРождения="01.03.2020 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[08.03.2021 12:26:28] [Auth1c] INFO :380 - User
+[08.03.2021 12:26:28] [Auth1c] INFO :381 - User
+[08.03.2021 12:26:28] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[08.03.2021 12:26:33] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="57088440882508802088440882408824088070882608811088320884708812088130882208810088040880408804088040880408830088670887308858088650879708839087980878908824088680887108858087970884108834087980878908862088100880208809088100881408805087890882408837088420878908821087890880808803088080880508828088290887908804088040880408804088040980409797098000981408789098140979709805098010878909801098110980987" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[08.03.2021 12:26:33] [Auth1c] INFO :380 - User
+[08.03.2021 12:26:33] [Auth1c] INFO :381 - User
+[08.03.2021 12:26:33] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[08.03.2021 12:26:33] [Auth1c] INFO :466 - ~~~~~~~~~~~~~~~
+[08.03.2021 12:26:33] [Auth1c] INFO :467 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="08.03.2021 12:29:04"/>>
+[08.03.2021 12:26:33] [Auth1c] INFO :468 - ~~~~~~~~~~~~~~~
+[08.03.2021 12:26:33] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="08.03.2021 12:29:04"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Аншба" Имя="Михаил" Отчество="Анатольевич" ДатаРождения="01.03.1992 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[08.03.2021 12:26:33] [Auth1c] INFO :380 - User
+[08.03.2021 12:26:33] [Auth1c] INFO :381 - User
+[08.03.2021 12:26:33] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[08.03.2021 12:28:54] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="23019100189101868019100189001890018730189201877018980191301878018790188801876018700187001870018700187001896019330193901924019310186301905018640185501890019340193701924018630190701900018640185501928018760186801875018760188001871018550189001903019080185501887018550187401869018740187101894018950194501870018700187001870018700287002863028660288001855028800286302871028670185502867028770287518" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[08.03.2021 12:28:54] [Auth1c] INFO :380 - User
+[08.03.2021 12:28:54] [Auth1c] INFO :381 - User
+[08.03.2021 12:28:54] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[08.03.2021 12:28:55] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="08.03.2021 12:31:26"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Аншба" Имя="Михаил" Отчество="Анатольевич" ДатаРождения="01.03.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD041525-CBB3-3FEB-E053-4740470A7ACE" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.01.0001 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[08.03.2021 12:28:55] [Auth1c] INFO :380 - User
+[08.03.2021 12:28:55] [Auth1c] INFO :381 - User
+[08.03.2021 12:28:55] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[08.03.2021 12:30:50] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="21020080198901966020080198801988019710199001975019960201101976019770198601974019680196801968019680196801994020310203702022020290196102003019620195301988020320203502022019610200501998019620195302026019740196601973019740197801969019530198802001020060195301985019530197201967019720196901992019930204301968019680196801968019680296802961029640297801953029780296102969029650195302965029750297319" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[08.03.2021 12:30:50] [Auth1c] INFO :380 - User
+[08.03.2021 12:30:50] [Auth1c] INFO :381 - User
+[08.03.2021 12:30:50] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[08.03.2021 12:30:51] [Auth1c] INFO :466 - ~~~~~~~~~~~~~~~
+[08.03.2021 12:30:51] [Auth1c] INFO :467 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="08.03.2021 12:33:22"/>>
+[08.03.2021 12:30:51] [Auth1c] INFO :468 - ~~~~~~~~~~~~~~~
+[08.03.2021 12:30:51] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="08.03.2021 12:33:22"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Чачхалия" Имя="Снежана" Отчество="Зауровна" ДатаРождения="04.12.1994 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[08.03.2021 12:30:51] [Auth1c] INFO :380 - User
+[08.03.2021 12:30:51] [Auth1c] INFO :381 - User
+[08.03.2021 12:30:51] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[08.03.2021 12:32:31] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="82051690515005127051690514905149051320515105136051570517205137051380514705135051290512905129051290512905155051920519805183051900512205164051230511405149051930519605183051220516605159051230511405187051350512705134051350513905130051140514905162051670511405146051140513305128051330513005153051540520405129051290512905129051290612906122061250613905114061390612206130061260511406126061360613450" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[08.03.2021 12:32:31] [Auth1c] INFO :380 - User
+[08.03.2021 12:32:31] [Auth1c] INFO :381 - User
+[08.03.2021 12:32:31] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[08.03.2021 12:32:31] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="08.03.2021 12:35:02"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Чачхалия" Имя="Снежана" Отчество="Зауровна" ДатаРождения="04.12.1994 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD042208-AECA-4113-E053-4740470A46A6" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.01.0001 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[08.03.2021 12:32:31] [Auth1c] INFO :380 - User
+[08.03.2021 12:32:31] [Auth1c] INFO :381 - User
+[08.03.2021 12:32:31] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[08.03.2021 12:36:49] [AddDivorce] ERROR:452 - java.sql.SQLException: ORA-04068: существующее состояние пакетов было сброшено
+ORA-04061: существующее состояния package body "XXI.DIVORCE" стало неприемлемым
+ORA-04065: не выполнено, package body "XXI.DIVORCE" изменено или удалено
+ORA-06508: PL/SQL: невозможно найти вызываемый блок программы: "XXI.DIVORCE"
+ORA-06512: на  line 1
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:446)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1054)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:612)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:223)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:56)
+	at oracle.jdbc.driver.T4CCallableStatement.executeForRows(T4CCallableStatement.java:907)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1119)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3780)
+	at oracle.jdbc.driver.T4CCallableStatement.executeInternal(T4CCallableStatement.java:1300)
+	at oracle.jdbc.driver.OraclePreparedStatement.execute(OraclePreparedStatement.java:3887)
+	at oracle.jdbc.driver.OracleCallableStatement.execute(OracleCallableStatement.java:4230)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.execute(OraclePreparedStatementWrapper.java:1079)
+	at mj.doc.divorce.AddDivorce.Save(AddDivorce.java:434)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:187)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: Error : 4068, Position : 0, Sql = BEGIN Divorce.AddDivorce(:1 ,:2 ,:3 ,:4 ,:5 ,:6 ,:7 ,:8 ,:9 ,:10 ,:11 ,:12 ,:13 ,:14 ,:15 ,:16 ,:17 ,:18 ,:19 ,:20 ,:21 ,:22 ,:23 ,:24 ,:25 ,:26 ,:27 ,:28 ) ; END;, OriginalSql = { call Divorce.AddDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }, Error Msg = ORA-04068: существующее состояние пакетов было сброшено
+ORA-04061: существующее состояния package body "XXI.DIVORCE" стало неприемлемым
+ORA-04065: не выполнено, package body "XXI.DIVORCE" изменено или удалено
+ORA-06508: PL/SQL: невозможно найти вызываемый блок программы: "XXI.DIVORCE"
+ORA-06512: на  line 1
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:498)
+	... 81 more
+~JavaFX Application Thread
+[08.03.2021 12:53:12] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="32028190280002777028190279902799027820280102786028070282202787027880279702785027790277902779027790277902805028420284802833028400277202814027730276402799028430284602833027720281602809027730276402837027850277702784027850278902780027640279902812028170276402796027640278302778027830278002803028040285402779027790277902779027790377903772037750378902764037890377203780037760276403776037860378427" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[08.03.2021 12:53:12] [Auth1c] INFO :380 - User
+[08.03.2021 12:53:12] [Auth1c] INFO :381 - User
+[08.03.2021 12:53:12] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[08.03.2021 12:53:13] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="08.03.2021 12:55:44"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Аншба" Имя="Михаил" Отчество="Анатольевич" ДатаРождения="01.03.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD041525-CBB3-3FEB-E053-4740470A7ACE" Просрочен="0" КодГосударства="2" НаименованиеГосударства="Россия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[08.03.2021 12:53:13] [Auth1c] INFO :380 - User
+[08.03.2021 12:53:13] [Auth1c] INFO :381 - User
+[08.03.2021 12:53:13] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[08.03.2021 14:35:40] [EditDivorce] ERROR:140 - java.sql.SQLException: ORA-04068: существующее состояние пакетов было сброшено
+ORA-04061: существующее состояния package body "XXI.DIVORCE" стало неприемлемым
+ORA-04065: не выполнено, package body "XXI.DIVORCE" изменено или удалено
+ORA-06508: PL/SQL: невозможно найти вызываемый блок программы: "XXI.DIVORCE"
+ORA-06512: на  line 1
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:446)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1054)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:612)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:223)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:56)
+	at oracle.jdbc.driver.T4CCallableStatement.executeForRows(T4CCallableStatement.java:907)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1119)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3780)
+	at oracle.jdbc.driver.T4CCallableStatement.executeInternal(T4CCallableStatement.java:1300)
+	at oracle.jdbc.driver.OraclePreparedStatement.execute(OraclePreparedStatement.java:3887)
+	at oracle.jdbc.driver.OracleCallableStatement.execute(OracleCallableStatement.java:4230)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.execute(OraclePreparedStatementWrapper.java:1079)
+	at mj.doc.divorce.EditDivorce.Save(EditDivorce.java:428)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:187)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: Error : 4068, Position : 0, Sql = BEGIN Divorce.EditDivorce(:1 ,:2 ,:3 ,:4 ,:5 ,:6 ,:7 ,:8 ,:9 ,:10 ,:11 ,:12 ,:13 ,:14 ,:15 ,:16 ,:17 ,:18 ,:19 ,:20 ,:21 ,:22 ,:23 ,:24 ,:25 ,:26 ,:27 ,:28 ) ; END;, OriginalSql = { call Divorce.EditDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }, Error Msg = ORA-04068: существующее состояние пакетов было сброшено
+ORA-04061: существующее состояния package body "XXI.DIVORCE" стало неприемлемым
+ORA-04065: не выполнено, package body "XXI.DIVORCE" изменено или удалено
+ORA-06508: PL/SQL: невозможно найти вызываемый блок программы: "XXI.DIVORCE"
+ORA-06512: на  line 1
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:498)
+	... 81 more
+
+[08.03.2021 20:43:28] [AddCourt] ERROR:140 - java.lang.NumberFormatException: For input string: ""
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.lang.Integer.parseInt(Integer.java:592)
+	at java.lang.Integer.valueOf(Integer.java:766)
+	at mj.courts.AddCourt.Save(AddCourt.java:51)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:187)
+	at java.lang.Thread.run(Thread.java:748)
+
+[08.03.2021 21:55:21] [EditDivorce] ERROR:140 - javafx.fxml.LoadException: 
+/C:/Users/Said.000/git/ZagsNotary/MinistryofJustice/target/classes/mj/doc/divorce/IUDivorce.fxml:174
+
+	at javafx.fxml.FXMLLoader.constructLoadException(FXMLLoader.java:2601)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2579)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2441)
+	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:2409)
+	at mj.doc.divorce.DivorceList.Edit(DivorceList.java:399)
+	at mj.doc.divorce.DivorceList.lambda$14(DivorceList.java:1053)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3470)
+	at javafx.scene.Scene$ClickGenerator.access$8100(Scene.java:3398)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3766)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:187)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.lang.IllegalArgumentException: Can not set javafx.scene.control.ComboBox field mj.doc.divorce.EditDivorce.DIVC_ZOSCN to javafx.scene.control.TextField
+	at sun.reflect.UnsafeFieldAccessorImpl.throwSetIllegalArgumentException(UnsafeFieldAccessorImpl.java:167)
+	at sun.reflect.UnsafeFieldAccessorImpl.throwSetIllegalArgumentException(UnsafeFieldAccessorImpl.java:171)
+	at sun.reflect.UnsafeObjectFieldAccessorImpl.set(UnsafeObjectFieldAccessorImpl.java:81)
+	at java.lang.reflect.Field.set(Field.java:764)
+	at javafx.fxml.FXMLLoader.injectFields(FXMLLoader.java:1163)
+	at javafx.fxml.FXMLLoader.access$1600(FXMLLoader.java:103)
+	at javafx.fxml.FXMLLoader$ValueElement.processValue(FXMLLoader.java:857)
+	at javafx.fxml.FXMLLoader$ValueElement.processStartElement(FXMLLoader.java:751)
+	at javafx.fxml.FXMLLoader.processStartElement(FXMLLoader.java:2707)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2527)
+	... 38 more
+
+[08.03.2021 22:49:11] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="04041910417204149041910417104171041540417304158041790419404159041600416904157041510415104151041510415104177042140422004205042120414404186041450413604171042150421804205041440418804181041450413604209041570414904156041570416104152041360417104184041890413604168041360415504150041550415204175041760422604151041510415104151041510515105144051470516104136051610514405152051480413605148051580515641" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[08.03.2021 22:49:11] [Auth1c] INFO :380 - User
+[08.03.2021 22:49:11] [Auth1c] INFO :381 - User
+[08.03.2021 22:49:11] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[08.03.2021 22:49:11] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="08.03.2021 22:51:43"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Аншба" Имя="Михаил" Отчество="Анатольевич" ДатаРождения="01.03.1992 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD041525-CBB3-3FEB-E053-4740470A7ACE" Просрочен="0" КодГосударства="2" НаименованиеГосударства="Россия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[08.03.2021 22:49:11] [Auth1c] INFO :380 - User
+[08.03.2021 22:49:11] [Auth1c] INFO :381 - User
+[08.03.2021 22:49:11] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[08.03.2021 22:56:46] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="62035490353003507035490352903529035120353103516035370355203517035180352703515035090350903509035090350903535035720357803563035700350203544035030349403529035730357603563035020354603539035030349403567035150350703514035150351903510034940352903542035470349403526034940351303508035130351003533035340358403509035090350903509035090450904502045050451903494045190450204510045060349404506045160451434" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[08.03.2021 22:56:46] [Auth1c] INFO :380 - User
+[08.03.2021 22:56:46] [Auth1c] INFO :381 - User
+[08.03.2021 22:56:46] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[08.03.2021 22:56:46] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="08.03.2021 22:59:18"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Чачхалия" Имя="Снежана" Отчество="Зауровна" ДатаРождения="04.12.1994 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD042208-AECA-4113-E053-4740470A46A6" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[08.03.2021 22:56:46] [Auth1c] INFO :380 - User
+[08.03.2021 22:56:46] [Auth1c] INFO :381 - User
+[08.03.2021 22:56:46] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+>>>>>>> refs/remotes/origin/master
