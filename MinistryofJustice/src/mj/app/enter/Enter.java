@@ -163,7 +163,6 @@ public class Enter {
 	void EnterMeth() {
 		try {
 			if (login.getValue() != null & !pass.getText().equals("")) {
-				Main.logger = Logger.getLogger(getClass());
 				Connect.connectionURL = DBIP.getText();
 				Connect.userID = login.getValue().toString();
 				Connect.userPassword = pass.getText();

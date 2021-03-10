@@ -246,21 +246,12 @@ public class Main extends Application {
 //
 //	Fast enter
 //			
-<<<<<<< HEAD
-//			Connect.connectionURL = "localhost:1522/orcl";
-//			Connect.userID = "xxi";
-//			Connect.userPassword = "";
-//			DBUtil.dbConnect();
-//			initRootLayout();
-//			RT();
-=======
 			Connect.connectionURL = "localhost:1522/orcl";
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DBUtil.dbConnect();
 			initRootLayout();
 			RT();
->>>>>>> refs/remotes/origin/master
 //
 //	END 		
 //			
