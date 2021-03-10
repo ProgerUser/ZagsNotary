@@ -248,7 +248,7 @@ public class Main extends Application {
 //			
 //			Connect.connectionURL = "localhost:1522/orcl";
 //			Connect.userID = "xxi";
-//			Connect.userPassword = "xxx";
+//			Connect.userPassword = "";
 //			DBUtil.dbConnect();
 //			initRootLayout();
 //			RT();

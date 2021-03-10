@@ -126,7 +126,7 @@ public class DivorceList {
 
 	public void manipulatePdf(String src, String dest) throws Exception {
 		if (DIVORCE_CERT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 		} else {
 			PdfReader reader = new PdfReader(src);
 			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
@@ -143,78 +143,78 @@ public class DivorceList {
 			prp.setInt(1, DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
-				fields.setField("Текст1", rs.getString("F1"));
-				fields.setField("Текст2", rs.getString("F2"));
-				fields.setField("Текст3", rs.getString("F3"));
-				fields.setField("Текст4", rs.getString("F4"));
-				fields.setField("Текст5", rs.getString("F5"));
-				fields.setField("Текст6", rs.getString("F6"));
-				fields.setField("Текст7", rs.getString("F7"));
-				fields.setField("Текст8", rs.getString("F8"));
-				fields.setField("Текст9", rs.getString("F9"));
-				fields.setField("Текст10", rs.getString("F10"));
-				fields.setField("Текст11", rs.getString("F11"));
-				fields.setField("Текст12", rs.getString("F12"));
-				fields.setField("Текст13", rs.getString("F13"));
-				fields.setField("Текст14", rs.getString("F14"));
-				fields.setField("Текст15", rs.getString("F15"));
-				fields.setField("Текст16", rs.getString("F16"));
-				fields.setField("Текст17", rs.getString("F17"));
-				fields.setField("Текст18", "-");
-				fields.setField("Текст19", "-");
-				fields.setField("Текст20", rs.getString("F20"));
-				fields.setField("Текст21", "-");
-				fields.setField("Текст22", "-");
-				fields.setField("Текст23", rs.getString("F23"));
-				fields.setField("Текст24", rs.getString("F24"));
-				fields.setField("Текст25", rs.getString("F25"));
-				fields.setField("Текст26", rs.getString("F26"));
-				fields.setField("Текст27", "-");
-				fields.setField("Текст28", rs.getString("F28"));
-				fields.setField("Текст29", rs.getString("F29"));
-				fields.setField("Текст30", rs.getString("F30"));
-				fields.setField("Текст31", rs.getString("F31"));
-				fields.setField("Текст32", rs.getString("F32"));
-				fields.setField("Текст33", rs.getString("F33"));
-				fields.setField("Текст34", rs.getString("F34"));
-				fields.setField("Текст35", rs.getString("F35"));
-				fields.setField("Текст36", rs.getString("F36"));
-				fields.setField("Текст37", rs.getString("F5"));
-				fields.setField("Текст38", rs.getString("F38"));
-				fields.setField("Текст39", rs.getString("F7"));
-				fields.setField("Текст40", rs.getString("F40"));
-				fields.setField("Текст41", rs.getString("F41"));
-				fields.setField("Текст42", rs.getString("F42"));
-				fields.setField("Текст43", rs.getString("F43"));
-				fields.setField("Текст44", rs.getString("F44"));
-				fields.setField("Текст45", rs.getString("F13"));
-				fields.setField("Текст46", rs.getString("F46"));
-				fields.setField("Текст47", rs.getString("F15"));
-				fields.setField("Текст48", rs.getString("F48"));
-				fields.setField("Текст49", rs.getString("F49"));
-				fields.setField("Текст50", rs.getString("F50"));
-				fields.setField("Текст51", rs.getString("F51"));
-				fields.setField("Текст52", rs.getString("F52"));
-				fields.setField("Текст53", "-");
-				fields.setField("Текст54", rs.getString("F54"));
-				fields.setField("Текст55", rs.getString("F55"));
-				fields.setField("Текст56", rs.getString("F56"));
-				fields.setField("Текст57", rs.getString("F72"));
-				fields.setField("Текст58", rs.getString("F58"));
-				fields.setField("Текст59", rs.getString("F24"));
-				fields.setField("Текст60", rs.getString("F60"));
-				fields.setField("Текст61", "-");
-				fields.setField("Текст62", rs.getString("F62"));
-				fields.setField("Текст63", rs.getString("F63"));
-				fields.setField("Текст64", "ЗАГС");
-				fields.setField("Текст65", rs.getString("F65"));
-				fields.setField("Текст66", "Республики Абхазия");
-				fields.setField("Текст67", "-");
-				fields.setField("Текст68", rs.getString("F68"));
-				fields.setField("Текст69", rs.getString("F69"));
-				fields.setField("Текст70", rs.getString("F58"));
-				fields.setField("Текст71", rs.getString("F72"));
-				fields.setField("Текст72", rs.getString("F72"));
+				fields.setField("РўРµРєСЃС‚1", rs.getString("F1"));
+				fields.setField("РўРµРєСЃС‚2", rs.getString("F2"));
+				fields.setField("РўРµРєСЃС‚3", rs.getString("F3"));
+				fields.setField("РўРµРєСЃС‚4", rs.getString("F4"));
+				fields.setField("РўРµРєСЃС‚5", rs.getString("F5"));
+				fields.setField("РўРµРєСЃС‚6", rs.getString("F6"));
+				fields.setField("РўРµРєСЃС‚7", rs.getString("F7"));
+				fields.setField("РўРµРєСЃС‚8", rs.getString("F8"));
+				fields.setField("РўРµРєСЃС‚9", rs.getString("F9"));
+				fields.setField("РўРµРєСЃС‚10", rs.getString("F10"));
+				fields.setField("РўРµРєСЃС‚11", rs.getString("F11"));
+				fields.setField("РўРµРєСЃС‚12", rs.getString("F12"));
+				fields.setField("РўРµРєСЃС‚13", rs.getString("F13"));
+				fields.setField("РўРµРєСЃС‚14", rs.getString("F14"));
+				fields.setField("РўРµРєСЃС‚15", rs.getString("F15"));
+				fields.setField("РўРµРєСЃС‚16", rs.getString("F16"));
+				fields.setField("РўРµРєСЃС‚17", rs.getString("F17"));
+				fields.setField("РўРµРєСЃС‚18", rs.getString("F18")+" С€С‹Т›У™СЃР°Р·С‹");
+				fields.setField("РўРµРєСЃС‚19", "-");
+				fields.setField("РўРµРєСЃС‚20", rs.getString("F20"));
+				fields.setField("РўРµРєСЃС‚21", "-");
+				fields.setField("РўРµРєСЃС‚22", "-");
+				fields.setField("РўРµРєСЃС‚23", rs.getString("F23"));
+				fields.setField("РўРµРєСЃС‚24", rs.getString("F24"));
+				fields.setField("РўРµРєСЃС‚25", rs.getString("F25"));
+				fields.setField("РўРµРєСЃС‚26", rs.getString("F26"));
+				fields.setField("РўРµРєСЃС‚27", "-");
+				fields.setField("РўРµРєСЃС‚28", rs.getString("F28"));
+				fields.setField("РўРµРєСЃС‚29", rs.getString("F29"));
+				fields.setField("РўРµРєСЃС‚30", rs.getString("F30"));
+				fields.setField("РўРµРєСЃС‚31", rs.getString("F31"));
+				fields.setField("РўРµРєСЃС‚32", rs.getString("F32"));
+				fields.setField("РўРµРєСЃС‚33", rs.getString("F33"));
+				fields.setField("РўРµРєСЃС‚34", rs.getString("F34"));
+				fields.setField("РўРµРєСЃС‚35", rs.getString("F35"));
+				fields.setField("РўРµРєСЃС‚36", rs.getString("F36"));
+				fields.setField("РўРµРєСЃС‚37", rs.getString("F5"));
+				fields.setField("РўРµРєСЃС‚38", rs.getString("F38"));
+				fields.setField("РўРµРєСЃС‚39", rs.getString("F7"));
+				fields.setField("РўРµРєСЃС‚40", rs.getString("F40"));
+				fields.setField("РўРµРєСЃС‚41", rs.getString("F41"));
+				fields.setField("РўРµРєСЃС‚42", rs.getString("F42"));
+				fields.setField("РўРµРєСЃС‚43", rs.getString("F43"));
+				fields.setField("РўРµРєСЃС‚44", rs.getString("F44"));
+				fields.setField("РўРµРєСЃС‚45", rs.getString("F13"));
+				fields.setField("РўРµРєСЃС‚46", rs.getString("F46"));
+				fields.setField("РўРµРєСЃС‚47", rs.getString("F15"));
+				fields.setField("РўРµРєСЃС‚48", rs.getString("F48"));
+				fields.setField("РўРµРєСЃС‚49", rs.getString("F49"));
+				fields.setField("РўРµРєСЃС‚50", rs.getString("F50"));
+				fields.setField("РўРµРєСЃС‚51", rs.getString("F51"));
+				fields.setField("РўРµРєСЃС‚52", rs.getString("F52"));
+				fields.setField("РўРµРєСЃС‚53", "-");
+				fields.setField("РўРµРєСЃС‚54", rs.getString("F54"));
+				fields.setField("РўРµРєСЃС‚55", rs.getString("F55"));
+				fields.setField("РўРµРєСЃС‚56", rs.getString("F56"));
+				fields.setField("РўРµРєСЃС‚57", rs.getString("F72"));
+				fields.setField("РўРµРєСЃС‚58", rs.getString("F58"));
+				fields.setField("РўРµРєСЃС‚59", rs.getString("F24"));
+				fields.setField("РўРµРєСЃС‚60", rs.getString("F60"));
+				fields.setField("РўРµРєСЃС‚61", "-");
+				fields.setField("РўРµРєСЃС‚62", rs.getString("F62"));
+				fields.setField("РўРµРєСЃС‚63", rs.getString("F63"));
+				fields.setField("РўРµРєСЃС‚64", "Р—РђР“РЎ");
+				fields.setField("РўРµРєСЃС‚65", rs.getString("F65"));
+				fields.setField("РўРµРєСЃС‚66", "Р РµСЃРїСѓР±Р»РёРєРё РђР±С…Р°Р·РёСЏ");
+				fields.setField("РўРµРєСЃС‚67", "-");
+				fields.setField("РўРµРєСЃС‚68", rs.getString("F68"));
+				fields.setField("РўРµРєСЃС‚69", rs.getString("F69"));
+				fields.setField("РўРµРєСЃС‚70", rs.getString("F58"));
+				fields.setField("РўРµРєСЃС‚71", rs.getString("F72"));
+				fields.setField("РўРµРєСЃС‚72", rs.getString("F72"));
 			}
 			prp.close();
 			rs.close();
@@ -238,7 +238,7 @@ public class DivorceList {
 	void Add() {
 		try {
 			if (DBUtil.OdbAction(98) == 0) {
-				Msg.Message("Нет доступа!");
+				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 				return;
 			}
 
@@ -254,7 +254,7 @@ public class DivorceList {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -276,30 +276,30 @@ public class DivorceList {
 		try {
 
 			if (DBUtil.OdbAction(100) == 0) {
-				Msg.Message("Нет доступа!");
+				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 				return;
 			}
 
 			if (DIVORCE_CERT.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите строку!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 			} else {
 				Main.logger = Logger.getLogger(getClass());
 
 				Stage stage = (Stage) DIVORCE_CERT.getScene().getWindow();
-				Label alert = new Label("Удалить запись?");
+				Label alert = new Label("РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ?");
 				alert.setLayoutX(75.0);
 				alert.setLayoutY(11.0);
 				alert.setPrefHeight(17.0);
 
 				Button no = new Button();
-				no.setText("Нет");
+				no.setText("РќРµС‚");
 				no.setLayoutX(111.0);
 				no.setLayoutY(56.0);
 				no.setPrefWidth(72.0);
 				no.setPrefHeight(21.0);
 
 				Button yes = new Button();
-				yes.setText("Да");
+				yes.setText("Р”Р°");
 				yes.setLayoutX(14.0);
 				yes.setLayoutY(56.0);
 				yes.setPrefWidth(72.0);
@@ -344,7 +344,7 @@ public class DivorceList {
 						newWindow_yn.close();
 					}
 				});
-				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 				newWindow_yn.setScene(ynScene);
 				newWindow_yn.initModality(Modality.WINDOW_MODAL);
 				newWindow_yn.initOwner(stage);
@@ -366,7 +366,7 @@ public class DivorceList {
 				Main.logger = Logger.getLogger(getClass());
 
 				if (DBUtil.OdbAction(99) == 0) {
-					Msg.Message("Нет доступа!");
+					Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 					return;
 				}
 
@@ -399,7 +399,7 @@ public class DivorceList {
 						Parent root = loader.load();
 						stage.setScene(new Scene(root));
 						stage.getIcons().add(new Image("/icon.png"));
-						stage.setTitle("Редактирование: ");
+						stage.setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ: ");
 						stage.initOwner(stage_);
 						stage.setResizable(false);
 						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -414,32 +414,32 @@ public class DivorceList {
 										if (from == null) {
 											Refresh();
 										}
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 										String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT");
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 										isopen = false;
-									} // Если нажали "X" или "Cancel" и до этого что-то меняли
+									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ С‡С‚Рѕ-С‚Рѕ РјРµРЅСЏР»Рё
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 1) {
 										/**
-										 * Проверка выхода без сохранения
+										 * РџСЂРѕРІРµСЂРєР° РІС‹С…РѕРґР° Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
 										 */
 										Stage stage = stage_;
-										Label alert = new Label("Закрыть форму без сохранения?");
+										Label alert = new Label("Р—Р°РєСЂС‹С‚СЊ С„РѕСЂРјСѓ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ?");
 										alert.setLayoutX(75.0);
 										alert.setLayoutY(11.0);
 										alert.setPrefHeight(17.0);
 
 										Button no = new Button();
-										no.setText("Нет");
+										no.setText("РќРµС‚");
 										no.setLayoutX(111.0);
 										no.setLayoutY(56.0);
 										no.setPrefWidth(72.0);
 										no.setPrefHeight(21.0);
 
 										Button yes = new Button();
-										yes.setText("Да");
+										yes.setText("Р”Р°");
 										yes.setLayoutX(14.0);
 										yes.setLayoutY(56.0);
 										yes.setPrefWidth(72.0);
@@ -465,7 +465,7 @@ public class DivorceList {
 													e.printStackTrace();
 												}
 												newWindow_yn.close();
-												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+												// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 												String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT");
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
@@ -473,18 +473,18 @@ public class DivorceList {
 												isopen = false;
 											}
 										});
-										newWindow_yn.setTitle("Внимание");
+										newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 										newWindow_yn.setScene(ynScene);
 										newWindow_yn.initModality(Modality.WINDOW_MODAL);
 										newWindow_yn.initOwner(stage);
 										newWindow_yn.setResizable(false);
 										newWindow_yn.getIcons().add(new Image("/icon.png"));
 										newWindow_yn.showAndWait();
-									} // Если нажали "X" или "Cancel" и до этого ничего не меняли
+									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ РЅРёС‡РµРіРѕ РЅРµ РјРµРЅСЏР»Рё
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										conn.rollback();
 										isopen = false;
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 										String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT");
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
@@ -500,14 +500,14 @@ public class DivorceList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "DIVORCE_CERT"));
+						Msg.Message("Р—Р°РїРёСЃСЊ СЂРµРґР°РєС‚РёСЂСѓРµС‚СЃСЏ " + DBUtil.Lock_Row_View(docid, "DIVORCE_CERT"));
 						DBUtil.LOG_ERROR(e);
 					} else {
 						DBUtil.LOG_ERROR(e);
 					}
 				}
 			} else {
-				Msg.Message("Форма редактирования уже открыта!");
+				Msg.Message("Р¤РѕСЂРјР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СѓР¶Рµ РѕС‚РєСЂС‹С‚Р°!");
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -515,19 +515,19 @@ public class DivorceList {
 	}
 
 	/**
-	 * Печать
+	 * РџРµС‡Р°С‚СЊ
 	 */
 	void Print() {
 		try {
 			if (DIVORCE_CERT.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите строку!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 			} else {
 				ROOT.setDisable(true);
 				PB.setVisible(true);
 				Task<Object> task = new Task<Object>() {
 					@Override
 					public Object call() throws Exception {
-						// Вызов
+						// Р’С‹Р·РѕРІ
 						Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/DIVORCE_CERT.docx");
 						docx.setVariablePattern(new VariablePattern("#{", "}"));
 						// preparing variables
@@ -720,7 +720,7 @@ public class DivorceList {
 				list.setDIVC_NUM(rs.getString("DIVC_NUM"));
 				list.setSHEFIO(rs.getString("SHEFIO"));
 				list.setDIVC_ZOSPRISON(rs.getInt("DIVC_ZOSPRISON"));
-				list.setDIVC_ZАNAME(rs.getString("DIVC_ZАNAME"));
+				list.setDIVC_ZРђNAME(rs.getString("DIVC_ZРђNAME"));
 				list.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
 						: null);
@@ -794,7 +794,7 @@ public class DivorceList {
 	@FXML
 	void CmEdit(ActionEvent event) {
 		if (DIVORCE_CERT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 		} else {
 			Edit(DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID(),
 					(Stage) DIVORCE_CERT.getScene().getWindow());
@@ -820,7 +820,7 @@ public class DivorceList {
 	void BtEdit(ActionEvent event) {
 
 		if (DIVORCE_CERT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 		} else {
 			Edit(DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID(),
 					(Stage) DIVORCE_CERT.getScene().getWindow());
@@ -875,7 +875,7 @@ public class DivorceList {
 				list.setDIVC_NUM(rs.getString("DIVC_NUM"));
 				list.setSHEFIO(rs.getString("SHEFIO"));
 				list.setDIVC_ZOSPRISON(rs.getInt("DIVC_ZOSPRISON"));
-				list.setDIVC_ZАNAME(rs.getString("DIVC_ZАNAME"));
+				list.setDIVC_ZРђNAME(rs.getString("DIVC_ZРђNAME"));
 				list.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
 						: null);
@@ -980,26 +980,26 @@ public class DivorceList {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");
 
-		CheckBox filterVisible = new CheckBox("Показать фильтр");
+		CheckBox filterVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ С„РёР»СЊС‚СЂ");
 		filterVisible.selectedProperty().bindBidirectional(table.filterRowVisibleProperty());
 
-		CheckBox menuButtonVisible = new CheckBox("Показать кнопку меню");
+		CheckBox menuButtonVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ РєРЅРѕРїРєСѓ РјРµРЅСЋ");
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
-		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
+		CheckBox firstFilterable = new CheckBox("Р¤РёР»СЊС‚СЂСѓРµРјС‹Р№ РїРµСЂРІС‹Р№ СЃС‚РѕР»Р±РµС†");
 		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(DIVC_ID.filterableProperty());
 
-		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
+		CheckBox includeHidden = new CheckBox("Р’РєР»СЋС‡РёС‚СЊ СЃРєСЂС‹С‚С‹Рµ СЃС‚РѕР»Р±С†С‹");
 		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
+		CheckBox andFilters = new CheckBox("РСЃРїРѕР»СЊР·СѓР№С‚Рµ РѕРїРµСЂР°С†РёСЋ \"Р\" РґР»СЏ РјРЅРѕРіРѕРєРѕР»РѕРЅРѕС‡РЅРѕРіРѕ С„РёР»СЊС‚СЂР°");
 		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
 		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
 
-		TitledBorderPane p = new TitledBorderPane("Настройки", pane);
+		TitledBorderPane p = new TitledBorderPane("РќР°СЃС‚СЂРѕР№РєРё", pane);
 		p.getStyleClass().add("top-border-only");
 		p.setStyle("-fx-border-insets: 10 0 0 0");
 		return p;
@@ -1033,7 +1033,7 @@ public class DivorceList {
 			dbConnect();
 			Refresh();
 
-			// Столбцы таблицы
+			// РЎС‚РѕР»Р±С†С‹ С‚Р°Р±Р»РёС†С‹
 			DIVC_ID.setCellValueFactory(cellData -> cellData.getValue().DIVC_IDProperty().asObject());
 			CR_DATE.setCellValueFactory(cellData -> cellData.getValue().CR_DATEProperty());
 			CR_TIME.setCellValueFactory(cellData -> cellData.getValue().CR_TIMEProperty());
@@ -1041,13 +1041,13 @@ public class DivorceList {
 			HeFio.setCellValueFactory(cellData -> cellData.getValue().HEFIOProperty());
 			SheFio.setCellValueFactory(cellData -> cellData.getValue().SHEFIOProperty());
 			DIVC_DT.setCellValueFactory(cellData -> cellData.getValue().DIVC_DTProperty());
-			// двойной щелчок
+			// РґРІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє
 			DIVORCE_CERT.setRowFactory(tv -> {
 				TableRow<DIVORCE_CERT> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
 						if (DIVORCE_CERT.getSelectionModel().getSelectedItem() == null) {
-							Msg.Message("Выберите строку!");
+							Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 						} else {
 							Edit(DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID(),
 									(Stage) DIVORCE_CERT.getScene().getWindow());
@@ -1056,7 +1056,7 @@ public class DivorceList {
 				});
 				return row;
 			});
-			// Форматирование дат
+			// Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ РґР°С‚
 			// CellDateFormatDT(DIVC_DATE);
 			CellDateFormatD(DIVC_DT);
 			CellDateFormatD(CR_DATE);
@@ -1084,7 +1084,7 @@ public class DivorceList {
 	}
 
 	/**
-	 * Сравнение данных
+	 * РЎСЂР°РІРЅРµРЅРёРµ РґР°РЅРЅС‹С…
 	 * 
 	 * @return
 	 */
@@ -1117,7 +1117,7 @@ public class DivorceList {
 	String RetXml;
 
 	/**
-	 * Возврат XML файлов для сравнения
+	 * Р’РѕР·РІСЂР°С‚ XML С„Р°Р№Р»РѕРІ РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ
 	 */
 	void XmlsForCompare(Integer docid) {
 		try {
