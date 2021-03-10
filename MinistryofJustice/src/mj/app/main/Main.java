@@ -236,22 +236,31 @@ public class Main extends Application {
 		try {
 			/* log4j */
 			DOMConfigurator.configure(getClass().getResource("/log4j.xml"));
-			//logger.info("MJ Start: " + Thread.currentThread().getName());
+			// logger.info("MJ Start: " + Thread.currentThread().getName());
 			Main.primaryStage = primaryStage;
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
 
-			Enter();
+//			Enter();
 
 //
 //	Fast enter
 //			
+<<<<<<< HEAD
 //			Connect.connectionURL = "localhost:1522/orcl";
 //			Connect.userID = "xxi";
 //			Connect.userPassword = "";
 //			DBUtil.dbConnect();
 //			initRootLayout();
 //			RT();
+=======
+			Connect.connectionURL = "localhost:1522/orcl";
+			Connect.userID = "xxi";
+			Connect.userPassword = "mj_pass_123";
+			DBUtil.dbConnect();
+			initRootLayout();
+			RT();
+>>>>>>> refs/remotes/origin/master
 //
 //	END 		
 //			

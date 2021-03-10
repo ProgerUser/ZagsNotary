@@ -770,8 +770,8 @@ public class MercerList {
 				fields.setField("Текст19", rs.getString("F19"));
 				fields.setField("Текст20", rs.getString("F20"));
 				fields.setField("Текст21", rs.getString("F21"));
-//				fields.setField("Текст22", rs.getString(""));
-//				fields.setField("Текст24", rs.getString(""));
+				fields.setField("Текст22", "-");
+				fields.setField("Текст24", "-");
 				fields.setField("Текст25", rs.getString("F25"));
 				fields.setField("Текст26", rs.getString("F26"));
 				fields.setField("Текст27", rs.getString("F6"));
@@ -800,7 +800,7 @@ public class MercerList {
 				fields.setField("Текст53", rs.getString("F25"));
 				fields.setField("Текст54", rs.getString("F54"));
 				fields.setField("Текст55", rs.getString("F1"));
-//				fields.setField("Текст56", rs.getString(""));
+				fields.setField("Текст56", "-");
 				fields.setField("Текст57", rs.getString("F35"));
 				fields.setField("Текст58", rs.getString("F43"));
 				fields.setField("Текст59", "ЗАГС");

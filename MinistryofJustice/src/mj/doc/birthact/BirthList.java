@@ -222,7 +222,7 @@ public class BirthList {
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				fields.setField("Текст1", rs.getString("F79"));
-//				fields.setField("Text1", rs.getString(""));
+				fields.setField("Text1", "-");
 				fields.setField("Текст2", rs.getString("F79"));
 				fields.setField("Text2", rs.getString("TEXT2"));
 				fields.setField("Текст3", rs.getString("F3"));
@@ -230,10 +230,10 @@ public class BirthList {
 				fields.setField("Текст72", rs.getString("F72"));
 				fields.setField("Текст73", rs.getString("F73"));
 				fields.setField("Текст74", rs.getString("F74"));
-//				fields.setField("Текст75", rs.getString(""));
+				fields.setField("Текст75", "-");
 				fields.setField("Текст76", rs.getString("F76"));
 				fields.setField("Текст77", rs.getString("F77"));
-//				fields.setField("Текст78", rs.getString(""));
+				fields.setField("Текст78", "-");
 				fields.setField("Текст79", rs.getString("F79"));
 				fields.setField("Текст80", rs.getString("F80"));
 				fields.setField("Текст81", rs.getString("F81"));
@@ -258,7 +258,7 @@ public class BirthList {
 				fields.setField("Текст100", rs.getString("F79"));
 				fields.setField("Текст101", rs.getString("F101"));
 				fields.setField("Текст102", rs.getString("F80"));
-//				fields.setField("Текст103", rs.getString(""));
+				fields.setField("Текст103", "-");
 				fields.setField("Текст104", rs.getString("F104"));
 				fields.setField("Текст105", rs.getString("F105"));
 				fields.setField("Текст106", rs.getString("F106"));
