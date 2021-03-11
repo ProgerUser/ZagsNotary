@@ -26,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -60,6 +61,7 @@ import mj.project.PRJ_FLS_FLDR;
 import mj.report.FRREPRunner;
 import mj.report.Report;
 import mj.users.UsrC;
+import mj.widgets.DbTracer;
 import mj.zags.ZagsList;
 
 
@@ -292,7 +294,6 @@ public class Main extends Application {
 			// Scene scene = new Scene(new RootPane(primaryStage, rootLayout));
 			primaryStage.setScene(scene); // Set the scene in primary stage.
 			primaryStage.show(); // Display the primary stage
-
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

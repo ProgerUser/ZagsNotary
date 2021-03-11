@@ -272,7 +272,7 @@ public class OtdList {
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("DB queries tracer");
 				stage.initOwner(stage_);
-				stage.setResizable(false);
+				stage.setResizable(true);
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {

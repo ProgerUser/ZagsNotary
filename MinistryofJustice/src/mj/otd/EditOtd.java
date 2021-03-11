@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
+import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import mj.users.OTD;
 import mj.widgets.DbmsOutputCapture;
@@ -40,7 +41,9 @@ public class EditOtd {
 			
 			try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
 				List<String> lines = capture.execute(call);
-				System.out.println(lines);
+				if (Connect.dbmsOutput) {
+					Main.logger.info(lines);
+				}
 			} catch (Exception e) {
 				DBUtil.LOG_ERROR(e);
 			}

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <TabPane fx:id="BorderPane" styleClass="floating" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -23,14 +23,14 @@
                      <top>
                         <ToolBar prefWidth="200.0" BorderPane.alignment="CENTER">
                            <items>
-                              <CheckBox mnemonicParsing="false" text="Включить" />
+                              <CheckBox fx:id="Turn" mnemonicParsing="false" onAction="#Turn" text="Включить" />
                               <Separator orientation="VERTICAL" />
-                              <Button mnemonicParsing="false">
+                              <Button mnemonicParsing="false" onAction="#Refresh">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <graphic>
-                                    <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
+                                    <FontAwesomeIconView glyphName="REFRESH" size="18" />
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Удалить лог" />
@@ -40,7 +40,7 @@
                         </ToolBar>
                      </top>
                      <center>
-                        <TextArea fx:id="Trace" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-control-inner-background: #FFFFE0;" BorderPane.alignment="CENTER" />
+                        <TextArea fx:id="Trace" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-control-inner-background: #FFFFE0;" styleClass="mylistview" stylesheets="/ScrPane.css" BorderPane.alignment="CENTER" />
                      </center>
                   </BorderPane>
                </content>

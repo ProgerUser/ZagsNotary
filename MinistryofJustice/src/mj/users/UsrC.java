@@ -605,14 +605,14 @@ public class UsrC {
 	void InitGrp() {
 		try {
 			PreparedStatement prepStmt = conn
-					.prepareStatement("SELECT GRP_ID, GRP_NAME, NOTATION_EXTEND_ID\n" + 
-							"  FROM ODB_GROUP_USR\n" + 
-							" WHERE EXISTS\n" + 
-							" (SELECT NULL\n" + 
-							"          FROM ODB_GRP_MEMBER G\n" + 
-							"         WHERE G.IUSRID =\n" + 
-							"               (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = ?))\n" + 
-							"");
+					.prepareStatement("SELECT GRP_ID, GRP_NAME, NOTATION_EXTEND_ID\r\n"
+							+ "  FROM ODB_GROUP_USR J\r\n"
+							+ " WHERE EXISTS (SELECT NULL\r\n"
+							+ "          FROM ODB_GRP_MEMBER G\r\n"
+							+ "         WHERE G.IUSRID =\r\n"
+							+ "               (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = ?)\r\n"
+							+ "           AND J.GRP_ID = G.GRP_ID)\r\n"
+							+ "");
 			prepStmt.setString(1, USRLST.getSelectionModel().getSelectedItem().getCUSRLOGNAME());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<ODB_GROUP_USR> dlist = FXCollections.observableArrayList();
