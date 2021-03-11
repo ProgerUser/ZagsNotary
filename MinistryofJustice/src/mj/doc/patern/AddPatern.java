@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -133,6 +132,24 @@ public class AddPatern {
 	@FXML
 	private TextField PC_ZMNAME;
 
+    //Новые поля 11.03.2021
+    @FXML
+    private TitledPane Bef;
+    @FXML
+    private TitledPane Doc_Num;
+
+    @FXML
+    private TextField BEF_LNAME;
+
+    @FXML
+    private TextField BEF_FNAME;
+
+    @FXML
+    private TextField BEF_MNAME;
+    
+    @FXML
+    private TextField DOC_NUMBER;
+    
 	// ______________Методы_____________
 	/**
 	 * Выбрать ребенка
@@ -229,7 +246,6 @@ public class AddPatern {
 	 */
 	void ActList(TextField number) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -375,13 +391,7 @@ public class AddPatern {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -394,7 +404,6 @@ public class AddPatern {
 	 */
 	void CusList(TextField number, TextField name) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -496,13 +505,7 @@ public class AddPatern {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -552,10 +555,8 @@ public class AddPatern {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			CallableStatement callStmt = conn
-					.prepareCall("{ call PATERN.AddPatern(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call PATERN.AddPatern(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, PС_NUMBER.getText());
 			callStmt.setString(3, PС_SERIA.getText());
@@ -591,7 +592,14 @@ public class AddPatern {
 			callStmt.setString(17, PC_ZLNAME.getText());
 			callStmt.setString(18, PC_ZFNAME.getText());
 			callStmt.setString(19, PC_ZMNAME.getText());
+			
 			callStmt.registerOutParameter(20, Types.INTEGER);
+			
+			callStmt.setString(21, BEF_LNAME.getText());
+			callStmt.setString(22, BEF_FNAME.getText());
+			callStmt.setString(23, BEF_MNAME.getText());
+			callStmt.setString(24, DOC_NUMBER.getText());
+			
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -607,14 +615,8 @@ public class AddPatern {
 				Msg.MessageBox(callStmt.getString(1), stage_);
 				callStmt.close();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -669,6 +671,11 @@ public class AddPatern {
 	@FXML
 	private void initialize() {
 		try {
+			Bef.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
+			Doc_Num.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
+			
 			PС_CH_NAME.setText(getCusFio());
 			PС_CH.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
 
@@ -704,12 +711,7 @@ public class AddPatern {
 			new ConvConst().FormatDatePiker(PС_TRZ);
 			
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -723,7 +725,6 @@ public class AddPatern {
 	 */
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "AddPatern");
@@ -731,13 +732,8 @@ public class AddPatern {
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
 			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -746,17 +742,11 @@ public class AddPatern {
 	 */
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

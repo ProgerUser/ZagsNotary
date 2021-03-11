@@ -69,8 +69,21 @@ public class PATERN_CERT {
 	private StringProperty MOTHERFIO;
 	/** Нет данных */
 	private StringProperty FATHERFIO;
+	/** Имя до уст. отц */
+	private StringProperty BEF_FNAME;
+	/** Отчество до уст. отц */
+	private StringProperty BEF_MNAME;
+	/** Фамилия до уст. отц */
+	private StringProperty BEF_LNAME;
+	/** Номер документа (проставляется пользователем) */
+	private StringProperty DOC_NUMBER;
 
 	public PATERN_CERT() {
+		this.DOC_NUMBER = new SimpleStringProperty();
+		this.BEF_FNAME = new SimpleStringProperty();
+		this.BEF_MNAME = new SimpleStringProperty();
+		this.BEF_LNAME = new SimpleStringProperty();
+
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.PC_ZPLACE = new SimpleStringProperty();
@@ -101,6 +114,54 @@ public class PATERN_CERT {
 		this.CHILDFIO = new SimpleStringProperty();
 		this.MOTHERFIO = new SimpleStringProperty();
 		this.FATHERFIO = new SimpleStringProperty();
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
+	}
+
+	public void setBEF_FNAME(String BEF_FNAME) {
+		this.BEF_FNAME.set(BEF_FNAME);
+	}
+
+	public void setBEF_MNAME(String BEF_MNAME) {
+		this.BEF_MNAME.set(BEF_MNAME);
+	}
+
+	public void setBEF_LNAME(String BEF_LNAME) {
+		this.BEF_LNAME.set(BEF_LNAME);
+	}
+
+	public String getBEF_FNAME() {
+		return BEF_FNAME.get();
+	}
+
+	public String getBEF_MNAME() {
+		return BEF_MNAME.get();
+	}
+
+	public String getBEF_LNAME() {
+		return BEF_LNAME.get();
+	}
+
+	public StringProperty BEF_FNAMEProperty() {
+		return BEF_FNAME;
+	}
+
+	public StringProperty BEF_MNAMEProperty() {
+		return BEF_MNAME;
+	}
+
+	public StringProperty BEF_LNAMEProperty() {
+		return BEF_LNAME;
 	}
 
 	public void setCR_TIME(String CR_TIME) {

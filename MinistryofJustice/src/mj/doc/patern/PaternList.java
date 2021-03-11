@@ -20,7 +20,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -34,6 +33,9 @@ import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
 import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -75,8 +77,8 @@ import pl.jsolve.templ4docx.variable.TextVariable;
 import pl.jsolve.templ4docx.variable.Variables;
 
 /**
- * Контроллер документа об установлении отцовства,<br>
- * добавление, редактирование
+ * РљРѕРЅС‚СЂРѕР»Р»РµСЂ РґРѕРєСѓРјРµРЅС‚Р° РѕР± СѓСЃС‚Р°РЅРѕРІР»РµРЅРёРё РѕС‚С†РѕРІСЃС‚РІР°,<br>
+ * РґРѕР±Р°РІР»РµРЅРёРµ, СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ
  * 
  * @author Said
  *
@@ -108,6 +110,10 @@ public class PaternList {
 	@FXML
 	private XTableColumn<PATERN_CERT, LocalDate> MotherBirthDate;
 
+	
+	@FXML
+	private XTableColumn<PATERN_CERT, String> DOC_NUMBER;
+	
 	@FXML
 	private DatePicker DT1;
 
@@ -118,7 +124,7 @@ public class PaternList {
 	private XTableView<PATERN_CERT> PATERN_CERT;
 
 	// @FXML
-	// private XTableColumn<PATERN_CERT, LocalDateTime> PС_DATE;
+	// private XTableColumn<PATERN_CERT, LocalDateTime> PРЎ_DATE;
 
 	@FXML
 	private DatePicker DT2;
@@ -143,14 +149,13 @@ public class PaternList {
 	}
 
 	/**
-	 * добавить
+	 * РґРѕР±Р°РІРёС‚СЊ
 	 */
 	void Add() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 
 			if (DBUtil.OdbAction(101) == 0) {
-				Msg.Message("Нет доступа!");
+				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 				return;
 			}
 
@@ -166,7 +171,7 @@ public class PaternList {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
+			stage.setTitle("Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -180,46 +185,150 @@ public class PaternList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
+	public void manipulatePdf(String src, String dest) throws Exception{
+		if (PATERN_CERT.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+		} else {
+			PdfReader reader = new PdfReader(src);
+			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+			AcroFields fields = stamper.getAcroFields();
+			
+//			Iterator it = fields.getFields().entrySet().iterator();
+//			while (it.hasNext()) {
+//				Map.Entry pair = (Map.Entry) it.next();
+//				System.out.println(pair.getKey());
+//				it.remove(); // avoids a ConcurrentModificationException
+//			}
+			
+			PreparedStatement prp = conn.prepareStatement("select * from BLANK_PATERN_CERT where PC_ID = ?");
+			prp.setInt(1, PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID());
+			ResultSet rs = prp.executeQuery();
+			while (rs.next()) {
+				fields.setField("РўРµРєСЃС‚1", rs.getString("f1"));
+				fields.setField("РўРµРєСЃС‚2", rs.getString("f2"));
+				fields.setField("РўРµРєСЃС‚3", rs.getString("f3"));
+				fields.setField("РўРµРєСЃС‚4", rs.getString("f4"));
+				fields.setField("РўРµРєСЃС‚5", rs.getString("f5"));
+				fields.setField("РўРµРєСЃС‚6", rs.getString("f6"));
+				fields.setField("РўРµРєСЃС‚7", rs.getString("f7"));
+				fields.setField("РўРµРєСЃС‚8", rs.getString("f8"));
+				fields.setField("РўРµРєСЃС‚9", rs.getString("f9"));
+				fields.setField("РўРµРєСЃС‚10", rs.getString("f10"));
+				fields.setField("РўРµРєСЃС‚11", rs.getString("f11"));
+				fields.setField("РўРµРєСЃС‚12", rs.getString("f12"));
+				fields.setField("РўРµРєСЃС‚13", rs.getString("f13"));
+				fields.setField("РўРµРєСЃС‚14", rs.getString("f14"));
+				fields.setField("РўРµРєСЃС‚15", rs.getString("f15"));
+				fields.setField("РўРµРєСЃС‚16", rs.getString("f16"));
+				fields.setField("РўРµРєСЃС‚17", rs.getString("f17"));
+				fields.setField("РўРµРєСЃС‚18", rs.getString("f18"));
+				fields.setField("РўРµРєСЃС‚19", rs.getString("f19"));
+				fields.setField("РўРµРєСЃС‚20", rs.getString("f20"));
+				fields.setField("РўРµРєСЃС‚21", rs.getString("f21"));
+				fields.setField("РўРµРєСЃС‚22", rs.getString("f22"));
+				fields.setField("РўРµРєСЃС‚23", rs.getString("f23"));
+				fields.setField("РўРµРєСЃС‚24", rs.getString("f24"));
+				fields.setField("РўРµРєСЃС‚25", rs.getString("f25"));
+				fields.setField("РўРµРєСЃС‚26", rs.getString("f26"));
+				fields.setField("РўРµРєСЃС‚27", rs.getString("f27"));
+				fields.setField("РўРµРєСЃС‚28", rs.getString("f28"));	
+				fields.setField("РўРµРєСЃС‚29", rs.getString("f29"));
+				fields.setField("РўРµРєСЃС‚30", rs.getString("f30"));
+				fields.setField("РўРµРєСЃС‚31", rs.getString("f31"));
+				fields.setField("РўРµРєСЃС‚32", rs.getString("f32"));
+				fields.setField("РўРµРєСЃС‚33", rs.getString("f33"));
+				fields.setField("РўРµРєСЃС‚34", rs.getString("f34"));
+				fields.setField("РўРµРєСЃС‚35", rs.getString("f35"));
+				fields.setField("РўРµРєСЃС‚36", rs.getString("f36"));
+				fields.setField("РўРµРєСЃС‚37", rs.getString("f37"));
+				fields.setField("РўРµРєСЃС‚38", rs.getString("f38"));
+				fields.setField("РўРµРєСЃС‚39", rs.getString("f39"));
+				fields.setField("РўРµРєСЃС‚40", rs.getString("f40"));
+				fields.setField("РўРµРєСЃС‚41", rs.getString("f41"));
+				fields.setField("РўРµРєСЃС‚42", rs.getString("f42"));
+				fields.setField("РўРµРєСЃС‚43", rs.getString("f43"));
+				fields.setField("РўРµРєСЃС‚44", rs.getString("f44"));
+				fields.setField("РўРµРєСЃС‚45", rs.getString("f45"));
+				fields.setField("РўРµРєСЃС‚46", rs.getString("f46"));
+				fields.setField("РўРµРєСЃС‚47", rs.getString("f47"));
+				fields.setField("РўРµРєСЃС‚48", rs.getString("f48"));
+				fields.setField("РўРµРєСЃС‚49", rs.getString("f49"));
+				fields.setField("РўРµРєСЃС‚50", rs.getString("f50"));
+				fields.setField("РўРµРєСЃС‚51", rs.getString("f51"));
+				fields.setField("РўРµРєСЃС‚52", rs.getString("f52"));
+				fields.setField("РўРµРєСЃС‚53", rs.getString("f53"));
+				fields.setField("РўРµРєСЃС‚54", rs.getString("f54"));
+				fields.setField("РўРµРєСЃС‚55", rs.getString("f55"));
+				fields.setField("РўРµРєСЃС‚56", rs.getString("f56"));
+				fields.setField("РўРµРєСЃС‚57", rs.getString("f57"));
+				fields.setField("РўРµРєСЃС‚58", rs.getString("f58"));
+				fields.setField("РўРµРєСЃС‚59", rs.getString("f59"));
+				fields.setField("РўРµРєСЃС‚60", rs.getString("f60"));
+				fields.setField("РўРµРєСЃС‚61", rs.getString("f61"));
+				fields.setField("РўРµРєСЃС‚62", rs.getString("f62"));
+				fields.setField("РўРµРєСЃС‚63", rs.getString("f63"));
+				fields.setField("РўРµРєСЃС‚64", rs.getString("f64"));
+				fields.setField("РўРµРєСЃС‚65", rs.getString("f65"));
+				fields.setField("РўРµРєСЃС‚66", rs.getString("f66"));
+				fields.setField("РўРµРєСЃС‚67", rs.getString("f67"));
+				fields.setField("РўРµРєСЃС‚68", rs.getString("f68"));
+				fields.setField("РўРµРєСЃС‚69", rs.getString("f69"));
+				fields.setField("РўРµРєСЃС‚70", rs.getString("f70"));
+				fields.setField("РўРµРєСЃС‚72", rs.getString("f72"));
+				fields.setField("РўРµРєСЃС‚73", rs.getString("f73"));
+				fields.setField("РўРµРєСЃС‚75", rs.getString("f75"));
+			}
+			prp.close();
+			rs.close();
+			
+			stamper.close();
+			reader.close();
+		}
+	}
+    @FXML
+    void BtPrintBlank(ActionEvent event) {
+		try {
+			manipulatePdf(System.getenv("MJ_PATH") + "/Reports/PATERN_CERT.pdf",
+					System.getenv("MJ_PATH") + "/OutReports/PATERN_CERT.pdf");
+			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/PATERN_CERT.pdf"));
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+    }
+    
 	/**
-	 * удалить
+	 * СѓРґР°Р»РёС‚СЊ
 	 */
 	void Delete() {
 		try {
 			if (PATERN_CERT.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите строку!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 			} else {
-				Main.logger = Logger.getLogger(getClass());
 
 				if (DBUtil.OdbAction(102) == 0) {
-					Msg.Message("Нет доступа!");
+					Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 					return;
 				}
 
 				Stage stage = (Stage) PATERN_CERT.getScene().getWindow();
-				Label alert = new Label("Удалить запись?");
+				Label alert = new Label("РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ?");
 				alert.setLayoutX(75.0);
 				alert.setLayoutY(11.0);
 				alert.setPrefHeight(17.0);
 
 				Button no = new Button();
-				no.setText("Нет");
+				no.setText("РќРµС‚");
 				no.setLayoutX(111.0);
 				no.setLayoutY(56.0);
 				no.setPrefWidth(72.0);
 				no.setPrefHeight(21.0);
 
 				Button yes = new Button();
-				yes.setText("Да");
+				yes.setText("Р”Р°");
 				yes.setLayoutX(14.0);
 				yes.setLayoutY(56.0);
 				yes.setPrefWidth(72.0);
@@ -252,20 +361,14 @@ public class PaternList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								DBUtil.LOG_ERROR(e1);
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
 				});
-				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 				newWindow_yn.setScene(ynScene);
 				newWindow_yn.initModality(Modality.WINDOW_MODAL);
 				newWindow_yn.initOwner(stage);
@@ -274,32 +377,25 @@ public class PaternList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Открыта ли форма редактирования <br>
-	 * Возможен только один экземпляр формы
+	 * РћС‚РєСЂС‹С‚Р° Р»Рё С„РѕСЂРјР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ <br>
+	 * Р’РѕР·РјРѕР¶РµРЅ С‚РѕР»СЊРєРѕ РѕРґРёРЅ СЌРєР·РµРјРїР»СЏСЂ С„РѕСЂРјС‹
 	 */
 	boolean isopen = false;
 
 	/**
-	 * Редактировать
+	 * Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ
 	 */
 	public void Edit(Integer docid, Stage stage_) {
 		try {
 			if (isopen == false) {
-				Main.logger = Logger.getLogger(getClass());
 
 				if (DBUtil.OdbAction(103) == 0) {
-					Msg.Message("Нет доступа!");
+					Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
 					return;
 				}
 
@@ -332,47 +428,47 @@ public class PaternList {
 						Parent root = loader.load();
 						stage.setScene(new Scene(root));
 						stage.getIcons().add(new Image("/icon.png"));
-						stage.setTitle("Редактирование: ");
+						stage.setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ: ");
 						stage.initOwner(stage_);
 						stage.setResizable(false);
 						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 							@Override
 							public void handle(WindowEvent paramT) {
 								try {
-									// Если нажали сохранить
-									// обновить без коммита
+									// Р•СЃР»Рё РЅР°Р¶Р°Р»Рё СЃРѕС…СЂР°РЅРёС‚СЊ
+									// РѕР±РЅРѕРІРёС‚СЊ Р±РµР· РєРѕРјРјРёС‚Р°
 									controller.SaveCompare();
 									if (controller.getStatus()) {
 										conn.commit();
 										if (from == null) {
 											Refresh();
 										}
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 										String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT");
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 										isopen = false;
-									} // Если нажали "X" или "Cancel" и до этого что-то меняли
+									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ С‡С‚Рѕ-С‚Рѕ РјРµРЅСЏР»Рё
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 1) {
 										/**
-										 * Проверка выхода без сохранения
+										 * РџСЂРѕРІРµСЂРєР° РІС‹С…РѕРґР° Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
 										 */
 										Stage stage = stage_;
-										Label alert = new Label("Закрыть форму без сохранения?");
+										Label alert = new Label("Р—Р°РєСЂС‹С‚СЊ С„РѕСЂРјСѓ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ?");
 										alert.setLayoutX(75.0);
 										alert.setLayoutY(11.0);
 										alert.setPrefHeight(17.0);
 
 										Button no = new Button();
-										no.setText("Нет");
+										no.setText("РќРµС‚");
 										no.setLayoutX(111.0);
 										no.setLayoutY(56.0);
 										no.setPrefWidth(72.0);
 										no.setPrefHeight(21.0);
 
 										Button yes = new Button();
-										yes.setText("Да");
+										yes.setText("Р”Р°");
 										yes.setLayoutX(14.0);
 										yes.setLayoutY(56.0);
 										yes.setPrefWidth(72.0);
@@ -398,7 +494,7 @@ public class PaternList {
 													e.printStackTrace();
 												}
 												newWindow_yn.close();
-												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+												// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 												String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT");
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
@@ -406,30 +502,25 @@ public class PaternList {
 												isopen = false;
 											}
 										});
-										newWindow_yn.setTitle("Внимание");
+										newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
 										newWindow_yn.setScene(ynScene);
 										newWindow_yn.initModality(Modality.WINDOW_MODAL);
 										newWindow_yn.initOwner(stage);
 										newWindow_yn.setResizable(false);
 										newWindow_yn.getIcons().add(new Image("/icon.png"));
 										newWindow_yn.showAndWait();
-									} // Если нажали "X" или "Cancel" и до этого ничего не меняли
+									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ РЅРёС‡РµРіРѕ РЅРµ РјРµРЅСЏР»Рё
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										conn.rollback();
 										isopen = false;
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
 										String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT");
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+									DBUtil.LOG_ERROR(e);
 								}
 							}
 						});
@@ -438,52 +529,34 @@ public class PaternList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "PATERN_CERT"));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						Msg.Message("Р—Р°РїРёСЃСЊ СЂРµРґР°РєС‚РёСЂСѓРµС‚СЃСЏ " + DBUtil.Lock_Row_View(docid, "PATERN_CERT"));
+						DBUtil.LOG_ERROR(e);
 					} else {
-						e.printStackTrace();
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 				}
-
 			} else {
-				Msg.Message("Форма редактирования уже открыта!");
+				Msg.Message("Р¤РѕСЂРјР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СѓР¶Рµ РѕС‚РєСЂС‹С‚Р°!");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Печать
+	 * РџРµС‡Р°С‚СЊ
 	 */
 	void Print() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (PATERN_CERT.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите строку!");
+				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 			} else {
 				ROOT.setDisable(true);
 				PB.setVisible(true);
 				Task<Object> task = new Task<Object>() {
 					@Override
 					public Object call() throws Exception {
-						// Вызов
+						// Р’С‹Р·РѕРІ
 						Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/PATERN_CERT.docx");
 						docx.setVariablePattern(new VariablePattern("#{", "}"));
 						// preparing variables
@@ -496,7 +569,7 @@ public class PaternList {
 						if (rs.next()) {
 							list = new V_REP_PATERN_CERT();
 							list.setCH_FNAME(rs.getString("CH_FNAME"));
-							list.setPС_DATE(rs.getString("PС_DATE"));
+							list.setPРЎ_DATE(rs.getString("PРЎ_DATE"));
 							list.setF_CITIZEN(rs.getString("F_CITIZEN"));
 							list.setPC_ZPLACE(rs.getString("PC_ZPLACE"));
 							list.setF_BR_DT(rs.getString("F_BR_DT"));
@@ -504,17 +577,17 @@ public class PaternList {
 							list.setM_MNAME(rs.getString("M_MNAME"));
 							list.setPC_ZFNAME(rs.getString("PC_ZFNAME"));
 							list.setF_NAT(rs.getString("F_NAT"));
-							list.setPС_FZ(rs.getString("PС_FZ"));
-							list.setPС_NUMBER(rs.getString("PС_NUMBER"));
+							list.setPРЎ_FZ(rs.getString("PРЎ_FZ"));
+							list.setPРЎ_NUMBER(rs.getString("PРЎ_NUMBER"));
 							list.setCH_LNAME(rs.getString("CH_LNAME"));
-							list.setPС_AFT_FNAME(rs.getString("PС_AFT_FNAME"));
-							list.setPС_TRZ(rs.getString("PС_TRZ"));
-							list.setPС_AFT_MNAME(rs.getString("PС_AFT_MNAME"));
+							list.setPРЎ_AFT_FNAME(rs.getString("PРЎ_AFT_FNAME"));
+							list.setPРЎ_TRZ(rs.getString("PРЎ_TRZ"));
+							list.setPРЎ_AFT_MNAME(rs.getString("PРЎ_AFT_MNAME"));
 							list.setF_ADDR(rs.getString("F_ADDR"));
-							list.setPС_SERIA(rs.getString("PС_SERIA"));
-							list.setPС_CRNAME(rs.getString("PС_CRNAME"));
+							list.setPРЎ_SERIA(rs.getString("PРЎ_SERIA"));
+							list.setPРЎ_CRNAME(rs.getString("PРЎ_CRNAME"));
 							list.setM_BR_PL(rs.getString("M_BR_PL"));
-							list.setPС_CRDATE(rs.getString("PС_CRDATE"));
+							list.setPРЎ_CRDATE(rs.getString("PРЎ_CRDATE"));
 							list.setF_LNAME(rs.getString("F_LNAME"));
 							list.setM_LNAME(rs.getString("M_LNAME"));
 							list.setM_FNAME(rs.getString("M_FNAME"));
@@ -534,13 +607,13 @@ public class PaternList {
 							list.setCH_BRDT(rs.getString("CH_BRDT"));
 							list.setM_BR_DT(rs.getString("M_BR_DT"));
 							list.setCH_BR_PL(rs.getString("CH_BR_PL"));
-							list.setPС_AFT_LNAME(rs.getString("PС_AFT_LNAME"));
+							list.setPРЎ_AFT_LNAME(rs.getString("PРЎ_AFT_LNAME"));
 						}
 						prepStmt.close();
 						rs.close();
 						// ------------
 						variables.addTextVariable(new TextVariable("#{CH_FNAME}", list.getCH_FNAME()));
-						variables.addTextVariable(new TextVariable("#{PС_DATE}", list.getPС_DATE()));
+						variables.addTextVariable(new TextVariable("#{PРЎ_DATE}", list.getPРЎ_DATE()));
 						variables.addTextVariable(new TextVariable("#{F_CITIZEN}", list.getF_CITIZEN()));
 						variables.addTextVariable(new TextVariable("#{PC_ZPLACE}", list.getPC_ZPLACE()));
 						variables.addTextVariable(new TextVariable("#{F_BR_DT}", list.getF_BR_DT()));
@@ -548,17 +621,17 @@ public class PaternList {
 						variables.addTextVariable(new TextVariable("#{M_MNAME}", list.getM_MNAME()));
 						variables.addTextVariable(new TextVariable("#{PC_ZFNAME}", list.getPC_ZFNAME()));
 						variables.addTextVariable(new TextVariable("#{F_NAT}", list.getF_NAT()));
-						variables.addTextVariable(new TextVariable("#{PС_FZ}", list.getPС_FZ()));
-						variables.addTextVariable(new TextVariable("#{PС_NUMBER}", list.getPС_NUMBER()));
-						variables.addTextVariable(new TextVariable("#{PС_AFT_FNAME}", list.getPС_AFT_FNAME()));
+						variables.addTextVariable(new TextVariable("#{PРЎ_FZ}", list.getPРЎ_FZ()));
+						variables.addTextVariable(new TextVariable("#{PРЎ_NUMBER}", list.getPРЎ_NUMBER()));
+						variables.addTextVariable(new TextVariable("#{PРЎ_AFT_FNAME}", list.getPРЎ_AFT_FNAME()));
 						variables.addTextVariable(new TextVariable("#{CH_LNAME}", list.getCH_LNAME()));
-						variables.addTextVariable(new TextVariable("#{PС_TRZ}", list.getPС_TRZ()));
-						variables.addTextVariable(new TextVariable("#{PС_AFT_MNAME}", list.getPС_AFT_MNAME()));
+						variables.addTextVariable(new TextVariable("#{PРЎ_TRZ}", list.getPРЎ_TRZ()));
+						variables.addTextVariable(new TextVariable("#{PРЎ_AFT_MNAME}", list.getPРЎ_AFT_MNAME()));
 						variables.addTextVariable(new TextVariable("#{F_ADDR}", list.getF_ADDR()));
-						variables.addTextVariable(new TextVariable("#{PС_SERIA}", list.getPС_SERIA()));
-						variables.addTextVariable(new TextVariable("#{PС_CRNAME}", list.getPС_CRNAME()));
+						variables.addTextVariable(new TextVariable("#{PРЎ_SERIA}", list.getPРЎ_SERIA()));
+						variables.addTextVariable(new TextVariable("#{PРЎ_CRNAME}", list.getPРЎ_CRNAME()));
 						variables.addTextVariable(new TextVariable("#{M_BR_PL}", list.getM_BR_PL()));
-						variables.addTextVariable(new TextVariable("#{PС_CRDATE}", list.getPС_CRDATE()));
+						variables.addTextVariable(new TextVariable("#{PРЎ_CRDATE}", list.getPРЎ_CRDATE()));
 						variables.addTextVariable(new TextVariable("#{F_LNAME}", list.getF_LNAME()));
 						variables.addTextVariable(new TextVariable("#{M_LNAME}", list.getM_LNAME()));
 						variables.addTextVariable(new TextVariable("#{M_FNAME}", list.getM_FNAME()));
@@ -578,7 +651,7 @@ public class PaternList {
 						variables.addTextVariable(new TextVariable("#{CH_BRDT}", list.getCH_BRDT()));
 						variables.addTextVariable(new TextVariable("#{M_BR_DT}", list.getM_BR_DT()));
 						variables.addTextVariable(new TextVariable("#{CH_BR_PL}", list.getCH_BR_PL()));
-						variables.addTextVariable(new TextVariable("#{PС_AFT_LNAME}", list.getPС_AFT_LNAME()));
+						variables.addTextVariable(new TextVariable("#{PРЎ_AFT_LNAME}", list.getPРЎ_AFT_LNAME()));
 						// fill template
 						docx.fillTemplate(variables);
 						/*
@@ -637,13 +710,7 @@ public class PaternList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -655,26 +722,22 @@ public class PaternList {
 	}
 
 	/**
-	 * Обновить таблицу
+	 * РћР±РЅРѕРІРёС‚СЊ С‚Р°Р±Р»РёС†Сѓ
 	 */
 	void Refresh() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-
 			String selectStmt = "select * from v_patern_cert " + ((getWhere() != null) ? getWhere() : "");
-
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<PATERN_CERT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				PATERN_CERT list = new PATERN_CERT();
 
-				list.setPС_FZ((rs.getDate("PС_FZ") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_FZ")), formatter)
+				list.setPРЎ_FZ((rs.getDate("PРЎ_FZ") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PРЎ_FZ")), formatter)
 						: null);
 				list.setMOTHERBIRTHDATE((rs.getDate("MOTHERBIRTHDATE") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MOTHERBIRTHDATE")), formatter) : null);
@@ -682,11 +745,11 @@ public class PaternList {
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CHILDRENBIRTH")), formatter) : null);
 				list.setFATHERFIO(rs.getString("FATHERFIO"));
 				list.setPC_ACT_ID(rs.getInt("PC_ACT_ID"));
-				list.setPС_CH(rs.getInt("PС_CH"));
-				list.setPС_SERIA(rs.getString("PС_SERIA"));
-				list.setPС_NUMBER(rs.getString("PС_NUMBER"));
-				list.setTM$PС_DATE((rs.getDate("TM$PС_DATE") != null) ? LocalDateTime.parse(
-						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$PС_DATE")), formatterwt)
+				list.setPРЎ_CH(rs.getInt("PРЎ_CH"));
+				list.setPРЎ_SERIA(rs.getString("PРЎ_SERIA"));
+				list.setPРЎ_NUMBER(rs.getString("PРЎ_NUMBER"));
+				list.setTM$PРЎ_DATE((rs.getDate("TM$PРЎ_DATE") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$PРЎ_DATE")), formatterwt)
 						: null);
 				list.setPC_ZLNAME(rs.getString("PC_ZLNAME"));
 				list.setMOTHERFIO(rs.getString("MOTHERFIO"));
@@ -697,25 +760,30 @@ public class PaternList {
 				list.setCR_TIME(rs.getString("CR_TIME"));
 				list.setFATHERBIRTHDATE((rs.getDate("FATHERBIRTHDATE") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("FATHERBIRTHDATE")), formatter) : null);
-				list.setPС_F(rs.getInt("PС_F"));
-				list.setPС_CRDATE((rs.getDate("PС_CRDATE") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_CRDATE")), formatter)
+				list.setPРЎ_F(rs.getInt("PРЎ_F"));
+				list.setPРЎ_CRDATE((rs.getDate("PРЎ_CRDATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PРЎ_CRDATE")), formatter)
 						: null);
-				list.setPС_TRZ((rs.getDate("PС_TRZ") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_TRZ")), formatter)
+				list.setPРЎ_TRZ((rs.getDate("PРЎ_TRZ") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PРЎ_TRZ")), formatter)
 						: null);
 				list.setPC_ZMNAME(rs.getString("PC_ZMNAME"));
-				list.setPС_AFT_LNAME(rs.getString("PС_AFT_LNAME"));
+				list.setPРЎ_AFT_LNAME(rs.getString("PРЎ_AFT_LNAME"));
 				list.setPC_ZFNAME(rs.getString("PC_ZFNAME"));
 				list.setCHILDFIO(rs.getString("CHILDFIO"));
-				list.setPС_CRNAME(rs.getString("PС_CRNAME"));
-				list.setPС_M(rs.getInt("PС_M"));
-				list.setPС_AFT_MNAME(rs.getString("PС_AFT_MNAME"));
-				list.setPС_ZAGS(rs.getInt("PС_ZAGS"));
+				list.setPРЎ_CRNAME(rs.getString("PРЎ_CRNAME"));
+				list.setPРЎ_M(rs.getInt("PРЎ_M"));
+				list.setPРЎ_AFT_MNAME(rs.getString("PРЎ_AFT_MNAME"));
+				list.setPРЎ_ZAGS(rs.getInt("PРЎ_ZAGS"));
 				list.setPC_ID(rs.getInt("PC_ID"));
-				list.setPС_TYPE(rs.getString("PС_TYPE"));
-				list.setPС_AFT_FNAME(rs.getString("PС_AFT_FNAME"));
-				list.setPС_USER(rs.getString("PС_USER"));
+				list.setPРЎ_TYPE(rs.getString("PРЎ_TYPE"));
+				list.setPРЎ_AFT_FNAME(rs.getString("PРЎ_AFT_FNAME"));
+				list.setPРЎ_USER(rs.getString("PРЎ_USER"));
+				
+				list.setBEF_LNAME(rs.getString("BEF_LNAME"));
+				list.setBEF_FNAME(rs.getString("BEF_FNAME"));
+				list.setBEF_MNAME(rs.getString("BEF_MNAME"));
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 
 				dlist.add(list);
 			}
@@ -733,18 +801,12 @@ public class PaternList {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * км обновить
+	 * РєРј РѕР±РЅРѕРІРёС‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -754,7 +816,7 @@ public class PaternList {
 	}
 
 	/**
-	 * кс добавить
+	 * РєСЃ РґРѕР±Р°РІРёС‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -764,14 +826,14 @@ public class PaternList {
 	}
 
 	/**
-	 * км редактировать
+	 * РєРј СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void CmEdit(ActionEvent event) {
 		if (PATERN_CERT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 		} else {
 			Edit(PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID(),
 					(Stage) PATERN_CERT.getScene().getWindow());
@@ -779,7 +841,7 @@ public class PaternList {
 	}
 
 	/**
-	 * км печать
+	 * РєРј РїРµС‡Р°С‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -789,7 +851,7 @@ public class PaternList {
 	}
 
 	/**
-	 * км удалить
+	 * РєРј СѓРґР°Р»РёС‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -799,7 +861,7 @@ public class PaternList {
 	}
 
 	/**
-	 * добавить
+	 * РґРѕР±Р°РІРёС‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -809,14 +871,14 @@ public class PaternList {
 	}
 
 	/**
-	 * кн редактировать
+	 * РєРЅ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void BtEdit(ActionEvent event) {
 		if (PATERN_CERT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
+			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 		} else {
 			Edit(PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID(),
 					(Stage) PATERN_CERT.getScene().getWindow());
@@ -824,7 +886,7 @@ public class PaternList {
 	}
 
 	/**
-	 * Кн удалить
+	 * РљРЅ СѓРґР°Р»РёС‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -834,7 +896,7 @@ public class PaternList {
 	}
 
 	/**
-	 * Кнопка печать
+	 * РљРЅРѕРїРєР° РїРµС‡Р°С‚СЊ
 	 * 
 	 * @param event
 	 */
@@ -844,16 +906,15 @@ public class PaternList {
 	}
 
 	/**
-	 * Подключение к базе
+	 * РџРѕРґРєР»СЋС‡РµРЅРёРµ Рє Р±Р°Р·Рµ
 	 */
 	private Connection conn;
 
 	/**
-	 * Открыть сессию
+	 * РћС‚РєСЂС‹С‚СЊ СЃРµСЃСЃРёСЋ
 	 */
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "PaternList");
@@ -862,36 +923,25 @@ public class PaternList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Закрыть сессию
+	 * Р—Р°РєСЂС‹С‚СЊ СЃРµСЃСЃРёСЋ
 	 */
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
-		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/**
-	 * Форматирование даты и времени
+	 * Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ РґР°С‚С‹ Рё РІСЂРµРјРµРЅРё
 	 * 
 	 * @param tc
 	 */
@@ -915,7 +965,7 @@ public class PaternList {
 	}
 
 	/**
-	 * Форматирование даты
+	 * Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ РґР°С‚С‹
 	 * 
 	 * @param tc
 	 */
@@ -952,33 +1002,33 @@ public class PaternList {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");
 
-		CheckBox filterVisible = new CheckBox("Показать фильтр");
+		CheckBox filterVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ С„РёР»СЊС‚СЂ");
 		filterVisible.selectedProperty().bindBidirectional(table.filterRowVisibleProperty());
 
-		CheckBox menuButtonVisible = new CheckBox("Показать кнопку меню");
+		CheckBox menuButtonVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ РєРЅРѕРїРєСѓ РјРµРЅСЋ");
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
-		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
+		CheckBox firstFilterable = new CheckBox("Р¤РёР»СЊС‚СЂСѓРµРјС‹Р№ РїРµСЂРІС‹Р№ СЃС‚РѕР»Р±РµС†");
 		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(PC_ID.filterableProperty());
 
-		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
+		CheckBox includeHidden = new CheckBox("Р’РєР»СЋС‡РёС‚СЊ СЃРєСЂС‹С‚С‹Рµ СЃС‚РѕР»Р±С†С‹");
 		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
+		CheckBox andFilters = new CheckBox("РСЃРїРѕР»СЊР·СѓР№С‚Рµ РѕРїРµСЂР°С†РёСЋ \"Р\" РґР»СЏ РјРЅРѕРіРѕРєРѕР»РѕРЅРѕС‡РЅРѕРіРѕ С„РёР»СЊС‚СЂР°");
 		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
 		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
 
-		TitledBorderPane p = new TitledBorderPane("Настройки", pane);
+		TitledBorderPane p = new TitledBorderPane("РќР°СЃС‚СЂРѕР№РєРё", pane);
 		p.getStyleClass().add("top-border-only");
 		p.setStyle("-fx-border-insets: 10 0 0 0");
 		return p;
 	}
 
 	/**
-	 * Инициализация
+	 * РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
@@ -1006,13 +1056,14 @@ public class PaternList {
 			ChildrenFio.setColumnFilter(new PatternColumnFilter<>());
 			ChildrenBirth.setColumnFilter(new DateColumnFilter<>());
 			MotherFio.setColumnFilter(new PatternColumnFilter<>());
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			FatherBirthDate.setColumnFilter(new DateColumnFilter<>());
 			MotherBirthDate.setColumnFilter(new DateColumnFilter<>());
 
 			dbConnect();
 			Refresh();
 			/**
-			 * Столбцы таблицы
+			 * РЎС‚РѕР»Р±С†С‹ С‚Р°Р±Р»РёС†С‹
 			 */
 			{
 				PC_ID.setCellValueFactory(cellData -> cellData.getValue().PC_IDProperty().asObject());
@@ -1022,19 +1073,20 @@ public class PaternList {
 				ChildrenFio.setCellValueFactory(cellData -> cellData.getValue().CHILDFIOProperty());
 				ChildrenBirth.setCellValueFactory(cellData -> cellData.getValue().CHILDRENBIRTHProperty());
 				MotherFio.setCellValueFactory(cellData -> cellData.getValue().MOTHERFIOProperty());
-				OPER.setCellValueFactory(cellData -> cellData.getValue().PС_USERProperty());
+				OPER.setCellValueFactory(cellData -> cellData.getValue().PРЎ_USERProperty());
+				DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 				FatherBirthDate.setCellValueFactory(cellData -> cellData.getValue().FATHERBIRTHDATEProperty());
 				MotherBirthDate.setCellValueFactory(cellData -> cellData.getValue().MOTHERBIRTHDATEProperty());
 
 			}
 
-			// двойной щелчок
+			// РґРІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє
 			PATERN_CERT.setRowFactory(tv -> {
 				TableRow<PATERN_CERT> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
 						if (PATERN_CERT.getSelectionModel().getSelectedItem() == null) {
-							Msg.Message("Выберите строку!");
+							Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
 						} else {
 							Edit(PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID(),
 									(Stage) PATERN_CERT.getScene().getWindow());
@@ -1044,10 +1096,10 @@ public class PaternList {
 				return row;
 			});
 			/**
-			 * ФД
+			 * Р¤Р”
 			 */
 			{
-				// CellDateFormatDT(PС_DATE);
+				// CellDateFormatDT(PРЎ_DATE);
 				CellDateFormatD(FatherBirthDate);
 				CellDateFormatD(MotherBirthDate);
 				CellDateFormatD(ChildrenBirth);
@@ -1058,26 +1110,16 @@ public class PaternList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	PATERN_CERT Initialize2(Integer docid) {
 		PATERN_CERT list = null;
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-
 			String selectStmt = "select * from v_patern_cert where PC_ID = ? ";
-
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			prepStmt.setInt(1, docid);
 			ResultSet rs = prepStmt.executeQuery();
@@ -1085,8 +1127,8 @@ public class PaternList {
 			while (rs.next()) {
 				list = new PATERN_CERT();
 
-				list.setPС_FZ((rs.getDate("PС_FZ") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_FZ")), formatter)
+				list.setPРЎ_FZ((rs.getDate("PРЎ_FZ") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PРЎ_FZ")), formatter)
 						: null);
 				list.setMOTHERBIRTHDATE((rs.getDate("MOTHERBIRTHDATE") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MOTHERBIRTHDATE")), formatter) : null);
@@ -1094,11 +1136,11 @@ public class PaternList {
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CHILDRENBIRTH")), formatter) : null);
 				list.setFATHERFIO(rs.getString("FATHERFIO"));
 				list.setPC_ACT_ID(rs.getInt("PC_ACT_ID"));
-				list.setPС_CH(rs.getInt("PС_CH"));
-				list.setPС_SERIA(rs.getString("PС_SERIA"));
-				list.setPС_NUMBER(rs.getString("PС_NUMBER"));
-				list.setTM$PС_DATE((rs.getDate("TM$PС_DATE") != null) ? LocalDateTime.parse(
-						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$PС_DATE")), formatterwt)
+				list.setPРЎ_CH(rs.getInt("PРЎ_CH"));
+				list.setPРЎ_SERIA(rs.getString("PРЎ_SERIA"));
+				list.setPРЎ_NUMBER(rs.getString("PРЎ_NUMBER"));
+				list.setTM$PРЎ_DATE((rs.getDate("TM$PРЎ_DATE") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$PРЎ_DATE")), formatterwt)
 						: null);
 				list.setPC_ZLNAME(rs.getString("PC_ZLNAME"));
 				list.setMOTHERFIO(rs.getString("MOTHERFIO"));
@@ -1109,39 +1151,38 @@ public class PaternList {
 				list.setCR_TIME(rs.getString("CR_TIME"));
 				list.setFATHERBIRTHDATE((rs.getDate("FATHERBIRTHDATE") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("FATHERBIRTHDATE")), formatter) : null);
-				list.setPС_F(rs.getInt("PС_F"));
-				list.setPС_CRDATE((rs.getDate("PС_CRDATE") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_CRDATE")), formatter)
+				list.setPРЎ_F(rs.getInt("PРЎ_F"));
+				list.setPРЎ_CRDATE((rs.getDate("PРЎ_CRDATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PРЎ_CRDATE")), formatter)
 						: null);
-				list.setPС_TRZ((rs.getDate("PС_TRZ") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_TRZ")), formatter)
+				list.setPРЎ_TRZ((rs.getDate("PРЎ_TRZ") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PРЎ_TRZ")), formatter)
 						: null);
 				list.setPC_ZMNAME(rs.getString("PC_ZMNAME"));
-				list.setPС_AFT_LNAME(rs.getString("PС_AFT_LNAME"));
+				list.setPРЎ_AFT_LNAME(rs.getString("PРЎ_AFT_LNAME"));
 				list.setPC_ZFNAME(rs.getString("PC_ZFNAME"));
 				list.setCHILDFIO(rs.getString("CHILDFIO"));
-				list.setPС_CRNAME(rs.getString("PС_CRNAME"));
-				list.setPС_M(rs.getInt("PС_M"));
-				list.setPС_AFT_MNAME(rs.getString("PС_AFT_MNAME"));
-				list.setPС_ZAGS(rs.getInt("PС_ZAGS"));
+				list.setPРЎ_CRNAME(rs.getString("PРЎ_CRNAME"));
+				list.setPРЎ_M(rs.getInt("PРЎ_M"));
+				list.setPРЎ_AFT_MNAME(rs.getString("PРЎ_AFT_MNAME"));
+				list.setPРЎ_ZAGS(rs.getInt("PРЎ_ZAGS"));
 				list.setPC_ID(rs.getInt("PC_ID"));
-				list.setPС_TYPE(rs.getString("PС_TYPE"));
-				list.setPС_AFT_FNAME(rs.getString("PС_AFT_FNAME"));
-				list.setPС_USER(rs.getString("PС_USER"));
+				list.setPРЎ_TYPE(rs.getString("PРЎ_TYPE"));
+				list.setPРЎ_AFT_FNAME(rs.getString("PРЎ_AFT_FNAME"));
+				list.setPРЎ_USER(rs.getString("PРЎ_USER"));
 
+				list.setBEF_LNAME(rs.getString("BEF_LNAME"));
+				list.setBEF_FNAME(rs.getString("BEF_FNAME"));
+				list.setBEF_MNAME(rs.getString("BEF_MNAME"));
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+				
 				dlist.add(list);
 			}
 			prepStmt.close();
 			rs.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return list;
 	}
@@ -1162,7 +1203,7 @@ public class PaternList {
 	}
 
 	/**
-	 * Сравнение данных
+	 * РЎСЂР°РІРЅРµРЅРёРµ РґР°РЅРЅС‹С…
 	 * 
 	 * @return
 	 */
@@ -1186,22 +1227,15 @@ public class PaternList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
-
 		return ret;
 	}
 
 	String RetXml;
 
 	/**
-	 * Возврат XML файлов для сравнения
+	 * Р’РѕР·РІСЂР°С‚ XML С„Р°Р№Р»РѕРІ РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ
 	 */
 	void XmlsForCompare(Integer docid) {
 		try {
@@ -1220,21 +1254,14 @@ public class PaternList {
 				r1.read(char_xmls);
 				// strings
 				RetXml = new String(char_xmls);
-				System.out.println(RetXml);
+				//System.out.println(RetXml);
 			} else {
 				Msg.Message(callStmt.getString(2));
 				Main.logger.error(callStmt.getString(2) + "~" + Thread.currentThread().getName());
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 }

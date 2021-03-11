@@ -20,7 +20,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -180,8 +179,6 @@ public class DeathList {
 	 */
 	void Add() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			if (DBUtil.OdbAction(104) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
@@ -225,8 +222,6 @@ public class DeathList {
 			if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите строку!");
 			} else {
-				Main.logger = Logger.getLogger(getClass());
-
 				if (DBUtil.OdbAction(106) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
@@ -279,16 +274,9 @@ public class DeathList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(
-										ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								DBUtil.LOG_ERROR(e1);
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
@@ -315,8 +303,6 @@ public class DeathList {
 	DEATH_CERT Initialize2(Integer docid) {
 		DEATH_CERT list = null;
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			String selectStmt = "select * from vdeath_cert t where DC_ID  = ?";
@@ -383,8 +369,6 @@ public class DeathList {
 	public void Edit(Integer docid, Stage stage_) {
 		try {
 			if (isopen == false) {
-				Main.logger = Logger.getLogger(getClass());
-
 				if (DBUtil.OdbAction(105) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
@@ -530,7 +514,6 @@ public class DeathList {
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
-
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

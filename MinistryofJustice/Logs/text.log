@@ -1,0 +1,432 @@
+[11.03.2021 21:52:17] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="71016580163901616016580163801638016210164001625016460166101626016270163601624016180161801618016180161801644016810168701672016790161101653016120160301638016820168501672016110165501648016120160301676016240161601623016240162801619016030163801651016560160301635016030162201617016220161901642016430169301618016180161801618016180261802611026140262801603026280261102619026150160302615026250262315" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 21:52:17] [Auth1c] INFO :380 - User
+[11.03.2021 21:52:17] [Auth1c] INFO :381 - User
+[11.03.2021 21:52:17] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 21:52:17] [Auth1c] INFO :466 - ~~~~~~~~~~~~~~~
+[11.03.2021 21:52:17] [Auth1c] INFO :467 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="11.03.2021 21:54:58"/>>
+[11.03.2021 21:52:17] [Auth1c] INFO :468 - ~~~~~~~~~~~~~~~
+[11.03.2021 21:52:17] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 21:54:58"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Трапш" Имя="Денис" Отчество="Гурамович" ДатаРождения="06.06.0019 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 21:52:17] [Auth1c] INFO :380 - User
+[11.03.2021 21:52:17] [Auth1c] INFO :381 - User
+[11.03.2021 21:52:17] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[11.03.2021 21:52:23] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="51030380301902996030380301803018030010302003005030260304103006030070301603004029980299802998029980299803024030610306703052030590299103033029920298303018030620306503052029910303503028029920298303056030040299603003030040300802999029830301803031030360298303015029830300202997030020299903022030230307302998029980299802998029980399803991039940400802983040080399103999039950298303995040050400329" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 21:52:23] [Auth1c] INFO :380 - User
+[11.03.2021 21:52:23] [Auth1c] INFO :381 - User
+[11.03.2021 21:52:23] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 21:52:23] [Auth1c] INFO :466 - ~~~~~~~~~~~~~~~
+[11.03.2021 21:52:23] [Auth1c] INFO :467 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="11.03.2021 21:55:03"/>>
+[11.03.2021 21:52:23] [Auth1c] INFO :468 - ~~~~~~~~~~~~~~~
+[11.03.2021 21:52:23] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 21:55:03"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Трапш" Имя="Денис" Отчество="Гурамович" ДатаРождения="06.06.1984 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 21:52:23] [Auth1c] INFO :380 - User
+[11.03.2021 21:52:23] [Auth1c] INFO :381 - User
+[11.03.2021 21:52:23] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[11.03.2021 21:53:43] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="46056330561405591056330561305613055960561505600056210563605601056020561105599055930559305593055930559305619056560566205647056540558605628055870557805613056570566005647055860563005623055870557805651055990559105598055990560305594055780561305626056310557805610055780559705592055970559405617056180566805593055930559305593055930659306586065890660305578066030658606594065900557806590066000659855" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 21:53:43] [Auth1c] INFO :380 - User
+[11.03.2021 21:53:43] [Auth1c] INFO :381 - User
+[11.03.2021 21:53:43] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 21:53:43] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 21:56:24"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Трапш" Имя="Денис" Отчество="Гурамович" ДатаРождения="06.06.1984 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD4852A0-9733-4012-E053-4740470A6727" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.01.0001 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 21:53:43] [Auth1c] INFO :380 - User
+[11.03.2021 21:53:43] [Auth1c] INFO :381 - User
+[11.03.2021 21:53:43] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.03.2021 21:55:31] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="50021370211802095021370211702117021000211902104021250214002105021060211502103020970209702097020970209702123021600216602151021580209002132020910208202117021610216402151020900213402127020910208202155021030209502102021030210702098020820211702130021350208202114020820210102096021010209802121021220217202097020970209702097020970309703090030930310702082031070309003098030940208203094031040310220" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 21:55:31] [Auth1c] INFO :380 - User
+[11.03.2021 21:55:31] [Auth1c] INFO :381 - User
+[11.03.2021 21:55:31] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 21:55:31] [Auth1c] INFO :466 - ~~~~~~~~~~~~~~~
+[11.03.2021 21:55:31] [Auth1c] INFO :467 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="11.03.2021 21:58:12"/>>
+[11.03.2021 21:55:31] [Auth1c] INFO :468 - ~~~~~~~~~~~~~~~
+[11.03.2021 21:55:31] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 21:58:12"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Мишелия" Имя="Амина" Отчество="Денисовна" ДатаРождения="13.05.2020 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 21:55:31] [Auth1c] INFO :380 - User
+[11.03.2021 21:55:31] [Auth1c] INFO :381 - User
+[11.03.2021 21:55:31] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[11.03.2021 21:58:43] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="41028280280902786028280280802808027910281002795028160283102796027970280602794027880278802788027880278802814028510285702842028490278102823027820277302808028520285502842027810282502818027820277302846027940278602793027940279802789027730280802821028260277302805027730279202787027920278902812028130286302788027880278802788027880378803781037840379802773037980378103789037850277303785037950379327" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 21:58:43] [Auth1c] INFO :380 - User
+[11.03.2021 21:58:43] [Auth1c] INFO :381 - User
+[11.03.2021 21:58:43] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 21:58:43] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 22:01:24"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Мишелия" Имя="Амина" Отчество="Денисовна" ДатаРождения="13.05.2020 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="8" НаименованиеРайона="г. Сухум" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD486483-3FB4-40D0-E053-4740470A6AFA" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.01.0001 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 21:58:43] [Auth1c] INFO :380 - User
+[11.03.2021 21:58:43] [Auth1c] INFO :381 - User
+[11.03.2021 21:58:43] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.03.2021 22:00:31] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="54094410942209399094410942109421094040942309408094290944409409094100941909407094010940109401094010940109427094640947009455094620939409436093950938609421094650946809455093940943809431093950938609459094070939909406094070941109402093860942109434094390938609418093860940509400094050940209425094260947609401094010940109401094011040110394103971041109386104111039410402103980938610398104081040693" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 22:00:31] [Auth1c] INFO :380 - User
+[11.03.2021 22:00:31] [Auth1c] INFO :381 - User
+[11.03.2021 22:00:31] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 22:00:31] [Auth1c] INFO :466 - ~~~~~~~~~~~~~~~
+[11.03.2021 22:00:31] [Auth1c] INFO :467 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="11.03.2021 22:03:11"/>>
+[11.03.2021 22:00:31] [Auth1c] INFO :468 - ~~~~~~~~~~~~~~~
+[11.03.2021 22:00:31] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 22:03:11"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Мшьалия" Имя="Сабина" Отчество="Миродовна" ДатаРождения="01.04.1996 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 22:00:31] [Auth1c] INFO :380 - User
+[11.03.2021 22:00:31] [Auth1c] INFO :381 - User
+[11.03.2021 22:00:31] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[11.03.2021 22:00:34] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="71023580233902316023580233802338023210234002325023460236102326023270233602324023180231802318023180231802344023810238702372023790231102353023120230302338023820238502372023110235502348023120230302376023240231602323023240232802319023030233802351023560230302335023030232202317023220231902342023430239302318023180231802318023180331803311033140332802303033280331103319033150230303315033250332322" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 22:00:34] [Auth1c] INFO :380 - User
+[11.03.2021 22:00:34] [Auth1c] INFO :381 - User
+[11.03.2021 22:00:34] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 22:00:34] [Auth1c] INFO :466 - ~~~~~~~~~~~~~~~
+[11.03.2021 22:00:34] [Auth1c] INFO :467 - AuthReturn=<<?xml version="1.0" encoding="UTF-8"?>
+<Ответ ОтветНаПопыткуАвторизации="11.03.2021 22:03:14"/>>
+[11.03.2021 22:00:34] [Auth1c] INFO :468 - ~~~~~~~~~~~~~~~
+[11.03.2021 22:00:34] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 22:03:14"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Фамилия="Мшьалия" Имя="Сабина" Отчество="Миродовна" ДатаРождения="01.04.1991 0:00:00"/>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 22:00:34] [Auth1c] INFO :380 - User
+[11.03.2021 22:00:34] [Auth1c] INFO :381 - User
+[11.03.2021 22:00:34] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/GetData/FIO
+[11.03.2021 22:02:16] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="37086240860508582086240860408604085870860608591086120862708592085930860208590085840858408584085840858408610086470865308638086450857708619085780856908604086480865108638085770862108614085780856908642085900858208589085900859408585085690860408617086220856908601085690858808583085880858508608086090865908584085840858408584085840958409577095800959408569095940957709585095810856909581095910958985" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 22:02:16] [Auth1c] INFO :380 - User
+[11.03.2021 22:02:16] [Auth1c] INFO :381 - User
+[11.03.2021 22:02:16] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 22:02:16] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 22:04:57"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Мишелия" Имя="Сабина" Отчество="Миродовна" ДатаРождения="01.04.1991 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD487137-9162-4216-E053-4740470A1EA8" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.01.0001 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 22:02:16] [Auth1c] INFO :380 - User
+[11.03.2021 22:02:16] [Auth1c] INFO :381 - User
+[11.03.2021 22:02:16] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.03.2021 22:08:24] [DbTracer] ERROR:140 - java.io.FileNotFoundException: C:\MJ_\Logs\text.log (Системе не удается найти указанный путь)
+	at java.io.FileInputStream.open0(Native Method)
+	at java.io.FileInputStream.open(FileInputStream.java:195)
+	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+	at java.util.Scanner.<init>(Scanner.java:611)
+	at mj.widgets.DbTracer.Refresh(DbTracer.java:41)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+[11.03.2021 22:08:46] [DbTracer] ERROR:140 - java.io.FileNotFoundException: C:\MJ_\Logs\text.log (Системе не удается найти указанный путь)
+	at java.io.FileInputStream.open0(Native Method)
+	at java.io.FileInputStream.open(FileInputStream.java:195)
+	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+	at java.util.Scanner.<init>(Scanner.java:611)
+	at mj.widgets.DbTracer.Refresh(DbTracer.java:41)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+[11.03.2021 22:18:58] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="10067970677806755067970677706777067600677906764067850680006765067660677506763067570675706757067570675706783068200682606811068180675006792067510674206777068210682406811067500679406787067510674206815067630675506762067630676706758067420677706790067950674206774067420676106756067610675806781067820683206757067570675706757067570775707750077530776706742077670775007758077540674207754077640776267" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 22:18:58] [Auth1c] INFO :380 - User
+[11.03.2021 22:18:58] [Auth1c] INFO :381 - User
+[11.03.2021 22:18:58] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 22:18:59] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 22:21:39"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Трапш" Имя="Денис" Отчество="Гурамович" ДатаРождения="06.07.1984 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD4852A0-9733-4012-E053-4740470A6727" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 22:18:59] [Auth1c] INFO :380 - User
+[11.03.2021 22:18:59] [Auth1c] INFO :381 - User
+[11.03.2021 22:18:59] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.03.2021 22:19:08] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="83075700755107528075700755007550075330755207537075580757307538075390754807536075300753007530075300753007556075930759907584075910752307565075240751507550075940759707584075230756707560075240751507588075360752807535075360754007531075150755007563075680751507547075150753407529075340753107554075550760507530075300753007530075300853008523085260854007515085400852308531085270751508527085370853574" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 22:19:08] [Auth1c] INFO :380 - User
+[11.03.2021 22:19:08] [Auth1c] INFO :381 - User
+[11.03.2021 22:19:08] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 22:19:08] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 22:21:48"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Трапш" Имя="Денис" Отчество="Гурамович" ДатаРождения="06.07.1984 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD4852A0-9733-4012-E053-4740470A6727" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 22:19:08] [Auth1c] INFO :380 - User
+[11.03.2021 22:19:08] [Auth1c] INFO :381 - User
+[11.03.2021 22:19:08] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.03.2021 22:19:24] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="85013720135301330013720135201352013350135401339013600137501340013410135001338013320133201332013320133201358013950140101386013930132501367013260131701352013960139901386013250136901362013260131701390013380133001337013380134201333013170135201365013700131701349013170133601331013360133301356013570140701332013320133201332013320233202325023280234201317023420232502333023290131702329023390233712" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 22:19:24] [Auth1c] INFO :380 - User
+[11.03.2021 22:19:24] [Auth1c] INFO :381 - User
+[11.03.2021 22:19:24] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 22:19:25] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 22:22:05"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Трапш" Имя="Денис" Отчество="Гурамович" ДатаРождения="06.07.1984 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD4852A0-9733-4012-E053-4740470A6727" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 22:19:25] [Auth1c] INFO :380 - User
+[11.03.2021 22:19:25] [Auth1c] INFO :381 - User
+[11.03.2021 22:19:25] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.03.2021 22:41:06] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="96083830836408341083830836308363083460836508350083710838608351083520836108349083430834308343083430834308369084060841208397084040833608378083370832808363084070841008397083360838008373083370832808401083490834108348083490835308344083280836308376083810832808360083280834708342083470834408367083680841808343083430834308343083430934309336093390935308328093530933609344093400832809340093500934882" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 22:41:06] [Auth1c] INFO :380 - User
+[11.03.2021 22:41:06] [Auth1c] INFO :381 - User
+[11.03.2021 22:41:06] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 22:41:07] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 22:43:47"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Мишелия" Имя="Сабина" Отчество="Миродовна" ДатаРождения="01.04.1991 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD487137-9162-4216-E053-4740470A1EA8" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 22:41:07] [Auth1c] INFO :380 - User
+[11.03.2021 22:41:07] [Auth1c] INFO :381 - User
+[11.03.2021 22:41:07] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.03.2021 22:41:19] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="65062520623306210062520623206232062150623406219062400625506220062210623006218062120621206212062120621206238062750628106266062730620506247062060619706232062760627906266062050624906242062060619706270062180621006217062180622206213061970623206245062500619706229061970621606211062160621306236062370628706212062120621206212062120721207205072080722206197072220720507213072090619707209072190721761" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[11.03.2021 22:41:19] [Auth1c] INFO :380 - User
+[11.03.2021 22:41:19] [Auth1c] INFO :381 - User
+[11.03.2021 22:41:19] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.03.2021 22:41:20] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="11.03.2021 22:44:00"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Пачулия Саид Викторович" ID="" КодСсылки="" Фамилия="Мишелия" Имя="Сабина" Отчество="Миродовна" ДатаРождения="01.04.1991 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="2" НаименованиеРайона="Гудаутский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD487137-9162-4216-E053-4740470A1EA8" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.03.2021 22:41:20] [Auth1c] INFO :380 - User
+[11.03.2021 22:41:20] [Auth1c] INFO :381 - User
+[11.03.2021 22:41:20] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority

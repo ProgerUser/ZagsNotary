@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -128,6 +127,26 @@ public class EditPatern {
 	@FXML
 	private TextField PC_ZMNAME;
 
+
+    
+    //Новые поля 11.03.2021
+    @FXML
+    private TitledPane Bef;
+    @FXML
+    private TitledPane Doc_Num;
+
+    @FXML
+    private TextField BEF_LNAME;
+
+    @FXML
+    private TextField BEF_FNAME;
+
+    @FXML
+    private TextField BEF_MNAME;
+    
+    @FXML
+    private TextField DOC_NUMBER;
+    
 	// ______________Методы_____________
 	/**
 	 * Выбрать ребенка
@@ -221,7 +240,6 @@ public class EditPatern {
 	 */
 	void ActList(TextField number) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -366,13 +384,7 @@ public class EditPatern {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -385,7 +397,6 @@ public class EditPatern {
 	 */
 	void CusList(TextField number, TextField name) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -487,13 +498,7 @@ public class EditPatern {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -543,10 +548,8 @@ public class EditPatern {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			CallableStatement callStmt = conn
-					.prepareCall("{ call PATERN.EditPatern(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call PATERN.EditPatern(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setInt(2, pat_cert.getPC_ID());
 			callStmt.setString(3, PС_NUMBER.getText());
@@ -584,6 +587,11 @@ public class EditPatern {
 			callStmt.setString(19, PC_ZFNAME.getText());
 			callStmt.setString(20, PC_ZMNAME.getText());
 
+			callStmt.setString(21, BEF_LNAME.getText());
+			callStmt.setString(22, BEF_FNAME.getText());
+			callStmt.setString(23, BEF_MNAME.getText());
+			callStmt.setString(24, DOC_NUMBER.getText());
+			
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -600,22 +608,14 @@ public class EditPatern {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void SaveCompare() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			CallableStatement callStmt = conn
-					.prepareCall("{ call PATERN.EditPatern(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call PATERN.EditPatern(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setInt(2, pat_cert.getPC_ID());
 			callStmt.setString(3, PС_NUMBER.getText());
@@ -652,16 +652,16 @@ public class EditPatern {
 			callStmt.setString(18, PC_ZLNAME.getText());
 			callStmt.setString(19, PC_ZFNAME.getText());
 			callStmt.setString(20, PC_ZMNAME.getText());
+			
+			callStmt.setString(21, BEF_LNAME.getText());
+			callStmt.setString(22, BEF_FNAME.getText());
+			callStmt.setString(23, BEF_MNAME.getText());
+			callStmt.setString(24, DOC_NUMBER.getText());
+			
 			callStmt.execute();
 			callStmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -716,8 +716,10 @@ public class EditPatern {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
+			Bef.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
+			Doc_Num.heightProperty().addListener(
+					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Pane1.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Pane2.heightProperty().addListener(
@@ -801,17 +803,17 @@ public class EditPatern {
 			PС_SERIA.setText(pat_cert.getPС_SERIA());
 			PС_NUMBER.setText(pat_cert.getPС_NUMBER());
 			
+			BEF_LNAME.setText(pat_cert.getBEF_LNAME());
+			BEF_FNAME.setText(pat_cert.getBEF_FNAME());
+			BEF_MNAME.setText(pat_cert.getBEF_MNAME());
+			DOC_NUMBER.setText(pat_cert.getDOC_NUMBER());
+			
 			new ConvConst().FormatDatePiker(PС_FZ);
 			new ConvConst().FormatDatePiker(PС_CRDATE);
 			new ConvConst().FormatDatePiker(PС_TRZ);
 			
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
