@@ -1,8 +1,9 @@
 package mj.otd;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -18,6 +19,7 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
 import mj.users.OTD;
+import mj.widgets.DbmsOutputCapture;
 
 public class EditOtd {
 
@@ -30,14 +32,27 @@ public class EditOtd {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			PreparedStatement oper = conn
-					.prepareStatement("update otd set IOTDNUM = ? , COTDNAME = ? where IOTDNUM = ?");
-			oper.setInt(1, Integer.valueOf(IOTDNUM.getText()));
-			oper.setString(2, COTDNAME.getText());
-			oper.setInt(3, Integer.valueOf(IOTDNUM.getText()));
-			oper.executeUpdate();
-			oper.close();
+			CallableStatement call = conn.prepareCall(
+					"begin dbms_output.put_line('asdasd');update otd set IOTDNUM = ? , COTDNAME = ? where IOTDNUM = ?; end;");
+			call.setInt(1, Integer.valueOf(IOTDNUM.getText()));
+			call.setString(2, COTDNAME.getText());
+			call.setInt(3, Integer.valueOf(IOTDNUM.getText()));
+			
+			try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
+				List<String> lines = capture.execute(call);
+				System.out.println(lines);
+			} catch (Exception e) {
+				DBUtil.LOG_ERROR(e);
+			}
+			
+			call.close();
+//			PreparedStatement oper = conn
+//					.prepareStatement("update otd set IOTDNUM = ? , COTDNAME = ? where IOTDNUM = ?");
+//			oper.setInt(1, Integer.valueOf(IOTDNUM.getText()));
+//			oper.setString(2, COTDNAME.getText());
+//			oper.setInt(3, Integer.valueOf(IOTDNUM.getText()));
+//			oper.executeUpdate();
+//			oper.close();
 			setStatus(true);
 			onclose();
 		} catch (SQLException e) {
