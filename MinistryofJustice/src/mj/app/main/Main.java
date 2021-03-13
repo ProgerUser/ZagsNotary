@@ -14,6 +14,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
 import com.jyloo.syntheticafx.DesktopPane;
+import com.jyloo.syntheticafx.Dialog;
+import com.jyloo.syntheticafx.Frame;
 import com.jyloo.syntheticafx.InternalFrame;
 import com.jyloo.syntheticafx.RootPane;
 import com.jyloo.syntheticafx.SyntheticaFX;
@@ -239,6 +241,7 @@ public class Main extends Application {
 			/* log4j */
 			DOMConfigurator.configure(getClass().getResource("/log4j.xml"));
 			// logger.info("MJ Start: " + Thread.currentThread().getName());
+			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
 			Main.primaryStage = primaryStage;
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
@@ -286,12 +289,13 @@ public class Main extends Application {
 			rootLayout = (BorderPane) loader.load();
 			// desktopPane = new DesktopPane();
 			// rootLayout.setCenter(desktopPane);
-			Scene scene = new Scene(rootLayout); // We are sending rootLayout to the Scene.
+			// Scene scene = new Scene(rootLayout); // We are sending rootLayout to the
+			// Scene.
 //			Style startingStyle = Style.LIGHT;
 //			JMetro jMetro = new JMetro(startingStyle);
 //			System.setProperty("prism.lcdtext", "false");
 //			jMetro.setScene(scene);
-			// Scene scene = new Scene(new RootPane(primaryStage, rootLayout));
+			Scene scene = new Scene(new RootPane(primaryStage, rootLayout, true, true));
 			primaryStage.setScene(scene); // Set the scene in primary stage.
 			primaryStage.show(); // Display the primary stage
 		} catch (Exception e) {
@@ -1044,15 +1048,18 @@ public class Main extends Application {
 	public static void Users() {
 		try {
 			if (UsrWin) {
+			
 				UsrWin = false;
 				Stage stage = new Stage();
 				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/users/Usr.fxml"));
 				Parent root = loader.load();
-				stage.setScene(new Scene(root));
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("Пользователи");
 				stage.initOwner(primaryStage);
 				UsrC controller = loader.getController();
+				Scene scene = new Scene(new RootPane(stage,root,true,true));
+				//stage.setScene(new Scene(root));
+				stage.setScene(scene);
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {
@@ -1060,6 +1067,11 @@ public class Main extends Application {
 						controller.dbDisconnect();
 					}
 				});
+//				InternalFrame iFrame = new InternalFrame("Пользователи", new RootPane(stage,root,true,true));
+//				iFrame.getIcons().add(new Image("/icon.png"));
+//				iFrame.setSelected(true);
+//				desktopPane.getChildren().add(iFrame);
+//				rootLayout.setCenter(desktopPane);
 				stage.show();
 			}
 		} catch (Exception e) {

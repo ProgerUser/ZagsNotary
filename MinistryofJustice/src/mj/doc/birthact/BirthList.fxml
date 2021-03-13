@@ -9,6 +9,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
@@ -73,7 +74,7 @@
                                  </font></Tooltip>
 									</tooltip>
 									<graphic>
-										<FontAwesomeIconView fill="BLACK" glyphName="PLUS" size="20.0" />
+										<FontAwesomeIconView fill="BLACK" glyphName="PLUS" size="18" />
 									</graphic>
                            <font>
                               <Font size="10.0" />
@@ -90,7 +91,7 @@
 										<Font size="10.0" />
 									</font>
 									<graphic>
-										<FontAwesomeIconView glyphName="EDIT" size="20" />
+										<FontAwesomeIconView glyphName="EDIT" size="18" />
 									</graphic>
 								</Button>
 								<Button fx:id="BIRTH_ACT_DELETE" maxWidth="30.0" mnemonicParsing="false" onAction="#BIRTH_ACT_DELETE">
@@ -104,9 +105,10 @@
 										<Font size="10.0" />
 									</font>
 									<graphic>
-										<FontAwesomeIconView glyphName="TIMES" size="20" />
+										<FontAwesomeIconView glyphName="TIMES" size="18" />
 									</graphic>
 								</Button>
+                        <Separator orientation="VERTICAL" />
                         <Button mnemonicParsing="false" onAction="#BtnRefresh">
                            <tooltip>
                               <Tooltip text="Обновить">
@@ -118,9 +120,10 @@
                               <Font size="10.0" />
                            </font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="REFRESH" size="20" />
+                              <FontAwesomeIconView glyphName="REFRESH" size="18" />
                            </graphic>
                         </Button>
+                        <Separator orientation="VERTICAL" />
       								<Button fx:id="BIRTH_ACT_PRINT" maxWidth="30.0" mnemonicParsing="false" onAction="#BIRTH_ACT_PRINT">
       									<tooltip>
       										<Tooltip text="Печать">
@@ -132,7 +135,7 @@
       										<Font size="10.0" />
       									</font>
       									<graphic>
-      										<FontAwesomeIconView glyphName="PRINT" size="20" />
+      										<FontAwesomeIconView glyphName="PRINT" size="18" />
       									</graphic>
       								</Button>
                         <Button layoutX="152.0" layoutY="10.0" maxWidth="30.0" mnemonicParsing="false" onAction="#PrintBlank">
@@ -147,7 +150,7 @@
                               <Font size="10.0" />
                            </font>
                            <graphic>
-                              <FontAwesomeIconView fill="#2c2ff2" glyphName="PRINT" size="20" />
+                              <FontAwesomeIconView fill="#2c2ff2" glyphName="PRINT" size="18" />
                            </graphic>
                         </Button>
                      </items>
