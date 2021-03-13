@@ -707,8 +707,8 @@ public class UtilCus {
 
 			cusllists.setItems(cuslist);
 
-			cusllists.setPrefWidth(500);
-			cusllists.setPrefHeight(350);
+			cusllists.setPrefWidth(700);
+			cusllists.setPrefHeight(400);
 
 //			DC_ID.setPrefWidth(100);
 //			DieFio.setPrefWidth(120);
@@ -745,7 +745,7 @@ public class UtilCus {
 			Stage newWindow = new Stage();
 			newWindow.setTitle("Свидетельства о смерти");
 			newWindow.setScene(secondScene);
-			newWindow.setResizable(false);
+			newWindow.setResizable(true);
 			newWindow.initModality(Modality.WINDOW_MODAL);
 			newWindow.initOwner(stage);
 			newWindow.getIcons().add(new Image("/icon.png"));
@@ -931,7 +931,7 @@ public class UtilCus {
 			Stage newWindow = new Stage();
 			newWindow.setTitle("Свидетельство о расторжении брака");
 			newWindow.setScene(secondScene);
-			newWindow.setResizable(false);
+			newWindow.setResizable(true);
 			newWindow.initModality(Modality.WINDOW_MODAL);
 			newWindow.initOwner(stage);
 			newWindow.getIcons().add(new Image("/icon.png"));
