@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import com.jyloo.syntheticafx.ComparableColumnFilter;
+import com.jyloo.syntheticafx.DateColumnFilter;
 import com.jyloo.syntheticafx.PatternColumnFilter;
 import com.jyloo.syntheticafx.TextFormatterFactory;
 import com.jyloo.syntheticafx.XTableColumn;
@@ -46,6 +47,8 @@ import mj.app.main.Main;
 import mj.dbutil.DBUtil;
 import mj.doc.birthact.AddBirthAct;
 import mj.doc.birthact.FindBirth;
+import mj.doc.death.DEATH_CERT;
+import mj.doc.divorce.DIVORCE_CERT;
 import mj.doc.mercer.MC_MERCER;
 import mj.doc.patern.PATERN_CERT;
 import mj.msg.Msg;
@@ -277,7 +280,7 @@ public class UtilCus {
 			/* SelData */
 			String selectStmt = "select (select g.ccusname from cus g where g.icusnum = t.mercer_he) HeFio,\n"
 					+ "       (select g.ccusname from cus g where g.icusnum = t.mercer_she) SheFio,\n" + "       t.*\n"
-					+ "  from MC_MERCER t\n";
+					+ "  from MC_MERCER t order by MERCER_ID desc\n";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -472,7 +475,7 @@ public class UtilCus {
 				return cell;
 			});
 			/* SelData */
-			String selectStmt = "select * from v_patern_cert";
+			String selectStmt = "select * from v_patern_cert order by PC_ID desc";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -576,6 +579,360 @@ public class UtilCus {
 			// Specifies the modality for new window.
 			newWindow.initModality(Modality.WINDOW_MODAL);
 			// Specifies the owner Window (parent) for new window
+			newWindow.initOwner(stage);
+			newWindow.getIcons().add(new Image("/icon.png"));
+			newWindow.show();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	/**
+	 * Список умерших
+	 * @param ID
+	 * @param stage
+	 * @param conn
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void FindDeath(TextField ID ,Stage stage,Connection conn) {
+		try {
+			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
+			
+			Button Update = new Button();
+			Update.setText("Выбрать");
+			BorderPane secondaryLayout = new BorderPane();
+
+			VBox vb = new VBox();
+			
+			ButtonBar buttonBar = new ButtonBar();
+			buttonBar.setPadding(new Insets(10,0,0,0));
+			ButtonBar.setButtonData(Update, ButtonData.APPLY);
+			buttonBar.getButtons().addAll(Update);
+			
+			
+			XTableView<DEATH_CERT> cusllists = new XTableView<DEATH_CERT>();
+			cusllists.getStyleClass().add("mylistview");
+			cusllists.getStylesheets().add("/ScrPane.css");
+			
+			cusllists.setMaxWidth(Double.MAX_VALUE);
+			cusllists.setMaxHeight(Double.MAX_VALUE);
+			
+			XTableColumn<DEATH_CERT, Integer> DC_ID = new XTableColumn<>("Номер");
+			DC_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
+					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+			
+			DC_ID.setCellValueFactory(new PropertyValueFactory<>("DC_ID"));
+			XTableColumn<DEATH_CERT, String> DieFio = new XTableColumn<>("ФИО");
+			
+			DieFio.setCellValueFactory(new PropertyValueFactory<>("DieFio"));
+			XTableColumn<DEATH_CERT, LocalDate> DC_DD = new XTableColumn<>("Дата смерти");
+			
+			DC_DD.setCellValueFactory(new PropertyValueFactory<>("DC_DD"));
+			cusllists.getColumns().add(DC_ID);
+			cusllists.getColumns().add(DieFio);
+			cusllists.getColumns().add(DC_DD);
+
+			vb.getChildren().add(cusllists);
+			vb.getChildren().add(buttonBar);
+			vb.setPadding(new Insets(10, 10, 10, 10));
+
+			DieFio.setColumnFilter(new PatternColumnFilter<>());
+			DC_DD.setColumnFilter(new DateColumnFilter<>());
+			
+			DC_ID.setCellValueFactory(cellData -> cellData.getValue().DC_IDProperty().asObject());
+			DieFio.setCellValueFactory(cellData -> cellData.getValue().DFIOProperty());
+			DC_DD.setCellValueFactory(cellData -> cellData.getValue().DC_DDProperty());
+
+			DC_DD.setCellFactory(column -> {
+				TableCell<DEATH_CERT, LocalDate> cell = new TableCell<DEATH_CERT, LocalDate>() {
+					private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+					@Override
+					protected void updateItem(LocalDate item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setText(null);
+						} else {
+							setText(format.format(item));
+						}
+					}
+				};
+				return cell;
+			});
+			String selectStmt = "select t.*, (select c.ccusname from CUS c where c.icusnum = t.dc_cus) DFIO \n"
+					+ "  from DEATH_CERT t order by DC_ID desc";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<DEATH_CERT> cuslist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				DEATH_CERT list = new DEATH_CERT();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+				//DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
+				list.setDFIO(rs.getString("DFIO"));
+				list.setDC_ID(rs.getInt("DC_ID"));
+				list.setDC_CUS(rs.getInt("DC_CUS"));
+				list.setDC_DD((rs.getDate("DC_DD") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DC_DD")), formatter)
+						: null);
+				list.setDC_DPL(rs.getString("DC_DPL"));
+				list.setDC_CD(rs.getString("DC_CD"));
+				list.setDC_FNUM(rs.getString("DC_FNUM"));
+				list.setDC_FD((rs.getDate("DC_FD") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DC_FD")), formatter)
+						: null);
+				list.setDC_FTYPE(rs.getString("DC_FTYPE"));
+				list.setDC_FMON(rs.getString("DC_FMON"));
+				list.setDC_RCNAME(rs.getString("DC_RCNAME"));
+				list.setDC_NRNAME(rs.getString("DC_NRNAME"));
+				list.setDC_LLOC(rs.getString("DC_LLOC"));
+				list.setDC_ZTP(rs.getString("DC_ZTP"));
+				list.setDC_FADFIRST_NAME(rs.getString("DC_FADFIRST_NAME"));
+				list.setDC_FADLAST_NAME(rs.getString("DC_FADLAST_NAME"));
+				list.setDC_FADMIDDLE_NAME(rs.getString("DC_FADMIDDLE_NAME"));
+				list.setDC_FADLOCATION(rs.getString("DC_FADLOCATION"));
+				list.setDC_FADORG_NAME(rs.getString("DC_FADORG_NAME"));
+				list.setDC_FADREG_ADR(rs.getString("DC_FADREG_ADR"));
+				list.setDC_SERIA(rs.getString("DC_SERIA"));
+				list.setDC_NUMBER(rs.getString("DC_NUMBER"));
+				list.setDC_USR(rs.getString("DC_USR"));
+				/*list.setTM$DC_OPEN((rs.getDate("TM$DC_OPEN") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DC_OPEN")), formatterdt) : null);*/
+				list.setDC_ZAGS(rs.getInt("DC_ZAGS"));
+
+				cuslist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+
+			cusllists.setItems(cuslist);
+
+			cusllists.setPrefWidth(500);
+			cusllists.setPrefHeight(350);
+
+//			DC_ID.setPrefWidth(100);
+//			DieFio.setPrefWidth(120);
+//			DC_DD.setPrefWidth(120);
+
+			TableFilter<DEATH_CERT> CUSFilter = TableFilter.forTableView(cusllists).apply();
+			CUSFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+			Update.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {
+					if (cusllists.getSelectionModel().getSelectedItem() == null) {
+						Msg.Message("Выберите данные из таблицы!");
+					} else {
+						DEATH_CERT country = cusllists.getSelectionModel().getSelectedItem();
+						// name.setText(country.getCCUSNAME());
+						ID.setText(String.valueOf(country.getDC_ID()));
+						((Node) (event.getSource())).getScene().getWindow().hide();
+					}
+				}
+
+			});
+
+//			secondaryLayout.getChildren().add(vb);
+			
+			secondaryLayout.setCenter(vb);
+			
+			Scene secondScene = new Scene(secondaryLayout, Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+
+			Stage newWindow = new Stage();
+			newWindow.setTitle("Свидетельства о смерти");
+			newWindow.setScene(secondScene);
+			newWindow.setResizable(false);
+			newWindow.initModality(Modality.WINDOW_MODAL);
+			newWindow.initOwner(stage);
+			newWindow.getIcons().add(new Image("/icon.png"));
+			newWindow.show();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	/**
+	 * Выбор списка Свидетельство о расторжении брака
+	 * @param number
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void FindDivorce(TextField ID ,Stage stage,Connection conn) {
+		try {
+			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
+			Button Update = new Button();
+			Update.setText("Выбрать");
+			BorderPane secondaryLayout = new BorderPane();
+
+			VBox vb = new VBox();
+			ButtonBar buttonBar = new ButtonBar();
+			buttonBar.setPadding(new Insets(10,0,0,0));
+			ButtonBar.setButtonData(Update, ButtonData.APPLY);
+			buttonBar.getButtons().addAll(Update);
+			
+			XTableView<DIVORCE_CERT> cusllists = new XTableView<DIVORCE_CERT>();
+			cusllists.getStyleClass().add("mylistview");
+			cusllists.getStylesheets().add("/ScrPane.css");
+			
+			cusllists.setMaxWidth(Double.MAX_VALUE);
+			cusllists.setMaxHeight(Double.MAX_VALUE);
+			
+			XTableColumn<DIVORCE_CERT, Integer> DIVC_ID = new XTableColumn<>("Номер");
+			DIVC_ID.setCellValueFactory(new PropertyValueFactory<>("DIVC_ID"));
+			
+			DIVC_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
+					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+			
+			XTableColumn<DIVORCE_CERT, String> SheFio = new XTableColumn<>("Ее ФИО");
+			SheFio.setCellValueFactory(new PropertyValueFactory<>("SheFio"));
+			
+			SheFio.setColumnFilter(new PatternColumnFilter<>());
+			
+			XTableColumn<DIVORCE_CERT, String> HeFio = new XTableColumn<>("Его ФИО");
+			HeFio.setCellValueFactory(new PropertyValueFactory<>("HeFio"));
+			
+			HeFio.setColumnFilter(new PatternColumnFilter<>());
+			
+			XTableColumn<DIVORCE_CERT, LocalDateTime> DIVC_DATE = new XTableColumn<>("Дата документа");
+			DIVC_DATE.setCellValueFactory(new PropertyValueFactory<>("DIVC_DATE"));
+			
+			cusllists.getColumns().add(DIVC_ID);
+			cusllists.getColumns().add(SheFio);
+			cusllists.getColumns().add(HeFio);
+			cusllists.getColumns().add(DIVC_DATE);
+
+			vb.getChildren().add(cusllists);
+			vb.getChildren().add(buttonBar);
+			vb.setPadding(new Insets(10, 10, 10, 10));
+
+			DIVC_ID.setCellValueFactory(cellData -> cellData.getValue().DIVC_IDProperty().asObject());
+			SheFio.setCellValueFactory(cellData -> cellData.getValue().SHEFIOProperty());
+			HeFio.setCellValueFactory(cellData -> cellData.getValue().HEFIOProperty());
+			DIVC_DATE.setCellValueFactory(cellData -> cellData.getValue().TM$DIVC_DATEProperty());
+
+			DIVC_DATE.setCellFactory(column -> {
+				TableCell<DIVORCE_CERT, LocalDateTime> cell = new TableCell<DIVORCE_CERT, LocalDateTime>() {
+					private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+					@Override
+					protected void updateItem(LocalDateTime item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setText(null);
+						} else {
+							setText(format.format(item));
+						}
+					}
+				};
+				return cell;
+			});
+
+			String selectStmt = "select (select g.ccusname from cus g where g.icusnum = t.divc_he) HeFio,\r\n"
+					+ "       (select g.ccusname from cus g where g.icusnum = t.divc_she) SheFio,\r\n"
+					+ "       t.*\r\n" + "  from DIVORCE_CERT t order by DIVC_ID desc";
+
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<DIVORCE_CERT> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+				DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
+				DIVORCE_CERT list = new DIVORCE_CERT();
+
+				list.setHEFIO(rs.getString("HeFio"));
+				list.setSHEFIO(rs.getString("SheFio"));
+				list.setDIVC_ID(rs.getInt("DIVC_ID"));
+				list.setDIVC_HE(rs.getInt("DIVC_HE"));
+				list.setDIVC_SHE(rs.getInt("DIVC_SHE"));
+				list.setDIVC_HE_LNBEF(rs.getString("DIVC_HE_LNBEF"));
+				list.setDIVC_HE_LNAFT(rs.getString("DIVC_HE_LNAFT"));
+				list.setDIVC_SHE_LNBEF(rs.getString("DIVC_SHE_LNBEF"));
+				list.setDIVC_SHE_LNAFT(rs.getString("DIVC_SHE_LNAFT"));
+				list.setTM$DIVC_DATE((rs.getDate("DIVC_DATE") != null) ? LocalDateTime
+						.parse(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DIVC_DATE")), formatterdt)
+						: null);
+				list.setDIVC_DT((rs.getDate("DIVC_DT") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_DT")), formatter)
+						: null);
+				list.setDIVC_USR(rs.getString("DIVC_USR"));
+				list.setDIVC_TYPE(rs.getString("DIVC_TYPE"));
+				list.setDIVC_TCHD((rs.getDate("DIVC_TCHD") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_TCHD")), formatter)
+						: null);
+				list.setDIVC_TCHNUM(rs.getString("DIVC_TCHNUM"));
+				list.setDIVC_CAN(rs.getInt("DIVC_CAN"));
+				list.setDIVC_CAD((rs.getDate("DIVC_CAD") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_CAD")), formatter)
+						: null);
+				list.setDIVC_ZOSCN(rs.getInt("DIVC_ZOSCN"));
+				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
+						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
+				list.setDIVC_ZOSFIO(rs.getString("DIVC_ZOSFIO"));
+				list.setDIVC_ZOSCN2(rs.getInt("DIVC_ZOSCN2"));
+				list.setDIVC_ZOSCD2((rs.getDate("DIVC_ZOSCD2") != null) ? LocalDate
+						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD2")), formatter) : null);
+				list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));
+				list.setDIVC_ZOSPRISON(rs.getInt("DIVC_ZOSPRISON"));
+				list.setDIVC_MC_MERCER(rs.getInt("DIVC_MC_MERCER"));
+				list.setDIVC_NUM(rs.getString("DIVC_NUM"));
+				list.setDIVC_SERIA(rs.getString("DIVC_SERIA"));
+				list.setDIVC_ZAGS(rs.getInt("DIVC_ZAGS"));
+				list.setDIVC_ZMNAME(rs.getString("DIVC_ZMNAME"));
+				list.setDIVC_ZLNAME(rs.getString("DIVC_ZLNAME"));
+				list.setDIVC_ZPLACE(rs.getString("DIVC_ZPLACE"));
+				list.setDIVC_ZАNAME(rs.getString("DIVC_ZАNAME"));
+				dlist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+
+			cusllists.setItems(dlist);
+
+			cusllists.setPrefWidth(700);
+			cusllists.setPrefHeight(400);
+
+//			DIVC_ID.setPrefWidth(100);
+//			SheFio.setPrefWidth(120);
+//			HeFio.setPrefWidth(120);
+//			DIVC_DATE.setPrefWidth(120);
+
+			TableFilter<DIVORCE_CERT> CUSFilter = TableFilter.forTableView(cusllists).apply();
+			CUSFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+			Update.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {
+					if (cusllists.getSelectionModel().getSelectedItem() == null) {
+						Msg.Message("Выберите данные из таблицы!");
+					} else {
+						DIVORCE_CERT country = cusllists.getSelectionModel().getSelectedItem();
+						// num.setText(country.getCCUSNAME());
+						ID.setText(String.valueOf(country.getDIVC_ID()));
+						((Node) (event.getSource())).getScene().getWindow().hide();
+					}
+				}
+
+			});
+
+//			secondaryLayout.getChildren().add(vb);
+			
+			secondaryLayout.setCenter(vb);
+			
+			Scene secondScene = new Scene(secondaryLayout, Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+
+			Stage newWindow = new Stage();
+			newWindow.setTitle("Свидетельство о расторжении брака");
+			newWindow.setScene(secondScene);
+			newWindow.setResizable(false);
+			newWindow.initModality(Modality.WINDOW_MODAL);
 			newWindow.initOwner(stage);
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
