@@ -729,7 +729,7 @@ public class PaternList {
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			String selectStmt = "select * from v_patern_cert " + ((getWhere() != null) ? getWhere() : "");
+			String selectStmt = "select * from v_patern_cert " + ((getWhere() != null) ? getWhere() : " order by PC_ID desc");
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<PATERN_CERT> dlist = FXCollections.observableArrayList();

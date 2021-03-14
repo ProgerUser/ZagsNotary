@@ -305,14 +305,11 @@
                                                       </Button>
                                                   </items>
                                                 </ToolBar>
-                                                <TableView fx:id="USR_GRP" prefHeight="200.0" prefWidth="200.0">
+                                                <TableView fx:id="USR_GRP" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                                   <columns>
                                                     <TableColumn fx:id="GRP_ID" prefWidth="108.0" text="ID" />
                                                     <TableColumn fx:id="GRP_NAME" prefWidth="478.0" text="Название" />
                                                   </columns>
-                                                   <columnResizePolicy>
-                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                   </columnResizePolicy>
                                                 </TableView>
                                              </children>
                                           </VBox>

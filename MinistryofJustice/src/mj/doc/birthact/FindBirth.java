@@ -22,6 +22,14 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
+import com.jyloo.syntheticafx.ComparableColumnFilter;
+import com.jyloo.syntheticafx.PatternColumnFilter;
+import com.jyloo.syntheticafx.TextFormatterFactory;
+import com.jyloo.syntheticafx.XTableColumn;
+import com.jyloo.syntheticafx.XTableView;
+import com.jyloo.syntheticafx.filter.ComparableFilterModel;
+import com.jyloo.syntheticafx.filter.ComparisonType;
+
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -43,10 +51,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -63,44 +69,44 @@ import mj.util.ConvConst;
 public class FindBirth {
 
 	@FXML
-	private TableColumn<SELECTBIRTH, String> BIRTH_ACT_LD;
+	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_LD;
 
 	@FXML
-	private TableView<SELECTBIRTH> BIRTH_ACT;
+	private XTableView<SELECTBIRTH> BIRTH_ACT;
 
 	@FXML
 	private Button BIRTH_ACT_FILTER;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_FNAME;
+	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_FNAME;
 
 	@FXML
 	private Button BIRTH_ACT_PRINT;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, Integer> BIRTH_ACT_ID;
+	private XTableColumn<SELECTBIRTH, Integer> BIRTH_ACT_ID;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_MNAME;
+	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_MNAME;
 
 	@FXML
 	private BorderPane ap;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, LocalDateTime> BIRTH_ACT_DATE;
+	private XTableColumn<SELECTBIRTH, LocalDateTime> BIRTH_ACT_DATE;
 	@FXML
-	private TableColumn<SELECTBIRTH, String> FFIO;
+	private XTableColumn<SELECTBIRTH, String> FFIO;
 	@FXML
-	private TableColumn<SELECTBIRTH, String> MFIO;
+	private XTableColumn<SELECTBIRTH, String> MFIO;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, String> BIRTH_ACT_ZAGS;
+	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_ZAGS;
 
 	@FXML
 	private Button BIRTH_ACT_ADD;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, String> ChFio;
+	private XTableColumn<SELECTBIRTH, String> ChFio;
 
 	@FXML
 	private Button BIRTH_ACT_DELETE;
@@ -324,7 +330,7 @@ public class FindBirth {
 			// SqlMap sql = new SqlMap().load("/BirthSql.xml");
 			// String readRecordSQL = sql.getSql("SelectBirth");
 			PreparedStatement prepStmt = conn
-					.prepareStatement("select * from SelectBirth t " + ((getWhere() != null) ? getWhere() : ""));
+					.prepareStatement("select * from SelectBirth t " + ((getWhere() != null) ? getWhere() : " order by BRN_AC_ID desc"));
 			// System.out.println("select * from SelectBirth t " + getWhere());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<SELECTBIRTH> cus_list = FXCollections.observableArrayList();
@@ -347,7 +353,7 @@ public class FindBirth {
 
 			Platform.runLater(new Runnable() {
 				@Override
-				public void run() {
+				public void run() {  
 					TableFilter<SELECTBIRTH> tableFilter = TableFilter.forTableView(BIRTH_ACT).apply();
 					tableFilter.setSearchStrategy((input, target) -> {
 						try {
@@ -728,6 +734,7 @@ public class FindBirth {
 	/**
 	 * Инициализация
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
 		try {
@@ -755,6 +762,17 @@ public class FindBirth {
 				});
 				return row;
 			});
+			
+			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
+			
+			BIRTH_ACT_LD.setColumnFilter(new PatternColumnFilter<>());
+			BIRTH_ACT_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
+					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+			BIRTH_ACT_ZAGS.setColumnFilter(new PatternColumnFilter<>());
+			MFIO.setColumnFilter(new PatternColumnFilter<>());
+			FFIO.setColumnFilter(new PatternColumnFilter<>());
+			ChFio.setColumnFilter(new PatternColumnFilter<>());
+			
 			BIRTH_ACT_LD.setCellValueFactory(cellData -> cellData.getValue().LIVE_DEADProperty());
 			BIRTH_ACT_ID.setCellValueFactory(cellData -> cellData.getValue().BRN_AC_IDProperty().asObject());
 			BIRTH_ACT_DATE.setCellValueFactory(cellData -> cellData.getValue().TM$_DOC_DATEProperty());
