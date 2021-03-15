@@ -264,7 +264,9 @@ public class AddBirthAct {
 
 	@FXML
 	void FindMerCert(ActionEvent event) {
-		Mercer(MARR_CER_ID);
+		//Mercer(MARR_CER_ID);
+		UtilCus cus = new UtilCus();
+		cus.FindMercer(MARR_CER_ID, (Stage) MARR_CER_ID.getScene().getWindow(), conn);
 	}
 
 	@FXML
@@ -274,7 +276,9 @@ public class AddBirthAct {
 
 	@FXML
 	void FindPat(ActionEvent event) {
-		Patern(PAT_CER_ID);
+//		Patern(PAT_CER_ID);
+		UtilCus cus = new UtilCus();
+		cus.FindPatern(PAT_CER_ID, (Stage) PAT_CER_ID.getScene().getWindow(), conn);
 	}
 
 	@FXML

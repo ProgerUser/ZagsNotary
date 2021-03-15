@@ -624,7 +624,7 @@ public class MercerList {
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			String selectStmt = "select * from vmc_mercer t\n " + ((getWhere() != null) ? getWhere() : "");
+			String selectStmt = "select * from vmc_mercer t\n " + ((getWhere() != null) ? getWhere() : " order by MERCER_ID desc");
 
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();

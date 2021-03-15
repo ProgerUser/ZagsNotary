@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -42,7 +41,6 @@ import javafx.util.converter.LocalDateTimeStringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 import mj.util.ConvConst;
 
 public class LogList {
@@ -158,7 +156,6 @@ public class LogList {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
 
 			ROOT.setBottom(createOptionPane(LOGS));
@@ -205,8 +202,7 @@ public class LogList {
 			LOGDATED.setOnEditCommit(new EventHandler<CellEditEvent<LOGS, LocalDateTime>>() {
 				@Override
 				public void handle(CellEditEvent<LOGS, LocalDateTime> t) {
-					((LOGS) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-							.setLOGDATE(t.getNewValue());
+					((LOGS) t.getTableView().getItems().get(t.getTablePosition().getRow())).setLOGDATE(t.getNewValue());
 				}
 			});
 //
@@ -263,18 +259,12 @@ public class LogList {
 				}
 			});
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void Init() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			DateTimeFormatter formatterd = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
@@ -300,7 +290,7 @@ public class LogList {
 				list.setLINENUMBER(rs.getInt("LINENUMBER"));
 				list.setMETHODNAME(rs.getString("METHODNAME"));
 				list.setCLASSNAME(rs.getString("CLASSNAME"));
-				list.setERROR(rs.getString("ERROR"));
+				//list.setERROR(rs.getString("ERROR"));
 				list.setID(rs.getInt("ID"));
 				dlist.add(list);
 			}
@@ -318,13 +308,7 @@ public class LogList {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -332,7 +316,6 @@ public class LogList {
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "LogList");
@@ -341,28 +324,17 @@ public class LogList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

@@ -706,7 +706,7 @@ public class DivorceList {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
-			String selectStmt = "select * from VDIVORCE_CERT t " + ((getWhere() != null) ? getWhere() : "");
+			String selectStmt = "select * from VDIVORCE_CERT t " + ((getWhere() != null) ? getWhere() : " ORDER BY DIVC_ID DESC");
 
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();

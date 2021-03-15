@@ -9,6 +9,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
@@ -73,46 +74,47 @@
 										<Tooltip text="Добавить" />
 									</tooltip>
                            <graphic>
-                              <FontAwesomeIconView glyphName="PLUS" size="20" />
+                              <FontAwesomeIconView glyphName="PLUS" size="18" />
                            </graphic>
                            <font>
                               <Font size="10.0" />
                            </font>
 								</Button>
-								<Button minHeight="30.0" mnemonicParsing="false" onAction="#BtEdit" prefWidth="30.0">
+								<Button mnemonicParsing="false" onAction="#BtEdit">
 									<tooltip>
 										<Tooltip text="Редактировать" />
 									</tooltip>
                            <graphic>
-                              <FontAwesomeIconView glyphName="EDIT" size="20" />
+                              <FontAwesomeIconView glyphName="EDIT" size="18" />
                            </graphic>
                            <font>
                               <Font size="10.0" />
                            </font>
 								</Button>
-								<Button minHeight="30.0" mnemonicParsing="false" onAction="#BtDelete" prefWidth="30.0">
+								<Button mnemonicParsing="false" onAction="#BtDelete">
 									<tooltip>
 										<Tooltip text="Удалить запись" />
 									</tooltip>
                            <graphic>
-                              <FontAwesomeIconView glyphName="TIMES" size="20" />
+                              <FontAwesomeIconView glyphName="TIMES" size="18" />
                            </graphic>
                            <font>
                               <Font size="10.0" />
                            </font>
 								</Button>
-								<Button minHeight="30.0" mnemonicParsing="false" onAction="#BtPrint" prefWidth="30.0">
+                        <Separator orientation="VERTICAL" />
+								<Button mnemonicParsing="false" onAction="#BtPrint">
 									<tooltip>
 										<Tooltip text="Печать" />
 									</tooltip>
                            <graphic>
-                              <FontAwesomeIconView glyphName="PRINT" size="20" />
+                              <FontAwesomeIconView glyphName="PRINT" size="18" />
                            </graphic>
                            <font>
                               <Font size="10.0" />
                            </font>
 								</Button>
-                        <Button layoutX="116.0" layoutY="10.0" minHeight="30.0" mnemonicParsing="false" onAction="#BtPrintBlank" prefWidth="30.0">
+                        <Button layoutX="116.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtPrintBlank">
                            <tooltip>
                               <Tooltip text="Печать бланка">
                                  <font>
@@ -121,7 +123,7 @@
                               </Tooltip>
                            </tooltip>
                            <graphic>
-                              <FontAwesomeIconView fill="#3b55eb" glyphName="PRINT" size="20" />
+                              <FontAwesomeIconView fill="#3b55eb" glyphName="PRINT" size="18" />
                            </graphic>
                            <font>
                               <Font size="10.0" />

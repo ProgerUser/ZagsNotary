@@ -19,20 +19,21 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<ScrollPane fx:id="MainScroll" prefHeight="514.0" prefWidth="851.0" styleClass="mylistview" stylesheets="/ScrPane.css">
+		<ScrollPane fx:id="MainScroll" pannable="true" prefHeight="514.0" prefWidth="795.0" styleClass="mylistview" stylesheets="/ScrPane.css" VBox.vgrow="ALWAYS">
          <VBox.margin>
-            <Insets left="10.0" right="10.0" top="10.0" />
+            <Insets left="10.0" right="10.0" top="5.0" />
          </VBox.margin>
          <content>
-            <VBox spacing="5.0">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
                <children>
-                  <HBox spacing="5.0">
+                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
-      						<TitledPane fx:id="children" alignment="CENTER" animated="false" collapsible="false" prefHeight="231.0" prefWidth="382.0" style="-fx-border-color: black;" text="Сведения о ребенке">
+      						<TitledPane fx:id="children" alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Сведения о ребенке" HBox.hgrow="ALWAYS">
       							<content>
       								<VBox>
       									<children>
@@ -72,7 +73,7 @@
       								</VBox>
       							</content>
       						</TitledPane>
-      						<TitledPane fx:id="osndoc" alignment="CENTER" animated="false" collapsible="false" prefHeight="231.0" prefWidth="382.0" style="-fx-border-color: black;" text="Документ подтверждающий факт рождения ребенка">
+      						<TitledPane fx:id="osndoc" alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Документ подтверждающий факт рождения ребенка" HBox.hgrow="ALWAYS">
       							<content>
       								<AnchorPane>
       									<children>
@@ -126,9 +127,9 @@
       						</TitledPane>
                      </children>
                   </HBox>
-                  <HBox spacing="5.0">
+                  <HBox spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
-      						<TitledPane fx:id="mother" alignment="CENTER" animated="false" collapsible="false" prefHeight="106.0" prefWidth="382.0" style="-fx-border-color: black;" text="Сведения о матери">
+      						<TitledPane fx:id="mother" alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Сведения о матери" HBox.hgrow="ALWAYS">
       							<content>
       								<VBox>
       									<children>
@@ -162,7 +163,7 @@
       								</VBox>
       							</content>
       						</TitledPane>
-      						<TitledPane fx:id="father" alignment="CENTER" animated="false" collapsible="false" prefHeight="106.0" prefWidth="408.0" style="-fx-border-color: black;" text="Сведения об отце">
+      						<TitledPane fx:id="father" alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Сведения об отце" HBox.hgrow="ALWAYS">
       							<content>
       								<VBox>
       									<children>
@@ -198,9 +199,9 @@
       						</TitledPane>
                      </children>
                   </HBox>
-                  <HBox spacing="5.0">
+                  <HBox spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
-      						<TitledPane fx:id="osnvosst" alignment="CENTER" animated="false" collapsible="false" prefHeight="218.0" prefWidth="334.0" style="-fx-border-color: black;" text="Основание восстановления записи акта о рождении">
+      						<TitledPane fx:id="osnvosst" alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Основание восстановления записи акта о рождении" HBox.hgrow="ALWAYS">
       							<content>
       								<VBox>
       									<children>
@@ -229,7 +230,7 @@
       								</VBox>
       							</content>
       						</TitledPane>
-      						<TitledPane fx:id="fiozaiav" alignment="CENTER" animated="false" collapsible="false" prefHeight="218.0" prefWidth="456.0" style="-fx-border-color: black;" text="ФИО,м.ж. заявителя или юр. адр. орг. заявившей о рожд.реб.">
+      						<TitledPane fx:id="fiozaiav" alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="ФИО,м.ж. заявителя или юр. адр. орг. заявившей о рожд.реб.">
       							<content>
       								<AnchorPane>
       									<children>
@@ -283,65 +284,84 @@
       						</TitledPane>
                      </children>
                   </HBox>
-                  <HBox spacing="5.0">
+                  <HBox spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
-      						<TitledPane fx:id="sved_thaver" alignment="CENTER" animated="false" collapsible="false" prefHeight="116.0" prefWidth="382.0" style="-fx-border-color: black;" text="Сведения об отце указаны на основании:">
-      							<content>
-      								<AnchorPane>
-      									<children>
-      										<ToolBar>
-      											<items>
-      												<ComboBox fx:id="FatherType" onAction="#FatherType" prefHeight="25.0" prefWidth="320.0" />
-      											</items>
-      										</ToolBar>
-      										<GridPane fx:id="IF1" layoutX="10.0" layoutY="40.0" visible="false">
-      											<columnConstraints>
-      												<ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
-      												<ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="104.0" prefWidth="104.0" />
-      												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
-      											</columnConstraints>
-      											<rowConstraints>
-      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      											</rowConstraints>
-      											<children>
-      												<Label text="Свидетельство о заключении брака" GridPane.halignment="LEFT" />
-      												<TextField fx:id="MARR_CER_ID" editable="false" maxWidth="100.0" GridPane.columnIndex="1" />
-      												<Button maxWidth="25.0" mnemonicParsing="false" onAction="#FindMerCert" prefHeight="25.0" styleClass="Search" stylesheets="/borderpane.css" GridPane.columnIndex="2" />
-      											</children>
-      										</GridPane>
-      										<GridPane fx:id="IF2" layoutX="10.0" layoutY="40.0" visible="false">
-      											<columnConstraints>
-      												<ColumnConstraints hgrow="SOMETIMES" maxWidth="356.0" minWidth="198.0" prefWidth="200.0" />
-      												<ColumnConstraints hgrow="SOMETIMES" maxWidth="283.0" minWidth="99.0" prefWidth="105.0" />
-      												<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="212.0" minWidth="14.0" prefWidth="34.0" />
-      											</columnConstraints>
-      											<rowConstraints>
-      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      											</rowConstraints>
-      											<children>
-      												<Label text="Свид. об установлении отцовства" GridPane.halignment="LEFT" />
-      												<TextField fx:id="PAT_CER_ID" editable="false" maxWidth="100.0" GridPane.columnIndex="1" />
-      												<Button maxWidth="25.0" mnemonicParsing="false" onAction="#FindPat" prefHeight="25.0" styleClass="Search" stylesheets="/borderpane.css" GridPane.columnIndex="2" />
-      											</children>
-      										</GridPane>
-      										<GridPane fx:id="IF3" layoutX="10.0" layoutY="40.0" visible="false">
-      											<columnConstraints>
-      												<ColumnConstraints hgrow="SOMETIMES" prefWidth="110.0" />
-      												<ColumnConstraints hgrow="SOMETIMES" prefWidth="130.0" />
-      											</columnConstraints>
-      											<rowConstraints>
-      												<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      											</rowConstraints>
-      											<children>
-      												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Заявление матери" GridPane.halignment="LEFT" />
-      												<DatePicker fx:id="BIRTH_ACT_ZM" maxWidth="100.0" GridPane.columnIndex="1" />
-      											</children>
-      										</GridPane>
-      									</children>
-      								</AnchorPane>
-      							</content>
+      						<TitledPane fx:id="sved_thaver" alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Сведения об отце указаны на основании:" HBox.hgrow="ALWAYS">
+                           <content>
+                              <VBox spacing="5.0">
+                                 <children>
+                        												<ComboBox fx:id="FatherType" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#FatherType" />
+                              										<GridPane fx:id="IF1" visible="false" VBox.vgrow="ALWAYS">
+                              											<columnConstraints>
+                              												<ColumnConstraints hgrow="ALWAYS" />
+                                          <ColumnConstraints hgrow="ALWAYS" />
+                                          <ColumnConstraints hgrow="ALWAYS" />
+                              											</columnConstraints>
+                              											<rowConstraints>
+                              												<RowConstraints vgrow="ALWAYS" />
+                              											</rowConstraints>
+                                       <children>
+                              												<Label text="Свидетельство о заключении брака" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                              												<TextField fx:id="MARR_CER_ID" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                              												<Button mnemonicParsing="false" onAction="#FindMerCert" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                                             <graphic>
+                                                <FontAwesomeIconView glyphName="SEARCH" size="18" />
+                                             </graphic>
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                             <GridPane.margin>
+                                                <Insets left="5.0" />
+                                             </GridPane.margin>
+                                          </Button>
+                                       </children>
+                              										</GridPane>
+                              										<GridPane fx:id="IF2" visible="false" VBox.vgrow="ALWAYS">
+                              											<columnConstraints>
+                              												<ColumnConstraints hgrow="ALWAYS" />
+                                          <ColumnConstraints hgrow="ALWAYS" />
+                                          <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+                              											</columnConstraints>
+                              											<rowConstraints>
+                              												<RowConstraints vgrow="ALWAYS" />
+                              											</rowConstraints>
+                                       <children>
+                              												<Label text="Свид. об установлении отцовства" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                              												<TextField fx:id="PAT_CER_ID" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                              												<Button mnemonicParsing="false" onAction="#FindPat" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                                             <graphic>
+                                                <FontAwesomeIconView glyphName="SEARCH" size="18" />
+                                             </graphic>
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                             <GridPane.margin>
+                                                <Insets left="5.0" />
+                                             </GridPane.margin>
+                                          </Button>
+                                       </children>
+                              										</GridPane>
+                              										<GridPane fx:id="IF3" visible="false" VBox.vgrow="ALWAYS">
+                              											<columnConstraints>
+                              												<ColumnConstraints hgrow="ALWAYS" />
+                              												<ColumnConstraints hgrow="ALWAYS" />
+                              											</columnConstraints>
+                              											<rowConstraints>
+                              												<RowConstraints vgrow="ALWAYS" />
+                              											</rowConstraints>
+                              											<children>
+                              												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Заявление матери" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                                             <GridPane.margin>
+                                                <Insets />
+                                             </GridPane.margin></Text>
+                              												<DatePicker fx:id="BIRTH_ACT_ZM" prefWidth="120.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                              											</children>
+                              										</GridPane>
+                                 </children>
+                              </VBox>
+                           </content>
       						</TitledPane>
-      						<TitledPane fx:id="printdoc" alignment="CENTER" animated="false" collapsible="false" prefHeight="116.0" prefWidth="408.0" style="-fx-border-color: black;" text="Печать органа записи актов гражданского состояния">
+      						<TitledPane fx:id="printdoc" alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Печать органа записи актов гражданского состояния" HBox.hgrow="ALWAYS">
       							<content>
       								<VBox>
       									<children>

@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import javafx.collections.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import com.jyloo.syntheticafx.*?>
+<?import com.jyloo.syntheticafx.XTableColumn?>
+<?import com.jyloo.syntheticafx.XTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <children>
    	<BorderPane fx:id="ROOT">
    	<left>
@@ -54,31 +66,31 @@
    		</VBox>
    	</top>
          <center>
-				<TableView fx:id="BIRTH_ACT" editable="false" prefHeight="450.0" prefWidth="900.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+				<XTableView fx:id="BIRTH_ACT" editable="false" prefHeight="450.0" prefWidth="900.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
 					<columns>
-						<TableColumn fx:id="BIRTH_ACT_ID" prefWidth="82.0" text="Номер" />
-						<TableColumn fx:id="BIRTH_ACT_DATE" maxWidth="5000.0" minWidth="10.0" prefWidth="114.0" text="Дата заведения" />
-						<TableColumn prefWidth="274.0" text="Ребенок">
+						<XTableColumn fx:id="BIRTH_ACT_ID" prefWidth="82.0" text="Номер" />
+						<XTableColumn fx:id="BIRTH_ACT_DATE" maxWidth="5000.0" minWidth="10.0" prefWidth="114.0" text="Дата заведения" />
+						<XTableColumn prefWidth="274.0" text="Ребенок">
 							<columns>
-								<TableColumn fx:id="ChFio" maxWidth="5000.0" minWidth="0.0" prefWidth="180.0" text="ФИО" />
-								<TableColumn fx:id="BIRTH_ACT_LD" minWidth="7.0" prefWidth="103.0" text="Ж/М" />
+								<XTableColumn fx:id="ChFio" maxWidth="5000.0" minWidth="0.0" prefWidth="180.0" text="ФИО" />
+								<XTableColumn fx:id="BIRTH_ACT_LD" minWidth="7.0" prefWidth="103.0" text="Ж/М" />
 							</columns>
-						</TableColumn>
-                  <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="177.0" resizable="false" text="Отец">
+						</XTableColumn>
+                  <XTableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="177.0" resizable="false" text="Отец">
                      <columns>
-                        <TableColumn fx:id="FFIO" prefWidth="180.0" text="ФИО" />
+                        <XTableColumn fx:id="FFIO" prefWidth="180.0" text="ФИО" />
                      </columns>
-                  </TableColumn>
-						<TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="177.0" resizable="false" text="Мать">
+                  </XTableColumn>
+						<XTableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="177.0" resizable="false" text="Мать">
 							<columns>
-								<TableColumn fx:id="MFIO" prefWidth="180.0" text="ФИО" />
+								<XTableColumn fx:id="MFIO" prefWidth="180.0" text="ФИО" />
 							</columns>
-						</TableColumn>
-						<TableColumn prefWidth="246.0" resizable="false" text="ЗАГС">
+						</XTableColumn>
+						<XTableColumn prefWidth="246.0" resizable="false" text="ЗАГС">
 							<columns>
-								<TableColumn fx:id="BIRTH_ACT_ZAGS" minWidth="7.0" prefWidth="285.0" text="Название" />
+								<XTableColumn fx:id="BIRTH_ACT_ZAGS" minWidth="7.0" prefWidth="285.0" text="Название" />
 							</columns>
-						</TableColumn>
+						</XTableColumn>
 					</columns>
 
 					<contextMenu>
@@ -92,11 +104,22 @@
 							</items>
 						</ContextMenu>
 					</contextMenu>
-				</TableView>
+				</XTableView>
          </center>
          <StackPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </StackPane.margin>
+         <bottom>
+            <ButtonBar BorderPane.alignment="CENTER">
+              <buttons>
+                <Button mnemonicParsing="false" onAction="#SelectDocument" text="Выбрать" />
+                  <Button mnemonicParsing="false" onAction="#Close" text="Отмена" />
+              </buttons>
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin>
+            </ButtonBar>
+         </bottom>
    	</BorderPane>
       <ProgressIndicator fx:id="PB" maxHeight="50.0" maxWidth="50.0" visible="false" />
    </children>

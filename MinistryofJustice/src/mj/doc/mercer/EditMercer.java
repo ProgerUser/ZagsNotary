@@ -146,12 +146,16 @@ public class EditMercer {
 
 	@FXML
 	void FindHeDivorce(ActionEvent event) {
-		DivorceList(MERCER_DIVHE);
+//		DivorceList(MERCER_DIVHE);
+		UtilCus cus = new UtilCus();
+		cus.FindDivorce(MERCER_DIVHE, (Stage) MERCER_DIVHE.getScene().getWindow(), conn);
 	}
 
 	@FXML
 	void FindHeDeath(ActionEvent event) {
-		DeathList(MERCER_DIEHE);
+//		DeathList(MERCER_DIEHE);
+		UtilCus cus = new UtilCus();
+		cus.FindDeath(MERCER_DIEHE, (Stage) MERCER_DIEHE.getScene().getWindow(), conn);
 	}
 
 	@FXML
@@ -171,17 +175,20 @@ public class EditMercer {
 
 	@FXML
 	void FindSheDivorce(ActionEvent event) {
-		DivorceList(MERCER_DIVSHE);
+//		DivorceList(MERCER_DIVSHE);
+		UtilCus cus = new UtilCus();
+		cus.FindDivorce(MERCER_DIVSHE, (Stage) MERCER_DIVSHE.getScene().getWindow(), conn);
 	}
 
 	@FXML
 	void FindSheDeath(ActionEvent event) {
-		DeathList(MERCER_DIESHE);
+//		DeathList(MERCER_DIESHE);
+		UtilCus cus = new UtilCus();
+		cus.FindDeath(MERCER_DIESHE, (Stage) MERCER_DIESHE.getScene().getWindow(), conn);
 	}
 
 	void DeathList(TextField number) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			AnchorPane secondaryLayout = new AnchorPane();
@@ -587,7 +594,6 @@ public class EditMercer {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn
 					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -664,7 +670,6 @@ public class EditMercer {
 
 	void SaveCompare() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn
 					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);

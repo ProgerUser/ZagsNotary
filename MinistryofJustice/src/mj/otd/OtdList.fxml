@@ -11,6 +11,7 @@
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="BP" onKeyPressed="#F5" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<padding>
@@ -26,6 +27,9 @@
 					<tooltip>
 						<Tooltip text="Добавить" />
 					</tooltip>
+               <font>
+                  <Font size="10.0" />
+               </font>
 				</Button>
             <Separator orientation="VERTICAL" />
 				<Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#Edit" text="">
@@ -35,6 +39,9 @@
 					<tooltip>
 						<Tooltip text="Редактировать" />
 					</tooltip>
+               <font>
+                  <Font size="10.0" />
+               </font>
 				</Button>
             <Separator layoutX="46.0" layoutY="10.0" orientation="VERTICAL" />
 				<Button layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#Delete" text="">
@@ -44,6 +51,9 @@
 					<tooltip>
 						<Tooltip text="Удалить" />
 					</tooltip>
+               <font>
+                  <Font size="10.0" />
+               </font>
 				</Button>
 			</items>
          <effect>

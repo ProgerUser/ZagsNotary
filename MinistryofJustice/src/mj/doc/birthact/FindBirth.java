@@ -22,6 +22,14 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
+import com.jyloo.syntheticafx.ComparableColumnFilter;
+import com.jyloo.syntheticafx.PatternColumnFilter;
+import com.jyloo.syntheticafx.TextFormatterFactory;
+import com.jyloo.syntheticafx.XTableColumn;
+import com.jyloo.syntheticafx.XTableView;
+import com.jyloo.syntheticafx.filter.ComparableFilterModel;
+import com.jyloo.syntheticafx.filter.ComparisonType;
+
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -43,10 +51,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -63,44 +69,44 @@ import mj.util.ConvConst;
 public class FindBirth {
 
 	@FXML
-	private TableColumn<SELECTBIRTH, String> BIRTH_ACT_LD;
+	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_LD;
 
 	@FXML
-	private TableView<SELECTBIRTH> BIRTH_ACT;
+	private XTableView<SELECTBIRTH> BIRTH_ACT;
 
 	@FXML
 	private Button BIRTH_ACT_FILTER;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_FNAME;
+	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_FNAME;
 
 	@FXML
 	private Button BIRTH_ACT_PRINT;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, Integer> BIRTH_ACT_ID;
+	private XTableColumn<SELECTBIRTH, Integer> BIRTH_ACT_ID;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_MNAME;
+	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_MNAME;
 
 	@FXML
 	private BorderPane ap;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, LocalDateTime> BIRTH_ACT_DATE;
+	private XTableColumn<SELECTBIRTH, LocalDateTime> BIRTH_ACT_DATE;
 	@FXML
-	private TableColumn<SELECTBIRTH, String> FFIO;
+	private XTableColumn<SELECTBIRTH, String> FFIO;
 	@FXML
-	private TableColumn<SELECTBIRTH, String> MFIO;
+	private XTableColumn<SELECTBIRTH, String> MFIO;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, String> BIRTH_ACT_ZAGS;
+	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_ZAGS;
 
 	@FXML
 	private Button BIRTH_ACT_ADD;
 
 	@FXML
-	private TableColumn<SELECTBIRTH, String> ChFio;
+	private XTableColumn<SELECTBIRTH, String> ChFio;
 
 	@FXML
 	private Button BIRTH_ACT_DELETE;
@@ -116,13 +122,7 @@ public class FindBirth {
 			/*******/
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -164,13 +164,7 @@ public class FindBirth {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -204,7 +198,6 @@ public class FindBirth {
 		try {
 			if (isopen == false) {
 				/* LOG */
-				Main.logger = Logger.getLogger(getClass());
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from brn_birth_act where  BR_ACT_ID = ? /*for update nowait*/");
 				selforupd.setInt(1, docid);
@@ -297,12 +290,7 @@ public class FindBirth {
 									}
 									isopen = false;
 								} catch (SQLException e) {
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+									DBUtil.LOG_ERROR(e);
 								}
 							}
 						});
@@ -312,19 +300,9 @@ public class FindBirth {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Документ редактируется другим пользователем!");
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					} else {
-						e.printStackTrace();
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 				}
 
@@ -332,13 +310,7 @@ public class FindBirth {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -354,12 +326,11 @@ public class FindBirth {
 
 	private void InitBirths() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			// SqlMap sql = new SqlMap().load("/BirthSql.xml");
 			// String readRecordSQL = sql.getSql("SelectBirth");
 			PreparedStatement prepStmt = conn
-					.prepareStatement("select * from SelectBirth t " + ((getWhere() != null) ? getWhere() : ""));
+					.prepareStatement("select * from SelectBirth t " + ((getWhere() != null) ? getWhere() : " order by BRN_AC_ID desc"));
 			// System.out.println("select * from SelectBirth t " + getWhere());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<SELECTBIRTH> cus_list = FXCollections.observableArrayList();
@@ -382,7 +353,7 @@ public class FindBirth {
 
 			Platform.runLater(new Runnable() {
 				@Override
-				public void run() {
+				public void run() {  
 					TableFilter<SELECTBIRTH> tableFilter = TableFilter.forTableView(BIRTH_ACT).apply();
 					tableFilter.setSearchStrategy((input, target) -> {
 						try {
@@ -395,19 +366,12 @@ public class FindBirth {
 			});
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	private void AfterAdd(Integer id) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			// SqlMap sql = new SqlMap().load("/BirthSql.xml");
 			// String readRecordSQL = sql.getSql("SelectBirth");
@@ -439,28 +403,39 @@ public class FindBirth {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
+	void SelectDocument(ActionEvent event) {
+		try {
+			if(BIRTH_ACT.getSelectionModel().getSelectedItem() != null) {
+				SELECTBIRTH elem = BIRTH_ACT.getSelectionModel().getSelectedItem();
+				setStatus(true);
+				setId(elem.getBRN_AC_ID());
+				onclose();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void Close(ActionEvent event) {
+		try {
+			onclose();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	@FXML
 	void RefreshBirthList(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			InitBirths();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -474,8 +449,6 @@ public class FindBirth {
 	 */
 	void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(FindBirth.class);
-
 			Properties props = new Properties();
 			props.put("v$session.program", "BirthList");
 
@@ -485,12 +458,7 @@ public class FindBirth {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -499,17 +467,11 @@ public class FindBirth {
 	 */
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(FindBirth.class);
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -567,14 +529,10 @@ public class FindBirth {
 								conn.rollback();
 							} catch (SQLException e1) {
 								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								Main.logger.error(
+										ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
@@ -591,13 +549,7 @@ public class FindBirth {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -616,7 +568,6 @@ public class FindBirth {
 	@FXML
 	void Print(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			ROOT.setDisable(true);
 			PB.setVisible(true);
 			Task<Object> task = new Task<Object>() {
@@ -632,13 +583,7 @@ public class FindBirth {
 			exec.execute(task);
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -685,7 +630,7 @@ public class FindBirth {
 			}
 		});
 	}
-	
+
 	/**
 	 * Поле С
 	 */
@@ -697,7 +642,7 @@ public class FindBirth {
 	 */
 	@FXML
 	private DatePicker DT2;
-	
+
 	/**
 	 * Поле С фильтра
 	 * 
@@ -706,15 +651,9 @@ public class FindBirth {
 	@FXML
 	void DT1(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			InitBirths2();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -723,9 +662,9 @@ public class FindBirth {
 		DT1.setValue(null);
 		DT2.setValue(null);
 	}
+
 	private void InitBirths2() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			// SqlMap sql = new SqlMap().load("/BirthSql.xml");
@@ -774,13 +713,7 @@ public class FindBirth {
 			});
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -792,30 +725,24 @@ public class FindBirth {
 	@FXML
 	void DT2(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			InitBirths2();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	/**
 	 * Инициализация
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
 
 			DateAutoComma(DT1);
 			DateAutoComma(DT2);
-			
+
 			exec = Executors.newCachedThreadPool((runnable) -> {
 				Thread t = new Thread(runnable);
 				t.setDaemon(true);
@@ -835,6 +762,17 @@ public class FindBirth {
 				});
 				return row;
 			});
+			
+			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
+			
+			BIRTH_ACT_LD.setColumnFilter(new PatternColumnFilter<>());
+			BIRTH_ACT_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
+					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+			BIRTH_ACT_ZAGS.setColumnFilter(new PatternColumnFilter<>());
+			MFIO.setColumnFilter(new PatternColumnFilter<>());
+			FFIO.setColumnFilter(new PatternColumnFilter<>());
+			ChFio.setColumnFilter(new PatternColumnFilter<>());
+			
 			BIRTH_ACT_LD.setCellValueFactory(cellData -> cellData.getValue().LIVE_DEADProperty());
 			BIRTH_ACT_ID.setCellValueFactory(cellData -> cellData.getValue().BRN_AC_IDProperty().asObject());
 			BIRTH_ACT_DATE.setCellValueFactory(cellData -> cellData.getValue().TM$_DOC_DATEProperty());
@@ -875,12 +813,7 @@ public class FindBirth {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -920,13 +853,7 @@ public class FindBirth {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 
 		return ret;
@@ -998,14 +925,7 @@ public class FindBirth {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

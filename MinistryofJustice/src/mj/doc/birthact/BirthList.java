@@ -548,7 +548,7 @@ public class BirthList {
 			// SqlMap sql = new SqlMap().load("/BirthSql.xml");
 			// String readRecordSQL = sql.getSql("SelectBirth");
 			PreparedStatement prepStmt = conn
-					.prepareStatement("select * from SelectBirth t " + ((getWhere() != null) ? getWhere() : ""));
+					.prepareStatement("select * from SelectBirth t " + ((getWhere() != null) ? getWhere() : " order by BRN_AC_ID desc"));
 			// System.out.println("select * from SelectBirth t " + getWhere());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<SELECTBIRTH> cus_list = FXCollections.observableArrayList();

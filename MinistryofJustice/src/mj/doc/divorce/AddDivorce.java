@@ -183,7 +183,9 @@ public class AddDivorce {
 
 	@FXML
 	void FindMercer(ActionEvent event) {
-		Mercer(DIVC_MC_MERCER);
+//		Mercer(DIVC_MC_MERCER);
+		UtilCus cus = new UtilCus();
+		cus.FindMercer(DIVC_MC_MERCER, (Stage) DIVC_MC_MERCER.getScene().getWindow(),conn);
 	}
 
 	void CusList(TextField num, TextField name) {
