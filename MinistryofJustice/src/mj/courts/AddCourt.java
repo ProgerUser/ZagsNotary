@@ -49,7 +49,7 @@ public class AddCourt {
 		try {
 			PreparedStatement oper = conn.prepareStatement("insert into  courts (ID, NAME, OTD,ABH_NAME,NAME_ROD) values (?,?,?,?,?)");
 			oper.setInt(1, Integer.valueOf(ID.getText()));
-			oper.setString(2, ID.getText());
+			oper.setString(2, NAME.getText());
 			oper.setInt(3, OTD.getSelectionModel().getSelectedItem().getIOTDNUM());
 			oper.setString(4, ABH_NAME.getText());
 			oper.setString(5, NAME_ROD.getText());
@@ -74,6 +74,12 @@ public class AddCourt {
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
+	
+	@FXML
+	private void OpenKey() {
+	
+	}
+	
 	@FXML
 	private void initialize() {
 		try {

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" layoutX="15.0" layoutY="120.0" spacing="5.0">
+         <children>
+            <Button fx:id="B1" mnemonicParsing="false" onAction="#B1" text="џ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B2" mnemonicParsing="false" onAction="#B2" text="ԥ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B3" mnemonicParsing="false" onAction="#B3" text="қ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B4" mnemonicParsing="false" onAction="#B4" text="ҟ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B5" mnemonicParsing="false" onAction="#B5" text="ҭ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B6" mnemonicParsing="false" onAction="#B6" text="ӷ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B7" mnemonicParsing="false" onAction="#B7" text="ҽ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B8" mnemonicParsing="false" onAction="#B8" text="ҿ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B9" mnemonicParsing="false" onAction="#B9" text="ҳ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="15.0" layoutY="85.0" spacing="5.0">
+         <children>
+            <Button fx:id="B10" mnemonicParsing="false" onAction="#B10" text="ҵ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B11" mnemonicParsing="false" onAction="#B11" text="ц">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B12" mnemonicParsing="false" onAction="#B12" text="у">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B13" mnemonicParsing="false" onAction="#B13" text="к">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B14" mnemonicParsing="false" onAction="#B14" text="е">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B15" mnemonicParsing="false" onAction="#B15" text="н">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B16" mnemonicParsing="false" onAction="#B16" text="г">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B17" mnemonicParsing="false" onAction="#B17" text="ш">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B18" mnemonicParsing="false" onAction="#B18" text="ӡ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B19" mnemonicParsing="false" onAction="#B19" text="з">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B20" mnemonicParsing="false" onAction="#B20" text="х">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="15.0" layoutY="190.0" spacing="5.0">
+         <children>
+            <Button fx:id="B21" mnemonicParsing="false" onAction="#B21" text="ф">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B22" mnemonicParsing="false" onAction="#B22" text="ы">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B23" mnemonicParsing="false" onAction="#B23" text="в">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B24" mnemonicParsing="false" onAction="#B24" text="а">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B25" mnemonicParsing="false" onAction="#B25" text="п">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B26" mnemonicParsing="false" onAction="#B26" text="р">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B27" mnemonicParsing="false" onAction="#B27" text="о">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B28" mnemonicParsing="false" onAction="#B28" text="л">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B29" mnemonicParsing="false" onAction="#B29" text="д">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B30" mnemonicParsing="false" onAction="#B30" text="ж">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B31" mnemonicParsing="false" onAction="#B31" text="ә">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="15.0" layoutY="120.0" spacing="5.0">
+         <children>
+            <Button fx:id="Shift" mnemonicParsing="false" onAction="#Shift" prefWidth="80.0" text="Shift">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="ARROW_UP" />
+               </graphic>
+            </Button>
+            <Button fx:id="B32" mnemonicParsing="false" onAction="#B32" text="ҷ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B33" mnemonicParsing="false" onAction="#B33" text="ч">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B34" mnemonicParsing="false" onAction="#B34" text="с">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B35" mnemonicParsing="false" onAction="#B35" prefWidth="35.0" text="м">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B36" mnemonicParsing="false" onAction="#B36" prefWidth="35.0" text="и">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B37" mnemonicParsing="false" onAction="#B37" text="т">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B38" mnemonicParsing="false" onAction="#B38" text="ь">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B39" mnemonicParsing="false" onAction="#B39" text="б">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="B40" mnemonicParsing="false" onAction="#B40" prefWidth="35.0" text="ҩ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="345.0" layoutY="10.0" mnemonicParsing="false" onAction="#Del">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="REMOVE" />
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#Space" text="пробел" />
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>
