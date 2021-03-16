@@ -56,7 +56,7 @@ public class EditCourt {
 
 			KeyBoard controller = new KeyBoard();
 			loader.setController(controller);
-			controller.setTextField(ABH_NAME, ABH_NAME.getScene());;
+			controller.setTextField(ABH_NAME.getScene());
 
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));

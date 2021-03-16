@@ -23,8 +23,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -51,8 +53,21 @@ import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.KeyBoard;
 
 public class EditAdopt {
+	@FXML
+	private TextField OLD_LASTNAME_AB;
+	@FXML
+	private TextField OLD_FIRSTNAME_AB;
+	@FXML
+	private TextField OLD_MIDDLNAME_AB;
+	@FXML
+	private TextField NEW_LASTNAME_AB;
+	@FXML
+	private TextField NEW_FIRSTNAME_AB;
+	@FXML
+	private TextField NEW_MIDDLNAME_AB;
 	@FXML
 	private TextField DOC_NUMBER;
 	@FXML
@@ -115,6 +130,37 @@ public class EditAdopt {
 	private TextField OLD_MIDDLNAME;
 
 	@FXML
+	private void OpenKey() {
+		try {
+			Stage stage = new Stage();
+			Stage stage_ = (Stage) OLD_MIDDLNAME.getScene().getWindow();
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/mj/widgets/KeyBoard.fxml"));
+
+			KeyBoard controller = new KeyBoard();
+			loader.setController(controller);
+			controller.setTextField(OLD_MIDDLNAME.getScene());
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Абхазская клавиатура");
+			stage.initOwner(stage_);
+			stage.setResizable(false);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+
+				}
+			});
+			stage.show();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	@FXML
 	void FindChildren(ActionEvent event) {
 		UtilCus cus = new UtilCus();
 		cus.Find_Cus(ChildrenFio, CUSID_CH, (Stage) CUSID_CH.getScene().getWindow());
@@ -176,7 +222,9 @@ public class EditAdopt {
 
 	@FXML
 	void FindChBrn(ActionEvent event) {
-		ActList(BRNACT);
+//		ActList(BRNACT);
+		UtilCus cus = new UtilCus();
+		cus.Find_Brn(BRNACT, (Stage) BRNACT.getScene().getWindow());
 	}
 
 	/**
@@ -615,7 +663,7 @@ public class EditAdopt {
 	void Save(ActionEvent event) {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ call ADOPT.EditAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call ADOPT.EditAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 
@@ -672,6 +720,14 @@ public class EditAdopt {
 			callStmt.setString(25, BRN_AREA.getText());
 			callStmt.setString(26, BRN_OBL_RESP.getText());
 			callStmt.setString(27, DOC_NUMBER.getText());
+			
+			callStmt.setString(28, OLD_LASTNAME_AB.getText());
+			callStmt.setString(29, OLD_FIRSTNAME_AB.getText());
+			callStmt.setString(30, OLD_MIDDLNAME_AB.getText());
+			callStmt.setString(31, NEW_LASTNAME_AB.getText());
+			callStmt.setString(32, NEW_FIRSTNAME_AB.getText());
+			callStmt.setString(33, NEW_MIDDLNAME_AB.getText());
+			
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -695,7 +751,7 @@ public class EditAdopt {
 	void SaveToCompare() {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ call ADOPT.EditAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call ADOPT.EditAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 
@@ -752,6 +808,14 @@ public class EditAdopt {
 			callStmt.setString(25, BRN_AREA.getText());
 			callStmt.setString(26, BRN_OBL_RESP.getText());
 			callStmt.setString(27, DOC_NUMBER.getText());
+			
+			callStmt.setString(28, OLD_LASTNAME_AB.getText());
+			callStmt.setString(29, OLD_FIRSTNAME_AB.getText());
+			callStmt.setString(30, OLD_MIDDLNAME_AB.getText());
+			callStmt.setString(31, NEW_LASTNAME_AB.getText());
+			callStmt.setString(32, NEW_FIRSTNAME_AB.getText());
+			callStmt.setString(33, NEW_MIDDLNAME_AB.getText());
+			
 			callStmt.execute();
 			callStmt.close();
 		} catch (SQLException e) {
@@ -889,6 +953,13 @@ public class EditAdopt {
 			SVID_NOMER.setText(adopt.getSVID_NOMER());
 
 			DOC_NUMBER.setText(adopt.getDOC_NUMBER());
+			
+			OLD_LASTNAME_AB.setText(adopt.getOLD_LASTNAME_AB());
+			OLD_FIRSTNAME_AB.setText(adopt.getOLD_FIRSTNAME_AB());
+			OLD_MIDDLNAME_AB.setText(adopt.getOLD_MIDDLNAME_AB());
+			NEW_LASTNAME_AB.setText(adopt.getNEW_LASTNAME_AB());
+			NEW_FIRSTNAME_AB.setText(adopt.getNEW_FIRSTNAME_AB());
+			NEW_MIDDLNAME_AB.setText(adopt.getNEW_MIDDLNAME_AB());
 			
 			new ConvConst().FormatDatePiker(OLD_BRTH);
 			new ConvConst().FormatDatePiker(ZAP_DATE);

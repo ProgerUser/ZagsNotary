@@ -27,8 +27,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -53,6 +55,7 @@ import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
+import mj.widgets.KeyBoard;
 
 public class AddUpdAbhName {
 
@@ -91,7 +94,56 @@ public class AddUpdAbhName {
 
 	@FXML
 	private TextField OLD_MIDDLNAME;
+	
+	@FXML
+	private TextField OLD_LASTNAME_AB;
 
+	@FXML
+	private TextField OLD_FIRSTNAME_AB;
+
+	@FXML
+	private TextField OLD_MIDDLNAME_AB;
+
+	@FXML
+	private TextField NEW_LASTNAME_AB;
+
+	@FXML
+	private TextField NEW_FIRSTNAME_AB;
+
+	@FXML
+	private TextField NEW_MIDDLNAME_AB;
+
+	@FXML
+	private void OpenKey() {
+		try {
+			Stage stage = new Stage();
+			Stage stage_ = (Stage) OLD_MIDDLNAME.getScene().getWindow();
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/mj/widgets/KeyBoard.fxml"));
+
+			KeyBoard controller = new KeyBoard();
+			loader.setController(controller);
+			controller.setTextField(OLD_MIDDLNAME.getScene());
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Абхазская клавиатура");
+			stage.initOwner(stage_);
+			stage.setResizable(false);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+
+				}
+			});
+			stage.show();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	public void setField(String LASTNAME, String FIRSTNAME, String MIDDLNAME, String cusid) {
 		Platform.runLater(new Runnable() {
 			@Override
@@ -429,7 +481,7 @@ public class AddUpdAbhName {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ call UpdAbhName.AddUpdAbhName(?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+			CallableStatement callStmt = conn.prepareCall("{ call UpdAbhName.AddUpdAbhName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
@@ -452,6 +504,13 @@ public class AddUpdAbhName {
 			callStmt.setString(11, SVID_NUMBER.getText());
 			callStmt.setString(12, SVID_SERIA.getText());
 			callStmt.setString(13, DOC_NUMBER.getText());
+			
+			callStmt.setString(14, OLD_LASTNAME_AB.getText());
+			callStmt.setString(15, OLD_FIRSTNAME_AB.getText());
+			callStmt.setString(16, OLD_MIDDLNAME_AB.getText());
+			callStmt.setString(17, NEW_LASTNAME_AB.getText());
+			callStmt.setString(18, NEW_FIRSTNAME_AB.getText());
+			callStmt.setString(19, NEW_MIDDLNAME_AB.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {

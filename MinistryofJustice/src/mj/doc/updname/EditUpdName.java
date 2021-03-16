@@ -24,8 +24,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -49,6 +51,7 @@ import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
+import mj.widgets.KeyBoard;
 
 public class EditUpdName {
 
@@ -105,6 +108,37 @@ public class EditUpdName {
 	@FXML
 	private TextField OLD_MIDDLNAME;
 
+	@FXML
+	private void OpenKey() {
+		try {
+			Stage stage = new Stage();
+			Stage stage_ = (Stage) OLD_MIDDLNAME.getScene().getWindow();
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/mj/widgets/KeyBoard.fxml"));
+
+			KeyBoard controller = new KeyBoard();
+			loader.setController(controller);
+			controller.setTextField(OLD_MIDDLNAME.getScene());
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Абхазская клавиатура");
+			stage.initOwner(stage_);
+			stage.setResizable(false);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+
+				}
+			});
+			stage.show();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	@FXML
 	void FindBrn(ActionEvent event) {
 		UtilCus cus = new UtilCus();

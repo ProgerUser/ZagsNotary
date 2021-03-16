@@ -90,6 +90,7 @@ import mj.dbutil.DBUtil;
 import mj.init.HttpsTrustManager;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.KeyBoard;
 
 /**
  * Создание нового гражданина 29.10.2020
@@ -99,6 +100,37 @@ import mj.util.ConvConst;
  */
 public class AddCus {
 
+	@FXML
+	private void OpenKey() {
+		try {
+			Stage stage = new Stage();
+			Stage stage_ = (Stage) AB_LAST_NAME.getScene().getWindow();
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/mj/widgets/KeyBoard.fxml"));
+
+			KeyBoard controller = new KeyBoard();
+			loader.setController(controller);
+			controller.setTextField(AB_LAST_NAME.getScene());
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Абхазская клавиатура");
+			stage.initOwner(stage_);
+			stage.setResizable(false);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+
+				}
+			});
+			stage.show();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
     @FXML
     private RadioButton AB_SUN;
 
@@ -2481,7 +2513,7 @@ public class AddCus {
 			{
 
 				Statement sqlStatement = conn.createStatement();
-				String readRecordSQL = "select * from COUNTRIES";
+				String readRecordSQL = "select * from COUNTRIES order by NAME";
 				ResultSet rs = sqlStatement.executeQuery(readRecordSQL);
 				ObservableList<COUNTRIES> nationals = FXCollections.observableArrayList();
 				while (rs.next()) {

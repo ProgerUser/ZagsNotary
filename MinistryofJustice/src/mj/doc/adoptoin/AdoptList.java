@@ -34,6 +34,9 @@ import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
 import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -131,6 +134,120 @@ public class AdoptList {
 	@FXML
 	private TitledPane FILTER;
 
+	
+	@FXML
+	void Spravka_31(ActionEvent event) {
+		try {
+
+		} catch (Exception e) {
+			
+		}
+	}
+	
+	public void manipulatePdf(String src, String dest) throws Exception{
+		if (ADOPTOIN.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Выберите строку!");
+		} else {
+			PdfReader reader = new PdfReader(src);
+			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+			AcroFields fields = stamper.getAcroFields();
+//			Iterator it = fields.getFields().entrySet().iterator();
+//			while (it.hasNext()) {
+//				Map.Entry pair = (Map.Entry) it.next();
+//				System.out.println(pair.getKey());
+//				it.remove(); // avoids a ConcurrentModificationException
+//			}
+			
+			PreparedStatement prp = conn.prepareStatement("select * from BLANK_ADOPTOIN where ID = ?");
+			prp.setInt(1, ADOPTOIN.getSelectionModel().getSelectedItem().getID());
+			ResultSet rs = prp.executeQuery();
+			while (rs.next()) {
+				fields.setField("Текст1", rs.getString("F1"));
+				fields.setField("Текст2", rs.getString("F2"));
+				fields.setField("Текст3", rs.getString("F3"));
+				fields.setField("Текст4", rs.getString("F4"));
+				fields.setField("Текст5", rs.getString("F5"));
+				fields.setField("Текст6", rs.getString("F6"));
+				fields.setField("Текст7", rs.getString("F7"));
+				fields.setField("Текст8", rs.getString("F8"));
+				fields.setField("Текст9", rs.getString("F9"));
+				fields.setField("Текст10", rs.getString("F10"));
+				fields.setField("Текст11", rs.getString("F11"));
+				fields.setField("Текст12", rs.getString("F12"));
+				fields.setField("Текст14", rs.getString("F14"));
+				fields.setField("Текст15", rs.getString("F15"));
+				fields.setField("Текст16", rs.getString("F16"));
+				fields.setField("Текст17", rs.getString("F17"));
+				fields.setField("Текст18", rs.getString("F18"));
+				fields.setField("Текст19", rs.getString("F19"));
+				fields.setField("Текст20", rs.getString("F20"));
+				fields.setField("Текст21", rs.getString("F21"));
+				fields.setField("Текст22", rs.getString("F5"));
+				fields.setField("Текст23", rs.getString("F4"));
+				fields.setField("Текст24", rs.getString("F6"));
+				fields.setField("Текст25", rs.getString("F8"));
+				fields.setField("Текст26", rs.getString("F7"));
+				fields.setField("Текст27", rs.getString("F27"));
+				fields.setField("Текст28", rs.getString("F28"));
+				fields.setField("Текст29", rs.getString("F29"));
+				fields.setField("Текст30", rs.getString("F30"));
+				fields.setField("Текст31", rs.getString("F31"));
+				fields.setField("Текст32", rs.getString("F32"));
+				fields.setField("Текст33", rs.getString("F33"));
+				fields.setField("Текст34", rs.getString("F28"));
+				fields.setField("Текст35", rs.getString("F35"));
+				fields.setField("Текст36", rs.getString("F36"));
+				fields.setField("Текст69", rs.getString("F29"));
+				fields.setField("Текст70", rs.getString("F70"));
+				fields.setField("Текст71", rs.getString("F5"));
+				fields.setField("Текст72", rs.getString("F6"));
+				fields.setField("Текст73", rs.getString("F7"));
+				fields.setField("Текст74", rs.getString("F74"));
+				fields.setField("Текст75", rs.getString("F75"));
+				fields.setField("Текст76", rs.getString("F76"));
+				fields.setField("Текст77", rs.getString("F77"));
+				fields.setField("Текст78", rs.getString("F78"));
+				fields.setField("Текст79", rs.getString("F79"));
+				fields.setField("Текст80", rs.getString("F80"));
+				fields.setField("Текст81", rs.getString("F81"));
+				fields.setField("Текст82", rs.getString("F82"));
+				fields.setField("Текст83", rs.getString("F83"));
+				fields.setField("Текст84", rs.getString("F84"));
+				fields.setField("Текст85", rs.getString("F85"));
+				fields.setField("Текст86", rs.getString("F86"));
+				fields.setField("Текст87", rs.getString("F87"));
+				fields.setField("Текст88", rs.getString("F88"));
+				fields.setField("Текст89", rs.getString("F89"));
+				fields.setField("Текст90", rs.getString("F90"));
+				fields.setField("Текст91",rs.getString("F91") );
+				fields.setField("Текст92",rs.getString("F92") );
+				fields.setField("Текст93",rs.getString("F93") );
+				fields.setField("Текст94",rs.getString("F94") );
+				fields.setField("Текст95",rs.getString("F30") );
+				fields.setField("Текст96",rs.getString("F96") );
+				fields.setField("Текст97",rs.getString("F97") );
+				fields.setField("Текст98","" );
+				fields.setField("Текст100",rs.getString("F100") );
+
+			}
+			prp.close();
+			rs.close();
+			
+			stamper.close();
+			reader.close();
+		}
+	}
+	@FXML
+	void PrintBlank(ActionEvent event) {
+		try {
+			manipulatePdf(System.getenv("MJ_PATH") + "/Reports/ADOPTOIN.pdf",
+					System.getenv("MJ_PATH") + "/OutReports/ADOPTOIN.pdf");
+			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/ADOPTOIN.pdf"));
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	private Pane createOptionPane(XTableView<?> table) {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");
@@ -328,6 +445,14 @@ public class AdoptList {
 						: null);
 				list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+				
+				list.setOLD_LASTNAME_AB(rs.getString("OLD_LASTNAME_AB"));
+				list.setOLD_FIRSTNAME_AB(rs.getString("OLD_FIRSTNAME_AB"));
+				list.setOLD_MIDDLNAME_AB(rs.getString("OLD_MIDDLNAME_AB"));
+				list.setNEW_LASTNAME_AB(rs.getString("NEW_LASTNAME_AB"));
+				list.setNEW_FIRSTNAME_AB(rs.getString("NEW_FIRSTNAME_AB"));
+				list.setNEW_MIDDLNAME_AB(rs.getString("NEW_MIDDLNAME_AB"));
+				
 				dlist.add(list);
 			}
 			prepStmt.close();

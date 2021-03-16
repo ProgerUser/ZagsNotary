@@ -7,18 +7,22 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-      <TitledPane alignment="CENTER" collapsible="false" style="-fx-border-color: black;" text="Номер документа">
+      <TitledPane alignment="CENTER" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Номер документа" VBox.vgrow="ALWAYS">
          <content>
             <VBox>
                <children>
@@ -27,70 +31,6 @@
             </VBox>
          </content>
       </TitledPane>
-		<HBox spacing="5.0">
-			<children>
-				<TitledPane fx:id="Pane2" animated="false" collapsible="false" prefHeight="136.0" prefWidth="308.0" style="-fx-border-color: black;" text="До восстановления">
-					<content>
-						<VBox>
-							<children>
-								<GridPane>
-									<children>
-										<Label text="Фамилия" GridPane.halignment="LEFT" />
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-										<TextField fx:id="OLD_LASTNAME" GridPane.columnIndex="1" />
-										<TextField fx:id="OLD_FIRSTNAME" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
-										<TextField fx:id="OLD_MIDDLNAME" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-									</children>
-									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" prefWidth="58.0" />
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="190.0" prefWidth="192.0" />
-									</columnConstraints>
-									<rowConstraints>
-										<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-									</rowConstraints>
-									<VBox.margin>
-										<Insets left="5.0" />
-									</VBox.margin>
-								</GridPane>
-							</children>
-						</VBox>
-					</content>
-				</TitledPane>
-				<TitledPane fx:id="Pane3" animated="false" collapsible="false" prefHeight="136.0" prefWidth="307.0" style="-fx-border-color: black;" text="После восстановления">
-					<content>
-						<VBox>
-							<children>
-								<GridPane>
-									<children>
-										<Label text="Фамилия" GridPane.halignment="LEFT" />
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-										<TextField fx:id="NEW_LASTNAME" GridPane.columnIndex="1" />
-										<TextField fx:id="NEW_FIRSTNAME" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
-										<TextField fx:id="NEW_MIDDLNAME" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-									</children>
-									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" prefWidth="58.0" />
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="190.0" prefWidth="192.0" />
-									</columnConstraints>
-									<rowConstraints>
-										<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-									</rowConstraints>
-									<VBox.margin>
-										<Insets left="5.0" />
-									</VBox.margin>
-								</GridPane>
-							</children>
-						</VBox>
-					</content>
-				</TitledPane>
-			</children>
-		</HBox>
 		<HBox spacing="5.0">
 			<children>
 				<TitledPane fx:id="Pane1" animated="false" collapsible="false" style="-fx-border-color: black;" text="Гражданин">
@@ -127,7 +67,7 @@
 						</VBox>
 					</content>
 				</TitledPane>
-				<TitledPane fx:id="Pane4" animated="false" collapsible="false" prefHeight="106.0" prefWidth="186.0" style="-fx-border-color: black;" text="Акт о рождении">
+				<TitledPane fx:id="Pane4" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Акт о рождении" HBox.hgrow="ALWAYS">
 					<content>
 						<VBox>
 							<children>
@@ -143,10 +83,13 @@
                                     <FontAwesomeIconView glyphName="SEARCH" size="15" />
                                  </graphic>
 										</MenuButton>
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="№" GridPane.halignment="LEFT" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="№" GridPane.halignment="LEFT">
+                                 <GridPane.margin>
+                                    <Insets right="5.0" />
+                                 </GridPane.margin></Text>
 									</children>
 									<columnConstraints>
-										<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="13.0" prefWidth="20.0" />
+										<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="13.0" />
 										<ColumnConstraints hgrow="SOMETIMES" minWidth="114.0" />
 										<ColumnConstraints hgrow="SOMETIMES" />
 									</columnConstraints>
@@ -160,7 +103,162 @@
 				</TitledPane>
 			</children>
 		</HBox>
-		<TitledPane fx:id="Pane5" animated="false" collapsible="false" prefHeight="106.0" prefWidth="603.0" style="-fx-border-color: black;" text="Выдано свидетельство">
+      <TabPane styleClass="floating" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="На Рус.">
+               <content>
+            		<HBox spacing="5.0">
+            			<children>
+            				<TitledPane fx:id="Pane2" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="До восстановления" HBox.hgrow="ALWAYS">
+            					<content>
+            						<VBox>
+            							<children>
+            								<GridPane>
+            									<children>
+            										<Label text="Фамилия" GridPane.halignment="LEFT" />
+            										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+            										<TextField fx:id="OLD_LASTNAME" GridPane.columnIndex="1" />
+            										<TextField fx:id="OLD_FIRSTNAME" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
+            										<TextField fx:id="OLD_MIDDLNAME" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            									</children>
+            									<columnConstraints>
+            										<ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" prefWidth="58.0" />
+            										<ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="190.0" prefWidth="192.0" />
+            									</columnConstraints>
+            									<rowConstraints>
+            										<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            										<RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            										<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            									</rowConstraints>
+            									<VBox.margin>
+            										<Insets left="5.0" />
+            									</VBox.margin>
+            								</GridPane>
+            							</children>
+            						</VBox>
+            					</content>
+            				</TitledPane>
+            				<TitledPane fx:id="Pane3" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="После восстановления" HBox.hgrow="ALWAYS">
+            					<content>
+            						<VBox>
+            							<children>
+            								<GridPane>
+            									<children>
+            										<Label text="Фамилия" GridPane.halignment="LEFT" />
+            										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+            										<TextField fx:id="NEW_LASTNAME" GridPane.columnIndex="1" />
+            										<TextField fx:id="NEW_FIRSTNAME" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
+            										<TextField fx:id="NEW_MIDDLNAME" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            									</children>
+            									<columnConstraints>
+            										<ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" prefWidth="58.0" />
+            										<ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="190.0" prefWidth="192.0" />
+            									</columnConstraints>
+            									<rowConstraints>
+            										<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            										<RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            										<RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            									</rowConstraints>
+            									<VBox.margin>
+            										<Insets left="5.0" />
+            									</VBox.margin>
+            								</GridPane>
+            							</children>
+            						</VBox>
+            					</content>
+            				</TitledPane>
+            			</children>
+            		</HBox>
+               </content>
+          </Tab>
+          <Tab text="На Абх.">
+               <content>
+                  <HBox spacing="5.0">
+                     <children>
+                        <TitledPane fx:id="Pane21" animated="false" collapsible="false" style="-fx-border-color: BLACK;" text="До перемены имени">
+                           <content>
+                              <VBox>
+                                 <children>
+                                    <GridPane>
+                                       <children>
+                                          <Label text="Фамилия" GridPane.halignment="LEFT" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                          <TextField fx:id="OLD_LASTNAME_AB" GridPane.columnIndex="1" />
+                                          <TextField fx:id="OLD_FIRSTNAME_AB" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
+                                          <TextField fx:id="OLD_MIDDLNAME_AB" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                       </children>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" prefWidth="58.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="190.0" prefWidth="192.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <VBox.margin>
+                                          <Insets left="5.0" />
+                                       </VBox.margin>
+                                    </GridPane>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </TitledPane>
+                        <TitledPane fx:id="Pane31" animated="false" collapsible="false" prefHeight="138.0" prefWidth="335.0" style="-fx-border-color: BLACK;" text="После перемены имени">
+                           <content>
+                              <VBox>
+                                 <children>
+                                    <GridPane>
+                                       <children>
+                                          <Label text="Фамилия" GridPane.halignment="LEFT" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Имя" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                          <TextField fx:id="NEW_LASTNAME_AB" GridPane.columnIndex="1" />
+                                          <TextField fx:id="NEW_FIRSTNAME_AB" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.rowIndex="2" />
+                                          <TextField fx:id="NEW_MIDDLNAME_AB" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Button mnemonicParsing="false" onAction="#OpenKey" GridPane.columnIndex="2">
+                                             <graphic>
+                                                <FontAwesomeIconView glyphName="KEYBOARD_ALT" size="18" />
+                                             </graphic>
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                             <tooltip>
+                                                <Tooltip text="Открыть клавиатуру" />
+                                             </tooltip>
+                                             <GridPane.margin>
+                                                <Insets left="5.0" />
+                                             </GridPane.margin>
+                                          </Button>
+                                       </children>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="55.0" prefWidth="58.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="190.0" prefWidth="192.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <VBox.margin>
+                                          <Insets left="5.0" />
+                                       </VBox.margin>
+                                    </GridPane>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </HBox>
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+		<TitledPane fx:id="Pane5" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Выдано свидетельство" VBox.vgrow="ALWAYS">
 			<content>
 				<VBox>
 					<children>

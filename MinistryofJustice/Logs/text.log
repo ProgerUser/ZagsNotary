@@ -732,3 +732,191 @@ Caused by: Error : 1400, Position : 75, Sql = insert into  courts (ID, NAME, OTD
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Unknown Source)
 
+[16.03.2021 20:00:27] [EditUpdAbhName] ERROR:140 - java.sql.SQLException: ORA-06550: Строка 1, столбец 7:
+PLS-00306: ошибочно число или типы аргументов при обращении к 'EDITUPDABHNAME'
+ORA-06550: Строка 1, столбец 7:
+PL/SQL: Statement ignored
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:446)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1054)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:612)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:223)
+	at oracle.jdbc.driver.T4CCallableStatement.doOall8(T4CCallableStatement.java:56)
+	at oracle.jdbc.driver.T4CCallableStatement.executeForRows(T4CCallableStatement.java:907)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1119)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3780)
+	at oracle.jdbc.driver.T4CCallableStatement.executeInternal(T4CCallableStatement.java:1300)
+	at oracle.jdbc.driver.OraclePreparedStatement.execute(OraclePreparedStatement.java:3887)
+	at oracle.jdbc.driver.OracleCallableStatement.execute(OracleCallableStatement.java:4230)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.execute(OraclePreparedStatementWrapper.java:1079)
+	at mj.doc.updabhname.EditUpdAbhName.SaveCompare(EditUpdAbhName.java:467)
+	at mj.doc.updabhname.UpdAbhNameList$4.handle(UpdAbhNameList.java:349)
+	at mj.doc.updabhname.UpdAbhNameList$4.handle(UpdAbhNameList.java:1)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at com.sun.javafx.stage.WindowPeerListener.closing(WindowPeerListener.java:88)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.run(GlassWindowEventHandler.java:122)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.run(GlassWindowEventHandler.java:40)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.lambda$handleWindowEvent$3(GlassWindowEventHandler.java:151)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassWindowEventHandler.handleWindowEvent(GlassWindowEventHandler.java:149)
+	at com.sun.glass.ui.Window.handleWindowEvent(Window.java:1273)
+	at com.sun.glass.ui.Window.notifyClose(Window.java:1177)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: Error : 6550, Position : 6, Sql = BEGIN UpdAbhName.EditUpdAbhName(:1 ,:2 ,:3 ,:4 ,:5 ,:6 ,:7 ,:8 ,:9 ,:10 ,:11 ,:12 ,:13 ) ; END;, OriginalSql = { call UpdAbhName.EditUpdAbhName(?,?,?,?,?,?,?,?,?,?,?,?,?) }, Error Msg = ORA-06550: Строка 1, столбец 7:
+PLS-00306: ошибочно число или типы аргументов при обращении к 'EDITUPDABHNAME'
+ORA-06550: Строка 1, столбец 7:
+PL/SQL: Statement ignored
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:498)
+	... 38 more
+
+[16.03.2021 21:00:37] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="83064700645106428064700645006450064330645206437064580647306438064390644806436064300643006430064300643006456064930649906484064910642306465064240641506450064940649706484064230646706460064240641506488064360642806435064360644006431064150645006463064680641506447064150643406429064340643106454064550650506430064300643006430064300743007423074260744006415074400742307431074270641507427074370743563" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[16.03.2021 21:00:37] [Auth1c] INFO :380 - User
+[16.03.2021 21:00:37] [Auth1c] INFO :381 - User
+[16.03.2021 21:00:37] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[16.03.2021 21:00:38] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="16.03.2021 21:03:32"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Агрба" Имя="Сидро" Отчество="Даниевна" ДатаРождения="17.07.2007 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="4" НаименованиеРайона="Гулрыпшский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD0ECEC2-8B05-0995-E053-4740470A71EB" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="000123" КемВыдан="null" ДатаВыдачи="17.07.2007 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[16.03.2021 21:00:38] [Auth1c] INFO :380 - User
+[16.03.2021 21:00:38] [Auth1c] INFO :381 - User
+[16.03.2021 21:00:38] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[16.03.2021 21:00:54] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="65084520843308410084520843208432084150843408419084400845508420084210843008418084120841208412084120841208438084750848108466084730840508447084060839708432084760847908466084050844908442084060839708470084180841008417084180842208413083970843208445084500839708429083970841608411084160841308436084370848708412084120841208412084120941209405094080942208397094220940509413094090839709409094190941783" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[16.03.2021 21:00:54] [Auth1c] INFO :380 - User
+[16.03.2021 21:00:54] [Auth1c] INFO :381 - User
+[16.03.2021 21:00:54] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[16.03.2021 21:00:54] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="16.03.2021 21:03:48"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Агрба" Имя="Сидро" Отчество="Даниевна" ДатаРождения="17.07.2007 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="4" НаименованиеРайона="Гулрыпшский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD0ECEC2-8B05-0995-E053-4740470A71EB" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="000123" КемВыдан="null" ДатаВыдачи="17.07.2007 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[16.03.2021 21:00:54] [Auth1c] INFO :380 - User
+[16.03.2021 21:00:54] [Auth1c] INFO :381 - User
+[16.03.2021 21:00:54] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[16.03.2021 21:01:48] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="53079400792107898079400792007920079030792207907079280794307908079090791807906079000790007900079000790007926079630796907954079610789307935078940788507920079640796707954078930793707930078940788507958079060789807905079060791007901078850792007933079380788507917078850790407899079040790107924079250797507900079000790007900079000890008893088960891007885089100889308901088970788508897089070890578" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[16.03.2021 21:01:48] [Auth1c] INFO :380 - User
+[16.03.2021 21:01:48] [Auth1c] INFO :381 - User
+[16.03.2021 21:01:48] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[16.03.2021 21:01:48] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="16.03.2021 21:04:42"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Агрба" Имя="Сидро" Отчество="Даниевна" ДатаРождения="17.07.2007 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="4" НаименованиеРайона="Гулрыпшский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD0ECEC2-8B05-0995-E053-4740470A71EB" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="000123" КемВыдан="null" ДатаВыдачи="17.07.2007 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[16.03.2021 21:01:48] [Auth1c] INFO :380 - User
+[16.03.2021 21:01:48] [Auth1c] INFO :381 - User
+[16.03.2021 21:01:48] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[16.03.2021 21:07:26] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="90046770465804635046770465704657046400465904644046650468004645046460465504643046370463704637046370463704663047000470604691046980463004672046310462204657047010470404691046300467404667046310462204695046430463504642046430464704638046220465704670046750462204654046220464104636046410463804661046620471204637046370463704637046370563705630056330564704622056470563005638056340462205634056440564245" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[16.03.2021 21:07:26] [Auth1c] INFO :380 - User
+[16.03.2021 21:07:26] [Auth1c] INFO :381 - User
+[16.03.2021 21:07:26] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[16.03.2021 21:07:26] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="16.03.2021 21:10:20"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Агрба" Имя="Сидро" Отчество="Даниевна" ДатаРождения="17.07.2007 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="4" НаименованиеРайона="Гулрыпшский р-он" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BD0ECEC2-8B05-0995-E053-4740470A71EB" Просрочен="0" КодГосударства="5" НаименованиеГосударства="Сирия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="000123" КемВыдан="null" ДатаВыдачи="17.07.2007 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[16.03.2021 21:07:26] [Auth1c] INFO :380 - User
+[16.03.2021 21:07:26] [Auth1c] INFO :381 - User
+[16.03.2021 21:07:26] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[16.03.2021 22:52:02] [EditAdopt] ERROR:140 - javafx.fxml.LoadException: Error resolving onAction='#OpenKey', either the event handler is not in the Namespace or there is an error in the script.
+/C:/Users/Said.000/git/ZagsNotary/MinistryofJustice/target/classes/mj/doc/adoptoin/IUAdopt.fxml:167
+
+	at javafx.fxml.FXMLLoader.constructLoadException(FXMLLoader.java:2597)
+	at javafx.fxml.FXMLLoader.access$100(FXMLLoader.java:103)
+	at javafx.fxml.FXMLLoader$Element.processEventHandlerAttributes(FXMLLoader.java:610)
+	at javafx.fxml.FXMLLoader$ValueElement.processEndElement(FXMLLoader.java:770)
+	at javafx.fxml.FXMLLoader.processEndElement(FXMLLoader.java:2823)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2532)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2441)
+	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:2409)
+	at mj.doc.adoptoin.AdoptList.Edit(AdoptList.java:495)
+	at mj.doc.adoptoin.AdoptList.lambda$18(AdoptList.java:1071)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3470)
+	at javafx.scene.Scene$ClickGenerator.access$8100(Scene.java:3398)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3766)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+

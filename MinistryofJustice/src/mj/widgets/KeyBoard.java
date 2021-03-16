@@ -139,14 +139,14 @@ public class KeyBoard {
 	@FXML
 	private Button B40;
 
-	TextField field;
 	Scene scene;
 
 	@FXML
 	void B1(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B1.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B1.getText());
 		}
 	}
 
@@ -154,7 +154,8 @@ public class KeyBoard {
 	void B10(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B10.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B10.getText());
 		}
 	}
 
@@ -162,7 +163,8 @@ public class KeyBoard {
 	void B11(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B11.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B11.getText());
 		}
 	}
 
@@ -170,7 +172,8 @@ public class KeyBoard {
 	void B12(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B12.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B12.getText());
 		}
 	}
 
@@ -178,7 +181,8 @@ public class KeyBoard {
 	void B13(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B13.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B13.getText());
 		}
 	}
 
@@ -186,7 +190,8 @@ public class KeyBoard {
 	void B14(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B14.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B14.getText());
 		}
 	}
 
@@ -194,7 +199,8 @@ public class KeyBoard {
 	void B15(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B15.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B15.getText());
 		}
 	}
 
@@ -202,7 +208,8 @@ public class KeyBoard {
 	void B16(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B16.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B16.getText());
 		}
 	}
 
@@ -210,7 +217,8 @@ public class KeyBoard {
 	void B17(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B17.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B17.getText());
 		}
 	}
 
@@ -218,7 +226,8 @@ public class KeyBoard {
 	void B18(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B18.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B18.getText());
 		}
 	}
 
@@ -226,7 +235,8 @@ public class KeyBoard {
 	void B19(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B19.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B19.getText());
 		}
 	}
 
@@ -234,7 +244,8 @@ public class KeyBoard {
 	void B2(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B2.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B2.getText());
 		}
 	}
 
@@ -242,7 +253,8 @@ public class KeyBoard {
 	void B20(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B20.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B20.getText());
 		}
 	}
 
@@ -250,7 +262,8 @@ public class KeyBoard {
 	void B21(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B21.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B21.getText());
 		}
 	}
 
@@ -258,7 +271,8 @@ public class KeyBoard {
 	void B22(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B22.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B22.getText());
 		}
 	}
 
@@ -266,7 +280,8 @@ public class KeyBoard {
 	void B23(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B23.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B23.getText());
 		}
 	}
 
@@ -274,7 +289,8 @@ public class KeyBoard {
 	void B24(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B24.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B24.getText());
 		}
 	}
 
@@ -282,7 +298,8 @@ public class KeyBoard {
 	void B25(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B25.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B25.getText());
 		}
 	}
 
@@ -290,7 +307,8 @@ public class KeyBoard {
 	void B26(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B26.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B26.getText());
 		}
 	}
 
@@ -298,7 +316,8 @@ public class KeyBoard {
 	void B27(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B27.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B27.getText());
 		}
 	}
 
@@ -306,7 +325,8 @@ public class KeyBoard {
 	void B28(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B28.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B28.getText());
 		}
 	}
 
@@ -314,7 +334,8 @@ public class KeyBoard {
 	void B29(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B29.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B29.getText());
 		}
 	}
 
@@ -322,7 +343,8 @@ public class KeyBoard {
 	void B3(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B3.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B3.getText());
 		}
 	}
 
@@ -330,7 +352,8 @@ public class KeyBoard {
 	void B30(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B30.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B30.getText());
 		}
 	}
 
@@ -338,7 +361,8 @@ public class KeyBoard {
 	void B31(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B31.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B31.getText());
 		}
 	}
 
@@ -346,7 +370,8 @@ public class KeyBoard {
 	void B32(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B32.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B32.getText());
 		}
 	}
 
@@ -354,7 +379,8 @@ public class KeyBoard {
 	void B33(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B33.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B33.getText());
 		}
 	}
 
@@ -362,7 +388,8 @@ public class KeyBoard {
 	void B34(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B34.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B34.getText());
 		}
 	}
 
@@ -370,7 +397,8 @@ public class KeyBoard {
 	void B35(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B35.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B35.getText());
 		}
 	}
 
@@ -378,7 +406,8 @@ public class KeyBoard {
 	void B36(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B36.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B36.getText());
 		}
 	}
 
@@ -386,7 +415,8 @@ public class KeyBoard {
 	void B37(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B37.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B37.getText());
 		}
 	}
 
@@ -394,7 +424,8 @@ public class KeyBoard {
 	void B38(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B38.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B38.getText());
 		}
 	}
 
@@ -402,7 +433,8 @@ public class KeyBoard {
 	void B39(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B39.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B39.getText());
 		}
 	}
 
@@ -410,7 +442,8 @@ public class KeyBoard {
 	void B4(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B4.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B4.getText());
 		}
 	}
 
@@ -418,7 +451,8 @@ public class KeyBoard {
 	void B40(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B40.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B40.getText());
 		}
 	}
 
@@ -426,7 +460,8 @@ public class KeyBoard {
 	void B5(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B5.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B5.getText());
 		}
 	}
 
@@ -434,7 +469,8 @@ public class KeyBoard {
 	void B6(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B6.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B6.getText());
 		}
 	}
 
@@ -442,7 +478,8 @@ public class KeyBoard {
 	void B7(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B7.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B7.getText());
 		}
 	}
 
@@ -450,7 +487,8 @@ public class KeyBoard {
 	void B8(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B8.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B8.getText());
 		}
 	}
 
@@ -458,7 +496,8 @@ public class KeyBoard {
 	void B9(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText() + B9.getText());
+			focusedTextArea
+					.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + B9.getText());
 		}
 	}
 
@@ -466,7 +505,10 @@ public class KeyBoard {
 	void Del(ActionEvent event) {
 		if (scene.focusOwnerProperty().get() instanceof TextField) {
 			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
-			focusedTextArea.setText(focusedTextArea.getText().substring(0, focusedTextArea.getText().length() - 1));
+			if ((focusedTextArea.getText() != null ? focusedTextArea.getText() : "").length() > 0) {
+				focusedTextArea.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "").substring(
+						0, (focusedTextArea.getText() != null ? focusedTextArea.getText() : "").length() - 1));
+			}
 		}
 	}
 
@@ -561,7 +603,10 @@ public class KeyBoard {
 
 	@FXML
 	void Space(ActionEvent event) {
-		field.setText(field.getText() + " ");
+		if (scene.focusOwnerProperty().get() instanceof TextField) {
+			TextField focusedTextArea = (TextField) scene.focusOwnerProperty().get();
+			focusedTextArea.setText((focusedTextArea.getText() != null ? focusedTextArea.getText() : "") + " ");
+		}
 	}
 
 	@FXML
@@ -573,8 +618,7 @@ public class KeyBoard {
 		}
 	}
 
-	public void setTextField(TextField field, Scene scene) {
-		this.field = field;
+	public void setTextField(Scene scene) {
 		this.scene = scene;
 	}
 
