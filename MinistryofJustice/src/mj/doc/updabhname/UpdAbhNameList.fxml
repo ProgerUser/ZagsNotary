@@ -125,6 +125,21 @@
                               <FontAwesomeIconView glyphName="PRINT" size="18" />
                            </graphic>
 								</Button>
+                        <Button mnemonicParsing="false" onAction="#PrintBlank">
+                           <tooltip>
+                              <Tooltip text="Альт. печать">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="PRINT" size="18" style="-fx-fill: BLUE;" />
+                           </graphic>
+                        </Button>
 							</items>
 							<VBox.margin>
 								<Insets />

@@ -20,7 +20,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -34,6 +33,9 @@ import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
 import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -170,7 +172,6 @@ public class UpdAbhNameList {
 			if (UPDATE_NAME.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите строку!");
 			} else {
-				Main.logger = Logger.getLogger(getClass());
 
 				if (DBUtil.OdbAction(115) == 0) {
 					Msg.Message("Нет доступа!");
@@ -223,15 +224,9 @@ public class UpdAbhNameList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								DBUtil.LOG_ERROR(e1);
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
@@ -245,13 +240,7 @@ public class UpdAbhNameList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -316,8 +305,6 @@ public class UpdAbhNameList {
 	public void Edit(Integer docid, Stage stage_) {
 		try {
 			if (isopen == false) {
-				Main.logger = Logger.getLogger(getClass());
-
 				if (DBUtil.OdbAction(114) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
@@ -442,13 +429,8 @@ public class UpdAbhNameList {
 											Msg.Message(lock);
 										}
 									}
-								} catch (SQLException e) {
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+								} catch (Exception e) {
+									DBUtil.LOG_ERROR(e);
 								}
 							}
 						});
@@ -458,19 +440,9 @@ public class UpdAbhNameList {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "UPDATE_ABH_NAME"));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					} else {
-						e.printStackTrace();
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 				}
 			} else {
@@ -478,13 +450,7 @@ public class UpdAbhNameList {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -499,8 +465,6 @@ public class UpdAbhNameList {
 
 					@Override
 					public Object call() throws Exception {
-						Main.logger = Logger.getLogger(getClass());
-
 						Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/UPDATE_ABH_NAME.docx");
 						docx.setVariablePattern(new VariablePattern("#{", "}"));
 
@@ -624,13 +588,7 @@ public class UpdAbhNameList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -720,6 +678,81 @@ public class UpdAbhNameList {
 	void CmPrint(ActionEvent event) {
 		Print();
 	}
+	
+	public void manipulatePdf(String src, String dest) throws Exception{
+		if (UPDATE_NAME.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Выберите строку!");
+		} else {
+			PdfReader reader = new PdfReader(src);
+			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+			AcroFields fields = stamper.getAcroFields();
+//			Iterator it = fields.getFields().entrySet().iterator();
+//			while (it.hasNext()) {
+//				Map.Entry pair = (Map.Entry) it.next();
+//				System.out.println(pair.getKey());
+//				it.remove(); // avoids a ConcurrentModificationException
+//			}
+			
+			PreparedStatement prp = conn.prepareStatement("select * from BLANK_UPDATE_ABH_NAME where ID = ?");
+			prp.setInt(1, UPDATE_NAME.getSelectionModel().getSelectedItem().getID());
+			ResultSet rs = prp.executeQuery();
+			while (rs.next()) {
+				fields.setField("Текст1", rs.getString("F1"));
+				fields.setField("Текст2", rs.getString(""));
+				fields.setField("Текст3", rs.getString(""));
+				fields.setField("Текст4", rs.getString(""));
+				fields.setField("Текст5", rs.getString(""));
+				fields.setField("Текст6", rs.getString(""));
+				fields.setField("Текст7", rs.getString(""));
+				fields.setField("Текст8", rs.getString(""));
+				fields.setField("Текст9", rs.getString(""));
+				fields.setField("Текст10", rs.getString(""));
+				fields.setField("Текст11", rs.getString(""));
+				fields.setField("Текст12", rs.getString(""));
+				fields.setField("Текст13", rs.getString(""));
+				fields.setField("Текст14", rs.getString(""));
+				fields.setField("Текст15", rs.getString(""));
+				fields.setField("Текст16", rs.getString(""));
+				fields.setField("Текст17", rs.getString(""));
+				fields.setField("Текст18", rs.getString(""));
+				fields.setField("Текст19", rs.getString(""));
+				fields.setField("Текст20", rs.getString(""));
+				fields.setField("Текст21", rs.getString(""));
+				fields.setField("Текст22", rs.getString(""));
+				fields.setField("Текст23", rs.getString(""));
+				fields.setField("Текст24", rs.getString(""));
+				fields.setField("Текст25", rs.getString(""));
+				fields.setField("Текст26", rs.getString(""));
+				fields.setField("Текст27", rs.getString(""));
+				fields.setField("Текст28", rs.getString(""));
+				fields.setField("Текст29", rs.getString(""));
+				fields.setField("Текст30", rs.getString(""));
+				fields.setField("Текст31", rs.getString(""));
+				fields.setField("Текст34", rs.getString(""));
+				fields.setField("Текст35", rs.getString(""));
+				fields.setField("Текст36", rs.getString(""));
+				fields.setField("Текст37", rs.getString(""));
+				fields.setField("Текст42", rs.getString(""));
+				fields.setField("Текст43", rs.getString(""));
+			}
+			prp.close();
+			rs.close();
+			
+			stamper.close();
+			reader.close();
+		}
+	}
+
+	@FXML
+	void PrintBlank(ActionEvent event) {
+		try {
+			manipulatePdf(System.getenv("MJ_PATH") + "/Reports/UPDATE_ABH_NAME.pdf",
+					System.getenv("MJ_PATH") + "/OutReports/UPDATE_ABH_NAME.pdf");
+			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/UPDATE_ABH_NAME.pdf"));
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
 
 	@FXML
 	void CmDelete(ActionEvent event) {
@@ -754,7 +787,6 @@ public class UpdAbhNameList {
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "UpdNameList");
@@ -763,28 +795,17 @@ public class UpdAbhNameList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -939,12 +960,7 @@ public class UpdAbhNameList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -988,13 +1004,7 @@ public class UpdAbhNameList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 
 		return ret;
@@ -1029,14 +1039,7 @@ public class UpdAbhNameList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 }
