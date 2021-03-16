@@ -104,6 +104,9 @@ public class UpdNatList {
 	private ProgressIndicator PB;
 
 	@FXML
+	private XTableColumn<VUPD_NAT, String> DOC_NUMBER;
+	
+	@FXML
 	private XTableView<VUPD_NAT> UPD_NAT;
 
 	@FXML
@@ -621,7 +624,7 @@ public class UpdNatList {
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")), formatterdt)
 						: null);
 				list.setSVID_SERIA(rs.getString("SVID_SERIA"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -674,6 +677,7 @@ public class UpdNatList {
 				list.setFIO(rs.getString("FIO"));
 				list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
 				list.setSVID_SERIA(rs.getString("SVID_SERIA"));
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -999,7 +1003,7 @@ public class UpdNatList {
 			CR_DATE.setColumnFilter(new DateColumnFilter<>());
 			CR_TIME.setColumnFilter(new PatternColumnFilter<>());
 			FIO.setColumnFilter(new PatternColumnFilter<>());
-
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
 			Refresh();
 			/**
@@ -1013,6 +1017,7 @@ public class UpdNatList {
 				CR_DATE.setCellValueFactory(cellData -> cellData.getValue().CR_DATEProperty());
 				CR_TIME.setCellValueFactory(cellData -> cellData.getValue().CR_TIMEProperty());
 				FIO.setCellValueFactory(cellData -> cellData.getValue().FIOProperty());
+				DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 			}
 
 			// двойной щелчок

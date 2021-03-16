@@ -61,31 +61,58 @@ import mj.util.ConvConst;
 
 public class AddMercer {
 
-	@FXML private GridPane SheTypeB;
-	@FXML private TextField MERCER_NUM;
-	@FXML private TextField MERCER_SHEAGE;
-	@FXML private TextField MERCER_OTHER;
-	@FXML private TextField HeFio;
-	@FXML private TextField MERCER_HE_LNAFT;
-	@FXML private TextField MERCER_DIVHE;
-	@FXML private TextField MERCER_HE;
-	@FXML private GridPane SheTypeA;
-	@FXML private TextField MERCER_DIESHE;
-	@FXML private TextField MERCER_SERIA;
-	@FXML private ComboBox<String> MERCER_DSPMT_HE;
-	@FXML private TextField MERCER_DIVSHE;
-	@FXML private TextField MERCER_HE_LNBEF;
-	@FXML private TextField SheFio;
-	@FXML private TextField MERCER_SHE_LNBEF;
-	@FXML private GridPane HeTypeA;
-	@FXML private ComboBox<String> MERCER_DSPMT_SHE;
-	@FXML private GridPane HeTypeB;
-	@FXML private TextField MERCER_SHE_LNBAFT;
-	@FXML private TextField MERCER_DIEHE;
-	@FXML private TextField MERCER_HEAGE;
-	@FXML private TextField MERCER_SHE;
-    @FXML
-    private DatePicker MC_DATE;
+	@FXML
+	private GridPane SheTypeB;
+	@FXML
+	private TextField MERCER_NUM;
+	@FXML
+	private TextField MERCER_SHEAGE;
+	@FXML
+	private TextField MERCER_OTHER;
+	@FXML
+	private TextField HeFio;
+	@FXML
+	private TextField MERCER_HE_LNAFT;
+	@FXML
+	private TextField MERCER_DIVHE;
+	@FXML
+	private TextField MERCER_HE;
+	@FXML
+	private GridPane SheTypeA;
+	@FXML
+	private TextField MERCER_DIESHE;
+	@FXML
+	private TextField MERCER_SERIA;
+	@FXML
+	private ComboBox<String> MERCER_DSPMT_HE;
+	@FXML
+	private TextField MERCER_DIVSHE;
+	@FXML
+	private TextField MERCER_HE_LNBEF;
+	@FXML
+	private TextField SheFio;
+	@FXML
+	private TextField MERCER_SHE_LNBEF;
+	@FXML
+	private GridPane HeTypeA;
+	@FXML
+	private ComboBox<String> MERCER_DSPMT_SHE;
+	@FXML
+	private GridPane HeTypeB;
+	@FXML
+	private TextField MERCER_SHE_LNBAFT;
+	@FXML
+	private TextField MERCER_DIEHE;
+	@FXML
+	private TextField MERCER_HEAGE;
+	@FXML
+	private TextField MERCER_SHE;
+	
+	@FXML
+	private TextField DOC_NUMBER;
+	@FXML
+	private DatePicker MC_DATE;
+    
 	@FXML
 	void FindHe(ActionEvent event) {
 		UtilCus cus = new UtilCus();
@@ -577,7 +604,7 @@ public class AddMercer {
 	void Save(ActionEvent event) {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ call Mercer.AddMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call Mercer.AddMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
 			callStmt.setString(3, MERCER_OTHER.getText());
@@ -630,6 +657,7 @@ public class AddMercer {
 			}
 			callStmt.setString(19, MERCER_DSPMT_SHE.getValue());
 			callStmt.setDate(20, (MC_DATE.getValue() != null) ? java.sql.Date.valueOf(MC_DATE.getValue()) : null);
+			callStmt.setString(21, DOC_NUMBER.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {

@@ -97,6 +97,9 @@ public class MercerList {
 	private XTableView<MC_MERCER> MC_MERCER;
 
 	@FXML
+	private XTableColumn<MC_MERCER, String> DOC_NUMBER;
+	
+	@FXML
 	private XTableColumn<MC_MERCER, String> SheFio;
 
 	@FXML
@@ -280,6 +283,7 @@ public class MercerList {
 				list.setMC_DATE((rs.getDate("MC_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MC_DATE")), formatter)
 						: null);
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -663,6 +667,7 @@ public class MercerList {
 				list.setMC_DATE((rs.getDate("MC_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MC_DATE")), formatter)
 						: null);
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -960,6 +965,9 @@ public class MercerList {
 			CR_TIME.setColumnFilter(new PatternColumnFilter<>());
 			SheFio.setColumnFilter(new PatternColumnFilter<>());
 			HeFio.setColumnFilter(new PatternColumnFilter<>());
+			
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
+			
 			dbConnect();
 			Refresh();
 			/**
@@ -972,6 +980,7 @@ public class MercerList {
 				HeFio.setCellValueFactory(cellData -> cellData.getValue().HEFIOProperty());
 				MERCER_ID.setCellValueFactory(cellData -> cellData.getValue().MERCER_IDProperty().asObject());
 				OPER.setCellValueFactory(cellData -> cellData.getValue().MERCER_USRProperty());
+				DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 			}
 
 			// двойной щелчок

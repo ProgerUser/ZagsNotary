@@ -35,8 +35,11 @@ public class SELECTBIRTH {
 	private StringProperty LIVE_DEAD;
 	/** Нет данных */
 	private IntegerProperty BRN_AC_ID;
+	/** Номер документа */
+	private StringProperty DOC_NUMBER;
 
 	public SELECTBIRTH() {
+		this.DOC_NUMBER = new SimpleStringProperty();
 		this.BR_ACT_USER = new SimpleStringProperty();
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
@@ -50,6 +53,18 @@ public class SELECTBIRTH {
 		this.CHILDREN_FIO = new SimpleStringProperty();
 		this.LIVE_DEAD = new SimpleStringProperty();
 		this.BRN_AC_ID = new SimpleIntegerProperty();
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
 	}
 
 	public void setBR_ACT_USER(String BR_ACT_USER) {

@@ -35,8 +35,11 @@ public class VUPD_NAT {
 	private StringProperty OLD_NAT;
 	/** Нет данных */
 	private StringProperty FIO;
+	/** Номер документа */
+	private StringProperty DOC_NUMBER;
 
 	public VUPD_NAT() {
+		this.DOC_NUMBER = new SimpleStringProperty();
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.SVID_NUMBER = new SimpleStringProperty();
@@ -50,6 +53,18 @@ public class VUPD_NAT {
 		this.NEW_NAT = new SimpleStringProperty();
 		this.OLD_NAT = new SimpleStringProperty();
 		this.FIO = new SimpleStringProperty();
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
 	}
 
 	public void setCR_TIME(String CR_TIME) {

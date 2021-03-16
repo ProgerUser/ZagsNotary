@@ -56,7 +56,10 @@ select br_act_id,
        br_act_patcer,
        ch.ccusname ChildrenName,
        f.ccusname FatherName,
-       m.ccusname MotherName
+       m.ccusname MotherName,
+       DOC_NUMBER,
+       MOTHERALONE,
+       IFMAL_F_LAST_NAME       
   from BRN_BIRTH_ACT brn, cus ch, cus f, cus m, zags zg
  where brn.br_act_ch = ch.icusnum(+)
    and brn.br_act_m = m.icusnum(+)

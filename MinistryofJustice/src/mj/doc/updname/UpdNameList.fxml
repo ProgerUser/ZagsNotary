@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<BorderPane fx:id="ROOT">
 			<left>
@@ -141,6 +141,7 @@
 				<XTableView fx:id="UPDATE_NAME" editable="false" prefHeight="450.0" prefWidth="900.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
 					<columns>
 						<XTableColumn fx:id="ID" prefWidth="82.0" text="Номер" />
+                  <XTableColumn fx:id="DOC_NUMBER" prefWidth="120.0" text="Номер документа" />
 						<XTableColumn fx:id="OPER" prefWidth="100.0" text="Опер." />
 						<XTableColumn fx:id="CR_DATE" prefWidth="150.0" text="Дата созд. записи" />
 						<XTableColumn fx:id="CR_TIME" prefWidth="150.0" text="Время созд. записи" />

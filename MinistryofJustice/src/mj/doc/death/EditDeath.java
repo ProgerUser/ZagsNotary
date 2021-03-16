@@ -54,11 +54,14 @@ import mj.util.ConvConst;
 
 public class EditDeath {
 
+	@FXML
+	private TextField DC_NRNAME;
+	
 	/**
 	 * Наименование суда
 	 */
 	@FXML
-	private TextField DC_NRNAME;
+	private TextField DOC_NUMBER;
 
 	/**
 	 * Решение суда об установлении
@@ -424,7 +427,7 @@ public class EditDeath {
 	void Save(ActionEvent event) {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call Deatch.EditDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ ? = call Deatch.EditDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, DC_NUMBER.getText());
 			callStmt.setString(3, DC_SERIA.getText());
@@ -451,6 +454,7 @@ public class EditDeath {
 				callStmt.setNull(21, java.sql.Types.INTEGER);
 			}
 			callStmt.setInt(22, getId());
+			callStmt.setString(23, DOC_NUMBER.getText());
 			callStmt.execute();
 			String ret = callStmt.getString(1);
 			callStmt.close();
@@ -472,7 +476,7 @@ public class EditDeath {
 	void SaveToCompare() {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call Deatch.EditDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ ? = call Deatch.EditDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, DC_NUMBER.getText());
 			callStmt.setString(3, DC_SERIA.getText());
@@ -499,6 +503,7 @@ public class EditDeath {
 				callStmt.setNull(21, java.sql.Types.INTEGER);
 			}
 			callStmt.setInt(22, getId());
+			callStmt.setString(23, DOC_NUMBER.getText());
 			callStmt.execute();
 			callStmt.close();
 		} catch (SQLException e) {
@@ -550,8 +555,6 @@ public class EditDeath {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			Pane1.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Pane2.heightProperty().addListener(
@@ -634,6 +637,7 @@ public class EditDeath {
 				DC_SERIA.setText(death.getDC_SERIA());
 				DC_NUMBER.setText(death.getDC_NUMBER());
 			}
+			DOC_NUMBER.setText(death.getDOC_NUMBER());
 			new ConvConst().FormatDatePiker(DC_DD);
 			new ConvConst().FormatDatePiker(DC_FD);
 		} catch (Exception e) {

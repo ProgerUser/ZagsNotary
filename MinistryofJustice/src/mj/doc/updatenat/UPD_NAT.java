@@ -30,8 +30,11 @@ public class UPD_NAT {
 	private IntegerProperty NEW_NAT;
 	/** ФИО */
 	private StringProperty FIO;
+	/** Номер документа */
+	private StringProperty DOC_NUMBER;
 
 	public UPD_NAT() {
+		this.DOC_NUMBER = new SimpleStringProperty();
 		this.SVID_SERIA = new SimpleStringProperty();
 		this.SVID_NUMBER = new SimpleStringProperty();
 		this.ID = new SimpleIntegerProperty();
@@ -43,6 +46,18 @@ public class UPD_NAT {
 		this.OLD_NAT = new SimpleIntegerProperty();
 		this.NEW_NAT = new SimpleIntegerProperty();
 		this.FIO = new SimpleStringProperty();
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
 	}
 
 	public void setSVID_SERIA(String SVID_SERIA) {

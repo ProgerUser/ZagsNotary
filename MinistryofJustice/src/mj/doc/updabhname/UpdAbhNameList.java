@@ -90,6 +90,9 @@ public class UpdAbhNameList {
 	private XTableView<UPDATE_ABH_NAME> UPDATE_NAME;
 
 	@FXML
+	private XTableColumn<UPDATE_ABH_NAME, String> DOC_NUMBER;
+	
+	@FXML
 	private XTableColumn<UPDATE_ABH_NAME, String> NEW_FIRSTNAME;
 
 	@FXML
@@ -127,8 +130,6 @@ public class UpdAbhNameList {
 
 	void Add() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			if (DBUtil.OdbAction(113) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
@@ -160,13 +161,7 @@ public class UpdAbhNameList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -265,8 +260,6 @@ public class UpdAbhNameList {
 	UPDATE_ABH_NAME Initialize2(Integer docid) {
 		UPDATE_ABH_NAME list = null;
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
@@ -300,20 +293,14 @@ public class UpdAbhNameList {
 				list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
 				list.setID(rs.getInt("ID"));
 				list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
 			rs.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return list;
 	}
@@ -656,8 +643,6 @@ public class UpdAbhNameList {
 
 	void Refresh() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
@@ -690,7 +675,7 @@ public class UpdAbhNameList {
 				list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
 				list.setID(rs.getInt("ID"));
 				list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -707,13 +692,7 @@ public class UpdAbhNameList {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -915,7 +894,8 @@ public class UpdAbhNameList {
 			NEW_LASTNAME.setColumnFilter(new PatternColumnFilter<>());
 			OLD_FIRSTNAME.setColumnFilter(new PatternColumnFilter<>());
 			OLD_MIDDLNAME.setColumnFilter(new PatternColumnFilter<>());
-
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
+			
 			dbConnect();
 			Refresh();
 			/**
@@ -932,6 +912,7 @@ public class UpdAbhNameList {
 				NEW_LASTNAME.setCellValueFactory(cellData -> cellData.getValue().NEW_LASTNAMEProperty());
 				OLD_FIRSTNAME.setCellValueFactory(cellData -> cellData.getValue().OLD_FIRSTNAMEProperty());
 				OLD_MIDDLNAME.setCellValueFactory(cellData -> cellData.getValue().OLD_MIDDLNAMEProperty());
+				DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 			}
 
 			// двойной щелчок

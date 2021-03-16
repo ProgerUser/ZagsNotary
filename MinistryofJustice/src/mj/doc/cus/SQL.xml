@@ -11,7 +11,15 @@ unins as
  (select 'brn_birth_act' table_name,
          'Свидетельство о рождении' DocName,
          brn_birth_act.br_act_id doc_ID,
-         brn_birth_act.br_act_date doc_date
+         brn_birth_act.br_act_date doc_date,
+         case
+           when br_act_ch = item.Id then
+            'Ребенок'
+           when brn_birth_act.br_act_f = item.Id then
+            'Отец'
+           when brn_birth_act.br_act_m = item.Id then
+            'Мать'
+         end TYPE_DOC
     from brn_birth_act, item
    where (brn_birth_act.br_act_ch = item.Id or
          brn_birth_act.br_act_f = item.Id or
@@ -33,7 +41,15 @@ unins as
   select 'PATERN_CERT' table_name,
          'Установление отцовства' DocName,
          PATERN_CERT.pc_id doc_ID,
-         PATERN_CERT.PС_DATE doc_date
+         PATERN_CERT.PС_DATE doc_date,
+         case
+           when PATERN_CERT.pс_ch = item.Id then
+            'Ребенок'
+           when PATERN_CERT.pс_f = item.Id then
+            'Отец'
+           when PATERN_CERT.pс_m = item.Id then
+            'Мать'
+         end TYPE_DOC
     from PATERN_CERT, item
    where (PATERN_CERT.pс_ch = item.Id or PATERN_CERT.pс_f = item.Id or
          PATERN_CERT.pс_m = item.Id)
@@ -54,7 +70,13 @@ unins as
   select 'mc_mercer' table_name,
          'Заключение брака' DocName,
          mc_mercer.mercer_id doc_ID,
-         mc_mercer.mercer_date doc_date
+         mc_mercer.mercer_date doc_date,
+         CASE
+           WHEN mc_mercer.MERCER_HE = item.Id THEN
+            'Муж'
+           WHEN mc_mercer.MERCER_SHE = item.Id THEN
+            'Жена'
+         END TYPE_DOC
     from mc_mercer, item
    where (mc_mercer.MERCER_HE = item.Id or mc_mercer.MERCER_SHE = item.Id)
         --где документ из загса пользователя
@@ -74,7 +96,13 @@ unins as
   select 'DIVORCE_CERT' table_name,
          'Расторжение брака' DocName,
          DIVORCE_CERT.Divc_Id doc_ID,
-         DIVORCE_CERT.DIVC_DATE doc_date
+         DIVORCE_CERT.DIVC_DATE doc_date,
+         CASE
+           WHEN DIVORCE_CERT.DIVC_HE = item.Id THEN
+            'Муж'
+           WHEN DIVORCE_CERT.DIVC_SHE = item.Id THEN
+            'Жена'
+         END TYPE_DOC
     from DIVORCE_CERT, item
    where (DIVORCE_CERT.DIVC_HE = item.Id or DIVORCE_CERT.DIVC_SHE = item.Id)
         --где документ из загса пользователя
@@ -94,7 +122,8 @@ unins as
   select 'DEATH_CERT' table_name,
          'Установление акта о смерти' DocName,
          DEATH_CERT.DC_ID doc_ID,
-         DEATH_CERT.DC_OPEN doc_date
+         DEATH_CERT.DC_OPEN doc_date,
+         'Свой' TYPE_DOC
     from DEATH_CERT, item
    where DEATH_CERT.DC_CUS = item.Id
         --где документ из загса пользователя
@@ -114,7 +143,8 @@ unins as
   select 'UPD_NAME' table_name,
          'Перемена имени' DocName,
          update_name.id doc_ID,
-         update_name.doc_date doc_date
+         update_name.doc_date doc_date,
+         'Свой' TYPE_DOC
     from update_name, item
    where update_name.CUSID = item.Id
         --где документ из загса пользователя
@@ -134,7 +164,8 @@ unins as
   select 'UPDATE_ABH_NAME' table_name,
          'Восстановление абхазской фамилии' DocName,
          UPDATE_ABH_NAME.ID doc_ID,
-         UPDATE_ABH_NAME.DOC_DATE doc_date
+         UPDATE_ABH_NAME.DOC_DATE doc_date,
+         'Свой' TYPE_DOC
     from UPDATE_ABH_NAME, item
    where UPDATE_ABH_NAME.CUSID = item.Id
         --где документ из загса пользователя
@@ -154,7 +185,8 @@ unins as
   select 'UPD_NAT' table_name,
          'Перемена национальной принадлежности' DocName,
          UPD_NAT.ID doc_ID,
-         UPD_NAT.DOC_DATE doc_date
+         UPD_NAT.DOC_DATE doc_date,
+         'Свой' TYPE_DOC
     from UPD_NAT, item
    where UPD_NAT.CUSID = item.Id
         --где документ из загса пользователя
@@ -174,7 +206,19 @@ unins as
   select 'ADOPT' table_name,
          'Усыновление (удочерение)' DocName,
          ADOPTOIN.ID doc_ID,
-         ADOPTOIN.DOC_DATE doc_date
+         ADOPTOIN.DOC_DATE doc_date,
+         case
+           when ADOPTOIN.CUSID_CH = item.Id then
+            'Ребенок'
+           when ADOPTOIN.CUSID_F = item.Id then
+            'Отец родной'
+           when ADOPTOIN.CUSID_M = item.Id then
+            'Мать родная'
+           when ADOPTOIN.CUSID_F_AD = item.Id then
+            'Отец усынов.'
+           when ADOPTOIN.CUSID_M_AD = item.Id then
+            'Мать усынов.'
+         end TYPE_DOC
     from ADOPTOIN, item
    where (ADOPTOIN.CUSID_CH = item.Id or ADOPTOIN.CUSID_F = item.Id or
          ADOPTOIN.CUSID_F_AD = item.Id or ADOPTOIN.CUSID_M = item.Id or
@@ -192,7 +236,11 @@ unins as
                         and mem.grp_id = grp.grp_id
                         and grp.grp_name = 'ZAGS_ADOPT_ALL'
                         and usr.cusrlogname = user)))
-select upper(table_name) table_name, DocName, doc_ID, doc_date tm$doc_date
+select upper(table_name) table_name,
+       DocName,
+       doc_ID,
+       doc_date tm$doc_date,
+       TYPE_DOC
   from unins
  order by doc_date desc
 

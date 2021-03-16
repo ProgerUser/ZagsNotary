@@ -62,6 +62,9 @@ import mj.msg.Msg;
 public class AddUpdNat {
 
 	@FXML
+	private TextField DOC_NUMBER;
+	
+	@FXML
 	private TextField BRN_ACT_ID;
 
 	@FXML
@@ -479,7 +482,7 @@ public class AddUpdNat {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 
-			CallableStatement callStmt = conn.prepareCall("{ call UDPNAT.AddUpdNat(?,?,?,?,?,?,?,?) }");
+			CallableStatement callStmt = conn.prepareCall("{ call UDPNAT.AddUpdNat(?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
@@ -511,6 +514,7 @@ public class AddUpdNat {
 			}
 			callStmt.setString(7, SVID_SERIA.getText());
 			callStmt.setString(8, SVID_NUMBER.getText());
+			callStmt.setString(9, DOC_NUMBER.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {

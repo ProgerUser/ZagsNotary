@@ -43,8 +43,11 @@ public class UPDATE_ABH_NAME {
 	private IntegerProperty ID;
 	/** Нет данных */
 	private StringProperty FIO;
+	/** Номер документа */
+	private StringProperty DOC_NUMBER;
 
 	public UPDATE_ABH_NAME() {
+		this.DOC_NUMBER = new SimpleStringProperty();
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.SVID_SERIA = new SimpleStringProperty();
@@ -62,6 +65,18 @@ public class UPDATE_ABH_NAME {
 		this.OLD_LASTNAME = new SimpleStringProperty();
 		this.ID = new SimpleIntegerProperty();
 		this.FIO = new SimpleStringProperty();
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
 	}
 
 	public void setCR_TIME(String CR_TIME) {

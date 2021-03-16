@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -32,6 +31,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
@@ -63,6 +63,40 @@ import mj.util.ConvConst;
 
 public class EditBirthAct {
 
+	@FXML
+	void MotherAlone(ActionEvent event) {
+		try {
+			if (MotherAlone.isSelected()) {
+				IfMNotAlone.setVisible(false);
+				IFMAL_F_LAST_NAME.setVisible(true);
+
+				FatherName.setText("");
+				FatherCusId.setText("");
+			} else {
+				IfMNotAlone.setVisible(true);
+				IFMAL_F_LAST_NAME.setVisible(false);
+
+				IFMAL_F_LAST_NAME.setText("");
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+    
+    @FXML
+    private TextField IFMAL_F_LAST_NAME;
+    
+    @FXML
+    private TextField DOC_NUMBER;
+    
+    
+
+    @FXML
+    private GridPane IfMNotAlone;
+    
+    @FXML
+    private CheckBox MotherAlone;
+    
 	@FXML
 	private TextField FADFIRST_NAME;
 
@@ -255,7 +289,6 @@ public class EditBirthAct {
 	 */
 	void Mercer(TextField ID) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			// Update.setLayoutX(30.0);
@@ -409,19 +442,12 @@ public class EditBirthAct {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void Patern(TextField ID) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			// Update.setLayoutX(30.0);
@@ -594,13 +620,7 @@ public class EditBirthAct {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -648,7 +668,6 @@ public class EditBirthAct {
 	 */
 	void CusList(ActionEvent event, TextField num, TextField name) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			// Update.setLayoutX(30.0);
@@ -763,13 +782,7 @@ public class EditBirthAct {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -809,10 +822,9 @@ public class EditBirthAct {
 	@FXML
 	void SAVE(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			{
 				CallableStatement callStmt = conn.prepareCall(
-						"{ ? = call BURN_UTIL.EDIT_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+						"{ ? = call BURN_UTIL.EDIT_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 				callStmt.registerOutParameter(1, Types.VARCHAR);
 				/* Тип заявителя.F-физик.-J-юрик */
 				if (BIRTH_ACT_TYPE.getValue() != null) {
@@ -931,6 +943,10 @@ public class EditBirthAct {
 					callStmt.setNull(28, java.sql.Types.INTEGER);
 				}
 				callStmt.setInt(29, getId());
+				
+				callStmt.setString(30, DOC_NUMBER.getText());
+				callStmt.setString(31, (MotherAlone.isSelected() ? "Y" : "N"));
+				callStmt.setString(32, IFMAL_F_LAST_NAME.getText());
 				/* Выполнить */
 				callStmt.execute();
 				String ret = callStmt.getString(1);
@@ -949,22 +965,15 @@ public class EditBirthAct {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void SAVECOMPARE() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			{
 				CallableStatement callStmt = conn.prepareCall(
-						"{ ? = call BURN_UTIL.EDIT_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+						"{ ? = call BURN_UTIL.EDIT_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 				callStmt.registerOutParameter(1, Types.VARCHAR);
 				/* Тип заявителя.F-физик.-J-юрик */
 				if (BIRTH_ACT_TYPE.getValue() != null) {
@@ -1083,18 +1092,16 @@ public class EditBirthAct {
 					callStmt.setNull(28, java.sql.Types.INTEGER);
 				}
 				callStmt.setInt(29, getId());
+				
+				callStmt.setString(30, DOC_NUMBER.getText());
+				callStmt.setString(31, (MotherAlone.isSelected() ? "Y" : "N"));
+				callStmt.setString(32, IFMAL_F_LAST_NAME.getText());
 				/* Выполнить */
 				callStmt.execute();
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1156,7 +1163,6 @@ public class EditBirthAct {
 	VBRN Init() {
 		VBRN list = new VBRN();
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			SqlMap sql = new SqlMap().load("/SqlBurn.xml");
 			String readRecordSQL = sql.getSql("BurnListSel");
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
@@ -1203,19 +1209,15 @@ public class EditBirthAct {
 				list.setBR_ACT_DATEDOCA((rs.getDate("BR_ACT_DATEDOCA") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("BR_ACT_DATEDOCA")), formatter) : null);
 				list.setBR_ACT_F(rs.getInt("BR_ACT_F"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+				list.setMOTHERALONE(rs.getString("MOTHERALONE"));
+				list.setIFMAL_F_LAST_NAME(rs.getString("IFMAL_F_LAST_NAME"));
 				burnlist.add(list);
 			}
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return list;
 	}
@@ -1291,8 +1293,6 @@ public class EditBirthAct {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			DateAutoComma(BIRTH_ACT_ZM);
 			DateAutoComma(DATEDOCB_B);
 			DateAutoComma(DATEDOCB_A);
@@ -1438,19 +1438,31 @@ public class EditBirthAct {
 			FADMIDDLE_NAME.setText(selbrn.getBR_ACT_FADMIDDLE_NAME());
 			FADLOCATION.setText(selbrn.getBR_ACT_FADLOCATION());
 
+			{
+				DOC_NUMBER.setText(selbrn.getDOC_NUMBER());
+				
+				if (selbrn.getMOTHERALONE() != null && selbrn.getMOTHERALONE().equals("Y")) {
+					
+					MotherAlone.setSelected(true);
+					
+					IfMNotAlone.setVisible(false);
+					IFMAL_F_LAST_NAME.setVisible(true);
+					IFMAL_F_LAST_NAME.setText(selbrn.getIFMAL_F_LAST_NAME());
+				} else if (selbrn.getMOTHERALONE() != null && selbrn.getMOTHERALONE().equals("N")) {
+					
+					MotherAlone.setSelected(false);
+					
+					IfMNotAlone.setVisible(true);
+					IFMAL_F_LAST_NAME.setVisible(false);
+				}
+			}
 			new ConvConst().FormatDatePiker(BIRTH_ACT_ZM);
 			new ConvConst().FormatDatePiker(DATEDOCB_B);
 			new ConvConst().FormatDatePiker(DATEDOCB_A);
 			new ConvConst().FormatDatePiker(DCOURT);
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

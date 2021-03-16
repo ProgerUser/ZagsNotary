@@ -57,6 +57,9 @@ import mj.msg.Msg;
 public class AddUpdName {
 
 	@FXML
+	private TextField DOC_NUMBER;
+	
+	@FXML
 	private TextField OLD_LASTNAME_AB;
 
 	@FXML
@@ -439,7 +442,7 @@ public class AddUpdName {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ call UpdName.AddUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+			CallableStatement callStmt = conn.prepareCall("{ call UpdName.AddUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
 			callStmt.setString(3, OLD_LASTNAME.getText());
@@ -472,6 +475,8 @@ public class AddUpdName {
 			callStmt.setString(17,NEW_FIRSTNAME_AB.getText());
 			//Отчество после перемены АБХ
 			callStmt.setString(18,NEW_MIDDLNAME_AB.getText());
+			
+			callStmt.setString(19,DOC_NUMBER.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {

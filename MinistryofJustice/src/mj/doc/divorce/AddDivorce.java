@@ -60,6 +60,9 @@ import mj.util.ConvConst;
 public class AddDivorce {
 
 	@FXML
+	private TextField DOC_NUMBER;
+	
+	@FXML
 	private DatePicker DIVC_ZOSCD2;
 
 	@FXML
@@ -376,7 +379,7 @@ public class AddDivorce {
 	void Save(ActionEvent event) {
 		try {
 			CallableStatement callStmt = conn.prepareCall(
-					"{ call Divorce.AddDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					"{ call Divorce.AddDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, DIVC_SERIA.getText());
 			callStmt.setString(3, DIVC_NUM.getText());
@@ -434,6 +437,7 @@ public class AddDivorce {
 			callStmt.setString(26, DIVC_ZÀNAME.getText());
 			callStmt.setString(27, DIVC_ZLNAME.getText());
 			callStmt.registerOutParameter(28, Types.INTEGER);
+			callStmt.setString(29, DOC_NUMBER.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {

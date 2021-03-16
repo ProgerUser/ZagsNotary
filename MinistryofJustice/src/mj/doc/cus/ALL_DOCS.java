@@ -17,12 +17,26 @@ public class ALL_DOCS {
 	private StringProperty DOCNAME;
 	/** Нет данных */
 	private StringProperty TABLE_NAME;
+	private StringProperty TYPE_DOC;
 
 	public ALL_DOCS() {
+		this.TYPE_DOC = new SimpleStringProperty();
 		this.TM$DOC_DATE = new SimpleObjectProperty<>();
 		this.DOC_ID = new SimpleIntegerProperty();
 		this.DOCNAME = new SimpleStringProperty();
 		this.TABLE_NAME = new SimpleStringProperty();
+	}
+
+	public StringProperty TYPE_DOCProperty() {
+		return TYPE_DOC;
+	}
+
+	public String getTYPE_DOC() {
+		return TYPE_DOC.get();
+	}
+
+	public void setTYPE_DOC(String TYPE_DOC) {
+		this.TYPE_DOC.set(TYPE_DOC);
 	}
 
 	public void setTM$DOC_DATE(LocalDateTime TM$DOC_DATE) {

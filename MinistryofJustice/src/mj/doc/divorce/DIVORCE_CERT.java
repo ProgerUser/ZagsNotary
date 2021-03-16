@@ -77,8 +77,11 @@ public class DIVORCE_CERT {
 	private StringProperty SHEFIO;
 	/** Нет данных */
 	private StringProperty HEFIO;
+	/** Номер документа */
+	private StringProperty DOC_NUMBER;
 
 	public DIVORCE_CERT() {
+		this.DOC_NUMBER = new SimpleStringProperty();
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.DIVC_ZPLACE = new SimpleStringProperty();
@@ -113,6 +116,18 @@ public class DIVORCE_CERT {
 		this.DIVC_ID = new SimpleIntegerProperty();
 		this.SHEFIO = new SimpleStringProperty();
 		this.HEFIO = new SimpleStringProperty();
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
 	}
 
 	public void setCR_TIME(String CR_TIME) {

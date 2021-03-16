@@ -61,8 +61,11 @@ public class MC_MERCER {
 	private StringProperty HEFIO;
 	/** Дата заключения брака */
 	private SimpleObjectProperty<LocalDate> MC_DATE;
+	/** Номер документа */
+	private StringProperty DOC_NUMBER;
 
 	public MC_MERCER() {
+		this.DOC_NUMBER = new SimpleStringProperty();
 		this.MC_DATE = new SimpleObjectProperty<>();
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
@@ -89,6 +92,18 @@ public class MC_MERCER {
 		this.MERCER_ID = new SimpleIntegerProperty();
 		this.SHEFIO = new SimpleStringProperty();
 		this.HEFIO = new SimpleStringProperty();
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
 	}
 
 	public void setMC_DATE(LocalDate MC_DATE) {

@@ -57,6 +57,8 @@ import mj.util.ConvConst;
 public class EditMercer {
 
 	@FXML
+	private TextField DOC_NUMBER;
+	@FXML
 	private GridPane SheTypeB;
 	@FXML
 	private TextField MERCER_NUM;
@@ -595,7 +597,7 @@ public class EditMercer {
 	void Save(ActionEvent event) {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
 			callStmt.setString(3, MERCER_OTHER.getText());
@@ -648,6 +650,7 @@ public class EditMercer {
 			}
 			callStmt.setString(19, MERCER_DSPMT_SHE.getValue());
 			callStmt.setDate(20, (MC_DATE.getValue() != null) ? java.sql.Date.valueOf(MC_DATE.getValue()) : null);
+			callStmt.setString(21, DOC_NUMBER.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -671,7 +674,7 @@ public class EditMercer {
 	void SaveCompare() {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setInt(2, mercer.getMERCER_ID());
 			callStmt.setString(3, MERCER_OTHER.getText());
@@ -725,6 +728,7 @@ public class EditMercer {
 			callStmt.setString(19, MERCER_DSPMT_SHE.getValue());
 			//Дата заключения брака
 			callStmt.setDate(20, (MC_DATE.getValue() != null) ? java.sql.Date.valueOf(MC_DATE.getValue()) : null);
+			callStmt.setString(21, DOC_NUMBER.getText());
 			callStmt.execute();
 			callStmt.close();
 		} catch (SQLException e) {
@@ -816,8 +820,10 @@ public class EditMercer {
 			MERCER_SERIA.setText(mercer.getMERCER_SERIA());
 			MERCER_NUM.setText(mercer.getMERCER_NUM());
 			MERCER_OTHER.setText(mercer.getMERCER_OTHER());
-			
+
 			MC_DATE.setValue(mercer.getMC_DATE());
+			
+			DOC_NUMBER.setText(mercer.getDOC_NUMBER());
 			
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);

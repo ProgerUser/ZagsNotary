@@ -112,6 +112,9 @@ public class UpdNameList {
 	private XTableColumn<UPDATE_NAME, String> NEW_FIRSTNAME;
 
 	@FXML
+	private XTableColumn<UPDATE_NAME, String> DOC_NUMBER;
+	
+	@FXML
 	private XTableColumn<UPDATE_NAME, String> OLD_LASTNAME;
 
 	@FXML
@@ -356,7 +359,7 @@ public class UpdNameList {
 				list.setNEW_LASTNAME_AB(rs.getString("NEW_LASTNAME_AB"));
 				list.setNEW_FIRSTNAME_AB(rs.getString("NEW_FIRSTNAME_AB"));
 				list.setNEW_MIDDLNAME_AB(rs.getString("NEW_MIDDLNAME_AB"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -854,7 +857,7 @@ public class UpdNameList {
 				list.setTM$DOC_DATE((rs.getDate("TM$DOC_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")), formatterwt)
 						: null);
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -1141,7 +1144,8 @@ public class UpdNameList {
 			NEW_LASTNAME.setColumnFilter(new PatternColumnFilter<>());
 			OLD_FIRSTNAME.setColumnFilter(new PatternColumnFilter<>());
 			OLD_MIDDLNAME.setColumnFilter(new PatternColumnFilter<>());
-
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
+			
 			dbConnect();
 			Refresh();
 			/**
@@ -1157,6 +1161,7 @@ public class UpdNameList {
 				NEW_MIDDLNAME.setCellValueFactory(cellData -> cellData.getValue().NEW_MIDDLNAMEProperty());
 				NEW_LASTNAME.setCellValueFactory(cellData -> cellData.getValue().NEW_LASTNAMEProperty());
 				OLD_FIRSTNAME.setCellValueFactory(cellData -> cellData.getValue().OLD_FIRSTNAMEProperty());
+				DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 				// DOC_DATE.setCellValueFactory(cellData ->
 				// cellData.getValue().DOC_DATEProperty());
 				OLD_MIDDLNAME.setCellValueFactory(cellData -> cellData.getValue().OLD_MIDDLNAMEProperty());
