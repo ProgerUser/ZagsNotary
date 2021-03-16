@@ -126,10 +126,9 @@ public class DeathList {
 
 	@FXML
 	private XTableColumn<DEATH_CERT, String> CR_TIME;
-	
+
 	@FXML
 	private XTableColumn<DEATH_CERT, String> DOC_NUMBER;
-	
 
 	@FXML
 	private XTableColumn<DEATH_CERT, String> OPER;
@@ -748,6 +747,47 @@ public class DeathList {
 		Refresh();
 	}
 
+	@FXML
+	void Spravka_34(ActionEvent event) {
+		try {
+			// Вызов
+			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPRAVKA_DEATH.docx");
+			docx.setVariablePattern(new VariablePattern("#{", "}"));
+			// preparing variables
+			Variables variables = new Variables();
+			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_DEATH_34 where DC_ID = ?");
+			prepStmt.setInt(1, DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID());
+			ResultSet rs = prepStmt.executeQuery();
+			if (rs.next()) {
+				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
+				variables.addTextVariable(new TextVariable("#{FIO}", rs.getString("FIO")));
+				variables.addTextVariable(new TextVariable("#{BR_DATE}", rs.getString("BR_DATE")));
+				variables.addTextVariable(new TextVariable("#{DETH_DATE}", rs.getString("DETH_DATE")));
+				variables.addTextVariable(new TextVariable("#{DC_CD}", rs.getString("DC_CD")));
+				variables.addTextVariable(new TextVariable("#{DC_DPL}", rs.getString("DC_DPL")));
+				variables.addTextVariable(new TextVariable("#{DOC_DATE}", rs.getString("DOC_DATE")));
+				variables.addTextVariable(new TextVariable("#{ZAGS_NAME}", rs.getString("ZAGS_NAME")));
+			}
+			rs.close();
+			prepStmt.close();
+
+			// fill template
+			docx.fillTemplate(variables);
+			File tempFile = File.createTempFile("SPRAVKA_DEATH", ".docx",
+					new File(System.getenv("MJ_PATH") + "OutReports"));
+			FileOutputStream str = new FileOutputStream(tempFile);
+			docx.save(str);
+			str.close();
+			tempFile.deleteOnExit();
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(tempFile);
+			}
+
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	/**
 	 * кс добавить
 	 * 
@@ -837,15 +877,15 @@ public class DeathList {
 	void BtPrint(ActionEvent event) {
 		Print();
 	}
-	
-	public void manipulatePdf(String src, String dest) throws Exception{
+
+	public void manipulatePdf(String src, String dest) throws Exception {
 		if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
 			Msg.Message("Выберите строку!");
 		} else {
 			PdfReader reader = new PdfReader(src);
 			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
 			AcroFields fields = stamper.getAcroFields();
-		    //System.out.print(fields.getFields());
+			// System.out.print(fields.getFields());
 
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_DEATH_CERT where DC_ID = ?");
 			prp.setInt(1, DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID());
@@ -874,7 +914,7 @@ public class DeathList {
 				fields.setField("Текст21", rs.getString("DETH_OPEN_YYYY"));
 				fields.setField("Текст22", rs.getString("ZAGS_CITY_ABH"));
 				fields.setField("Текст23", rs.getString("F23"));
-				fields.setField("Текст24", rs.getString("F24"));	
+				fields.setField("Текст24", rs.getString("F24"));
 				fields.setField("Текст25", rs.getString("F25"));
 				fields.setField("Текст26", rs.getString("F26"));
 				fields.setField("Текст27", rs.getString("F27"));
@@ -901,7 +941,7 @@ public class DeathList {
 			}
 			prp.close();
 			rs.close();
-			
+
 			stamper.close();
 			reader.close();
 		}
@@ -922,7 +962,7 @@ public class DeathList {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	/**
 	 * Подключение к базе
 	 */
@@ -1183,7 +1223,7 @@ public class DeathList {
 				r1.read(char_xmls);
 				// strings
 				RetXml = new String(char_xmls);
-				//System.out.println(RetXml);
+				// System.out.println(RetXml);
 			} else {
 				Msg.Message(callStmt.getString(2));
 				Main.logger.error(callStmt.getString(2) + "~" + Thread.currentThread().getName());
