@@ -58,6 +58,9 @@ public class AddUpdAbhName {
 
 	@FXML
 	private TextField NEW_LASTNAME;
+	
+	@FXML
+	private TextField DOC_NUMBER;
 
 	@FXML
 	private TextField CUSID;
@@ -426,9 +429,7 @@ public class AddUpdAbhName {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
-			CallableStatement callStmt = conn.prepareCall("{ call UpdAbhName.AddUpdAbhName(?,?,?,?,?,?,?,?,?,?,?,?) }");
+			CallableStatement callStmt = conn.prepareCall("{ call UpdAbhName.AddUpdAbhName(?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
@@ -450,7 +451,7 @@ public class AddUpdAbhName {
 			}
 			callStmt.setString(11, SVID_NUMBER.getText());
 			callStmt.setString(12, SVID_SERIA.getText());
-
+			callStmt.setString(13, DOC_NUMBER.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -467,13 +468,7 @@ public class AddUpdAbhName {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

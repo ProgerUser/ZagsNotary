@@ -77,8 +77,18 @@ public class VBRN {
 	private SimpleObjectProperty<LocalDate> BR_ACT_DATE;
 	/** Нет данных */
 	private IntegerProperty BR_ACT_ID;
+	/** Мать одиночка */
+	private StringProperty MOTHERALONE;
+	/** Номер документа */
+	private StringProperty DOC_NUMBER;
+	/** Фамилия отца если мать одиночка */
+	private StringProperty IFMAL_F_LAST_NAME;
 
 	public VBRN() {
+		this.DOC_NUMBER = new SimpleStringProperty();
+		this.IFMAL_F_LAST_NAME = new SimpleStringProperty();
+		this.MOTHERALONE = new SimpleStringProperty();
+
 		this.MOTHERNAME = new SimpleStringProperty();
 		this.FATHERNAME = new SimpleStringProperty();
 		this.CHILDRENNAME = new SimpleStringProperty();
@@ -113,6 +123,42 @@ public class VBRN {
 		this.BR_ACT_ZTP = new SimpleStringProperty();
 		this.BR_ACT_DATE = new SimpleObjectProperty<>();
 		this.BR_ACT_ID = new SimpleIntegerProperty();
+	}
+
+	public void setIFMAL_F_LAST_NAME(String IFMAL_F_LAST_NAME) {
+		this.IFMAL_F_LAST_NAME.set(IFMAL_F_LAST_NAME);
+	}
+
+	public String getIFMAL_F_LAST_NAME() {
+		return IFMAL_F_LAST_NAME.get();
+	}
+
+	public StringProperty IFMAL_F_LAST_NAMEProperty() {
+		return IFMAL_F_LAST_NAME;
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
+	}
+
+	public void setMOTHERALONE(String MOTHERALONE) {
+		this.MOTHERALONE.set(MOTHERALONE);
+	}
+
+	public String getMOTHERALONE() {
+		return MOTHERALONE.get();
+	}
+
+	public StringProperty MOTHERALONEProperty() {
+		return MOTHERALONE;
 	}
 
 	public void setMOTHERNAME(String MOTHERNAME) {

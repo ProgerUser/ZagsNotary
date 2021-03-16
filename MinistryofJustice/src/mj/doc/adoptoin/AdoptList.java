@@ -93,6 +93,9 @@ public class AdoptList {
 	private XTableColumn<ADOPTOIN, String> NEW_FIRSTNAME;
 
 	@FXML
+	private XTableColumn<ADOPTOIN, String> DOC_NUMBER;
+	
+	@FXML
 	private XTableColumn<ADOPTOIN, String> OLD_LASTNAME;
 
 	@FXML
@@ -324,7 +327,7 @@ public class AdoptList {
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
 						: null);
 				list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -737,7 +740,7 @@ public class AdoptList {
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
 						: null);
 				list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -920,7 +923,7 @@ public class AdoptList {
 			ZAGS_NAME.setColumnFilter(new PatternColumnFilter<>());
 			ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
 					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
-
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
 			Refresh();
 			/**
@@ -940,6 +943,7 @@ public class AdoptList {
 				OLD_MIDDLNAME.setCellValueFactory(cellData -> cellData.getValue().OLD_MIDDLNAMEProperty());
 				OPER.setCellValueFactory(cellData -> cellData.getValue().OPERProperty());
 				ZAGS_NAME.setCellValueFactory(cellData -> cellData.getValue().ZAGS_NAMEProperty());
+				DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 			}
 
 			// двойной щелчок

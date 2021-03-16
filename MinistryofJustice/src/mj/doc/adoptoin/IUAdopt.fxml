@@ -17,12 +17,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
       <ScrollPane fx:id="MainScroll" pannable="true" prefHeight="500.0" prefWidth="450.0" styleClass="mylistview" stylesheets="/ScrPane.css">
          <content>
             <VBox stylesheets="/borderpane.css">
                <children>
+                  <TitledPane alignment="CENTER" collapsible="false" text="Номер документа">
+                     <content>
+                        <VBox>
+                           <children>
+                              <TextField fx:id="DOC_NUMBER" />
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
                 <TitledPane fx:id="Pane1" animated="false" text="Ребенок">
                      <content>
                         <VBox>

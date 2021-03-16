@@ -19,12 +19,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
       <ScrollPane fx:id="MainScroll" pannable="true" styleClass="mylistview" stylesheets="/ScrPane.css">
          <content>
             <VBox spacing="5.0" stylesheets="/borderpane.css">
                <children>
+                  <TitledPane alignment="CENTER" collapsible="false" style="-fx-border-color: black;" text="Номер документа">
+                     <content>
+                        <VBox>
+                           <children>
+                              <TextField fx:id="DOC_NUMBER" />
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
                   <HBox maxWidth="1.7976931348623157E308" spacing="5.0">
                      <children>
                       <TitledPane fx:id="HePane" alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Он">

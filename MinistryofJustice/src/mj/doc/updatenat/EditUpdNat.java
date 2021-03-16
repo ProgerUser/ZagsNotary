@@ -56,6 +56,9 @@ import mj.msg.Msg;
 public class EditUpdNat {
 
 	@FXML
+	private TextField DOC_NUMBER;
+	
+	@FXML
 	private TextField BRN_ACT_ID;
 
 	@FXML
@@ -88,7 +91,6 @@ public class EditUpdNat {
 		cus.Add_Cus(FIO, CUSID, (Stage) CUSID.getScene().getWindow(), conn);
 	}
 
-
 	@FXML
 	void FindBrn(ActionEvent event) {
 		UtilCus cus = new UtilCus();
@@ -100,7 +102,7 @@ public class EditUpdNat {
 		UtilCus cus = new UtilCus();
 		cus.Add_Brn(BRN_ACT_ID, (Stage) CUSID.getScene().getWindow(), conn);
 	}
-	
+
 	/**
 	 * Найти акты о рождении
 	 * 
@@ -405,9 +407,8 @@ public class EditUpdNat {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 
-			CallableStatement callStmt = conn.prepareCall("{ call UDPNAT.EditUpdNat(?,?,?,?,?,?,?,?) }");
+			CallableStatement callStmt = conn.prepareCall("{ call UDPNAT.EditUpdNat(?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setInt(2, upd.getID());
@@ -439,6 +440,7 @@ public class EditUpdNat {
 			}
 			callStmt.setString(7, SVID_SERIA.getText());
 			callStmt.setString(8, SVID_NUMBER.getText());
+			callStmt.setString(9, DOC_NUMBER.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -454,22 +456,14 @@ public class EditUpdNat {
 				Msg.MessageBox(callStmt.getString(1), stage_);
 				callStmt.close();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	void SaveForCompare() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
-			CallableStatement callStmt = conn.prepareCall("{ call UDPNAT.EditUpdNat(?,?,?,?,?,?,?,?) }");
+			CallableStatement callStmt = conn.prepareCall("{ call UDPNAT.EditUpdNat(?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setInt(2, upd.getID());
@@ -501,16 +495,11 @@ public class EditUpdNat {
 			}
 			callStmt.setString(7, SVID_SERIA.getText());
 			callStmt.setString(8, SVID_NUMBER.getText());
+			callStmt.setString(9, DOC_NUMBER.getText());
 			callStmt.execute();
 			callStmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -556,7 +545,7 @@ public class EditUpdNat {
 					nationals.add(list);
 				}
 				sqlStatement.close();
-				
+
 				FilteredList<NATIONALITY> filterednationals1 = new FilteredList<NATIONALITY>(nationals);
 				FilteredList<NATIONALITY> filterednationals2 = new FilteredList<NATIONALITY>(nationals);
 				NEW_NAT.getEditor().textProperty()
@@ -601,15 +590,9 @@ public class EditUpdNat {
 
 			SVID_SERIA.setText(upd.getSVID_SERIA());
 			SVID_NUMBER.setText(upd.getSVID_NUMBER());
-
+			DOC_NUMBER.setText(upd.getDOC_NUMBER());
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

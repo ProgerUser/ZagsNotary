@@ -100,6 +100,10 @@ public class DivorceList {
 	@FXML
 	private BorderPane ROOT;
 
+	
+	@FXML
+	private XTableColumn<DIVORCE_CERT, String> DOC_NUMBER;
+	
 	@FXML
 	private XTableView<DIVORCE_CERT> DIVORCE_CERT;
 
@@ -760,7 +764,7 @@ public class DivorceList {
 				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
 				list.setHEFIO(rs.getString("HEFIO"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -915,6 +919,7 @@ public class DivorceList {
 				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
 				list.setHEFIO(rs.getString("HEFIO"));
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -1029,7 +1034,8 @@ public class DivorceList {
 			SheFio.setColumnFilter(new PatternColumnFilter<>());
 			HeFio.setColumnFilter(new PatternColumnFilter<>());
 			DIVC_DT.setColumnFilter(new DateColumnFilter<>());
-
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
+			
 			dbConnect();
 			Refresh();
 
@@ -1041,6 +1047,7 @@ public class DivorceList {
 			HeFio.setCellValueFactory(cellData -> cellData.getValue().HEFIOProperty());
 			SheFio.setCellValueFactory(cellData -> cellData.getValue().SHEFIOProperty());
 			DIVC_DT.setCellValueFactory(cellData -> cellData.getValue().DIVC_DTProperty());
+			DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 			// двойной щелчок
 			DIVORCE_CERT.setRowFactory(tv -> {
 				TableRow<DIVORCE_CERT> row = new TableRow<>();

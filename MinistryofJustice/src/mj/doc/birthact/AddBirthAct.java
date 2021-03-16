@@ -40,6 +40,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
@@ -75,6 +76,39 @@ import mj.util.ConvConst;
 
 public class AddBirthAct {
 
+	@FXML
+	void MotherAlone(ActionEvent event) {
+		try {
+			if (MotherAlone.isSelected()) {
+				IfMNotAlone.setVisible(false);
+				IFMAL_F_LAST_NAME.setVisible(true);
+
+				FatherName.setText("");
+				FatherCusId.setText("");
+			} else {
+				IfMNotAlone.setVisible(true);
+				IFMAL_F_LAST_NAME.setVisible(false);
+
+				IFMAL_F_LAST_NAME.setText("");
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+    
+    @FXML
+    private TextField IFMAL_F_LAST_NAME;
+
+    @FXML
+    private GridPane IfMNotAlone;
+    
+    @FXML
+    private CheckBox MotherAlone;
+    
+    @FXML
+    private TextField DOC_NUMBER;
+    
+    
 	@FXML
 	private TextField FADFIRST_NAME;
 
@@ -293,7 +327,6 @@ public class AddBirthAct {
 	 */
 	void Patern(TextField ID) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			// Update.setLayoutX(30.0);
@@ -479,7 +512,6 @@ public class AddBirthAct {
 	 */
 	void Mercer(TextField ID) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			// Update.setLayoutX(30.0);
@@ -646,7 +678,6 @@ public class AddBirthAct {
 	 */
 	void CusList(ActionEvent event, TextField num, TextField name) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Button Update = new Button();
 			Update.setText("Выбрать");
 			// Update.setLayoutX(30.0);
@@ -808,13 +839,16 @@ public class AddBirthAct {
 	@FXML
 	void SAVE(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			// ре - валидация 
 			ch_cnt_val.revalidate();
 			ld_val.revalidate();
 			ch_cus_id_val.revalidate();
 			m_cus_id_val.revalidate();
-			f_cus_id_val.revalidate();
+			
+			if(!MotherAlone.isSelected()) {
+				f_cus_id_val.revalidate();
+			}
+			
 			BR_ACT_DBF_VAL.revalidate();
 			SERIA_VAL.revalidate();
 			NUM_VAL.revalidate();
@@ -833,7 +867,7 @@ public class AddBirthAct {
 			/* Вызов функции CRE_BURN из пакета BIRN_UTIL */
 			{
 				CallableStatement callStmt = conn.prepareCall(
-						"{ ? = call BURN_UTIL.CRE_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+						"{ ? = call BURN_UTIL.CRE_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 				callStmt.registerOutParameter(1, Types.VARCHAR);
 				/* Тип заявителя.F-физик.-J-юрик */
 				if (BIRTH_ACT_TYPE.getValue() != null) {
@@ -953,6 +987,9 @@ public class AddBirthAct {
 				}
 				callStmt.registerOutParameter(29, Types.INTEGER);
 
+				callStmt.setString(30, DOC_NUMBER.getText());
+				callStmt.setString(31, (MotherAlone.isSelected() ? "Y" : "N"));
+				callStmt.setString(32, IFMAL_F_LAST_NAME.getText());
 				/* Выполнить */
 				callStmt.execute();
 				String ret = callStmt.getString(1);
@@ -1049,7 +1086,6 @@ public class AddBirthAct {
 	 */
 	void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "AddBirth");
@@ -1095,7 +1131,6 @@ public class AddBirthAct {
 	 */
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}

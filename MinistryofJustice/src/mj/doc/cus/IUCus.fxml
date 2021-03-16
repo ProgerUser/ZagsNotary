@@ -31,7 +31,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
       <VBox />
       <BorderPane fx:id="BP">
@@ -417,10 +417,8 @@
                                   <TableColumn fx:id="DOC_DATET" prefWidth="112.0" text="Дата документа" />
                                   <TableColumn fx:id="DOCNAME" prefWidth="329.0" text="Тип документа" />
                                     <TableColumn fx:id="DOC_ID" prefWidth="136.0" text="Номер документа" />
+                                    <TableColumn fx:id="TYPE_DOC" prefWidth="136.0" text="Тип" />
                                 </columns>
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
                                  <contextMenu>
                                     <ContextMenu>
                                       <items>

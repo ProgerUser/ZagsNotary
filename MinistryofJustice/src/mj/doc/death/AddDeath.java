@@ -59,6 +59,8 @@ import mj.util.ConvConst;
 
 public class AddDeath {
 
+	@FXML
+	private TextField DOC_NUMBER;
 	/**
 	 * Наименование суда
 	 */
@@ -461,7 +463,7 @@ public class AddDeath {
 			Main.logger = Logger.getLogger(getClass());
 
 			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call Deatch.AddDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ ? = call Deatch.AddDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, DC_NUMBER.getText());
 			callStmt.setString(3, DC_SERIA.getText());
@@ -488,6 +490,7 @@ public class AddDeath {
 				callStmt.setNull(21, java.sql.Types.INTEGER);
 			}
 			callStmt.registerOutParameter(22, Types.INTEGER);
+			callStmt.setString(23, DOC_NUMBER.getText());
 			callStmt.execute();
 			String ret = callStmt.getString(1);
 			Integer id = callStmt.getInt(22);

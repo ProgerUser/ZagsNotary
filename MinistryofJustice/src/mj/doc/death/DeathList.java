@@ -126,6 +126,10 @@ public class DeathList {
 
 	@FXML
 	private XTableColumn<DEATH_CERT, String> CR_TIME;
+	
+	@FXML
+	private XTableColumn<DEATH_CERT, String> DOC_NUMBER;
+	
 
 	@FXML
 	private XTableColumn<DEATH_CERT, String> OPER;
@@ -351,7 +355,7 @@ public class DeathList {
 						: null);
 				list.setDC_SERIA(rs.getString("DC_SERIA"));
 				list.setCR_TIME(rs.getString("CR_TIME"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -713,7 +717,7 @@ public class DeathList {
 						: null);
 				list.setDC_SERIA(rs.getString("DC_SERIA"));
 				list.setCR_TIME(rs.getString("CR_TIME"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -1062,7 +1066,7 @@ public class DeathList {
 			DFIO.setColumnFilter(new PatternColumnFilter<>());
 			DBDATE.setColumnFilter(new DateColumnFilter<>());
 			DC_DD.setColumnFilter(new DateColumnFilter<>());
-
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
 			Refresh();
 			/**
@@ -1077,6 +1081,7 @@ public class DeathList {
 				DFIO.setCellValueFactory(cellData -> cellData.getValue().DFIOProperty());
 				DBDATE.setCellValueFactory(cellData -> cellData.getValue().DBDATEProperty());
 				DC_DD.setCellValueFactory(cellData -> cellData.getValue().DC_DDProperty());
+				DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 			}
 
 			// двойной щелчок

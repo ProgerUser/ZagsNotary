@@ -52,7 +52,8 @@ import mj.msg.Msg;
 
 public class EditUpdName {
 
-
+	@FXML
+	private TextField DOC_NUMBER;
     @FXML
     private TextField OLD_LASTNAME_AB;
 
@@ -411,8 +412,7 @@ public class EditUpdName {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			CallableStatement callStmt = conn.prepareCall("{ call UpdName.EditUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+			CallableStatement callStmt = conn.prepareCall("{ call UpdName.EditUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setInt(2, updname.getID());
 			callStmt.setString(3, OLD_LASTNAME.getText());
@@ -446,7 +446,7 @@ public class EditUpdName {
 			callStmt.setString(17,NEW_FIRSTNAME_AB.getText());
 			//Отчество после перемены АБХ
 			callStmt.setString(18,NEW_MIDDLNAME_AB.getText());
-			
+			callStmt.setString(19,DOC_NUMBER.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -470,8 +470,7 @@ public class EditUpdName {
 
 	public void SaveWtOtCommit() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			CallableStatement callStmt = conn.prepareCall("{ call UpdName.EditUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+			CallableStatement callStmt = conn.prepareCall("{ call UpdName.EditUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setInt(2, updname.getID());
 			callStmt.setString(3, OLD_LASTNAME.getText());
@@ -505,6 +504,7 @@ public class EditUpdName {
 			callStmt.setString(17,NEW_FIRSTNAME_AB.getText());
 			//Отчество после перемены АБХ
 			callStmt.setString(18,NEW_MIDDLNAME_AB.getText());
+			callStmt.setString(19,DOC_NUMBER.getText());
 			callStmt.execute();
 			callStmt.close();
 		} catch (Exception e) {
@@ -580,6 +580,7 @@ public class EditUpdName {
 			}
 			SVID_SERIA.setText(updname.getSVID_SERIA());
 			SVID_NUMBER.setText(updname.getSVID_NUMBER());
+			DOC_NUMBER.setText(updname.getDOC_NUMBER());
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

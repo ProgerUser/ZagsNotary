@@ -58,6 +58,9 @@ import mj.util.ConvConst;
 public class EditDivorce {
 
 	@FXML
+	private TextField DOC_NUMBER;
+	
+	@FXML
 	private DatePicker DIVC_ZOSCD2;
 
 	@FXML
@@ -418,7 +421,7 @@ public class EditDivorce {
 	void Save(ActionEvent event) {
 		try {
 			CallableStatement callStmt = conn.prepareCall(
-					"{ call Divorce.EditDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					"{ call Divorce.EditDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, DIVC_SERIA.getText());
 			callStmt.setString(3, DIVC_NUM.getText());
@@ -483,6 +486,7 @@ public class EditDivorce {
 			callStmt.setString(26, DIVC_ZАNAME.getText());
 			callStmt.setString(27, DIVC_ZLNAME.getText());
 			callStmt.setInt(28, div_cer.getDIVC_ID());
+			callStmt.setString(29,  DOC_NUMBER.getText());
 			callStmt.execute();
 			if (callStmt.getString(1) == null) {
 				conn.commit();
@@ -504,7 +508,7 @@ public class EditDivorce {
 	void SaveTocompare() {
 		try {
 			CallableStatement callStmt = conn.prepareCall(
-					"{ call Divorce.EditDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					"{ call Divorce.EditDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, DIVC_SERIA.getText());
 			callStmt.setString(3, DIVC_NUM.getText());
@@ -562,6 +566,7 @@ public class EditDivorce {
 			callStmt.setString(26, DIVC_ZАNAME.getText());
 			callStmt.setString(27, DIVC_ZLNAME.getText());
 			callStmt.setInt(28, div_cer.getDIVC_ID());
+			callStmt.setString(29,  DOC_NUMBER.getText());
 			callStmt.execute();
 			callStmt.close();
 		} catch (SQLException e) {
@@ -763,6 +768,8 @@ public class EditDivorce {
 			// Выдано свидетельство
 			DIVC_SERIA.setText(div_cer.getDIVC_SERIA());
 			DIVC_NUM.setText(div_cer.getDIVC_NUM());
+			
+			DOC_NUMBER.setText(div_cer.getDOC_NUMBER());
 			
 			new ConvConst().FormatDatePiker(DIVC_ZOSCD2);
 			new ConvConst().FormatDatePiker(DIVC_CAD);

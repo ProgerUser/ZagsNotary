@@ -65,8 +65,12 @@ public class DEATH_CERT {
 	private SimpleObjectProperty<LocalDate> DBDATE;
 	/** Нет данных */
 	private StringProperty DFIO;
+	/** Номер документа */
+	private StringProperty DOC_NUMBER;
 
 	public DEATH_CERT() {
+		this.DOC_NUMBER = new SimpleStringProperty();
+
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.DC_ZAGS = new SimpleIntegerProperty();
@@ -95,6 +99,18 @@ public class DEATH_CERT {
 		this.DC_ID = new SimpleIntegerProperty();
 		this.DBDATE = new SimpleObjectProperty<>();
 		this.DFIO = new SimpleStringProperty();
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
 	}
 
 	public void setCR_TIME(String CR_TIME) {

@@ -81,8 +81,11 @@ public class ADOPTOIN {
 	private StringProperty CR_TIME;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> CR_DATE;
+	/** Номер документа */
+	private StringProperty DOC_NUMBER;
 
 	public ADOPTOIN() {
+		this.DOC_NUMBER = new SimpleStringProperty();
 		this.BRN_OBL_RESP = new SimpleStringProperty();
 		this.BRN_AREA = new SimpleStringProperty();
 		this.BRN_CITY = new SimpleStringProperty();
@@ -119,6 +122,18 @@ public class ADOPTOIN {
 		this.FATHERFIO = new SimpleStringProperty();
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
 	}
 
 	public void setBRN_OBL_RESP(String BRN_OBL_RESP) {

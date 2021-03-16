@@ -195,6 +195,7 @@ public class EditCus {
 				list.setDOCNAME(rs.getString("DOCNAME"));
 				list.setTABLE_NAME(rs.getString("TABLE_NAME"));
 				list.setDOC_ID(rs.getInt("DOC_ID"));
+				list.setTYPE_DOC(rs.getString("TYPE_DOC"));
 				val.add(list);
 			}
 			sqlStatement.close();
@@ -237,6 +238,10 @@ public class EditCus {
 	@FXML
 	private TableColumn<ALL_DOCS, String> DOCNAME;
 
+	@FXML
+	private TableColumn<ALL_DOCS, String> TYPE_DOC;
+	
+	
 	@FXML
 	private TableColumn<ALL_DOCS, Integer> DOC_ID;
 
@@ -1909,7 +1914,7 @@ public class EditCus {
 			DOC_DATET.setCellValueFactory(cellData -> cellData.getValue().TM$DOC_DATEProperty());
 			DOCNAME.setCellValueFactory(cellData -> cellData.getValue().DOCNAMEProperty());
 			DOC_ID.setCellValueFactory(cellData -> cellData.getValue().DOC_IDProperty().asObject());
-
+			TYPE_DOC.setCellValueFactory(cellData -> cellData.getValue().TYPE_DOCProperty());
 			// Двойной щелчок по строке для открытия документа
 			all_docs.setRowFactory(tv -> {
 				TableRow<ALL_DOCS> row = new TableRow<>();

@@ -55,8 +55,12 @@ public class UPDATE_NAME {
 	private StringProperty NEW_FIRSTNAME_AB;
 	/** Отчество после перемены АБХ */
 	private StringProperty NEW_MIDDLNAME_AB;
+	/** Номер документа */
+	private StringProperty DOC_NUMBER;
 
 	public UPDATE_NAME() {
+		this.DOC_NUMBER = new SimpleStringProperty();
+
 		this.OLD_LASTNAME_AB = new SimpleStringProperty();
 		this.OLD_FIRSTNAME_AB = new SimpleStringProperty();
 		this.OLD_MIDDLNAME_AB = new SimpleStringProperty();
@@ -81,6 +85,18 @@ public class UPDATE_NAME {
 		this.OLD_LASTNAME = new SimpleStringProperty();
 		this.ID = new SimpleIntegerProperty();
 		this.FIO = new SimpleStringProperty();
+	}
+
+	public void setDOC_NUMBER(String DOC_NUMBER) {
+		this.DOC_NUMBER.set(DOC_NUMBER);
+	}
+
+	public String getDOC_NUMBER() {
+		return DOC_NUMBER.get();
+	}
+
+	public StringProperty DOC_NUMBERProperty() {
+		return DOC_NUMBER;
 	}
 
 	public void setOLD_LASTNAME_AB(String OLD_LASTNAME_AB) {

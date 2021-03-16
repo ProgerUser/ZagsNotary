@@ -59,7 +59,8 @@ import mj.msg.Msg;
 import mj.util.ConvConst;
 
 public class AddAdopt {
-
+	@FXML
+	private TextField DOC_NUMBER;
 	@FXML
 	private TextField CUSID_F;
 	@FXML
@@ -617,7 +618,7 @@ public class AddAdopt {
 	void Save(ActionEvent event) {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ call ADOPT.AddAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call ADOPT.AddAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
@@ -670,6 +671,7 @@ public class AddAdopt {
 			callStmt.setString(24, BRN_CITY.getText());
 			callStmt.setString(25, BRN_AREA.getText());
 			callStmt.setString(26, BRN_OBL_RESP.getText());
+			callStmt.setString(27, DOC_NUMBER.getText());
 			
 			callStmt.execute();
 

@@ -104,6 +104,9 @@ public class UpdNatList {
 	private ProgressIndicator PB;
 
 	@FXML
+	private XTableColumn<VUPD_NAT, String> DOC_NUMBER;
+	
+	@FXML
 	private XTableView<VUPD_NAT> UPD_NAT;
 
 	@FXML
@@ -621,7 +624,7 @@ public class UpdNatList {
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")), formatterdt)
 						: null);
 				list.setSVID_SERIA(rs.getString("SVID_SERIA"));
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -674,6 +677,7 @@ public class UpdNatList {
 				list.setFIO(rs.getString("FIO"));
 				list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
 				list.setSVID_SERIA(rs.getString("SVID_SERIA"));
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -745,43 +749,7 @@ public class UpdNatList {
 			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
 			AcroFields fields = stamper.getAcroFields();
 		    //System.out.print(fields.getFields());
-			fields.setField("Текст1", "1");
-			fields.setField("Текст2", "2");
-			fields.setField("Текст3", "3");
-			fields.setField("Текст4", "4");
-			fields.setField("Текст5", "5");
-			fields.setField("Текст6", "6");
-			fields.setField("Текст8", "8");
-			fields.setField("Текст9", "9");
-			fields.setField("Текст10", "10");
-			fields.setField("Текст11", "11");
-			fields.setField("Текст12", "12");
-			fields.setField("Текст13", "13");
-			fields.setField("Текст14", "14");
-			fields.setField("Текст15", "15");
-			fields.setField("Текст16", "16");
-			fields.setField("Текст17", "17");
-			fields.setField("Текст18", "18");
-			fields.setField("Текст19", "19");
-			fields.setField("Текст20", "20");
-			fields.setField("Текст21", "21");
-			fields.setField("Текст22", "22");
-			fields.setField("Текст23", "23");
-			fields.setField("Текст24", "24");
-			fields.setField("Текст25", "25");
-			fields.setField("Текст26", "26");
-			fields.setField("Текст27", "27");
-			fields.setField("Текст28", "28");
-			fields.setField("Текст29", "29");
-			fields.setField("Текст30", "30");
-			fields.setField("Текст31", "31");
-			fields.setField("Текст32", "32");
-			fields.setField("Текст33", "33");
-			fields.setField("Текст34", "34");
-			fields.setField("Текст36", "36");
-			fields.setField("Текст69", "69");
-			fields.setField("Текст71", "71");
-			fields.setField("Текст72", "72");
+
 
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_UPD_NAT where ID = ?");
 			prp.setInt(1, UPD_NAT.getSelectionModel().getSelectedItem().getID());
@@ -999,7 +967,7 @@ public class UpdNatList {
 			CR_DATE.setColumnFilter(new DateColumnFilter<>());
 			CR_TIME.setColumnFilter(new PatternColumnFilter<>());
 			FIO.setColumnFilter(new PatternColumnFilter<>());
-
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
 			Refresh();
 			/**
@@ -1013,6 +981,7 @@ public class UpdNatList {
 				CR_DATE.setCellValueFactory(cellData -> cellData.getValue().CR_DATEProperty());
 				CR_TIME.setCellValueFactory(cellData -> cellData.getValue().CR_TIMEProperty());
 				FIO.setCellValueFactory(cellData -> cellData.getValue().FIOProperty());
+				DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 			}
 
 			// двойной щелчок

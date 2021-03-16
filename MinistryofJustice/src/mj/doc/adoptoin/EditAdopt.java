@@ -53,7 +53,8 @@ import mj.msg.Msg;
 import mj.util.ConvConst;
 
 public class EditAdopt {
-
+	@FXML
+	private TextField DOC_NUMBER;
 	@FXML
 	private TextField BRN_CITY;
 	@FXML
@@ -614,7 +615,7 @@ public class EditAdopt {
 	void Save(ActionEvent event) {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ call ADOPT.EditAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call ADOPT.EditAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 
@@ -670,7 +671,7 @@ public class EditAdopt {
 			callStmt.setString(24, BRN_CITY.getText());
 			callStmt.setString(25, BRN_AREA.getText());
 			callStmt.setString(26, BRN_OBL_RESP.getText());
-			
+			callStmt.setString(27, DOC_NUMBER.getText());
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -694,7 +695,7 @@ public class EditAdopt {
 	void SaveToCompare() {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ call ADOPT.EditAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call ADOPT.EditAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 
@@ -750,7 +751,7 @@ public class EditAdopt {
 			callStmt.setString(24, BRN_CITY.getText());
 			callStmt.setString(25, BRN_AREA.getText());
 			callStmt.setString(26, BRN_OBL_RESP.getText());
-			
+			callStmt.setString(27, DOC_NUMBER.getText());
 			callStmt.execute();
 			callStmt.close();
 		} catch (SQLException e) {
@@ -887,6 +888,8 @@ public class EditAdopt {
 			SVID_SERIA.setText(adopt.getSVID_SERIA());
 			SVID_NOMER.setText(adopt.getSVID_NOMER());
 
+			DOC_NUMBER.setText(adopt.getDOC_NUMBER());
+			
 			new ConvConst().FormatDatePiker(OLD_BRTH);
 			new ConvConst().FormatDatePiker(ZAP_DATE);
 			new ConvConst().FormatDatePiker(NEW_BRTH);

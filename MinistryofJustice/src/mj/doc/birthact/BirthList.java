@@ -92,6 +92,10 @@ public class BirthList {
 	@FXML
 	private Button BIRTH_ACT_FILTER;
 
+	
+	@FXML
+	private XTableColumn<SELECTBIRTH, String> DOC_NUMBER;
+	
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_FNAME;
 
@@ -222,7 +226,7 @@ public class BirthList {
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				fields.setField("Текст1", rs.getString("F79"));
-				fields.setField("Text1", "-");
+				fields.setField("Text1", rs.getString("FT1") + " шықәсазы");
 				fields.setField("Текст2", rs.getString("F79"));
 				fields.setField("Text2", rs.getString("TEXT2"));
 				fields.setField("Текст3", rs.getString("F3"));
@@ -230,10 +234,10 @@ public class BirthList {
 				fields.setField("Текст72", rs.getString("F72"));
 				fields.setField("Текст73", rs.getString("F73"));
 				fields.setField("Текст74", rs.getString("F74"));
-				fields.setField("Текст75", "-");
+				fields.setField("Текст75", "");
 				fields.setField("Текст76", rs.getString("F76"));
 				fields.setField("Текст77", rs.getString("F77"));
-				fields.setField("Текст78", "-");
+				fields.setField("Текст78", rs.getString("F78"));
 				fields.setField("Текст79", rs.getString("F79"));
 				fields.setField("Текст80", rs.getString("F80"));
 				fields.setField("Текст81", rs.getString("F81"));
@@ -258,7 +262,7 @@ public class BirthList {
 				fields.setField("Текст100", rs.getString("F79"));
 				fields.setField("Текст101", rs.getString("F101"));
 				fields.setField("Текст102", rs.getString("F80"));
-				fields.setField("Текст103", "-");
+				fields.setField("Текст103", rs.getString("F78"));
 				fields.setField("Текст104", rs.getString("F104"));
 				fields.setField("Текст105", rs.getString("F105"));
 				fields.setField("Текст106", rs.getString("F106"));
@@ -571,7 +575,7 @@ public class BirthList {
 				list.setTM$_DOC_DATE((rs.getDate("TM$_DOC_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$_DOC_DATE")), formatterwt)
 						: null);
-
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				cus_list.add(list);
 			}
 			prepStmt.close();
@@ -1181,7 +1185,8 @@ public class BirthList {
 			MFIO.setColumnFilter(new PatternColumnFilter<>());
 			FFIO.setColumnFilter(new PatternColumnFilter<>());
 			BR_ACT_USER.setColumnFilter(new PatternColumnFilter<>());
-
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
+			
 			DateAutoComma(DT1);
 			DateAutoComma(DT2);
 
@@ -1215,6 +1220,7 @@ public class BirthList {
 			MFIO.setCellValueFactory(cellData -> cellData.getValue().MFIOProperty());
 			FFIO.setCellValueFactory(cellData -> cellData.getValue().FFIOProperty());
 			BR_ACT_USER.setCellValueFactory(cellData -> cellData.getValue().BR_ACT_USERProperty());
+			DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 
 			/*
 			 * BIRTH_ACT_ID.setCellFactory( TextFieldTableCell.<BIRTH_ACT,
