@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TitledPane?>
@@ -22,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <children>
    	<BorderPane fx:id="ROOT">
    	<left>
@@ -139,6 +140,24 @@
                               <FontAwesomeIconView fill="#2c2ff2" glyphName="PRINT" size="18" />
                            </graphic>
                         </Button>
+                        <MenuButton mnemonicParsing="false">
+                           <tooltip>
+                              <Tooltip text="Справки">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIconView fill="#2c8361" glyphName="PRINT" size="18" />
+                           </graphic>
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#Spravka_34" text="Форма №34" />
+                           </items>
+                        </MenuButton>
    					</items>
    					<VBox.margin>
    						<Insets />

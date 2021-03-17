@@ -82,6 +82,17 @@
                            <graphic>
                               <FontAwesomeIconView glyphName="CLONE" size="15" />
                            </graphic></Button>
+                        <Button mnemonicParsing="false" onAction="#OpenKey">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="KEYBOARD_ALT" size="15" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Открыть клавиатуру" />
+                           </tooltip>
+                        </Button>
             								<CheckBox fx:id="ViewFire" mnemonicParsing="false" onAction="#ViewFire" text="Показывать уволенных" />
 								<Text fx:id="LOG" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>

@@ -49,6 +49,7 @@ import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.KeyBoard;
 
 /**
  * Администрирование пользователей
@@ -172,6 +173,37 @@ public class UsrC {
 		}
 	}
 
+	@FXML
+	private void OpenKey() {
+		try {
+			Stage stage = new Stage();
+			Stage stage_ = (Stage) IUSRPWD_LENGTH.getScene().getWindow();
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/mj/widgets/KeyBoard.fxml"));
+
+			KeyBoard controller = new KeyBoard();
+			loader.setController(controller);
+			controller.setTextField(IUSRPWD_LENGTH.getScene());
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Абхазская клавиатура");
+			stage.initOwner(stage_);
+			stage.setResizable(false);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+
+				}
+			});
+			stage.show();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	@FXML
 	void ClearOtd(ActionEvent event) {
 		try {

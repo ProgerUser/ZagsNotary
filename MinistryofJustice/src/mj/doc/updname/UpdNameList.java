@@ -858,6 +858,12 @@ public class UpdNameList {
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")), formatterwt)
 						: null);
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+				list.setOLD_LASTNAME_AB(rs.getString("OLD_LASTNAME_AB"));
+				list.setOLD_FIRSTNAME_AB(rs.getString("OLD_FIRSTNAME_AB"));
+				list.setOLD_MIDDLNAME_AB(rs.getString("OLD_MIDDLNAME_AB"));
+				list.setNEW_LASTNAME_AB(rs.getString("NEW_LASTNAME_AB"));
+				list.setNEW_FIRSTNAME_AB(rs.getString("NEW_FIRSTNAME_AB"));
+				list.setNEW_MIDDLNAME_AB(rs.getString("NEW_MIDDLNAME_AB"));
 				dlist.add(list);
 			}
 			prepStmt.close();
