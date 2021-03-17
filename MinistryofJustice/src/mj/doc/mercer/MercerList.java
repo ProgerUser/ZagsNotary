@@ -117,6 +117,92 @@ public class MercerList {
 	@FXML
 	private XTableColumn<MC_MERCER, String> CR_TIME;
 
+	
+	@FXML
+	void Spravka_28(ActionEvent event) {
+		try {
+			// Вызов
+			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_MC_MERCER_28.docx");
+			docx.setVariablePattern(new VariablePattern("#{", "}"));
+			// preparing variables
+			Variables variables = new Variables();
+			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_MC_MERCER where MERCER_ID = ?");
+			prepStmt.setInt(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
+			ResultSet rs = prepStmt.executeQuery();
+			if (rs.next()) {
+				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
+				variables.addTextVariable(new TextVariable("#{ZAGS_NAME}", rs.getString("ZAGS_NAME")));
+				variables.addTextVariable(new TextVariable("#{HE_FIO}", rs.getString("HE_FIO")));
+				variables.addTextVariable(new TextVariable("#{SHE_FIO}", rs.getString("SHE_FIO")));
+				variables.addTextVariable(new TextVariable("#{HE_CIT}", rs.getString("HE_CIT")));
+				variables.addTextVariable(new TextVariable("#{SHE_CIT}", rs.getString("SHE_CIT")));
+				variables.addTextVariable(new TextVariable("#{MC_DATE}", rs.getString("MC_DATE")));
+				variables.addTextVariable(new TextVariable("#{SHE_AFT_LNAME}", rs.getString("SHE_AFT_LNAME")));
+				variables.addTextVariable(new TextVariable("#{HE_AFT_LNAME}", rs.getString("HE_AFT_LNAME")));
+				variables.addTextVariable(new TextVariable("#{DOC_DATE}", rs.getString("DOC_DATE")));
+				
+			}
+			rs.close();
+			prepStmt.close();
+
+			// fill template
+			docx.fillTemplate(variables);
+			File tempFile = File.createTempFile("SPR_MC_MERCER_28", ".docx",
+					new File(System.getenv("MJ_PATH") + "OutReports"));
+			FileOutputStream str = new FileOutputStream(tempFile);
+			docx.save(str);
+			str.close();
+			tempFile.deleteOnExit();
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(tempFile);
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	@FXML
+	void Spravka_29(ActionEvent event) {
+		try {
+			// Вызов
+			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_MC_MERCER_29.docx");
+			docx.setVariablePattern(new VariablePattern("#{", "}"));
+			// preparing variables
+			Variables variables = new Variables();
+			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_MC_MERCER where MERCER_ID = ?");
+			prepStmt.setInt(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
+			ResultSet rs = prepStmt.executeQuery();
+			if (rs.next()) {
+				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
+				variables.addTextVariable(new TextVariable("#{ZAGS_NAME}", rs.getString("ZAGS_NAME")));
+				variables.addTextVariable(new TextVariable("#{HE_FIO}", rs.getString("HE_FIO")));
+				variables.addTextVariable(new TextVariable("#{SHE_FIO}", rs.getString("SHE_FIO")));
+				variables.addTextVariable(new TextVariable("#{HE_CIT}", rs.getString("HE_CIT")));
+				variables.addTextVariable(new TextVariable("#{SHE_CIT}", rs.getString("SHE_CIT")));
+				variables.addTextVariable(new TextVariable("#{MC_DATE}", rs.getString("MC_DATE")));
+				variables.addTextVariable(new TextVariable("#{SHE_AFT_LNAME}", rs.getString("SHE_AFT_LNAME")));
+				variables.addTextVariable(new TextVariable("#{HE_AFT_LNAME}", rs.getString("HE_AFT_LNAME")));
+				variables.addTextVariable(new TextVariable("#{DOC_DATE}", rs.getString("DOC_DATE")));
+			}
+			rs.close();
+			prepStmt.close();
+
+			// fill template
+			docx.fillTemplate(variables);
+			File tempFile = File.createTempFile("SPR_MC_MERCER_29", ".docx",
+					new File(System.getenv("MJ_PATH") + "OutReports"));
+			FileOutputStream str = new FileOutputStream(tempFile);
+			docx.save(str);
+			str.close();
+			tempFile.deleteOnExit();
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(tempFile);
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	void Add() {
 		try {
 

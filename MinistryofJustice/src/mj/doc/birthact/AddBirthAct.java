@@ -845,9 +845,9 @@ public class AddBirthAct {
 			ch_cus_id_val.revalidate();
 			m_cus_id_val.revalidate();
 			
-			if(!MotherAlone.isSelected()) {
-				f_cus_id_val.revalidate();
-			}
+//			if(!MotherAlone.isSelected()) {
+//				f_cus_id_val.revalidate();
+//			}
 			
 			BR_ACT_DBF_VAL.revalidate();
 			SERIA_VAL.revalidate();
@@ -856,7 +856,7 @@ public class AddBirthAct {
 			// проверка
 			if (!NUM_VAL.isValid() | !SERIA_VAL.isValid() | !BR_ACT_DBF_VAL.isValid() | !ch_cnt_val.isValid()
 					| !ld_val.isValid() | !ch_cus_id_val.isValid() | !m_cus_id_val.isValid()
-					| !f_cus_id_val.isValid()|!FatherType_val.isValid()) {
+					| /*!f_cus_id_val.isValid()|*/!FatherType_val.isValid()) {
 				// показать диалог с ошибкой
 				Dialog<ActionType> d = DialogFactory.createError(null, "Не все поля заполнены!", null, "Ошибка");
 				d.showAndWait();
@@ -1150,8 +1150,8 @@ public class AddBirthAct {
 	Validity ch_cus_id_val;
 	@SuppressWarnings("rawtypes")
 	Validity m_cus_id_val;
-	@SuppressWarnings("rawtypes")
-	Validity f_cus_id_val;
+//	@SuppressWarnings("rawtypes")
+//	Validity f_cus_id_val;
 
 	@SuppressWarnings("rawtypes")
 	Validity BR_ACT_DBF_VAL;
@@ -1187,8 +1187,8 @@ public class AddBirthAct {
 			m_cus_id_val = Validation.installValidator(MotherCusId, Validator.createEmptyValidator(MotherCusId),
 					Validation.Type.EAGER, Decorator.createWarningDecorator("Выберите ИД метери!"));
 
-			f_cus_id_val = Validation.installValidator(FatherCusId, Validator.createEmptyValidator(FatherCusId),
-					Validation.Type.EAGER, Decorator.createWarningDecorator("Выберите ИД отца!"));
+//			f_cus_id_val = Validation.installValidator(FatherCusId, Validator.createEmptyValidator(FatherCusId),
+//					Validation.Type.EAGER, Decorator.createWarningDecorator("Выберите ИД отца!"));
 
 			BR_ACT_DBF_VAL = Validation.installValidator(BR_ACT_DBF, Validator.createEmptyValidator(BR_ACT_DBF),
 					Validation.Type.EAGER, Decorator.createWarningDecorator("Выберите тип!"));
@@ -1268,7 +1268,7 @@ public class AddBirthAct {
 				FirstWUpp(FADREG_ADR);
 			}
 			FatherType.getItems().addAll("Свидетельства о заключении брака", "Свидетельства об установлении отцовства",
-					"Заявления матери");
+					"Заявления матери","Со слов матери");
 			BR_ACT_DBF.getItems().addAll("Документ установленной формы о рождении", "Заявление");
 			
 			new ConvConst().FormatDatePiker(BIRTH_ACT_ZM);
@@ -1357,6 +1357,15 @@ public class AddBirthAct {
 			PAT_CER_ID.setText("");
 			BIRTH_ACT_ZM.setValue(null);
 
+		} else if (FatherType.getValue().equals("Со слов матери")) {
+
+			IF1.setVisible(false);
+			IF2.setVisible(false);
+			IF3.setVisible(false);
+
+			MARR_CER_ID.setText("");
+			PAT_CER_ID.setText("");
+			BIRTH_ACT_ZM.setValue(null);
 		}
 	}
 

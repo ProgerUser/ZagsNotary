@@ -165,6 +165,133 @@ public class BirthList {
 		Print();
 	}
 
+	
+	
+	@FXML
+	void Spravka_25(ActionEvent event) {
+		try {
+			// Вызов
+			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_BRN_BIRTH_ACT_25.docx");
+			docx.setVariablePattern(new VariablePattern("#{", "}"));
+			// preparing variables
+			Variables variables = new Variables();
+			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_BRN_BIRTH_ACT where BR_ACT_ID = ?");
+			prepStmt.setInt(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
+			ResultSet rs = prepStmt.executeQuery();
+			if (rs.next()) {
+				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
+				variables.addTextVariable(new TextVariable("#{ZAGS_NAME}", rs.getString("ZAGS_NAME")));
+				variables.addTextVariable(new TextVariable("#{CH_FIO}", rs.getString("CH_FIO")));
+				variables.addTextVariable(new TextVariable("#{BR_ACT_DATE}", rs.getString("BR_ACT_DATE")));
+				variables.addTextVariable(new TextVariable("#{CH_BR_DATE}", rs.getString("CH_BR_DATE")));
+				variables.addTextVariable(new TextVariable("#{CH_PL_BR}", rs.getString("CH_PL_BR")));
+				variables.addTextVariable(new TextVariable("#{F_FIO}", rs.getString("F_FIO")));
+				variables.addTextVariable(new TextVariable("#{M_FIO}", rs.getString("M_FIO")));
+			}
+			rs.close();
+			prepStmt.close();
+
+			// fill template
+			docx.fillTemplate(variables);
+			File tempFile = File.createTempFile("SPR_BRN_BIRTH_ACT_25", ".docx",
+					new File(System.getenv("MJ_PATH") + "OutReports"));
+			FileOutputStream str = new FileOutputStream(tempFile);
+			docx.save(str);
+			str.close();
+			tempFile.deleteOnExit();
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(tempFile);
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	@FXML
+	void Spravka_26(ActionEvent event) {
+		try {
+			// Вызов
+			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_BRN_BIRTH_ACT_26.docx");
+			docx.setVariablePattern(new VariablePattern("#{", "}"));
+			// preparing variables
+			Variables variables = new Variables();
+			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_BRN_BIRTH_ACT where BR_ACT_ID = ?");
+			prepStmt.setInt(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
+			ResultSet rs = prepStmt.executeQuery();
+			if (rs.next()) {
+				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
+				variables.addTextVariable(new TextVariable("#{ZAGS_NAME}", rs.getString("ZAGS_NAME")));
+				variables.addTextVariable(new TextVariable("#{CH_FIO}", rs.getString("CH_FIO")));
+				variables.addTextVariable(new TextVariable("#{BR_ACT_DATE}", rs.getString("BR_ACT_DATE")));
+				variables.addTextVariable(new TextVariable("#{CH_BR_DATE}", rs.getString("CH_BR_DATE")));
+				variables.addTextVariable(new TextVariable("#{CH_PL_BR}", rs.getString("CH_PL_BR")));
+				variables.addTextVariable(new TextVariable("#{F_FIO}", rs.getString("F_FIO")));
+				variables.addTextVariable(new TextVariable("#{M_FIO}", rs.getString("M_FIO")));
+				
+				variables.addTextVariable(new TextVariable("#{F_NAT}", rs.getString("F_NAT")));
+				variables.addTextVariable(new TextVariable("#{M_NAT}", rs.getString("M_NAT")));
+			}
+			rs.close();
+			prepStmt.close();
+
+			// fill template
+			docx.fillTemplate(variables);
+			File tempFile = File.createTempFile("SPR_BRN_BIRTH_ACT_26", ".docx",
+					new File(System.getenv("MJ_PATH") + "OutReports"));
+			FileOutputStream str = new FileOutputStream(tempFile);
+			docx.save(str);
+			str.close();
+			tempFile.deleteOnExit();
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(tempFile);
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	@FXML
+	void Spravka_27(ActionEvent event) {
+		try {
+			// Вызов
+			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_BRN_BIRTH_ACT_27.docx");
+			docx.setVariablePattern(new VariablePattern("#{", "}"));
+			// preparing variables
+			Variables variables = new Variables();
+			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_BRN_BIRTH_ACT where BR_ACT_ID = ?");
+			prepStmt.setInt(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
+			ResultSet rs = prepStmt.executeQuery();
+			if (rs.next()) {
+				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
+				variables.addTextVariable(new TextVariable("#{ZAGS_NAME}", rs.getString("ZAGS_NAME")));
+				variables.addTextVariable(new TextVariable("#{CH_FIO}", rs.getString("CH_FIO")));
+				variables.addTextVariable(new TextVariable("#{BR_ACT_DATE}", rs.getString("BR_ACT_DATE")));
+				variables.addTextVariable(new TextVariable("#{CH_BR_DATE}", rs.getString("CH_BR_DATE")));
+				variables.addTextVariable(new TextVariable("#{CH_PL_BR}", rs.getString("CH_PL_BR")));
+				variables.addTextVariable(new TextVariable("#{F_FIO}", rs.getString("F_FIO")));
+				variables.addTextVariable(new TextVariable("#{M_FIO}", rs.getString("M_FIO")));
+				
+				variables.addTextVariable(new TextVariable("#{F_NAT}", rs.getString("F_NAT")));
+				variables.addTextVariable(new TextVariable("#{M_NAT}", rs.getString("M_NAT")));
+			}
+			rs.close();
+			prepStmt.close();
+
+			// fill template
+			docx.fillTemplate(variables);
+			File tempFile = File.createTempFile("SPR_BRN_BIRTH_ACT_27", ".docx",
+					new File(System.getenv("MJ_PATH") + "OutReports"));
+			FileOutputStream str = new FileOutputStream(tempFile);
+			docx.save(str);
+			str.close();
+			tempFile.deleteOnExit();
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(tempFile);
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
 	public void Add(Stage stage_) {
 		try {
 			Logger.getLogger(getClass());

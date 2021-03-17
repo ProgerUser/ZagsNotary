@@ -148,6 +148,46 @@ public class PaternList {
 
 	}
 
+	
+	@FXML
+	void Spravka_32(ActionEvent event) {
+		try {
+			// Вызов
+			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_PATERN_CERT.docx");
+			docx.setVariablePattern(new VariablePattern("#{", "}"));
+			// preparing variables
+			Variables variables = new Variables();
+			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_PATERN_CERT where PC_ID = ?");
+			prepStmt.setInt(1, PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID());
+			ResultSet rs = prepStmt.executeQuery();
+			if (rs.next()) {
+				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
+				variables.addTextVariable(new TextVariable("#{ZAGS_NAME}", rs.getString("ZAGS_NAME")));
+				variables.addTextVariable(new TextVariable("#{DOC_DATE}", rs.getString("DOC_DATE")));
+				variables.addTextVariable(new TextVariable("#{F_FIO}", rs.getString("F_FIO")));
+				variables.addTextVariable(new TextVariable("#{CH_AFT_LNAME}", rs.getString("CH_AFT_LNAME")));
+				variables.addTextVariable(new TextVariable("#{CH_AFT_FNAME}", rs.getString("CH_AFT_FNAME")));
+				variables.addTextVariable(new TextVariable("#{CH_AFT_MNAME}", rs.getString("CH_AFT_MNAME")));
+			}
+			rs.close();
+			prepStmt.close();
+
+			// fill template
+			docx.fillTemplate(variables);
+			File tempFile = File.createTempFile("SPR_PATERN_CERT", ".docx",
+					new File(System.getenv("MJ_PATH") + "OutReports"));
+			FileOutputStream str = new FileOutputStream(tempFile);
+			docx.save(str);
+			str.close();
+			tempFile.deleteOnExit();
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(tempFile);
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	/**
 	 * добавить
 	 */

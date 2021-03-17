@@ -228,6 +228,47 @@ public class DivorceList {
 		}
 	}
 	
+	
+	
+	@FXML
+	void Spravka_30(ActionEvent event) {
+		try {
+			// Вызов
+			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_DIVORCE.docx");
+			docx.setVariablePattern(new VariablePattern("#{", "}"));
+			// preparing variables
+			Variables variables = new Variables();
+			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_DIVORCE where DIVC_ID = ?");
+			prepStmt.setInt(1, DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID());
+			ResultSet rs = prepStmt.executeQuery();
+			if (rs.next()) {
+				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
+				variables.addTextVariable(new TextVariable("#{HE_FIO}", rs.getString("HE_FIO")));
+				variables.addTextVariable(new TextVariable("#{SHE_FIO}", rs.getString("SHE_FIO")));
+				variables.addTextVariable(new TextVariable("#{DIVC_DT}", rs.getString("DIVC_DT")));
+				variables.addTextVariable(new TextVariable("#{HE_SHE_FIO}", rs.getString("HE_SHE_FIO")));
+				variables.addTextVariable(new TextVariable("#{DOC_DATE}", rs.getString("DOC_DATE")));
+				variables.addTextVariable(new TextVariable("#{ZAGS_NAME}", rs.getString("ZAGS_NAME")));
+			}
+			rs.close();
+			prepStmt.close();
+
+			// fill template
+			docx.fillTemplate(variables);
+			File tempFile = File.createTempFile("SPR_DIVORCE", ".docx",
+					new File(System.getenv("MJ_PATH") + "OutReports"));
+			FileOutputStream str = new FileOutputStream(tempFile);
+			docx.save(str);
+			str.close();
+			tempFile.deleteOnExit();
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(tempFile);
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+    
     @FXML
     void BtPrintBlank(ActionEvent event) {
     	try {

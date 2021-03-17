@@ -656,6 +656,15 @@ public class EditBirthAct {
 			PAT_CER_ID.setText("");
 			BIRTH_ACT_ZM.setValue(null);
 
+		}else if (FatherType.getValue().equals("Со слов матери")) {
+
+			IF1.setVisible(false);
+			IF2.setVisible(false);
+			IF3.setVisible(false);
+
+			MARR_CER_ID.setText("");
+			PAT_CER_ID.setText("");
+			BIRTH_ACT_ZM.setValue(null);
 		}
 	}
 
@@ -1380,7 +1389,7 @@ public class EditBirthAct {
 			}
 
 			FatherType.getItems().addAll("Свидетельства о заключении брака", "Свидетельства об установлении отцовства",
-					"Заявления матери");
+					"Заявления матери", "Со слов матери");
 			if (selbrn.getBR_ACT_TGRABF() != null) {
 				if (selbrn.getBR_ACT_TGRABF().equals("Свидетельства о заключении брака")) {
 					FatherType.getSelectionModel().select(selbrn.getBR_ACT_TGRABF());
