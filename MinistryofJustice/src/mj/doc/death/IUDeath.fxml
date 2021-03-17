@@ -41,7 +41,7 @@
                                     </VBox>
                                  </content>
                               </TitledPane>
-                            <TitledPane fx:id="Pane1" animated="false" expanded="false" text="Сведения об умершем">
+                            <TitledPane fx:id="Pane1" animated="false" text="Сведения об умершем">
                                  <content>
                                     <VBox>
                                        <children>
@@ -92,7 +92,7 @@
                                     </VBox>
                                  </content>
                             </TitledPane>
-                              <TitledPane fx:id="Pane2" animated="false" text="Документ подтверждающий факт смерти">
+                              <TitledPane fx:id="Pane2" animated="false" expanded="false" text="Документ подтверждающий факт смерти">
                                  <content>
                                     <AnchorPane>
                                        <children>
@@ -121,7 +121,7 @@
                                                 <DatePicker fx:id="DC_FD" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                              </children>
                                           </GridPane>
-                                          <GridPane fx:id="D_B" layoutX="10.0" layoutY="40.0">
+                                          <GridPane fx:id="D_B" layoutX="10.0" layoutY="40.0" visible="false">
                                             <columnConstraints>
                                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="116.0" />
                                               <ColumnConstraints hgrow="SOMETIMES" />
