@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -49,8 +48,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
+import mj.courts.VCOURTS;
 import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
@@ -155,7 +156,7 @@ public class AddDeath {
 	 * Наименование суда
 	 */
 	@FXML
-	private TextField DC_RCNAME;
+	private ComboBox<VCOURTS> DC_RCNAME;
 
 	/**
 	 * юрик
@@ -340,13 +341,7 @@ public class AddDeath {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -359,13 +354,13 @@ public class AddDeath {
 	void DC_FTYPE(ActionEvent event) {
 		if (DC_FTYPE.getValue().equals("Документ установленной формы о смерти")) {
 			D_B.setVisible(false);
-			D_B.setVisible(false);
+			D_V.setVisible(false);
 			D_A.setVisible(true);
 			// значения полей
 			DC_FNUM.setText("");
 			DC_FD.setValue(null);
 			DC_FMON.setText("");
-			DC_RCNAME.setText("");
+			DC_RCNAME.setValue(null);
 			DC_NRNAME.setText("");
 		} else if (DC_FTYPE.getValue().equals("Решение суда об установлении факта о смерти")
 				| DC_FTYPE.getValue().equals("Решение суда об установлении лица умершим")) {
@@ -376,7 +371,7 @@ public class AddDeath {
 			DC_FNUM.setText("");
 			DC_FD.setValue(null);
 			DC_FMON.setText("");
-			DC_RCNAME.setText("");
+			DC_RCNAME.setValue(null);
 			DC_NRNAME.setText("");
 		} else if (DC_FTYPE.getValue().equals("Документ о факте смерти лица, необоснованно репрессированного")) {
 			D_A.setVisible(false);
@@ -386,7 +381,7 @@ public class AddDeath {
 			DC_FNUM.setText("");
 			DC_FD.setValue(null);
 			DC_FMON.setText("");
-			DC_RCNAME.setText("");
+			DC_RCNAME.setValue(null);
 			DC_NRNAME.setText("");
 		}
 	}
@@ -460,8 +455,6 @@ public class AddDeath {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			CallableStatement callStmt = conn
 					.prepareCall("{ ? = call Deatch.AddDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -476,7 +469,11 @@ public class AddDeath {
 			callStmt.setString(10, DC_ZTP.getValue());
 			callStmt.setString(11, DC_LLOC.getText());
 			callStmt.setString(12, DC_NRNAME.getText());
-			callStmt.setString(13, DC_RCNAME.getText());
+			if (DC_RCNAME.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(13, DC_RCNAME.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(13, java.sql.Types.INTEGER);
+			}
 			callStmt.setString(14, DC_FMON.getText());
 			callStmt.setString(15, DC_FTYPE.getValue());
 			callStmt.setDate(16, (DC_FD.getValue() != null) ? java.sql.Date.valueOf(DC_FD.getValue()) : null);
@@ -507,14 +504,8 @@ public class AddDeath {
 				Msg.ErrorView(stage_, "AddDeath", conn);
 				callStmt.close();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -551,6 +542,21 @@ public class AddDeath {
 	@FXML
 	private TitledPane Pane4;
 	
+	private void convert_DC_RCNAME() {
+		DC_RCNAME.setConverter(new StringConverter<VCOURTS>() {
+			@Override
+			public String toString(VCOURTS product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public VCOURTS fromString(final String string) {
+				return DC_RCNAME.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
+	
 	/**
 	 * Инициализация
 	 */
@@ -571,6 +577,32 @@ public class AddDeath {
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			
 			dbConnect();
+			
+			
+			// Суды
+			{
+				PreparedStatement stsmt = conn.prepareStatement("select * from VCOURTS");
+				ResultSet rs = stsmt.executeQuery();
+				ObservableList<VCOURTS> combolist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					VCOURTS list = new VCOURTS();
+					list.setCOTDNAME(rs.getString("COTDNAME"));
+					list.setID(rs.getInt("ID"));
+					list.setABH_NAME(rs.getString("ABH_NAME"));
+					list.setNAME_ROD(rs.getString("NAME_ROD"));
+					list.setNAME(rs.getString("NAME"));
+					list.setAREA_ID(rs.getInt("AREA_ID"));
+					list.setOTD(rs.getInt("OTD"));
+					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					combolist.add(list);
+				}
+
+				stsmt.close();
+				rs.close();
+
+				DC_RCNAME.setItems(combolist);
+				convert_DC_RCNAME();
+			}
 			/**
 			 * Тип заявителя
 			 */
@@ -584,12 +616,7 @@ public class AddDeath {
 			new ConvConst().FormatDatePiker(DC_DD);
 			new ConvConst().FormatDatePiker(DC_FD);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -603,7 +630,6 @@ public class AddDeath {
 	 */
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "AddDeath");
@@ -612,12 +638,7 @@ public class AddDeath {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -626,17 +647,11 @@ public class AddDeath {
 	 */
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

@@ -47,6 +47,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.courts.VCOURTS;
@@ -659,6 +660,50 @@ public class AddDivorce {
 	@FXML
 	private TitledPane Pane7;
 
+	private void convert_DIVC_ZOSCN2() {
+		DIVC_ZOSCN2.setConverter(new StringConverter<VCOURTS>() {
+			@Override
+			public String toString(VCOURTS product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public VCOURTS fromString(final String string) {
+				return DIVC_ZOSCN2.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
+	
+	private void convert_DIVC_ZOSCN() {
+		DIVC_ZOSCN.setConverter(new StringConverter<VCOURTS>() {
+			@Override
+			public String toString(VCOURTS product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public VCOURTS fromString(final String string) {
+				return DIVC_ZOSCN.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
+	private void convert_DIVC_CAN() {
+		DIVC_CAN.setConverter(new StringConverter<VCOURTS>() {
+			@Override
+			public String toString(VCOURTS product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public VCOURTS fromString(final String string) {
+				return DIVC_CAN.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
+	
 	@FXML
 	private void initialize() {
 		try {
@@ -688,6 +733,40 @@ public class AddDivorce {
 
 			dbConnect();
 
+			
+			// Суды
+			{
+				PreparedStatement stsmt = conn.prepareStatement("select * from VCOURTS");
+				ResultSet rs = stsmt.executeQuery();
+				ObservableList<VCOURTS> combolist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					VCOURTS list = new VCOURTS();
+					list.setCOTDNAME(rs.getString("COTDNAME"));
+					list.setID(rs.getInt("ID"));
+					list.setABH_NAME(rs.getString("ABH_NAME"));
+					list.setNAME_ROD(rs.getString("NAME_ROD"));
+					list.setNAME(rs.getString("NAME"));
+					list.setAREA_ID(rs.getInt("AREA_ID"));
+					list.setOTD(rs.getInt("OTD"));
+					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					combolist.add(list);
+				}
+
+				stsmt.close();
+				rs.close();
+
+				DIVC_CAN.setItems(combolist);
+				DIVC_ZOSCN2.setItems(combolist);
+				DIVC_ZOSCN.setItems(combolist);
+
+				// НАИМЕНОВАНИЯ СУДА, ЕСЛИ ЕСТЬ
+				convert_DIVC_CAN();
+				convert_DIVC_ZOSCN2();
+				convert_DIVC_ZOSCN();
+
+				rs.close();
+			}
+						
 			DIVC_TYPE.getItems().addAll(
 					"Совместное заявление супругов, не имеющих общих детей, не достигших совершеннолетия",
 					"Решение суда о расторжении брака",

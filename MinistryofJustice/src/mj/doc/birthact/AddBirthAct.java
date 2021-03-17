@@ -903,6 +903,8 @@ public class AddBirthAct {
 						callStmt.setString(5, "B");
 					} else if (FatherType.getValue().equals("Заявления матери")) {
 						callStmt.setString(5, "V");
+					}else if (FatherType.getValue().equals("Со слов матери")) {
+						callStmt.setString(5, "G");
 					}
 				} else {
 					callStmt.setString(5, null);

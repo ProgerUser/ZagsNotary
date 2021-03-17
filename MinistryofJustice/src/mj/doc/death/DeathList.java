@@ -342,7 +342,7 @@ public class DeathList {
 						: null);
 				list.setDC_NRNAME(rs.getString("DC_NRNAME"));
 				list.setDC_FADMIDDLE_NAME(rs.getString("DC_FADMIDDLE_NAME"));
-				list.setDC_RCNAME(rs.getString("DC_RCNAME"));
+				list.setDC_RCNAME(rs.getInt("DC_RCNAME"));
 				list.setDC_FADFIRST_NAME(rs.getString("DC_FADFIRST_NAME"));
 				list.setDC_FADLOCATION(rs.getString("DC_FADLOCATION"));
 				list.setDC_ID(rs.getInt("DC_ID"));
@@ -704,7 +704,7 @@ public class DeathList {
 						: null);
 				list.setDC_NRNAME(rs.getString("DC_NRNAME"));
 				list.setDC_FADMIDDLE_NAME(rs.getString("DC_FADMIDDLE_NAME"));
-				list.setDC_RCNAME(rs.getString("DC_RCNAME"));
+				list.setDC_RCNAME(rs.getInt("DC_RCNAME"));
 				list.setDC_FADFIRST_NAME(rs.getString("DC_FADFIRST_NAME"));
 				list.setDC_FADLOCATION(rs.getString("DC_FADLOCATION"));
 				list.setDC_ID(rs.getInt("DC_ID"));

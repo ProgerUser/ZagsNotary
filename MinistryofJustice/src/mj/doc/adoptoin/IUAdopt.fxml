@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
@@ -15,8 +16,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -180,7 +183,7 @@
                         </VBox>
                      </content>
                   </TitledPane>
-                  <TitledPane fx:id="Pane3" animated="false" layoutX="10.0" layoutY="116.0" text="После усыновления">
+                  <TitledPane fx:id="Pane3" animated="false" expanded="false" layoutX="10.0" layoutY="116.0" text="После усыновления">
                      <content>
                         <VBox>
                            <children>
@@ -283,11 +286,14 @@
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Район" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                                     <TextField fx:id="BRN_CITY" GridPane.columnIndex="1" />
                                     <TextField fx:id="BRN_AREA" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Область, (край, республика)" GridPane.rowIndex="2" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Область, (край, республика)" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets right="5.0" />
+                                       </GridPane.margin></Text>
                                     <TextField fx:id="BRN_OBL_RESP" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                  </children>
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="55.0" prefWidth="88.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="169.0" prefWidth="172.0" />
                                  </columnConstraints>
                                  <rowConstraints>
@@ -533,31 +539,62 @@
                      <content>
                         <VBox>
                            <children>
-                              <GridPane>
+                              <HBox>
                                  <children>
-                                    <Label text="Решение исполкома" GridPane.halignment="LEFT" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Совета депутатов трудящихся" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                                    <TextField fx:id="ZAP_ISPOLKOM_RESH" GridPane.columnIndex="1" />
-                                    <TextField fx:id="ZAP_SOVET_DEP_TRUD" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата" GridPane.rowIndex="2" />
-                                    <DatePicker fx:id="ZAP_DATE" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Номер" GridPane.rowIndex="3" />
-                                    <TextField fx:id="ZAP_NUMBER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Тип" HBox.hgrow="ALWAYS">
+                                       <HBox.margin>
+                                          <Insets right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                    <ComboBox fx:id="GR_ADOPT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#GR_ADOPT" HBox.hgrow="ALWAYS" />
                                  </children>
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.0" minWidth="57.0" prefWidth="169.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="120.0" prefWidth="221.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <VBox.margin>
-                                    <Insets left="5.0" />
-                                 </VBox.margin>
-                              </GridPane>
+                              </HBox>
+                              <AnchorPane>
+                                 <children>
+                                    <GridPane fx:id="GR_ADOPT_A" visible="false">
+                                       <children>
+                                          <Label text="Решение исполкома" GridPane.halignment="LEFT" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Совета депутатов трудящихся" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                          <TextField fx:id="ZAP_ISPOLKOM_RESH" GridPane.columnIndex="1" />
+                                          <TextField fx:id="ZAP_SOVET_DEP_TRUD" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата" GridPane.rowIndex="2" />
+                                          <DatePicker fx:id="ZAP_DATE" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Номер" GridPane.rowIndex="3" />
+                                          <TextField fx:id="ZAP_NUMBER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                       </children>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.0" minWidth="57.0" prefWidth="169.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="120.0" prefWidth="221.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="30.0" minHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                    <GridPane fx:id="GR_ADOPT_B" visible="false">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                                        <ColumnConstraints hgrow="SOMETIMES" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наименование суда">
+                                             <GridPane.margin>
+                                                <Insets right="5.0" />
+                                             </GridPane.margin>
+                                          </Text>
+                                          <ComboBox fx:id="GR_COURT" prefWidth="280.0" GridPane.columnIndex="1" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="От" GridPane.rowIndex="1" />
+                                          <DatePicker fx:id="GR_COURT_DATE" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </VBox>
                      </content>

@@ -869,6 +869,8 @@ public class EditBirthAct {
 						callStmt.setString(5, "B");
 					} else if (FatherType.getValue().equals("Заявления матери")) {
 						callStmt.setString(5, "V");
+					}else if (FatherType.getValue().equals("Со слов матери")) {
+						callStmt.setString(5, "G");
 					}
 				} else {
 					callStmt.setString(5, null);
@@ -1018,6 +1020,8 @@ public class EditBirthAct {
 						callStmt.setString(5, "B");
 					} else if (FatherType.getValue().equals("Заявления матери")) {
 						callStmt.setString(5, "V");
+					}else if (FatherType.getValue().equals("Со слов матери")) {
+						callStmt.setString(5, "G");
 					}
 				} else {
 					callStmt.setString(5, null);
@@ -1390,6 +1394,7 @@ public class EditBirthAct {
 
 			FatherType.getItems().addAll("Свидетельства о заключении брака", "Свидетельства об установлении отцовства",
 					"Заявления матери", "Со слов матери");
+			
 			if (selbrn.getBR_ACT_TGRABF() != null) {
 				if (selbrn.getBR_ACT_TGRABF().equals("Свидетельства о заключении брака")) {
 					FatherType.getSelectionModel().select(selbrn.getBR_ACT_TGRABF());
@@ -1400,6 +1405,8 @@ public class EditBirthAct {
 				} else if (selbrn.getBR_ACT_TGRABF().equals("Заявления матери")) {
 					FatherType.getSelectionModel().select(selbrn.getBR_ACT_TGRABF());
 					IF3.setVisible(true);
+				}else if (selbrn.getBR_ACT_TGRABF().equals("Со слов матери")) {
+					FatherType.getSelectionModel().select(selbrn.getBR_ACT_TGRABF());
 				}
 			}
 

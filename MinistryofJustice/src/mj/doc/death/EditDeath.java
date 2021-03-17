@@ -45,7 +45,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import mj.app.main.Main;
+import mj.courts.VCOURTS;
 import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
@@ -151,7 +153,7 @@ public class EditDeath {
 	 * Наименование суда
 	 */
 	@FXML
-	private TextField DC_RCNAME;
+	private ComboBox<VCOURTS> DC_RCNAME;
 
 	/**
 	 * юрик
@@ -355,13 +357,13 @@ public class EditDeath {
 	void DC_FTYPE(ActionEvent event) {
 		if (DC_FTYPE.getValue().equals("Документ установленной формы о смерти")) {
 			D_B.setVisible(false);
-			D_B.setVisible(false);
+			D_V.setVisible(false);
 			D_A.setVisible(true);
 			// значения полей
 			DC_FNUM.setText("");
 			DC_FD.setValue(null);
 			DC_FMON.setText("");
-			DC_RCNAME.setText("");
+			DC_RCNAME.setValue(null);
 			DC_NRNAME.setText("");
 		} else if (DC_FTYPE.getValue().equals("Решение суда об установлении факта о смерти")
 				| DC_FTYPE.getValue().equals("Решение суда об установлении лица умершим")) {
@@ -372,7 +374,7 @@ public class EditDeath {
 			DC_FNUM.setText("");
 			DC_FD.setValue(null);
 			DC_FMON.setText("");
-			DC_RCNAME.setText("");
+			DC_RCNAME.setValue(null);
 			DC_NRNAME.setText("");
 		} else if (DC_FTYPE.getValue().equals("Документ о факте смерти лица, необоснованно репрессированного")) {
 			D_A.setVisible(false);
@@ -382,7 +384,7 @@ public class EditDeath {
 			DC_FNUM.setText("");
 			DC_FD.setValue(null);
 			DC_FMON.setText("");
-			DC_RCNAME.setText("");
+			DC_RCNAME.setValue(null);
 			DC_NRNAME.setText("");
 		}
 	}
@@ -440,7 +442,11 @@ public class EditDeath {
 			callStmt.setString(10, DC_ZTP.getValue());
 			callStmt.setString(11, DC_LLOC.getText());
 			callStmt.setString(12, DC_NRNAME.getText());
-			callStmt.setString(13, DC_RCNAME.getText());
+			if (DC_RCNAME.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(13, DC_RCNAME.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(13, java.sql.Types.INTEGER);
+			}
 			callStmt.setString(14, DC_FMON.getText());
 			callStmt.setString(15, DC_FTYPE.getValue());
 			callStmt.setDate(16, (DC_FD.getValue() != null) ? java.sql.Date.valueOf(DC_FD.getValue()) : null);
@@ -489,7 +495,11 @@ public class EditDeath {
 			callStmt.setString(10, DC_ZTP.getValue());
 			callStmt.setString(11, DC_LLOC.getText());
 			callStmt.setString(12, DC_NRNAME.getText());
-			callStmt.setString(13, DC_RCNAME.getText());
+			if (DC_RCNAME.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setInt(13, DC_RCNAME.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(13, java.sql.Types.INTEGER);
+			}
 			callStmt.setString(14, DC_FMON.getText());
 			callStmt.setString(15, DC_FTYPE.getValue());
 			callStmt.setDate(16, (DC_FD.getValue() != null) ? java.sql.Date.valueOf(DC_FD.getValue()) : null);
@@ -598,12 +608,11 @@ public class EditDeath {
 					} else if (death.getDC_FTYPE().equals("B")) {
 						DC_FTYPE.getSelectionModel().select("Решение суда об установлении факта о смерти");
 						D_B.setVisible(true);
-
-						DC_RCNAME.setText(death.getDC_RCNAME());
+						//DC_RCNAME.setText(death.getDC_RCNAME());
 					} else if (death.getDC_FTYPE().equals("B1")) {
 						DC_FTYPE.getSelectionModel().select("Решение суда об установлении лица умершим");
 						D_B.setVisible(true);
-						DC_RCNAME.setText(death.getDC_RCNAME());
+						//DC_RCNAME.setText(death.getDC_RCNAME());
 					} else if (death.getDC_FTYPE().equals("V")) {
 						DC_FTYPE.getSelectionModel()
 								.select("Документ о факте смерти лица, необоснованно репрессированного");
@@ -638,6 +647,41 @@ public class EditDeath {
 				DC_NUMBER.setText(death.getDC_NUMBER());
 			}
 			DOC_NUMBER.setText(death.getDOC_NUMBER());
+			
+			// Суды
+			{
+				PreparedStatement stsmt = conn.prepareStatement("select * from VCOURTS");
+				ResultSet rs = stsmt.executeQuery();
+				ObservableList<VCOURTS> combolist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					VCOURTS list = new VCOURTS();
+					list.setCOTDNAME(rs.getString("COTDNAME"));
+					list.setID(rs.getInt("ID"));
+					list.setABH_NAME(rs.getString("ABH_NAME"));
+					list.setNAME_ROD(rs.getString("NAME_ROD"));
+					list.setNAME(rs.getString("NAME"));
+					list.setAREA_ID(rs.getInt("AREA_ID"));
+					list.setOTD(rs.getInt("OTD"));
+					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					combolist.add(list);
+				}
+
+				stsmt.close();
+				rs.close();
+
+				DC_RCNAME.setItems(combolist);
+				convert_DC_RCNAME();
+				
+				if (death.getDC_RCNAME() != null) {
+					for (VCOURTS ld : DC_RCNAME.getItems()) {
+						if (death.getDC_RCNAME().equals(ld.getID())) {
+							DC_RCNAME.getSelectionModel().select(ld);
+							break;
+						}
+					}
+				}
+			}
+						
 			new ConvConst().FormatDatePiker(DC_DD);
 			new ConvConst().FormatDatePiker(DC_FD);
 		} catch (Exception e) {
@@ -645,6 +689,20 @@ public class EditDeath {
 		}
 	}
 
+	private void convert_DC_RCNAME() {
+		DC_RCNAME.setConverter(new StringConverter<VCOURTS>() {
+			@Override
+			public String toString(VCOURTS product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public VCOURTS fromString(final String string) {
+				return DC_RCNAME.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
 	/**
 	 * Объект свидетельства о смерти
 	 */

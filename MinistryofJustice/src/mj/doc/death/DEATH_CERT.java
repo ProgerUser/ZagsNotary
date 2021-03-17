@@ -42,7 +42,7 @@ public class DEATH_CERT {
 	/** Нет данных */
 	private StringProperty DC_NRNAME;
 	/** Нет данных */
-	private StringProperty DC_RCNAME;
+	private IntegerProperty DC_RCNAME;
 	/** Нет данных */
 	private StringProperty DC_FMON;
 	/** Нет данных */
@@ -87,7 +87,7 @@ public class DEATH_CERT {
 		this.DC_ZTP = new SimpleStringProperty();
 		this.DC_LLOC = new SimpleStringProperty();
 		this.DC_NRNAME = new SimpleStringProperty();
-		this.DC_RCNAME = new SimpleStringProperty();
+		this.DC_RCNAME = new SimpleIntegerProperty();
 		this.DC_FMON = new SimpleStringProperty();
 		this.DC_FTYPE = new SimpleStringProperty();
 		this.DC_FD = new SimpleObjectProperty<>();
@@ -177,7 +177,7 @@ public class DEATH_CERT {
 		this.DC_NRNAME.set(DC_NRNAME);
 	}
 
-	public void setDC_RCNAME(String DC_RCNAME) {
+	public void setDC_RCNAME(Integer DC_RCNAME) {
 		this.DC_RCNAME.set(DC_RCNAME);
 	}
 
@@ -289,7 +289,7 @@ public class DEATH_CERT {
 		return DC_NRNAME.get();
 	}
 
-	public String getDC_RCNAME() {
+	public Integer getDC_RCNAME() {
 		return DC_RCNAME.get();
 	}
 
@@ -401,7 +401,7 @@ public class DEATH_CERT {
 		return DC_NRNAME;
 	}
 
-	public StringProperty DC_RCNAMEProperty() {
+	public IntegerProperty DC_RCNAMEProperty() {
 		return DC_RCNAME;
 	}
 

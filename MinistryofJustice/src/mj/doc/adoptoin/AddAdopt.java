@@ -35,6 +35,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ScrollPane;
@@ -47,13 +48,16 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
 import mj.app.model.Connect;
+import mj.courts.VCOURTS;
 import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
@@ -62,6 +66,18 @@ import mj.util.ConvConst;
 import mj.widgets.KeyBoard;
 
 public class AddAdopt {
+
+    @FXML
+    private ComboBox<VCOURTS> GR_COURT;
+    @FXML
+    private GridPane GR_ADOPT_B;
+    @FXML
+    private DatePicker GR_COURT_DATE;
+    @FXML
+    private ComboBox<String> GR_ADOPT;
+    @FXML
+    private GridPane GR_ADOPT_A;
+    
 	@FXML
 	private TextField OLD_LASTNAME_AB;
 	@FXML
@@ -137,6 +153,27 @@ public class AddAdopt {
 	@FXML
 	private TextField OLD_MIDDLNAME;
 
+	@FXML
+	void GR_ADOPT(ActionEvent event) {
+		try {
+			if (GR_ADOPT.getValue().equals("Решение суда")) {
+				GR_ADOPT_A.setVisible(false);
+				GR_ADOPT_B.setVisible(true);
+				ZAP_ISPOLKOM_RESH.setText("");
+				ZAP_SOVET_DEP_TRUD.setText("");
+				ZAP_DATE.setValue(null);
+				ZAP_NUMBER.setText("");
+			} else if (GR_ADOPT.getValue().equals("Решение исполкома")) {
+				GR_ADOPT_B.setVisible(false);
+				GR_ADOPT_A.setVisible(true);
+				GR_COURT_DATE.setValue(null);
+				GR_COURT.setValue(null);
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+    
 	@FXML
 	void FindChildren(ActionEvent event) {
 		UtilCus cus = new UtilCus();
@@ -635,7 +672,7 @@ public class AddAdopt {
 	void Save(ActionEvent event) {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ call ADOPT.AddAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					.prepareCall("{ call ADOPT.AddAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.registerOutParameter(2, Types.INTEGER);
@@ -697,6 +734,18 @@ public class AddAdopt {
 			callStmt.setString(32, NEW_FIRSTNAME_AB.getText());
 			callStmt.setString(33, NEW_MIDDLNAME_AB.getText());
 			
+			// Основание записи об усыновлении
+			callStmt.setString(34, (GR_ADOPT.getValue().equals("Решение суда") ? "B" : "A"));
+			// Решение суда дата
+			callStmt.setDate(35,
+					(GR_COURT_DATE.getValue() != null) ? java.sql.Date.valueOf(GR_COURT_DATE.getValue()) : null);
+			// Решение суда дата
+			if (GR_COURT.getValue() != null) {
+				callStmt.setInt(36, GR_COURT.getSelectionModel().getSelectedItem().getID());
+			} else {
+				callStmt.setNull(36, java.sql.Types.INTEGER);
+			}
+
 			callStmt.execute();
 
 			if (callStmt.getString(1) == null) {
@@ -788,9 +837,26 @@ public class AddAdopt {
 	@FXML
 	private TitledPane Pane11;
 
+	private void convert_GR_COURT() {
+		GR_COURT.setConverter(new StringConverter<VCOURTS>() {
+			@Override
+			public String toString(VCOURTS product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public VCOURTS fromString(final String string) {
+				return GR_COURT.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
+	
 	@FXML
 	private void initialize() {
 		try {
+			
+			GR_ADOPT.getItems().addAll("Решение исполкома","Решение суда");
 			
 			ChildrenFio.setText(getCusFio());
 			//
@@ -834,6 +900,32 @@ public class AddAdopt {
 			if (conn == null) {
 				dbConnect();
 			}
+			
+			// Суды
+			{
+				PreparedStatement stsmt = conn.prepareStatement("select * from VCOURTS");
+				ResultSet rs = stsmt.executeQuery();
+				ObservableList<VCOURTS> combolist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					VCOURTS list = new VCOURTS();
+					list.setCOTDNAME(rs.getString("COTDNAME"));
+					list.setID(rs.getInt("ID"));
+					list.setABH_NAME(rs.getString("ABH_NAME"));
+					list.setNAME_ROD(rs.getString("NAME_ROD"));
+					list.setNAME(rs.getString("NAME"));
+					list.setAREA_ID(rs.getInt("AREA_ID"));
+					list.setOTD(rs.getInt("OTD"));
+					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					combolist.add(list);
+				}
+				stsmt.close();
+				rs.close();
+				GR_COURT.setItems(combolist);
+				//НАИМЕНОВАНИЯ СУДА, ЕСЛИ ЕСТЬ
+				convert_GR_COURT();
+			}
+			
+			new ConvConst().FormatDatePiker(GR_COURT_DATE);
 			new ConvConst().FormatDatePiker(OLD_BRTH);
 			new ConvConst().FormatDatePiker(ZAP_DATE);
 			new ConvConst().FormatDatePiker(NEW_BRTH);

@@ -263,7 +263,7 @@ public class AddMercer {
 						: null);
 				list.setDC_FTYPE(rs.getString("DC_FTYPE"));
 				list.setDC_FMON(rs.getString("DC_FMON"));
-				list.setDC_RCNAME(rs.getString("DC_RCNAME"));
+				list.setDC_RCNAME(rs.getInt("DC_RCNAME"));
 				list.setDC_NRNAME(rs.getString("DC_NRNAME"));
 				list.setDC_LLOC(rs.getString("DC_LLOC"));
 				list.setDC_ZTP(rs.getString("DC_ZTP"));

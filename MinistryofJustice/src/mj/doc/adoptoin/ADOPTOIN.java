@@ -96,7 +96,18 @@ public class ADOPTOIN {
 	/** Отчество после перемены АБХ */
 	private StringProperty NEW_MIDDLNAME_AB;
 
+	/** Основание записи об усыновлении */
+	private StringProperty GR_ADOPT;
+	/** Решение суда дата */
+	private SimpleObjectProperty<LocalDate> GR_COURT_DATE;
+	/** Решение суда ссылка на суд */
+	private IntegerProperty GR_COURT;
+
 	public ADOPTOIN() {
+
+		this.GR_ADOPT = new SimpleStringProperty();
+		this.GR_COURT_DATE = new SimpleObjectProperty<>();
+		this.GR_COURT = new SimpleIntegerProperty();
 
 		this.OLD_LASTNAME_AB = new SimpleStringProperty();
 		this.OLD_FIRSTNAME_AB = new SimpleStringProperty();
@@ -142,6 +153,42 @@ public class ADOPTOIN {
 		this.FATHERFIO = new SimpleStringProperty();
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
+	}
+
+	public void setGR_ADOPT(String GR_ADOPT) {
+		this.GR_ADOPT.set(GR_ADOPT);
+	}
+
+	public void setGR_COURT_DATE(LocalDate GR_COURT_DATE) {
+		this.GR_COURT_DATE.set(GR_COURT_DATE);
+	}
+
+	public void setGR_COURT(Integer GR_COURT) {
+		this.GR_COURT.set(GR_COURT);
+	}
+
+	public String getGR_ADOPT() {
+		return GR_ADOPT.get();
+	}
+
+	public LocalDate getGR_COURT_DATE() {
+		return GR_COURT_DATE.get();
+	}
+
+	public Integer getGR_COURT() {
+		return GR_COURT.get();
+	}
+
+	public StringProperty GR_ADOPTProperty() {
+		return GR_ADOPT;
+	}
+
+	public SimpleObjectProperty<LocalDate> GR_COURT_DATEProperty() {
+		return GR_COURT_DATE;
+	}
+
+	public IntegerProperty GR_COURTProperty() {
+		return GR_COURT;
 	}
 
 	public void setOLD_LASTNAME_AB(String OLD_LASTNAME_AB) {

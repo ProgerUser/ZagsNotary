@@ -486,6 +486,12 @@ public class AdoptList {
 				list.setNEW_FIRSTNAME_AB(rs.getString("NEW_FIRSTNAME_AB"));
 				list.setNEW_MIDDLNAME_AB(rs.getString("NEW_MIDDLNAME_AB"));
 				
+				list.setGR_ADOPT(rs.getString("GR_ADOPT"));
+				list.setGR_COURT_DATE((rs.getDate("GR_COURT_DATE") != null) ? LocalDate.parse(
+						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("GR_COURT_DATE")), formatter) : null);
+				list.setGR_COURT(rs.getInt("GR_COURT"));
+
+				
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -899,6 +905,12 @@ public class AdoptList {
 						: null);
 				list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+				
+				list.setGR_ADOPT(rs.getString("GR_ADOPT"));
+				list.setGR_COURT_DATE((rs.getDate("GR_COURT_DATE") != null) ? LocalDate.parse(
+						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("GR_COURT_DATE")), formatter) : null);
+				list.setGR_COURT(rs.getInt("GR_COURT"));
+
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -1166,7 +1178,7 @@ public class AdoptList {
 				callStmt.close();
 			} else {
 				Msg.Message(callStmt.getString(3));
-				Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
+				Main.logger.error(callStmt.getString(3) + "~" + Thread.currentThread().getName());
 				callStmt.close();
 			}
 		} catch (Exception e) {
