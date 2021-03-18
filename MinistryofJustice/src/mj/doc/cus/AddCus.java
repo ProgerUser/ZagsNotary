@@ -2511,7 +2511,6 @@ public class AddCus {
 
 			// страна рождения
 			{
-
 				Statement sqlStatement = conn.createStatement();
 				String readRecordSQL = "select * from COUNTRIES order by NAME";
 				ResultSet rs = sqlStatement.executeQuery(readRecordSQL);

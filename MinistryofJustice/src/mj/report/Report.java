@@ -157,14 +157,14 @@ public class Report {
 					String.valueOf(ComboList.getSelectionModel().getSelectedItem().getREPORT_TYPE_ID()));
 			runner.setReport_id(String.valueOf(ComboList.getSelectionModel().getSelectedItem().getREPORT_ID()));
 
-			// runner.setGenerate_type("F");
-			// runner.setUse_convertation("N");
-			// runner.setEdit_enable("N");
-			// runner.setDir("T");
+			runner.setGenerate_type("V");
+			runner.setUse_convertation("N");
+			runner.setEdit_enable("N");
+			runner.setDir("T");
 			runner.run();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

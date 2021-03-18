@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import com.sun.jna.Library;
+
 public class FRREPRunner {
 	public enum FRREPDllOptions {
 		RUN, GRANTS, CLONE, DEPENDECES, DELETE, DESIGN, NEW;
@@ -37,6 +39,39 @@ public class FRREPRunner {
 	private String p9 = "";
 	private String p10 = "";
 
+//
+//	FRREP
+//	
+	public interface FRREP extends Library {
+		public String _SHOWREPORT(
+				String DLLOPTIONS,
+				String USERNAME,
+				String PASSW,
+				String CONNECT_STRING,
+				String SERVERNAME,
+				String SID,
+				String Edit_Enable,
+				String Generate_Type,
+				String Dir,
+				String Use_Convertation,
+				String File_Name,
+				String REPORT_FILE,
+				String REPORT_TYPE_ID,
+				String REPORT_ID,
+				String REP_NAME,
+				String REPORT_SORT,
+				String P1,
+				String P2,
+				String P3,
+				String P4,
+				String P5,
+				String P6,
+				String P7,
+				String P8,
+				String P9,
+				String P10);
+	}
+	
 	public void setDllOptions(FRREPDllOptions opts) {
 		this.dllOptions = opts;
 		switch (opts) {
@@ -167,9 +202,10 @@ public class FRREPRunner {
 	}
 
 	public void setReport_id(String r_id) {
-		if (this.dllOptions != FRREPDllOptions.RUN) {
-			this.report_id = r_id;
-		}
+//		if (this.dllOptions != FRREPDllOptions.RUN | this.generate_type.equals("F")) {
+//			this.report_id = r_id;
+//		}
+		this.report_id = r_id;
 	}
 
 	public String getReport_id() {
@@ -333,6 +369,37 @@ public class FRREPRunner {
 	}
 
 	public void run() throws AltPrintParamsNotSetException, IOException, InterruptedException {
+		
+//		FRREP lib = (FRREP) Native.loadLibrary(System.getenv("MJ_PATH") + "bin/FRREP.dll", FRREP.class);
+//		String ret = lib._SHOWREPORT(this.dllOptionsStr, // DLLOPTIONS
+//				this.userName, // USERNAME
+//				this.passw, // PASSW
+//				this.connect_string, // CONNECT_STRING
+//				this.serverName, // SERVERNAME
+//				this.sid, // SID
+//				this.edit_enable, // Edit_Enable
+//				this.generate_type, // Generate_Type
+//				this.dir, // Dir
+//				this.use_convertation, // Use_Convertation
+//				this.file_name, // File_Name
+//				this.report_file, // REPORT_FILE
+//				this.report_type_id, // REPORT_TYPE_ID
+//				this.report_id, // REPORT_ID
+//				this.rep_name, // REP_NAME
+//				this.report_sort, // REPORT_SORT
+//				this.p1, // P1
+//				this.p2, // P2
+//				this.p3, // P3
+//				this.p4, // P4
+//				this.p5, // P5
+//				this.p6, // P6
+//				this.p7, // P7
+//				this.p8, // P8
+//				this.p9, // P9
+//				this.p10 // P10
+//		);
+//		System.out.println(ret);
+		
 		Process p;
 		checkMinimalParams();
 

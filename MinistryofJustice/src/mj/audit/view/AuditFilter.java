@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
@@ -14,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,6 +34,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
+import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
@@ -116,190 +117,231 @@ public class AuditFilter {
 
 	@FXML
 	void ACTDAUDDATE(ActionEvent event) {
-		if (CHDAUDDATE.isSelected()) {
-			DAUDDATE.setStyle("-fx-background-color:#ff80ff");
-			DAUDDATE1.setStyle("-fx-background-color:#ff80ff");
-			AUFILTERTEXT = "\r\n where 1=1 \r\n";
-			// ifonedate.setVisible(false);
-			// datefinal.setVisible(true);
-			if (DAUDDATE.getValue() == null) {
-				Msg.Message("Заполните дату!");
-				CHDAUDDATE.setSelected(false);
+		try {
+			if (CHDAUDDATE.isSelected()) {
+				DAUDDATE.setStyle("-fx-background-color:#ff80ff");
+				DAUDDATE1.setStyle("-fx-background-color:#ff80ff");
+				AUFILTERTEXT = "\r\n where 1=1 \r\n";
+				// ifonedate.setVisible(false);
+				// datefinal.setVisible(true);
+				if (DAUDDATE.getValue() == null) {
+					Msg.Message("Заполните дату!");
+					CHDAUDDATE.setSelected(false);
+					DAUDDATE.setStyle("");
+					DAUDDATE1.setStyle("");
+					return;
+				}
+				if (DAUDDATE.getValue() == null & DAUDDATE1.getValue() != null) {
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					String DAUDDATE1s = DAUDDATE1.getValue().format(formatter);
+					tDAUDDATE = "\r\n and DAUDDATE between to_date('" + DAUDDATE1s + "','dd.mm.yyyy') and to_date('"
+							+ DAUDDATE1s + "','dd.mm.yyyy')\r\n";
+				} else if (DAUDDATE.getValue() != null & DAUDDATE1.getValue() == null) {
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					String DAUDDATEs = DAUDDATE.getValue().format(formatter);
+					tDAUDDATE = "\r\n and DAUDDATE between to_date('" + DAUDDATEs + "','dd.mm.yyyy') and to_date('"
+							+ DAUDDATEs + "','dd.mm.yyyy')\r\n";
+				} else if (DAUDDATE.getValue() != null & DAUDDATE1.getValue() != null) {
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					String DAUDDATEs = DAUDDATE.getValue().format(formatter);
+					String DAUDDATE1s = DAUDDATE1.getValue().format(formatter);
+					tDAUDDATE = "\r\n and DAUDDATE between to_date('" + DAUDDATEs + "','dd.mm.yyyy') and to_date('"
+							+ DAUDDATE1s + "','dd.mm.yyyy')\r\n";
+				} else {
+					Msg.Message("Ошибка заполнения даты!");
+					CHDAUDDATE.setSelected(false);
+					return;
+				}
+
+				// datefinal.setStyle("-fx-control-inner-background:#ff80ff");
+				// datefinal.setText(tDAUDDATE);
+			} else {
 				DAUDDATE.setStyle("");
 				DAUDDATE1.setStyle("");
-				return;
+				AUFILTERTEXT = "\r\n where 1=2 \r\n";
+				// datefinal.setVisible(false);
+				// ifonedate.setVisible(true);
+				tDAUDDATE = "";
+				// datefinal.setText(tDAUDDATE);
 			}
-			if (DAUDDATE.getValue() == null & DAUDDATE1.getValue() != null) {
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-				String DAUDDATE1s = DAUDDATE1.getValue().format(formatter);
-				tDAUDDATE = "\r\n and DAUDDATE between to_date('" + DAUDDATE1s + "','dd.mm.yyyy') and to_date('"
-						+ DAUDDATE1s + "','dd.mm.yyyy')\r\n";
-			} else if (DAUDDATE.getValue() != null & DAUDDATE1.getValue() == null) {
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-				String DAUDDATEs = DAUDDATE.getValue().format(formatter);
-				tDAUDDATE = "\r\n and DAUDDATE between to_date('" + DAUDDATEs + "','dd.mm.yyyy') and to_date('"
-						+ DAUDDATEs + "','dd.mm.yyyy')\r\n";
-			} else if (DAUDDATE.getValue() != null & DAUDDATE1.getValue() != null) {
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-				String DAUDDATEs = DAUDDATE.getValue().format(formatter);
-				String DAUDDATE1s = DAUDDATE1.getValue().format(formatter);
-				tDAUDDATE = "\r\n and DAUDDATE between to_date('" + DAUDDATEs + "','dd.mm.yyyy') and to_date('"
-						+ DAUDDATE1s + "','dd.mm.yyyy')\r\n";
-			} else {
-				Msg.Message("Ошибка заполнения даты!");
-				CHDAUDDATE.setSelected(false);
-				return;
-			}
-
-			// datefinal.setStyle("-fx-control-inner-background:#ff80ff");
-			// datefinal.setText(tDAUDDATE);
-		} else {
-			DAUDDATE.setStyle("");
-			DAUDDATE1.setStyle("");
-			AUFILTERTEXT = "\r\n where 1=2 \r\n";
-			// datefinal.setVisible(false);
-			// ifonedate.setVisible(true);
-			tDAUDDATE = "";
-			// datefinal.setText(tDAUDDATE);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void datebetween(ActionEvent event) {
-		Button Update = new Button();
-		Update.setText("Выбрать");
-		Update.setLayoutX(29.0);
-		Update.setLayoutY(462.0);
-		AnchorPane secondaryLayout = new AnchorPane();
-		/**/
-		Update.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
+		try {
+			Button Update = new Button();
+			Update.setText("Выбрать");
+			Update.setLayoutX(29.0);
+			Update.setLayoutY(462.0);
+			AnchorPane secondaryLayout = new AnchorPane();
+			/**/
+			Update.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {
 
-			}
-		});
+				}
+			});
 
-		secondaryLayout.getChildren().add(Update);
+			secondaryLayout.getChildren().add(Update);
 
-		// VBox vbox = new VBox(debtinfo);
-		Scene secondScene = new Scene(secondaryLayout, 518, 500);
-		Stage stage = (Stage) IACTION_ID.getScene().getWindow();
+			// VBox vbox = new VBox(debtinfo);
+			Scene secondScene = new Scene(secondaryLayout, 518, 500);
+			Stage stage = (Stage) IACTION_ID.getScene().getWindow();
 
-		Stage newWindow = new Stage();
-		newWindow.setTitle("Диапазон дат");
-		newWindow.setScene(secondScene);
-		// Specifies the modality for new window.
-		newWindow.initModality(Modality.WINDOW_MODAL);
-		// Specifies the owner Window (parent) for new window
-		newWindow.initOwner(stage);
-		newWindow.getIcons().add(new Image("/icon.png"));
-		newWindow.show();
+			Stage newWindow = new Stage();
+			newWindow.setTitle("Диапазон дат");
+			newWindow.setScene(secondScene);
+			// Specifies the modality for new window.
+			newWindow.initModality(Modality.WINDOW_MODAL);
+			// Specifies the owner Window (parent) for new window
+			newWindow.initOwner(stage);
+			newWindow.getIcons().add(new Image("/icon.png"));
+			newWindow.show();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
 	}
 
 	@FXML
 	void ACTCAUDOPERATION(ActionEvent event) {
-		if (CHCAUDOPERATION.isSelected()) {
-			AUFILTERTEXT = "\r\n where 1=1 \r\n";
-			tCAUDOPERATION = "\r\n and CAUDOPERATION = '"
-					+ ((CAUDOPERATION.getSelectionModel().getSelectedItem() != null) ? CAUDOPERATION.getValue() : "")
-					+ "'\r\n";
-			CAUDOPERATION.setStyle("-fx-background-color:#ff80ff");
-		} else {
-			AUFILTERTEXT = "\r\n where 1=2 \r\n";
-			CAUDOPERATION.setStyle("");
-			tCAUDOPERATION = "";
+		try {
+			if (CHCAUDOPERATION.isSelected()) {
+				AUFILTERTEXT = "\r\n where 1=1 \r\n";
+				tCAUDOPERATION = "\r\n and CAUDOPERATION = '"
+						+ ((CAUDOPERATION.getSelectionModel().getSelectedItem() != null) ? CAUDOPERATION.getValue()
+								: "")
+						+ "'\r\n";
+				CAUDOPERATION.setStyle("-fx-background-color:#ff80ff");
+			} else {
+				AUFILTERTEXT = "\r\n where 1=2 \r\n";
+				CAUDOPERATION.setStyle("");
+				tCAUDOPERATION = "";
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void ACTIACTION_ID(ActionEvent event) {
-		if (CHIACTION_ID.isSelected()) {
-			AUFILTERTEXT = "\r\n where 1=1 \r\n";
-			tIACTION_ID = "\r\n and IACTION_ID = " + IACTION_ID.getText() + "\r\n";
-			IACTION_ID.setStyle("-fx-control-inner-background:#ff80ff");
-		} else {
-			AUFILTERTEXT = "\r\n where 1=2 \r\n";
-			IACTION_ID.setStyle("");
-			tIACTION_ID = "";
+		try {
+			if (CHIACTION_ID.isSelected()) {
+				AUFILTERTEXT = "\r\n where 1=1 \r\n";
+				tIACTION_ID = "\r\n and IACTION_ID = " + IACTION_ID.getText() + "\r\n";
+				IACTION_ID.setStyle("-fx-control-inner-background:#ff80ff");
+			} else {
+				AUFILTERTEXT = "\r\n where 1=2 \r\n";
+				IACTION_ID.setStyle("");
+				tIACTION_ID = "";
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void ACTCTABLE(ActionEvent event) {
-		if (CHCTABLE.isSelected()) {
-			AU_TABLE au = CTABLE.getSelectionModel().getSelectedItem();
-			AUFILTERTEXT = "\r\n where 1=1 \r\n";
-			tCTABLE = "\r\n and upper(CTABLE) = '"
-					+ ((CTABLE.getSelectionModel().getSelectedItem() != null) ? au.getCNAME() : null) + "' \r\n";
-			CTABLE.setStyle("-fx-background-color:#ff80ff");
-		} else {
-			AUFILTERTEXT = "\r\n where 1=2 \r\n";
-			CTABLE.setStyle("");
-			tCTABLE = "";
+		try {
+			if (CHCTABLE.isSelected()) {
+				AU_TABLE au = CTABLE.getSelectionModel().getSelectedItem();
+				AUFILTERTEXT = "\r\n where 1=1 \r\n";
+				tCTABLE = "\r\n and upper(CTABLE) = '"
+						+ ((CTABLE.getSelectionModel().getSelectedItem() != null) ? au.getCNAME() : null) + "' \r\n";
+				CTABLE.setStyle("-fx-background-color:#ff80ff");
+			} else {
+				AUFILTERTEXT = "\r\n where 1=2 \r\n";
+				CTABLE.setStyle("");
+				tCTABLE = "";
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void ACTRROWID(ActionEvent event) {
-		if (CHRROWID.isSelected()) {
-			AUFILTERTEXT = "\r\n where 1=1 \r\n";
-			tRROWID = "\r\n and RROWID = '" + RROWID.getText() + "' \r\n";
-			RROWID.setStyle("-fx-control-inner-background:#ff80ff");
-		} else {
-			AUFILTERTEXT = "\r\n where 1=2 \r\n";
-			RROWID.setStyle("");
-			tRROWID = "";
+		try {
+			if (CHRROWID.isSelected()) {
+				AUFILTERTEXT = "\r\n where 1=1 \r\n";
+				tRROWID = "\r\n and RROWID = '" + RROWID.getText() + "' \r\n";
+				RROWID.setStyle("-fx-control-inner-background:#ff80ff");
+			} else {
+				AUFILTERTEXT = "\r\n where 1=2 \r\n";
+				RROWID.setStyle("");
+				tRROWID = "";
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void ACTID_ANUM(ActionEvent event) {
-		if (CHID_ANUM.isSelected()) {
-			AUFILTERTEXT = "\r\n where 1=1 \r\n";
-			tID_ANUM = "\r\n and ID_ANUM = '" + ID_ANUM.getText() + "' \r\n";
-			ID_ANUM.setStyle("-fx-control-inner-background:#ff80ff");
-		} else {
-			AUFILTERTEXT = "\r\n where 1=2 \r\n";
-			ID_ANUM.setStyle("");
-			tID_ANUM = "";
+		try {
+			if (CHID_ANUM.isSelected()) {
+				AUFILTERTEXT = "\r\n where 1=1 \r\n";
+				tID_ANUM = "\r\n and ID_ANUM = '" + ID_ANUM.getText() + "' \r\n";
+				ID_ANUM.setStyle("-fx-control-inner-background:#ff80ff");
+			} else {
+				AUFILTERTEXT = "\r\n where 1=2 \r\n";
+				ID_ANUM.setStyle("");
+				tID_ANUM = "";
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void ACTID_NUM(ActionEvent event) {
-		if (CHID_NUM.isSelected()) {
-			AUFILTERTEXT = "\r\n where 1=1 \r\n";
-			tID_NUM = "\r\n and ID_NUM = '" + ID_NUM.getText() + "' \r\n";
-			ID_NUM.setStyle("-fx-control-inner-background:#ff80ff");
-		} else {
-			AUFILTERTEXT = "\r\n where 1=2 \r\n";
-			ID_NUM.setStyle("");
-			tID_NUM = "";
+		try {
+			if (CHID_NUM.isSelected()) {
+				AUFILTERTEXT = "\r\n where 1=1 \r\n";
+				tID_NUM = "\r\n and ID_NUM = '" + ID_NUM.getText() + "' \r\n";
+				ID_NUM.setStyle("-fx-control-inner-background:#ff80ff");
+			} else {
+				AUFILTERTEXT = "\r\n where 1=2 \r\n";
+				ID_NUM.setStyle("");
+				tID_NUM = "";
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void ACTCAUDUSER(ActionEvent event) {
-		if (CHCAUDUSER.isSelected()) {
-			AUFILTERTEXT = "\r\n where 1=1 \r\n";
-			tCAUDUSER = "\r\n and CAUDUSER = '" + CAUDUSER.getText() + "' \r\n";
-			CAUDUSER.setStyle("-fx-control-inner-background:#ff80ff");
-		} else {
-			AUFILTERTEXT = "\r\n where 1=2 \r\n";
-			CAUDUSER.setStyle("");
-			tCAUDUSER = "";
+		try {
+			if (CHCAUDUSER.isSelected()) {
+				AUFILTERTEXT = "\r\n where 1=1 \r\n";
+				tCAUDUSER = "\r\n and CAUDUSER = '" + CAUDUSER.getText() + "' \r\n";
+				CAUDUSER.setStyle("-fx-control-inner-background:#ff80ff");
+			} else {
+				AUFILTERTEXT = "\r\n where 1=2 \r\n";
+				CAUDUSER.setStyle("");
+				tCAUDUSER = "";
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void ACTCAUDIP_ADDRESS(ActionEvent event) {
-		if (CHCAUDIP_ADDRESS.isSelected()) {
-			AUFILTERTEXT = "\r\n where 1=1 \r\n";
-			tСAUDIP_ADDRESS = "\r\n and AUDIP_ADDRESS = '" + CAUDIP_ADDRESS.getText() + "' \r\n";
-			CAUDIP_ADDRESS.setStyle("-fx-control-inner-background:#ff80ff");
-		} else {
-			AUFILTERTEXT = "\r\n where 1=2 \r\n";
-			CAUDIP_ADDRESS.setStyle("");
-			tСAUDIP_ADDRESS = "";
+		try {
+			if (CHCAUDIP_ADDRESS.isSelected()) {
+				AUFILTERTEXT = "\r\n where 1=1 \r\n";
+				tСAUDIP_ADDRESS = "\r\n and AUDIP_ADDRESS = '" + CAUDIP_ADDRESS.getText() + "' \r\n";
+				CAUDIP_ADDRESS.setStyle("-fx-control-inner-background:#ff80ff");
+			} else {
+				AUFILTERTEXT = "\r\n where 1=2 \r\n";
+				CAUDIP_ADDRESS.setStyle("");
+				tСAUDIP_ADDRESS = "";
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -364,15 +406,15 @@ public class AuditFilter {
 	}
 
 	private BooleanProperty Status;
-	
+
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
 	}
-	
+
 	public boolean getStatus() {
 		return this.Status.get();
 	}
-	
+
 	/**
 	 * Для типа документов
 	 */
@@ -380,7 +422,7 @@ public class AuditFilter {
 		CTABLE.setConverter(new StringConverter<AU_TABLE>() {
 			@Override
 			public String toString(AU_TABLE product) {
-				return product.getTABLENAME();
+				return (product != null ? product.getTABLENAME() : "");
 			}
 
 			@Override
@@ -394,7 +436,6 @@ public class AuditFilter {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(AuditFilter.class);
 			String pattern = "dd.MM.yyyy";
 
 			CAUDOPERATION.getItems().addAll("I", "U", "D");
@@ -402,16 +443,21 @@ public class AuditFilter {
 				PreparedStatement sqlStatement = DBUtil.conn.prepareStatement("select * from AU_TABLE ");
 				ResultSet rs = sqlStatement.executeQuery();
 				ObservableList<AU_TABLE> areas = FXCollections.observableArrayList();
+				AU_TABLE list = null;
 				while (rs.next()) {
-					AU_TABLE list = new AU_TABLE();
+					list = new AU_TABLE();
 					list.setTABLENAME(rs.getString("TABLENAME"));
 					list.setCNAME(rs.getString("CNAME"));
 					areas.add(list);
 				}
-				
+
 				sqlStatement.close();
 				rs.close();
-				
+				// 1. Сначала фильтр !
+				FilteredList<AU_TABLE> filterednationals = new FilteredList<AU_TABLE>(areas);
+				CTABLE.getEditor().textProperty()
+						.addListener(new InputFilter<AU_TABLE>(CTABLE, filterednationals, false));
+				// 2. Потом данные
 				CTABLE.setItems(areas);
 				convertComboDisplayList();
 				// CTABLE.getSelectionModel().select(0);
@@ -487,9 +533,7 @@ public class AuditFilter {
 			new ConvConst().FormatDatePiker(DAUDDATE);
 			new ConvConst().FormatDatePiker(DAUDDATE1);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
