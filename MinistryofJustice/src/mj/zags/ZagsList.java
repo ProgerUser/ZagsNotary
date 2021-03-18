@@ -326,7 +326,7 @@ public class ZagsList {
 
 	void Init() {
 		try {
-			String selectStmt = "select * from VZAGS";
+			String selectStmt = "select * from VZAGS order by ZAGS_ID desc";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<VZAGS> dlist = FXCollections.observableArrayList();

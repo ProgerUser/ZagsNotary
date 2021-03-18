@@ -2,8 +2,9 @@ package mj.otd;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -11,16 +12,18 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import mj.users.OTD;
-import mj.widgets.DbmsOutputCapture;
 
 public class EditOtd {
 
@@ -30,23 +33,27 @@ public class EditOtd {
 	@FXML
 	private TextField IOTDNUM;
 
+    @FXML
+    private ComboBox<RAION> RAION;
+    
 	@FXML
 	void Save(ActionEvent event) {
 		try {
 			CallableStatement call = conn.prepareCall(
-					"begin dbms_output.put_line('asdasd');update otd set IOTDNUM = ? , COTDNAME = ? where IOTDNUM = ?; end;");
+					"begin update otd set IOTDNUM = ? , COTDNAME = ?,AREA_ID=? where IOTDNUM = ?; end;");
 			call.setInt(1, Integer.valueOf(IOTDNUM.getText()));
 			call.setString(2, COTDNAME.getText());
 			call.setInt(3, Integer.valueOf(IOTDNUM.getText()));
-			
-			try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
-				List<String> lines = capture.execute(call);
-				if (Connect.dbmsOutput) {
-					Main.logger.info(lines);
-				}
-			} catch (Exception e) {
-				DBUtil.LOG_ERROR(e);
-			}
+			call.setInt(4, RAION.getSelectionModel().getSelectedItem().getCODE());
+			call.executeUpdate();
+//			try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
+//				List<String> lines = capture.execute(call);
+//				if (Connect.dbmsOutput) {
+//					Main.logger.info(lines);
+//				}
+//			} catch (Exception e) {
+//				DBUtil.LOG_ERROR(e);
+//			}
 			
 			call.close();
 //			PreparedStatement oper = conn
@@ -80,11 +87,53 @@ public class EditOtd {
 			COTDNAME.setText(otd.getCOTDNAME());
 			IOTDNUM.setText(String.valueOf(otd.getIOTDNUM()));
 
+			
+			// Районы
+			{
+				PreparedStatement stsmt = conn.prepareStatement("select * from RAION");
+				ResultSet rs = stsmt.executeQuery();
+				ObservableList<RAION> combolist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					RAION list = new RAION();
+					list.setNAME(rs.getString("NAME"));
+					list.setCODE(rs.getInt("CODE"));
+					combolist.add(list);
+				}
+				stsmt.close();
+				rs.close();
+				RAION.setItems(combolist);
+				convert_RAION(RAION);
+				rs.close();
+				if (otd.getAREA_ID() != null) {
+					for (RAION ld : RAION.getItems()) {
+						if (otd.getAREA_ID().equals(ld.getCODE())) {
+							RAION.getSelectionModel().select(ld);
+							break;
+						}
+					}
+				}
+			}
+			
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
 
+	private void convert_RAION(ComboBox<RAION> cmbbx) {
+		cmbbx.setConverter(new StringConverter<RAION>() {
+			@Override
+			public String toString(RAION product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public RAION fromString(final String string) {
+				return cmbbx.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
+	
 	Connection conn;
 
 	OTD otd;

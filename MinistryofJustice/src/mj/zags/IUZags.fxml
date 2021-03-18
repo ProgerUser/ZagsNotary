@@ -14,14 +14,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets left="10.0" right="10.0" top="10.0" />
    </padding>
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" prefWidth="110.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="239.0" prefWidth="300.0" />
         </columnConstraints>
         <rowConstraints>
@@ -50,7 +50,10 @@
             <TextField fx:id="ZAGS_RUK_ABH" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес" GridPane.rowIndex="5" />
             <TextField fx:id="ADDR" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наим. для бланк." GridPane.rowIndex="8" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наим. для бланк." GridPane.rowIndex="8">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></Text>
             <TextField fx:id="ZAGS_ADR_ABH" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Город на Абх." GridPane.rowIndex="9" />
             <TextField fx:id="ZAGS_CITY_ABH" GridPane.columnIndex="1" GridPane.rowIndex="9" />

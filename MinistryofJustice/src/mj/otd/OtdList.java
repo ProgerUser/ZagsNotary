@@ -53,6 +53,9 @@ public class OtdList {
 	@FXML
 	private TableColumn<OTD, Integer> IOTDNUM;
 
+    @FXML
+    private TableColumn<OTD, String> RAION;
+    
 	@FXML
 	private TableView<OTD> OTD;
 
@@ -302,7 +305,8 @@ public class OtdList {
 
 			COTDNAME.setCellValueFactory(cellData -> cellData.getValue().COTDNAMEProperty());
 			IOTDNUM.setCellValueFactory(cellData -> cellData.getValue().IOTDNUMProperty().asObject());
-
+			RAION.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
+			
 			// двойной щелчок
 			OTD.setRowFactory(tv -> {
 				TableRow<OTD> row = new TableRow<>();
@@ -327,15 +331,17 @@ public class OtdList {
 	OTD Init2(Integer id) {
 		OTD list = null;
 		try {
-
-			String selectStmt = "select * from otd where IOTDNUM = ? ";
+			String selectStmt = "select * from otd_area where IOTDNUM = ? ";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			prepStmt.setInt(1, id);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				list = new OTD();
-				list.setIOTDNUM(rs.getInt("IOTDNUM"));
 				list.setCOTDNAME(rs.getString("COTDNAME"));
+				list.setAREA_ID(rs.getInt("AREA_ID"));
+				list.setIOTDNUM(rs.getInt("IOTDNUM"));
+				list.setNAME(rs.getString("NAME"));
+				list.setCODE(rs.getInt("CODE"));
 			}
 			prepStmt.close();
 			rs.close();
@@ -347,14 +353,17 @@ public class OtdList {
 
 	void Init() {
 		try {
-			String selectStmt = "select * from otd";
+			String selectStmt = "select * from otd_area";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<OTD> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				OTD list = new OTD();
-				list.setIOTDNUM(rs.getInt("IOTDNUM"));
 				list.setCOTDNAME(rs.getString("COTDNAME"));
+				list.setAREA_ID(rs.getInt("AREA_ID"));
+				list.setIOTDNUM(rs.getInt("IOTDNUM"));
+				list.setNAME(rs.getString("NAME"));
+				list.setCODE(rs.getInt("CODE"));
 				dlist.add(list);
 			}
 			prepStmt.close();
