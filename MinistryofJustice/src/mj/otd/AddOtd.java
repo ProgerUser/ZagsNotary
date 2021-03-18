@@ -3,28 +3,34 @@ package mj.otd;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 
 public class AddOtd {
 
+    @FXML
+    private ComboBox<RAION> RAION;
+    
 	@FXML
 	private TextField COTDNAME;
 
@@ -35,21 +41,17 @@ public class AddOtd {
 	void Save(ActionEvent event) {
 		try {
 			Main.logger = Logger.getLogger(getClass());
-			PreparedStatement oper = conn.prepareStatement("insert into  otd (IOTDNUM, COTDNAME) values (?,?)");
+			PreparedStatement oper = conn.prepareStatement("insert into  otd (IOTDNUM, COTDNAME,AREA_ID) values (?,?,?)");
 			oper.setInt(1, Integer.valueOf(IOTDNUM.getText()));
 			oper.setString(2, COTDNAME.getText());
+			oper.setInt(3, RAION.getSelectionModel().getSelectedItem().getCODE());
 			oper.executeUpdate();
 			oper.close();
 			conn.commit();
 			setStatus(true);
 			onclose();
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -67,24 +69,50 @@ public class AddOtd {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
 
+			// Районы
+			{
+				PreparedStatement stsmt = conn.prepareStatement("select * from RAION");
+				ResultSet rs = stsmt.executeQuery();
+				ObservableList<RAION> combolist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					RAION list = new RAION();
+					list.setCODE(rs.getInt("CODE"));
+					list.setNAME(rs.getString("NAME"));
+					combolist.add(list);
+				}
+				stsmt.close();
+				rs.close();
+				RAION.setItems(combolist);
+				convert_RAION(RAION);
+				rs.close();
+			}
+
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
+	}
+	
+	private void convert_RAION(ComboBox<RAION> cmbbx) {
+		cmbbx.setConverter(new StringConverter<RAION>() {
+			@Override
+			public String toString(RAION product) {
+				return product != null ? product.getNAME() : null;
+			}
+
+			@Override
+			public RAION fromString(final String string) {
+				return cmbbx.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
 	}
 
 	Connection conn;
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
 			props.put("v$session.program", "AssOtd");
@@ -93,28 +121,17 @@ public class AddOtd {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	public void dbDisconnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

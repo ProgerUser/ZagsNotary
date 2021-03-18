@@ -1250,6 +1250,7 @@ ORA-06512: на  "XXI.ADOPT", line 436
 ORA-06512: на  "XXI.ADOPT", line 436
 ORA-06512: на  "XXI.ADOPT", line 436
 ~JavaFX Application Thread
+<<<<<<< HEAD
 [18.03.2021 23:47:14] [Audit] INFO :110 - select * from VAU_ACTION 
  where 1=1 
 
@@ -1305,3 +1306,8 @@ ORA-06512: на  "XXI.ADOPT", line 436
 
  and upper(CTABLE) = 'CUS' 
  order by DAUDDATE desc
+=======
+[18.03.2021 10:38:25] [EditOtd] INFO :55 - []
+[18.03.2021 10:46:56] [AddUser] INFO :143 - Пользователь TextField[id=CUSRLOGNAME, styleClass=text-input text-field] Создан~JavaFX Application Thread
+[18.03.2021 10:56:56] [AddUser] INFO :143 - Пользователь TextField[id=CUSRLOGNAME, styleClass=text-input text-field] Создан~JavaFX Application Thread
+>>>>>>> refs/remotes/origin/master

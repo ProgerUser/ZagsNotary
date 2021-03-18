@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="BP" onKeyPressed="#F5" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="BP" onKeyPressed="#F5" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
@@ -22,7 +22,7 @@
 			<items>
 				<Button mnemonicParsing="false" onAction="#Add" text="">
 					<graphic>
-						<FontAwesomeIconView fill="BLACK" glyphName="PLUS_CIRCLE" size="18" />
+						<FontAwesomeIconView fill="BLACK" glyphName="PLUS_CIRCLE" size="15" />
 					</graphic>
 					<tooltip>
 						<Tooltip text="Добавить" />
@@ -34,7 +34,7 @@
             <Separator orientation="VERTICAL" />
 				<Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#Edit" text="">
 					<graphic>
-						<FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="18" />
+						<FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="15" />
 					</graphic>
 					<tooltip>
 						<Tooltip text="Редактировать" />
@@ -46,7 +46,7 @@
             <Separator layoutX="46.0" layoutY="10.0" orientation="VERTICAL" />
 				<Button layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#Delete" text="">
 					<graphic>
-						<FontAwesomeIconView fill="BLACK" glyphName="TRASH_ALT" size="18" />
+						<FontAwesomeIconView fill="BLACK" glyphName="TRASH_ALT" size="15" />
 					</graphic>
 					<tooltip>
 						<Tooltip text="Удалить" />
@@ -66,10 +66,11 @@
 		</ToolBar>
 	</top>
 	<center>
-		<TableView fx:id="OTD" prefWidth="300.0" BorderPane.alignment="CENTER">
+		<TableView fx:id="OTD" BorderPane.alignment="CENTER">
 			<columns>
-				<TableColumn fx:id="IOTDNUM" prefWidth="75.0" text="Номер" />
-				<TableColumn fx:id="COTDNAME" prefWidth="113.0" text="Название" />
+				<TableColumn fx:id="IOTDNUM" prefWidth="65.0" text="Номер" />
+				<TableColumn fx:id="COTDNAME" prefWidth="181.0" text="Название" />
+            <TableColumn fx:id="RAION" prefWidth="181.0" text="Найон" />
 			</columns>
 			<columnResizePolicy>
 				<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

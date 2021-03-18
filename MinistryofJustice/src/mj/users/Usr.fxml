@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jyloo.syntheticafx.XTableColumn?>
+<?import com.jyloo.syntheticafx.XTableView?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -28,7 +30,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.users.UsrC">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.users.UsrC">
 	<children>
 		<SplitPane orientation="VERTICAL">
 			<items>
@@ -106,11 +108,11 @@
 							<items>
 								<BorderPane>
 									<center>
-										<TableView fx:id="USRLST" editable="true" styleClass="mylistview" stylesheets="/ScrPane.css" BorderPane.alignment="CENTER">
+										<XTableView fx:id="USRLST" editable="true" styleClass="mylistview" stylesheets="/ScrPane.css" BorderPane.alignment="CENTER">
 											<columns>
-												<TableColumn fx:id="USRID" prefWidth="59.0" text="ID" />
-												<TableColumn fx:id="LOGNAME" minWidth="-1.0" prefWidth="95.0" text="Logname" />
-												<TableColumn fx:id="CUSRNAMEC" prefWidth="200.0" text="ФИО" />
+												<XTableColumn fx:id="USRID" prefWidth="59.0" text="ID" />
+												<XTableColumn fx:id="LOGNAME" minWidth="-1.0" prefWidth="149.0" text="Logname" />
+												<XTableColumn fx:id="CUSRNAMEC" prefWidth="200.0" text="ФИО" />
 											</columns>
 											<contextMenu>
 												<ContextMenu>
@@ -121,7 +123,7 @@
 													</items>
 												</ContextMenu>
 											</contextMenu>
-										</TableView>
+										</XTableView>
 									</center>
 								</BorderPane>
 								<BorderPane>

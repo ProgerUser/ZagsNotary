@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="BP" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="BP" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
@@ -21,7 +21,7 @@
 			<items>
 				<Button mnemonicParsing="false" onAction="#Add" text="">
 					<graphic>
-						<FontAwesomeIconView fill="BLACK" glyphName="PLUS" size="18" />
+						<FontAwesomeIconView fill="BLACK" glyphName="PLUS" size="15" />
 					</graphic>
 					<tooltip>
 						<Tooltip text="Добавить" />
@@ -32,7 +32,7 @@
 				</Button>
 				<Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#Edit" text="">
 					<graphic>
-						<FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="18" />
+						<FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="15" />
 					</graphic>
 					<tooltip>
 						<Tooltip text="Редактировать" />
@@ -43,7 +43,7 @@
 				</Button>
 				<Button layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#Delete" text="">
 					<graphic>
-						<FontAwesomeIconView fill="BLACK" glyphName="TIMES" size="18" />
+						<FontAwesomeIconView fill="BLACK" glyphName="TIMES" size="15" />
 					</graphic>
 					<tooltip>
 						<Tooltip text="Удалить" />
@@ -63,7 +63,7 @@
 		</ToolBar>
 	</top>
 	<center>
-		<TableView fx:id="COURTS" prefWidth="500.0" BorderPane.alignment="CENTER">
+		<TableView fx:id="COURTS" prefWidth="600.0" BorderPane.alignment="CENTER">
 			<columns>
 				<TableColumn fx:id="ID" prefWidth="91.0" text="Ид" />
 				<TableColumn fx:id="NAME" prefWidth="241.0" text="Название" />

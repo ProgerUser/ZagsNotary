@@ -16,6 +16,15 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
+import com.jyloo.syntheticafx.ComparableColumnFilter;
+import com.jyloo.syntheticafx.PatternColumnFilter;
+import com.jyloo.syntheticafx.SyntheticaFX;
+import com.jyloo.syntheticafx.TextFormatterFactory;
+import com.jyloo.syntheticafx.XTableColumn;
+import com.jyloo.syntheticafx.XTableView;
+import com.jyloo.syntheticafx.filter.ComparableFilterModel;
+import com.jyloo.syntheticafx.filter.ComparisonType;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -122,13 +131,13 @@ public class UsrC {
 	private TextField IUSRSPEC_QUANTITY;
 
 	@FXML
-	private TableView<USR> USRLST;
+	private XTableView<USR> USRLST;
 
 	@FXML
-	private TableColumn<USR, String> LOGNAME;
+	private XTableColumn<USR, String> LOGNAME;
 
 	@FXML
-	private TableColumn<USR, String> CUSRNAMEC;
+	private XTableColumn<USR, String> CUSRNAMEC;
 
 	@FXML
 	private ComboBox<NOTARY> NOTARY;
@@ -137,7 +146,7 @@ public class UsrC {
 	private ComboBox<ZAGS> ZAGS;
 
 	@FXML
-	private TableColumn<USR, Integer> USRID;
+	private XTableColumn<USR, Integer> USRID;
 
 	@FXML
 	private TextField CUSRPOSITION;
@@ -428,7 +437,7 @@ public class UsrC {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-			String selectStmt = "select * from usr " + where + " order by CUSRLOGNAME";
+			String selectStmt = "select * from usr " + where + " order by IUSRID desc";
 
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
@@ -549,8 +558,11 @@ public class UsrC {
 		Add();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
+		SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
+		ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
 		
 		ToggleGroup group = new ToggleGroup();
 		zags_w.setToggleGroup(group);
@@ -568,6 +580,11 @@ public class UsrC {
 		LOGNAME.setCellValueFactory(cellData -> cellData.getValue().CUSRLOGNAMEProperty());
 		CUSRNAMEC.setCellValueFactory(cellData -> cellData.getValue().CUSRNAMEProperty());
 
+		USRID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
+				TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+		LOGNAME.setColumnFilter(new PatternColumnFilter<>());
+		CUSRNAMEC.setColumnFilter(new PatternColumnFilter<>());
+		
 		GRP_ID.setCellValueFactory(cellData -> cellData.getValue().GRP_IDProperty().asObject());
 		GRP_NAME.setCellValueFactory(cellData -> cellData.getValue().GRP_NAMEProperty());
 		
@@ -600,10 +617,12 @@ public class UsrC {
 				} else {
 					setText(item.toString());
 					if (userfire(item.toString())) {
-						setStyle(
-								"-fx-background-color: rgb(162, 189, 48);-fx-border-color:black;-fx-border-width :  0.5 0.5 0.5 0.5 ");
+//						setStyle(
+//								"-fx-background-color: rgb(162, 189, 48);-fx-border-color:black;-fx-border-width :  0.5 0.5 0.5 0.5 ");
+						//setStyle("-fx-text-fill: rgb(162, 189, 48);");
 					} else {
-						setStyle("-fx-background-color: #D24141;");
+//						setStyle("-fx-background-color: #D24141;");
+						setStyle("-fx-text-fill: #D24141;");
 					}
 				}
 			}
