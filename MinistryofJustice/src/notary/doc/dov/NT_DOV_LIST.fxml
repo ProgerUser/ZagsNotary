@@ -42,7 +42,7 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="PLUS" size="20" />
+                              <FontAwesomeIconView glyphName="PLUS" size="18" />
                            </graphic>
 								</Button>
 								<Button mnemonicParsing="false" onAction="#BtEdit">
@@ -56,7 +56,7 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="EDIT" size="20" />
+                              <FontAwesomeIconView glyphName="EDIT" size="18" />
                            </graphic>
 								</Button>
 								<Button mnemonicParsing="false" onAction="#BtDelete">
@@ -70,7 +70,7 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="TIMES" size="20" />
+                              <FontAwesomeIconView glyphName="TIMES" size="18" />
                            </graphic>
 								</Button>
 								<Button mnemonicParsing="false" onAction="#BtPrint">
@@ -84,7 +84,7 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="PRINT" size="20" />
+                              <FontAwesomeIconView glyphName="PRINT" size="18" />
                            </graphic>
 								</Button>
 							</items>
