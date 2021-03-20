@@ -14,17 +14,30 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
+import com.jyloo.syntheticafx.RootPane;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import mj.access.action.ODB_ACTION;
 import mj.access.menu.ODB_MNU;
 import mj.app.main.Main;
@@ -79,6 +92,30 @@ public class GrpController {
 	@FXML
 	private ContextMenu ContMenu;
 
+	//Report_________________________________________________
+    @FXML private TableView<AP_REPORT_TYPE> ap_report_type;
+    @FXML private TableColumn<AP_REPORT_TYPE, Integer> REPORT_TYPE_ID;
+    @FXML private TableColumn<AP_REPORT_TYPE, String> REPORT_TYPE_NAME;
+    
+	//IN
+	@FXML private TableView<AP_REPORT_CAT> ap_report_cat_out;
+	@FXML private TableColumn<AP_REPORT_CAT, Integer> REPORT_ID_OUT;
+	@FXML private TableColumn<AP_REPORT_CAT, String> REPORT_NAME_OUT;
+	//OUT
+	@FXML private TableView<AP_REPORT_CAT> ap_report_cat_in;
+	@FXML private TableColumn<AP_REPORT_CAT, Integer> REPORT_ID_IN;
+	@FXML private TableColumn<AP_REPORT_CAT, String> REPORT_NAME_IN;
+	//________________________________________________________
+	//IN
+	@FXML private TableView<AP_REPORT_TYPE> ap_report_type_out;
+	@FXML private TableColumn<AP_REPORT_TYPE, Integer> REPORT_TYPE_ID_OUT;
+	@FXML private TableColumn<AP_REPORT_TYPE, String> REPORT_TYPE_NAME_OUT;
+	//OUT
+    @FXML private TableView<AP_REPORT_TYPE> ap_report_type_in;
+    @FXML private TableColumn<AP_REPORT_TYPE, Integer> REPORT_TYPE_ID_IN;
+    @FXML private TableColumn<AP_REPORT_TYPE, String> REPORT_TYPE_NAME_IN;
+	//________________________________________________________
+	
 	@FXML
 	void AddAct(ActionEvent event) {
 		try {
@@ -340,19 +377,148 @@ public class GrpController {
 
 	@FXML
 	void add(ActionEvent event) {
-
+		try {
+			Stage stage = new Stage();
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/mj/access/grp/IUGrp.fxml"));
+			AddGrp controller = new AddGrp();
+			loader.setController(controller);
+			Parent root = loader.load();
+			// stage.setScene(new Scene(root));
+			RootPane rp = new RootPane(stage, root, true, true);
+			stage.setScene(new Scene(rp));
+			// stage.initStyle(StageStyle.DECORATED);
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Добавить группу");
+			stage.setResizable(false);
+			stage.setIconified(false);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner((Stage) MNU.getScene().getWindow());
+			// stage.initModality(Modality.WINDOW_MODAL);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+					controller.dbDisconnect();
+					InitGrp();
+				}
+			});
+			stage.showAndWait();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
 	}
 
 	@FXML
 	void adit(ActionEvent event) {
-
+		try {
+			if (grp.getSelectionModel().getSelectedItem() != null) {
+				ODB_GROUP_USR group = InitGrp2(grp.getSelectionModel().getSelectedItem().getGRP_ID());
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader();
+				
+				loader.setLocation(getClass().getResource("/mj/access/grp/IUGrp.fxml"));
+				EditGrp controller = new EditGrp();
+				controller.setConn(conn, group);
+				
+				loader.setController(controller);
+				Parent root = loader.load();
+				// stage.setScene(new Scene(root));
+				RootPane rp = new RootPane(stage, root, true, true);
+				stage.setScene(new Scene(rp));
+				// stage.initStyle(StageStyle.DECORATED);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Добавить группу");
+				stage.setResizable(false);
+				stage.setIconified(false);
+				stage.initModality(Modality.WINDOW_MODAL);
+				stage.initOwner((Stage) MNU.getScene().getWindow());
+				// stage.initModality(Modality.WINDOW_MODAL);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						InitGrp();
+					}
+				});
+				stage.showAndWait();
+			} 
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
 	}
 
 	@FXML
 	void delete(ActionEvent event) {
+		try {
+			if (grp.getSelectionModel().getSelectedItem() == null) {
+				Msg.Message("Выберите документ!");
+			} else {
+				Stage stage = (Stage) grp.getScene().getWindow();
+				Label alert = new Label("Удалить запись?");
+				alert.setLayoutX(75.0);
+				alert.setLayoutY(11.0);
+				alert.setPrefHeight(17.0);
 
+				Button no = new Button();
+				no.setText("Нет");
+				no.setLayoutX(111.0);
+				no.setLayoutY(56.0);
+				no.setPrefWidth(72.0);
+				no.setPrefHeight(21.0);
+
+				Button yes = new Button();
+				yes.setText("Да");
+				yes.setLayoutX(14.0);
+				yes.setLayoutY(56.0);
+				yes.setPrefWidth(72.0);
+				yes.setPrefHeight(21.0);
+
+				AnchorPane yn = new AnchorPane();
+				yn.getChildren().add(alert);
+				yn.getChildren().add(no);
+				yn.getChildren().add(yes);
+				Scene ynScene = new Scene(yn, 250, 100);
+				Stage newWindow_yn = new Stage();
+				no.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						newWindow_yn.close();
+					}
+				});
+				yes.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						try {
+							ODB_GROUP_USR id = grp.getSelectionModel().getSelectedItem();
+							PreparedStatement prst = conn.prepareStatement("delete from ODB_GROUP_USR where GRP_ID =?");
+							prst.setInt(1, id.getGRP_ID());
+							prst.executeUpdate();
+							prst.close();
+							conn.commit();
+							InitGrp();
+						} catch (Exception e) {
+							try {
+								conn.rollback();
+							} catch (SQLException e1) {
+								DBUtil.LOG_ERROR(e1);
+							}
+							DBUtil.LOG_ERROR(e);
+						}
+						newWindow_yn.close();
+					}
+				});
+				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setScene(ynScene);
+				// Specifies the modality for new window.
+				newWindow_yn.initModality(Modality.WINDOW_MODAL);
+				// Specifies the owner Window (parent) for new window
+				newWindow_yn.initOwner(stage);
+				newWindow_yn.setResizable(false);
+				newWindow_yn.getIcons().add(new Image("/icon.png"));
+				newWindow_yn.show();
+
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
 	}
-
 	
 	@FXML
 	private TextField ActionID;
@@ -444,12 +610,44 @@ public class GrpController {
 				fillTreeMnu();
 				// заполним функции
 				fillTreeAct();
-				
 				ODB_GROUP_USR grp_act = grp.getSelectionModel().getSelectedItem();
 				// Заполнить таблицы
-				InitUsrIn(grp_act.getGRP_ID());
-				InitUsrOut(grp_act.getGRP_ID());
+				if (grp_act != null) {
+					InitUsrIn(grp_act.getGRP_ID());
+					InitUsrOut(grp_act.getGRP_ID());
+					
+					//Печать
+					InitRepTpIn(grp_act.getGRP_ID());
+					InitRepTpOut(grp_act.getGRP_ID());
+				}
+				ap_report_cat_out.setItems(null);
+				ap_report_cat_in.setItems(null);
 			});
+			
+			ap_report_type_in.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+				AP_REPORT_TYPE rep_tp = ap_report_type_in.getSelectionModel().getSelectedItem();
+				ODB_GROUP_USR grp_act = grp.getSelectionModel().getSelectedItem();
+				if (rep_tp != null & grp_act != null) {
+					InitRepIn(rep_tp.getREPORT_TYPE_ID(), grp_act.getGRP_ID());
+					InitRepOut(rep_tp.getREPORT_TYPE_ID(), grp_act.getGRP_ID());
+				}
+			});
+
+			//Печать
+			REPORT_TYPE_ID.setCellValueFactory(cellData -> cellData.getValue().REPORT_TYPE_IDProperty().asObject());
+			REPORT_TYPE_NAME.setCellValueFactory(cellData -> cellData.getValue().REPORT_TYPE_NAMEProperty());
+			
+			REPORT_TYPE_ID_IN.setCellValueFactory(cellData -> cellData.getValue().REPORT_TYPE_IDProperty().asObject());
+			REPORT_TYPE_NAME_IN.setCellValueFactory(cellData -> cellData.getValue().REPORT_TYPE_NAMEProperty());
+			REPORT_TYPE_ID_OUT.setCellValueFactory(cellData -> cellData.getValue().REPORT_TYPE_IDProperty().asObject());
+			REPORT_TYPE_NAME_OUT.setCellValueFactory(cellData -> cellData.getValue().REPORT_TYPE_NAMEProperty());
+			//____Column
+			REPORT_ID_OUT.setCellValueFactory(cellData -> cellData.getValue().REPORT_IDProperty().asObject());
+			REPORT_NAME_OUT.setCellValueFactory(cellData -> cellData.getValue().REPORT_NAMEProperty());
+			//____Column
+			REPORT_ID_IN.setCellValueFactory(cellData -> cellData.getValue().REPORT_IDProperty().asObject());
+			REPORT_NAME_IN.setCellValueFactory(cellData -> cellData.getValue().REPORT_NAMEProperty());
+			InitRep();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -459,6 +657,121 @@ public class GrpController {
 	TreeItem<ODB_ACTION> root_root = null;
 	ODB_MNU adb_act;
 
+	/**
+	 * Разрешить отчет группе
+	 * @param event
+	 */
+	@FXML
+    void AddRep(ActionEvent event) {
+		try {
+			AP_REPORT_TYPE rep_tp = ap_report_type_in.getSelectionModel().getSelectedItem();
+			ODB_GROUP_USR grp_act = grp.getSelectionModel().getSelectedItem();
+			AP_REPORT_CAT rep_out = ap_report_cat_out.getSelectionModel().getSelectedItem();
+			if (rep_tp != null & grp_act != null & rep_out != null) {
+				PreparedStatement prp = conn.prepareStatement("insert into AP_GROUP_REPORT_CAT_ROLE\n" + 
+						"  (GROUP_ID, REPORT_TYPE_ID, REPORT_ID)\n" + 
+						"values\n" + 
+						"  (?,?,?)\n" + 
+						" ");
+				prp.setInt(1, grp_act.getGRP_ID());
+				prp.setInt(2, rep_tp.getREPORT_TYPE_ID());
+				prp.setInt(3, rep_out.getREPORT_ID());
+				prp.executeUpdate();
+				prp.close();
+				conn.commit();
+				InitRepIn(rep_tp.getREPORT_TYPE_ID(), grp_act.getGRP_ID());
+				InitRepOut(rep_tp.getREPORT_TYPE_ID(), grp_act.getGRP_ID());
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+    }
+	
+	/**
+	 * Отобрать тип отчета у группы
+	 * @param event
+	 */
+    @FXML
+    void DeleteRepTp(ActionEvent event) {
+		try {
+			AP_REPORT_TYPE rep_tp = ap_report_type_in.getSelectionModel().getSelectedItem();
+			ODB_GROUP_USR grp_act = grp.getSelectionModel().getSelectedItem();
+			if (rep_tp != null & grp_act != null) {
+				PreparedStatement prp = conn.prepareStatement("delete from AP_GROUP_REPORT_ROLE\n" + 
+						" where GROUP_ID = ?\n" + 
+						"   and REPORT_TYPE_ID = ?\n" + 
+						"");
+				prp.setInt(1, grp_act.getGRP_ID());
+				prp.setInt(2, rep_tp.getREPORT_TYPE_ID());
+				prp.executeUpdate();
+				prp.close();
+				conn.commit();
+				InitRepTpIn(grp_act.getGRP_ID());
+				InitRepTpOut( grp_act.getGRP_ID());
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+    }
+    
+	/**
+	 * Разрешить тип отчета группе
+	 * @param event
+	 */
+	@FXML
+    void AddRepTp(ActionEvent event) {
+		try {
+			AP_REPORT_TYPE rep_tp = ap_report_type_out.getSelectionModel().getSelectedItem();
+			ODB_GROUP_USR grp_act = grp.getSelectionModel().getSelectedItem();
+			if (rep_tp != null & grp_act != null) {
+				PreparedStatement prp = conn.prepareStatement("insert into ap_group_report_role\n" + 
+						"  (GROUP_ID, REPORT_TYPE_ID)\n" + 
+						"values\n" + 
+						"  (?,?)\n" + 
+						" ");
+				prp.setInt(1, grp_act.getGRP_ID());
+				prp.setInt(2, rep_tp.getREPORT_TYPE_ID());
+				prp.executeUpdate();
+				prp.close();
+				conn.commit();
+				InitRepTpIn(grp_act.getGRP_ID());
+				InitRepTpOut( grp_act.getGRP_ID());
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+    }
+	
+	/**
+	 * Отобрать отчет
+	 * @param event
+	 */
+    @FXML
+    void DeleteRep(ActionEvent event) {
+		try {
+			AP_REPORT_TYPE rep_tp = ap_report_type_in.getSelectionModel().getSelectedItem();
+			ODB_GROUP_USR grp_act = grp.getSelectionModel().getSelectedItem();
+			AP_REPORT_CAT rep_out = ap_report_cat_in.getSelectionModel().getSelectedItem();
+			if (rep_tp != null & grp_act != null & rep_out != null) {
+				PreparedStatement prp = conn.prepareStatement("delete from AP_GROUP_REPORT_CAT_ROLE\n" + 
+						" where GROUP_ID = ?\n" + 
+						"   and REPORT_TYPE_ID = ?\n" + 
+						"   and REPORT_ID = ?\n" + 
+						"");
+				prp.setInt(1, grp_act.getGRP_ID());
+				prp.setInt(2, rep_tp.getREPORT_TYPE_ID());
+				prp.setInt(3, rep_out.getREPORT_ID());
+				prp.executeUpdate();
+				prp.close();
+				conn.commit();
+				InitRepIn(rep_tp.getREPORT_TYPE_ID(), grp_act.getGRP_ID());
+				InitRepOut(rep_tp.getREPORT_TYPE_ID(), grp_act.getGRP_ID());
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+    }
+    
 	void fillTreeMnu() {
 		Map<Integer, TreeItem<ODB_MNU>> itemById = new HashMap<>();
 		Map<Integer, Integer> parents = new HashMap<>();
@@ -622,14 +935,14 @@ public class GrpController {
 	void InitGrp() {
 		try {
 			PreparedStatement prepStmt = conn
-					.prepareStatement("select grp_id, grp_name, notation_extend_id from ODB_GROUP_USR t\n" + "");
+					.prepareStatement("select grp_id, grp_name, NAME from ODB_GROUP_USR t\n" + "");
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<ODB_GROUP_USR> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				ODB_GROUP_USR list = new ODB_GROUP_USR();
 				list.setGRP_ID(rs.getInt("GRP_ID"));
 				list.setGRP_NAME(rs.getString("GRP_NAME"));
-				list.setNOTATION_EXTEND_ID(rs.getInt("NOTATION_EXTEND_ID"));
+				list.setNAME(rs.getString("NAME"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -648,5 +961,269 @@ public class GrpController {
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
+	}
+	
+	/**
+	 * Обновить таблицу с типами отчетов
+	 */
+	void InitRepTpIn(Integer grp_id) {
+		try {
+			PreparedStatement prepStmt = conn
+					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_TYPE_NAME\n" + 
+							"  FROM (select AP_Group_Report_Role.*, AP_Report_Type.report_type_name\n" + 
+							"          from AP_Group_Report_Role, AP_Report_Type\n" + 
+							"         where AP_Report_Type.report_type_id =\n" + 
+							"               AP_Group_Report_Role.report_type_id)\n" + 
+							" WHERE (GROUP_ID = ?)\n" + 
+							" order by report_type_id\n" + 
+							"");
+			prepStmt.setInt(1, grp_id);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<AP_REPORT_TYPE> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				AP_REPORT_TYPE list = new AP_REPORT_TYPE();
+				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_TYPE_NAME(rs.getString("REPORT_TYPE_NAME"));
+				dlist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+
+			ap_report_type_in.setItems(dlist);
+
+			TableFilter<AP_REPORT_TYPE> tableFilter = TableFilter.forTableView(ap_report_type_in).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	void InitRep() {
+		try {
+			PreparedStatement prepStmt = conn
+					.prepareStatement("select * from ap_report_type");
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<AP_REPORT_TYPE> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				AP_REPORT_TYPE list = new AP_REPORT_TYPE();
+				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_TYPE_NAME(rs.getString("REPORT_TYPE_NAME"));
+				dlist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+
+			ap_report_type.setItems(dlist);
+
+			TableFilter<AP_REPORT_TYPE> tableFilter = TableFilter.forTableView(ap_report_type).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	void InitRepTpOut(Integer grp_id) {
+		try {
+			PreparedStatement prepStmt = conn
+					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_TYPE_NAME\n" + 
+							"  FROM (select ODB_Group_USR.grp_id group_id, AP_Report_Type.*\n" + 
+							"          from ODB_Group_USR, AP_Report_Type\n" + 
+							"         where not exists\n" + 
+							"         (select null\n" + 
+							"                  from AP_Group_Report_Role\n" + 
+							"                 where AP_Group_Report_Role.group_id = ODB_Group_USR.grp_id\n" + 
+							"                   and AP_Group_Report_Role.report_type_id =\n" + 
+							"                       AP_Report_Type.report_type_id))\n" + 
+							" WHERE (GROUP_ID = ?)\n" + 
+							" order by report_type_id\n" + 
+							"");
+			prepStmt.setInt(1, grp_id);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<AP_REPORT_TYPE> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				AP_REPORT_TYPE list = new AP_REPORT_TYPE();
+				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_TYPE_NAME(rs.getString("REPORT_TYPE_NAME"));
+				dlist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+
+			ap_report_type_out.setItems(dlist);
+
+			TableFilter<AP_REPORT_TYPE> tableFilter = TableFilter.forTableView(ap_report_type_out).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	void InitRepIn(Integer rep_tp_id, Integer grp_id) {
+		try {
+			PreparedStatement prepStmt = conn
+					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_ID, REPORT_NAME\n" + 
+							"  FROM (select AP_Group_Report_Cat_Role.*, AP_Report_Cat.report_name\n" + 
+							"          from AP_Group_Report_Cat_Role, AP_Report_Cat\n" + 
+							"         where AP_Report_Cat.report_type_id =\n" + 
+							"               AP_Group_Report_Cat_Role.report_type_id\n" + 
+							"           and AP_Report_Cat.report_id = AP_Group_Report_Cat_Role.report_id)\n" + 
+							" WHERE (GROUP_ID = ?)\n" + 
+							"   and (REPORT_TYPE_ID = ?)\n" + 
+							" order by report_id\n" + 
+							"");
+			prepStmt.setInt(1, grp_id);
+			prepStmt.setInt(2, rep_tp_id);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<AP_REPORT_CAT> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				AP_REPORT_CAT list = new AP_REPORT_CAT();
+				list.setREPORT_ID(rs.getInt("REPORT_ID"));
+				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_NAME(rs.getString("REPORT_NAME"));
+				dlist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+
+			ap_report_cat_in.setItems(dlist);
+
+			TableFilter<AP_REPORT_CAT> tableFilter = TableFilter.forTableView(ap_report_cat_in).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	void InitRepOut(Integer rep_tp_id,Integer grp_id) {
+		try {
+			PreparedStatement prepStmt = conn
+					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_ID, REPORT_NAME\n" + 
+							"  FROM (select AP_Group_Report_Role.*,\n" + 
+							"               AP_Report_Cat.report_id,\n" + 
+							"               AP_Report_Cat.report_name\n" + 
+							"          from AP_Group_Report_Role, AP_Report_Cat\n" + 
+							"         where AP_Report_Cat.report_type_id =\n" + 
+							"               AP_Group_Report_Role.report_type_id\n" + 
+							"           and not exists (select null\n" + 
+							"                  from AP_Group_Report_Cat_Role\n" + 
+							"                 where AP_Group_Report_Cat_Role.group_id =\n" + 
+							"                       AP_Group_Report_Role.group_id\n" + 
+							"                   and AP_Group_Report_Cat_Role.report_type_id =\n" + 
+							"                       AP_Report_Cat.report_type_id\n" + 
+							"                   and AP_Group_Report_Cat_Role.report_id =\n" + 
+							"                       AP_Report_Cat.report_id))\n" + 
+							" WHERE (GROUP_ID = ?)\n" + 
+							"   and (REPORT_TYPE_ID = ?)\n" + 
+							" order by report_id\n" + 
+							"");
+			prepStmt.setInt(1, grp_id);
+			prepStmt.setInt(2, rep_tp_id);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<AP_REPORT_CAT> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				AP_REPORT_CAT list = new AP_REPORT_CAT();
+				list.setREPORT_ID(rs.getInt("REPORT_ID"));
+				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_NAME(rs.getString("REPORT_NAME"));
+				dlist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+
+			ap_report_cat_out.setItems(dlist);
+
+			TableFilter<AP_REPORT_CAT> tableFilter = TableFilter.forTableView(ap_report_cat_out).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	void RepIn() {
+		try {
+			PreparedStatement prepStmt = conn
+					.prepareStatement("select * from ap_report_cat t");
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<AP_REPORT_CAT> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				AP_REPORT_CAT list = new AP_REPORT_CAT();
+				list.setREPORT_ID(rs.getInt("REPORT_ID"));
+				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_NAME(rs.getString("REPORT_NAME"));
+				list.setREPORT_UFS(rs.getString("REPORT_UFS"));
+				list.setCOPIES(rs.getInt("COPIES"));
+				list.setREPORT_VIEWER(rs.getInt("REPORT_VIEWER"));
+				list.setREPORT_COMMENT(rs.getString("REPORT_COMMENT"));
+				list.setEDIT_PARAM(rs.getString("EDIT_PARAM"));
+				list.setOEM_DATA(rs.getString("OEM_DATA"));
+				list.setAVAILABLE_SQL(rs.getString("AVAILABLE_SQL"));
+
+				dlist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+
+			ap_report_cat_out.setItems(dlist);
+
+			TableFilter<AP_REPORT_CAT> tableFilter = TableFilter.forTableView(ap_report_cat_out).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	ODB_GROUP_USR InitGrp2(Integer grp_id) {
+		ODB_GROUP_USR list = null;
+		try {
+			PreparedStatement prepStmt = conn
+					.prepareStatement("select grp_id, grp_name, NAME from ODB_GROUP_USR where grp_id = ?");
+			prepStmt.setInt(1, grp_id);
+			ResultSet rs = prepStmt.executeQuery();
+			while (rs.next()) {
+				list = new ODB_GROUP_USR();
+				list.setGRP_ID(rs.getInt("GRP_ID"));
+				list.setGRP_NAME(rs.getString("grp_name"));
+				list.setNAME(rs.getString("NAME"));
+			}
+			prepStmt.close();
+			rs.close();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+		return list;
 	}
 }

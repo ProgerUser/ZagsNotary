@@ -1,12 +1,17 @@
 package mj.report;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.Properties;
+
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
@@ -34,9 +39,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableRow;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -53,18 +62,44 @@ import mj.msg.Msg;
 
 public class Report {
 
+	
+	@FXML private Button List;
+	@FXML private Button Design;
+	@FXML private Button Clone;
+	@FXML private Button New;
+	
+    @FXML private CheckBox USE_CONVERTATION;
+    @FXML private CheckBox LOW_REGIM;
+    @FXML private CheckBox EDIT_ENABLE;
+    
+    @FXML private ComboBox<String> PRINTER_ID;
+    @FXML private ComboBox<AP_REPORT_CAT> ComboList;
+    
+    @FXML private TextField FILE_NAME;
+    
+    @FXML private RadioButton Display;
+    @FXML private RadioButton GENERATE_TYPE;
+    @FXML private RadioButton ToPrinter;
+    @FXML private RadioButton ToFile;
+    @FXML private RadioButton DIR_MANUAL;
+    @FXML private RadioButton DIR_USER_OUT;
+    @FXML private RadioButton DIR_TEMP;
+    
 	@FXML
-	private ComboBox<AP_REPORT_CAT> ComboList;
-
-	@FXML
-	private Button List;
-
-	@FXML
-	private Button Design;
-
-	@FXML
-	private Button Clone;
-
+	void Display(ActionEvent event) {
+		if (Display.isSelected()) {
+			LOW_REGIM.setDisable(false);
+			EDIT_ENABLE.setDisable(false);
+		} else {
+			LOW_REGIM.setDisable(true);
+			EDIT_ENABLE.setDisable(true);
+			
+			LOW_REGIM.setSelected(false);
+			EDIT_ENABLE.setSelected(false);
+		}
+	}
+    
+    
 	@FXML
 	void List(ActionEvent event) {
 		ParamRep();
@@ -78,7 +113,34 @@ public class Report {
 	@FXML
 	void ComboList(ActionEvent event) {
 		try {
-
+			AP_REPORT_CAT rep_cat = ComboList.getSelectionModel().getSelectedItem();
+			if (rep_cat != null) {
+			String viewer = "";
+			PreparedStatement prp = conn.prepareStatement("select lower(decode(replace(CNAME, 'FRREP ', ''),\n" + 
+					"                    'Отсутствует',\n" + 
+					"                    '.xlt',\n" + 
+					"                    'MS EXCEL',\n" + 
+					"                    '.xls',\n" + 
+					"                    '.' || replace(CNAME, 'FRREP ', ''))) ext,CNAME\n" + 
+					"  from AP_REPORT_CAT, AP_VIEWER\n" + 
+					" where AP_REPORT_CAT.REPORT_VIEWER = AP_VIEWER.ID\n" + 
+					"   and AP_REPORT_CAT.REPORT_ID = ?");
+			prp.setInt(1, ComboList.getSelectionModel().getSelectedItem().getREPORT_ID());
+			ResultSet rs = prp.executeQuery();
+			if (rs.next()) {
+				viewer = rs.getString("CNAME");
+				FILE_NAME.setText(rep_cat.getREPORT_TYPE_ID() + "." + rep_cat.getREPORT_ID() + ". "
+						+ rep_cat.getREPORT_NAME() + "(" + java.util.UUID.randomUUID() + ")" + rs.getString("ext"));
+			}
+			prp.close();
+			rs.close();
+			if (viewer.equals("Отсутствует")) {
+				GENERATE_TYPE.setText("Отсутствует");
+				GENERATE_TYPE.setDisable(false);
+			} else {
+				GENERATE_TYPE.setText(viewer);
+				GENERATE_TYPE.setDisable(true);
+			}}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -104,6 +166,14 @@ public class Report {
 			runfr3();
 		}
 	}
+	
+	@FXML
+	void New(ActionEvent event) {
+		if (ComboList.getSelectionModel().getSelectedItem() != null) {
+			setFrDllOptions(FRREPRunner.FRREPDllOptions.NEW);
+			runfr3();
+		}
+	}
 
 	@FXML
 	void Design(ActionEvent event) {
@@ -122,9 +192,22 @@ public class Report {
 	}
 
 	private FRREPRunner.FRREPDllOptions frDllOptions;
-
+	String UserDir = null;
 	void runfr3() {
 		try {
+			
+			{
+				if (UserDir == null || !UserDir.equals(System.getenv("MJ_PATH") + "OutReports")) {
+					PreparedStatement prp = conn
+							.prepareStatement("UPDATE USR SET cdirOUTPBOX = ? WHERE CUSRLOGNAME = ?");
+					prp.setString(2, Connect.userID.toUpperCase());
+					prp.setString(1, System.getenv("MJ_PATH") + "OutReports");
+					prp.executeUpdate();
+					conn.commit();
+					prp.close();
+				}
+			}
+			
 			FRREPRunner runner = new FRREPRunner();
 			dbConnect();
 			String port = Connect.connectionURL.substring(Connect.connectionURL.indexOf(":")+1,
@@ -155,14 +238,15 @@ public class Report {
 			runner.setReport_file(ComboList.getSelectionModel().getSelectedItem().getREPORT_UFS());
 			runner.setReport_type_id(
 					String.valueOf(ComboList.getSelectionModel().getSelectedItem().getREPORT_TYPE_ID()));
-			runner.setReport_id(String.valueOf(ComboList.getSelectionModel().getSelectedItem().getREPORT_ID()));
-
+		    runner.setReport_id(String.valueOf(ComboList.getSelectionModel().getSelectedItem().getREPORT_ID()));
+		
+		    runner.setFileName(FILE_NAME.getText());
 			runner.setGenerate_type("V");
 			runner.setUse_convertation("N");
 			runner.setEdit_enable("N");
-			runner.setDir("T");
+			runner.setDir("O");
+			
 			runner.run();
-
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -306,6 +390,22 @@ public class Report {
 	private void initialize() {
 		// ResourceManager.addBundle();
 		try {
+			ToggleGroup toggleGroup = new ToggleGroup();
+			GENERATE_TYPE.setToggleGroup(toggleGroup);
+			ToFile.setToggleGroup(toggleGroup);
+			ToPrinter.setToggleGroup(toggleGroup);
+			Display.setToggleGroup(toggleGroup);
+			
+			ToggleGroup toggleGroup2 = new ToggleGroup();
+			DIR_MANUAL.setToggleGroup(toggleGroup2);
+			DIR_USER_OUT.setToggleGroup(toggleGroup2);
+			DIR_TEMP.setToggleGroup(toggleGroup2);
+			
+			DIR_TEMP.setText(System.getenv("TEMP"));
+			
+			DIR_TEMP.setSelected(true);
+			
+			
 			dbConnect();
 			// установить svg как иконку для кнопки
 //			{
@@ -320,11 +420,24 @@ public class Report {
 			//OctIconView icon = new OctIconView(OctIcon.TOOLS);
 			//Text icon = OctIconFactory.get().createIcon(OctIcon.TOOLS);
 			
+			PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+
+	        PrintService service = PrintServiceLookup.lookupDefaultPrintService(); 
+	        for (PrintService printer : printServices) {
+	            PRINTER_ID.getItems().add(printer.getName());
+	        }
+	        PRINTER_ID.getSelectionModel().select(service.getName());
+	        
+	        
 			if (DBUtil.OdbAction(183) == 0) {
 				Clone.setVisible(false);
 			}
+			
 			if (DBUtil.OdbAction(182) == 0) {
 				Design.setVisible(false);
+			}
+			if (DBUtil.OdbAction(184) == 0) {
+				New.setVisible(false);
 			}
 
 //			{
@@ -376,12 +489,52 @@ public class Report {
 				CombRep(ComboList);
 			}
 			
-//			PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-//	        System.out.println("Number of print services: " + printServices.length);
-//
-//	        for (PrintService printer : printServices)
-//	            System.out.println("Printer: " + printer.getName());
+			//Template
+			{
+				AP_REPORT_CAT rep_cat = ComboList.getSelectionModel().getSelectedItem();
+				if (rep_cat != null) {
+					FILE_NAME.setText(rep_cat.getREPORT_TYPE_ID() + "." + rep_cat.getREPORT_ID() + ". "
+							+ rep_cat.getREPORT_NAME());
 
+					String viewer = "";
+				    PreparedStatement prp = conn.prepareStatement("select lower(decode(replace(CNAME, 'FRREP ', ''),\n" + 
+				    		"                    'Отсутствует',\n" + 
+				    		"                    '.xlt',\n" + 
+				    		"                    'MS EXCEL',\n" + 
+				    		"                    '.xls',\n" + 
+				    		"                    '.' || replace(CNAME, 'FRREP ', ''))) ext, CNAME\n" + 
+						"  from AP_REPORT_CAT, AP_VIEWER\n" + 
+						" where AP_REPORT_CAT.REPORT_VIEWER = AP_VIEWER.ID\n" + 
+						"   and AP_REPORT_CAT.REPORT_ID = ?\n" + 
+						"");
+					prp.setInt(1, ComboList.getSelectionModel().getSelectedItem().getREPORT_ID());
+					ResultSet rs = prp.executeQuery();
+					if (rs.next()) {
+						viewer = rs.getString("CNAME");
+						FILE_NAME.setText(rep_cat.getREPORT_TYPE_ID() + "." + rep_cat.getREPORT_ID() + ". "
+								+ rep_cat.getREPORT_NAME() + "(" + java.util.UUID.randomUUID() + ")"
+								+ rs.getString("ext"));
+					}
+					prp.close();
+					rs.close();
+					if (viewer.equals("Отсутствует")) {
+						GENERATE_TYPE.setText("Отсутствует");
+						GENERATE_TYPE.setDisable(false);
+					} else {
+						GENERATE_TYPE.setText(viewer);
+						GENERATE_TYPE.setDisable(true);
+					}
+				}
+				CallableStatement cst = conn
+						.prepareCall("{  ? = call USERS_UTILITIES.Get_OutBox_Directory(vcLOGNAME=>?)} ");
+				cst.registerOutParameter(1, Types.VARCHAR);
+				cst.setString(2, Connect.userID.toUpperCase());
+				cst.execute();
+				UserDir = cst.getString(1);
+				cst.close();
+				DIR_USER_OUT.setText(UserDir);
+				DIR_USER_OUT.setSelected(true);
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -391,7 +544,7 @@ public class Report {
 		cmb.setConverter(new StringConverter<AP_REPORT_CAT>() {
 			@Override
 			public String toString(AP_REPORT_CAT product) {
-				return (product != null) ? product.getREPORT_NAME() : "";
+				return (product != null) ? product.getREPORT_ID()+". "+ product.getREPORT_NAME() : "";
 			}
 
 			@Override

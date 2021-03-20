@@ -1,8 +1,9 @@
 package mj.app.controller;
 
 import java.awt.SplashScreen;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.fxml.FXML;
@@ -11,7 +12,6 @@ import javafx.scene.image.ImageView;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 
 public class First {
 
@@ -25,18 +25,28 @@ public class First {
 	@FXML
 	private void initialize() {
 		try {
-
+			//проверка не используется
 			if (Main.enterdtage != null)
 				Main.enterdtage.close();
-
+			//splash - не используется
 			final SplashScreen splash = SplashScreen.getSplashScreen();
 			if (splash != null) {
 				splash.close();
 			}
-
-			Main.primaryStage.setTitle(Connect.userID + "/" + Connect.connectionURL);
-
-			Image image = new Image(ClassLoader.class.getResourceAsStream("/logo.png"));
+			//логин и ФИО
+			String usrlogin = "";
+			PreparedStatement prp = DBUtil.conn
+					.prepareStatement("select CUSRNAME||' - '||CUSRLOGNAME login from usr t where upper(cusrlogname) = ?");
+			prp.setString(1, Connect.userID.toUpperCase());
+			ResultSet rs = prp.executeQuery();
+			if (rs.next()) {
+				usrlogin = rs.getString("login");
+			}
+			rs.close();
+			prp.close();
+			Main.primaryStage.setTitle("(" + usrlogin + ") " + Connect.connectionURL);
+			//картинка в центр
+			Image image = new Image(getClass().getResourceAsStream("/logo.png"));
 			imageView.setImage(image);
 			// Setting the image view parameters
 			imageView.setX(500);
@@ -45,15 +55,8 @@ public class First {
 			imageView.setFitHeight(500);
 			imageView.setPreserveRatio(true);
 			imageView.setPickOnBounds(true);
-		
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
-
 }

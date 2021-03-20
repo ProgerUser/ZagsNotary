@@ -166,6 +166,11 @@ public class FRREPRunner {
 		return this.generate_type;
 	}
 
+	public void setFileName(String FileName) {
+		this.file_name = FileName;
+	}
+
+
 	public void setDir(String dir) {
 		this.dir = dir;
 	}
@@ -185,7 +190,7 @@ public class FRREPRunner {
 	public void setReport_file(String rep_file) {
 		if (this.dllOptions != FRREPDllOptions.NEW) {
 			this.report_file = rep_file;
-			this.file_name = rep_file;
+			//this.file_name = rep_file;
 		}
 	}
 
@@ -202,10 +207,9 @@ public class FRREPRunner {
 	}
 
 	public void setReport_id(String r_id) {
-//		if (this.dllOptions != FRREPDllOptions.RUN | this.generate_type.equals("F")) {
-//			this.report_id = r_id;
-//		}
-		this.report_id = r_id;
+		if (this.dllOptions != FRREPDllOptions.NEW) {
+			this.report_id = r_id;
+		}
 	}
 
 	public String getReport_id() {

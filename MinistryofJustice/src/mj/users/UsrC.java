@@ -172,6 +172,15 @@ public class UsrC {
 		}
 	}
 
+
+    @FXML
+    void AddGrp(ActionEvent event) {
+
+    }
+    @FXML
+    void DeleteGrp(ActionEvent event) {
+
+    }
 	@FXML
 	void ClearNotary(ActionEvent event) {
 		try {
@@ -656,7 +665,7 @@ public class UsrC {
 	void InitGrp() {
 		try {
 			PreparedStatement prepStmt = conn
-					.prepareStatement("SELECT GRP_ID, GRP_NAME, NOTATION_EXTEND_ID\r\n"
+					.prepareStatement("SELECT GRP_ID, GRP_NAME, NAME\r\n"
 							+ "  FROM ODB_GROUP_USR J\r\n"
 							+ " WHERE EXISTS (SELECT NULL\r\n"
 							+ "          FROM ODB_GRP_MEMBER G\r\n"
@@ -671,7 +680,7 @@ public class UsrC {
 				ODB_GROUP_USR list = new ODB_GROUP_USR();
 				list.setGRP_ID(rs.getInt("GRP_ID"));
 				list.setGRP_NAME(rs.getString("GRP_NAME"));
-				list.setNOTATION_EXTEND_ID(rs.getInt("NOTATION_EXTEND_ID"));
+				list.setNAME(rs.getString("NAME"));
 				dlist.add(list);
 			}
 			prepStmt.close();
