@@ -41,6 +41,15 @@ public class Root {
 	
 	
 	@FXML
+	void Nt_Temp(ActionEvent event) {
+		try {
+			Main.Nt_Temp();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	@FXML
 	void grp_acces(ActionEvent event) {
 		try {
 			Main.grp_acces();

@@ -65,6 +65,7 @@ import mj.report.Report;
 import mj.users.UsrC;
 import mj.widgets.DbTracer;
 import mj.zags.ZagsList;
+import notary.template.NtTemplate;
 
 
 /**
@@ -194,6 +195,8 @@ public class Main extends Application {
 	public static boolean ReportsWin = true;
 	
 	public static boolean GrpAccessWin = true;
+	
+	public static boolean NtTempWin = true;
 
 	public static DesktopPane desktopPane;
 
@@ -451,7 +454,36 @@ public class Main extends Application {
 		}
 	}
 	
-	
+	public static void Nt_Temp() {
+		try {
+			if (NtTempWin) {
+				NtTempWin = false;
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/template/NT_TEMPLATE.fxml"));
+
+				NtTemplate controller = new NtTemplate();
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.setResizable(false);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Шаблоны");
+				stage.initOwner(primaryStage);
+
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						NtTempWin = true;
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
 	
 	/**
 	 * Общие настройки

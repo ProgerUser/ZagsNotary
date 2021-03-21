@@ -24,7 +24,7 @@
 				</Menu>
 				<Menu fx:id="125" mnemonicParsing="false" text="Нотариус">
 					<items>
-						<MenuItem fx:id="163" mnemonicParsing="false" text="Шаблоны" />
+						<MenuItem fx:id="163" mnemonicParsing="false" onAction="#Nt_Temp" text="Шаблоны" />
 					</items>
 				</Menu>
 				<Menu fx:id="14" mnemonicParsing="false" text="Справочники">

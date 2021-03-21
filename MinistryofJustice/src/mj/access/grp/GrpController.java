@@ -53,50 +53,24 @@ public class GrpController {
 	
 	ODB_ACTION adb_act_act;
 	
-	@FXML
-	private TextField ActionID_ACT;
-
-	@FXML
-	private TreeView<ODB_ACTION> Actions;
-
-	@FXML
-	private TableColumn<USR_IN_OUT, String> out_fio;
-
-	@FXML
-	private TableColumn<USR_IN_OUT, String> out_login;
-
-	@FXML
-	private TableView<ODB_GROUP_USR> grp;
-
-	@FXML
-	private TableColumn<USR_IN_OUT, String> in_login;
-
-	@FXML
-	private TableColumn<USR_IN_OUT, String> in_fio;
-
-	@FXML
-	private TableColumn<ODB_GROUP_USR, String> name;
-
-	@FXML
-	private TableColumn<ODB_GROUP_USR, Integer> id;
-
-	@FXML
-	private TableView<USR_IN_OUT> usrout;
-
-	@FXML
-	private TableView<USR_IN_OUT> usrin;
-
-	@FXML
-	private TreeView<ODB_MNU> MNU;
-
-	@FXML
-	private ContextMenu ContMenu;
+	@FXML private TextField ActionID_ACT;
+	@FXML private TreeView<ODB_ACTION> Actions;
+	@FXML private TableColumn<USR_IN_OUT, String> out_fio;
+	@FXML private TableColumn<USR_IN_OUT, String> out_login;
+	@FXML private TableView<ODB_GROUP_USR> grp;
+	@FXML private TableColumn<USR_IN_OUT, String> in_login;
+	@FXML private TableColumn<USR_IN_OUT, String> in_fio;
+	@FXML private TableColumn<ODB_GROUP_USR, String> name;
+	@FXML private TableColumn<ODB_GROUP_USR, Integer> id;
+	@FXML private TableView<USR_IN_OUT> usrout;
+	@FXML private TableView<USR_IN_OUT> usrin;
+	@FXML private TreeView<ODB_MNU> MNU;
+	@FXML private ContextMenu ContMenu;
 
 	//Report_________________________________________________
     @FXML private TableView<AP_REPORT_TYPE> ap_report_type;
     @FXML private TableColumn<AP_REPORT_TYPE, Integer> REPORT_TYPE_ID;
     @FXML private TableColumn<AP_REPORT_TYPE, String> REPORT_TYPE_NAME;
-    
 	//IN
 	@FXML private TableView<AP_REPORT_CAT> ap_report_cat_out;
 	@FXML private TableColumn<AP_REPORT_CAT, Integer> REPORT_ID_OUT;
