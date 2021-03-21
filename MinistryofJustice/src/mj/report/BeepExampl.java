@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -228,7 +226,7 @@ public class BeepExampl {
 		}
 		return result.trim();
 	}
-
+	
 	public static void main(String[] args) throws SQLException {
 //		System.out.println(getCpuNumber());
 //		System.out.println(getSerialNumber());
@@ -252,45 +250,45 @@ public class BeepExampl {
 		
 		DBUtil.dbConnect();
 		
-		String sid = "";
-		{
-			Statement statement = DBUtil.conn.createStatement();
-			ResultSet rs = statement
-					.executeQuery("select INSTANCE_NAME, HOST_NAME, userenv('SESSIONID') from SYS.V_$INSTANCE");
-			rs.next();
-			sid = rs.getString(1);
-		}
-		//DBUtil.dbDisconnect();
-
-		FRREP lib = (FRREP) Native.loadLibrary(System.getenv("MJ_PATH") + "bin/FRREP.dll", FRREP.class);
-		String ret = lib._SHOWREPORT("RUN", // DLLOPTIONS
-				"xxi", // USERNAME
-				"", // PASSW
-				"localhost:1522/orcl", // CONNECT_STRING
-				"orcl", // SERVERNAME
-				sid, // SID
-				"Y", // Edit_Enable
-				"F", // Generate_Type
-				"T", // Dir
-				"Y", // Use_Convertation
-				"AUDIT.fr3", // File_Name
-				"AUDIT.fr3", // REPORT_FILE
-				"1", // REPORT_TYPE_ID
-				"", // REPORT_ID
-				"", // REP_NAME
-				"", // REPORT_SORT
-				"0", // P1
-				"", // P2
-				"", // P3
-				"", // P4
-				"", // P5
-				"", // P6
-				"", // P7
-				"", // P8
-				"", // P9
-				"" // P10
-		);
-
-		System.out.println("FRREP=" + ret);
+//		String sid = "";
+//		{
+//			Statement statement = DBUtil.conn.createStatement();
+//			ResultSet rs = statement
+//					.executeQuery("select INSTANCE_NAME, HOST_NAME, userenv('SESSIONID') from SYS.V_$INSTANCE");
+//			rs.next();
+//			sid = rs.getString(1);
+//		}
+//		//DBUtil.dbDisconnect();
+//
+//		FRREP lib = (FRREP) Native.loadLibrary(System.getenv("MJ_PATH") + "bin/FRREP.dll", FRREP.class);
+//		String ret = lib._SHOWREPORT("RUN", // DLLOPTIONS
+//				"xxi", // USERNAME
+//				"", // PASSW
+//				"localhost:1522/orcl", // CONNECT_STRING
+//				"orcl", // SERVERNAME
+//				sid, // SID
+//				"Y", // Edit_Enable
+//				"F", // Generate_Type
+//				"T", // Dir
+//				"Y", // Use_Convertation
+//				"AUDIT.fr3", // File_Name
+//				"AUDIT.fr3", // REPORT_FILE
+//				"1", // REPORT_TYPE_ID
+//				"", // REPORT_ID
+//				"", // REP_NAME
+//				"", // REPORT_SORT
+//				"0", // P1
+//				"", // P2
+//				"", // P3
+//				"", // P4
+//				"", // P5
+//				"", // P6
+//				"", // P7
+//				"", // P8
+//				"", // P9
+//				"" // P10
+//		);
+//
+//		System.out.println("FRREP=" + ret);
 	}
 }

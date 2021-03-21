@@ -22,7 +22,11 @@
 						<MenuItem fx:id="13" mnemonicParsing="false" onAction="#ADOPTOIN" text="Усыновление (удочерение)" />
 					</items>
 				</Menu>
-            <Menu fx:id="125" mnemonicParsing="false" text="Нотариус" />
+				<Menu fx:id="125" mnemonicParsing="false" text="Нотариус">
+					<items>
+						<MenuItem fx:id="163" mnemonicParsing="false" text="Шаблоны" />
+					</items>
+				</Menu>
 				<Menu fx:id="14" mnemonicParsing="false" text="Справочники">
 					<items>
 						<MenuItem fx:id="15" mnemonicParsing="false" onAction="#CUSLIST" text="Список граждан" />
@@ -40,21 +44,21 @@
 				<Menu fx:id="16" mnemonicParsing="false" text="Администратор">
 					<items>
 						<MenuItem fx:id="17" mnemonicParsing="false" onAction="#usradmin" text="Пользователи" />
-                  <Menu fx:id="103" mnemonicParsing="false" text="Доступ">
-                     <items>
-      						<MenuItem fx:id="18" mnemonicParsing="false" onAction="#access_menuitems" text="Доступность пунктов меню" />
-      						<MenuItem fx:id="19" mnemonicParsing="false" onAction="#access_3" text="Доступ по действиям" />
-      						<MenuItem fx:id="123" mnemonicParsing="false" onAction="#grp_acces" text="Группы доступа по функционалу" />
-                     </items>
-                  </Menu>
-                  <Menu fx:id="104" mnemonicParsing="false" text="Аудит">
-                     <items>
-      
-      						<MenuItem fx:id="21" mnemonicParsing="false" onAction="#au_setup" text="Найстройка аудита" />
-      
-      						<MenuItem fx:id="20" mnemonicParsing="false" onAction="#auview" text="Просмотр аудита" />
-                     </items>
-                  </Menu>
+						<Menu fx:id="103" mnemonicParsing="false" text="Доступ">
+							<items>
+								<MenuItem fx:id="18" mnemonicParsing="false" onAction="#access_menuitems" text="Доступность пунктов меню" />
+								<MenuItem fx:id="19" mnemonicParsing="false" onAction="#access_3" text="Доступ по действиям" />
+								<MenuItem fx:id="123" mnemonicParsing="false" onAction="#grp_acces" text="Группы доступа по функционалу" />
+							</items>
+						</Menu>
+						<Menu fx:id="104" mnemonicParsing="false" text="Аудит">
+							<items>
+
+								<MenuItem fx:id="21" mnemonicParsing="false" onAction="#au_setup" text="Найстройка аудита" />
+
+								<MenuItem fx:id="20" mnemonicParsing="false" onAction="#auview" text="Просмотр аудита" />
+							</items>
+						</Menu>
 
 						<MenuItem fx:id="43" mnemonicParsing="false" onAction="#prglog" text="Лог программы" />
 

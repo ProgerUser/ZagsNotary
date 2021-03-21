@@ -61,13 +61,14 @@ public class OtdList {
 
 	@FXML
 	void Add(ActionEvent event) {
-		// проверка доступа
-		if (DBUtil.OdbAction(122) == 0) {
-			Msg.Message("Нет доступа!");
-			return;
-		}
 
 		try {
+			// проверка доступа
+			if (DBUtil.OdbAction(122) == 0) {
+				Msg.Message("Нет доступа!");
+				return;
+			}
+			
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) OTD.getScene().getWindow();
 
