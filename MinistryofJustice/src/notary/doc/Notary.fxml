@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<BorderPane fx:id="ROOT">
 			<left>
@@ -42,7 +43,7 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="PLUS" size="18" />
+                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="15" />
                            </graphic>
 								</Button>
 								<Button mnemonicParsing="false" onAction="#BtEdit">
@@ -56,12 +57,12 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="EDIT" size="18" />
+                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="15" />
                            </graphic>
 								</Button>
 								<Button mnemonicParsing="false" onAction="#BtDelete">
 									<tooltip>
-										<Tooltip text="Удалить запись">
+										<Tooltip text="Удалить">
                                  <font>
                                     <Font size="14.0" />
                                  </font></Tooltip>
@@ -70,9 +71,26 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="TIMES" size="18" />
+                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
                            </graphic>
 								</Button>
+                        <Separator orientation="VERTICAL" />
+                        <Button layoutX="74.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtDelete">
+                           <tooltip>
+                              <Tooltip text="Обновить">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="REFRESH" size="15" />
+                           </graphic>
+                        </Button>
+                        <Separator layoutX="104.0" layoutY="10.0" orientation="VERTICAL" />
 								<Button mnemonicParsing="false" onAction="#BtPrint">
 									<tooltip>
 										<Tooltip text="Печать">
@@ -84,12 +102,12 @@
 										<Font size="10.0" />
 									</font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="PRINT" size="18" />
+                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PRINT" size="15" />
                            </graphic>
 								</Button>
 							</items>
 							<VBox.margin>
-								<Insets />
+								<Insets bottom="5.0" left="-5.0" right="-5.0" top="-5.0" />
 							</VBox.margin>
 						</ToolBar>
 					</children>
@@ -99,12 +117,13 @@
 				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 			</StackPane.margin>
          <center>
-				<XTableView fx:id="DIVORCE_CERT" editable="false" prefHeight="450.0" prefWidth="900.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+				<XTableView fx:id="DIVORCE_CERT" editable="false" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
 					<columns>
 						<XTableColumn fx:id="ID" prefWidth="82.0" text="Номер" />
-						<XTableColumn fx:id="OPER" prefWidth="100.0" text="Опер." />
-						<XTableColumn fx:id="CR_DATE" prefWidth="150.0" text="Дата созд. записи" />
+						<XTableColumn fx:id="OPER" prefWidth="164.0" text="Опер." />
+						<XTableColumn fx:id="CR_DATE" prefWidth="86.0" text="Дата созд. записи" />
 						<XTableColumn fx:id="CR_TIME" prefWidth="150.0" text="Время созд. записи" />
+                  <XTableColumn fx:id="ID1" prefWidth="82.0" text="Номер" />
 					</columns>
 
       					<contextMenu>
