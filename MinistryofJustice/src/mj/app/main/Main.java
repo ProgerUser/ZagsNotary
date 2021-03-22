@@ -65,8 +65,8 @@ import mj.report.Report;
 import mj.users.UsrC;
 import mj.widgets.DbTracer;
 import mj.zags.ZagsList;
+import notary.doc.NotaryDocList;
 import notary.template.NtTemplate;
-
 
 /**
  * Главная точка входа и перехода по меню
@@ -76,128 +76,42 @@ import notary.template.NtTemplate;
  */
 @SuppressWarnings("unused")
 public class Main extends Application {
-	/**
-	 * Для сохранения лог-а
-	 */
+
 	public static Logger logger = Logger.getLogger(Main.class);
-	/**
-	 * Stage для всего приложения
-	 */
 	public static Stage primaryStage;
-	/**
-	 * BorderPane для всего приложения
-	 */
 	public static BorderPane rootLayout;
-	/**
-	 * Не используется
-	 */
 	public static Stage enterdtage = null;
-	/**
-	 * Проверка формы граждан, если открыта одна форма
-	 */
+	//Только одна форма
 	public static boolean CusWin = true;
-	/**
-	 * Проверка формы актов о рождении, если открыта одна форма
-	 */
 	public static boolean BActWin = true;
-	/**
-	 * Проверка формы пользователей, если открыта одна форма
-	 */
 	public static boolean UsrWin = true;
-	/**
-	 * Проверка формы пользователей и пунктов меню, если открыта одна форма
-	 */
 	public static boolean UsrMenuWin = true;
-	/**
-	 * Проверка формы пользователей и пунктов меню, если открыта одна форма
-	 */
 	public static boolean UsrActWin = true;
-	/**
-	 * Проверка формы аудита и пунктов меню, если открыта одна форма
-	 */
 	public static boolean AuditWin = true;
-	/**
-	 * Заключение брака
-	 */
 	public static boolean MercerWin = true;
-	/**
-	 * Расторжение брака
-	 */
 	public static boolean DivorcerWin = true;
-	/**
-	 * Свидетельство о смерти 
-	 */
 	public static boolean DeathWin = true;
-	/**
-	 * Установление отцовстава
-	 */
 	public static boolean PaternWin = true;
-	/**
-	 * Действия
-	 */
 	public static boolean ActWin = true;
-	/**
-	 * Меню
-	 */
 	public static boolean MenuWin = true;
-	/**
-	 * Перемена имени
-	 */
 	public static boolean UpdateNameWin = true;
-	/**
-	 * Восстановление АБХ фамилии
-	 */
 	public static boolean UpdateAbhNameWin = true;
-	/**
-	 * Перемена национальности
-	 */
 	public static boolean UpdNatWin = true;
-	/**
-	 * Усыновление (удочерение)
-	 */
 	public static boolean AdoptWin = true;
-	/**
-	 * Настройка аудита
-	 */
 	public static boolean AuSetupWin = true;
-	/**
-	 * Отделения
-	 */
 	public static boolean OtdWin = true;
 	public static boolean CourtsWin = true;
-	/**
-	 * ЗАГС-ы
-	 */
 	public static boolean ZagsWin = true;
-	
 	public static boolean NotaryWin = true;
-
-	/**
-	 * Паспорта
-	 */
 	public static boolean Doc1cWin = true;
-
-	/**
-	 * ОБЩ настройки
-	 */
 	public static boolean SettingsWin = true;
-
-	/**
-	 * Лог
-	 */
 	public static boolean LogWin = true;
-
-	/**
-	 * Проект
-	 */
 	public static boolean PrjWin = true;
-
 	public static boolean ReportsWin = true;
-	
 	public static boolean GrpAccessWin = true;
-	
 	public static boolean NtTempWin = true;
-
+	public static boolean NtDocWin = true;
+	//______________________________________
 	public static DesktopPane desktopPane;
 
 	/**
@@ -453,7 +367,7 @@ public class Main extends Application {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	public static void Nt_Temp() {
 		try {
 			if (NtTempWin) {
@@ -484,7 +398,7 @@ public class Main extends Application {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	/**
 	 * Общие настройки
 	 */
@@ -519,7 +433,37 @@ public class Main extends Application {
 		}
 	}
 
-	
+	public static void Nt_Doc() {
+		try {
+			if (NtDocWin) {
+				NtDocWin = false;
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/doc/Notary.fxml"));
+
+				NotaryDocList controller = new NotaryDocList();
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.setResizable(true);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Документы");
+				stage.initOwner(primaryStage);
+
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						NtDocWin = true;
+						controller.dbDisconnect();
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	/**
 	 * Общие настройки
 	 */
@@ -637,7 +581,7 @@ public class Main extends Application {
 				loader.setController(controller);
 				Parent root = loader.load();
 				Scene scene = new Scene(root);
-						
+
 //				Style startingStyle = Style.LIGHT;
 //				JMetro jMetro = new JMetro(startingStyle);
 //				System.setProperty("prism.lcdtext", "false");
@@ -673,7 +617,7 @@ public class Main extends Application {
 				loader.setController(controller);
 				Parent root = loader.load();
 				Scene scene = new Scene(root);
-						
+
 //				Style startingStyle = Style.LIGHT;
 //				JMetro jMetro = new JMetro(startingStyle);
 //				System.setProperty("prism.lcdtext", "false");
@@ -697,7 +641,7 @@ public class Main extends Application {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	/**
 	 * ЗАГС
 	 */
@@ -730,7 +674,7 @@ public class Main extends Application {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	public static void NOTARY() {
 		try {
 			if (NotaryWin) {
@@ -1009,7 +953,7 @@ public class Main extends Application {
 	 * Список граждан
 	 */
 	public static void CUSLIST() {
-		try { 
+		try {
 			if (CusWin) {
 				CusWin = false;
 				Stage stage = new Stage();
@@ -1017,13 +961,13 @@ public class Main extends Application {
 				CusList controller = new CusList();
 				loader.setController(controller);
 				Parent root = loader.load();
-				
+
 				Scene scene = new Scene(root);
 //				Style startingStyle = Style.LIGHT;
 //				JMetro jMetro = new JMetro(startingStyle);
 //				System.setProperty("prism.lcdtext", "false");
 //				jMetro.setScene(scene);
-				
+
 				stage.setScene(scene);
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("Список граждан");
@@ -1080,7 +1024,7 @@ public class Main extends Application {
 	public static void Users() {
 		try {
 			if (UsrWin) {
-			
+
 				UsrWin = false;
 				Stage stage = new Stage();
 				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/users/Usr.fxml"));
@@ -1089,8 +1033,8 @@ public class Main extends Application {
 				stage.setTitle("Пользователи");
 				stage.initOwner(primaryStage);
 				UsrC controller = loader.getController();
-				Scene scene = new Scene(new RootPane(stage,root,true,true));
-				//stage.setScene(new Scene(root));
+				Scene scene = new Scene(new RootPane(stage, root, true, true));
+				// stage.setScene(new Scene(root));
 				stage.setScene(scene);
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override

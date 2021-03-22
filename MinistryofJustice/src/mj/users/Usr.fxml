@@ -40,7 +40,7 @@
 							<items>
 								<Button fx:id="ADD_USR" mnemonicParsing="false" onAction="#AddUser">
                            <graphic>
-                              <FontAwesomeIconView glyphName="USER" size="18" />
+                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="USER" size="18" />
                            </graphic>
                            <font>
                               <Font size="10.0" />
@@ -57,7 +57,7 @@
                               <Font size="10.0" />
                            </font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="SAVE" size="18" />
+                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="SAVE" size="18" />
                            </graphic>
                            <tooltip>
                               <Tooltip text="Сохранить">
@@ -71,7 +71,7 @@
                               <Font size="10.0" />
                            </font>
                            <graphic>
-                              <FontAwesomeIconView glyphName="EDIT" size="18" />
+                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="18" />
                            </graphic>
                            <tooltip>
                               <Tooltip text="Изменить пароль">
@@ -82,11 +82,11 @@
                            </tooltip></Button>
 								<Button mnemonicParsing="false">
                            <graphic>
-                              <FontAwesomeIconView glyphName="CLONE" size="18" />
+                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="CLONE" size="18" />
                            </graphic></Button>
                         <Button mnemonicParsing="false" onAction="#OpenKey">
                            <graphic>
-                              <FontAwesomeIconView glyphName="KEYBOARD_ALT" size="18" />
+                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="KEYBOARD_ALT" size="18" />
                            </graphic>
                            <font>
                               <Font size="10.0" />
@@ -308,12 +308,12 @@
                                                   <items>
                                                     <Button mnemonicParsing="false" onAction="#AddGrp">
                                                          <graphic>
-                                                            <FontAwesomeIconView glyphName="PLUS" size="15" />
+                                                            <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="15" />
                                                          </graphic>
                                                       </Button>
                                                       <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteGrp">
                                                          <graphic>
-                                                            <FontAwesomeIconView glyphName="TIMES" size="15" />
+                                                            <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
                                                          </graphic>
                                                       </Button>
                                                   </items>

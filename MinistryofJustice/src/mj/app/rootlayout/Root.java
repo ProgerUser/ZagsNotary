@@ -71,6 +71,15 @@ public class Root {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+	@FXML
+	void Nt_Doc(ActionEvent event) {
+		try {
+			Main.Nt_Doc();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	
 	/**
 	 * Ëמד ןנמדנאללû

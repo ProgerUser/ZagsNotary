@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <TableView fx:id="NOTARY" prefWidth="700.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
         <columns>
@@ -26,30 +26,33 @@
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
    <top>
-      <ToolBar style="-fx-border-color: silver;" BorderPane.alignment="CENTER">
+      <ToolBar BorderPane.alignment="CENTER">
         <items>
           <Button mnemonicParsing="false" onAction="#Add">
                <graphic>
-                  <FontAwesomeIconView glyphName="PLUS" size="20" />
+                  <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="18" />
                </graphic>
                <font>
                   <Font size="10.0" />
                </font></Button>
             <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#Edit">
                <graphic>
-                  <FontAwesomeIconView glyphName="EDIT" size="20" />
+                  <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="18" />
                </graphic>
                <font>
                   <Font size="10.0" />
                </font></Button>
             <Button layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#Delete">
                <graphic>
-                  <FontAwesomeIconView glyphName="TRASH" size="20" />
+                  <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="18" />
                </graphic>
                <font>
                   <Font size="10.0" />
                </font></Button>
         </items>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="-5.0" right="-5.0" top="-5.0" />
+         </BorderPane.margin>
       </ToolBar>
    </top>
 </BorderPane>

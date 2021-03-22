@@ -25,9 +25,9 @@
 
 <BorderPane fx:id="CUS_BORDER" stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<top>
-		<VBox BorderPane.alignment="CENTER">
+		<VBox spacing="5.0" BorderPane.alignment="CENTER">
 			<children>
-            <ToolBar style="-fx-border-color: silver;">
+            <ToolBar>
                <items>
                   <Button maxWidth="30.0" mnemonicParsing="false" onAction="#BtAdd">
                      <tooltip>
@@ -37,7 +37,7 @@
                         <Font size="10.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView fill="BLACK" glyphName="PLUS" size="18" />
+                        <FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="PLUS" size="18" />
                      </graphic>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#BtEdit">
@@ -48,7 +48,7 @@
                         <Font size="10.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView glyphName="EDIT" size="18" />
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="18" />
                      </graphic>
                   </Button>
                   <Button maxWidth="30.0" mnemonicParsing="false" onAction="#BtDelete">
@@ -59,7 +59,7 @@
                         <Font size="10.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView glyphName="TIMES" size="18" />
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="18" />
                      </graphic>
                   </Button>
 						<Button mnemonicParsing="false" onAction="#ViewAllDocs" styleClass="AllDocs" visible="false">
@@ -72,7 +72,7 @@
 						</Button>
                </items>
                <VBox.margin>
-                  <Insets />
+                  <Insets left="-5.0" right="-5.0" top="-5.0" />
                </VBox.margin>
             </ToolBar>
 
