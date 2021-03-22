@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
@@ -33,7 +33,7 @@
                                 <items>
                                   <Button mnemonicParsing="false" onAction="#AddTemp">
                                        <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="18" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="15" />
                                        </graphic>
                                        <font>
                                           <Font size="10.0" />
@@ -48,7 +48,7 @@
                                     </Button>
                                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#EditTemp">
                                        <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="18" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="15" />
                                        </graphic>
                                        <font>
                                           <Font size="10.0" />
@@ -59,7 +59,7 @@
                                     </Button>
                                     <Button layoutX="43.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteTemp">
                                        <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="18" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
                                        </graphic>
                                        <font>
                                           <Font size="10.0" />
@@ -77,7 +77,7 @@
                                     <TextField fx:id="TextToSearch" onAction="#TextToSearch" />
                                     <Button layoutX="43.0" layoutY="10.0" mnemonicParsing="false" onAction="#SearchTemp">
                                        <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="SEARCH" size="18" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="SEARCH" size="15" />
                                        </graphic>
                                        <font>
                                           <Font size="10.0" />
@@ -112,7 +112,7 @@
                                  <items>
                                     <Button mnemonicParsing="false" onAction="#AddTempList">
                                        <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="18" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="15" />
                                        </graphic>
                                        <font>
                                           <Font size="10.0" />
@@ -127,7 +127,7 @@
                                     </Button>
                                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#EditTempList">
                                        <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="18" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="15" />
                                        </graphic>
                                        <font>
                                           <Font size="10.0" />
@@ -138,7 +138,7 @@
                                     </Button>
                                     <Button layoutX="43.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteTempList">
                                        <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="18" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
                                        </graphic>
                                        <font>
                                           <Font size="10.0" />
@@ -154,13 +154,29 @@
                                     <Separator orientation="VERTICAL" />
                                     <Button layoutX="79.0" layoutY="10.0" mnemonicParsing="false" onAction="#OpenWord">
                                        <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_WORD_ALT" size="18" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_WORD_ALT" size="15" />
                                        </graphic>
                                        <font>
                                           <Font size="10.0" />
                                        </font>
                                        <tooltip>
                                           <Tooltip text="Редактировать файл">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Tooltip>
+                                       </tooltip>
+                                    </Button>
+                                    <Separator layoutX="112.0" layoutY="10.0" orientation="VERTICAL" />
+                                    <Button layoutX="122.0" layoutY="10.0" mnemonicParsing="false" onAction="#OpenParam">
+                                       <graphic>
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="LIST_ALT" size="15" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                       <tooltip>
+                                          <Tooltip text="Параметры">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>

@@ -1,5 +1,7 @@
 package notary.template;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -89,9 +91,44 @@ public class NtTemplate {
 		}
 	}
 
+	@FXML
+	void OpenParam(ActionEvent event) {
+		try {
+			NT_TEMP_LIST tmp = NT_TEMP_LIST.getSelectionModel().getSelectedItem();
+			if (tmp != null) {
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
+
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/template/IUTempParam.fxml"));
+
+				IUTempParam controller = new IUTempParam();
+				controller.setID(tmp.getID());
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Параметры " + tmp.getNAME());
+				stage.initOwner(stage_);
+				stage.setResizable(false);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						fillTreeNtTemp();
+					}
+				});
+				stage.showAndWait();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	void Init(Integer id) {
 		try {
-			String selectStmt = "select * from nt_temp_list where PARENT = ?";
+			String selectStmt = "select * from nt_temp_list where PARENT = ? order by ID asc";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			prepStmt.setInt(1, id);
 			ResultSet rs = prepStmt.executeQuery();
@@ -230,7 +267,66 @@ public class NtTemplate {
 	@FXML
 	void DeleteTempList(ActionEvent event) {
 		try {
-			
+			NT_TEMP_LIST tmp = NT_TEMP_LIST.getSelectionModel().getSelectedItem();
+			if (tmp != null) {
+				Stage stage = (Stage) NT_TEMP_LIST.getScene().getWindow();
+				Label alert = new Label("Удалить запись?");
+				alert.setLayoutX(75.0);
+				alert.setLayoutY(11.0);
+				alert.setPrefHeight(17.0);
+
+				Button no = new Button();
+				no.setText("Нет");
+				no.setLayoutX(111.0);
+				no.setLayoutY(56.0);
+				no.setPrefWidth(72.0);
+				no.setPrefHeight(21.0);
+
+				Button yes = new Button();
+				yes.setText("Да");
+				yes.setLayoutX(14.0);
+				yes.setLayoutY(56.0);
+				yes.setPrefWidth(72.0);
+				yes.setPrefHeight(21.0);
+
+				AnchorPane yn = new AnchorPane();
+				yn.getChildren().add(alert);
+				yn.getChildren().add(no);
+				yn.getChildren().add(yes);
+				Scene ynScene = new Scene(yn, 250, 100);
+				Stage newWindow_yn = new Stage();
+				no.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						newWindow_yn.close();
+					}
+				});
+				yes.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						try {
+							PreparedStatement delete = conn.prepareStatement("delete from NT_TEMP_LIST where ID = ?");
+							delete.setInt(1, tmp.getID());
+							delete.executeUpdate();
+							delete.close();
+							conn.commit();
+						} catch (SQLException e) {
+							try {
+								conn.rollback();
+							} catch (SQLException e1) {
+								DBUtil.LOG_ERROR(e1);
+							}
+							DBUtil.LOG_ERROR(e);
+						}
+						newWindow_yn.close();
+					}
+				});
+				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setScene(ynScene);
+				newWindow_yn.initModality(Modality.WINDOW_MODAL);
+				newWindow_yn.initOwner(stage);
+				newWindow_yn.setResizable(false);
+				newWindow_yn.getIcons().add(new Image("/icon.png"));
+				newWindow_yn.show();
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -315,7 +411,12 @@ public class NtTemplate {
 	@FXML
 	void OpenWord(ActionEvent event) {
 		try {
-			
+			NT_TEMP_LIST tmp = NT_TEMP_LIST.getSelectionModel().getSelectedItem();
+			if (tmp != null) {
+				if (Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + tmp.getFILE_PATH()));
+				}
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
