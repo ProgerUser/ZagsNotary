@@ -25,7 +25,7 @@
 				<Menu fx:id="125" mnemonicParsing="false" text="Нотариус">
 					<items>
 						<MenuItem fx:id="163" mnemonicParsing="false" onAction="#Nt_Temp" text="Шаблоны" />
-                  <MenuItem mnemonicParsing="false" fx:id="184" text="Клиенты" />
+                  <MenuItem mnemonicParsing="false" fx:id="184" onAction="#NtClients" text="Клиенты" />
                   <MenuItem mnemonicParsing="false" fx:id="183" onAction="#Nt_Doc" text="Документы" />
 					</items>
 				</Menu>

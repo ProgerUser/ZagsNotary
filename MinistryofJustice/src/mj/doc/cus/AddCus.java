@@ -2442,7 +2442,6 @@ public class AddCus {
 				new ConvConst().FirstWUpp(INFR_NAME);
 				// UpperCase(DOC_SUBDIV_T);
 				// UpperCase(DOC_AGENCY_T);
-
 			}
 			/**
 			 * Инициализация столбцов

@@ -65,6 +65,7 @@ import mj.report.Report;
 import mj.users.UsrC;
 import mj.widgets.DbTracer;
 import mj.zags.ZagsList;
+import notary.client.ClientsList;
 import notary.doc.NotaryDocList;
 import notary.template.NtTemplate;
 
@@ -111,6 +112,7 @@ public class Main extends Application {
 	public static boolean GrpAccessWin = true;
 	public static boolean NtTempWin = true;
 	public static boolean NtDocWin = true;
+	public static boolean NtCliWin = true;
 	//______________________________________
 	public static DesktopPane desktopPane;
 
@@ -432,7 +434,36 @@ public class Main extends Application {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+	public static void NtClients() {
+		try {
+			if (NtCliWin) {
+				NtCliWin = false;
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/client/ClientList.fxml"));
 
+				ClientsList controller = new ClientsList();
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.setResizable(true);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Клиенты");
+				stage.initOwner(primaryStage);
+
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						NtCliWin = true;
+						controller.dbDisconnect();
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
 	public static void Nt_Doc() {
 		try {
 			if (NtDocWin) {

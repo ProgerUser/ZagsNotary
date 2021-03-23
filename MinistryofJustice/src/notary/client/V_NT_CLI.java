@@ -1,6 +1,5 @@
 package notary.client;
 
-import java.time.LocalDateTime;
 import java.time.LocalDate;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -8,73 +7,77 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class NT_CLIENTS {
-	/** ид клиента */
+public class V_NT_CLI {
+	/** Нет данных */
 	private IntegerProperty CLI_ID;
-	/** наименование */
+	/** Нет данных */
 	private StringProperty CLI_NAME;
-	/** фамлия если физик, ип */
+	/** Нет данных */
 	private StringProperty CLI_LAST_NAME;
-	/** имя если физик, ип */
+	/** Нет данных */
 	private StringProperty CLI_FIRST_NAME;
-	/** отчество если физик, ип */
+	/** Нет данных */
 	private StringProperty CLI_MIDDLE_NAME;
-	/** наименование короткое */
+	/** Нет данных */
 	private StringProperty CLI_SH_NAME;
-	/** тип клиента 1-физ - 2-ип 3- юл */
+	/** Нет данных */
 	private IntegerProperty CLI_TYPE;
-	/** пол, 1=мужской, 2=женский */
+	/** Нет данных */
 	private IntegerProperty CLI_GENDER;
-	/** ссылка на нотариус */
+	/** Нет данных */
 	private IntegerProperty CLI_NOTARY;
-	/** ИНН */
+	/** Нет данных */
 	private StringProperty CLI_INN;
-	/** КПП */
+	/** Нет данных */
 	private StringProperty CLI_KPP;
-	/** ОГРН */
+	/** Нет данных */
 	private StringProperty CLI_OGRN;
-	/** пользователь */
+	/** Нет данных */
 	private StringProperty CLI_OPER;
-	/** дата создания */
-	private SimpleObjectProperty<LocalDateTime> CLI_DATE;
-	/** дата рождения */
+	/** Нет данных */
+	private SimpleObjectProperty<LocalDate> CLI_DATE;
+	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> CLI_BR_DATE;
-	/** место рождения */
-	private StringProperty CLI_PLACE_BIRTH;
-	/** дата регистрации (ЮЛ) */
+	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> CLI_DATE_REG;
-	/** адрес-страна */
+	/** Нет данных */
 	private IntegerProperty CLI_ADR_COUNTRY;
-	/** адрес-район */
+	/** Нет данных */
 	private IntegerProperty CLI_ADR_RAION;
-	/** адрес-населенный пункт */
+	/** Нет данных */
 	private IntegerProperty CLI_ADR_NAS_PUNKT;
-	/** адрес-улица */
+	/** Нет данных */
 	private StringProperty CLI_ADR_STREET;
-	/** адрес-дом */
+	/** Нет данных */
 	private StringProperty CLI_ADR_HOME;
-	/** адрес-корпус */
+	/** Нет данных */
 	private StringProperty CLI_ADR_CORP;
-	/** адрес-квартира */
+	/** Нет данных */
 	private StringProperty CLI_ADR_KV;
-	/** документ-тип документа */
+	/** Нет данных */
 	private IntegerProperty CLI_DOC_TYPE;
-	/** документ-серия */
+	/** Нет данных */
 	private StringProperty CLI_DOC_SERIA;
-	/** документ-номер */
+	/** Нет данных */
 	private StringProperty CLI_DOC_NUMBER;
-	/** документ-кем выдан */
+	/** Нет данных */
 	private StringProperty CLI_DOC_AGENCY;
-	/** документ-дата выдачи */
+	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> CLI_DOC_START;
-	/** документ-срок действия */
+	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> CLI_DOC_END;
-	/** документ-код подразделения */
+	/** Нет данных */
 	private StringProperty CLI_DOC_SUBDIV;
-	/** страна рождения */
+	/** Нет данных */
+	private StringProperty CLI_PLACE_BIRTH;
+	/** Нет данных */
 	private IntegerProperty CLI_BIRTH_COUNTRY;
+	/** Нет данных */
+	private SimpleObjectProperty<LocalDate> CR_DATE;
+	/** Нет данных */
+	private StringProperty CR_TIME;
 
-	public NT_CLIENTS() {
+	public V_NT_CLI() {
 		this.CLI_ID = new SimpleIntegerProperty();
 		this.CLI_NAME = new SimpleStringProperty();
 		this.CLI_LAST_NAME = new SimpleStringProperty();
@@ -90,7 +93,6 @@ public class NT_CLIENTS {
 		this.CLI_OPER = new SimpleStringProperty();
 		this.CLI_DATE = new SimpleObjectProperty<>();
 		this.CLI_BR_DATE = new SimpleObjectProperty<>();
-		this.CLI_PLACE_BIRTH = new SimpleStringProperty();
 		this.CLI_DATE_REG = new SimpleObjectProperty<>();
 		this.CLI_ADR_COUNTRY = new SimpleIntegerProperty();
 		this.CLI_ADR_RAION = new SimpleIntegerProperty();
@@ -106,7 +108,10 @@ public class NT_CLIENTS {
 		this.CLI_DOC_START = new SimpleObjectProperty<>();
 		this.CLI_DOC_END = new SimpleObjectProperty<>();
 		this.CLI_DOC_SUBDIV = new SimpleStringProperty();
+		this.CLI_PLACE_BIRTH = new SimpleStringProperty();
 		this.CLI_BIRTH_COUNTRY = new SimpleIntegerProperty();
+		this.CR_DATE = new SimpleObjectProperty<>();
+		this.CR_TIME = new SimpleStringProperty();
 	}
 
 	public void setCLI_ID(Integer CLI_ID) {
@@ -161,16 +166,12 @@ public class NT_CLIENTS {
 		this.CLI_OPER.set(CLI_OPER);
 	}
 
-	public void setCLI_DATE(LocalDateTime CLI_DATE) {
+	public void setCLI_DATE(LocalDate CLI_DATE) {
 		this.CLI_DATE.set(CLI_DATE);
 	}
 
 	public void setCLI_BR_DATE(LocalDate CLI_BR_DATE) {
 		this.CLI_BR_DATE.set(CLI_BR_DATE);
-	}
-
-	public void setCLI_PLACE_BIRTH(String CLI_PLACE_BIRTH) {
-		this.CLI_PLACE_BIRTH.set(CLI_PLACE_BIRTH);
 	}
 
 	public void setCLI_DATE_REG(LocalDate CLI_DATE_REG) {
@@ -233,8 +234,20 @@ public class NT_CLIENTS {
 		this.CLI_DOC_SUBDIV.set(CLI_DOC_SUBDIV);
 	}
 
+	public void setCLI_PLACE_BIRTH(String CLI_PLACE_BIRTH) {
+		this.CLI_PLACE_BIRTH.set(CLI_PLACE_BIRTH);
+	}
+
 	public void setCLI_BIRTH_COUNTRY(Integer CLI_BIRTH_COUNTRY) {
 		this.CLI_BIRTH_COUNTRY.set(CLI_BIRTH_COUNTRY);
+	}
+
+	public void setCR_DATE(LocalDate CR_DATE) {
+		this.CR_DATE.set(CR_DATE);
+	}
+
+	public void setCR_TIME(String CR_TIME) {
+		this.CR_TIME.set(CR_TIME);
 	}
 
 	public Integer getCLI_ID() {
@@ -289,16 +302,12 @@ public class NT_CLIENTS {
 		return CLI_OPER.get();
 	}
 
-	public LocalDateTime getCLI_DATE() {
+	public LocalDate getCLI_DATE() {
 		return CLI_DATE.get();
 	}
 
 	public LocalDate getCLI_BR_DATE() {
 		return CLI_BR_DATE.get();
-	}
-
-	public String getCLI_PLACE_BIRTH() {
-		return CLI_PLACE_BIRTH.get();
 	}
 
 	public LocalDate getCLI_DATE_REG() {
@@ -361,8 +370,20 @@ public class NT_CLIENTS {
 		return CLI_DOC_SUBDIV.get();
 	}
 
+	public String getCLI_PLACE_BIRTH() {
+		return CLI_PLACE_BIRTH.get();
+	}
+
 	public Integer getCLI_BIRTH_COUNTRY() {
 		return CLI_BIRTH_COUNTRY.get();
+	}
+
+	public LocalDate getCR_DATE() {
+		return CR_DATE.get();
+	}
+
+	public String getCR_TIME() {
+		return CR_TIME.get();
 	}
 
 	public IntegerProperty CLI_IDProperty() {
@@ -417,16 +438,12 @@ public class NT_CLIENTS {
 		return CLI_OPER;
 	}
 
-	public SimpleObjectProperty<LocalDateTime> CLI_DATEProperty() {
+	public SimpleObjectProperty<LocalDate> CLI_DATEProperty() {
 		return CLI_DATE;
 	}
 
 	public SimpleObjectProperty<LocalDate> CLI_BR_DATEProperty() {
 		return CLI_BR_DATE;
-	}
-
-	public StringProperty CLI_PLACE_BIRTHProperty() {
-		return CLI_PLACE_BIRTH;
 	}
 
 	public SimpleObjectProperty<LocalDate> CLI_DATE_REGProperty() {
@@ -489,7 +506,19 @@ public class NT_CLIENTS {
 		return CLI_DOC_SUBDIV;
 	}
 
+	public StringProperty CLI_PLACE_BIRTHProperty() {
+		return CLI_PLACE_BIRTH;
+	}
+
 	public IntegerProperty CLI_BIRTH_COUNTRYProperty() {
 		return CLI_BIRTH_COUNTRY;
+	}
+
+	public SimpleObjectProperty<LocalDate> CR_DATEProperty() {
+		return CR_DATE;
+	}
+
+	public StringProperty CR_TIMEProperty() {
+		return CR_TIME;
 	}
 }

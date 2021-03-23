@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
@@ -26,9 +26,9 @@
          <content>
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
-                  <TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Основные данные" VBox.vgrow="ALWAYS">
+                  <TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Основные данные" VBox.vgrow="ALWAYS">
                      <content>
-                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                        <VBox fx:id="OSN_VBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                            <children>
                               <GridPane VBox.vgrow="ALWAYS">
                                 <columnConstraints>
@@ -47,7 +47,7 @@
                                     <TextField fx:id="CLI_NAME" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
-                              <GridPane layoutX="20.0" layoutY="20.0" VBox.vgrow="ALWAYS">
+                              <GridPane fx:id="L_F_M_NAME" layoutX="20.0" layoutY="20.0" VBox.vgrow="ALWAYS">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="80.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
@@ -100,7 +100,7 @@
                               <GridPane layoutX="20.0" layoutY="80.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="80.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="350.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints prefHeight="30.0" />
@@ -184,7 +184,9 @@
                               <GridPane layoutX="20.0" layoutY="200.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
                                  </columnConstraints>
@@ -197,13 +199,19 @@
                                           <Insets right="5.0" />
                                        </GridPane.margin>
                                     </Text>
-                                    <ComboBox fx:id="CLI_GENDER" prefWidth="150.0" GridPane.columnIndex="1" />
+                                    <ComboBox fx:id="CLI_GENDER" prefWidth="120.0" GridPane.columnIndex="1" />
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Страна рождения" GridPane.columnIndex="2">
                                        <GridPane.margin>
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                     </Text>
                                     <ComboBox fx:id="CLI_BIRTH_COUNTRY" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата рождения" GridPane.columnIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                    </Text>
+                                    <DatePicker fx:id="CLI_BR_DATE" prefWidth="120.0" GridPane.columnIndex="5" />
                                  </children>
                               </GridPane>
                            </children>
