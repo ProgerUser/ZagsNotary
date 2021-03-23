@@ -1,5 +1,6 @@
 package mj.dbutil;
 
+import java.io.FileInputStream;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -60,6 +61,18 @@ public class DBUtil {
 		}
 	}
 
+	public static String SqlFromProp(String path, String prpname) {
+		String ret = null;
+		try {
+			Properties props = new Properties();
+			props.load(new FileInputStream("src/main/resources/myconf.properties"));
+			ret = props.getProperty(prpname);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+		return ret;
+	}
+	
 	public static boolean CheckConnect() {
 		boolean ret = true;
 		try {

@@ -1212,7 +1212,7 @@ public class Main extends Application {
 					}
 				}
 			}
-			column.setPrefWidth(max + 10.0d);
+			column.setPrefWidth(max + 25.0d);
 		});
 	}
 }

@@ -5,8 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -15,11 +13,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
@@ -30,50 +33,74 @@ import mj.dbutil.DBUtil;
 
 public class AddNotaryDoc {
 
-	@FXML
-	private ComboBox<V_NT_TEMP_LIST> VAL_NT_VALUE;
-	@FXML
-	private TableView<?> nt_temp_param_val;
-	@FXML
-	private TableColumn<?, ?> id;
-	@FXML
-	private TableColumn<?, ?> name;
-	@FXML
-	private TableColumn<?, ?> value;
-	@FXML
-	private ScrollPane scroll;
+	@FXML private ComboBox<V_NT_TEMP_LIST> VAL_NT_VALUE;
+	@FXML private TableView<V_NT_DOC_PRM> nt_temp_param_val;
+	@FXML private TableColumn<V_NT_DOC_PRM, Integer> id;
+	@FXML private TableColumn<V_NT_DOC_PRM, String> name;
+	@FXML private TableColumn<V_NT_DOC_PRM, String> value;
+	@FXML private ScrollPane scroll;
 
 	@FXML
 	void AddParam(ActionEvent event) {
 		try {
+			V_NT_DOC_PRM val = nt_temp_param_val.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) scroll.getScene().getWindow();
 
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/doc/IUParam.fxml"));
+
+				AddParam controller = new AddParam();
+				controller.setConn(conn, val);
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Добавить");
+				stage.initOwner(stage_);
+				stage.setResizable(true);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+					}
+				});
+				stage.showAndWait();
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-
-	void Init() {
+//	DBUtil.SqlFromProp("notary/doc/SQL.properties", "NtParamVal")
+	void Init(Integer id) {
 		try {
-			PreparedStatement prepStmt = conn.prepareStatement("select * from V_NT_DOC");
+			{
+				PreparedStatement prp = conn.prepareStatement("delete from NT_TEMP_PARAM_VAL_TEMP");
+				prp.executeUpdate();
+				prp.close();
+				conn.commit();
+			}
+			PreparedStatement prepStmt = conn
+					.prepareStatement("select * from V_NT_DOC_PRM t where t.PRM_TMP_ID = ?");
+			prepStmt.setInt(1, id);
 			ResultSet rs = prepStmt.executeQuery();
-			ObservableList<V_NT_DOC> dlist = FXCollections.observableArrayList();
+			ObservableList<V_NT_DOC_PRM> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
-				V_NT_DOC list = new V_NT_DOC();
-				list.setCR_TIME(rs.getString("CR_TIME"));
-				list.setID(rs.getInt("ID"));
-				list.setOPER(rs.getString("OPER"));
-				list.setNOTARY(rs.getInt("NOTARY"));
-				list.setNT_TYPE(rs.getInt("NT_TYPE"));
-				list.setCR_DATE((rs.getDate("CR_DATE") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
-						: null);
-				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
-				list.setTYPE_NAME(rs.getString("TYPE_NAME"));
+				V_NT_DOC_PRM list = new V_NT_DOC_PRM();
+				list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+				list.setPRM_NAME(rs.getString("PRM_NAME"));
+				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+				list.setVAL_PRM_ID(rs.getInt("VAL_PRM_ID"));
+				list.setVAL_NT_VALUE(rs.getString("VAL_NT_VALUE"));
+				list.setPRM_ID(rs.getInt("PRM_ID"));
+				list.setVAL_NT_DOC(rs.getInt("VAL_NT_DOC"));
+				list.setPRM_SQL(rs.getString("PRM_SQL"));
 				dlist.add(list);
 			}
 			prepStmt.close();
 			rs.close();
-			NT_DOC.setItems(dlist);
+			nt_temp_param_val.setItems(dlist);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -120,7 +147,7 @@ public class AddNotaryDoc {
 		try {
 			V_NT_TEMP_LIST val = VAL_NT_VALUE.getSelectionModel().getSelectedItem();
 			if(val != null) {
-				
+				Init(val.getID());
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -159,6 +186,10 @@ public class AddNotaryDoc {
 				convert_VAL_NT_VALUE(VAL_NT_VALUE);
 				rs.close();
 			}
+			id.setCellValueFactory(cellData -> cellData.getValue().PRM_IDProperty().asObject());
+			name.setCellValueFactory(cellData -> cellData.getValue().PRM_NAMEProperty());
+			value.setCellValueFactory(cellData -> cellData.getValue().VAL_NT_VALUEProperty());
+			Main.autoResizeColumns(nt_temp_param_val);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

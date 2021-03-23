@@ -31,7 +31,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
       <VBox />
       <BorderPane fx:id="BP">
@@ -215,11 +215,11 @@
                                                 </TabPane>
                                                 <HBox spacing="5.0">
                                                    <children>
-                                                    <TitledPane fx:id="Citizen" alignment="CENTER" animated="false" collapsible="false" style="-fx-border-color: black;" text="Гражданство">
+                                                    <TitledPane fx:id="Citizen" alignment="CENTER" animated="false" collapsible="false" style="-fx-border-color: black;" text="Гражданство" HBox.hgrow="ALWAYS">
                                                          <content>
-                                                            <VBox>
+                                                            <VBox spacing="5.0">
                                                                <children>
-                                                                  <ToolBar style="-fx-border-color: silver;">
+                                                                  <ToolBar>
                                                                      <items>
                                                                         <Button mnemonicParsing="false" onAction="#BtAddCitizen" text="">
                                                                            <graphic>
@@ -255,6 +255,9 @@
                                                                            </font>
                                                                         </Button>
                                                                      </items>
+                                                                     <VBox.margin>
+                                                                        <Insets left="-10.0" right="-10.0" top="-10.0" />
+                                                                     </VBox.margin>
                                                                   </ToolBar>
                                                                   <HBox spacing="5.0">
                                                                      <children>
@@ -284,7 +287,7 @@
                                                             </VBox>
                                                          </content>
                                                     </TitledPane>
-                                                    <TitledPane fx:id="Address" alignment="CENTER" animated="false" collapsible="false" prefHeight="187.0" style="-fx-border-color: black;" text="Адрес">
+                                                    <TitledPane fx:id="Address" alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;" text="Адрес" HBox.hgrow="ALWAYS">
                                                       <content>
                                                         <AnchorPane>
                                                                <children>
@@ -348,7 +351,7 @@
                                                 </HBox>
                                               <TitledPane fx:id="Docs" alignment="CENTER" animated="false" collapsible="false" style="-fx-border-color: black;" text="Паспортные данные">
                                                    <content>
-                                                      <VBox>
+                                                      <VBox spacing="5.0">
                                                          <children>
                                                             <ToolBar style="-fx-border-color: silver;">
                                                                <items>
@@ -386,6 +389,9 @@
                                                                      </font>
                                                                   </Button>
                                                                </items>
+                                                               <VBox.margin>
+                                                                  <Insets left="-10.0" right="-10.0" top="-10.0" />
+                                                               </VBox.margin>
                                                             </ToolBar>
                                                             <TableView fx:id="CUS_DOCUM" editable="true" maxWidth="1.7976931348623157E308" prefHeight="120.0">
                                                               <columns>

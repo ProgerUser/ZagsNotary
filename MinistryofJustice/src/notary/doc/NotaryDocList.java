@@ -115,7 +115,7 @@ public class NotaryDocList {
 	@FXML
 	void Print(ActionEvent event) {
 		try {
-
+			
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -124,7 +124,7 @@ public class NotaryDocList {
 	@FXML
 	void Refresh(ActionEvent event) {
 		try {
-
+			Init();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
