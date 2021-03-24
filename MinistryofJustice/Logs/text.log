@@ -3611,3 +3611,15 @@ Caused by: Error : 2290, Position : 0, Sql = update NT_TEMP_LIST_PARAM set PRM_N
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Unknown Source)
 
+[24.03.2021 14:37:20] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and upper(CTABLE) = 'CUS' 
+
+ and ID_NUM = '455' 
+ order by DAUDDATE desc
+[24.03.2021 14:39:45] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and upper(CTABLE) = 'UPDATE_NAME' 
+ order by DAUDDATE desc
