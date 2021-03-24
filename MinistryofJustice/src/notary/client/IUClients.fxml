@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ScrollPane?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
@@ -233,6 +234,7 @@
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="80.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                              </columnConstraints>
                                              <rowConstraints>
                                                 <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -265,6 +267,18 @@
                                                 </Text>
                                                 <TextField fx:id="CLI_ADR_STREET" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                 <ComboBox fx:id="CLI_ADR_COUNTRY" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+                                                <CheckBox fx:id="raion_not_list" mnemonicParsing="false" onAction="#raion_not_list" text="Не из справ." GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets left="5.0" />
+                                                   </GridPane.margin>
+                                                </CheckBox>
+                                                <CheckBox fx:id="nas_p_not_list" mnemonicParsing="false" onAction="#nas_p_not_list" text="Не из справ." GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets left="5.0" />
+                                                   </GridPane.margin>
+                                                </CheckBox>
+                                                <TextField fx:id="CLI_ADR_NAS_PUNKT_T" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="CLI_ADR_RAION_T" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                              </children>
                                           </GridPane>
                                           <GridPane>

@@ -9,6 +9,28 @@ import javafx.beans.property.StringProperty;
 
 public class V_NT_CLI {
 	/** Нет данных */
+	private StringProperty NOT_NAME;
+	/** Нет данных */
+	private StringProperty CLI_GENDER_S;
+	/** Нет данных */
+	private StringProperty CLI_ADR_COUNTRY_S;
+	/** Нет данных */
+	private StringProperty CLI_ADR_NAS_PUNKT_S;
+	/** Нет данных */
+	private StringProperty CLI_ADR_RAION_S;
+	/** Нет данных */
+	private StringProperty CLI_BIRTH_COUNTRY_S;
+	/** Нет данных */
+	private StringProperty CLI_DOC_TYPE_S;
+	/** Нет данных */
+	private StringProperty CLI_ADR_NAS_PUNKT_T;
+	/** Нет данных */
+	private StringProperty CLI_ADR_RAION_T;
+	/** Нет данных */
+	private IntegerProperty RAION_NOT_LIST;
+	/** Нет данных */
+	private IntegerProperty NAS_P_NOT_LIST;
+	/** Нет данных */
 	private IntegerProperty CLI_ID;
 	/** Нет данных */
 	private StringProperty CLI_NAME;
@@ -76,8 +98,21 @@ public class V_NT_CLI {
 	private SimpleObjectProperty<LocalDate> CR_DATE;
 	/** Нет данных */
 	private StringProperty CR_TIME;
+	/** Нет данных */
+	private StringProperty CLI_TYPE_S;
 
 	public V_NT_CLI() {
+		this.NOT_NAME = new SimpleStringProperty();
+		this.CLI_GENDER_S = new SimpleStringProperty();
+		this.CLI_ADR_COUNTRY_S = new SimpleStringProperty();
+		this.CLI_ADR_NAS_PUNKT_S = new SimpleStringProperty();
+		this.CLI_ADR_RAION_S = new SimpleStringProperty();
+		this.CLI_BIRTH_COUNTRY_S = new SimpleStringProperty();
+		this.CLI_DOC_TYPE_S = new SimpleStringProperty();
+		this.CLI_ADR_NAS_PUNKT_T = new SimpleStringProperty();
+		this.CLI_ADR_RAION_T = new SimpleStringProperty();
+		this.RAION_NOT_LIST = new SimpleIntegerProperty();
+		this.NAS_P_NOT_LIST = new SimpleIntegerProperty();
 		this.CLI_ID = new SimpleIntegerProperty();
 		this.CLI_NAME = new SimpleStringProperty();
 		this.CLI_LAST_NAME = new SimpleStringProperty();
@@ -112,6 +147,51 @@ public class V_NT_CLI {
 		this.CLI_BIRTH_COUNTRY = new SimpleIntegerProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.CR_TIME = new SimpleStringProperty();
+		this.CLI_TYPE_S = new SimpleStringProperty();
+	}
+
+	public void setNOT_NAME(String NOT_NAME) {
+		this.NOT_NAME.set(NOT_NAME);
+	}
+
+	public void setCLI_GENDER_S(String CLI_GENDER_S) {
+		this.CLI_GENDER_S.set(CLI_GENDER_S);
+	}
+
+	public void setCLI_ADR_COUNTRY_S(String CLI_ADR_COUNTRY_S) {
+		this.CLI_ADR_COUNTRY_S.set(CLI_ADR_COUNTRY_S);
+	}
+
+	public void setCLI_ADR_NAS_PUNKT_S(String CLI_ADR_NAS_PUNKT_S) {
+		this.CLI_ADR_NAS_PUNKT_S.set(CLI_ADR_NAS_PUNKT_S);
+	}
+
+	public void setCLI_ADR_RAION_S(String CLI_ADR_RAION_S) {
+		this.CLI_ADR_RAION_S.set(CLI_ADR_RAION_S);
+	}
+
+	public void setCLI_BIRTH_COUNTRY_S(String CLI_BIRTH_COUNTRY_S) {
+		this.CLI_BIRTH_COUNTRY_S.set(CLI_BIRTH_COUNTRY_S);
+	}
+
+	public void setCLI_DOC_TYPE_S(String CLI_DOC_TYPE_S) {
+		this.CLI_DOC_TYPE_S.set(CLI_DOC_TYPE_S);
+	}
+
+	public void setCLI_ADR_NAS_PUNKT_T(String CLI_ADR_NAS_PUNKT_T) {
+		this.CLI_ADR_NAS_PUNKT_T.set(CLI_ADR_NAS_PUNKT_T);
+	}
+
+	public void setCLI_ADR_RAION_T(String CLI_ADR_RAION_T) {
+		this.CLI_ADR_RAION_T.set(CLI_ADR_RAION_T);
+	}
+
+	public void setRAION_NOT_LIST(Integer RAION_NOT_LIST) {
+		this.RAION_NOT_LIST.set(RAION_NOT_LIST);
+	}
+
+	public void setNAS_P_NOT_LIST(Integer NAS_P_NOT_LIST) {
+		this.NAS_P_NOT_LIST.set(NAS_P_NOT_LIST);
 	}
 
 	public void setCLI_ID(Integer CLI_ID) {
@@ -250,6 +330,54 @@ public class V_NT_CLI {
 		this.CR_TIME.set(CR_TIME);
 	}
 
+	public void setCLI_TYPE_S(String CLI_TYPE_S) {
+		this.CLI_TYPE_S.set(CLI_TYPE_S);
+	}
+
+	public String getNOT_NAME() {
+		return NOT_NAME.get();
+	}
+
+	public String getCLI_GENDER_S() {
+		return CLI_GENDER_S.get();
+	}
+
+	public String getCLI_ADR_COUNTRY_S() {
+		return CLI_ADR_COUNTRY_S.get();
+	}
+
+	public String getCLI_ADR_NAS_PUNKT_S() {
+		return CLI_ADR_NAS_PUNKT_S.get();
+	}
+
+	public String getCLI_ADR_RAION_S() {
+		return CLI_ADR_RAION_S.get();
+	}
+
+	public String getCLI_BIRTH_COUNTRY_S() {
+		return CLI_BIRTH_COUNTRY_S.get();
+	}
+
+	public String getCLI_DOC_TYPE_S() {
+		return CLI_DOC_TYPE_S.get();
+	}
+
+	public String getCLI_ADR_NAS_PUNKT_T() {
+		return CLI_ADR_NAS_PUNKT_T.get();
+	}
+
+	public String getCLI_ADR_RAION_T() {
+		return CLI_ADR_RAION_T.get();
+	}
+
+	public Integer getRAION_NOT_LIST() {
+		return RAION_NOT_LIST.get();
+	}
+
+	public Integer getNAS_P_NOT_LIST() {
+		return NAS_P_NOT_LIST.get();
+	}
+
 	public Integer getCLI_ID() {
 		return CLI_ID.get();
 	}
@@ -386,6 +514,54 @@ public class V_NT_CLI {
 		return CR_TIME.get();
 	}
 
+	public String getCLI_TYPE_S() {
+		return CLI_TYPE_S.get();
+	}
+
+	public StringProperty NOT_NAMEProperty() {
+		return NOT_NAME;
+	}
+
+	public StringProperty CLI_GENDER_SProperty() {
+		return CLI_GENDER_S;
+	}
+
+	public StringProperty CLI_ADR_COUNTRY_SProperty() {
+		return CLI_ADR_COUNTRY_S;
+	}
+
+	public StringProperty CLI_ADR_NAS_PUNKT_SProperty() {
+		return CLI_ADR_NAS_PUNKT_S;
+	}
+
+	public StringProperty CLI_ADR_RAION_SProperty() {
+		return CLI_ADR_RAION_S;
+	}
+
+	public StringProperty CLI_BIRTH_COUNTRY_SProperty() {
+		return CLI_BIRTH_COUNTRY_S;
+	}
+
+	public StringProperty CLI_DOC_TYPE_SProperty() {
+		return CLI_DOC_TYPE_S;
+	}
+
+	public StringProperty CLI_ADR_NAS_PUNKT_TProperty() {
+		return CLI_ADR_NAS_PUNKT_T;
+	}
+
+	public StringProperty CLI_ADR_RAION_TProperty() {
+		return CLI_ADR_RAION_T;
+	}
+
+	public IntegerProperty RAION_NOT_LISTProperty() {
+		return RAION_NOT_LIST;
+	}
+
+	public IntegerProperty NAS_P_NOT_LISTProperty() {
+		return NAS_P_NOT_LIST;
+	}
+
 	public IntegerProperty CLI_IDProperty() {
 		return CLI_ID;
 	}
@@ -520,5 +696,9 @@ public class V_NT_CLI {
 
 	public StringProperty CR_TIMEProperty() {
 		return CR_TIME;
+	}
+
+	public StringProperty CLI_TYPE_SProperty() {
+		return CLI_TYPE_S;
 	}
 }

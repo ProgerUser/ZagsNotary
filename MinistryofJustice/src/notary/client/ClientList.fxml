@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="VBOX" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ToolBar>
         <items>
@@ -51,13 +51,51 @@
             <Insets left="-5.0" right="-5.0" top="-5.0" />
          </VBox.margin>
       </ToolBar>
-      <XTableView fx:id="NT_CLIENTS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="800.0" VBox.vgrow="ALWAYS">
+      <XTableView fx:id="NT_CLIENTS" styleClass="mylistview" stylesheets="/ScrPane.css" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="900.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
          <columns>
             <XTableColumn fx:id="CLI_ID" prefWidth="75.0" text="ИД" />
             <XTableColumn fx:id="CLI_OPER" prefWidth="96.0" text="Пользователь" />
             <XTableColumn fx:id="CR_DATE" prefWidth="96.0" text="Дата" />
             <XTableColumn fx:id="CR_TIME" prefWidth="96.0" text="Время" />
-            <XTableColumn fx:id="CLI_NAME" prefWidth="232.0" text="Наименование" />
+            <XTableColumn prefWidth="266.0" text="Основные данные">
+               <columns>
+                  <XTableColumn fx:id="CLI_NAME" prefWidth="250.0" text="Наименование" />
+                  <XTableColumn fx:id="CLI_SH_NAME" prefWidth="200.0" text="Наим. кр." />
+                  <XTableColumn fx:id="CLI_LAST_NAME" prefWidth="150.0" text="Фамилия" />
+                  <XTableColumn fx:id="CLI_FIRST_NAME" prefWidth="100.0" text="Имя" />
+                  <XTableColumn fx:id="CLI_MIDDLE_NAME" prefWidth="150.0" text="Отчество" />
+                  <XTableColumn fx:id="CLI_TYPE" text="Тип клиента" />
+                  <XTableColumn fx:id="CLI_OGRN" prefWidth="120.0" text="ОГРН" />
+                  <XTableColumn fx:id="CLI_INN" prefWidth="100.0" text="ИНН" />
+                  <XTableColumn fx:id="CLI_KPP" prefWidth="100.0" text="КПП" />
+                  <XTableColumn fx:id="CLI_PLACE_BIRTH" prefWidth="250.0" text="Место рождения" />
+                  <XTableColumn fx:id="CLI_GENDER" prefWidth="100.0" text="Пол" />
+                  <XTableColumn fx:id="CLI_BIRTH_COUNTRY" prefWidth="150.0" text="Страна рождения" />
+                  <XTableColumn fx:id="CLI_BR_DATE" prefWidth="100.0" text="Дата рождения" />
+               </columns>
+           </XTableColumn>
+           <XTableColumn prefWidth="266.0" text="Адрес">
+               <columns>
+                  <XTableColumn fx:id="CLI_ADR_COUNTRY" prefWidth="200.0" text="Страна" />
+                  <XTableColumn fx:id="CLI_ADR_RAION" prefWidth="150.0" text="Район" />
+                  <XTableColumn fx:id="CLI_ADR_NAS_PUNKT" prefWidth="150.0" text="Насел. пункт" />
+                  <XTableColumn fx:id="CLI_ADR_STREET" prefWidth="150.0" text="Улица" />
+                  <XTableColumn fx:id="CLI_ADR_HOME" prefWidth="100.0" text="Дом" />
+                  <XTableColumn fx:id="CLI_ADR_CORP" prefWidth="100.0" text="Корпус" />
+                  <XTableColumn fx:id="CLI_ADR_KV" prefWidth="100.0" text="Кв." />
+               </columns>
+           </XTableColumn>
+             <XTableColumn prefWidth="266.0" text="Паспортные данные">
+               <columns>
+                  <XTableColumn fx:id="CLI_DOC_TYPE" prefWidth="200.0" text="Тип документа" />
+                  <XTableColumn fx:id="CLI_DOC_SERIA" prefWidth="100.0" text="Серия" />
+                  <XTableColumn fx:id="CLI_DOC_NUMBER" prefWidth="100.0" text="Номер" />
+                  <XTableColumn fx:id="CLI_DOC_AGENCY" prefWidth="200.0" text="Кем выдан" />
+                  <XTableColumn fx:id="CLI_DOC_START" prefWidth="100.0" text="Дата выдачи" />
+                  <XTableColumn fx:id="CLI_DOC_END" prefWidth="100.0" text="Срок действия" />
+                  <XTableColumn fx:id="CLI_DOC_SUBDIV" prefWidth="150.0" text="Код подразделения" />
+               </columns>
+           </XTableColumn>
          </columns>
       </XTableView>
    </children>

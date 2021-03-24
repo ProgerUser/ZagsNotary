@@ -2,12 +2,10 @@ package notary.client;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Types;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -29,14 +27,14 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.doc.cus.COUNTRIES;
 import mj.msg.Msg;
 import mj.util.ConvConst;
 
-public class AddClients {
+public class EditClients {
+	
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
 	}
@@ -47,11 +45,18 @@ public class AddClients {
 		return this.Status.get();
 	}
 
-	public AddClients() {
+	public EditClients() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 	}
 
+	V_NT_CLI nt_cli;
+
+	public void setConn(Connection conn, V_NT_CLI nt_cli) {
+		this.conn = conn;
+		this.nt_cli = nt_cli;
+	}
+	
     @FXML
     private CheckBox raion_not_list;
 
@@ -132,42 +137,6 @@ public class AddClients {
     private TextField CLI_ADR_RAION_T;
     
 	@FXML
-	void nas_p_not_list(ActionEvent event) {
-		try {
-			if (nas_p_not_list.isSelected()) {
-				CLI_ADR_NAS_PUNKT.setValue(null);
-				CLI_ADR_NAS_PUNKT.setVisible(false);
-
-				CLI_ADR_NAS_PUNKT_T.setVisible(true);
-			}else {
-				CLI_ADR_NAS_PUNKT.setVisible(true);
-				CLI_ADR_NAS_PUNKT_T.setVisible(false);
-				CLI_ADR_NAS_PUNKT_T.setText("");
-			}
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	@FXML
-	void raion_not_list(ActionEvent event) {
-		try {
-			if (raion_not_list.isSelected()) {
-				CLI_ADR_RAION.setValue(null);
-				CLI_ADR_RAION.setVisible(false);
-
-				CLI_ADR_RAION_T.setVisible(true);
-			}else {
-				CLI_ADR_RAION.setVisible(true);
-				CLI_ADR_RAION_T.setText("");
-				CLI_ADR_RAION_T.setVisible(false);
-			}
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-    
-	@FXML
 	void CENCEL(ActionEvent event) {
 		try {
 			onclose();
@@ -239,11 +208,11 @@ public class AddClients {
 	void OK(ActionEvent event) {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ call NT_CLI.ADD_CLI(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					.prepareCall("{ call NT_CLI.EDIT_CLI(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			// ќшибка
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			// ид клиента
-			callStmt.registerOutParameter(2, Types.INTEGER);
+			callStmt.setInt(2, nt_cli.getCLI_ID());
 			// наименование
 			callStmt.setString(3, CLI_NAME.getText());
 			// фамили€ если физик, ип
@@ -340,7 +309,6 @@ public class AddClients {
 			callStmt.setInt(33, (raion_not_list.isSelected() ? 2 : 1));
 			// адрес-населенный пункт если текст
 			callStmt.setInt(34, (nas_p_not_list.isSelected() ? 2 : 1));
-
 			
 			callStmt.execute();
 			if (callStmt.getString(1) != null) {
@@ -355,22 +323,45 @@ public class AddClients {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+	@FXML
+	void nas_p_not_list(ActionEvent event) {
+		try {
+			if (nas_p_not_list.isSelected()) {
+				CLI_ADR_NAS_PUNKT.setValue(null);
+				CLI_ADR_NAS_PUNKT.setVisible(false);
 
+				CLI_ADR_NAS_PUNKT_T.setVisible(true);
+			}else {
+				CLI_ADR_NAS_PUNKT.setVisible(true);
+				CLI_ADR_NAS_PUNKT_T.setVisible(false);
+				CLI_ADR_NAS_PUNKT_T.setText("");
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void raion_not_list(ActionEvent event) {
+		try {
+			if (raion_not_list.isSelected()) {
+				CLI_ADR_RAION.setValue(null);
+				CLI_ADR_RAION.setVisible(false);
+
+				CLI_ADR_RAION_T.setVisible(true);
+			}else {
+				CLI_ADR_RAION.setVisible(true);
+				CLI_ADR_RAION_T.setText("");
+				CLI_ADR_RAION_T.setVisible(false);
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
 	@FXML
 	private void initialize() {
 		try {
-
-			new ConvConst().FormatDatePiker(CLI_DATE_REG);
-			new ConvConst().FormatDatePiker(CLI_DOC_START);
-			new ConvConst().FormatDatePiker(CLI_DOC_END);
-			new ConvConst().FormatDatePiker(CLI_DATE_REG);
-			new ConvConst().FormatDatePiker(CLI_BR_DATE);
-
-			scroll.setFitToHeight(true);
-			scroll.setFitToWidth(true);
-
-			dbConnect();
-			// страна рождени€
+			// страна рождени€/проживани€
 			{
 				Statement sqlStatement = conn.createStatement();
 				String readRecordSQL = "select * from COUNTRIES order by NAME";
@@ -400,6 +391,18 @@ public class AddClients {
 					CombCountry(CLI_ADR_COUNTRY);
 					CLI_ADR_COUNTRY.getSelectionModel().select(0);
 				}
+				for (COUNTRIES value : CLI_ADR_COUNTRY.getItems()) {
+					if (value.getCODE().equals(nt_cli.getCLI_ADR_COUNTRY())) {
+						CLI_ADR_COUNTRY.getSelectionModel().select(value);
+						break;
+					}
+				}
+				for (COUNTRIES value : CLI_BIRTH_COUNTRY.getItems()) {
+					if (value.getCODE().equals(nt_cli.getCLI_BIRTH_COUNTRY())) {
+						CLI_BIRTH_COUNTRY.getSelectionModel().select(value);
+						break;
+					}
+				}
 			}
 			// район
 			{
@@ -417,6 +420,36 @@ public class AddClients {
 				CombRaion(CLI_ADR_RAION);
 				rs.close();
 				sqlStatement.close();
+				for (RAION value : CLI_ADR_RAION.getItems()) {
+					if (value.getCODE().equals(nt_cli.getCLI_ADR_RAION())) {
+						CLI_ADR_RAION.getSelectionModel().select(value);
+						break;
+					}
+				}
+			}
+			// нас. пункт
+			{
+				PreparedStatement prp = conn
+						.prepareStatement("select * from NAS_PUNKT where AREA = ? order by NAME");
+				prp.setString(1, nt_cli.getCLI_ADR_RAION_S());
+				ResultSet rs = prp.executeQuery();
+				ObservableList<NAS_PUNKT> nationals = FXCollections.observableArrayList();
+				while (rs.next()) {
+					NAS_PUNKT countryes = new NAS_PUNKT();
+					countryes.setCODE(rs.getInt("CODE"));
+					countryes.setNAME(rs.getString("NAME"));
+					nationals.add(countryes);
+				}
+				rs.close();
+				prp.close();
+				{
+					FilteredList<NAS_PUNKT> filterednationals = new FilteredList<NAS_PUNKT>(nationals);
+					CLI_ADR_NAS_PUNKT.getEditor().textProperty()
+							.addListener(new InputFilter<NAS_PUNKT>(CLI_ADR_NAS_PUNKT, filterednationals, false));
+					CLI_ADR_NAS_PUNKT.setItems(filterednationals);
+					CombNasPunkt(CLI_ADR_NAS_PUNKT);
+					CLI_ADR_NAS_PUNKT.getSelectionModel().select(0);
+				}
 			}
 			// пол
 			{
@@ -434,6 +467,12 @@ public class AddClients {
 				CombGender(CLI_GENDER);
 				rs.close();
 				sqlStatement.close();
+				for (GENDER value : CLI_GENDER.getItems()) {
+					if (value.getID().equals(nt_cli.getCLI_GENDER())) {
+						CLI_GENDER.getSelectionModel().select(value);
+						break;
+					}
+				}
 			}
 			// тип клиента
 			{
@@ -451,6 +490,12 @@ public class AddClients {
 				CombCliType(CLI_TYPE);
 				rs.close();
 				sqlStatement.close();
+				for (NT_CLI_TYPES value : CLI_TYPE.getItems()) {
+					if (value.getCODE().equals(nt_cli.getCLI_TYPE())) {
+						CLI_TYPE.getSelectionModel().select(value);
+						break;
+					}
+				}
 			}
 			// типы документов
 			{
@@ -468,7 +513,71 @@ public class AddClients {
 				CombDocType(CLI_DOC_TYPE);
 				rs.close();
 				sqlStatement.close();
+				for (DOC_TYPES value : CLI_DOC_TYPE.getItems()) {
+					if (value.getCODE().equals(nt_cli.getCLI_DOC_TYPE())) {
+						CLI_DOC_TYPE.getSelectionModel().select(value);
+						break;
+					}
+				}
 			}
+			//«аполнить пол€
+			CLI_ADR_STREET.setText(nt_cli.getCLI_ADR_STREET());
+			CLI_DATE_REG.setValue(nt_cli.getCLI_DATE_REG());
+			CLI_NAME.setText(nt_cli.getCLI_NAME());
+			CLI_SH_NAME.setText(nt_cli.getCLI_SH_NAME());
+			CLI_LAST_NAME.setText(nt_cli.getCLI_LAST_NAME());
+			CLI_FIRST_NAME.setText(nt_cli.getCLI_FIRST_NAME());
+			CLI_MIDDLE_NAME.setText(nt_cli.getCLI_MIDDLE_NAME());
+			CLI_OGRN.setText(nt_cli.getCLI_OGRN());
+			CLI_INN.setText(nt_cli.getCLI_INN());
+			CLI_KPP.setText(nt_cli.getCLI_KPP());
+			CLI_PLACE_BIRTH.setText(nt_cli.getCLI_PLACE_BIRTH());
+			CLI_BR_DATE.setValue(nt_cli.getCLI_BR_DATE());
+			CLI_ADR_HOME.setText(nt_cli.getCLI_ADR_HOME());
+			CLI_ADR_CORP.setText(nt_cli.getCLI_ADR_CORP());
+			CLI_ADR_KV.setText(nt_cli.getCLI_ADR_KV());
+			CLI_DOC_SERIA.setText(nt_cli.getCLI_DOC_SERIA());
+			CLI_DOC_NUMBER.setText(nt_cli.getCLI_DOC_NUMBER());
+			CLI_DOC_AGENCY.setText(nt_cli.getCLI_DOC_AGENCY());
+			CLI_DOC_START.setValue(nt_cli.getCLI_DOC_START());
+			CLI_DOC_END.setValue(nt_cli.getCLI_DOC_END());
+			CLI_DOC_SUBDIV.setText(nt_cli.getCLI_DOC_SUBDIV());
+			CLI_ADR_NAS_PUNKT_T.setText(nt_cli.getCLI_ADR_NAS_PUNKT_T());
+			CLI_ADR_RAION_T.setText(nt_cli.getCLI_ADR_RAION_T());
+			//населенный пункт
+			if (nt_cli.getNAS_P_NOT_LIST() == 2) {
+				nas_p_not_list.setSelected(true);
+				CLI_ADR_NAS_PUNKT.setValue(null);
+				CLI_ADR_NAS_PUNKT.setVisible(false);
+				CLI_ADR_NAS_PUNKT_T.setVisible(true);
+			} else if (nt_cli.getNAS_P_NOT_LIST() == 1) {
+				nas_p_not_list.setSelected(false);
+				CLI_ADR_NAS_PUNKT.setVisible(true);
+				CLI_ADR_NAS_PUNKT_T.setVisible(false);
+				CLI_ADR_NAS_PUNKT_T.setText("");
+			}
+			//район
+			if (nt_cli.getRAION_NOT_LIST() == 2) {
+				raion_not_list.setSelected(true);
+				CLI_ADR_RAION.setValue(null);
+				CLI_ADR_RAION.setVisible(false);
+				CLI_ADR_RAION_T.setVisible(true);
+			} else if (nt_cli.getRAION_NOT_LIST() == 1) {
+				raion_not_list.setSelected(false);
+				CLI_ADR_RAION.setVisible(true);
+				CLI_ADR_RAION_T.setText("");
+				CLI_ADR_RAION_T.setVisible(false);
+			}
+			//‘орматирование
+			new ConvConst().FormatDatePiker(CLI_DATE_REG);
+			new ConvConst().FormatDatePiker(CLI_DOC_START);
+			new ConvConst().FormatDatePiker(CLI_DOC_END);
+			new ConvConst().FormatDatePiker(CLI_DATE_REG);
+			new ConvConst().FormatDatePiker(CLI_BR_DATE);
+
+			scroll.setFitToHeight(true);
+			scroll.setFitToWidth(true);
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -565,28 +674,4 @@ public class AddClients {
 	}
 
 	private Connection conn;
-
-	private void dbConnect() {
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program", "AddClients");
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	public void dbDisconnect() {
-		try {
-			if (conn != null && !conn.isClosed()) {
-				conn.close();
-			}
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
 }
