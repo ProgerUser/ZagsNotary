@@ -202,8 +202,8 @@ public class AddNotaryDoc {
 	private void initialize() {
 		try {
 			dbConnect();
-			scroll.setFitToHeight(true);
-			scroll.setFitToWidth(true);
+			//scroll.setFitToHeight(true);
+			//scroll.setFitToWidth(true);
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from V_NT_TEMP_LIST");
 				ResultSet rs = stsmt.executeQuery();

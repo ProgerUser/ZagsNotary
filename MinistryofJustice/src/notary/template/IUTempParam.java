@@ -23,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -39,21 +40,25 @@ public class IUTempParam {
 		Main.logger = Logger.getLogger(getClass());
 		this.ID = new SimpleIntegerProperty();
 	}
+
 	private IntegerProperty ID;
+
 	public void setID(Integer ID) {
 		this.ID.set(ID);
 	}
+
 	public Integer getID() {
 		return ID.get();
 	}
+
 	@FXML
 	private TableView<NT_TEMP_LIST_PARAM> NT_TEMP_LIST_PARAM;
 	@FXML
 	private TableColumn<NT_TEMP_LIST_PARAM, Integer> PRM_ID;
 	@FXML
 	private TableColumn<NT_TEMP_LIST_PARAM, String> PRM_NAME;
-    @FXML
-    private TableColumn<NT_TEMP_LIST_PARAM, Integer> PRM_TYPE;
+	@FXML
+	private TableColumn<NT_TEMP_LIST_PARAM, Integer> PRM_TYPE;
 
 	@FXML
 	void Add(ActionEvent event) {
@@ -92,7 +97,7 @@ public class IUTempParam {
 	void Cencel(ActionEvent event) {
 		try {
 			onclose();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
@@ -136,7 +141,8 @@ public class IUTempParam {
 				yes.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						try {
-							PreparedStatement delete = conn.prepareStatement("delete from NT_TEMP_LIST_PARAM where PRM_ID = ?");
+							PreparedStatement delete = conn
+									.prepareStatement("delete from NT_TEMP_LIST_PARAM where PRM_ID = ?");
 							delete.setInt(1, tmp.getPRM_ID());
 							delete.executeUpdate();
 							delete.close();
@@ -165,17 +171,16 @@ public class IUTempParam {
 		}
 	}
 
-    @FXML
-    void OK(ActionEvent event) {
+	@FXML
+	void OK(ActionEvent event) {
 		try {
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
-    }
-    
-	@FXML
-	void Edit(ActionEvent event) {
+	}
+
+	void Edit() {
 		try {
 			NT_TEMP_LIST_PARAM tmp = NT_TEMP_LIST_PARAM.getSelectionModel().getSelectedItem();
 			if (tmp != null) {
@@ -205,7 +210,16 @@ public class IUTempParam {
 				});
 				stage.showAndWait();
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void Edit(ActionEvent event) {
+		try {
+			Edit();
+		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
@@ -248,11 +262,21 @@ public class IUTempParam {
 	private void initialize() {
 		try {
 			dbConnect();
-			
+
 			PRM_ID.setCellValueFactory(cellData -> cellData.getValue().PRM_IDProperty().asObject());
 			PRM_NAME.setCellValueFactory(cellData -> cellData.getValue().PRM_NAMEProperty());
 			PRM_TYPE.setCellValueFactory(cellData -> cellData.getValue().PRM_TYPEProperty().asObject());
 			Init();
+			// Двойной щелчок по строке для открытия документа
+			NT_TEMP_LIST_PARAM.setRowFactory(tv -> {
+				TableRow<NT_TEMP_LIST_PARAM> row = new TableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						Edit();
+					}
+				});
+				return row;
+			});
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

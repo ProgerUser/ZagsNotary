@@ -25,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
@@ -368,9 +369,9 @@ public class NtTemplate {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+	
 
-	@FXML
-	void EditTempList(ActionEvent event) {
+	void EditTempList() {
 		try {
 			NT_TEMP_LIST tmp = NT_TEMP_LIST.getSelectionModel().getSelectedItem();
 			if (tmp != null) {
@@ -403,6 +404,15 @@ public class NtTemplate {
 				});
 				stage.showAndWait();
 			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	@FXML
+	void EditTempList(ActionEvent event) {
+		try {
+			EditTempList();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -543,7 +553,16 @@ public class NtTemplate {
 			ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
 			NAME.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
 			fillTreeNtTemp();
-			
+			// Двойной щелчок по строке для открытия документа
+			NT_TEMP_LIST.setRowFactory(tv -> {
+				TableRow<NT_TEMP_LIST> row = new TableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						EditTempList();
+					}
+				});
+				return row;
+			});
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

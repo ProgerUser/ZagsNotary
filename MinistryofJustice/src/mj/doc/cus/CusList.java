@@ -946,8 +946,6 @@ public class CusList {
 	private void InitVCus(String lname, String fname, String mname, LocalDate dt1, LocalDate dt2, String type,
 			Integer ID) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
 			String wlname = "";
@@ -1364,11 +1362,6 @@ public class CusList {
 			dbConnect();
 
 			/**
-			 * Заполнение данными таблицу
-			 */
-			InitVCus(null, null, null, null, null, "null", null);
-
-			/**
 			 * Инициализация столбцов таблицы
 			 */
 			{
@@ -1486,14 +1479,13 @@ public class CusList {
 				});
 
 			}
+			/**
+			 * Заполнение данными таблицу
+			 */
+			InitVCus(null, null, null, null, null, "null", null);
+			
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

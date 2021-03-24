@@ -111,7 +111,7 @@
 				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 			</StackPane.margin>
 			<center>
-				<XTableView fx:id="NT_DOC" editable="false" prefWidth="800.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+				<XTableView fx:id="NT_DOC" prefWidth="800.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
 					<columns>
 						<XTableColumn fx:id="ID" prefWidth="82.0" text="Номер" />
 						<XTableColumn fx:id="DOC_NUMBER" prefWidth="120.0" text="Номер документа" />

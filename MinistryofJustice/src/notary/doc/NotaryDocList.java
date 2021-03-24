@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.controlsfx.control.table.TableFilter;
 
 import com.jyloo.syntheticafx.ComparableColumnFilter;
 import com.jyloo.syntheticafx.DateColumnFilter;
@@ -33,6 +34,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableRow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -43,6 +45,7 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
+import mj.util.ConvConst;
 
 public class NotaryDocList {
 
@@ -104,6 +107,17 @@ public class NotaryDocList {
 		}
 	}
 
+	void Edit() {
+		try {
+			V_NT_DOC val = NT_DOC.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	@FXML
 	void Delete(ActionEvent event) {
 		try {
@@ -116,7 +130,7 @@ public class NotaryDocList {
 	@FXML
 	void Edit(ActionEvent event) {
 		try {
-
+			Edit();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -163,6 +177,17 @@ public class NotaryDocList {
 			NT_TYPE.setColumnFilter(new PatternColumnFilter<>());
 			OPER.setColumnFilter(new PatternColumnFilter<>());
 			Init();
+			// Двойной щелчок по строке для открытия документа
+			NT_DOC.setRowFactory(tv -> {
+				TableRow<V_NT_DOC> row = new TableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						Edit();
+					}
+				});
+				return row;
+			});
+			new ConvConst().TableColumnDate(CR_DATE);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -213,6 +238,22 @@ public class NotaryDocList {
 			prepStmt.close();
 			rs.close();
 			NT_DOC.setItems(dlist);
+
+//			// enable filter support
+//			FilteredList filtered = new FilteredList(dlist);
+//			// data should be sortable too
+//			SortedList sorted = new SortedList(filtered);
+//			sorted.comparatorProperty().bind(NT_DOC.comparatorProperty());
+//			NT_DOC.setEditable(true);
+
+			TableFilter<V_NT_DOC> tableFilter = TableFilter.forTableView(NT_DOC).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
