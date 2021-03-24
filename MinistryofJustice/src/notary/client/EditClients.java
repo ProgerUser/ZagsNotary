@@ -53,8 +53,13 @@ public class EditClients {
 	V_NT_CLI nt_cli;
 
 	public void setConn(Connection conn, V_NT_CLI nt_cli) {
-		this.conn = conn;
-		this.nt_cli = nt_cli;
+		try {
+			this.conn = conn;
+			this.conn.setAutoCommit(false);
+			this.nt_cli = nt_cli;
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
 	}
 	
     @FXML

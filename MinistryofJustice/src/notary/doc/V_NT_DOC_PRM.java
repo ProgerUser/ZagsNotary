@@ -19,8 +19,6 @@ public class V_NT_DOC_PRM {
 	/** Нет данных */
 	private IntegerProperty VAL_PRM_ID;
 	/** Нет данных */
-	private IntegerProperty VAL_NT_DOC;
-	/** Нет данных */
 	private StringProperty VAL_NT_VALUE;
 
 	public V_NT_DOC_PRM() {
@@ -30,7 +28,6 @@ public class V_NT_DOC_PRM {
 		this.PRM_SQL = new SimpleStringProperty();
 		this.PRM_TYPE = new SimpleIntegerProperty();
 		this.VAL_PRM_ID = new SimpleIntegerProperty();
-		this.VAL_NT_DOC = new SimpleIntegerProperty();
 		this.VAL_NT_VALUE = new SimpleStringProperty();
 	}
 
@@ -56,10 +53,6 @@ public class V_NT_DOC_PRM {
 
 	public void setVAL_PRM_ID(Integer VAL_PRM_ID) {
 		this.VAL_PRM_ID.set(VAL_PRM_ID);
-	}
-
-	public void setVAL_NT_DOC(Integer VAL_NT_DOC) {
-		this.VAL_NT_DOC.set(VAL_NT_DOC);
 	}
 
 	public void setVAL_NT_VALUE(String VAL_NT_VALUE) {
@@ -90,10 +83,6 @@ public class V_NT_DOC_PRM {
 		return VAL_PRM_ID.get();
 	}
 
-	public Integer getVAL_NT_DOC() {
-		return VAL_NT_DOC.get();
-	}
-
 	public String getVAL_NT_VALUE() {
 		return VAL_NT_VALUE.get();
 	}
@@ -120,10 +109,6 @@ public class V_NT_DOC_PRM {
 
 	public IntegerProperty VAL_PRM_IDProperty() {
 		return VAL_PRM_ID;
-	}
-
-	public IntegerProperty VAL_NT_DOCProperty() {
-		return VAL_NT_DOC;
 	}
 
 	public StringProperty VAL_NT_VALUEProperty() {

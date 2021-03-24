@@ -12,9 +12,16 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import com.jyloo.syntheticafx.ComparableColumnFilter;
+import com.jyloo.syntheticafx.DateColumnFilter;
+import com.jyloo.syntheticafx.PatternColumnFilter;
+import com.jyloo.syntheticafx.SyntheticaFX;
+import com.jyloo.syntheticafx.TextFormatterFactory;
 import com.jyloo.syntheticafx.TitledBorderPane;
 import com.jyloo.syntheticafx.XTableColumn;
 import com.jyloo.syntheticafx.XTableView;
+import com.jyloo.syntheticafx.filter.ComparableFilterModel;
+import com.jyloo.syntheticafx.filter.ComparisonType;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,18 +59,18 @@ public class NotaryDocList {
 	@FXML
 	private XTableColumn<V_NT_DOC, Integer> ID;
 	@FXML
-	private XTableColumn<V_NT_DOC, ?> DOC_NUMBER;
+	private XTableColumn<V_NT_DOC, String> DOC_NUMBER;
 	@FXML
-	private XTableColumn<V_NT_DOC, ?> OPER;
+	private XTableColumn<V_NT_DOC, String> OPER;
 	@FXML
-	private XTableColumn<V_NT_DOC, ?> CR_DATE;
+	private XTableColumn<Object, LocalDate> CR_DATE;
 	@FXML
-	private XTableColumn<V_NT_DOC, ?> CR_TIME;
+	private XTableColumn<V_NT_DOC, String> CR_TIME;
 	@FXML
-	private XTableColumn<V_NT_DOC, ?> NT_TYPE;
+	private XTableColumn<V_NT_DOC, String> NT_TYPE;
 	@FXML
 	private ProgressIndicator PB;
-    
+
 	@FXML
 	void Add(ActionEvent event) {
 		try {
@@ -85,10 +92,13 @@ public class NotaryDocList {
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
 				public void handle(WindowEvent paramT) {
-					controller.dbDisconnect();
+					if (controller.getStatus()) {
+						Init();
+						controller.dbDisconnect();
+					}
 				}
 			});
-			stage.showAndWait();
+			stage.show();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -111,11 +121,11 @@ public class NotaryDocList {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	@FXML
 	void Print(ActionEvent event) {
 		try {
-			
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -130,11 +140,28 @@ public class NotaryDocList {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
 		try {
 			dbConnect();
 			ROOT.setBottom(createOptionPane(NT_DOC));
+			ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
+			DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
+			OPER.setCellValueFactory(cellData -> cellData.getValue().OPERProperty());
+			CR_TIME.setCellValueFactory(cellData -> cellData.getValue().CR_TIMEProperty());
+			NT_TYPE.setCellValueFactory(cellData -> cellData.getValue().TYPE_NAMEProperty());
+			CR_DATE.setCellValueFactory(cellData -> ((V_NT_DOC) cellData.getValue()).CR_DATEProperty());
+			// Фильтр
+			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
+			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
+			ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
+					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
+			CR_DATE.setColumnFilter(new DateColumnFilter<>());
+			CR_TIME.setColumnFilter(new PatternColumnFilter<>());
+			NT_TYPE.setColumnFilter(new PatternColumnFilter<>());
+			OPER.setColumnFilter(new PatternColumnFilter<>());
 			Init();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -163,7 +190,7 @@ public class NotaryDocList {
 	}
 
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-	
+
 	void Init() {
 		try {
 			PreparedStatement prepStmt = conn.prepareStatement("select * from V_NT_DOC");
@@ -190,7 +217,7 @@ public class NotaryDocList {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	public void dbDisconnect() {
 		try {
 			if (conn != null && !conn.isClosed()) {
@@ -200,7 +227,7 @@ public class NotaryDocList {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	private Pane createOptionPane(XTableView<?> table) {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");

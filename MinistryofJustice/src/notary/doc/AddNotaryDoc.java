@@ -1,14 +1,18 @@
 package notary.doc;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -22,6 +26,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -30,15 +35,33 @@ import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
+import mj.msg.Msg;
 
 public class AddNotaryDoc {
 
-	@FXML private ComboBox<V_NT_TEMP_LIST> VAL_NT_VALUE;
-	@FXML private TableView<V_NT_DOC_PRM> nt_temp_param_val;
-	@FXML private TableColumn<V_NT_DOC_PRM, Integer> id;
-	@FXML private TableColumn<V_NT_DOC_PRM, String> name;
-	@FXML private TableColumn<V_NT_DOC_PRM, String> value;
-	@FXML private ScrollPane scroll;
+	@FXML
+	private ComboBox<V_NT_TEMP_LIST> VAL_NT_VALUE;
+	@FXML
+	private TableView<V_NT_DOC_PRM> nt_temp_param_val;
+	@FXML
+	private TableColumn<V_NT_DOC_PRM, Integer> id;
+	@FXML
+	private TableColumn<V_NT_DOC_PRM, String> name;
+	@FXML
+	private TableColumn<V_NT_DOC_PRM, String> value;
+	@FXML
+	private TextField DOC_NUM;
+	@FXML
+	private ScrollPane scroll;
+	private BooleanProperty status;
+
+	public void setStatus(Boolean status) {
+		this.status.set(status);
+	}
+
+	public Boolean getStatus() {
+		return status.get();
+	}
 
 	@FXML
 	void AddParam(ActionEvent event) {
@@ -64,6 +87,10 @@ public class AddNotaryDoc {
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {
+						if (controller.getStatus()) {
+							Init(VAL_NT_VALUE.getSelectionModel().getSelectedItem().getID());
+							System.out.println("Дошли1");
+						}
 					}
 				});
 				stage.showAndWait();
@@ -72,17 +99,11 @@ public class AddNotaryDoc {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+
 //	DBUtil.SqlFromProp("notary/doc/SQL.properties", "NtParamVal")
 	void Init(Integer id) {
 		try {
-			{
-				PreparedStatement prp = conn.prepareStatement("delete from NT_TEMP_PARAM_VAL_TEMP");
-				prp.executeUpdate();
-				prp.close();
-				conn.commit();
-			}
-			PreparedStatement prepStmt = conn
-					.prepareStatement("select * from V_NT_DOC_PRM t where t.PRM_TMP_ID = ?");
+			PreparedStatement prepStmt = conn.prepareStatement("select * from V_NT_DOC_PRM t where t.PRM_TMP_ID = ?");
 			prepStmt.setInt(1, id);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<V_NT_DOC_PRM> dlist = FXCollections.observableArrayList();
@@ -94,7 +115,6 @@ public class AddNotaryDoc {
 				list.setVAL_PRM_ID(rs.getInt("VAL_PRM_ID"));
 				list.setVAL_NT_VALUE(rs.getString("VAL_NT_VALUE"));
 				list.setPRM_ID(rs.getInt("PRM_ID"));
-				list.setVAL_NT_DOC(rs.getInt("VAL_NT_DOC"));
 				list.setPRM_SQL(rs.getString("PRM_SQL"));
 				dlist.add(list);
 			}
@@ -105,10 +125,11 @@ public class AddNotaryDoc {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	@FXML
 	void Cencel(ActionEvent event) {
 		try {
+			setStatus(false);
 			onclose();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -136,7 +157,25 @@ public class AddNotaryDoc {
 	@FXML
 	void OK(ActionEvent event) {
 		try {
-
+			V_NT_TEMP_LIST val = VAL_NT_VALUE.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				System.out.println("Дошли2");
+				CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC(?,?,?)}");
+				cls.registerOutParameter(1, Types.VARCHAR);
+				cls.setInt(2, val.getID());
+				cls.setString(3, DOC_NUM.getText());
+				cls.execute();
+				if (cls.getString(1) == null) {
+					conn.commit();
+					setStatus(true);
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Msg.Message(cls.getString(1));
+				}
+				cls.close();
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -146,7 +185,7 @@ public class AddNotaryDoc {
 	void VAL_NT_VALUE(ActionEvent event) {
 		try {
 			V_NT_TEMP_LIST val = VAL_NT_VALUE.getSelectionModel().getSelectedItem();
-			if(val != null) {
+			if (val != null) {
 				Init(val.getID());
 			}
 		} catch (Exception e) {
@@ -156,6 +195,7 @@ public class AddNotaryDoc {
 
 	public AddNotaryDoc() {
 		Main.logger = Logger.getLogger(getClass());
+		this.status = new SimpleBooleanProperty();
 	}
 
 	@FXML

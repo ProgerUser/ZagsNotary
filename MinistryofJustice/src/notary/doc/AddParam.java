@@ -1,29 +1,53 @@
 package notary.doc;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 
 import org.apache.log4j.Logger;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
+import mj.msg.Msg;
 import mj.util.ConvConst;
 
 public class AddParam {
 
 	public AddParam() {
 		Main.logger = Logger.getLogger(getClass());
+		this.status = new SimpleBooleanProperty();
 	}
 
 	@FXML
 	private VBox VBOX_ROOT;
+
+	private BooleanProperty status;
+
+	public void setStatus(Boolean status) {
+		this.status.set(status);
+	}
+
+	public Boolean getStatus() {
+		return status.get();
+	}
 
 	@FXML
 	private TitledPane T_F;
@@ -53,16 +77,48 @@ public class AddParam {
 	@FXML
 	void Cencel(ActionEvent event) {
 		try {
-
+			setStatus(false);
+			onclose();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
 
+	void onclose() {
+		Stage stage = (Stage) OK.getScene().getWindow();
+		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+	}
+
 	@FXML
 	void IF_LIST_FIELD_B(ActionEvent event) {
 		try {
+			Stage stage = new Stage();
+			Stage stage_ = (Stage) IF_LIST_FIELD_B.getScene().getWindow();
 
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/notary/doc/ParamList.fxml"));
+
+			ParamList controller = new ParamList();
+			controller.setQuery(prm.getPRM_SQL());
+			controller.setConn(conn);
+			loader.setController(controller);
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Список");
+			stage.initOwner(stage_);
+			stage.setResizable(true);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+					if (controller.getStatus()) {
+						IF_LIST_FIELD_ID.setText(controller.getCode_s());
+						IF_LIST_FIELD_NAME.setText(controller.getName_s());
+					}
+				}
+			});
+			stage.show();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -71,8 +127,27 @@ public class AddParam {
 	@FXML
 	void OK(ActionEvent event) {
 		try {
-
+			if (!IF_LIST_FIELD_ID.getText().equals("") & !IF_LIST_FIELD_NAME.getText().equals("")) {
+				CallableStatement prp = conn
+						.prepareCall(DBUtil.SqlFromProp("/notary/doc/SQL.properties", "InsertTempParam"));
+				prp.setInt(1, prm.getPRM_ID());
+				prp.setString(2, IF_LIST_FIELD_ID.getText());
+				prp.registerOutParameter(3, Types.VARCHAR);
+				prp.execute();
+				if (prp.getString(3) != null) {
+					Msg.Message(prp.getString(3));
+				}
+				prp.close();
+				conn.commit();
+				setStatus(true);
+				onclose();
+			}
 		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				DBUtil.LOG_ERROR(e1);
+			}
 			DBUtil.LOG_ERROR(e);
 		}
 	}
