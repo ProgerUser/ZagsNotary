@@ -1,31 +1,37 @@
-package notary.template;
+package notary.doc;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class NT_TEMP_LIST_PARAM {
-	/** ИД */
+public class V_NT_DOC_PRM_EDIT {
+	/** Нет данных */
 	private IntegerProperty PRM_ID;
-	/** Название */
+	/** Нет данных */
 	private StringProperty PRM_NAME;
-	/** Ссылка на шаблоны */
+	/** Нет данных */
 	private IntegerProperty PRM_TMP_ID;
-	/** Запрос */
+	/** Нет данных */
 	private StringProperty PRM_SQL;
-	/** Тип параметра */
+	/** Нет данных */
 	private IntegerProperty PRM_TYPE;
-	/** Ссылка на таблицу */
-	private StringProperty PRM_TBL_REF;
+	/** Нет данных */
+	private IntegerProperty VAL_PRM_ID;
+	/** Нет данных */
+	private StringProperty VAL_NT_VALUE;
+	/** Нет данных */
+	private IntegerProperty VAL_NT_DOC;
 
-	public NT_TEMP_LIST_PARAM() {
+	public V_NT_DOC_PRM_EDIT() {
 		this.PRM_ID = new SimpleIntegerProperty();
 		this.PRM_NAME = new SimpleStringProperty();
 		this.PRM_TMP_ID = new SimpleIntegerProperty();
 		this.PRM_SQL = new SimpleStringProperty();
 		this.PRM_TYPE = new SimpleIntegerProperty();
-		this.PRM_TBL_REF = new SimpleStringProperty();
+		this.VAL_PRM_ID = new SimpleIntegerProperty();
+		this.VAL_NT_VALUE = new SimpleStringProperty();
+		this.VAL_NT_DOC = new SimpleIntegerProperty();
 	}
 
 	public void setPRM_ID(Integer PRM_ID) {
@@ -48,8 +54,16 @@ public class NT_TEMP_LIST_PARAM {
 		this.PRM_TYPE.set(PRM_TYPE);
 	}
 
-	public void setPRM_TBL_REF(String PRM_TBL_REF) {
-		this.PRM_TBL_REF.set(PRM_TBL_REF);
+	public void setVAL_PRM_ID(Integer VAL_PRM_ID) {
+		this.VAL_PRM_ID.set(VAL_PRM_ID);
+	}
+
+	public void setVAL_NT_VALUE(String VAL_NT_VALUE) {
+		this.VAL_NT_VALUE.set(VAL_NT_VALUE);
+	}
+
+	public void setVAL_NT_DOC(Integer VAL_NT_DOC) {
+		this.VAL_NT_DOC.set(VAL_NT_DOC);
 	}
 
 	public Integer getPRM_ID() {
@@ -72,8 +86,16 @@ public class NT_TEMP_LIST_PARAM {
 		return PRM_TYPE.get();
 	}
 
-	public String getPRM_TBL_REF() {
-		return PRM_TBL_REF.get();
+	public Integer getVAL_PRM_ID() {
+		return VAL_PRM_ID.get();
+	}
+
+	public String getVAL_NT_VALUE() {
+		return VAL_NT_VALUE.get();
+	}
+
+	public Integer getVAL_NT_DOC() {
+		return VAL_NT_DOC.get();
 	}
 
 	public IntegerProperty PRM_IDProperty() {
@@ -96,7 +118,15 @@ public class NT_TEMP_LIST_PARAM {
 		return PRM_TYPE;
 	}
 
-	public StringProperty PRM_TBL_REFProperty() {
-		return PRM_TBL_REF;
+	public IntegerProperty VAL_PRM_IDProperty() {
+		return VAL_PRM_ID;
+	}
+
+	public StringProperty VAL_NT_VALUEProperty() {
+		return VAL_NT_VALUE;
+	}
+
+	public IntegerProperty VAL_NT_DOCProperty() {
+		return VAL_NT_DOC;
 	}
 }

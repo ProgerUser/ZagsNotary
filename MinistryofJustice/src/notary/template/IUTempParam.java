@@ -233,11 +233,12 @@ public class IUTempParam {
 			ObservableList<NT_TEMP_LIST_PARAM> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				NT_TEMP_LIST_PARAM list = new NT_TEMP_LIST_PARAM();
-				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
-				list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
-				list.setPRM_SQL(rs.getString("PRM_SQL"));
 				list.setPRM_ID(rs.getInt("PRM_ID"));
 				list.setPRM_NAME(rs.getString("PRM_NAME"));
+				list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+				list.setPRM_SQL(rs.getString("PRM_SQL"));
+				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+				list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 				dlist.add(list);
 			}
 			prepStmt.close();

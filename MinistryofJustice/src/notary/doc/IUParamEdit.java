@@ -2,8 +2,9 @@ package notary.doc;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 
 import org.apache.log4j.Logger;
 
@@ -26,12 +27,11 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 import mj.util.ConvConst;
 
-public class AddParam {
+public class IUParamEdit {
 
-	public AddParam() {
+	public IUParamEdit() {
 		Main.logger = Logger.getLogger(getClass());
 		this.status = new SimpleBooleanProperty();
 	}
@@ -127,21 +127,30 @@ public class AddParam {
 	@FXML
 	void OK(ActionEvent event) {
 		try {
-			if (!IF_LIST_FIELD_ID.getText().equals("") & !IF_LIST_FIELD_NAME.getText().equals("")) {
-				CallableStatement prp = conn
-						.prepareCall(DBUtil.SqlFromProp("/notary/doc/SQL.properties", "InsertTempParam"));
-				prp.setInt(1, prm.getPRM_ID());
-				prp.setString(2, IF_LIST_FIELD_ID.getText());
-				prp.registerOutParameter(3, Types.VARCHAR);
-				prp.execute();
-				if (prp.getString(3) != null) {
-					Msg.Message(prp.getString(3));
+			if (prm.getPRM_TYPE() == 1) {
+				// Список
+				if (!IF_LIST_FIELD_ID.getText().equals("") & !IF_LIST_FIELD_NAME.getText().equals("")) {
+					CallableStatement prp = conn
+							.prepareCall(DBUtil.SqlFromProp("/notary/doc/SQL.properties", "UpdateParamValue"));
+					prp.setString(1, IF_LIST_FIELD_ID.getText());
+					prp.setInt(2, prm.getVAL_PRM_ID());
+					prp.setInt(3, prm.getVAL_NT_DOC());
+					prp.execute();
+					prp.close();
+					setStatus(true);
+					onclose();
 				}
-				prp.close();
-				conn.commit();
-				setStatus(true);
-				onclose();
+			} else if (prm.getPRM_TYPE() == 2) {
+				// Поле
+				
+			} else if (prm.getPRM_TYPE() == 3) {
+				// Дата
+				
+			} else if (prm.getPRM_TYPE() == 4) {
+				// Расширенное поле
+				
 			}
+
 		} catch (Exception e) {
 			try {
 				conn.rollback();
@@ -152,10 +161,10 @@ public class AddParam {
 		}
 	}
 
-	V_NT_DOC_PRM prm;
+	V_NT_DOC_PRM_EDIT prm;
 	Connection conn;
 
-	public void setConn(Connection conn, V_NT_DOC_PRM prm) {
+	public void setConn(Connection conn, V_NT_DOC_PRM_EDIT prm) {
 		try {
 			this.conn = conn;
 			this.prm = prm;
@@ -174,6 +183,13 @@ public class AddParam {
 				VBOX_ROOT.getChildren().remove(T_A);
 				VBOX_ROOT.getChildren().remove(D_F);
 				L_F.setText(prm.getPRM_NAME());
+				PreparedStatement prp = conn.prepareStatement(prm.getPRM_SQL() + " where code = ?");
+				prp.setInt(1,Integer.valueOf(prm.getVAL_NT_VALUE()));
+				ResultSet rs = prp.executeQuery();
+				if (rs.next()) {
+					IF_LIST_FIELD_ID.setText(String.valueOf(rs.getInt("code")));
+					IF_LIST_FIELD_NAME.setText(rs.getString("name"));
+				}
 			} else if (prm.getPRM_TYPE() == 2) {
 				// Поле
 				VBOX_ROOT.getChildren().remove(L_F);

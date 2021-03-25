@@ -111,7 +111,31 @@ public class NotaryDocList {
 		try {
 			V_NT_DOC val = NT_DOC.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) NT_DOC.getScene().getWindow();
+
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/doc/IUNotary.fxml"));
+
+				EditNotaryDoc controller = new EditNotaryDoc();
+				controller.setConn(conn,val);
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Редактировать: " + val.getID());
+				stage.initOwner(stage_);
+				stage.setResizable(true);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						if (controller.getStatus()) {
+							Init();
+						}
+					}
+				});
+				stage.show();
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);

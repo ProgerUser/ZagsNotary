@@ -1,13 +1,8 @@
 package notary.doc;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -33,23 +28,21 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 
-public class AddNotaryDoc {
+public class EditNotaryDoc {
 
 	@FXML
 	private ComboBox<V_NT_TEMP_LIST> VAL_NT_VALUE;
 	@FXML
-	private TableView<V_NT_DOC_PRM> nt_temp_param_val;
+	private TableView<V_NT_DOC_PRM_EDIT> nt_temp_param_val;
 	@FXML
-	private TableColumn<V_NT_DOC_PRM, Integer> id;
+	private TableColumn<V_NT_DOC_PRM_EDIT, Integer> id;
 	@FXML
-	private TableColumn<V_NT_DOC_PRM, String> name;
+	private TableColumn<V_NT_DOC_PRM_EDIT, String> name;
 	@FXML
-	private TableColumn<V_NT_DOC_PRM, String> value;
+	private TableColumn<V_NT_DOC_PRM_EDIT, String> value;
 	@FXML
 	private TextField DOC_NUM;
 	@FXML
@@ -64,21 +57,24 @@ public class AddNotaryDoc {
 		return status.get();
 	}
 
+
 //	DBUtil.SqlFromProp("notary/doc/SQL.properties", "NtParamVal")
 	void Init(Integer id) {
 		try {
-			PreparedStatement prepStmt = conn.prepareStatement("select * from V_NT_DOC_PRM t where t.PRM_TMP_ID = ?");
+			PreparedStatement prepStmt = conn.prepareStatement("select * from V_NT_DOC_PRM_EDIT t where t.PRM_TMP_ID = ? and VAL_NT_DOC = ? ");
 			prepStmt.setInt(1, id);
+			prepStmt.setInt(2, nt_doc.getID());
 			ResultSet rs = prepStmt.executeQuery();
-			ObservableList<V_NT_DOC_PRM> dlist = FXCollections.observableArrayList();
+			ObservableList<V_NT_DOC_PRM_EDIT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
-				V_NT_DOC_PRM list = new V_NT_DOC_PRM();
-				list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
-				list.setPRM_NAME(rs.getString("PRM_NAME"));
-				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
-				list.setVAL_PRM_ID(rs.getInt("VAL_PRM_ID"));
+				V_NT_DOC_PRM_EDIT list = new V_NT_DOC_PRM_EDIT();
 				list.setVAL_NT_VALUE(rs.getString("VAL_NT_VALUE"));
+				list.setVAL_PRM_ID(rs.getInt("VAL_PRM_ID"));
+				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+				list.setPRM_NAME(rs.getString("PRM_NAME"));
+				list.setVAL_NT_DOC(rs.getInt("VAL_NT_DOC"));
 				list.setPRM_ID(rs.getInt("PRM_ID"));
+				list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
 				list.setPRM_SQL(rs.getString("PRM_SQL"));
 				dlist.add(list);
 			}
@@ -102,7 +98,7 @@ public class AddNotaryDoc {
 
 	void EditParam() {
 		try {
-			V_NT_DOC_PRM val = nt_temp_param_val.getSelectionModel().getSelectedItem();
+			V_NT_DOC_PRM_EDIT val = nt_temp_param_val.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) scroll.getScene().getWindow();
@@ -110,7 +106,7 @@ public class AddNotaryDoc {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/notary/doc/IUParam.fxml"));
 
-				IUParam controller = new IUParam();
+				IUParamEdit controller = new IUParamEdit();
 				controller.setConn(conn, val);
 				loader.setController(controller);
 
@@ -125,7 +121,6 @@ public class AddNotaryDoc {
 					public void handle(WindowEvent paramT) {
 						if (controller.getStatus()) {
 							Init(VAL_NT_VALUE.getSelectionModel().getSelectedItem().getID());
-							System.out.println("Дошли1");
 						}
 					}
 				});
@@ -148,25 +143,8 @@ public class AddNotaryDoc {
 	@FXML
 	void OK(ActionEvent event) {
 		try {
-			V_NT_TEMP_LIST val = VAL_NT_VALUE.getSelectionModel().getSelectedItem();
-			if (val != null) {
-				System.out.println("Дошли2");
-				CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC(?,?,?)}");
-				cls.registerOutParameter(1, Types.VARCHAR);
-				cls.setInt(2, val.getID());
-				cls.setString(3, DOC_NUM.getText());
-				cls.execute();
-				if (cls.getString(1) == null) {
-					conn.commit();
-					setStatus(true);
-					onclose();
-				} else {
-					conn.rollback();
-					setStatus(false);
-					Msg.Message(cls.getString(1));
-				}
-				cls.close();
-			}
+			conn.commit();
+			onclose();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -184,7 +162,7 @@ public class AddNotaryDoc {
 		}
 	}
 
-	public AddNotaryDoc() {
+	public EditNotaryDoc() {
 		Main.logger = Logger.getLogger(getClass());
 		this.status = new SimpleBooleanProperty();
 	}
@@ -192,12 +170,11 @@ public class AddNotaryDoc {
 	@FXML
 	private void initialize() {
 		try {
-			dbConnect();
 			//scroll.setFitToHeight(true);
 			//scroll.setFitToWidth(true);
 			// Двойной щелчок по строке для открытия документа
 			nt_temp_param_val.setRowFactory(tv -> {
-				TableRow<V_NT_DOC_PRM> row = new TableRow<>();
+				TableRow<V_NT_DOC_PRM_EDIT> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
 						EditParam();
@@ -226,7 +203,16 @@ public class AddNotaryDoc {
 				VAL_NT_VALUE.setItems(combolist);
 				convert_VAL_NT_VALUE(VAL_NT_VALUE);
 				rs.close();
+				if (nt_doc.getNT_TYPE() != null) {
+					for (V_NT_TEMP_LIST ld : VAL_NT_VALUE.getItems()) {
+						if (nt_doc.getNT_TYPE().equals(ld.getID())) {
+							VAL_NT_VALUE.getSelectionModel().select(ld);
+							break;
+						}
+					}
+				}
 			}
+			Init(nt_doc.getNT_TYPE());
 			id.setCellValueFactory(cellData -> cellData.getValue().PRM_IDProperty().asObject());
 			name.setCellValueFactory(cellData -> cellData.getValue().PRM_NAMEProperty());
 			value.setCellValueFactory(cellData -> cellData.getValue().VAL_NT_VALUEProperty());
@@ -250,32 +236,17 @@ public class AddNotaryDoc {
 			}
 		});
 	}
-
-	public void dbDisconnect() {
+	V_NT_DOC nt_doc;
+	public void setConn(Connection conn,V_NT_DOC nt_doc) {
 		try {
-			if (conn != null && !conn.isClosed()) {
-				conn.close();
-			}
-		} catch (SQLException e) {
+			this.conn = conn;
+			this.nt_doc = nt_doc;
+			this.conn.setAutoCommit(false);
+		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-
 	private Connection conn;
-
-	private void dbConnect() {
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program", "IUTempParam");
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
 
 	void onclose() {
 		Stage stage = (Stage) VAL_NT_VALUE.getScene().getWindow();
