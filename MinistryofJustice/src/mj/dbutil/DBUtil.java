@@ -92,7 +92,7 @@ public class DBUtil {
 			Timer time = new Timer(); // Instantiate Timer Object
 			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
 			st.setConn(conn);
-			time.schedule(st, 0, 10000); // Create task repeating every 1 sec
+			time.schedule(st, 0, 300000); // Create task repeating every 5 min
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
