@@ -14,12 +14,15 @@ public class NT_TEMP_LIST {
 	private IntegerProperty PARENT;
 	/** Путь */
 	private StringProperty FILE_PATH;
+	/** запрос */
+	private StringProperty REP_QUERY;
 
 	public NT_TEMP_LIST() {
 		this.ID = new SimpleIntegerProperty();
 		this.NAME = new SimpleStringProperty();
 		this.PARENT = new SimpleIntegerProperty();
 		this.FILE_PATH = new SimpleStringProperty();
+		this.REP_QUERY = new SimpleStringProperty();
 	}
 
 	public void setID(Integer ID) {
@@ -38,6 +41,10 @@ public class NT_TEMP_LIST {
 		this.FILE_PATH.set(FILE_PATH);
 	}
 
+	public void setREP_QUERY(String REP_QUERY) {
+		this.REP_QUERY.set(REP_QUERY);
+	}
+
 	public Integer getID() {
 		return ID.get();
 	}
@@ -54,6 +61,10 @@ public class NT_TEMP_LIST {
 		return FILE_PATH.get();
 	}
 
+	public String getREP_QUERY() {
+		return REP_QUERY.get();
+	}
+
 	public IntegerProperty IDProperty() {
 		return ID;
 	}
@@ -68,5 +79,9 @@ public class NT_TEMP_LIST {
 
 	public StringProperty FILE_PATHProperty() {
 		return FILE_PATH;
+	}
+
+	public StringProperty REP_QUERYProperty() {
+		return REP_QUERY;
 	}
 }

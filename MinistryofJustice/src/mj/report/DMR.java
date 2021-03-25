@@ -16,21 +16,21 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
+import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 
-public class Main {
-	
-	public class MjDynamRepExc extends Exception { 
-	    /**
+public class DMR {
+	public class MjDynamRepExc extends Exception {
+		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 999;
 
 		public MjDynamRepExc(String errorMessage) {
-	        super(errorMessage);
-	    }
+			super(errorMessage);
+		}
 	}
-	
+
 	@SuppressWarnings("resource")
 	public void DunamicRep() {
 		try {
@@ -100,14 +100,9 @@ public class Main {
 			URLClassLoader urlClassLoader = new URLClassLoader(new URL[] { temp.toUri().toURL() }, classLoader);
 			Class<?> javaDemoClass = urlClassLoader.loadClass(className);
 			Method method = javaDemoClass.getMethod("run", paramString);
-			method.invoke(null, "SAID");
+			method.invoke(null, "");
 		} catch (Exception e) {
-			e.printStackTrace();
+			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
-	public static void main(String[] args) {
-		
-	}
-
 }

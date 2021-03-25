@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<BorderPane fx:id="ROOT">
 			<top>
@@ -114,7 +114,7 @@
 				<XTableView fx:id="NT_DOC" prefWidth="800.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
 					<columns>
 						<XTableColumn fx:id="ID" prefWidth="82.0" text="Номер" />
-						<XTableColumn fx:id="DOC_NUMBER" prefWidth="120.0" text="Номер документа" visible="false" />
+						<XTableColumn fx:id="DOC_NUMBER" prefWidth="120.0" text="Номер документа" />
 						<XTableColumn fx:id="OPER" prefWidth="120.0" text="Опер." />
 						<XTableColumn fx:id="CR_DATE" prefWidth="120.0" text="Дата созд. записи" />
 						<XTableColumn fx:id="CR_TIME" prefWidth="120.0" text="Время созд. записи" />

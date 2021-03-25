@@ -140,6 +140,7 @@ public class NtTemplate {
 				list.setNAME(rs.getString("NAME"));
 				list.setPARENT(rs.getInt("PARENT"));
 				list.setFILE_PATH(rs.getString("FILE_PATH"));
+				list.setREP_QUERY(rs.getString("REP_QUERY"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -172,7 +173,7 @@ public class NtTemplate {
 				loader.setLocation(getClass().getResource("/notary/template/IUTempList.fxml"));
 
 				IUTemplateList controller = new IUTemplateList();
-				controller.setID(tmp.getValue().getNT_ID());
+				controller.setVal(tmp.getValue());
 				controller.settype("I");
 				loader.setController(controller);
 
@@ -382,9 +383,7 @@ public class NtTemplate {
 				loader.setLocation(getClass().getResource("/notary/template/IUTempList.fxml"));
 
 				IUTemplateList controller = new IUTemplateList();
-				controller.setID(tmp.getID());
-				controller.setNAME(tmp.getNAME());
-				controller.setFilePath(tmp.getFILE_PATH());
+				controller.setVal(tmp);
 				controller.settype("U");
 				loader.setController(controller);
 

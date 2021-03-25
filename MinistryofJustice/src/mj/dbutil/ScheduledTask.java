@@ -19,7 +19,7 @@ public class ScheduledTask extends TimerTask {
 				rs.close();
 				prp.close();
 			} catch (Exception e) {
-				DBUtil.LOG_ERROR(e);
+				this.cancel();
 			}
 		} else {
 			this.cancel();

@@ -163,7 +163,7 @@ public class NotaryDocList {
 	@FXML
 	void Print(ActionEvent event) {
 		try {
-
+			
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

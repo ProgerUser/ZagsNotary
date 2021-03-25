@@ -9,28 +9,25 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.stage.FileChooser.ExtensionFilter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 
 public class IUTemplateList {
 
-	private IntegerProperty ID;
+
 	private StringProperty type;
-	private StringProperty NAME_;
-	private StringProperty FilePath;
 	@FXML
 	private TextField FILE_PATH;
 	@FXML
@@ -38,48 +35,30 @@ public class IUTemplateList {
 
 	public IUTemplateList() {
 		Main.logger = Logger.getLogger(getClass());
-		this.ID = new SimpleIntegerProperty();
 		this.type = new SimpleStringProperty();
-		this.NAME_ = new SimpleStringProperty();
-		this.FilePath = new SimpleStringProperty();
 	}
-
-	public void setFilePath(String FilePath) {
-		this.FilePath.set(FilePath);
-	}
-
-	public String getFilePath() {
-		return FilePath.get();
-	}
-
-	public void setNAME(String NAME) {
-		this.NAME_.set(NAME);
-	}
-
-	public String getNAME() {
-		return NAME_.get();
-	}
-
 	public void settype(String type) {
 		this.type.set(type);
 	}
+	
+	NT_TEMPLATE val;
+	NT_TEMP_LIST val_list;
+	
+	public void  setVal(NT_TEMPLATE val) {
+		this.val = val;
+	}
 
+	public void setVal(NT_TEMP_LIST val_list) {
+		this.val_list = val_list;
+	}
 	public String gettype() {
 		return type.get();
 	}
-
-	public void setID(Integer ID) {
-		this.ID.set(ID);
-	}
-
-	public Integer getID() {
-		return ID.get();
-	}
-
 	private Connection conn;
 	@FXML
 	private TextField NAME;
-
+    @FXML
+    private TextArea REP_QUERY;
 	@FXML
 	void Cencel(ActionEvent event) {
 		onclose();
@@ -91,20 +70,22 @@ public class IUTemplateList {
 			if (!NAME.getText().equals("")) {
 				if (gettype().equals("I")) {
 					PreparedStatement prp = conn
-							.prepareStatement("insert into NT_TEMP_LIST (NAME,PARENT,FILE_PATH) values (?,?,?)");
+							.prepareStatement("insert into NT_TEMP_LIST (NAME,PARENT,FILE_PATH,REP_QUERY) values (?,?,?,?)");
 					prp.setString(1, NAME.getText());
-					prp.setInt(2, getID());
+					prp.setInt(2, val.getNT_ID());
 					prp.setString(3, FILE_PATH.getText());
+					prp.setString(4, REP_QUERY.getText());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
 					onclose();
 				} else if (gettype().equals("U")) {
 					PreparedStatement prp = conn
-							.prepareStatement("update NT_TEMP_LIST set NAME = ?,FILE_PATH=? where ID = ?");
+							.prepareStatement("update NT_TEMP_LIST set NAME = ?,FILE_PATH=?,REP_QUERY=? where ID = ?");
 					prp.setString(1, NAME.getText());
 					prp.setString(2, FILE_PATH.getText());
-					prp.setInt(3, getID());
+					prp.setString(3, REP_QUERY.getText());
+					prp.setInt(4, val_list.getID());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
@@ -170,8 +151,9 @@ public class IUTemplateList {
 			dbConnect();
 			DBUtil.RunProcess(conn);
 			if (gettype().equals("U")) {
-				NAME.setText(getNAME());
-				FILE_PATH.setText(getFilePath());
+				NAME.setText(val_list.getNAME());
+				FILE_PATH.setText(val_list.getFILE_PATH());
+				REP_QUERY.setText(val_list.getREP_QUERY());
 				OK.setText("Сохранить");
 			}
 		} catch (Exception e) {

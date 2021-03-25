@@ -143,8 +143,14 @@ public class EditNotaryDoc {
 	@FXML
 	void OK(ActionEvent event) {
 		try {
+			PreparedStatement prp = conn.prepareStatement("update NT_DOC set DOC_NUMBER = ? where ID = ?");
+			prp.setString(1, DOC_NUM.getText());
+			prp.setInt(2,nt_doc.getID());
+			prp.executeUpdate();
+			prp.close();
 			conn.commit();
 			onclose();
+			setStatus(true);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

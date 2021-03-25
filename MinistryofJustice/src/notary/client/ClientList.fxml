@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="VBOX" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="VBOX" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ToolBar>
         <items>
@@ -51,7 +51,7 @@
             <Insets left="-5.0" right="-5.0" top="-5.0" />
          </VBox.margin>
       </ToolBar>
-      <XTableView fx:id="NT_CLIENTS" styleClass="mylistview" stylesheets="/ScrPane.css" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="900.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+      <XTableView fx:id="NT_CLIENTS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="900.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
          <columns>
             <XTableColumn fx:id="CLI_ID" prefWidth="75.0" text="ИД" />
             <XTableColumn fx:id="CLI_OPER" prefWidth="96.0" text="Пользователь" />

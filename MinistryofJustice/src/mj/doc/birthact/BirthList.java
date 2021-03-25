@@ -82,67 +82,46 @@ public class BirthList {
 
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_LD;
-
     @FXML
     private TitledPane FILTER;
-    
 	@FXML
 	private XTableView<SELECTBIRTH> BIRTH_ACT;
-
 	@FXML
 	private Button BIRTH_ACT_FILTER;
-
-	
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> DOC_NUMBER;
-	
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_FNAME;
-
 	@FXML
 	private Button BIRTH_ACT_PRINT;
-
 	@FXML
 	private XTableColumn<SELECTBIRTH, Integer> BIRTH_ACT_ID;
-
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_MNAME;
-
 	@FXML
 	private BorderPane ap;
-
 	@FXML
 	private XTableColumn<SELECTBIRTH, LocalDate> CR_DATE;
-
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> CR_TIME;
-
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> BR_ACT_USER;
-
 	// @FXML
 	// private XTableColumn<SELECTBIRTH, LocalDateTime> BIRTH_ACT_DATE;
-
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> FFIO;
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> MFIO;
-
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_ZAGS;
-
 	@FXML
 	private Button BIRTH_ACT_ADD;
-
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> ChFio;
-
 	@FXML
 	private Button BIRTH_ACT_DELETE;
-
 	@FXML
 	private Button BIRTH_ACT_EDIT;
-
 	@FXML
 	void BIRTH_ACT_FILTER(ActionEvent event) {
 		try {
