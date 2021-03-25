@@ -119,7 +119,7 @@ public class AddNotary {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			/* Отделение */
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from otd");

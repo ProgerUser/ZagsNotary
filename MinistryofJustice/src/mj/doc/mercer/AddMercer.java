@@ -723,7 +723,7 @@ public class AddMercer {
 
 			
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			ShePane.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			HePane.heightProperty().addListener(

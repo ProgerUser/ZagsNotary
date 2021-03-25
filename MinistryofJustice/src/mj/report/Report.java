@@ -210,6 +210,7 @@ public class Report {
 			
 			FRREPRunner runner = new FRREPRunner();
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			String port = Connect.connectionURL.substring(Connect.connectionURL.indexOf(":")+1,
 					Connect.connectionURL.indexOf("/"));
 			//System.out.println(port);
@@ -407,6 +408,7 @@ public class Report {
 			
 			
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			// установить svg как иконку для кнопки
 //			{
 //				InputStream svgFile = getClass().getResourceAsStream("/table2.svg");

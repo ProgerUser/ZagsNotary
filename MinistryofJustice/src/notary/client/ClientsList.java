@@ -224,6 +224,7 @@ public class ClientsList {
 		try {
 			// Соединение
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			// Двойной щелчок по строке для открытия документа
 			NT_CLIENTS.setRowFactory(tv -> {
 				TableRow<V_NT_CLI> row = new TableRow<>();

@@ -579,7 +579,7 @@ public class UsrC {
 		all_w.setToggleGroup(group);
 
 		dbConnect();
-	
+		DBUtil.RunProcess(conn);
 		ZagsCombo();
 		NotaryCombo();
 		convertComboDisplayList();

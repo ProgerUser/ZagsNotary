@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Properties;
+import java.util.Timer;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -44,6 +45,7 @@ public class DBUtil {
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
 			conn.setAutoCommit(false);
+			DBUtil.RunProcess(conn);
 		}catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -84,6 +86,16 @@ public class DBUtil {
 			ret = false;
 		}
 		return ret;
+	}	
+	public static void RunProcess(Connection conn) {
+		try {
+			Timer time = new Timer(); // Instantiate Timer Object
+			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
+			st.setConn(conn);
+			time.schedule(st, 0, 10000); // Create task repeating every 1 sec
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
 	}
 	/**
 	 * Запись лога

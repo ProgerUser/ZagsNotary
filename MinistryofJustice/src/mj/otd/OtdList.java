@@ -298,6 +298,7 @@ public class OtdList {
 //			addIfNotPresent(OTD.getStyleClass(), JMetroStyleClass.TABLE_GRID_LINES);
 //			addIfNotPresent(OTD.getStyleClass(), JMetroStyleClass.ALTERNATING_ROW_COLORS);
 			dbConnect();
+			DBUtil.RunProcess(conn);
 //			Platform.runLater(() -> {
 //			});
 

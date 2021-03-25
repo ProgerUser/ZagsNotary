@@ -2271,7 +2271,7 @@ public class AddCus {
 			AB_DOUTH.setToggleGroup(toggleGroup);
 			
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			/**
 			 * Двойной щелчок по строке
 			 */

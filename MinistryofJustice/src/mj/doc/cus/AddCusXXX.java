@@ -2379,7 +2379,7 @@ public class AddCusXXX {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			/**
 			 * Двойной щелчок по строке
 			 */

@@ -157,7 +157,7 @@ public class PRJ_UPDATE {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			IUBtn.setText("Сохранить");
 
 			IsFolder.setDisable(true);

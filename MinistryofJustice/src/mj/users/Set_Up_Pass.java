@@ -77,6 +77,7 @@ public class Set_Up_Pass {
 	@FXML
 	private void initialize() {
 		dbConnect();
+		DBUtil.RunProcess(conn);
 		CUSRLOGNAME.setText(getUsr());
 	}
 

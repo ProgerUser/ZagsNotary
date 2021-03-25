@@ -1360,7 +1360,7 @@ public class CusList {
 			 * Создать сессию
 			 */
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			/**
 			 * Инициализация столбцов таблицы
 			 */

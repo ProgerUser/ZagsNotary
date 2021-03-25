@@ -263,7 +263,7 @@ public class IUTempParam {
 	private void initialize() {
 		try {
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			PRM_ID.setCellValueFactory(cellData -> cellData.getValue().PRM_IDProperty().asObject());
 			PRM_NAME.setCellValueFactory(cellData -> cellData.getValue().PRM_NAMEProperty());
 			PRM_TYPE.setCellValueFactory(cellData -> cellData.getValue().PRM_TYPEProperty().asObject());

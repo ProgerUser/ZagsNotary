@@ -501,7 +501,7 @@ public class GrpController {
 	private void initialize() {
 		try {
 			dbConnect();
-			
+			DBUtil.RunProcess(conn);
 			fillTreeMnu();
 			fillTreeAct();
 			

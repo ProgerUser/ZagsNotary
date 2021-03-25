@@ -78,6 +78,7 @@ public class Trigger {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			INIT();
 		} catch (Exception e) {
 			Msg.Message(ExceptionUtils.getStackTrace(e));

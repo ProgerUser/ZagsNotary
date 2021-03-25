@@ -320,7 +320,7 @@ public class PRJ_FLS_FLDR {
 			});
 
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			FillTree();
 
 			PROJECT.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {

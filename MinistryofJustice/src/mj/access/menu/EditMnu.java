@@ -140,6 +140,7 @@ public class EditMnu {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			MNU_PARENT.setText(String.valueOf(parantid));
 			MNU_NAME.setText(txt);
 			// FirstWUpp(ACT_NAME);

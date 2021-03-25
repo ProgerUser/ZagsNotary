@@ -460,7 +460,7 @@ public class OdbActions {
 			});
 
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			InitUsrs();
 
 			fillTree();

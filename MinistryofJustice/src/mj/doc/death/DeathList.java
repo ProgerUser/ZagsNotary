@@ -1108,6 +1108,7 @@ public class DeathList {
 			DC_DD.setColumnFilter(new DateColumnFilter<>());
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			Refresh();
 			/**
 			 * Столбцы таблицы

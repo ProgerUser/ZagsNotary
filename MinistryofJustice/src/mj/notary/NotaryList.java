@@ -262,7 +262,7 @@ public class NotaryList {
 	private void initialize() {
 		try {
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			NOT_NAME.setCellValueFactory(cellData -> cellData.getValue().NOT_NAMEProperty());
 			NOT_OTD.setCellValueFactory(cellData -> cellData.getValue().COTDNAMEProperty());
 			NOT_RUK.setCellValueFactory(cellData -> cellData.getValue().NOT_RUKProperty());

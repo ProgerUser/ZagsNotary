@@ -969,6 +969,7 @@ public class UpdNatList {
 			FIO.setColumnFilter(new PatternColumnFilter<>());
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			Refresh();
 			/**
 			 * Столбцы таблицы

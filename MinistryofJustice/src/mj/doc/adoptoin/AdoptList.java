@@ -1095,6 +1095,7 @@ public class AdoptList {
 					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			Refresh();
 			/**
 			 * Столбцы таблицы

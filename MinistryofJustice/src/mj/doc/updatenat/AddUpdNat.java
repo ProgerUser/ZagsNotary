@@ -604,6 +604,7 @@ public class AddUpdNat {
 
 			if (conn == null) {
 				dbConnect();
+				DBUtil.RunProcess(conn);
 			}
 			{
 				Statement sqlStatement = conn.createStatement();

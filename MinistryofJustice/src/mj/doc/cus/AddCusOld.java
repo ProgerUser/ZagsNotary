@@ -2355,7 +2355,7 @@ public class AddCusOld {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			Docs.heightProperty().addListener(
 					(observable, oldValue, newValue) -> ScrollPaneCus.vvalueProperty().set(newValue.doubleValue()));
 			Address.heightProperty().addListener(

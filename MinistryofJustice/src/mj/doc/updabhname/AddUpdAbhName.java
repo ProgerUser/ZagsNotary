@@ -566,6 +566,7 @@ public class AddUpdAbhName {
 
 			if (conn == null) {
 				dbConnect();
+				DBUtil.RunProcess(conn);
 			}
 			/*
 			 * Pane1.heightProperty().addListener( (observable, oldValue, newValue) ->

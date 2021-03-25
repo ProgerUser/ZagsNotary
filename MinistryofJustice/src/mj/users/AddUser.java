@@ -77,6 +77,7 @@ public class AddUser {
 	@FXML
 	private void initialize() {
 		dbConnect();
+		DBUtil.RunProcess(conn);
 		UpperCase(CUSRLOGNAME);
 		FirstWUpp(CUSRNAME);
 	}

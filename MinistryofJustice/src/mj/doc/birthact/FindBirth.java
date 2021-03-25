@@ -739,7 +739,7 @@ public class FindBirth {
 	private void initialize() {
 		try {
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			DateAutoComma(DT1);
 			DateAutoComma(DT2);
 

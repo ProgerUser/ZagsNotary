@@ -157,6 +157,7 @@ public class Report_ {
 			FRREPRunner runner = new FRREPRunner();
 
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			String port = "1521";
 			String sid = "";
 			String host = "";
@@ -535,7 +536,7 @@ public class Report_ {
 	private void initialize() {
 		try {
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			VALUE.setOnEditCommit(new EventHandler<CellEditEvent<REP_PARAMS, String>>() {
 				@Override
 				public void handle(CellEditEvent<REP_PARAMS, String> t) {

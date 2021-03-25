@@ -1293,7 +1293,7 @@ public class BirthList {
 	private void initialize() {
 		try {
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			VB.getChildren().remove(FILTER);
 			
 			ROOT.setBottom(createOptionPane(BIRTH_ACT));

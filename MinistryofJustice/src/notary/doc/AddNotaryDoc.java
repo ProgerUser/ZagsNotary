@@ -193,6 +193,7 @@ public class AddNotaryDoc {
 	private void initialize() {
 		try {
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			//scroll.setFitToHeight(true);
 			//scroll.setFitToWidth(true);
 			// Двойной щелчок по строке для открытия документа

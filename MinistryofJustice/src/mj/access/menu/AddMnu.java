@@ -123,7 +123,7 @@ public class AddMnu {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			MNU_PARENT.setText(String.valueOf(parantid));
 
 			// FirstWUpp(MNU_NAME);

@@ -138,7 +138,7 @@ public class IUTemplate {
 	private void initialize() {
 		try {
 			dbConnect();
-			
+			DBUtil.RunProcess(conn);
 			if (gettype().equals("U")) {
 				NT_NAME.setText(getNAME());
 				OK.setText("Сохранить");

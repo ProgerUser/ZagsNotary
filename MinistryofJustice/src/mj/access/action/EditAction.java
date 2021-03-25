@@ -104,7 +104,7 @@ public class EditAction {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			ACT_PARENT.setText(String.valueOf(parantid));
 			ACT_NAME.setText(txt);
 			// FirstWUpp(ACT_NAME);

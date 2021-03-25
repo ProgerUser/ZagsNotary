@@ -370,6 +370,7 @@ public class AddClients {
 			scroll.setFitToWidth(true);
 
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			// страна рождения
 			{
 				Statement sqlStatement = conn.createStatement();

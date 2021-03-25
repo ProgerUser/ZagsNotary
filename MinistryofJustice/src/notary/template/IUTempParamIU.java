@@ -167,6 +167,7 @@ public class IUTempParamIU {
 	private void initialize() {
 		try {
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from ALL_TABLE order by TABLE_NAME asc");
 				ResultSet rs = stsmt.executeQuery();

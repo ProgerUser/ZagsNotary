@@ -157,7 +157,7 @@ public class LogList {
 	private void initialize() {
 		try {
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			ROOT.setBottom(createOptionPane(LOGS));
 
 			METHODNAME.setCellValueFactory(cellData -> cellData.getValue().METHODNAMEProperty());

@@ -140,7 +140,7 @@ public class PRJ_ADD {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			PRJ_PARENT.setText(String.valueOf(getId()));
 
 		} catch (Exception e) {

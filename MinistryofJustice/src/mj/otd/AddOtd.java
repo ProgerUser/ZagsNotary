@@ -70,7 +70,7 @@ public class AddOtd {
 	private void initialize() {
 		try {
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			// Районы
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from RAION");

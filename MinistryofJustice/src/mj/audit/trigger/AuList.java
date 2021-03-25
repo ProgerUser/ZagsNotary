@@ -711,6 +711,7 @@ public class AuList {
 			Main.logger = Logger.getLogger(getClass());
 
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			Refresh();
 
 			/**

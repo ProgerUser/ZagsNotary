@@ -266,7 +266,7 @@ public class ZagsList {
 	private void initialize() {
 		try {
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			ZAGS_NAME.setCellValueFactory(cellData -> cellData.getValue().ZAGS_NAMEProperty());
 			ZAGS_OTD.setCellValueFactory(cellData -> cellData.getValue().COTDNAMEProperty());
 			ZAGS_RUK.setCellValueFactory(cellData -> cellData.getValue().ZAGS_RUKProperty());

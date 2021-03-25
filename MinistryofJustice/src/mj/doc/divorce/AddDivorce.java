@@ -732,7 +732,7 @@ public class AddDivorce {
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			
 			// Суды
 			{

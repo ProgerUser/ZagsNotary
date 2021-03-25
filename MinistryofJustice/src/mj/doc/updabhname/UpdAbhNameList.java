@@ -930,6 +930,7 @@ public class UpdAbhNameList {
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			Refresh();
 			/**
 			 * Столбцы таблицы

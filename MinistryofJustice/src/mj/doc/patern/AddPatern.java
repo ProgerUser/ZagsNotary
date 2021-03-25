@@ -698,6 +698,7 @@ public class AddPatern {
 
 			if (conn == null) {
 				dbConnect();
+				DBUtil.RunProcess(conn);
 			}
 			/**
 			 * Тип основания для уст. отцовства

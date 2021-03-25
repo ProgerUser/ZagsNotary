@@ -183,6 +183,7 @@ public class NotaryDocList {
 	private void initialize() {
 		try {
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			ROOT.setBottom(createOptionPane(NT_DOC));
 			ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
 			DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());

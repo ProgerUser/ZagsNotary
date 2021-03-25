@@ -160,7 +160,7 @@ public class AddZags {
 	private void initialize() {
 		try {
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			/* Отделение */
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from otd");

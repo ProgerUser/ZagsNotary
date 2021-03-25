@@ -404,7 +404,7 @@ public class OdbMNU {
 			});
 
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			InitUsrs();
 
 			fillTree();

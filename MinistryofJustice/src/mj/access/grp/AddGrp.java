@@ -58,6 +58,7 @@ public class AddGrp {
 	private void initialize() {
 		try {
 			dbConnect();
+			DBUtil.RunProcess(conn);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

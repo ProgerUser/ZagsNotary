@@ -726,7 +726,7 @@ public class FIND_CUS {
 			 * Создать сессию
 			 */
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			/**
 			 * Заполнение данными таблицу
 			 */

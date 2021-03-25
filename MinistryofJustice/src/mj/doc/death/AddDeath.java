@@ -577,7 +577,7 @@ public class AddDeath {
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			
 			dbConnect();
-			
+			DBUtil.RunProcess(conn);
 			
 			// Суды
 			{

@@ -899,6 +899,7 @@ public class AddAdopt {
 
 			if (conn == null) {
 				dbConnect();
+				DBUtil.RunProcess(conn);
 			}
 			
 			// Суды

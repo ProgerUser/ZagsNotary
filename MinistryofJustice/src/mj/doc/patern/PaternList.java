@@ -1101,6 +1101,7 @@ public class PaternList {
 			MotherBirthDate.setColumnFilter(new DateColumnFilter<>());
 
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			Refresh();
 			/**
 			 * Столбцы таблицы

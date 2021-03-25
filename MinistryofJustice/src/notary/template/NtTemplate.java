@@ -525,7 +525,7 @@ public class NtTemplate {
 	private void initialize() {
 		try {
 			dbConnect();
-			
+			DBUtil.RunProcess(conn);
 			NT_TEMPLATE.setCellFactory(tv -> {
 				TreeCell<NT_TEMPLATE> cell = new TreeCell<NT_TEMPLATE>() {
 					@Override

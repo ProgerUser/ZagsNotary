@@ -577,6 +577,7 @@ public class AddUpdName {
 			 */
 			if (conn == null) {
 				dbConnect();
+				DBUtil.RunProcess(conn);
 			}
 		} catch (Exception e) {
 			Msg.Message(ExceptionUtils.getStackTrace(e));

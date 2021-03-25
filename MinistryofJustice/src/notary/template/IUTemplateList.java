@@ -168,7 +168,7 @@ public class IUTemplateList {
 	private void initialize() {
 		try {
 			dbConnect();
-
+			DBUtil.RunProcess(conn);
 			if (gettype().equals("U")) {
 				NAME.setText(getNAME());
 				FILE_PATH.setText(getFilePath());

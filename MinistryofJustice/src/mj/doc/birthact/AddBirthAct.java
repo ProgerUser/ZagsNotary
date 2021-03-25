@@ -1240,6 +1240,7 @@ public class AddBirthAct {
 			});
 
 			dbConnect();
+			DBUtil.RunProcess(conn);
 			{
 				OnlyDigits(ChildCnt);
 				OnlyDigits(NDOC_A);
