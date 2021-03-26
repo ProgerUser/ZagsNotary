@@ -1,6 +1,7 @@
 package notary.template;
 
 import java.io.File;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,7 +24,9 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
+import oracle.sql.CLOB;
 
+@SuppressWarnings("deprecation")
 public class IUTemplateList {
 
 
@@ -74,7 +77,9 @@ public class IUTemplateList {
 					prp.setString(1, NAME.getText());
 					prp.setInt(2, val.getNT_ID());
 					prp.setString(3, FILE_PATH.getText());
-					prp.setString(4, REP_QUERY.getText());
+					Clob clob = oracle.sql.CLOB.createTemporary(conn, false, CLOB.DURATION_SESSION);
+					clob.setString(1, REP_QUERY.getText());
+					prp.setClob(4, clob);
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
@@ -84,7 +89,9 @@ public class IUTemplateList {
 							.prepareStatement("update NT_TEMP_LIST set NAME = ?,FILE_PATH=?,REP_QUERY=? where ID = ?");
 					prp.setString(1, NAME.getText());
 					prp.setString(2, FILE_PATH.getText());
-					prp.setString(3, REP_QUERY.getText());
+					Clob clob = oracle.sql.CLOB.createTemporary(conn, false, CLOB.DURATION_SESSION);
+					clob.setString(1, REP_QUERY.getText());
+					prp.setClob(3, clob);
 					prp.setInt(4, val_list.getID());
 					prp.executeUpdate();
 					prp.close();

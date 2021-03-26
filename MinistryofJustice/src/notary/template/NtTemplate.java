@@ -1,7 +1,10 @@
 package notary.template;
 
 import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -45,17 +48,22 @@ public class NtTemplate {
 	public NtTemplate() {
 		Main.logger = Logger.getLogger(getClass());
 	}
-	
+
 	NT_TEMPLATE nt_template;
-	
-	@FXML private TreeView<NT_TEMPLATE> NT_TEMPLATE;
-	@FXML private TableView<NT_TEMP_LIST> NT_TEMP_LIST;
-	@FXML private TableColumn<NT_TEMP_LIST, Integer> ID;
-	@FXML private TableColumn<NT_TEMP_LIST, String> NAME;
-    @FXML private TextField TextToSearch;
-    
+
+	@FXML
+	private TreeView<NT_TEMPLATE> NT_TEMPLATE;
+	@FXML
+	private TableView<NT_TEMP_LIST> NT_TEMP_LIST;
+	@FXML
+	private TableColumn<NT_TEMP_LIST, Integer> ID;
+	@FXML
+	private TableColumn<NT_TEMP_LIST, String> NAME;
+	@FXML
+	private TextField TextToSearch;
+
 	TreeItem<NT_TEMPLATE> root = null;
-	
+
 	@FXML
 	void AddTemp(ActionEvent event) {
 		try {
@@ -126,7 +134,17 @@ public class NtTemplate {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
+	public static String getClobString(Clob clob) throws SQLException, IOException {
+		BufferedReader stringReader = new BufferedReader(clob.getCharacterStream());
+		String singleLine = null;
+		StringBuffer strBuff = new StringBuffer();
+		while ((singleLine = stringReader.readLine()) != null) {
+			strBuff.append(singleLine+"\r\n");
+		}
+		return strBuff.toString();
+	}
+
 	void Init(Integer id) {
 		try {
 			String selectStmt = "select * from nt_temp_list where PARENT = ? order by ID asc";
@@ -140,7 +158,9 @@ public class NtTemplate {
 				list.setNAME(rs.getString("NAME"));
 				list.setPARENT(rs.getInt("PARENT"));
 				list.setFILE_PATH(rs.getString("FILE_PATH"));
-				list.setREP_QUERY(rs.getString("REP_QUERY"));
+				if (rs.getClob("REP_QUERY") != null) {
+					list.setREP_QUERY(getClobString(rs.getClob("REP_QUERY")));
+				}
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -160,7 +180,7 @@ public class NtTemplate {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	@FXML
 	void AddTempList(ActionEvent event) {
 		try {
@@ -202,64 +222,63 @@ public class NtTemplate {
 		try {
 			TreeItem<NT_TEMPLATE> tmp = NT_TEMPLATE.getSelectionModel().getSelectedItem();
 			if (tmp != null) {
-			Stage stage = (Stage) NT_TEMPLATE.getScene().getWindow();
-			Label alert = new Label("Удалить запись?");
-			alert.setLayoutX(75.0);
-			alert.setLayoutY(11.0);
-			alert.setPrefHeight(17.0);
+				Stage stage = (Stage) NT_TEMPLATE.getScene().getWindow();
+				Label alert = new Label("Удалить запись?");
+				alert.setLayoutX(75.0);
+				alert.setLayoutY(11.0);
+				alert.setPrefHeight(17.0);
 
-			Button no = new Button();
-			no.setText("Нет");
-			no.setLayoutX(111.0);
-			no.setLayoutY(56.0);
-			no.setPrefWidth(72.0);
-			no.setPrefHeight(21.0);
+				Button no = new Button();
+				no.setText("Нет");
+				no.setLayoutX(111.0);
+				no.setLayoutY(56.0);
+				no.setPrefWidth(72.0);
+				no.setPrefHeight(21.0);
 
-			Button yes = new Button();
-			yes.setText("Да");
-			yes.setLayoutX(14.0);
-			yes.setLayoutY(56.0);
-			yes.setPrefWidth(72.0);
-			yes.setPrefHeight(21.0);
+				Button yes = new Button();
+				yes.setText("Да");
+				yes.setLayoutX(14.0);
+				yes.setLayoutY(56.0);
+				yes.setPrefWidth(72.0);
+				yes.setPrefHeight(21.0);
 
-			AnchorPane yn = new AnchorPane();
-			yn.getChildren().add(alert);
-			yn.getChildren().add(no);
-			yn.getChildren().add(yes);
-			Scene ynScene = new Scene(yn, 250, 100);
-			Stage newWindow_yn = new Stage();
-			no.setOnAction(new EventHandler<ActionEvent>() {
-				public void handle(ActionEvent event) {
-					newWindow_yn.close();
-				}
-			});
-			yes.setOnAction(new EventHandler<ActionEvent>() {
-				public void handle(ActionEvent event) {
-					try {
-						PreparedStatement delete = conn
-								.prepareStatement("delete from NT_TEMPLATE where NT_ID = ?");
-						delete.setInt(1, tmp.getValue().getNT_ID());
-						delete.executeUpdate();
-						delete.close();
-						conn.commit();
-					} catch (SQLException e) {
-						try {
-							conn.rollback();
-						} catch (SQLException e1) {
-							DBUtil.LOG_ERROR(e1);
-						}
-						DBUtil.LOG_ERROR(e);
+				AnchorPane yn = new AnchorPane();
+				yn.getChildren().add(alert);
+				yn.getChildren().add(no);
+				yn.getChildren().add(yes);
+				Scene ynScene = new Scene(yn, 250, 100);
+				Stage newWindow_yn = new Stage();
+				no.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						newWindow_yn.close();
 					}
-					newWindow_yn.close();
-				}
-			});
-			newWindow_yn.setTitle("Внимание");
-			newWindow_yn.setScene(ynScene);
-			newWindow_yn.initModality(Modality.WINDOW_MODAL);
-			newWindow_yn.initOwner(stage);
-			newWindow_yn.setResizable(false);
-			newWindow_yn.getIcons().add(new Image("/icon.png"));
-			newWindow_yn.show();
+				});
+				yes.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						try {
+							PreparedStatement delete = conn.prepareStatement("delete from NT_TEMPLATE where NT_ID = ?");
+							delete.setInt(1, tmp.getValue().getNT_ID());
+							delete.executeUpdate();
+							delete.close();
+							conn.commit();
+						} catch (SQLException e) {
+							try {
+								conn.rollback();
+							} catch (SQLException e1) {
+								DBUtil.LOG_ERROR(e1);
+							}
+							DBUtil.LOG_ERROR(e);
+						}
+						newWindow_yn.close();
+					}
+				});
+				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setScene(ynScene);
+				newWindow_yn.initModality(Modality.WINDOW_MODAL);
+				newWindow_yn.initOwner(stage);
+				newWindow_yn.setResizable(false);
+				newWindow_yn.getIcons().add(new Image("/icon.png"));
+				newWindow_yn.show();
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -370,7 +389,6 @@ public class NtTemplate {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
 
 	void EditTempList() {
 		try {
@@ -407,7 +425,7 @@ public class NtTemplate {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	@FXML
 	void EditTempList(ActionEvent event) {
 		try {
@@ -434,7 +452,7 @@ public class NtTemplate {
 	@FXML
 	void SearchTemp(ActionEvent event) {
 		try {
-			
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -443,12 +461,12 @@ public class NtTemplate {
 	@FXML
 	void TextToSearch(ActionEvent event) {
 		try {
-			
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	void fillTreeNtTemp() {
 		Map<Integer, TreeItem<NT_TEMPLATE>> itemById = new HashMap<>();
 		Map<Integer, Integer> parents = new HashMap<>();
@@ -493,7 +511,7 @@ public class NtTemplate {
 		root.setExpanded(true);
 		NT_TEMPLATE.setRoot(root);
 	}
-	
+
 	private Connection conn;
 
 	private void dbConnect() {
@@ -519,7 +537,7 @@ public class NtTemplate {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	@FXML
 	private void initialize() {
 		try {
@@ -548,7 +566,7 @@ public class NtTemplate {
 					Init(tmp.getValue().getNT_ID());
 				}
 			});
-			
+
 			ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
 			NAME.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
 			fillTreeNtTemp();

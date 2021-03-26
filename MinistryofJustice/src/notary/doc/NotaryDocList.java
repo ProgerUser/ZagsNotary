@@ -1,5 +1,11 @@
 package notary.doc;
 
+import java.awt.Desktop;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -46,6 +52,10 @@ import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import mj.util.ConvConst;
+import pl.jsolve.templ4docx.core.Docx;
+import pl.jsolve.templ4docx.core.VariablePattern;
+import pl.jsolve.templ4docx.variable.TextVariable;
+import pl.jsolve.templ4docx.variable.Variables;
 
 public class NotaryDocList {
 
@@ -118,7 +128,7 @@ public class NotaryDocList {
 				loader.setLocation(getClass().getResource("/notary/doc/IUNotary.fxml"));
 
 				EditNotaryDoc controller = new EditNotaryDoc();
-				controller.setConn(conn,val);
+				controller.setConn(conn, val);
 				loader.setController(controller);
 
 				Parent root = loader.load();
@@ -160,10 +170,66 @@ public class NotaryDocList {
 		}
 	}
 
+	public static String getClobString(Clob clob) throws SQLException, IOException {
+		BufferedReader stringReader = new BufferedReader(clob.getCharacterStream());
+		String singleLine = null;
+		StringBuffer strBuff = new StringBuffer();
+		while ((singleLine = stringReader.readLine()) != null) {
+			strBuff.append(singleLine + "\r\n");
+		}
+		return strBuff.toString();
+	}
+
 	@FXML
 	void Print(ActionEvent event) {
 		try {
-			
+			V_NT_DOC val = NT_DOC.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				String path = null;
+				String sql = null;
+				{
+					PreparedStatement prp = conn
+							.prepareStatement("select FILE_PATH,REP_QUERY from NT_TEMP_LIST t where t.id = ? ");
+					prp.setInt(1, val.getNT_TYPE());
+					ResultSet rs = prp.executeQuery();
+					if (rs.next()) {
+						path = rs.getString("FILE_PATH");
+						sql = rs.getString("REP_QUERY");
+						if (rs.getClob("REP_QUERY") != null) {
+							sql = getClobString(rs.getClob("REP_QUERY"));
+						}
+					}
+					rs.close();
+					prp.close();
+				}
+				// Вызов
+				Docx docx = new Docx(System.getenv("MJ_PATH") + path);
+				docx.setVariablePattern(new VariablePattern("#{", "}"));
+				// preparing variables
+				Variables variables = new Variables();
+				PreparedStatement prepStmt = DBUtil.conn.prepareStatement(sql);
+				prepStmt.setInt(1, val.getID());
+				ResultSet rs = prepStmt.executeQuery();
+				while (rs.next()) {
+					variables.addTextVariable(new TextVariable("#{" + rs.getString("NAME_").toLowerCase() + "}",
+							(rs.getString("VALUE_") == null || rs.getString("VALUE_").length() < 2 ? "ПУСТО!"
+									: rs.getString("VALUE_"))));
+				}
+				rs.close();
+				prepStmt.close();
+
+				// fill template
+				docx.fillTemplate(variables);
+				File tempFile = File.createTempFile("Документ", ".docx",
+						new File(System.getenv("MJ_PATH") + "OutReports"));
+				FileOutputStream str = new FileOutputStream(tempFile);
+				docx.save(str);
+				str.close();
+				tempFile.deleteOnExit();
+				if (Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(tempFile);
+				}
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
