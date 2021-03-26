@@ -210,13 +210,13 @@ public class Main extends Application {
 			rootLayout = (BorderPane) loader.load();
 			// desktopPane = new DesktopPane();
 			// rootLayout.setCenter(desktopPane);
-			// Scene scene = new Scene(rootLayout); // We are sending rootLayout to the
+			Scene scene = new Scene(rootLayout); // We are sending rootLayout to the
 			// Scene.
 //			Style startingStyle = Style.LIGHT;
 //			JMetro jMetro = new JMetro(startingStyle);
 //			System.setProperty("prism.lcdtext", "false");
 //			jMetro.setScene(scene);
-			Scene scene = new Scene(new RootPane(primaryStage, rootLayout, true, true));
+			//Scene scene = new Scene(new RootPane(primaryStage, rootLayout, true, true));
 			primaryStage.setScene(scene); // Set the scene in primary stage.
 			primaryStage.show(); // Display the primary stage
 		} catch (Exception e) {

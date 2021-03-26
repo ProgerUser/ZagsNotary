@@ -132,9 +132,9 @@ public class IUParamEdit {
 				if (!IF_LIST_FIELD_ID.getText().equals("") & !IF_LIST_FIELD_NAME.getText().equals("")) {
 					CallableStatement prp = conn
 							.prepareCall(DBUtil.SqlFromProp("/notary/doc/SQL.properties", "UpdateParamValue"));
-					prp.setString(1, IF_LIST_FIELD_ID.getText());
-					prp.setInt(2, prm.getVAL_PRM_ID());
-					prp.setInt(3, prm.getVAL_NT_DOC());
+					prp.setInt(1, prm.getVAL_PRM_ID());
+					prp.setInt(2, prm.getVAL_NT_DOC());
+					prp.setString(3, IF_LIST_FIELD_ID.getText());
 					prp.execute();
 					prp.close();
 					setStatus(true);
