@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"
+	charset="UTF-8">
+<script>
+	function helloWorld() {
+		invoke.world(event.target.id);
+	}
+	function SetValue(name, value) {
+		document.getElementById(name).value = value;
+	}
+</script>
+</head>
+<body>
+	<p style="text-align: center;">
+		<strong>#{doc_number}</strong>
+	</p>
+	<h1 style="text-align: center;">
+		<strong>ДОВЕРЕННОСТЬ</strong>
+	</h1>
+	<p style="text-align: center;">
+		<strong><em>#{country_city}</em></strong>
+	</p>
+	<p style="text-align: center;">
+		<strong><em>#{doc_date_word}</em></strong>
+	</p>
+	<p>
+		Я, <strong><em><input id="fname" name="fname"
+				type="text" onclick="helloWorld()" readonly="readonly" /> </em></strong>/паспорт
+		<strong>#{dov_passport}</strong>, выдан <strong>#{dov_doc_agency}</strong>
+		<strong>#{dov_doc_start}</strong> к.п. <strong>#{dov_doc_subdiv}</strong>/
+		<strong>#{dov_br_date}</strong> г.р., прож. по адресу:
+	</p>
+</body>
+</html>

@@ -67,9 +67,9 @@ import mj.report.Report;
 import mj.users.UsrC;
 import mj.widgets.DbTracer;
 import mj.zags.ZagsList;
-import notary.client.ClientsList;
-import notary.doc.NotaryDocList;
-import notary.template.NtTemplate;
+import notary.client.controller.ClientsList;
+import notary.doc.controller.NotaryDocList;
+import notary.template.controller.NtTemplate;
 
 /**
  * Главная точка входа и перехода по меню
@@ -176,8 +176,9 @@ public class Main extends Application {
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DBUtil.dbConnect();
-			initRootLayout();
-			RT();
+			//initRootLayout();
+			//RT();
+			new NotaryDocList().HtmlEditor(primaryStage);
 //
 //	END 		
 //			
