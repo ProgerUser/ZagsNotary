@@ -36,6 +36,7 @@ import notary.client.model.DOC_TYPES;
 import notary.client.model.GENDER;
 import notary.client.model.NAS_PUNKT;
 import notary.client.model.NT_CLI_TYPES;
+import notary.client.model.RAION;
 import notary.client.model.V_NT_CLI;
 
 public class EditClients {

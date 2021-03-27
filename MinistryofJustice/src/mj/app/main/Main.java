@@ -68,8 +68,8 @@ import mj.users.UsrC;
 import mj.widgets.DbTracer;
 import mj.zags.ZagsList;
 import notary.client.controller.ClientsList;
-import notary.doc.controller.NotaryDocList;
-import notary.template.controller.NtTemplate;
+import notary.doc.old.controller.NotaryDocList;
+import notary.template.old.controller.NtTemplate;
 
 /**
  * Главная точка входа и перехода по меню
