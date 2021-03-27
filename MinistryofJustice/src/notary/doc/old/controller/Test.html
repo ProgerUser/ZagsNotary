@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"
+	charset="UTF-8"></meta>
+<script>
+	function GetValue() {
+		invoke.run(event.target.id);
+	}
+	function SetValue(name, value) {
+		document.getElementById(name).value = value;
+	}
+</script>
+</head>
+<body>
+	<p style="text-align: center;">
+		<input id="doc_number" type="text" />
+	</p>
+	<h1 style="text-align: center;">
+		<strong>ДОВЕРЕННОСТЬ</strong>
+	</h1>
+	<p style="text-align: center;">
+		<input id="country_city" type="text" />
+	</p>
+	<p style="text-align: center;">
+		<input id="doc_date_word" type="text" />
+	</p>
+	<p>
+		Я, <input id="doveritel" readonly="readonly" type="text" /> /паспорт
+		<input id="dov_passport" type="text" />, выдан <input
+			id="dov_doc_agency" type="text" /> <input id="dov_doc_start"
+			type="text" /> к.п. <input id="dov_doc_subdiv" type="text" />/ <input
+			id="dov_br_date" type="text" /> г.р., прож. по адресу:
+	</p>
+	<p>
+		настоящей доверенностью уполномочиваю <input id="predstavitel"
+			type="text" /> /паспорт <input id="pr_passport" type="text" />,
+		выдан <input id="pr_doc_agency" type="text" /> <input
+			id="pr_doc_start" type="text" /> г. к.п. <input id="pr_doc_subdiv"
+			type="text" />/ <input id="pr_br_date" type="text" /> г.р., прож.
+		по адресу: <input id="pr_place" type="text" />
+	</p>
+	<p>
+		<strong><em>получать причитающуюся мне пенсию во всех
+				структурных подразделениях Акционерного Коммерческого
+				Сберегательного банка Республики Абхазия (открытое Акционерное
+				общество), для чего предоставляю ей право расписываться за меня в
+				получении и совершать все прочие действия, связанные с данным
+				поручением.</em></strong>
+	</p>
+	<p>
+		<strong><em>Доверенность выдана сроком на три года.</em></strong>
+	</p>
+	<table style="width: 717px;">
+		<tbody>
+			<tr>
+				<td style="width: 73px;">Подпись:&nbsp;</td>
+				<td style="width: 628px; text-align: right;">&nbsp;/<input
+					id="dov_sh_name" type="text" />/
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p>
+		&nbsp;<input id="doc_date" type="text" /> года настоящая доверенность
+		удостоверена и зачитана мной, <input id="notary_ruk_rod" type="text" />,
+		нотариусом <input id="not_name" type="text" />. Доверенность
+		подписана <input id="dov_name" type="text" /> в моем присутствии.
+		Личность его установлена, дееспособность проверена.
+	</p>
+	<table style="width: 749px; height: 194px;">
+		<tbody>
+			<tr>
+				<td style="width: 387px;">
+					<h3>
+						<strong><em>Зарегистрировано в реестре за №</em></strong>
+					</h3>
+				</td>
+				<td style="width: 346px;">&nbsp;</td>
+			</tr>
+			<tr>
+				<td style="width: 387px;">
+					<h3>
+						<strong><em>Взыскано госпошлины:</em></strong>
+					</h3>
+				</td>
+				<td style="width: 346px;">&nbsp;</td>
+			</tr>
+			<tr>
+				<td style="width: 387px;">
+					<h3>
+						<em>Гос. нотариус</em>
+					</h3>
+				</td>
+				<td style="width: 346px;">
+					<h3 style="text-align: right;">
+						<em>/<input id="nt_ruk_sh" type="text" />/
+						</em>
+					</h3>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<h3>&nbsp;</h3>
+</body>
+</html>

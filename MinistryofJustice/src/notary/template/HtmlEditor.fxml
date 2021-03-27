@@ -34,7 +34,7 @@
                   <Font size="10.0" />
                </font>
                <tooltip>
-                  <Tooltip text="Добавить поле" />
+                  <Tooltip text="Показать html" />
                </tooltip>
             </Button>
         </items>
@@ -44,11 +44,8 @@
       </ToolBar>
       <SplitPane dividerPositions="0.6303630363036303" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" VBox.vgrow="ALWAYS">
          <items>
-            <HTMLEditor fx:id="VisHtml" htmlText="" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" />
-            <TextArea fx:id="CodeHtml" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0">
-               <font>
-                  <Font size="14.0" />
-               </font></TextArea>
+            <HTMLEditor fx:id="VisHtml" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" />
+            <TextArea fx:id="CodeHtml" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" />
          </items>
       </SplitPane>
    </children>

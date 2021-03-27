@@ -1,5 +1,9 @@
 package notary.doc.old.controller;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import javafx.event.ActionEvent;
@@ -22,9 +26,9 @@ public class HtmTempEditor {
 	private TextArea CodeHtml;
 
 	@FXML
-	void AddField(ActionEvent event) {
+	void HtmlToView(ActionEvent event) {
 		try {
-
+			VisHtml.setHtmlText(CodeHtml.getText());
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -33,7 +37,7 @@ public class HtmTempEditor {
 	@FXML
 	void ViewHtmlTag(ActionEvent event) {
 		try {
-
+			CodeHtml.setText(VisHtml.getHtmlText());
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -42,7 +46,9 @@ public class HtmTempEditor {
 	@FXML
 	private void initialize() {
 		try {
-			
+			InputStream is = getClass().getResourceAsStream("/notary/doc/old/controller/Test.html");
+			String text = IOUtils.toString(is, StandardCharsets.UTF_8.name());
+			VisHtml.setHtmlText(text);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

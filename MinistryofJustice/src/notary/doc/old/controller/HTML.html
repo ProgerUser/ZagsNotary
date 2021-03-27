@@ -4,8 +4,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"
 	charset="UTF-8">
 <script>
-	function helloWorld() {
-		invoke.world(event.target.id);
+	function GetValue() {
+		invoke.run(event.target.id);
 	}
 	function SetValue(name, value) {
 		document.getElementById(name).value = value;
@@ -14,23 +14,25 @@
 </head>
 <body>
 	<p style="text-align: center;">
-		<strong>#{doc_number}</strong>
+		<strong><input id="doc_number" type="text" /></strong>
 	</p>
 	<h1 style="text-align: center;">
 		<strong>ДОВЕРЕННОСТЬ</strong>
 	</h1>
 	<p style="text-align: center;">
-		<strong><em>#{country_city}</em></strong>
+		<strong><em><input id="country_city" type="text" /></em></strong>
 	</p>
 	<p style="text-align: center;">
-		<strong><em>#{doc_date_word}</em></strong>
+		<strong><em><input id="doc_date_word" type="text" /></em></strong>
 	</p>
 	<p>
-		Я, <strong><em><input id="fname" name="fname"
-				type="text" onclick="helloWorld()" readonly="readonly" /> </em></strong>/паспорт
-		<strong>#{dov_passport}</strong>, выдан <strong>#{dov_doc_agency}</strong>
-		<strong>#{dov_doc_start}</strong> к.п. <strong>#{dov_doc_subdiv}</strong>/
-		<strong>#{dov_br_date}</strong> г.р., прож. по адресу:
+		Я, <strong><em><input id="doveritel" type="text"
+				onclick="GetValue()" readonly="readonly" /> </em></strong>/паспорт <strong><input
+			id="dov_passport" type="text" /></strong>, выдан <strong><input
+			id="dov_doc_agency" type="text" /></strong> <strong><input
+			id="dov_doc_start" type="text" /></strong> к.п. <strong><input
+			id="dov_doc_subdiv" type="text" /></strong>/ <strong><input
+			id="dov_br_date" type="text" /></strong> г.р., прож. по адресу:
 	</p>
 </body>
 </html>
