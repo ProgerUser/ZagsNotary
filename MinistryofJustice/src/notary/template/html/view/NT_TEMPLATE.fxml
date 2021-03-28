@@ -73,23 +73,8 @@
                                        </tooltip>
                                     </Button>
                                     <Separator orientation="VERTICAL" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Поиск" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
                                     <TextField fx:id="TextToSearch" onAction="#TextToSearch" />
-                                    <Button layoutX="43.0" layoutY="10.0" mnemonicParsing="false" onAction="#SearchTemp">
-                                       <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="SEARCH" size="15" />
-                                       </graphic>
-                                       <font>
-                                          <Font size="10.0" />
-                                       </font>
-                                       <tooltip>
-                                          <Tooltip text="Empty Tooltip">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Tooltip>
-                                       </tooltip>
-                                    </Button>
                                 </items>
                                  <VBox.margin>
                                     <Insets left="-10.0" right="-10.0" top="-10.0" />
@@ -152,9 +137,9 @@
                                        </tooltip>
                                     </Button>
                                     <Separator orientation="VERTICAL" />
-                                    <Button layoutX="79.0" layoutY="10.0" mnemonicParsing="false" onAction="#OpenWord">
+                                    <Button layoutX="79.0" layoutY="10.0" mnemonicParsing="false" onAction="#Html">
                                        <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_WORD_ALT" size="15" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_CODE_ALT" size="15" />
                                        </graphic>
                                        <font>
                                           <Font size="10.0" />
@@ -168,7 +153,7 @@
                                        </tooltip>
                                     </Button>
                                     <Separator layoutX="112.0" layoutY="10.0" orientation="VERTICAL" />
-                                    <Button layoutX="122.0" layoutY="10.0" mnemonicParsing="false" onAction="#OpenParam">
+                                    <Button layoutX="122.0" layoutY="10.0" mnemonicParsing="false" onAction="#Param">
                                        <graphic>
                                           <FontAwesomeIconView fontSmoothingType="LCD" glyphName="LIST_ALT" size="15" />
                                        </graphic>

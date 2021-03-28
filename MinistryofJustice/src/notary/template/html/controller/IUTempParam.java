@@ -1,4 +1,4 @@
-package notary.template.old.controller;
+package notary.template.html.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -33,7 +33,7 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
-import notary.template.old.model.NT_TEMP_LIST_PARAM;
+import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
 public class IUTempParam {
 
@@ -68,7 +68,7 @@ public class IUTempParam {
 			Stage stage_ = (Stage) NT_TEMP_LIST_PARAM.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/notary/template/IUTempParamIU.fxml"));
+			loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempParamIU.fxml"));
 
 			IUTempParamIU controller = new IUTempParamIU();
 			controller.setID(getID());
@@ -189,7 +189,7 @@ public class IUTempParam {
 				Stage stage_ = (Stage) NT_TEMP_LIST_PARAM.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/IUTempParamIU.fxml"));
+				loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempParamIU.fxml"));
 
 				IUTempParamIU controller = new IUTempParamIU();
 				controller.setcl(tmp);

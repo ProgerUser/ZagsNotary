@@ -1,8 +1,6 @@
-package notary.template.old.controller;
+package notary.template.html.controller;
 
-import java.awt.Desktop;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -42,8 +40,8 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
-import notary.template.old.model.NT_TEMPLATE;
-import notary.template.old.model.NT_TEMP_LIST;
+import notary.template.html.model.NT_TEMPLATE;
+import notary.template.html.model.NT_TEMP_LIST;
 
 public class NtTemplate {
 
@@ -75,7 +73,7 @@ public class NtTemplate {
 				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/IUNtTemplate.fxml"));
+				loader.setLocation(getClass().getResource("/notary/template/html/view/IUNtTemplate.fxml"));
 
 				IUTemplate controller = new IUTemplate();
 				controller.setNT_PARENT(tmp.getValue().getNT_ID());
@@ -103,7 +101,7 @@ public class NtTemplate {
 	}
 
 	@FXML
-	void OpenParam(ActionEvent event) {
+	void Param(ActionEvent event) {
 		try {
 			NT_TEMP_LIST tmp = NT_TEMP_LIST.getSelectionModel().getSelectedItem();
 			if (tmp != null) {
@@ -111,7 +109,7 @@ public class NtTemplate {
 				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/IUTempParam.fxml"));
+				loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempParam.fxml"));
 
 				IUTempParam controller = new IUTempParam();
 				controller.setID(tmp.getID());
@@ -142,7 +140,7 @@ public class NtTemplate {
 		String singleLine = null;
 		StringBuffer strBuff = new StringBuffer();
 		while ((singleLine = stringReader.readLine()) != null) {
-			strBuff.append(singleLine+"\r\n");
+			strBuff.append(singleLine + "\r\n");
 		}
 		return strBuff.toString();
 	}
@@ -159,9 +157,11 @@ public class NtTemplate {
 				list.setID(rs.getInt("ID"));
 				list.setNAME(rs.getString("NAME"));
 				list.setPARENT(rs.getInt("PARENT"));
-				list.setFILE_PATH(rs.getString("FILE_PATH"));
 				if (rs.getClob("REP_QUERY") != null) {
 					list.setREP_QUERY(getClobString(rs.getClob("REP_QUERY")));
+				}
+				if (rs.getClob("REP_QUERY") != null) {
+					list.setHTML_TEMP(getClobString(rs.getClob("HTML_TEMP")));
 				}
 				dlist.add(list);
 			}
@@ -192,7 +192,7 @@ public class NtTemplate {
 				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/IUTempList.fxml"));
+				loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempList.fxml"));
 
 				IUTemplateList controller = new IUTemplateList();
 				controller.setVal(tmp.getValue());
@@ -364,7 +364,7 @@ public class NtTemplate {
 				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/IUNtTemplate.fxml"));
+				loader.setLocation(getClass().getResource("/notary/template/html/view/IUNtTemplate.fxml"));
 
 				IUTemplate controller = new IUTemplate();
 				controller.setID(tmp.getValue().getNT_ID());
@@ -400,7 +400,7 @@ public class NtTemplate {
 				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/IUTempList.fxml"));
+				loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempList.fxml"));
 
 				IUTemplateList controller = new IUTemplateList();
 				controller.setVal(tmp);
@@ -421,7 +421,7 @@ public class NtTemplate {
 						Init(tmp.getPARENT());
 					}
 				});
-				stage.showAndWait();
+				stage.show();
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -438,23 +438,37 @@ public class NtTemplate {
 	}
 
 	@FXML
-	void OpenWord(ActionEvent event) {
+	void Html(ActionEvent event) {
 		try {
 			NT_TEMP_LIST tmp = NT_TEMP_LIST.getSelectionModel().getSelectedItem();
 			if (tmp != null) {
-				if (Desktop.isDesktopSupported()) {
-					Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + tmp.getFILE_PATH()));
-				}
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
+
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/template/html/view/HtmlEditor.fxml"));
+
+				IUTemplateList controller = new IUTemplateList();
+				controller.setVal(tmp);
+				controller.settype("U");
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Шаблон HTML: " + tmp.getNAME());
+				stage.initOwner(stage_);
+				stage.setResizable(false);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						fillTreeNtTemp();
+						Init(tmp.getPARENT());
+					}
+				});
+				stage.show();
 			}
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	@FXML
-	void SearchTemp(ActionEvent event) {
-		try {
-
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

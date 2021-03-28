@@ -1,4 +1,4 @@
-package notary.template.old.model;
+package notary.template.html.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

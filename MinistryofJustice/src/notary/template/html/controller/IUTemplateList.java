@@ -1,6 +1,5 @@
-package notary.template.old.controller;
+package notary.template.html.controller;
 
-import java.io.File;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,15 +16,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
-import notary.template.old.model.NT_TEMPLATE;
-import notary.template.old.model.NT_TEMP_LIST;
+import notary.template.html.model.NT_TEMPLATE;
+import notary.template.html.model.NT_TEMP_LIST;
 import oracle.sql.CLOB;
 
 @SuppressWarnings("deprecation")
@@ -33,8 +30,7 @@ public class IUTemplateList {
 
 
 	private StringProperty type;
-	@FXML
-	private TextField FILE_PATH;
+
 	@FXML
 	private Button OK;
 
@@ -75,26 +71,24 @@ public class IUTemplateList {
 			if (!NAME.getText().equals("")) {
 				if (gettype().equals("I")) {
 					PreparedStatement prp = conn
-							.prepareStatement("insert into NT_TEMP_LIST (NAME,PARENT,FILE_PATH,REP_QUERY) values (?,?,?,?)");
+							.prepareStatement("insert into NT_TEMP_LIST (NAME,PARENT,REP_QUERY) values (?,?,?)");
 					prp.setString(1, NAME.getText());
 					prp.setInt(2, val.getNT_ID());
-					prp.setString(3, FILE_PATH.getText());
 					Clob clob = oracle.sql.CLOB.createTemporary(conn, false, CLOB.DURATION_SESSION);
 					clob.setString(1, REP_QUERY.getText());
-					prp.setClob(4, clob);
+					prp.setClob(3, clob);
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
 					onclose();
 				} else if (gettype().equals("U")) {
 					PreparedStatement prp = conn
-							.prepareStatement("update NT_TEMP_LIST set NAME = ?,FILE_PATH=?,REP_QUERY=? where ID = ?");
+							.prepareStatement("update NT_TEMP_LIST set NAME = ?,REP_QUERY=? where ID = ?");
 					prp.setString(1, NAME.getText());
-					prp.setString(2, FILE_PATH.getText());
 					Clob clob = oracle.sql.CLOB.createTemporary(conn, false, CLOB.DURATION_SESSION);
 					clob.setString(1, REP_QUERY.getText());
-					prp.setClob(3, clob);
-					prp.setInt(4, val_list.getID());
+					prp.setClob(2, clob);
+					prp.setInt(3, val_list.getID());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
@@ -121,7 +115,7 @@ public class IUTemplateList {
 	}
 
 	void onclose() {
-		Stage stage = (Stage) FILE_PATH.getScene().getWindow();
+		Stage stage = (Stage) OK.getScene().getWindow();
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
@@ -135,24 +129,24 @@ public class IUTemplateList {
 		}
 	}
 
-	@FXML
-	void AddPath(ActionEvent event) {
-		try {
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Выбрать файл");
-			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("ALL Others", "*.*"),
-					new ExtensionFilter("Exe file", "*.exe"), new ExtensionFilter("Jar file", "*.jar"),
-					new ExtensionFilter("DLL file", "*.dll"), new ExtensionFilter("SQLITE file", "*.db"),
-					new ExtensionFilter("WORD file", "*.doc*"));
-			File file = fileChooser.showOpenDialog(null);
-			if (file != null) {
-				FILE_PATH.setText(file.getAbsolutePath().substring(
-						file.getAbsolutePath().indexOf(System.getenv("MJ_PATH")) + System.getenv("MJ_PATH").length()));
-			}
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
+//	@FXML
+//	void AddPath(ActionEvent event) {
+//		try {
+//			FileChooser fileChooser = new FileChooser();
+//			fileChooser.setTitle("Выбрать файл");
+//			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("ALL Others", "*.*"),
+//					new ExtensionFilter("Exe file", "*.exe"), new ExtensionFilter("Jar file", "*.jar"),
+//					new ExtensionFilter("DLL file", "*.dll"), new ExtensionFilter("SQLITE file", "*.db"),
+//					new ExtensionFilter("WORD file", "*.doc*"));
+//			File file = fileChooser.showOpenDialog(null);
+//			if (file != null) {
+//				FILE_PATH.setText(file.getAbsolutePath().substring(
+//						file.getAbsolutePath().indexOf(System.getenv("MJ_PATH")) + System.getenv("MJ_PATH").length()));
+//			}
+//		} catch (Exception e) {
+//			DBUtil.LOG_ERROR(e);
+//		}
+//	}
 
 	@FXML
 	private void initialize() {
@@ -161,7 +155,6 @@ public class IUTemplateList {
 			DBUtil.RunProcess(conn);
 			if (gettype().equals("U")) {
 				NAME.setText(val_list.getNAME());
-				FILE_PATH.setText(val_list.getFILE_PATH());
 				REP_QUERY.setText(val_list.getREP_QUERY());
 				OK.setText("Сохранить");
 			}

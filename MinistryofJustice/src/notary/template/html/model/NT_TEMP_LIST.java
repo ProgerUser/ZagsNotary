@@ -1,4 +1,4 @@
-package notary.template.old.model;
+package notary.template.html.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -12,17 +12,17 @@ public class NT_TEMP_LIST {
 	private StringProperty NAME;
 	/** Ссылка на id родитель */
 	private IntegerProperty PARENT;
-	/** Путь */
-	private StringProperty FILE_PATH;
-	/** запрос */
+	/** Запрос */
 	private StringProperty REP_QUERY;
+	/** шаблон html */
+	private StringProperty HTML_TEMP;
 
 	public NT_TEMP_LIST() {
 		this.ID = new SimpleIntegerProperty();
 		this.NAME = new SimpleStringProperty();
 		this.PARENT = new SimpleIntegerProperty();
-		this.FILE_PATH = new SimpleStringProperty();
 		this.REP_QUERY = new SimpleStringProperty();
+		this.HTML_TEMP = new SimpleStringProperty();
 	}
 
 	public void setID(Integer ID) {
@@ -37,12 +37,12 @@ public class NT_TEMP_LIST {
 		this.PARENT.set(PARENT);
 	}
 
-	public void setFILE_PATH(String FILE_PATH) {
-		this.FILE_PATH.set(FILE_PATH);
-	}
-
 	public void setREP_QUERY(String REP_QUERY) {
 		this.REP_QUERY.set(REP_QUERY);
+	}
+
+	public void setHTML_TEMP(String HTML_TEMP) {
+		this.HTML_TEMP.set(HTML_TEMP);
 	}
 
 	public Integer getID() {
@@ -57,12 +57,12 @@ public class NT_TEMP_LIST {
 		return PARENT.get();
 	}
 
-	public String getFILE_PATH() {
-		return FILE_PATH.get();
-	}
-
 	public String getREP_QUERY() {
 		return REP_QUERY.get();
+	}
+
+	public String getHTML_TEMP() {
+		return HTML_TEMP.get();
 	}
 
 	public IntegerProperty IDProperty() {
@@ -77,11 +77,11 @@ public class NT_TEMP_LIST {
 		return PARENT;
 	}
 
-	public StringProperty FILE_PATHProperty() {
-		return FILE_PATH;
-	}
-
 	public StringProperty REP_QUERYProperty() {
 		return REP_QUERY;
+	}
+
+	public StringProperty HTML_TEMPProperty() {
+		return HTML_TEMP;
 	}
 }

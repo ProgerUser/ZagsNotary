@@ -1,4 +1,4 @@
-package notary.template.old.controller;
+package notary.template.html.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

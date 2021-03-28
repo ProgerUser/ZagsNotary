@@ -1,4 +1,4 @@
-package notary.template.old.controller;
+package notary.template.html.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,9 +29,9 @@ import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
-import notary.template.old.model.ALL_TABLE;
-import notary.template.old.model.NT_PRM_TYPE;
-import notary.template.old.model.NT_TEMP_LIST_PARAM;
+import notary.template.html.model.ALL_TABLE;
+import notary.template.html.model.NT_PRM_TYPE;
+import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
 public class IUTempParamIU {
 

@@ -69,7 +69,7 @@ import mj.widgets.DbTracer;
 import mj.zags.ZagsList;
 import notary.client.controller.ClientsList;
 import notary.doc.old.controller.NotaryDocList;
-import notary.template.old.controller.NtTemplate;
+import notary.template.html.controller.NtTemplate;
 
 /**
  * Главная точка входа и перехода по меню
@@ -176,9 +176,9 @@ public class Main extends Application {
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DBUtil.dbConnect();
-			//initRootLayout();
-			//RT();
-			new NotaryDocList().HtmlEditor(primaryStage);
+			initRootLayout();
+			RT();
+//			new NotaryDocList().HtmlEditor(primaryStage);
 //
 //	END 		
 //			
@@ -378,7 +378,7 @@ public class Main extends Application {
 			if (NtTempWin) {
 				NtTempWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/template/NT_TEMPLATE.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/template/html/view/NT_TEMPLATE.fxml"));
 
 				NtTemplate controller = new NtTemplate();
 				loader.setController(controller);
