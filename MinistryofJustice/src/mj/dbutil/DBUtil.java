@@ -132,7 +132,7 @@ public class DBUtil {
 	/**
 	 * Запись "залоченной" строки
 	 */
-	public static String Lock_Row(Integer Id, String TableName) {
+	public static String Lock_Row(Integer Id, String TableName,Connection conn) {
 		String ret = null;
 		try {
 			if (Id != null & (TableName != null && !TableName.equals(""))) {
@@ -199,7 +199,7 @@ public class DBUtil {
 	/**
 	 * Удалить инф. о залоченной строке
 	 */
-	public static String Lock_Row_Delete(Integer Id, String TableName) {
+	public static String Lock_Row_Delete(Integer Id, String TableName,Connection conn) {
 		String ret = null;
 		try {
 			if (Id != null & (TableName != null && !TableName.equals(""))) {

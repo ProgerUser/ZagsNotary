@@ -390,7 +390,7 @@ public class MercerList {
 				}
 
 				PreparedStatement selforupd = conn
-						.prepareStatement("select * from MC_MERCER where  MERCER_ID = ? /*for update nowait*/");
+						.prepareStatement("select * from MC_MERCER where  MERCER_ID = ? for update nowait");
 				MC_MERCER cl = Initialize2(docid);
 				selforupd.setInt(1, cl.getMERCER_ID());
 				try {
@@ -398,7 +398,7 @@ public class MercerList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "MC_MERCER");
+						String lock = DBUtil.Lock_Row(docid, "MC_MERCER",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -432,7 +432,7 @@ public class MercerList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER");
+										String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -483,7 +483,7 @@ public class MercerList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER");
+												String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -502,7 +502,7 @@ public class MercerList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER");
+										String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}

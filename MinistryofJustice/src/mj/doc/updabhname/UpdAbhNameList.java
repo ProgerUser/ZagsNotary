@@ -316,7 +316,7 @@ public class UpdAbhNameList {
 					return;
 				}
 				PreparedStatement selforupd = conn
-						.prepareStatement("select * from UPDATE_ABH_NAME where  ID = ? /*for update nowait*/");
+						.prepareStatement("select * from UPDATE_ABH_NAME where  ID = ? for update nowait");
 				UPDATE_ABH_NAME cl = Initialize2(docid);
 				selforupd.setInt(1, cl.getID());
 				try {
@@ -324,7 +324,7 @@ public class UpdAbhNameList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "UPDATE_ABH_NAME");
+						String lock = DBUtil.Lock_Row(docid, "UPDATE_ABH_NAME",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -360,7 +360,7 @@ public class UpdAbhNameList {
 											Refresh();
 										}
 										// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME");
+										String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -411,7 +411,7 @@ public class UpdAbhNameList {
 												}
 												newWindow_yn.close();
 												// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME");
+												String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -430,7 +430,7 @@ public class UpdAbhNameList {
 										conn.rollback();
 										isopen = false;
 										// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"
-										String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME");
+										String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}

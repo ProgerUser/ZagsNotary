@@ -284,7 +284,41 @@ public class ConvConst {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+	
+	public void TxtFldDeleteListener(TextField TxtFld) {
+		try {
+			ChangeListener<String> changeListener = new ChangeListener<String>() {
+			    @Override
+			    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+			    	TxtFld.textProperty().removeListener(this);
+			    }
+			};
+			TxtFld.textProperty().addListener(changeListener);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
 
+	
+	/**
+	 * Только число
+	 * 
+	 * @param TxtFld
+	 */
+	public void OnlyNumber(TextField TxtFld) {
+		try {
+			TxtFld.textProperty().addListener(new ChangeListener<String>() {
+				@Override
+				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+					if (!newValue.matches("\\d*")) {
+						TxtFld.setText(newValue.replaceAll("[^\\d]", ""));
+					}
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
 	/**
 	 * В верхнем регистре
 	 * 

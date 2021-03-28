@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.IntegerProperty;
@@ -65,6 +64,24 @@ public class Edit_Cus_Doc {
 	@FXML
 	private CheckBox PREF_T;
 
+	@FXML
+	void ID_DOC_TP_T(ActionEvent event) {
+		try {
+			VPUD val = ID_DOC_TP_T.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				if (val.getIPUDID() == 1 || val.getIPUDID() == 2) {
+					new ConvConst().OnlyNumber(DOC_SER_T);
+					new ConvConst().OnlyNumber(DOC_NUM_T);
+				} else {
+					new ConvConst().TxtFldDeleteListener(DOC_SER_T);
+					new ConvConst().TxtFldDeleteListener(DOC_NUM_T);
+				}
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+    
 	/**
 	 * Для типа документов
 	 */
@@ -144,14 +161,7 @@ public class Edit_Cus_Doc {
 				Msg.Message("Заполните поля");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -191,13 +201,7 @@ public class Edit_Cus_Doc {
 				Msg.ErrorView(stage_, "CUS_DOCUM_TEMP", conn);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -208,7 +212,6 @@ public class Edit_Cus_Doc {
 	 */
 	void CRUDDocum(String type) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn.prepareCall(type);
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setString(2, (PREF_T.isSelected()) ? "Y" : "N");
@@ -239,13 +242,7 @@ public class Edit_Cus_Doc {
 				Msg.ErrorView(stage_, "CUS_DOCUM", conn);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -341,12 +338,8 @@ public class Edit_Cus_Doc {
 			new ConvConst().FormatDatePiker(DOC_DATE_T);
 			new ConvConst().FormatDatePiker(DOC_PERIOD_T);
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 }
+

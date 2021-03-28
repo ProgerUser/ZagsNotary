@@ -23,9 +23,7 @@ import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import notary.template.html.model.NT_TEMPLATE;
 import notary.template.html.model.NT_TEMP_LIST;
-import oracle.sql.CLOB;
 
-@SuppressWarnings("deprecation")
 public class IUTemplateList {
 
 
@@ -52,9 +50,11 @@ public class IUTemplateList {
 	public void setVal(NT_TEMP_LIST val_list) {
 		this.val_list = val_list;
 	}
+	
 	public String gettype() {
 		return type.get();
 	}
+	
 	private Connection conn;
 	@FXML
 	private TextField NAME;
@@ -74,7 +74,7 @@ public class IUTemplateList {
 							.prepareStatement("insert into NT_TEMP_LIST (NAME,PARENT,REP_QUERY) values (?,?,?)");
 					prp.setString(1, NAME.getText());
 					prp.setInt(2, val.getNT_ID());
-					Clob clob = oracle.sql.CLOB.createTemporary(conn, false, CLOB.DURATION_SESSION);
+					Clob clob = conn.createClob();
 					clob.setString(1, REP_QUERY.getText());
 					prp.setClob(3, clob);
 					prp.executeUpdate();
@@ -85,7 +85,7 @@ public class IUTemplateList {
 					PreparedStatement prp = conn
 							.prepareStatement("update NT_TEMP_LIST set NAME = ?,REP_QUERY=? where ID = ?");
 					prp.setString(1, NAME.getText());
-					Clob clob = oracle.sql.CLOB.createTemporary(conn, false, CLOB.DURATION_SESSION);
+					Clob clob = conn.createClob();
 					clob.setString(1, REP_QUERY.getText());
 					prp.setClob(2, clob);
 					prp.setInt(3, val_list.getID());

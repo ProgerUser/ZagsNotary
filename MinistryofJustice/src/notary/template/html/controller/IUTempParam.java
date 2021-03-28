@@ -175,7 +175,8 @@ public class IUTempParam {
 	@FXML
 	void OK(ActionEvent event) {
 		try {
-
+			conn.commit();
+			onclose();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

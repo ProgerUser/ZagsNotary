@@ -436,17 +436,15 @@ public class BirthList {
 				return;
 			}
 			if (isopen == false) {
-				/* LOG */
-				Main.logger = Logger.getLogger(getClass());
 				PreparedStatement selforupd = conn
-						.prepareStatement("select * from brn_birth_act where  BR_ACT_ID = ? /*for update nowait*/");
+						.prepareStatement("select * from brn_birth_act where  BR_ACT_ID = ? for update nowait");
 				selforupd.setInt(1, docid);
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "brn_birth_act");
+						String lock = DBUtil.Lock_Row(docid, "brn_birth_act",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -483,7 +481,7 @@ public class BirthList {
 										}
 										conn.commit();
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act");
+										String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -534,7 +532,7 @@ public class BirthList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act");
+												String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -552,7 +550,7 @@ public class BirthList {
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
-										String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act");
+										String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -568,7 +566,6 @@ public class BirthList {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "brn_birth_act"));
-						DBUtil.LOG_ERROR(e);
 					} else {
 						DBUtil.LOG_ERROR(e);
 					}

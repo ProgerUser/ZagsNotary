@@ -440,7 +440,7 @@ public class PaternList {
 				}
 
 				PreparedStatement selforupd = conn
-						.prepareStatement("select * from PATERN_CERT where  PC_ID = ? /*for update nowait*/");
+						.prepareStatement("select * from PATERN_CERT where  PC_ID = ? for update nowait");
 				PATERN_CERT cl = Initialize2(docid);
 				selforupd.setInt(1, docid);
 				try {
@@ -448,7 +448,7 @@ public class PaternList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "PATERN_CERT");
+						String lock = DBUtil.Lock_Row(docid, "PATERN_CERT",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -484,7 +484,7 @@ public class PaternList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT");
+										String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -535,7 +535,7 @@ public class PaternList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT");
+												String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -554,7 +554,7 @@ public class PaternList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT");
+										String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}

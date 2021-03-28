@@ -135,7 +135,14 @@ public class NtTemplate {
 		}
 	}
 
-	public static String getClobString(Clob clob) throws SQLException, IOException {
+	/**
+	 * Clob в строку
+	 * @param clob
+	 * @return
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	public String ClobToString(Clob clob) throws SQLException, IOException {
 		BufferedReader stringReader = new BufferedReader(clob.getCharacterStream());
 		String singleLine = null;
 		StringBuffer strBuff = new StringBuffer();
@@ -158,10 +165,10 @@ public class NtTemplate {
 				list.setNAME(rs.getString("NAME"));
 				list.setPARENT(rs.getInt("PARENT"));
 				if (rs.getClob("REP_QUERY") != null) {
-					list.setREP_QUERY(getClobString(rs.getClob("REP_QUERY")));
+					list.setREP_QUERY(ClobToString(rs.getClob("REP_QUERY")));
 				}
-				if (rs.getClob("REP_QUERY") != null) {
-					list.setHTML_TEMP(getClobString(rs.getClob("HTML_TEMP")));
+				if (rs.getClob("HTML_TEMP") != null) {
+					list.setHTML_TEMP(ClobToString(rs.getClob("HTML_TEMP")));
 				}
 				dlist.add(list);
 			}
@@ -448,9 +455,8 @@ public class NtTemplate {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/notary/template/html/view/HtmlEditor.fxml"));
 
-				IUTemplateList controller = new IUTemplateList();
-				controller.setVal(tmp);
-				controller.settype("U");
+				HtmlEditor controller = new HtmlEditor();
+				controller.setConn(conn, tmp);
 				loader.setController(controller);
 
 				Parent root = loader.load();
@@ -458,11 +464,11 @@ public class NtTemplate {
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("Шаблон HTML: " + tmp.getNAME());
 				stage.initOwner(stage_);
-				stage.setResizable(false);
+				stage.setResizable(true);
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {
-						controller.dbDisconnect();
+						Init(tmp.getPARENT());
 					}
 				});
 				stage.show();

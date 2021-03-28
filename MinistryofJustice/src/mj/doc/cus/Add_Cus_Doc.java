@@ -62,6 +62,24 @@ public class Add_Cus_Doc {
 	@FXML
 	private CheckBox PREF_T;
 	
+	@FXML
+	void ID_DOC_TP_T(ActionEvent event) {
+		try {
+			VPUD val = ID_DOC_TP_T.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				if (val.getIPUDID() == 1 || val.getIPUDID() == 2) {
+					new ConvConst().OnlyNumber(DOC_SER_T);
+					new ConvConst().OnlyNumber(DOC_NUM_T);
+				}else {
+					new ConvConst().TxtFldDeleteListener(DOC_SER_T);
+					new ConvConst().TxtFldDeleteListener(DOC_NUM_T);
+				}
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	/**
 	 * Для типа документов
 	 */

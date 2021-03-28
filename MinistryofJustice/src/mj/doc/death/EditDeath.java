@@ -407,7 +407,7 @@ public class EditDeath {
 			DC_FADORG_NAME.setText("");
 			DC_FADREG_ADR.setText("");
 
-		} else if (DC_ZTP.getValue().equals("Организация")) {
+		} else if (DC_ZTP.getValue().equals("Юр. лицо")) {
 			FIZIK.setVisible(false);
 			JURIK.setVisible(true);
 
@@ -576,7 +576,7 @@ public class EditDeath {
 
 			// Тип заявителя
 			{
-				DC_ZTP.getItems().addAll("Физ. лицо", "Организация");
+				DC_ZTP.getItems().addAll("Физ. лицо", "Юр. лицо");
 			}
 			// Тип документа
 			{
@@ -634,7 +634,7 @@ public class EditDeath {
 						DC_FADMIDDLE_NAME.setText(death.getDC_FADMIDDLE_NAME());
 						DC_FADLOCATION.setText(death.getDC_FADLOCATION());
 					} else if (death.getDC_ZTP().equals("J")) {
-						DC_ZTP.getSelectionModel().select("Организация");
+						DC_ZTP.getSelectionModel().select("Юр. лицо");
 						JURIK.setVisible(true);
 						DC_FADORG_NAME.setText(death.getDC_FADORG_NAME());
 						DC_FADREG_ADR.setText(death.getDC_FADREG_ADR());

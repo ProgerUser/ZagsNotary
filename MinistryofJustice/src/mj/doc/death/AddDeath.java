@@ -407,7 +407,7 @@ public class AddDeath {
 				DC_FADLOCATION.setText("");
 				DC_FADORG_NAME.setText("");
 				DC_FADREG_ADR.setText("");
-			} else if (DC_ZTP.getValue().equals("Организация")) {
+			} else if (DC_ZTP.getValue().equals("Юр. лицо")) {
 				FIZIK.setVisible(false);
 				JURIK.setVisible(true);
 
@@ -418,7 +418,7 @@ public class AddDeath {
 				DC_FADORG_NAME.setText("");
 				DC_FADREG_ADR.setText("");
 			}
-		} else if (DC_ZTP.getValue().equals("Организация")) {
+		} else if (DC_ZTP.getValue().equals("Юр. лицо")) {
 			FIZIK.setVisible(false);
 			JURIK.setVisible(true);
 
@@ -432,7 +432,7 @@ public class AddDeath {
 				DC_FADLOCATION.setText("");
 				DC_FADORG_NAME.setText("");
 				DC_FADREG_ADR.setText("");
-			} else if (DC_ZTP.getValue().equals("Организация")) {
+			} else if (DC_ZTP.getValue().equals("Юр. лицо")) {
 				FIZIK.setVisible(false);
 				JURIK.setVisible(true);
 
@@ -606,7 +606,7 @@ public class AddDeath {
 			/**
 			 * Тип заявителя
 			 */
-			DC_ZTP.getItems().addAll("Физ. лицо", "Организация");
+			DC_ZTP.getItems().addAll("Физ. лицо", "Юр. лицо");
 			/**
 			 * Подтверждение факта о смерти
 			 */

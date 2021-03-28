@@ -100,11 +100,23 @@ public class IUTempParamIU {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+	private ALL_TABLE alltbl;
+	@FXML
+	void PRM_TBL_REF(ActionEvent event) {
+		try {
+			if (PRM_TBL_REF.getSelectionModel().getSelectedItem() != null) {
+				alltbl = PRM_TBL_REF.getSelectionModel().getSelectedItem();
+				PRM_TBL_REF.getSelectionModel().select(alltbl);
+				System.out.println(alltbl.getTABLE_NAME());
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
 
 	@FXML
 	void OK(ActionEvent event) {
 		try {
-			System.out.println(PRM_TBL_REF.getSelectionModel().getSelectedItem().getTABLE_NAME());
 			if (!PRM_NAME.getText().equals("")) {
 				if (gettype().equals("I")) {
 					PreparedStatement prp = conn.prepareStatement(
@@ -113,7 +125,7 @@ public class IUTempParamIU {
 					prp.setInt(2, getID());
 					prp.setString(3, PRM_SQL.getText());
 					prp.setInt(4, PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID());
-					prp.setString(5, PRM_TBL_REF.getSelectionModel().getSelectedItem().getTABLE_NAME());
+					prp.setString(5, alltbl.getTABLE_NAME());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
@@ -124,7 +136,7 @@ public class IUTempParamIU {
 					prp.setString(1, PRM_NAME.getText());
 					prp.setString(2, PRM_SQL.getText());
 					prp.setInt(3, PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID());
-					prp.setString(4, PRM_TBL_REF.getSelectionModel().getSelectedItem().getTABLE_NAME());
+					prp.setString(4, alltbl.getTABLE_NAME());
 					prp.setInt(5, cl.getPRM_ID());
 					prp.executeUpdate();
 					prp.close();
@@ -265,14 +277,13 @@ public class IUTempParamIU {
 		cmbbx.setConverter(new StringConverter<ALL_TABLE>() {
 			@Override
 			public String toString(ALL_TABLE product) {
-				return product != null ? product.getTABLE_NAME() + "/" + product.getTABLECOMMENT() : null;
+				return product != null ? product.getTABLE_NAME() : null;
 			}
 
 			@Override
 			public ALL_TABLE fromString(final String string) {
-				return cmbbx.getItems().stream()
-						.filter(product -> product.getTABLE_NAME().equals(string.substring(0,string.indexOf("/"))))
-						.findFirst().orElse(null);
+				return cmbbx.getItems().stream().filter(product -> product.getTABLE_NAME().equals(string)).findFirst()
+						.orElse(null);
 			}
 		});
 	}

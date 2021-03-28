@@ -514,7 +514,7 @@ public class AdoptList {
 		try {
 			if (isopen == false) {
 				PreparedStatement selforupd = conn
-						.prepareStatement("select * from ADOPTOIN where  ID = ? /*for update nowait*/");
+						.prepareStatement("select * from ADOPTOIN where  ID = ? for update nowait");
 				ADOPTOIN cl = Initialize2(docid);
 				selforupd.setInt(1, cl.getID());
 				try {
@@ -522,7 +522,7 @@ public class AdoptList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "ADOPTOIN");
+						String lock = DBUtil.Lock_Row(docid, "ADOPTOIN",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -559,7 +559,7 @@ public class AdoptList {
 											Refresh();
 										}
 										// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "ADOPTOIN");
+										String lock = DBUtil.Lock_Row_Delete(docid, "ADOPTOIN",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -610,7 +610,7 @@ public class AdoptList {
 												}
 												newWindow_yn.close();
 												// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "ADOPTOIN");
+												String lock = DBUtil.Lock_Row_Delete(docid, "ADOPTOIN",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -628,7 +628,7 @@ public class AdoptList {
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										isopen = false;
 										// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "ADOPTOIN");
+										String lock = DBUtil.Lock_Row_Delete(docid, "ADOPTOIN",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}

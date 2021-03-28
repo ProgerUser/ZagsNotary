@@ -1,5 +1,7 @@
 package mj.doc.cus;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.sql.CallableStatement;
 import java.sql.Clob;
@@ -544,6 +546,22 @@ public class CusList {
 	}
 
 	/**
+	 * Clob в строку
+	 * @param clob
+	 * @return
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	public String ClobToString(Clob clob) throws SQLException, IOException {
+		BufferedReader stringReader = new BufferedReader(clob.getCharacterStream());
+		String singleLine = null;
+		StringBuffer strBuff = new StringBuffer();
+		while ((singleLine = stringReader.readLine()) != null) {
+			strBuff.append(singleLine + "\r\n");
+		}
+		return strBuff.toString();
+	}
+	/**
 	 * Возврат XML файлов для сравнения
 	 */
 	void XmlsForCompare(Integer docid, Connection conn) {
@@ -593,17 +611,10 @@ public class CusList {
 //				System.out.println(CusCitizXml);
 			} else {
 				Msg.Message(callStmt.getString(2));
-				Main.logger.error(callStmt.getString(2) + "~" + Thread.currentThread().getName());
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -629,7 +640,7 @@ public class CusList {
 				}
 				Main.logger = Logger.getLogger(getClass());
 				PreparedStatement selforupd = conn
-						.prepareStatement("select * from cus where  ICUSNUM = ? /*for update nowait*/");
+						.prepareStatement("select * from cus where  ICUSNUM = ? for update nowait");
 				VCUS cl = Init2(docid, conn);
 				selforupd.setInt(1, cl.getICUSNUM());
 				try {
@@ -637,7 +648,7 @@ public class CusList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "CUS");
+						String lock = DBUtil.Lock_Row(docid, "CUS",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -676,14 +687,13 @@ public class CusList {
 									// Если нажали сохранить
 									// обновление без сохранения
 									controller.CallSaveToCompare();
-									//XmlsForCompare(docid, conn);
 									if (controller.getStatus()) {
 										if (formname.equals("norm")) {
 											InitVCus(null, null, null, null, null, "edit", controller.getId());
 										}
 										conn.commit();
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "CUS");
+										String lock = DBUtil.Lock_Row_Delete(docid, "CUS",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -735,7 +745,7 @@ public class CusList {
 												newWindow_yn.close();
 												isopen = false;
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "CUS");
+												String lock = DBUtil.Lock_Row_Delete(docid, "CUS",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -753,20 +763,13 @@ public class CusList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "CUS");
+										String lock = DBUtil.Lock_Row_Delete(docid, "CUS",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									Msg.Message(ExceptionUtils.getStackTrace(e));
-									Main.logger.error(
-											ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-									String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-									String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-									int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-									DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e),
-											methodName);
+									DBUtil.LOG_ERROR(e);
 								}
 							}
 						});
@@ -776,33 +779,15 @@ public class CusList {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "CUS"));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 					} else {
-						e.printStackTrace();
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 				}
-
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -813,8 +798,6 @@ public class CusList {
 	 */
 	void Add() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			if (DBUtil.OdbAction(27) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
@@ -1524,13 +1507,7 @@ public class CusList {
 				stage.show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 }

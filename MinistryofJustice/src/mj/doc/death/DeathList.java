@@ -378,7 +378,7 @@ public class DeathList {
 				}
 
 				PreparedStatement selforupd = conn
-						.prepareStatement("select * from DEATH_CERT where  DC_ID = ? /*for update nowait*/");
+						.prepareStatement("select * from DEATH_CERT where  DC_ID = ? for update nowait");
 				DEATH_CERT cl = Initialize2(docid);
 				selforupd.setInt(1, cl.getDC_ID());
 				try {
@@ -386,7 +386,7 @@ public class DeathList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "DEATH_CERT");
+						String lock = DBUtil.Lock_Row(docid, "DEATH_CERT",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -422,7 +422,7 @@ public class DeathList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT");
+										String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -473,7 +473,7 @@ public class DeathList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT");
+												String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -493,7 +493,7 @@ public class DeathList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT");
+										String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}

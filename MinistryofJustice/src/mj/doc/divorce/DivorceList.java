@@ -416,7 +416,7 @@ public class DivorceList {
 				}
 
 				PreparedStatement selforupd = conn
-						.prepareStatement("select * from DIVORCE_CERT where  DIVC_ID = ? /*for update nowait*/");
+						.prepareStatement("select * from DIVORCE_CERT where  DIVC_ID = ? for update nowait");
 				DIVORCE_CERT cl = Initialize2(docid);
 				selforupd.setInt(1, cl.getDIVC_ID());
 				try {
@@ -424,7 +424,7 @@ public class DivorceList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "DIVORCE_CERT");
+						String lock = DBUtil.Lock_Row(docid, "DIVORCE_CERT",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -460,7 +460,7 @@ public class DivorceList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT");
+										String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -511,7 +511,7 @@ public class DivorceList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT");
+												String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -530,7 +530,7 @@ public class DivorceList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT");
+										String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}

@@ -271,7 +271,7 @@ public class UpdNatList {
 
 				PreparedStatement selforupd = conn
 						.prepareStatement(
-								"select * from UPD_NAT where  ID = ? /*for update nowait*/");
+								"select * from UPD_NAT where  ID = ? for update nowait");
 				UPD_NAT cl = Initialize2(docid);
 				selforupd.setInt(1, cl.getID());
 				//selforupd.setInt(2, cl.getCUSID());
@@ -280,7 +280,7 @@ public class UpdNatList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "UPD_NAT");
+						String lock = DBUtil.Lock_Row(docid, "UPD_NAT",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -316,7 +316,7 @@ public class UpdNatList {
 											Refresh();
 										}
 										// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "UPD_NAT");
+										String lock = DBUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -368,7 +368,7 @@ public class UpdNatList {
 												newWindow_yn.close();
 
 												// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "UPD_NAT");
+												String lock = DBUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -387,7 +387,7 @@ public class UpdNatList {
 										conn.rollback();
 										isopen = false;
 										// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"
-										String lock = DBUtil.Lock_Row_Delete(docid, "UPD_NAT");
+										String lock = DBUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
