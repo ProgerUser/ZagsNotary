@@ -1,4 +1,4 @@
-package notary.doc.old.model;
+package notary.doc.html.model;
 
 import java.time.LocalDate;
 import javafx.beans.property.IntegerProperty;

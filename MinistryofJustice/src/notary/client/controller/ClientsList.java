@@ -129,7 +129,7 @@ public class ClientsList {
 			Stage stage_ = (Stage) NT_CLIENTS.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/notary/client/IUClients.fxml"));
+			loader.setLocation(getClass().getResource("/notary/client/view/IUClients.fxml"));
 
 			AddClients controller = new AddClients();
 			loader.setController(controller);
@@ -171,7 +171,7 @@ public class ClientsList {
 				Stage stage_ = (Stage) NT_CLIENTS.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/client/IUClients.fxml"));
+				loader.setLocation(getClass().getResource("/notary/client/view/IUClients.fxml"));
 
 				EditClients controller = new EditClients();
 				controller.setConn(conn, val);

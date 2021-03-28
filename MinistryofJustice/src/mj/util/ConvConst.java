@@ -1,5 +1,9 @@
 package mj.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.sql.Clob;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -104,6 +108,23 @@ public class ConvConst {
 		}
 	}
 
+	/**
+	 * Clob в строку
+	 * @param clob
+	 * @return
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	public String ClobToString(Clob clob) throws SQLException, IOException {
+		BufferedReader stringReader = new BufferedReader(clob.getCharacterStream());
+		String singleLine = null;
+		StringBuffer strBuff = new StringBuffer();
+		while ((singleLine = stringReader.readLine()) != null) {
+			strBuff.append(singleLine + "\r\n");
+		}
+		return strBuff.toString();
+	}
+	
 	/**
 	 * Форматирование столбцов <br>
 	 * dd.MM.yyyy

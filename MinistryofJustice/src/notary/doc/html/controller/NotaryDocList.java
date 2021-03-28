@@ -1,4 +1,4 @@
-package notary.doc.old.controller;
+package notary.doc.html.controller;
 
 import java.awt.Desktop;
 import java.io.BufferedReader;
@@ -53,7 +53,7 @@ import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import mj.util.ConvConst;
-import notary.doc.old.model.V_NT_DOC;
+import notary.doc.html.model.V_NT_DOC;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -93,9 +93,9 @@ public class NotaryDocList {
 			Stage stage_ = (Stage) NT_DOC.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/notary/doc/old/view/IUNotary.fxml"));
+			loader.setLocation(getClass().getResource("/notary/doc/html/view/IUHtmlDoc.fxml"));
 
-			AddNotaryDoc controller = new AddNotaryDoc();
+			AddDoc controller = new AddDoc();
 			loader.setController(controller);
 
 			Parent root = loader.load();
@@ -123,36 +123,37 @@ public class NotaryDocList {
 		try {
 			V_NT_DOC val = NT_DOC.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				Stage stage = new Stage();
-				Stage stage_ = (Stage) NT_DOC.getScene().getWindow();
-
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/doc/old/view/IUNotary.fxml"));
-
-				EditNotaryDoc controller = new EditNotaryDoc();
-				controller.setConn(conn, val);
-				loader.setController(controller);
-
-				Parent root = loader.load();
-				stage.setScene(new Scene(root));
-				stage.getIcons().add(new Image("/icon.png"));
-				stage.setTitle("Редактировать: " + val.getID());
-				stage.initOwner(stage_);
-				stage.setResizable(true);
-				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-					@Override
-					public void handle(WindowEvent paramT) {
-						if (controller.getStatus()) {
-							Init();
-						}
-					}
-				});
-				stage.show();
+//				Stage stage = new Stage();
+//				Stage stage_ = (Stage) NT_DOC.getScene().getWindow();
+//
+//				FXMLLoader loader = new FXMLLoader();
+//				loader.setLocation(getClass().getResource("/notary/doc/html/view/IUNotary.fxml"));
+//
+//				EditNotaryDoc controller = new EditNotaryDoc();
+//				controller.setConn(conn, val);
+//				loader.setController(controller);
+//
+//				Parent root = loader.load();
+//				stage.setScene(new Scene(root));
+//				stage.getIcons().add(new Image("/icon.png"));
+//				stage.setTitle("Редактировать: " + val.getID());
+//				stage.initOwner(stage_);
+//				stage.setResizable(true);
+//				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+//					@Override
+//					public void handle(WindowEvent paramT) {
+//						if (controller.getStatus()) {
+//							Init();
+//						}
+//					}
+//				});
+//				stage.show();
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+
 	public void HtmlEditor(Stage stage_) {
 		try {
 			Stage stage = new Stage();
@@ -345,6 +346,9 @@ public class NotaryDocList {
 			ObservableList<V_NT_DOC> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				V_NT_DOC list = new V_NT_DOC();
+				if (rs.getClob("HTML_DOCUMENT") != null) {
+					list.setHTML_DOCUMENT(new ConvConst().ClobToString(rs.getClob("HTML_DOCUMENT")));
+				}
 				list.setCR_TIME(rs.getString("CR_TIME"));
 				list.setID(rs.getInt("ID"));
 				list.setOPER(rs.getString("OPER"));

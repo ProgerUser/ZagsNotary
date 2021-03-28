@@ -77,7 +77,7 @@ public class HtmlEditor {
 		try {
 			PreparedStatement prp = conn.prepareStatement("update NT_TEMP_LIST set HTML_TEMP = ? where ID = ?");
 			Clob clob = conn.createClob();
-			clob.setString(1, VisHtml.getHtmlText());
+			clob.setString(1, CodeHtml.getText().replace("<html dir=\"ltr\"><head>", "<!DOCTYPE html>\r\n<html>\r\n<head>"));
 			prp.setClob(1, clob);
 			prp.setInt(2, val_list.getID());
 			prp.executeUpdate();

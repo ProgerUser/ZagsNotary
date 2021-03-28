@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jyloo.syntheticafx.XTableColumn?>
+<?import com.jyloo.syntheticafx.XTableView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<BorderPane fx:id="ROOT">
+			<top>
+				<VBox fx:id="VB" BorderPane.alignment="CENTER">
+					<children>
+						<ToolBar>
+							<items>
+								<Button mnemonicParsing="false" onAction="#Add">
+									<tooltip>
+										<Tooltip text="Добавить">
+											<font>
+												<Font size="14.0" />
+											</font>
+										</Tooltip>
+									</tooltip>
+									<font>
+										<Font size="10.0" />
+									</font>
+									<graphic>
+										<FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="18" />
+									</graphic>
+								</Button>
+								<Button mnemonicParsing="false" onAction="#Edit">
+									<tooltip>
+										<Tooltip text="Редактировать">
+											<font>
+												<Font size="14.0" />
+											</font>
+										</Tooltip>
+									</tooltip>
+									<font>
+										<Font size="10.0" />
+									</font>
+									<graphic>
+										<FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="18" />
+									</graphic>
+								</Button>
+								<Button mnemonicParsing="false" onAction="#Delete">
+									<tooltip>
+										<Tooltip text="Удалить">
+											<font>
+												<Font size="14.0" />
+											</font>
+										</Tooltip>
+									</tooltip>
+									<font>
+										<Font size="10.0" />
+									</font>
+									<graphic>
+										<FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="18" />
+									</graphic>
+								</Button>
+								<Separator orientation="VERTICAL" />
+								<Button layoutX="74.0" layoutY="10.0" mnemonicParsing="false" onAction="#Refresh">
+									<tooltip>
+										<Tooltip text="Обновить">
+											<font>
+												<Font size="14.0" />
+											</font>
+										</Tooltip>
+									</tooltip>
+									<font>
+										<Font size="10.0" />
+									</font>
+									<graphic>
+										<FontAwesomeIconView fontSmoothingType="LCD" glyphName="REFRESH" size="18" />
+									</graphic>
+								</Button>
+								<Separator layoutX="104.0" layoutY="10.0" orientation="VERTICAL" />
+								<Button mnemonicParsing="false" onAction="#Print">
+									<tooltip>
+										<Tooltip text="Печать">
+											<font>
+												<Font size="14.0" />
+											</font>
+										</Tooltip>
+									</tooltip>
+									<font>
+										<Font size="10.0" />
+									</font>
+									<graphic>
+										<FontAwesomeIconView fontSmoothingType="LCD" glyphName="PRINT" size="18" />
+									</graphic>
+								</Button>
+							</items>
+							<VBox.margin>
+								<Insets bottom="5.0" left="-5.0" right="-5.0" top="-5.0" />
+							</VBox.margin>
+						</ToolBar>
+					</children>
+				</VBox>
+			</top>
+			<StackPane.margin>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+			</StackPane.margin>
+			<center>
+				<XTableView fx:id="NT_DOC" prefWidth="800.0" styleClass="mylistview" stylesheets="/ScrPane.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+					<columns>
+						<XTableColumn fx:id="ID" prefWidth="82.0" text="Номер" />
+						<XTableColumn fx:id="DOC_NUMBER" prefWidth="120.0" text="Номер документа" />
+						<XTableColumn fx:id="OPER" prefWidth="120.0" text="Опер." />
+						<XTableColumn fx:id="CR_DATE" prefWidth="120.0" text="Дата созд. записи" />
+						<XTableColumn fx:id="CR_TIME" prefWidth="120.0" text="Время созд. записи" />
+						<XTableColumn fx:id="NT_TYPE" prefWidth="120.0" text="Тип документа" />
+					</columns>
+					<BorderPane.margin>
+						<Insets />
+					</BorderPane.margin>
+				</XTableView>
+			</center>
+		</BorderPane>
+		<ProgressIndicator fx:id="PB" maxHeight="50.0" maxWidth="50.0" visible="false" />
+	</children>
+</StackPane>

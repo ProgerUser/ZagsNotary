@@ -28,7 +28,6 @@ import mj.app.main.Main;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
-import notary.doc.old.model.ParamList;
 import notary.doc.old.model.V_NT_DOC_PRM;
 
 public class IUParam {

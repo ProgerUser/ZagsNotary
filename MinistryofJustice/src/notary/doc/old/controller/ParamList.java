@@ -1,4 +1,4 @@
-package notary.doc.old.model;
+package notary.doc.old.controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
+import notary.doc.old.model.LIST;
 
 public class ParamList {
 

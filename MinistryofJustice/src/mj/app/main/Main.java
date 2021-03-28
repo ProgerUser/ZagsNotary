@@ -68,7 +68,7 @@ import mj.users.UsrC;
 import mj.widgets.DbTracer;
 import mj.zags.ZagsList;
 import notary.client.controller.ClientsList;
-import notary.doc.old.controller.NotaryDocList;
+import notary.doc.html.controller.NotaryDocList;
 import notary.template.html.controller.NtTemplate;
 
 /**
@@ -442,7 +442,7 @@ public class Main extends Application {
 			if (NtCliWin) {
 				NtCliWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/client/ClientList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/client/view/ClientList.fxml"));
 
 				ClientsList controller = new ClientsList();
 				loader.setController(controller);
@@ -472,7 +472,7 @@ public class Main extends Application {
 			if (NtDocWin) {
 				NtDocWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/doc/Notary.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/doc/html/view/Notary.fxml"));
 
 				NotaryDocList controller = new NotaryDocList();
 				loader.setController(controller);
