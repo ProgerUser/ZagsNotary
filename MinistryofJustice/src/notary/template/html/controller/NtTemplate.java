@@ -463,8 +463,6 @@ public class NtTemplate {
 					@Override
 					public void handle(WindowEvent paramT) {
 						controller.dbDisconnect();
-						fillTreeNtTemp();
-						Init(tmp.getPARENT());
 					}
 				});
 				stage.show();
