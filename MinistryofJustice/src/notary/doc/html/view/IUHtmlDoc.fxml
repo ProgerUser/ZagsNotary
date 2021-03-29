@@ -6,10 +6,8 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -20,26 +18,19 @@
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
 	<children>
-      <GridPane>
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Тип документа">
-               <GridPane.margin>
-                  <Insets right="5.0" />
-               </GridPane.margin>
-            </Text>
-            <ComboBox fx:id="TYPE_NAME" editable="true" onAction="#TYPE_NAME" prefWidth="400.0" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" onAction="#DelSelType" GridPane.columnIndex="2">
-               <GridPane.margin>
-                  <Insets left="5.0" />
-               </GridPane.margin>
+      <ToolBar>
+        <items>
+          <Button mnemonicParsing="false" onAction="#refresh">
+               <graphic>
+                  <FontAwesomeIconView glyphName="REFRESH" size="18" />
+               </graphic>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Тип документа" />
+            <ComboBox fx:id="TYPE_NAME" editable="true" onAction="#TYPE_NAME" prefWidth="400.0" />
+            <Button mnemonicParsing="false" onAction="#DelSelType">
                <graphic>
                   <FontAwesomeIconView glyphName="TIMES" size="17" />
                </graphic>
@@ -47,8 +38,11 @@
                   <Font size="10.0" />
                </font>
             </Button>
-         </children>
-      </GridPane>
+        </items>
+         <VBox.margin>
+            <Insets left="-5.0" right="-5.0" top="-5.0" />
+         </VBox.margin>
+      </ToolBar>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
          <center>
       		<WebView fx:id="webView" minHeight="600.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="900.0" BorderPane.alignment="CENTER" />

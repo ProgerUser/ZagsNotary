@@ -37,8 +37,8 @@ import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.util.ConvConst;
 import netscape.javascript.JSObject;
-import notary.doc.html.model.NT_TEMP_LIST_PARAM;
 import notary.doc.html.model.V_NT_TEMP_LIST;
+import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
 public class AddDoc {
 
@@ -81,10 +81,11 @@ public class AddDoc {
 			ListVal(id);
 		}
 	}
-	
+
+	NT_TEMP_LIST_PARAM list = null;
+
 	void ListVal(String id) {
 		try {
-			NT_TEMP_LIST_PARAM list = null;
 			PreparedStatement prp = conn.prepareStatement("select * from NT_TEMP_LIST_PARAM t ");
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
@@ -95,6 +96,9 @@ public class AddDoc {
 				list.setPRM_SQL(rs.getString("PRM_SQL"));
 				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
 				list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
+				if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
+					list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
+				}
 			}
 			prp.close();
 			rs.close();
@@ -120,7 +124,20 @@ public class AddDoc {
 				@Override
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
-						webEngine.executeScript("SetValue('" + id + "','" + controller.getName_s() + "')");
+						try {
+							webEngine.executeScript("SetValue('" + id + "','" + controller.getName_s() + "')");
+							PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
+							prp.setInt(1, Integer.valueOf(controller.getCode_s()));
+							ResultSet rs = prp.executeQuery();
+							while (rs.next()) {
+								System.out.println(rs.getString("NAME_").toLowerCase());
+								System.out.println(rs.getString("VALUE_"));
+								webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
+										+ rs.getString("VALUE_") + "')");
+							}
+						} catch (Exception e) {
+							DBUtil.LOG_ERROR(e);
+						}
 					}
 				}
 			});
@@ -133,11 +150,16 @@ public class AddDoc {
 	private WebEngine webEngine;
 
 	@FXML
-	void TYPE_NAME(ActionEvent event) {
+	void refresh(ActionEvent event) {
+		Reload();
+	}
+
+	void Reload() {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				webEngine = webView.getEngine();
+				webView.setContextMenuEnabled(false);
 				webEngine.loadContent(val.getHTML_TEMP());
 				webEngine.setJavaScriptEnabled(true);
 				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
@@ -154,6 +176,11 @@ public class AddDoc {
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
+	}
+
+	@FXML
+	void TYPE_NAME(ActionEvent event) {
+		Reload();
 	}
 
 	@FXML

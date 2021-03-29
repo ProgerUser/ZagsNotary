@@ -6,6 +6,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class NT_TEMP_LIST_PARAM {
+	/** Запрос для параметров */
+	private StringProperty PRM_FOR_PRM_SQL;
 	/** ИД */
 	private IntegerProperty PRM_ID;
 	/** Название */
@@ -20,12 +22,17 @@ public class NT_TEMP_LIST_PARAM {
 	private StringProperty PRM_TBL_REF;
 
 	public NT_TEMP_LIST_PARAM() {
+		this.PRM_FOR_PRM_SQL = new SimpleStringProperty();
 		this.PRM_ID = new SimpleIntegerProperty();
 		this.PRM_NAME = new SimpleStringProperty();
 		this.PRM_TMP_ID = new SimpleIntegerProperty();
 		this.PRM_SQL = new SimpleStringProperty();
 		this.PRM_TYPE = new SimpleIntegerProperty();
 		this.PRM_TBL_REF = new SimpleStringProperty();
+	}
+
+	public void setPRM_FOR_PRM_SQL(String PRM_FOR_PRM_SQL) {
+		this.PRM_FOR_PRM_SQL.set(PRM_FOR_PRM_SQL);
 	}
 
 	public void setPRM_ID(Integer PRM_ID) {
@@ -52,6 +59,10 @@ public class NT_TEMP_LIST_PARAM {
 		this.PRM_TBL_REF.set(PRM_TBL_REF);
 	}
 
+	public String getPRM_FOR_PRM_SQL() {
+		return PRM_FOR_PRM_SQL.get();
+	}
+
 	public Integer getPRM_ID() {
 		return PRM_ID.get();
 	}
@@ -74,6 +85,10 @@ public class NT_TEMP_LIST_PARAM {
 
 	public String getPRM_TBL_REF() {
 		return PRM_TBL_REF.get();
+	}
+
+	public StringProperty PRM_FOR_PRM_SQLProperty() {
+		return PRM_FOR_PRM_SQL;
 	}
 
 	public IntegerProperty PRM_IDProperty() {

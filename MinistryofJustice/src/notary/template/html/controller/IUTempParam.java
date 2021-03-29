@@ -33,6 +33,7 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
+import mj.util.ConvConst;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
 public class IUTempParam {
@@ -241,6 +242,9 @@ public class IUTempParam {
 				list.setPRM_SQL(rs.getString("PRM_SQL"));
 				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
 				list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
+				if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
+					list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
+				}
 				dlist.add(list);
 			}
 			prepStmt.close();

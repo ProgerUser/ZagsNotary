@@ -1,5 +1,6 @@
 package notary.template.html.controller;
 
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -80,6 +81,9 @@ public class IUTempParamIU {
 	private ComboBox<ALL_TABLE> PRM_TBL_REF;
 
 	@FXML
+	private TextArea PRM_FOR_PRM_SQL;
+
+	@FXML
 	void Cencel(ActionEvent event) {
 		onclose();
 	}
@@ -91,7 +95,10 @@ public class IUTempParamIU {
 			if (type != null) {
 				if (type.getTYPE_ID() == 1) {
 					PRM_SQL.setEditable(true);
+					PRM_FOR_PRM_SQL.setEditable(true);
 				} else {
+					PRM_FOR_PRM_SQL.setEditable(false);
+					PRM_FOR_PRM_SQL.setText("");
 					PRM_SQL.setEditable(false);
 					PRM_SQL.setText("");
 				}
@@ -100,7 +107,9 @@ public class IUTempParamIU {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+
 	private ALL_TABLE alltbl;
+
 	@FXML
 	void PRM_TBL_REF(ActionEvent event) {
 		try {
@@ -120,24 +129,30 @@ public class IUTempParamIU {
 			if (!PRM_NAME.getText().equals("")) {
 				if (gettype().equals("I")) {
 					PreparedStatement prp = conn.prepareStatement(
-							"insert into NT_TEMP_LIST_PARAM (PRM_NAME,PRM_TMP_ID,PRM_SQL,PRM_TYPE,PRM_TBL_REF) values (?,?,?,?,?)");
+							"insert into NT_TEMP_LIST_PARAM (PRM_NAME,PRM_TMP_ID,PRM_SQL,PRM_TYPE,PRM_TBL_REF,PRM_FOR_PRM_SQL) values (?,?,?,?,?,?)");
 					prp.setString(1, PRM_NAME.getText());
 					prp.setInt(2, getID());
 					prp.setString(3, PRM_SQL.getText());
 					prp.setInt(4, PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID());
 					prp.setString(5, alltbl.getTABLE_NAME());
+					Clob clob = conn.createClob();
+					clob.setString(1, PRM_FOR_PRM_SQL.getText());
+					prp.setClob(6, clob);
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
 					onclose();
 				} else if (gettype().equals("U")) {
 					PreparedStatement prp = conn.prepareStatement(
-							"update NT_TEMP_LIST_PARAM set PRM_NAME = ?,PRM_SQL=?,PRM_TYPE=?,PRM_TBL_REF=? where PRM_ID = ?");
+							"update NT_TEMP_LIST_PARAM set PRM_NAME = ?,PRM_SQL=?,PRM_TYPE=?,PRM_TBL_REF=?,PRM_FOR_PRM_SQL=? where PRM_ID = ?");
 					prp.setString(1, PRM_NAME.getText());
 					prp.setString(2, PRM_SQL.getText());
 					prp.setInt(3, PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID());
 					prp.setString(4, alltbl.getTABLE_NAME());
-					prp.setInt(5, cl.getPRM_ID());
+					Clob clob = conn.createClob();
+					clob.setString(1, PRM_FOR_PRM_SQL.getText());
+					prp.setClob(5, clob);
+					prp.setInt(6, cl.getPRM_ID());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
@@ -220,6 +235,7 @@ public class IUTempParamIU {
 			}
 
 			if (gettype().equals("U")) {
+				PRM_FOR_PRM_SQL.setText(cl.getPRM_FOR_PRM_SQL());
 				PRM_NAME.setText(cl.getPRM_NAME());
 				OK.setText("Сохранить");
 				PRM_SQL.setText(cl.getPRM_SQL());
@@ -237,6 +253,7 @@ public class IUTempParamIU {
 					for (ALL_TABLE ld : PRM_TBL_REF.getItems()) {
 						if (cl.getPRM_TBL_REF().equals(ld.getTABLE_NAME())) {
 							PRM_TBL_REF.getSelectionModel().select(ld);
+							alltbl = ld;
 							break;
 						}
 					}
@@ -247,8 +264,10 @@ public class IUTempParamIU {
 			if (type != null) {
 				if (type.getTYPE_ID() == 1) {
 					PRM_SQL.setEditable(true);
+					PRM_FOR_PRM_SQL.setEditable(true);
 				} else {
 					PRM_SQL.setEditable(false);
+					PRM_FOR_PRM_SQL.setEditable(false);
 					PRM_SQL.setText("");
 				}
 			}
