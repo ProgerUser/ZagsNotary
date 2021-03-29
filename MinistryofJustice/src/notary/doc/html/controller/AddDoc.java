@@ -1,5 +1,6 @@
 package notary.doc.html.controller;
 
+import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,7 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -125,15 +133,37 @@ public class AddDoc {
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
 						try {
+							System.out.println("controller.getCode_s()=" + controller.getCode_s());
 							webEngine.executeScript("SetValue('" + id + "','" + controller.getName_s() + "')");
-							PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
-							prp.setInt(1, Integer.valueOf(controller.getCode_s()));
-							ResultSet rs = prp.executeQuery();
-							while (rs.next()) {
-								System.out.println(rs.getString("NAME_").toLowerCase());
-								System.out.println(rs.getString("VALUE_"));
-								webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
-										+ rs.getString("VALUE_") + "')");
+							{
+								PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
+								prp.setInt(1, Integer.valueOf(controller.getCode_s()));
+								ResultSet rs = prp.executeQuery();
+								while (rs.next()) {
+									System.out.println(
+											rs.getString("NAME_").toLowerCase() + "=" + rs.getString("VALUE_"));
+									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
+										webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
+												+ "','" + rs.getString("VALUE_") + "')");
+									}
+								}
+								prp.close();
+								rs.close();
+							}
+							{
+								PreparedStatement prp = conn.prepareStatement(
+										TYPE_NAME.getSelectionModel().getSelectedItem().getREP_QUERY());
+								ResultSet rs = prp.executeQuery();
+								while (rs.next()) {
+									System.out.println("SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
+											+ rs.getString("VALUE_") + "')");
+									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
+										webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
+												+ "','" + rs.getString("VALUE_") + "')");
+									}
+								}
+								prp.close();
+								rs.close();
 							}
 						} catch (Exception e) {
 							DBUtil.LOG_ERROR(e);
@@ -152,6 +182,7 @@ public class AddDoc {
 	@FXML
 	void refresh(ActionEvent event) {
 		Reload();
+		enableFirebug(webEngine);
 	}
 
 	void Reload() {
@@ -192,9 +223,33 @@ public class AddDoc {
 		}
 	}
 
+	/**
+	 * Enables Firebug Lite for debugging a webEngine.
+	 * 
+	 * @param engine the webEngine for which debugging is to be enabled.
+	 */
+	private static void enableFirebug(final WebEngine engine) {
+		engine.executeScript(
+				"if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}");
+	}
+
 	@FXML
 	void OK(ActionEvent event) {
-
+		try {
+//			String html = (String) webEngine.executeScript("document.documentElement.outerHTML");
+//			System.out.println(html);
+//			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			Document doc = webEngine.getDocument();
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+			transformer.transform(new DOMSource(doc), new StreamResult(new OutputStreamWriter(System.out, "UTF-8")));
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
 	}
 
 	public void dbDisconnect() {
@@ -251,6 +306,9 @@ public class AddDoc {
 				ObservableList<V_NT_TEMP_LIST> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					V_NT_TEMP_LIST list = new V_NT_TEMP_LIST();
+					if (rs.getClob("REP_QUERY") != null) {
+						list.setREP_QUERY(new ConvConst().ClobToString(rs.getClob("REP_QUERY")));
+					}
 					list.setPARENT(rs.getInt("PARENT"));
 					list.setNAMES(rs.getString("NAMES"));
 					list.setNAME(rs.getString("NAME"));

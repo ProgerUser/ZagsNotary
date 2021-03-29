@@ -7,8 +7,6 @@ import javafx.beans.property.StringProperty;
 
 public class V_NT_TEMP_LIST {
 	/** Нет данных */
-	private StringProperty HTML_TEMP;
-	/** Нет данных */
 	private StringProperty NAMES;
 	/** Нет данных */
 	private IntegerProperty ID;
@@ -16,17 +14,18 @@ public class V_NT_TEMP_LIST {
 	private StringProperty NAME;
 	/** Нет данных */
 	private IntegerProperty PARENT;
+	/** Нет данных */
+	private StringProperty HTML_TEMP;
+	/** Нет данных */
+	private StringProperty REP_QUERY;
 
 	public V_NT_TEMP_LIST() {
-		this.HTML_TEMP = new SimpleStringProperty();
 		this.NAMES = new SimpleStringProperty();
 		this.ID = new SimpleIntegerProperty();
 		this.NAME = new SimpleStringProperty();
 		this.PARENT = new SimpleIntegerProperty();
-	}
-
-	public void setHTML_TEMP(String HTML_TEMP) {
-		this.HTML_TEMP.set(HTML_TEMP);
+		this.HTML_TEMP = new SimpleStringProperty();
+		this.REP_QUERY = new SimpleStringProperty();
 	}
 
 	public void setNAMES(String NAMES) {
@@ -45,8 +44,12 @@ public class V_NT_TEMP_LIST {
 		this.PARENT.set(PARENT);
 	}
 
-	public String getHTML_TEMP() {
-		return HTML_TEMP.get();
+	public void setHTML_TEMP(String HTML_TEMP) {
+		this.HTML_TEMP.set(HTML_TEMP);
+	}
+
+	public void setREP_QUERY(String REP_QUERY) {
+		this.REP_QUERY.set(REP_QUERY);
 	}
 
 	public String getNAMES() {
@@ -65,8 +68,12 @@ public class V_NT_TEMP_LIST {
 		return PARENT.get();
 	}
 
-	public StringProperty HTML_TEMPProperty() {
-		return HTML_TEMP;
+	public String getHTML_TEMP() {
+		return HTML_TEMP.get();
+	}
+
+	public String getREP_QUERY() {
+		return REP_QUERY.get();
 	}
 
 	public StringProperty NAMESProperty() {
@@ -83,5 +90,13 @@ public class V_NT_TEMP_LIST {
 
 	public IntegerProperty PARENTProperty() {
 		return PARENT;
+	}
+
+	public StringProperty HTML_TEMPProperty() {
+		return HTML_TEMP;
+	}
+
+	public StringProperty REP_QUERYProperty() {
+		return REP_QUERY;
 	}
 }
