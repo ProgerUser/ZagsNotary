@@ -1,21 +1,17 @@
 package notary.doc.html.controller;
 
-import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.sql.CallableStatement;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Properties;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -43,6 +39,7 @@ import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
+import mj.msg.Msg;
 import mj.util.ConvConst;
 import netscape.javascript.JSObject;
 import notary.doc.html.model.V_NT_TEMP_LIST;
@@ -94,7 +91,8 @@ public class AddDoc {
 
 	void ListVal(String id) {
 		try {
-			PreparedStatement prp = conn.prepareStatement("select * from NT_TEMP_LIST_PARAM t ");
+			PreparedStatement prp = conn.prepareStatement("select * from NT_TEMP_LIST_PARAM t where PRM_NAME = ?");
+			prp.setString(1, id);
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				list = new NT_TEMP_LIST_PARAM();
@@ -133,7 +131,7 @@ public class AddDoc {
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
 						try {
-							System.out.println("controller.getCode_s()=" + controller.getCode_s());
+							System.out.println("!!-------------controller.getCode_s()=" + controller.getCode_s());
 							webEngine.executeScript("SetValue('" + id + "','" + controller.getName_s() + "')");
 							{
 								PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
@@ -142,21 +140,6 @@ public class AddDoc {
 								while (rs.next()) {
 									System.out.println(
 											rs.getString("NAME_").toLowerCase() + "=" + rs.getString("VALUE_"));
-									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-										webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
-												+ "','" + rs.getString("VALUE_") + "')");
-									}
-								}
-								prp.close();
-								rs.close();
-							}
-							{
-								PreparedStatement prp = conn.prepareStatement(
-										TYPE_NAME.getSelectionModel().getSelectedItem().getREP_QUERY());
-								ResultSet rs = prp.executeQuery();
-								while (rs.next()) {
-									System.out.println("SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
-											+ rs.getString("VALUE_") + "')");
 									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
 										webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
 												+ "','" + rs.getString("VALUE_") + "')");
@@ -182,16 +165,18 @@ public class AddDoc {
 	@FXML
 	void refresh(ActionEvent event) {
 		Reload();
-		enableFirebug(webEngine);
 	}
 
 	void Reload() {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
+				URL url = HtmlEditorTest.class.getResource("/notary/doc/html/controller/HTML.html");
 				webEngine = webView.getEngine();
+				webEngine.load(url.toExternalForm());
+				// webEngine = webView.getEngine();
 				webView.setContextMenuEnabled(false);
-				webEngine.loadContent(val.getHTML_TEMP());
+				// webEngine.loadContent(val.getHTML_TEMP());
 				webEngine.setJavaScriptEnabled(true);
 				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 					@Override
@@ -200,6 +185,23 @@ public class AddDoc {
 						if (newState == State.SUCCEEDED) {
 							JSObject window = (JSObject) webEngine.executeScript("window");
 							window.setMember("invoke", new JsToJava());
+							try {
+								PreparedStatement prp = conn.prepareStatement(
+										TYPE_NAME.getSelectionModel().getSelectedItem().getREP_QUERY());
+								ResultSet rs = prp.executeQuery();
+								while (rs.next()) {
+									System.out.println("------------SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
+											+ rs.getString("VALUE_") + "')");
+									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
+										webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
+												+ "','" + rs.getString("VALUE_") + "')");
+									}
+								}
+								prp.close();
+								rs.close();
+							} catch (Exception e) {
+								DBUtil.LOG_ERROR(e);
+							}
 						}
 					}
 				});
@@ -223,30 +225,48 @@ public class AddDoc {
 		}
 	}
 
-	/**
-	 * Enables Firebug Lite for debugging a webEngine.
-	 * 
-	 * @param engine the webEngine for which debugging is to be enabled.
-	 */
-	private static void enableFirebug(final WebEngine engine) {
-		engine.executeScript(
-				"if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}");
-	}
-
 	@FXML
 	void OK(ActionEvent event) {
 		try {
-//			String html = (String) webEngine.executeScript("document.documentElement.outerHTML");
-//			System.out.println(html);
-//			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			Document doc = webEngine.getDocument();
-			Transformer transformer = TransformerFactory.newInstance().newTransformer();
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-			transformer.transform(new DOMSource(doc), new StreamResult(new OutputStreamWriter(System.out, "UTF-8")));
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				String KeyValue = "";
+				PreparedStatement prp = conn
+						.prepareStatement("select * from NT_TEMP_LIST_PARAM t where PRM_TMP_ID = ?");
+				prp.setInt(1, val.getID());
+				ResultSet rs = prp.executeQuery();
+				while (rs.next()) {
+					KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|"
+							+ (String) webEngine.executeScript("ReturnValue('" + rs.getString("PRM_NAME") + "')")
+							+ "\r\n";
+				}
+				prp.close();
+				rs.close();
+				System.out.print(KeyValue);
+				if (!KeyValue.equals("")) {
+					CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC_HTML(?,?,?)}");
+					cls.registerOutParameter(1, Types.VARCHAR);
+					cls.setInt(2, val.getID());
+					Clob clob = conn.createClob();
+					clob.setString(1, KeyValue);
+					cls.setClob(3, clob);
+					cls.execute();
+					if (cls.getString(1) == null) {
+						conn.commit();
+						setStatus(true);
+						onclose();
+					} else {
+						conn.rollback();
+						setStatus(false);
+						Msg.Message(cls.getString(1));
+					}
+					cls.close();
+					setStatus(true);
+					onclose();
+				} else {
+					Msg.Message("осярн!");
+				}
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

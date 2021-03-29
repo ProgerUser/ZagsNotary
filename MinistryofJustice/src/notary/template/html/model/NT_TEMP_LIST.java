@@ -6,6 +6,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class NT_TEMP_LIST {
+	/** Ссылка на нотариус */
+	private IntegerProperty NOTARY;
+	/** Путь к файлу */
+	private StringProperty DOCX_PATH;
 	/** ИД */
 	private IntegerProperty ID;
 	/** Наименование */
@@ -18,11 +22,21 @@ public class NT_TEMP_LIST {
 	private StringProperty HTML_TEMP;
 
 	public NT_TEMP_LIST() {
+		this.NOTARY = new SimpleIntegerProperty();
+		this.DOCX_PATH = new SimpleStringProperty();
 		this.ID = new SimpleIntegerProperty();
 		this.NAME = new SimpleStringProperty();
 		this.PARENT = new SimpleIntegerProperty();
 		this.REP_QUERY = new SimpleStringProperty();
 		this.HTML_TEMP = new SimpleStringProperty();
+	}
+
+	public void setNOTARY(Integer NOTARY) {
+		this.NOTARY.set(NOTARY);
+	}
+
+	public void setDOCX_PATH(String DOCX_PATH) {
+		this.DOCX_PATH.set(DOCX_PATH);
 	}
 
 	public void setID(Integer ID) {
@@ -45,6 +59,14 @@ public class NT_TEMP_LIST {
 		this.HTML_TEMP.set(HTML_TEMP);
 	}
 
+	public Integer getNOTARY() {
+		return NOTARY.get();
+	}
+
+	public String getDOCX_PATH() {
+		return DOCX_PATH.get();
+	}
+
 	public Integer getID() {
 		return ID.get();
 	}
@@ -63,6 +85,14 @@ public class NT_TEMP_LIST {
 
 	public String getHTML_TEMP() {
 		return HTML_TEMP.get();
+	}
+
+	public IntegerProperty NOTARYProperty() {
+		return NOTARY;
+	}
+
+	public StringProperty DOCX_PATHProperty() {
+		return DOCX_PATH;
 	}
 
 	public IntegerProperty IDProperty() {

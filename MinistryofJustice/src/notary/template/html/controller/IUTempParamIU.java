@@ -134,7 +134,12 @@ public class IUTempParamIU {
 					prp.setInt(2, getID());
 					prp.setString(3, PRM_SQL.getText());
 					prp.setInt(4, PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID());
-					prp.setString(5, alltbl.getTABLE_NAME());
+					if (alltbl != null) {
+						prp.setString(5, alltbl.getTABLE_NAME());
+					}else {
+						prp.setString(5,null);
+					}
+
 					Clob clob = conn.createClob();
 					clob.setString(1, PRM_FOR_PRM_SQL.getText());
 					prp.setClob(6, clob);
@@ -148,7 +153,11 @@ public class IUTempParamIU {
 					prp.setString(1, PRM_NAME.getText());
 					prp.setString(2, PRM_SQL.getText());
 					prp.setInt(3, PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID());
-					prp.setString(4, alltbl.getTABLE_NAME());
+					if (alltbl != null) {
+						prp.setString(4, alltbl.getTABLE_NAME());
+					}else {
+						prp.setString(4,null);
+					}
 					Clob clob = conn.createClob();
 					clob.setString(1, PRM_FOR_PRM_SQL.getText());
 					prp.setClob(5, clob);

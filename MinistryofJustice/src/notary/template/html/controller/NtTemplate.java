@@ -40,6 +40,7 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
+import mj.util.ConvConst;
 import notary.template.html.model.NT_TEMPLATE;
 import notary.template.html.model.NT_TEMP_LIST;
 
@@ -62,6 +63,9 @@ public class NtTemplate {
 	@FXML
 	private TextField TextToSearch;
 
+
+
+    
 	TreeItem<NT_TEMPLATE> root = null;
 
 	@FXML
@@ -137,6 +141,7 @@ public class NtTemplate {
 
 	/**
 	 * Clob в строку
+	 * 
 	 * @param clob
 	 * @return
 	 * @throws SQLException
@@ -151,7 +156,7 @@ public class NtTemplate {
 		}
 		return strBuff.toString();
 	}
-
+	
 	void Init(Integer id) {
 		try {
 			String selectStmt = "select * from nt_temp_list where PARENT = ? order by ID asc";
@@ -165,11 +170,14 @@ public class NtTemplate {
 				list.setNAME(rs.getString("NAME"));
 				list.setPARENT(rs.getInt("PARENT"));
 				if (rs.getClob("REP_QUERY") != null) {
-					list.setREP_QUERY(ClobToString(rs.getClob("REP_QUERY")));
+					list.setREP_QUERY(new ConvConst().ClobToString(rs.getClob("REP_QUERY")));
 				}
 				if (rs.getClob("HTML_TEMP") != null) {
-					list.setHTML_TEMP(ClobToString(rs.getClob("HTML_TEMP")));
+					list.setHTML_TEMP(new ConvConst().ClobToString(rs.getClob("HTML_TEMP")));
 				}
+				list.setDOCX_PATH(rs.getString("DOCX_PATH"));
+				list.setNOTARY(rs.getInt("NOTARY"));
+
 				dlist.add(list);
 			}
 			prepStmt.close();
