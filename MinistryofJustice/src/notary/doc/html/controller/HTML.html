@@ -15,8 +15,8 @@
 	}
 	function RodPad(name) {
 		var Fio = document.getElementById(name).value;
-		var NumCommaSpace = Fio.substr(1, 2);
-		var GoodData = Fio.substr(2);
+		var NumCommaSpace = Fio.substr(0, Fio.indexOf('.') + 1);
+		var GoodData = Fio.substr(Fio.indexOf('.') + 1);
 		var tmp = GoodData.split(" ");
 
 		var LasteName = tmp[1];
@@ -29,12 +29,13 @@
 			last : LasteName
 		};
 
-		var RodFio = petrovich(person, 'genitive');
-		var obj = JSON.stringify(RodFio);
-		var varStrFio = obj.first + " " + obj.last + " " + obj.middle;
+		var RodFio = petrovich(person, 'accusative');
+		//var obj = JSON.stringify(RodFio);
+		var varStrFio = NumCommaSpace + " " + RodFio.last + " " + RodFio.first
+				+ " " + RodFio.middle;
 
 		document.getElementById(name).value = varStrFio;
-		invoke.Text(varStrFio);
+		//invoke.Text(varStrFio);
 	}
 	/* ----- JavaScript ----- */
 	function writeJSONfile() {
@@ -79,23 +80,23 @@
 		</p>
 		<p>
 			Я, гр. <input id="doveritel" readonly="readonly" type="text"
-				size="30" onclick="GetValue()" placeholder="Список" /> <input
-				type="button" value="В род.пад." onclick="RodPad('doveritel')" />
-			/паспорт <input id="dov_passport" type="text" readonly="readonly" />,
-			выдан <input id="dov_doc_agency" type="text" readonly="readonly"
-				size="60" /> <input id="dov_doc_start" type="text"
-				readonly="readonly" /> к.п. <input id="dov_doc_subdiv" type="text"
-				readonly="readonly" />/ <input id="dov_br_date" type="text"
-				readonly="readonly" /> г.р., прож. по адресу: <input id="dov_place"
-				size="50" type="text" readonly="readonly" />
+				size="30" onclick="GetValue()" placeholder="Список" /> /паспорт <input
+				id="dov_passport" type="text" readonly="readonly" />, выдан <input
+				id="dov_doc_agency" type="text" readonly="readonly" size="60" /> <input
+				id="dov_doc_start" type="text" readonly="readonly" /> к.п. <input
+				id="dov_doc_subdiv" type="text" readonly="readonly" />/ <input
+				id="dov_br_date" type="text" readonly="readonly" /> г.р., прож. по
+			адресу: <input id="dov_place" size="50" type="text"
+				readonly="readonly" />
 		</p>
 		<p>
 			настоящей доверенностью уполномочиваю <input id="predstavitel"
 				placeholder="Список" type="text" onclick="GetValue()" size="30"
-				readonly="readonly" /> /паспорт <input id="pr_passport" type="text"
-				readonly="readonly" />, выдан <input id="pr_doc_agency" type="text"
-				readonly="readonly" size="60" /> <input id="pr_doc_start"
-				type="text" readonly="readonly" /> г. к.п. <input
+				readonly="readonly" /><input type="button" value="В вин.пад."
+				onclick="RodPad('predstavitel')" /> /паспорт <input
+				id="pr_passport" type="text" readonly="readonly" />, выдан <input
+				id="pr_doc_agency" type="text" readonly="readonly" size="60" /> <input
+				id="pr_doc_start" type="text" readonly="readonly" /> г. к.п. <input
 				id="pr_doc_subdiv" type="text" readonly="readonly" />/ <input
 				id="pr_br_date" type="text" readonly="readonly" /> г.р., прож. по
 			адресу: <input id="pr_place" type="text" size="50"
@@ -676,8 +677,6 @@
 			}
 		}();
 	</script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>

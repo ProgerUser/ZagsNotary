@@ -100,6 +100,52 @@ import mj.widgets.KeyBoard;
  */
 public class AddCus {
 
+    @FXML
+    private CheckBox PUNCT_NAME_NOT_LIST;
+    @FXML
+    private CheckBox AREA_NOT_LIST;
+    @FXML
+    private TextField AREA_T;
+    @FXML
+    private TextField PUNCT_NAME_T;
+    
+	@FXML
+	void AREA_NOT_LIST(ActionEvent event) {
+		try {
+			if (AREA_NOT_LIST.isSelected()) {
+				AREA.setValue(null);
+				AREA.setVisible(false);
+
+				AREA_T.setVisible(true);
+			} else {
+				AREA.setVisible(true);
+				AREA_T.setVisible(false);
+				AREA_T.setText("");
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	@FXML
+	void PUNCT_NAME_NOT_LIST(ActionEvent event) {
+		try {
+			if (PUNCT_NAME_NOT_LIST.isSelected()) {
+				PUNCT_NAME.setValue(null);
+				PUNCT_NAME.setVisible(false);
+
+				PUNCT_NAME_T.setVisible(true);
+			} else {
+				PUNCT_NAME.setVisible(true);
+				
+				PUNCT_NAME_T.setVisible(false);
+				PUNCT_NAME_T.setText("");
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	@FXML
 	private void OpenKey() {
 		try {
@@ -1937,7 +1983,7 @@ public class AddCus {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call MJCUS.ADD_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					.prepareCall("{ ? = call MJCUS.ADD_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setDate(2,
 					(DCUSBIRTHDAY.getValue() != null) ? java.sql.Date.valueOf(DCUSBIRTHDAY.getValue()) : null);
@@ -1958,9 +2004,19 @@ public class AddCus {
 			} else {
 				callStmt.setNull(11, Types.INTEGER);
 			}
-			callStmt.setString(12, AREA.getValue());
+			// Район
+			if (AREA_NOT_LIST.isSelected()) {
+				callStmt.setString(12, AREA_T.getText());
+			} else if (!AREA_NOT_LIST.isSelected()) {
+				callStmt.setString(12, AREA.getValue());
+			}
 			callStmt.setString(13, null);
-			callStmt.setString(14, PUNCT_NAME.getValue());
+			// Нас. пункт
+			if (PUNCT_NAME_NOT_LIST.isSelected()) {
+				callStmt.setString(14, PUNCT_NAME_T.getText());
+			} else if (!PUNCT_NAME_NOT_LIST.isSelected()) {
+				callStmt.setString(14, PUNCT_NAME.getValue());
+			}
 			callStmt.setString(15, INFR_NAME.getText());
 			callStmt.setString(16, DOM.getText());
 			callStmt.setString(17, KORP.getText());
@@ -1970,6 +2026,10 @@ public class AddCus {
 			callStmt.setString(21, AB_MIDDLE_NAME.getText());
 			callStmt.setString(22, AB_LAST_NAME.getText());
 			callStmt.setString(23, AB_PLACE_BIRTH.getText());
+			// адрес-район если текст
+			callStmt.setInt(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
+			// адрес-населенный пункт если текст
+			callStmt.setInt(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
 			callStmt.execute();
 			String ret = callStmt.getString(1);
 			Integer retid = callStmt.getInt(19);

@@ -86,34 +86,41 @@ public class NotaryDocList {
 	@FXML
 	private ProgressIndicator PB;
 
+	static boolean AddWin = true;
+	static boolean EditWin = true;
+
 	@FXML
 	void Add(ActionEvent event) {
 		try {
-			Stage stage = new Stage();
-			Stage stage_ = (Stage) NT_DOC.getScene().getWindow();
+			if (AddWin) {
+				AddWin = false;
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) NT_DOC.getScene().getWindow();
 
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/notary/doc/html/view/IUHtmlDoc.fxml"));
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/doc/html/view/IUHtmlDoc.fxml"));
 
-			AddDoc controller = new AddDoc();
-			loader.setController(controller);
+				AddDoc controller = new AddDoc();
+				loader.setController(controller);
 
-			Parent root = loader.load();
-			stage.setScene(new Scene(root));
-			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Добавить новую запись");
-			stage.initOwner(stage_);
-			stage.setResizable(true);
-			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				@Override
-				public void handle(WindowEvent paramT) {
-					if (controller.getStatus()) {
-						Init();
-						controller.dbDisconnect();
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Добавить новую запись");
+				stage.initOwner(stage_);
+				stage.setResizable(true);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						AddWin = true;
+						if (controller.getStatus()) {
+							Init();
+							controller.dbDisconnect();
+						}
 					}
-				}
-			});
-			stage.show();
+				});
+				stage.show();
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -121,33 +128,44 @@ public class NotaryDocList {
 
 	void Edit() {
 		try {
-			V_NT_DOC val = NT_DOC.getSelectionModel().getSelectedItem();
-			if (val != null) {
-//				Stage stage = new Stage();
-//				Stage stage_ = (Stage) NT_DOC.getScene().getWindow();
-//
-//				FXMLLoader loader = new FXMLLoader();
-//				loader.setLocation(getClass().getResource("/notary/doc/html/view/IUNotary.fxml"));
-//
-//				EditNotaryDoc controller = new EditNotaryDoc();
-//				controller.setConn(conn, val);
-//				loader.setController(controller);
-//
-//				Parent root = loader.load();
-//				stage.setScene(new Scene(root));
-//				stage.getIcons().add(new Image("/icon.png"));
-//				stage.setTitle("Редактировать: " + val.getID());
-//				stage.initOwner(stage_);
-//				stage.setResizable(true);
-//				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-//					@Override
-//					public void handle(WindowEvent paramT) {
-//						if (controller.getStatus()) {
-//							Init();
-//						}
-//					}
-//				});
-//				stage.show();
+			if (EditWin) {
+				V_NT_DOC val = NT_DOC.getSelectionModel().getSelectedItem();
+				if (val != null) {
+					EditWin = false;
+					Stage stage = new Stage();
+					Stage stage_ = (Stage) NT_DOC.getScene().getWindow();
+
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/notary/doc/html/view/IUHtmlDoc.fxml"));
+
+					EditDoc controller = new EditDoc();
+					controller.setConn(conn, val);
+					loader.setController(controller);
+
+					Parent root = loader.load();
+					stage.setScene(new Scene(root));
+					stage.getIcons().add(new Image("/icon.png"));
+					stage.setTitle("Редактировать: " + val.getDOC_NUMBER());
+					stage.initOwner(stage_);
+					stage.setResizable(true);
+					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+						@Override
+						public void handle(WindowEvent paramT) {
+							try {
+								EditWin = true;
+								if (controller.getStatus()) {
+									Init();
+									conn.commit();
+								} else {
+									conn.rollback();
+								}
+							} catch (Exception e) {
+								DBUtil.LOG_ERROR(e);
+							}
+						}
+					});
+					stage.show();
+				}
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -196,7 +214,8 @@ public class NotaryDocList {
 	@FXML
 	void Edit(ActionEvent event) {
 		try {
-			HtmlEditor((Stage) NT_DOC.getScene().getWindow());
+			// HtmlEditor((Stage) NT_DOC.getScene().getWindow());
+			Edit();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -212,6 +231,7 @@ public class NotaryDocList {
 		return strBuff.toString();
 	}
 
+	@SuppressWarnings("unused")
 	@FXML
 	void Print(ActionEvent event) {
 		try {
@@ -221,11 +241,11 @@ public class NotaryDocList {
 				String sql = null;
 				{
 					PreparedStatement prp = conn
-							.prepareStatement("select FILE_PATH,REP_QUERY from NT_TEMP_LIST t where t.id = ? ");
+							.prepareStatement("select DOCX_PATH,REP_QUERY from NT_TEMP_LIST t where t.id = ? ");
 					prp.setInt(1, val.getNT_TYPE());
 					ResultSet rs = prp.executeQuery();
 					if (rs.next()) {
-						path = rs.getString("FILE_PATH");
+						path = rs.getString("DOCX_PATH");
 						sql = rs.getString("REP_QUERY");
 						if (rs.getClob("REP_QUERY") != null) {
 							sql = getClobString(rs.getClob("REP_QUERY"));
@@ -239,13 +259,14 @@ public class NotaryDocList {
 				docx.setVariablePattern(new VariablePattern("#{", "}"));
 				// preparing variables
 				Variables variables = new Variables();
-				PreparedStatement prepStmt = DBUtil.conn.prepareStatement(sql);
+				PreparedStatement prepStmt = DBUtil.conn.prepareStatement(
+						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrintNtDocPrmVals"));
 				prepStmt.setInt(1, val.getID());
 				ResultSet rs = prepStmt.executeQuery();
 				while (rs.next()) {
-					variables.addTextVariable(new TextVariable("#{" + rs.getString("NAME_").toLowerCase() + "}",
-							(rs.getString("VALUE_") == null || rs.getString("VALUE_").length() < 2 ? "ПУСТО!"
-									: rs.getString("VALUE_"))));
+					variables.addTextVariable(new TextVariable("#{" + rs.getString("NAME").toLowerCase() + "}",
+							(rs.getString("VALUE") == null || rs.getString("VALUE").length() < 2 ? "ПУСТО!"
+									: rs.getString("VALUE"))));
 				}
 				rs.close();
 				prepStmt.close();

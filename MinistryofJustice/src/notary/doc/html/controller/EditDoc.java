@@ -3,12 +3,9 @@ package notary.doc.html.controller;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -35,23 +32,32 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
 import netscape.javascript.JSObject;
+import notary.doc.html.model.V_NT_DOC;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
-public class AddDoc {
+public class EditDoc {
 
-	public AddDoc() {
+	public EditDoc() {
 		Main.logger = Logger.getLogger(getClass());
 		this.status = new SimpleBooleanProperty();
 	}
 
 	private BooleanProperty status;
+
+	Connection conn;
+
+	public void setConn(Connection conn, V_NT_DOC val) {
+		this.conn = conn;
+		this.NT_DOC = val;
+	}
+
+	V_NT_DOC NT_DOC;
 
 	public void setStatus(Boolean status) {
 		this.status.set(status);
@@ -167,7 +173,6 @@ public class AddDoc {
 
 	// private WebEngine webEngine;
 
-
 	void Reload() {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
@@ -213,6 +218,55 @@ public class AddDoc {
 		}
 	}
 
+	void Init() {
+		try {
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				final WebEngine webEngine = webView.getEngine();
+				final JsToJava jstojava = new JsToJava();
+				webEngine.loadContent(val.getHTML_TEMP());
+				webView.setContextMenuEnabled(false);
+				webEngine.setJavaScriptEnabled(true);
+				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+					@Override
+					public void changed(ObservableValue<? extends State> observableValue, State oldState,
+							State newState) {
+						if (newState == State.SUCCEEDED) {
+							JSObject window = (JSObject) webEngine.executeScript("window");
+							window.setMember("invoke", jstojava);
+							// При открытии
+							try {
+								// Сами параметры
+								{
+									PreparedStatement stsmt = conn.prepareStatement(DBUtil.SqlFromProp(
+											"/notary/doc/html/controller/Sql.properties", "EditNtDocPrmVals"));
+									stsmt.setInt(1, NT_DOC.getID());
+									ResultSet rs = stsmt.executeQuery();
+									while (rs.next()) {
+										if (rs.getString("PRM_NAME") != null & rs.getString("VAL_NT_VALUE") != null) {
+											System.out.println(
+													"------------SetValue('" + rs.getString("PRM_NAME").toLowerCase()
+															+ "','" + rs.getString("VAL_NT_VALUE") + "')");
+											webView.getEngine()
+													.executeScript("SetValue('" + rs.getString("PRM_NAME").toLowerCase()
+															+ "','" + rs.getString("VAL_NT_VALUE") + "')");
+										}
+									}
+									stsmt.close();
+									rs.close();
+								}
+							} catch (Exception e) {
+								DBUtil.LOG_ERROR(e);
+							}
+						}
+					}
+				});
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	@FXML
 	void TYPE_NAME(ActionEvent event) {
 		Reload();
@@ -245,56 +299,26 @@ public class AddDoc {
 				rs.close();
 				System.out.print(KeyValue);
 				if (!KeyValue.equals("")) {
-					CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC_HTML(?,?,?)}");
+					CallableStatement cls = conn.prepareCall("{call NT_PKG.EDIT_DOC_HTML(?,?,?)}");
 					cls.registerOutParameter(1, Types.VARCHAR);
-					cls.setInt(2, val.getID());
+					cls.setInt(2, NT_DOC.getID());
 					Clob clob = conn.createClob();
 					clob.setString(1, KeyValue);
 					cls.setClob(3, clob);
 					cls.execute();
 					if (cls.getString(1) == null) {
-						conn.commit();
 						setStatus(true);
 						onclose();
 					} else {
-						conn.rollback();
 						setStatus(false);
 						Msg.Message(cls.getString(1));
 					}
 					cls.close();
-					setStatus(true);
-					onclose();
 				} else {
 					Msg.Message("ПУСТО!");
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	public void dbDisconnect() {
-		try {
-			if (conn != null && !conn.isClosed()) {
-				conn.close();
-			}
-		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	private Connection conn;
-
-	private void dbConnect() {
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program", "AddNotaryDoc");
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
@@ -317,8 +341,6 @@ public class AddDoc {
 	@FXML
 	private void initialize() {
 		try {
-			dbConnect();
-			DBUtil.RunProcess(conn);
 			webView.getStyleClass().add("mylistview");
 			webView.getStylesheets().add("/ScrPane.css");
 			{
@@ -348,6 +370,15 @@ public class AddDoc {
 				convert_TYPE_NAME(TYPE_NAME);
 				rs.close();
 			}
+			if (NT_DOC.getNT_TYPE() != null) {
+				for (V_NT_TEMP_LIST ld : TYPE_NAME.getItems()) {
+					if (NT_DOC.getNT_TYPE().equals(ld.getID())) {
+						TYPE_NAME.getSelectionModel().select(ld);
+						break;
+					}
+				}
+			}
+			Init();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

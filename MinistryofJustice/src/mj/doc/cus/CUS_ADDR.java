@@ -32,9 +32,15 @@ public class CUS_ADDR {
 	private StringProperty COUNTRY;/* Страна */
 	private StringProperty CODE;/* Код адреса */
 	private StringProperty CLONGNAMET;
-	
+	/** адрес-район если текст */
+	private IntegerProperty AREA_NOT_LIST;
+	/** адрес-населенный пункт если текст */
+	private IntegerProperty PUNCT_NAME_NOT_LIST;
 
 	public CUS_ADDR() {
+		this.AREA_NOT_LIST = new SimpleIntegerProperty();
+		this.PUNCT_NAME_NOT_LIST = new SimpleIntegerProperty();
+
 		this.CLONGNAMET = new SimpleStringProperty();
 		this.ADDR_TYPE = new SimpleIntegerProperty();
 		this.ICUSNUM = new SimpleIntegerProperty();
@@ -63,10 +69,34 @@ public class CUS_ADDR {
 		this.CODE = new SimpleStringProperty();
 	}
 
+	public void setAREA_NOT_LIST(Integer AREA_NOT_LIST) {
+		this.AREA_NOT_LIST.set(AREA_NOT_LIST);
+	}
+
+	public void setPUNCT_NAME_NOT_LIST(Integer PUNCT_NAME_NOT_LIST) {
+		this.PUNCT_NAME_NOT_LIST.set(PUNCT_NAME_NOT_LIST);
+	}
+
+	public Integer getAREA_NOT_LIST() {
+		return AREA_NOT_LIST.get();
+	}
+
+	public Integer getPUNCT_NAME_NOT_LIST() {
+		return PUNCT_NAME_NOT_LIST.get();
+	}
+
+	public IntegerProperty AREA_NOT_LISTProperty() {
+		return AREA_NOT_LIST;
+	}
+
+	public IntegerProperty PUNCT_NAME_NOT_LISTProperty() {
+		return PUNCT_NAME_NOT_LIST;
+	}
+
 	public void setCLONGNAMET(String CLONGNAMET) {
 		this.CLONGNAMET.set(CLONGNAMET);
 	}
-	
+
 	public void setADDR_TYPE(Integer ADDR_TYPE) {
 		this.ADDR_TYPE.set(ADDR_TYPE);
 	}
@@ -214,11 +244,11 @@ public class CUS_ADDR {
 	public String getKORP() {
 		return KORP.get();
 	}
-	
+
 	public String getPUNCT_TYPE() {
 		return PUNCT_TYPE.get();
 	}
-	
+
 	public String getCLONGNAMET() {
 		return CLONGNAMET.get();
 	}
@@ -302,11 +332,10 @@ public class CUS_ADDR {
 	public StringProperty OFFICEProperty() {
 		return OFFICE;
 	}
-	
+
 	public StringProperty CLONGNAMETProperty() {
 		return CLONGNAMET;
 	}
-	
 
 	public StringProperty KVProperty() {
 		return KV;

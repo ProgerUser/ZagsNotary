@@ -16937,3 +16937,290 @@ Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующ
 	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:118)
 	... 19 more
 
+[30.03.2021 20:47:19] [ParamList] ERROR:165 - java.sql.SQLSyntaxErrorException: ORA-00904: "FILE_PATH": недопустимый идентификатор
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:446)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1054)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:612)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:226)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:59)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForDescribe(T4CPreparedStatement.java:747)
+	at oracle.jdbc.driver.OracleStatement.executeMaybeDescribe(OracleStatement.java:904)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1082)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3780)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeInternal(T4CPreparedStatement.java:1343)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeQuery(OraclePreparedStatement.java:3822)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeQuery(OraclePreparedStatementWrapper.java:1165)
+	at notary.doc.html.controller.NotaryDocList.Print(NotaryDocList.java:226)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Node.fireEvent(Node.java:8411)
+	at javafx.scene.control.Button.fire(Button.java:185)
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:182)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:96)
+	at com.sun.javafx.scene.control.skin.BehaviorSkinBase$1.handle(BehaviorSkinBase.java:89)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: Error : 904, Position : 7, Sql = select FILE_PATH,REP_QUERY from NT_TEMP_LIST t where t.id = :1  , OriginalSql = select FILE_PATH,REP_QUERY from NT_TEMP_LIST t where t.id = ? , Error Msg = ORA-00904: "FILE_PATH": недопустимый идентификатор
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:498)
+	... 77 more
+
+[30.03.2021 21:15:26] [ConvConst] ERROR:165 - netscape.javascript.JSException: SyntaxError: Unexpected EOF
+	at com.sun.webkit.dom.JSObject.fwkMakeException(JSObject.java:156)
+	at com.sun.webkit.WebPage.twkExecuteScript(Native Method)
+	at com.sun.webkit.WebPage.executeScript(WebPage.java:1519)
+	at javafx.scene.web.WebEngine.executeScript(WebEngine.java:1005)
+	at notary.doc.html.controller.EditDoc.initialize(EditDoc.java:382)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2566)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2441)
+	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:2409)
+	at notary.doc.html.controller.NotaryDocList.Edit(NotaryDocList.java:136)
+	at notary.doc.html.controller.NotaryDocList.lambda$7(NotaryDocList.java:316)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3470)
+	at javafx.scene.Scene$ClickGenerator.access$8100(Scene.java:3398)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3766)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+[30.03.2021 21:15:37] [ConvConst] ERROR:165 - netscape.javascript.JSException: SyntaxError: Unexpected EOF
+	at com.sun.webkit.dom.JSObject.fwkMakeException(JSObject.java:156)
+	at com.sun.webkit.WebPage.twkExecuteScript(Native Method)
+	at com.sun.webkit.WebPage.executeScript(WebPage.java:1519)
+	at javafx.scene.web.WebEngine.executeScript(WebEngine.java:1005)
+	at notary.doc.html.controller.EditDoc.initialize(EditDoc.java:382)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2566)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2441)
+	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:2409)
+	at notary.doc.html.controller.NotaryDocList.Edit(NotaryDocList.java:136)
+	at notary.doc.html.controller.NotaryDocList.lambda$7(NotaryDocList.java:316)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3470)
+	at javafx.scene.Scene$ClickGenerator.access$8100(Scene.java:3398)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3766)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+[30.03.2021 23:12:46] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="64092510923209209092510923109231092140923309218092390925409219092200922909217092110921109211092110921109237092740928009265092720920409246092050919609231092750927809265092040924809241092050919609269092170920909216092170922109212091960923109244092490919609228091960921509210092150921209235092360928609211092110921109211092111021110204102071022109196102211020410212102080919610208102181021691" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[30.03.2021 23:12:46] [Auth1c] INFO :380 - User
+[30.03.2021 23:12:46] [Auth1c] INFO :381 - User
+[30.03.2021 23:12:46] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[30.03.2021 23:12:48] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="30.03.2021 23:15:18"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Пачулия" Имя="Саид" Отчество="Викторович" ДатаРождения="30.04.1996 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="null" НаименованиеРайона="null" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9F745B-2CC7-7C46-E053-4740470A0AC7" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="22" Номер="22" КемВыдан="null" ДатаВыдачи="03.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+			<Паспорт2 ID="BC9E643A-C9E8-6789-E053-4740470A034A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.03.2021 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[30.03.2021 23:12:48] [Auth1c] INFO :380 - User
+[30.03.2021 23:12:48] [Auth1c] INFO :381 - User
+[30.03.2021 23:12:48] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[30.03.2021 23:22:28] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="58097450972609703097450972509725097080972709712097330974809713097140972309711097050970509705097050970509731097680977409759097660969809740096990969009725097690977209759096980974209735096990969009763097110970309710097110971509706096900972509738097430969009722096900970909704097090970609729097300978009705097050970509705097051070510698107011071509690107151069810706107020969010702107121071096" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[30.03.2021 23:22:28] [Auth1c] INFO :380 - User
+[30.03.2021 23:22:28] [Auth1c] INFO :381 - User
+[30.03.2021 23:22:28] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[30.03.2021 23:22:28] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="30.03.2021 23:24:58"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Пачулия" Имя="Саид" Отчество="Викторович" ДатаРождения="30.04.1996 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="null" НаименованиеРайона="null" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9F745B-2CC7-7C46-E053-4740470A0AC7" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="22" Номер="22" КемВыдан="null" ДатаВыдачи="03.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+			<Паспорт2 ID="BC9E643A-C9E8-6789-E053-4740470A034A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.03.2021 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[30.03.2021 23:22:28] [Auth1c] INFO :380 - User
+[30.03.2021 23:22:28] [Auth1c] INFO :381 - User
+[30.03.2021 23:22:28] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[30.03.2021 23:25:57] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="06046930467404651046930467304673046560467504660046810469604661046620467104659046530465304653046530465304679047160472204707047140464604688046470463804673047170472004707046460469004683046470463804711046590465104658046590466304654046380467304686046910463804670046380465704652046570465404677046780472804653046530465304653046530565305646056490566304638056630564605654056500463805650056600565846" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[30.03.2021 23:25:57] [Auth1c] INFO :380 - User
+[30.03.2021 23:25:57] [Auth1c] INFO :381 - User
+[30.03.2021 23:25:57] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[30.03.2021 23:25:57] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="30.03.2021 23:28:27"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Пачулия" Имя="Саид" Отчество="Викторович" ДатаРождения="30.04.1996 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="null" НаименованиеРайона="null" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9F745B-2CC7-7C46-E053-4740470A0AC7" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="22" Номер="22" КемВыдан="null" ДатаВыдачи="03.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+			<Паспорт2 ID="BC9E643A-C9E8-6789-E053-4740470A034A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.03.2021 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[30.03.2021 23:25:57] [Auth1c] INFO :380 - User
+[30.03.2021 23:25:57] [Auth1c] INFO :381 - User
+[30.03.2021 23:25:57] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[30.03.2021 23:30:36] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="50033370331803295033370331703317033000331903304033250334003305033060331503303032970329703297032970329703323033600336603351033580329003332032910328203317033610336403351032900333403327032910328203355033030329503302033030330703298032820331703330033350328203314032820330103296033010329803321033220337203297032970329703297032970429704290042930430703282043070429004298042940328204294043040430232" IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984"/>
+</Контейнер>
+
+[30.03.2021 23:30:36] [Auth1c] INFO :380 - User
+[30.03.2021 23:30:36] [Auth1c] INFO :381 - User
+[30.03.2021 23:30:36] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[30.03.2021 23:30:37] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="cfb4421b-3f1a-496d-8ecb-b56ea7b05984" ДатаПоследнейАвторизации="30.03.2021 23:33:06"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД ДОМ/Агрба Инара И." ID="" КодСсылки="" Фамилия="Пачулия" Имя="Саид" Отчество="Викторович" ДатаРождения="30.04.1996 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="null" НаименованиеРайона="null" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9F745B-2CC7-7C46-E053-4740470A0AC7" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="22" Номер="22" КемВыдан="null" ДатаВыдачи="03.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+			<Паспорт2 ID="BC9E643A-C9E8-6789-E053-4740470A034A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.03.2021 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[30.03.2021 23:30:37] [Auth1c] INFO :380 - User
+[30.03.2021 23:30:37] [Auth1c] INFO :381 - User
+[30.03.2021 23:30:37] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority

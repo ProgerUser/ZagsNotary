@@ -233,7 +233,7 @@
                                           <GridPane>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="80.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" />
+                                                <ColumnConstraints hgrow="SOMETIMES" prefWidth="300.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                              </columnConstraints>
                                              <rowConstraints>

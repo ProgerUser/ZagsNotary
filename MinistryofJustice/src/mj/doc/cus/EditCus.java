@@ -115,7 +115,51 @@ import mj.widgets.KeyBoard;
  *
  */
 public class EditCus {
+	@FXML
+    private CheckBox PUNCT_NAME_NOT_LIST;
+    @FXML
+    private CheckBox AREA_NOT_LIST;
+    @FXML
+    private TextField AREA_T;
+    @FXML
+    private TextField PUNCT_NAME_T;
+    
+	@FXML
+	void AREA_NOT_LIST(ActionEvent event) {
+		try {
+			if (AREA_NOT_LIST.isSelected()) {
+				AREA.setValue(null);
+				AREA.setVisible(false);
 
+				AREA_T.setVisible(true);
+			} else {
+				AREA.setVisible(true);
+				AREA_T.setVisible(false);
+				AREA_T.setText("");
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
+	@FXML
+	void PUNCT_NAME_NOT_LIST(ActionEvent event) {
+		try {
+			if (PUNCT_NAME_NOT_LIST.isSelected()) {
+				PUNCT_NAME.setValue(null);
+				PUNCT_NAME.setVisible(false);
+
+				PUNCT_NAME_T.setVisible(true);
+			} else {
+				PUNCT_NAME.setVisible(true);
+				
+				PUNCT_NAME_T.setVisible(false);
+				PUNCT_NAME_T.setText("");
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
 	@FXML
 	private void OpenKey() {
 		try {
@@ -1324,7 +1368,7 @@ public class EditCus {
 	void CallSave() {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call MJCUS.UPDATE_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					.prepareCall("{ ? = call MJCUS.UPDATE_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setDate(2,
 					(DCUSBIRTHDAY.getValue() != null) ? java.sql.Date.valueOf(DCUSBIRTHDAY.getValue()) : null);
@@ -1345,9 +1389,19 @@ public class EditCus {
 			} else {
 				callStmt.setNull(11, Types.INTEGER);
 			}
-			callStmt.setString(12, AREA.getValue());
+			// Район
+			if (AREA_NOT_LIST.isSelected()) {
+				callStmt.setString(12, AREA_T.getText());
+			} else if (!AREA_NOT_LIST.isSelected()) {
+				callStmt.setString(12, AREA.getValue());
+			}
 			callStmt.setString(13, null);
-			callStmt.setString(14, PUNCT_NAME.getValue());
+			// Нас. пункт
+			if (PUNCT_NAME_NOT_LIST.isSelected()) {
+				callStmt.setString(14, PUNCT_NAME_T.getText());
+			} else if (!PUNCT_NAME_NOT_LIST.isSelected()) {
+				callStmt.setString(14, PUNCT_NAME.getValue());
+			}
 			callStmt.setString(15, INFR_NAME.getText());
 			callStmt.setString(16, DOM.getText());
 			callStmt.setString(17, KORP.getText());
@@ -1357,6 +1411,10 @@ public class EditCus {
 			callStmt.setString(21, AB_MIDDLE_NAME.getText());
 			callStmt.setString(22, AB_LAST_NAME.getText());
 			callStmt.setString(23, AB_PLACE_BIRTH.getText());
+			// адрес-район если текст
+			callStmt.setInt(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
+			// адрес-населенный пункт если текст
+			callStmt.setInt(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
 			callStmt.execute();
 			String ret = callStmt.getString(1);
 			callStmt.close();
@@ -1385,7 +1443,7 @@ public class EditCus {
 	void CallSaveToCompare() {
 		try {
 			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call MJCUS.UPDATE_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					.prepareCall("{ ? = call MJCUS.UPDATE_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setDate(2,
 					(DCUSBIRTHDAY.getValue() != null) ? java.sql.Date.valueOf(DCUSBIRTHDAY.getValue()) : null);
@@ -1406,9 +1464,19 @@ public class EditCus {
 			} else {
 				callStmt.setNull(11, Types.INTEGER);
 			}
-			callStmt.setString(12, AREA.getValue());
+			// Район
+			if (AREA_NOT_LIST.isSelected()) {
+				callStmt.setString(12, AREA_T.getText());
+			} else if (!AREA_NOT_LIST.isSelected()) {
+				callStmt.setString(12, AREA.getValue());
+			}
 			callStmt.setString(13, null);
-			callStmt.setString(14, PUNCT_NAME.getValue());
+			// Нас. пункт
+			if (PUNCT_NAME_NOT_LIST.isSelected()) {
+				callStmt.setString(14, PUNCT_NAME_T.getText());
+			} else if (!PUNCT_NAME_NOT_LIST.isSelected()) {
+				callStmt.setString(14, PUNCT_NAME.getValue());
+			}
 			callStmt.setString(15, INFR_NAME.getText());
 			callStmt.setString(16, DOM.getText());
 			callStmt.setString(17, KORP.getText());
@@ -1418,6 +1486,10 @@ public class EditCus {
 			callStmt.setString(21, AB_MIDDLE_NAME.getText());
 			callStmt.setString(22, AB_LAST_NAME.getText());
 			callStmt.setString(23, AB_PLACE_BIRTH.getText());
+			// адрес-район если текст
+			callStmt.setInt(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
+			// адрес-населенный пункт если текст
+			callStmt.setInt(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
 			callStmt.execute();
 			callStmt.close();
 		} catch (Exception e) {
@@ -2265,6 +2337,32 @@ public class EditCus {
 				DOM.setText(addr.getDOM());
 				KORP.setText(addr.getKORP());
 				KV.setText(addr.getKV());
+				AREA_T.setText(addr.getAREA());
+				PUNCT_NAME_T.setText(addr.getPUNCT_NAME());
+				//населенный пункт
+				if (addr.getPUNCT_NAME_NOT_LIST() == 2) {
+					PUNCT_NAME_NOT_LIST.setSelected(true);
+					PUNCT_NAME.setValue(null);
+					PUNCT_NAME.setVisible(false);
+					PUNCT_NAME_T.setVisible(true);
+				} else if (addr.getPUNCT_NAME_NOT_LIST() == 1) {
+					PUNCT_NAME_NOT_LIST.setSelected(false);
+					PUNCT_NAME.setVisible(true);
+					PUNCT_NAME_T.setVisible(false);
+					PUNCT_NAME_T.setText("");
+				}
+				//район
+				if (addr.getAREA_NOT_LIST() == 2) {
+					AREA_NOT_LIST.setSelected(true);
+					AREA.setValue(null);
+					AREA.setVisible(false);
+					AREA_T.setVisible(true);
+				} else if (addr.getAREA_NOT_LIST() == 1) {
+					AREA_NOT_LIST.setSelected(false);
+					AREA.setVisible(true);
+					AREA_T.setText("");
+					AREA_T.setVisible(false);
+				}
 			}
 			/**
 			 * Гражданства
@@ -2431,6 +2529,8 @@ public class EditCus {
 				addr.setOFFICE(rs.getString("OFFICE"));
 				addr.setPORCH(rs.getString("PORCH"));
 				addr.setCLONGNAMET(rs.getString("CLONGNAMET"));
+				addr.setAREA_NOT_LIST(rs.getInt("AREA_NOT_LIST"));
+				addr.setPUNCT_NAME_NOT_LIST(rs.getInt("PUNCT_NAME_NOT_LIST"));
 				adrlist.add(addr);
 			}
 			prepStmt.close();
