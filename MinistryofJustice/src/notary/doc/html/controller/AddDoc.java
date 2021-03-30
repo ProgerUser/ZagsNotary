@@ -85,6 +85,9 @@ public class AddDoc {
 		public void run(String id) {
 			ListVal(id);
 		}
+		public void Text(String Mes) {
+			Msg.Message(Mes);
+		}
 	}
 
 	NT_TEMP_LIST_PARAM list = null;
@@ -132,7 +135,8 @@ public class AddDoc {
 					if (controller.getStatus()) {
 						try {
 							System.out.println("!!-------------controller.getCode_s()=" + controller.getCode_s());
-							webEngine.executeScript("SetValue('" + id + "','" + controller.getName_s() + "')");
+							webEngine.executeScript("SetValue('" + id + "','" + controller.getCode_s() + ". "
+									+ controller.getName_s() + "')");
 							{
 								PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
 								prp.setInt(1, Integer.valueOf(controller.getCode_s()));
@@ -174,9 +178,9 @@ public class AddDoc {
 				URL url = HtmlEditorTest.class.getResource("/notary/doc/html/controller/HTML.html");
 				webEngine = webView.getEngine();
 				webEngine.load(url.toExternalForm());
-				// webEngine = webView.getEngine();
+//			    webEngine = webView.getEngine();
+//				webEngine.loadContent(val.getHTML_TEMP());
 				webView.setContextMenuEnabled(false);
-				// webEngine.loadContent(val.getHTML_TEMP());
 				webEngine.setJavaScriptEnabled(true);
 				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 					@Override
