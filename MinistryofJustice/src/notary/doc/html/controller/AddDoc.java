@@ -85,6 +85,7 @@ public class AddDoc {
 		public void run(String id) {
 			ListVal(id);
 		}
+
 		public void Text(String Mes) {
 			Msg.Message(Mes);
 		}
@@ -135,7 +136,7 @@ public class AddDoc {
 					if (controller.getStatus()) {
 						try {
 							System.out.println("!!-------------controller.getCode_s()=" + controller.getCode_s());
-							webEngine.executeScript("SetValue('" + id + "','" + controller.getCode_s() + ". "
+							webView.getEngine().executeScript("SetValue('" + id + "','" + controller.getCode_s() + ". "
 									+ controller.getName_s() + "')");
 							{
 								PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
@@ -145,8 +146,9 @@ public class AddDoc {
 									System.out.println(
 											rs.getString("NAME_").toLowerCase() + "=" + rs.getString("VALUE_"));
 									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-										webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
-												+ "','" + rs.getString("VALUE_") + "')");
+										webView.getEngine()
+												.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
+														+ "','" + rs.getString("VALUE_") + "')");
 									}
 								}
 								prp.close();
@@ -164,7 +166,7 @@ public class AddDoc {
 		}
 	}
 
-	private WebEngine webEngine;
+	// private WebEngine webEngine;
 
 	@FXML
 	void refresh(ActionEvent event) {
@@ -175,8 +177,11 @@ public class AddDoc {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
+				final WebEngine webEngine = webView.getEngine();
+				final JsToJava jstojava = new JsToJava();
+
 				URL url = HtmlEditorTest.class.getResource("/notary/doc/html/controller/HTML.html");
-				webEngine = webView.getEngine();
+
 				webEngine.load(url.toExternalForm());
 //			    webEngine = webView.getEngine();
 //				webEngine.loadContent(val.getHTML_TEMP());
@@ -188,14 +193,14 @@ public class AddDoc {
 							State newState) {
 						if (newState == State.SUCCEEDED) {
 							JSObject window = (JSObject) webEngine.executeScript("window");
-							window.setMember("invoke", new JsToJava());
+							window.setMember("invoke", jstojava);
 							try {
 								PreparedStatement prp = conn.prepareStatement(
 										TYPE_NAME.getSelectionModel().getSelectedItem().getREP_QUERY());
 								ResultSet rs = prp.executeQuery();
 								while (rs.next()) {
-									System.out.println("------------SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
-											+ rs.getString("VALUE_") + "')");
+									System.out.println("------------SetValue('" + rs.getString("NAME_").toLowerCase()
+											+ "','" + rs.getString("VALUE_") + "')");
 									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
 										webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
 												+ "','" + rs.getString("VALUE_") + "')");
@@ -240,9 +245,8 @@ public class AddDoc {
 				prp.setInt(1, val.getID());
 				ResultSet rs = prp.executeQuery();
 				while (rs.next()) {
-					KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|"
-							+ (String) webEngine.executeScript("ReturnValue('" + rs.getString("PRM_NAME") + "')")
-							+ "\r\n";
+					KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + (String) webView.getEngine()
+							.executeScript("ReturnValue('" + rs.getString("PRM_NAME") + "')") + "\r\n";
 				}
 				prp.close();
 				rs.close();
