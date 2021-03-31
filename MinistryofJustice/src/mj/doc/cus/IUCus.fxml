@@ -32,7 +32,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
       <BorderPane fx:id="BP">
          <bottom>
@@ -181,7 +181,7 @@
                                                                                     <TextField fx:id="AB_MIDDLE_NAME" maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                                                     <Button mnemonicParsing="false" onAction="#OpenKey">
                                                                                        <graphic>
-                                                                                          <FontAwesomeIconView glyphName="KEYBOARD_ALT" size="18" />
+                                                                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="KEYBOARD_ALT" size="15" />
                                                                                        </graphic>
                                                                                        <font>
                                                                                           <Font size="10.0" />
@@ -252,7 +252,7 @@
                                                                            <items>
                                                                               <Button mnemonicParsing="false" onAction="#BtAddCitizen" text="">
                                                                                  <graphic>
-                                                                                    <FontAwesomeIconView fill="BLACK" glyphName="PLUS" size="18" />
+                                                                                    <FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="PLUS" size="15" />
                                                                                  </graphic>
                                                                                  <tooltip>
                                                                                     <Tooltip text="Добавить" />
@@ -263,7 +263,7 @@
                                                                               </Button>
                                                                               <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtEditCitizen">
                                                                                  <graphic>
-                                                                                    <FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="18" />
+                                                                                    <FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="EDIT" size="15" />
                                                                                  </graphic>
                                                                                  <tooltip>
                                                                                     <Tooltip text="Редактировать" />
@@ -274,7 +274,7 @@
                                                                               </Button>
                                                                               <Button layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtDelCitizen" text="">
                                                                                  <graphic>
-                                                                                    <FontAwesomeIconView fill="BLACK" glyphName="TIMES" size="18" />
+                                                                                    <FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
                                                                                  </graphic>
                                                                                  <tooltip>
                                                                                     <Tooltip text="Удалить" />
@@ -366,9 +366,9 @@
                                                                                           <TextField fx:id="INFR_NAME" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                                                           <ComboBox fx:id="CombCountryAddr" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
                                                                                           <CheckBox fx:id="AREA_NOT_LIST" mnemonicParsing="false" onAction="#AREA_NOT_LIST" text="Не из спр." GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                                                                             <padding>
+                                                                                             <GridPane.margin>
                                                                                                 <Insets left="5.0" />
-                                                                                             </padding>
+                                                                                             </GridPane.margin>
                                                                                           </CheckBox>
                                                                                           <CheckBox fx:id="PUNCT_NAME_NOT_LIST" mnemonicParsing="false" onAction="#PUNCT_NAME_NOT_LIST" text="Не из спр." GridPane.columnIndex="2" GridPane.rowIndex="2">
                                                                                              <GridPane.margin>
@@ -433,7 +433,7 @@
                                                                            <items>
                                                                               <Button fx:id="AddCusDocum" mnemonicParsing="false" onAction="#AddCusDocum" text="">
                                                                                  <graphic>
-                                                                                    <FontAwesomeIconView fill="BLACK" glyphName="PLUS" size="18" />
+                                                                                    <FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="PLUS" size="15" />
                                                                                  </graphic>
                                                                                  <tooltip>
                                                                                     <Tooltip text="Добавить" />
@@ -444,7 +444,7 @@
                                                                               </Button>
                                                                               <Button fx:id="EditCusDocum" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#EditCusDocum" text="">
                                                                                  <graphic>
-                                                                                    <FontAwesomeIconView fill="BLACK" glyphName="EDIT" size="18" />
+                                                                                    <FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="EDIT" size="15" />
                                                                                  </graphic>
                                                                                  <tooltip>
                                                                                     <Tooltip text="Редактировать" />
@@ -455,7 +455,7 @@
                                                                               </Button>
                                                                               <Button fx:id="BtDelDocum" layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#BtDelDocum" text="">
                                                                                  <graphic>
-                                                                                    <FontAwesomeIconView fill="BLACK" glyphName="TIMES" size="18" />
+                                                                                    <FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
                                                                                  </graphic>
                                                                                  <tooltip>
                                                                                     <Tooltip text="Удалить" />
@@ -542,7 +542,7 @@
                                         <MenuItem fx:id="13" mnemonicParsing="false" onAction="#ADOPT" text="Усыновление (удочерение)" />
                                       </items>
                                        <graphic>
-                                          <FontAwesomeIconView glyphName="PLUS" size="18" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="15" />
                                        </graphic>
                                        <font>
                                           <Font size="10.0" />
@@ -557,7 +557,7 @@
                                     </MenuButton>
                                     <Button layoutX="10.0" layoutY="13.0" mnemonicParsing="false" onAction="#OpenBTN">
                                        <graphic>
-                                          <FontAwesomeIconView glyphName="FOLDER_OPEN_ALT" size="18" />
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="FOLDER_OPEN_ALT" size="15" />
                                        </graphic>
                                        <tooltip>
                                           <Tooltip text="Открыть">
@@ -565,7 +565,10 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Tooltip>
-                                       </tooltip></Button>
+                                       </tooltip>
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font></Button>
                                 </items>
                               </ToolBar>
                            </top>
