@@ -5,14 +5,14 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.HTMLEditor?>
+<?import org.fxmisc.richtext.CodeArea?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ToolBar>
         <items>
@@ -43,13 +43,10 @@
             <Insets left="-5.0" right="-5.0" top="-5.0" />
          </VBox.margin>
       </ToolBar>
-      <SplitPane dividerPositions="0.6303630363036303" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" VBox.vgrow="ALWAYS">
+      <SplitPane dividerPositions="0.10975609756097561" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" VBox.vgrow="ALWAYS">
          <items>
             <HTMLEditor fx:id="VisHtml" htmlText="" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" />
-            <TextArea fx:id="CodeHtml" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0">
-               <font>
-                  <Font size="14.0" />
-               </font></TextArea>
+            <CodeArea fx:id="CodeHtml" />
          </items>
       </SplitPane>
       <ButtonBar>

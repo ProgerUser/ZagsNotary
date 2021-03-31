@@ -167,17 +167,28 @@ public class AddDoc {
 
 	// private WebEngine webEngine;
 
-
 	void Reload() {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				final WebEngine webEngine = webView.getEngine();
 				final JsToJava jstojava = new JsToJava();
-
+				String HTML = "";
+				{
+					PreparedStatement prp = conn
+							.prepareStatement("select * from NT_TEMP_LIST_JS where TMP_LIST_ID = ?");
+					prp.setInt(1, val.getID());
+					ResultSet rs = prp.executeQuery();
+					while (rs.next()) {
+						HTML = HTML + val.getHTML_TEMP().replace("{" + rs.getString("JSNAME") + "}",
+								new ConvConst().ClobToString(rs.getClob("JSFILE")));
+					}
+					prp.close();
+					rs.close();
+				}
 //				URL url = HtmlEditorTest.class.getResource("/notary/doc/html/controller/HTML.html");
 //				webEngine.load(url.toExternalForm());
-				webEngine.loadContent(val.getHTML_TEMP());
+				webEngine.loadContent(HTML);
 				webView.setContextMenuEnabled(false);
 				webEngine.setJavaScriptEnabled(true);
 				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {

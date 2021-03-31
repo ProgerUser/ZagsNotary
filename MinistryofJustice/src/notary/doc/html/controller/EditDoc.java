@@ -179,10 +179,22 @@ public class EditDoc {
 			if (val != null) {
 				final WebEngine webEngine = webView.getEngine();
 				final JsToJava jstojava = new JsToJava();
-
+				String HTML = "";
+				{
+					PreparedStatement prp = conn
+							.prepareStatement("select * from NT_TEMP_LIST_JS where TMP_LIST_ID = ?");
+					prp.setInt(1, val.getID());
+					ResultSet rs = prp.executeQuery();
+					while (rs.next()) {
+						HTML = HTML + val.getHTML_TEMP().replace("{" + rs.getString("JSNAME") + "}",
+								new ConvConst().ClobToString(rs.getClob("JSFILE")));
+					}
+					prp.close();
+					rs.close();
+				}
 //				URL url = HtmlEditorTest.class.getResource("/notary/doc/html/controller/HTML.html");
 //				webEngine.load(url.toExternalForm());
-				webEngine.loadContent(val.getHTML_TEMP());
+				webEngine.loadContent(HTML);
 				webView.setContextMenuEnabled(false);
 				webEngine.setJavaScriptEnabled(true);
 				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
@@ -224,7 +236,21 @@ public class EditDoc {
 			if (val != null) {
 				final WebEngine webEngine = webView.getEngine();
 				final JsToJava jstojava = new JsToJava();
-				webEngine.loadContent(val.getHTML_TEMP());
+
+				String HTML = "";
+				{
+					PreparedStatement prp = conn
+							.prepareStatement("select * from NT_TEMP_LIST_JS where TMP_LIST_ID = ?");
+					prp.setInt(1, val.getID());
+					ResultSet rs = prp.executeQuery();
+					while (rs.next()) {
+						HTML = HTML + val.getHTML_TEMP().replace("{" + rs.getString("JSNAME") + "}",
+								new ConvConst().ClobToString(rs.getClob("JSFILE")));
+					}
+					prp.close();
+					rs.close();
+				}
+				webEngine.loadContent(HTML);
 				webView.setContextMenuEnabled(false);
 				webEngine.setJavaScriptEnabled(true);
 				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
@@ -299,12 +325,13 @@ public class EditDoc {
 				rs.close();
 				System.out.print(KeyValue);
 				if (!KeyValue.equals("")) {
-					CallableStatement cls = conn.prepareCall("{call NT_PKG.EDIT_DOC_HTML(?,?,?)}");
+					CallableStatement cls = conn.prepareCall("{call NT_PKG.EDIT_DOC_HTML(?,?,?,?)}");
 					cls.registerOutParameter(1, Types.VARCHAR);
 					cls.setInt(2, NT_DOC.getID());
 					Clob clob = conn.createClob();
 					clob.setString(1, KeyValue);
 					cls.setClob(3, clob);
+					cls.setInt(4, val.getID());
 					cls.execute();
 					if (cls.getString(1) == null) {
 						setStatus(true);
