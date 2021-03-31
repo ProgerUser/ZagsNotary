@@ -17265,3 +17265,15 @@ Caused by: java.net.ConnectException: Connection refused: connect
 	at oracle.net.nt.TcpNTAdapter.connect(TcpNTAdapter.java:169)
 	... 23 more
 
+[31.03.2021 17:16:37] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and DAUDDATE between to_date('01.01.2000','dd.mm.yyyy') and to_date('31.03.2021','dd.mm.yyyy')
+ order by DAUDDATE desc
+[31.03.2021 17:17:40] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and upper(CTABLE) = 'CUS' 
+
+ and ID_NUM = '588' 
+ order by DAUDDATE desc
