@@ -320,7 +320,6 @@ public class NotaryDocList {
 			CR_TIME.setColumnFilter(new PatternColumnFilter<>());
 			NT_TYPE.setColumnFilter(new PatternColumnFilter<>());
 			OPER.setColumnFilter(new PatternColumnFilter<>());
-			Init();
 			// Двойной щелчок по строке для открытия документа
 			NT_DOC.setRowFactory(tv -> {
 				TableRow<V_NT_DOC> row = new TableRow<>();
@@ -332,6 +331,7 @@ public class NotaryDocList {
 				return row;
 			});
 			new ConvConst().TableColumnDate(CR_DATE);
+			Init();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

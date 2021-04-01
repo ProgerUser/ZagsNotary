@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -46,7 +47,7 @@ public class ParamList {
 	public Boolean getStatus() {
 		return status.get();
 	}
-	
+
 	public void setName_S(String name_s) {
 		this.name_s.set(name_s);
 	}
@@ -54,6 +55,7 @@ public class ParamList {
 	public String getName_s() {
 		return name_s.get();
 	}
+
 	public void setCode_S(String code_s) {
 		this.code_s.set(code_s);
 	}
@@ -61,7 +63,7 @@ public class ParamList {
 	public String getCode_s() {
 		return code_s.get();
 	}
-	
+
 	public void setQuery(String query) {
 		this.query.set(query);
 	}
@@ -144,9 +146,8 @@ public class ParamList {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
-	@FXML
-	void select(ActionEvent event) {
+
+	void Select() {
 		try {
 			LIST val = list.getSelectionModel().getSelectedItem();
 			if (val != null) {
@@ -154,15 +155,30 @@ public class ParamList {
 				setName_S(val.getNAME());
 				setStatus(true);
 				onclose();
-			} 
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
+	void select(ActionEvent event) {
+		Select();
+	}
+
+	@FXML
 	private void initialize() {
 		try {
+			// Двойной щелчок по строке для открытия документа
+			list.setRowFactory(tv -> {
+				TableRow<LIST> row = new TableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						Select();
+					}
+				});
+				return row;
+			});
 			code.setCellValueFactory(cellData -> cellData.getValue().CODEProperty().asObject());
 			name.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
 			init("");

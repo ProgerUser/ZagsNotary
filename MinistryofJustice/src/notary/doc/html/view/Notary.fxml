@@ -118,7 +118,7 @@
 						<XTableColumn fx:id="OPER" prefWidth="120.0" text="Опер." />
 						<XTableColumn fx:id="CR_DATE" prefWidth="120.0" text="Дата созд. записи" />
 						<XTableColumn fx:id="CR_TIME" prefWidth="120.0" text="Время созд. записи" />
-						<XTableColumn fx:id="NT_TYPE" prefWidth="120.0" text="Тип документа" />
+						<XTableColumn fx:id="NT_TYPE" prefWidth="237.0" text="Тип документа" />
 					</columns>
 					<BorderPane.margin>
 						<Insets />

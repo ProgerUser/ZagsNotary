@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -24,11 +25,27 @@
             <ComboBox fx:id="TYPE_NAME" editable="true" onAction="#TYPE_NAME" prefWidth="400.0" />
             <Button mnemonicParsing="false" onAction="#DelSelType">
                <graphic>
-                  <FontAwesomeIconView glyphName="TIMES" size="17" />
+                  <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TIMES" size="17" />
                </graphic>
                <font>
                   <Font size="10.0" />
                </font>
+            </Button>
+            <Separator orientation="VERTICAL" />
+            <Button layoutX="500.0" layoutY="10.0" mnemonicParsing="false" onAction="#Print">
+               <graphic>
+                  <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PRINT" size="17" />
+               </graphic>
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <tooltip>
+                  <Tooltip text="Печать">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Tooltip>
+               </tooltip>
             </Button>
         </items>
          <VBox.margin>
