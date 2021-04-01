@@ -1,6 +1,8 @@
 package notary.template.html.controller;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -62,10 +64,9 @@ public class NtTemplate {
 	private TableColumn<NT_TEMP_LIST, String> NAME;
 	@FXML
 	private TextField TextToSearch;
+	@FXML
+	private TableColumn<NT_TEMP_LIST, Integer> NOTARY;
 
-
-
-    
 	TreeItem<NT_TEMPLATE> root = null;
 
 	@FXML
@@ -156,7 +157,7 @@ public class NtTemplate {
 		}
 		return strBuff.toString();
 	}
-	
+
 	void Init(Integer id) {
 		try {
 			String selectStmt = "select * from nt_temp_list where PARENT = ? order by ID asc";
@@ -567,6 +568,20 @@ public class NtTemplate {
 	}
 
 	@FXML
+	void OpenWord(ActionEvent event) {
+		try {
+			NT_TEMP_LIST val = NT_TEMP_LIST.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				if (Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + val.getDOCX_PATH()));
+				}
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
 	private void initialize() {
 		try {
 			dbConnect();
@@ -594,7 +609,7 @@ public class NtTemplate {
 					Init(tmp.getValue().getNT_ID());
 				}
 			});
-
+			NOTARY.setCellValueFactory(cellData -> cellData.getValue().NOTARYProperty().asObject());
 			ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
 			NAME.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
 			fillTreeNtTemp();

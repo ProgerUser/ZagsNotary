@@ -80,7 +80,7 @@
                                     <Insets left="-10.0" right="-10.0" top="-10.0" />
                                  </VBox.margin>
                               </ToolBar>
-                              <TreeView fx:id="NT_TEMPLATE" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="500.0" VBox.vgrow="ALWAYS" />
+                              <TreeView fx:id="NT_TEMPLATE" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </content>
@@ -168,19 +168,33 @@
                                           </Tooltip>
                                        </tooltip>
                                     </Button>
+                                    <Separator orientation="VERTICAL" />
+                                    <Button layoutX="113.0" layoutY="10.0" mnemonicParsing="false" onAction="#OpenWord">
+                                       <graphic>
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_WORD_ALT" size="15" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                       <tooltip>
+                                          <Tooltip text="Редактировать файл">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Tooltip>
+                                       </tooltip>
+                                    </Button>
                                  </items>
                                  <VBox.margin>
                                     <Insets left="-10.0" right="-10.0" top="-10.0" />
                                  </VBox.margin>
                               </ToolBar>
-                              <TableView fx:id="NT_TEMP_LIST" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="NT_TEMP_LIST" maxHeight="1.7976931348623157E308" prefWidth="500.0" VBox.vgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn fx:id="ID" maxWidth="1000.0" text="ИД" />
-                                  <TableColumn fx:id="NAME" prefWidth="75.0" text="Наименование" />
+                                  <TableColumn fx:id="ID" maxWidth="1000.0" prefWidth="55.0" text="ИД" />
+                                  <TableColumn fx:id="NAME" prefWidth="228.0" text="Наименование" />
+                                    <TableColumn fx:id="NOTARY" prefWidth="97.0" text="Нотариус" />
                                 </columns>
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
                               </TableView>
                            </children>
                         </VBox>

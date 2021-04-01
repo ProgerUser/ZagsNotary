@@ -1,36 +1,22 @@
 package notary.template.html.controller;
 
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.SplitPane;
+import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
-import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import mj.app.main.Main;
-import mj.dbutil.DBUtil;
-import notary.template.html.model.NT_TEMP_LIST;
 
-public class HtmlEditor {
-
-	public HtmlEditor() {
-		Main.logger = Logger.getLogger(getClass());
-	}
+public class XMLEditorDemo extends Application {
 
 	private static final Pattern XML_TAG = Pattern
 			.compile("(?<ELEMENT>(</?\\h*)(\\w+)([^<>]*)(\\h*/?>))" + "|(?<COMMENT><!--[^<>]+-->)");
@@ -45,74 +31,39 @@ public class HtmlEditor {
 	private static final int GROUP_EQUAL_SYMBOL = 2;
 	private static final int GROUP_ATTRIBUTE_VALUE = 3;
 
-	NT_TEMP_LIST val_list;
+	private static final String sampleCode = String.join("\n", new String[] {
+			"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>", "<!-- Sample XML -->", "< orders >",
+			"	<Order number=\"1\" table=\"center\">", "		<items>", "			<Item>",
+			"				<type>ESPRESSO</type>", "				<shots>2</shots>",
+			"				<iced>false</iced>", "				<orderNumber>1</orderNumber>", "			</Item>",
+			"			<Item>", "				<type>CAPPUCCINO</type>", "				<shots>1</shots>",
+			"				<iced>false</iced>", "				<orderNumber>1</orderNumber>", "			</Item>",
+			"			<Item>", "			<type>LATTE</type>", "				<shots>2</shots>",
+			"				<iced>false</iced>", "				<orderNumber>1</orderNumber>", "			</Item>",
+			"			<Item>", "				<type>MOCHA</type>", "				<shots>3</shots>",
+			"				<iced>true</iced>", "				<orderNumber>1</orderNumber>", "			</Item>",
+			"		</items>", "	</Order>", "</orders>" });
 
-	public void setConn(Connection conn, NT_TEMP_LIST val_list) {
-		try {
-			this.val_list = val_list;
-			this.conn = conn;
-			this.conn.setAutoCommit(false);
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
+	public static void main(String[] args) {
+		launch(args);
 	}
 
-	private Connection conn;
-	@FXML
-	private HTMLEditor VisHtml;
+	@Override
+	public void start(Stage primaryStage) {
+		CodeArea codeArea = new CodeArea();
+		codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
 
-	// @FXML
-	// private CodeArea CodeHtml;
-
-	@FXML
-	void HtmlToView(ActionEvent event) {
-		try {
-			VisHtml.setHtmlText(CodeHtml.getText());
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	@FXML
-	void ViewHtmlTag(ActionEvent event) {
-		try {
-			CodeHtml.replaceText(0, 0, VisHtml.getHtmlText());
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	@FXML
-	void CENCEL(ActionEvent event) {
-		try {
-			onclose();
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	void onclose() {
-		Stage stage = (Stage) VisHtml.getScene().getWindow();
-		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-	}
-
-	@FXML
-	void OK(ActionEvent event) {
-		try {
-			PreparedStatement prp = conn.prepareStatement("update NT_TEMP_LIST set HTML_TEMP = ? where ID = ?");
-			Clob clob = conn.createClob();
-			clob.setString(1,
-					CodeHtml.getText().replace("<html dir=\"ltr\"><head>", "<!DOCTYPE html>\r\n<html>\r\n<head>"));
-			prp.setClob(1, clob);
-			prp.setInt(2, val_list.getID());
-			prp.executeUpdate();
-			prp.close();
-			clob.free();
-			conn.commit();
-			onclose();
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
+		codeArea.textProperty().addListener((obs, oldText, newText) -> {
+			codeArea.setStyleSpans(0, computeHighlighting(newText));
+		});
+		codeArea.replaceText(0, 0, sampleCode);
+		
+		Scene scene = new Scene(new StackPane(new VirtualizedScrollPane<>(codeArea)), 600, 400);
+		scene.getStylesheets().add(XMLEditorDemo.class
+				.getResource("/notary/template/html/controller/xml-highlighting.css").toExternalForm());
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("XML Editor Demo");
+		primaryStage.show();
 	}
 
 	private static StyleSpans<Collection<String>> computeHighlighting(String text) {
@@ -162,36 +113,5 @@ public class HtmlEditor {
 		}
 		spansBuilder.add(Collections.emptyList(), text.length() - lastKwEnd);
 		return spansBuilder.create();
-	}
-
-	@FXML
-	private SplitPane Split;
-
-	private CodeArea CodeHtml;
-
-	@FXML
-	private void initialize() {
-		try {
-			CodeHtml = new CodeArea();
-//			InputStream is = getClass().getResourceAsStream("/notary/doc/old/controller/Test.html");
-//			String text = IOUtils.toString(is, StandardCharsets.UTF_8.name());
-
-			Split.getItems().add(new StackPane(new VirtualizedScrollPane<>(CodeHtml)));
-			VisHtml.setHtmlText(val_list.getHTML_TEMP());
-
-			CodeHtml.setParagraphGraphicFactory(LineNumberFactory.get(CodeHtml));
-			CodeHtml.textProperty().addListener((obs, oldText, newText) -> {
-				CodeHtml.setStyleSpans(0, computeHighlighting(newText));
-			});
-
-			if (val_list.getHTML_TEMP() != null) {
-				CodeHtml.replaceText(0, 0, val_list.getHTML_TEMP());
-			}
-
-			CodeHtml.getStylesheets().add(
-					getClass().getResource("/notary/template/html/controller/xml-highlighting.css").toExternalForm());
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
 	}
 }
