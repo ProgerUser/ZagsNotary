@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -40,6 +41,7 @@ import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.DbmsOutputCapture;
 import netscape.javascript.JSObject;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
@@ -80,6 +82,15 @@ public class AddDoc {
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
+	@FXML
+	void Print(ActionEvent event) {
+		try {
+			
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	public class JsToJava {
 		public void run(String id) {
 			ListVal(id);
@@ -94,72 +105,97 @@ public class AddDoc {
 
 	void ListVal(String id) {
 		try {
-			PreparedStatement prp = conn.prepareStatement("select * from NT_TEMP_LIST_PARAM t where PRM_NAME = ?");
-			prp.setString(1, id);
-			ResultSet rs = prp.executeQuery();
-			while (rs.next()) {
-				list = new NT_TEMP_LIST_PARAM();
-				list.setPRM_ID(rs.getInt("PRM_ID"));
-				list.setPRM_NAME(rs.getString("PRM_NAME"));
-				list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
-				list.setPRM_SQL(rs.getString("PRM_SQL"));
-				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
-				list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
-				if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
-					list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				PreparedStatement prp = conn
+						.prepareStatement("select * from VNT_TEMP_LIST_PARAM t where PRM_NAME = ? and PRM_TMP_ID = ?");
+				prp.setString(1, id);
+				prp.setInt(2, val.getID());
+				ResultSet rs = prp.executeQuery();
+				while (rs.next()) {
+					list = new NT_TEMP_LIST_PARAM();
+					list.setPRM_ID(rs.getInt("PRM_ID"));
+					list.setPRM_NAME(rs.getString("PRM_NAME"));
+					list.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
+					list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+					list.setPRM_SQL(rs.getString("PRM_SQL"));
+					list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+					list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
+					if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
+						list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
+					}
+					list.setPDJ_NAME(rs.getString("PDJ_NAME"));
+					list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					list.setTYPE_NAME(rs.getString("TYPE_NAME"));
+					list.setREQUIRED(rs.getString("REQUIRED"));
 				}
-			}
-			prp.close();
-			rs.close();
+				prp.close();
+				rs.close();
 
-			Stage stage = new Stage();
-			Stage stage_ = (Stage) webView.getScene().getWindow();
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) webView.getScene().getWindow();
 
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/notary/doc/html/view/ParamList.fxml"));
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/doc/html/view/ParamList.fxml"));
 
-			ParamList controller = new ParamList();
-			controller.setQuery(list.getPRM_SQL());
-			controller.setConn(conn);
-			loader.setController(controller);
+				ParamList controller = new ParamList();
+				controller.setQuery(list.getPRM_SQL());
+				controller.setConn(conn);
+				loader.setController(controller);
 
-			Parent root = loader.load();
-			stage.setScene(new Scene(root));
-			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Список");
-			stage.initOwner(stage_);
-			stage.setResizable(true);
-			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				@Override
-				public void handle(WindowEvent paramT) {
-					if (controller.getStatus()) {
-						try {
-							System.out.println("!!-------------controller.getCode_s()=" + controller.getCode_s());
-							webView.getEngine().executeScript("SetValue('" + id + "','" + controller.getCode_s() + ". "
-									+ controller.getName_s() + "')");
-							{
-								PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
-								prp.setInt(1, Integer.valueOf(controller.getCode_s()));
-								ResultSet rs = prp.executeQuery();
-								while (rs.next()) {
-									System.out.println(
-											rs.getString("NAME_").toLowerCase() + "=" + rs.getString("VALUE_"));
-									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-										webView.getEngine()
-												.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
-														+ "','" + rs.getString("VALUE_") + "')");
-									}
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Список");
+				stage.initOwner(stage_);
+				stage.setResizable(true);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						if (controller.getStatus()) {
+							try {
+								// Инициализация
+								System.out.println("!!-------------controller.getCode_s()=" + controller.getCode_s());
+								System.out.println("1____PDJ_NAME=" + list.getPDJ_NAME());
+								System.out.println("2____PRM_NAME=" + id);
+								// Если падеж не пуст
+								if (list.getPDJ_NAME() != null) {
+									// Получить измененный падеж
+									String FioPod = (String) webView.getEngine()
+											.executeScript("Padej('" + controller.getCode_s() + ". "
+													+ controller.getName_s() + "','" + list.getPDJ_NAME() + "')");
+									System.out.println("........FioPod=" + FioPod);
+									webView.getEngine().executeScript("SetValue('" + id + "','" + FioPod + "')");
+								} else {
+									webView.getEngine().executeScript("SetValue('" + id + "','" + controller.getCode_s()
+											+ ". " + controller.getName_s() + "')");
 								}
-								prp.close();
-								rs.close();
+								// _______________________
+								{
+									PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
+									prp.setInt(1, Integer.valueOf(controller.getCode_s()));
+									ResultSet rs = prp.executeQuery();
+									while (rs.next()) {
+										System.out.println(
+												rs.getString("NAME_").toLowerCase() + "=" + rs.getString("VALUE_"));
+										if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
+											webView.getEngine()
+													.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
+															+ "','" + rs.getString("VALUE_") + "')");
+										}
+									}
+									prp.close();
+									rs.close();
+								}
+							} catch (Exception e) {
+								DBUtil.LOG_ERROR(e);
 							}
-						} catch (Exception e) {
-							DBUtil.LOG_ERROR(e);
 						}
 					}
-				}
-			});
-			stage.show();
+				});
+				stage.show();
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -262,7 +298,14 @@ public class AddDoc {
 					Clob clob = conn.createClob();
 					clob.setString(1, KeyValue);
 					cls.setClob(3, clob);
-					cls.execute();
+					// DbmsOutput
+					try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
+						List<String> lines = capture.execute(cls);
+						System.out.println(lines);
+					} catch (Exception e) {
+						DBUtil.LOG_ERROR(e);
+					}
+					// --------------
 					if (cls.getString(1) == null) {
 						conn.commit();
 						setStatus(true);

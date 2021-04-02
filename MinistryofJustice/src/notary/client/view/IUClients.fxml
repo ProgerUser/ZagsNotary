@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
@@ -72,13 +72,13 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                     </Text>
-                                    <TextField fx:id="CLI_FIRST_NAME" GridPane.columnIndex="3" />
+                                    <TextField fx:id="CLI_FIRST_NAME" disable="true" GridPane.columnIndex="3" />
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Отчество" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
                                        <GridPane.margin>
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                     </Text>
-                                    <TextField fx:id="CLI_MIDDLE_NAME" GridPane.columnIndex="5" />
+                                    <TextField fx:id="CLI_MIDDLE_NAME" disable="true" GridPane.columnIndex="5" />
                                  </children>
                               </GridPane>
                               <GridPane layoutX="20.0" layoutY="20.0" VBox.vgrow="ALWAYS">

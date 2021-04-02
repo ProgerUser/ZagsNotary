@@ -60,7 +60,9 @@ public class IUTempParam {
 	@FXML
 	private TableColumn<NT_TEMP_LIST_PARAM, String> PRM_NAME;
 	@FXML
-	private TableColumn<NT_TEMP_LIST_PARAM, Integer> PRM_TYPE;
+	private TableColumn<NT_TEMP_LIST_PARAM, String> PRM_TYPE;
+	@FXML
+	private TableColumn<NT_TEMP_LIST_PARAM, String> PRM_R_NAME;
 
 	@FXML
 	void Add(ActionEvent event) {
@@ -229,7 +231,7 @@ public class IUTempParam {
 
 	void Init() {
 		try {
-			String selectStmt = "select * from NT_TEMP_LIST_PARAM where PRM_TMP_ID = ? order by PRM_ID asc";
+			String selectStmt = "select * from VNT_TEMP_LIST_PARAM where PRM_TMP_ID = ? order by PRM_ID asc";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			prepStmt.setInt(1, getID());
 			ResultSet rs = prepStmt.executeQuery();
@@ -238,13 +240,17 @@ public class IUTempParam {
 				NT_TEMP_LIST_PARAM list = new NT_TEMP_LIST_PARAM();
 				list.setPRM_ID(rs.getInt("PRM_ID"));
 				list.setPRM_NAME(rs.getString("PRM_NAME"));
+				list.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
 				list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
 				list.setPRM_SQL(rs.getString("PRM_SQL"));
 				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+				list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
 				list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 				if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
 					list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 				}
+				list.setTYPE_NAME(rs.getString("TYPE_NAME"));
+				list.setREQUIRED(rs.getString("REQUIRED"));
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -272,7 +278,8 @@ public class IUTempParam {
 			DBUtil.RunProcess(conn);
 			PRM_ID.setCellValueFactory(cellData -> cellData.getValue().PRM_IDProperty().asObject());
 			PRM_NAME.setCellValueFactory(cellData -> cellData.getValue().PRM_NAMEProperty());
-			PRM_TYPE.setCellValueFactory(cellData -> cellData.getValue().PRM_TYPEProperty().asObject());
+			PRM_TYPE.setCellValueFactory(cellData -> cellData.getValue().TYPE_NAMEProperty());
+			PRM_R_NAME.setCellValueFactory(cellData -> cellData.getValue().PRM_R_NAMEProperty());
 			Init();
 			// Двойной щелчок по строке для открытия документа
 			NT_TEMP_LIST_PARAM.setRowFactory(tv -> {

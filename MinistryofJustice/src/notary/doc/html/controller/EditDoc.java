@@ -1,5 +1,8 @@
 package notary.doc.html.controller;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -40,6 +43,10 @@ import netscape.javascript.JSObject;
 import notary.doc.html.model.V_NT_DOC;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
+import pl.jsolve.templ4docx.core.Docx;
+import pl.jsolve.templ4docx.core.VariablePattern;
+import pl.jsolve.templ4docx.variable.TextVariable;
+import pl.jsolve.templ4docx.variable.Variables;
 
 public class EditDoc {
 
@@ -96,6 +103,63 @@ public class EditDoc {
 		}
 	}
 
+	@SuppressWarnings("unused")
+	@FXML
+	void Print(ActionEvent event) {
+		try {
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				String path = null;
+				String sql = null;
+				{
+					PreparedStatement prp = conn
+							.prepareStatement("select DOCX_PATH,REP_QUERY from NT_TEMP_LIST t where t.id = ? ");
+					prp.setInt(1, val.getID());
+					ResultSet rs = prp.executeQuery();
+					if (rs.next()) {
+						path = rs.getString("DOCX_PATH");
+						sql = rs.getString("REP_QUERY");
+						if (rs.getClob("REP_QUERY") != null) {
+							sql = new ConvConst().ClobToString(rs.getClob("REP_QUERY"));
+						}
+					}
+					rs.close();
+					prp.close();
+				}
+				// Вызов
+				Docx docx = new Docx(System.getenv("MJ_PATH") + path);
+				docx.setVariablePattern(new VariablePattern("#{", "}"));
+				// preparing variables
+				Variables variables = new Variables();
+				PreparedStatement prepStmt = DBUtil.conn.prepareStatement(
+						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrintNtDocPrmVals"));
+				prepStmt.setInt(1, NT_DOC.getID());
+				ResultSet rs = prepStmt.executeQuery();
+				while (rs.next()) {
+					variables.addTextVariable(new TextVariable("#{" + rs.getString("NAME").toLowerCase() + "}",
+							(rs.getString("VALUE") == null || rs.getString("VALUE").length() < 2 ? "ПУСТО!"
+									: rs.getString("VALUE"))));
+				}
+				rs.close();
+				prepStmt.close();
+
+				// fill template
+				docx.fillTemplate(variables);
+				File tempFile = File.createTempFile("Документ", ".docx",
+						new File(System.getenv("MJ_PATH") + "OutReports"));
+				FileOutputStream str = new FileOutputStream(tempFile);
+				docx.save(str);
+				str.close();
+				tempFile.deleteOnExit();
+				if (Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(tempFile);
+				}
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	NT_TEMP_LIST_PARAM list = null;
 
 	void ListVal(String id) {
@@ -107,13 +171,19 @@ public class EditDoc {
 				list = new NT_TEMP_LIST_PARAM();
 				list.setPRM_ID(rs.getInt("PRM_ID"));
 				list.setPRM_NAME(rs.getString("PRM_NAME"));
+				list.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
 				list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
 				list.setPRM_SQL(rs.getString("PRM_SQL"));
 				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+				list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
 				list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 				if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
 					list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 				}
+				list.setPDJ_NAME(rs.getString("PDJ_NAME"));
+				list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+				list.setTYPE_NAME(rs.getString("TYPE_NAME"));
+				list.setREQUIRED(rs.getString("REQUIRED"));
 			}
 			prp.close();
 			rs.close();
@@ -140,9 +210,22 @@ public class EditDoc {
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
 						try {
+							// Инициализация
 							System.out.println("!!-------------controller.getCode_s()=" + controller.getCode_s());
-							webView.getEngine().executeScript("SetValue('" + id + "','" + controller.getCode_s() + ". "
-									+ controller.getName_s() + "')");
+							System.out.println("1____PDJ_NAME=" + list.getPDJ_NAME());
+							System.out.println("2____PRM_NAME=" + id);
+							// Если падеж не пуст
+							if (list.getPDJ_NAME() != null) {
+								// Получить измененный падеж
+								String FioPod = (String) webView.getEngine()
+										.executeScript("Padej('" + controller.getCode_s() + ". "
+												+ controller.getName_s() + "','" + list.getPDJ_NAME() + "')");
+								System.out.println("........FioPod=" + FioPod);
+								webView.getEngine().executeScript("SetValue('" + id + "','" + FioPod + "')");
+							} else {
+								webView.getEngine().executeScript("SetValue('" + id + "','" + controller.getCode_s()
+										+ ". " + controller.getName_s() + "')");
+							}
 							{
 								PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
 								prp.setInt(1, Integer.valueOf(controller.getCode_s()));

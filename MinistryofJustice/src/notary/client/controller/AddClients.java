@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -57,12 +59,12 @@ public class AddClients {
 		this.Status = new SimpleBooleanProperty();
 	}
 
-    @FXML
-    private CheckBox raion_not_list;
+	@FXML
+	private CheckBox raion_not_list;
 
-    @FXML
-    private CheckBox nas_p_not_list;
-    
+	@FXML
+	private CheckBox nas_p_not_list;
+
 	@FXML
 	private ScrollPane scroll;
 
@@ -125,17 +127,17 @@ public class AddClients {
 	@FXML
 	private ComboBox<DOC_TYPES> CLI_DOC_TYPE;
 
-    @FXML
-    private GridPane L_F_M_NAME;
-    
-    @FXML
-    private VBox OSN_VBox;
-    
-    @FXML
-    private TextField CLI_ADR_NAS_PUNKT_T;
-    @FXML
-    private TextField CLI_ADR_RAION_T;
-    
+	@FXML
+	private GridPane L_F_M_NAME;
+
+	@FXML
+	private VBox OSN_VBox;
+
+	@FXML
+	private TextField CLI_ADR_NAS_PUNKT_T;
+	@FXML
+	private TextField CLI_ADR_RAION_T;
+
 	@FXML
 	void nas_p_not_list(ActionEvent event) {
 		try {
@@ -144,7 +146,7 @@ public class AddClients {
 				CLI_ADR_NAS_PUNKT.setVisible(false);
 
 				CLI_ADR_NAS_PUNKT_T.setVisible(true);
-			}else {
+			} else {
 				CLI_ADR_NAS_PUNKT.setVisible(true);
 				CLI_ADR_NAS_PUNKT_T.setVisible(false);
 				CLI_ADR_NAS_PUNKT_T.setText("");
@@ -162,7 +164,7 @@ public class AddClients {
 				CLI_ADR_RAION.setVisible(false);
 
 				CLI_ADR_RAION_T.setVisible(true);
-			}else {
+			} else {
 				CLI_ADR_RAION.setVisible(true);
 				CLI_ADR_RAION_T.setText("");
 				CLI_ADR_RAION_T.setVisible(false);
@@ -171,7 +173,7 @@ public class AddClients {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-    
+
 	@FXML
 	void CENCEL(ActionEvent event) {
 		try {
@@ -243,8 +245,8 @@ public class AddClients {
 	@FXML
 	void OK(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn
-					.prepareCall("{ call NT_CLI.ADD_CLI(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall(
+					"{ call NT_CLI.ADD_CLI(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			// Ошибка
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			// ид клиента
@@ -337,7 +339,7 @@ public class AddClients {
 			} else {
 				callStmt.setNull(30, java.sql.Types.INTEGER);
 			}
-			//адрес-населенный пункт/текст
+			// адрес-населенный пункт/текст
 			callStmt.setString(31, CLI_ADR_NAS_PUNKT_T.getText());
 			// адрес-район/текст
 			callStmt.setString(32, CLI_ADR_RAION_T.getText());
@@ -346,7 +348,6 @@ public class AddClients {
 			// адрес-населенный пункт если текст
 			callStmt.setInt(34, (nas_p_not_list.isSelected() ? 2 : 1));
 
-			
 			callStmt.execute();
 			if (callStmt.getString(1) != null) {
 				Msg.Message(callStmt.getString(1));
@@ -364,7 +365,64 @@ public class AddClients {
 	@FXML
 	private void initialize() {
 		try {
+			new ConvConst().FirstWUpp(CLI_LAST_NAME);
+			new ConvConst().FirstWUpp(CLI_FIRST_NAME);
+			new ConvConst().FirstWUpp(CLI_MIDDLE_NAME);
+			// FIO
+			CLI_LAST_NAME.focusedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue,
+						Boolean newPropertyValue) {
+					if (newPropertyValue) {
+					} else {
+						CLI_SH_NAME.setText(CLI_LAST_NAME.getText() + " ");
+						CLI_NAME.setText(CLI_LAST_NAME.getText() + " ");
 
+						CLI_FIRST_NAME.setDisable(false);
+					}
+				}
+			});
+			CLI_FIRST_NAME.focusedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue,
+						Boolean newPropertyValue) {
+					if (newPropertyValue) {
+					} else {
+						String[] name = CLI_NAME.getText().split(" ");
+						System.out.println(name[0]);
+						CLI_NAME.setText(name[0] + " " + CLI_FIRST_NAME.getText() + " ");
+
+						String[] name_sh = CLI_SH_NAME.getText().split(" ");
+						CLI_SH_NAME.setText(name_sh[0] + " " + CLI_FIRST_NAME.getText() + " ");
+
+						CLI_MIDDLE_NAME.setDisable(false);
+					}
+				}
+			});
+			CLI_MIDDLE_NAME.focusedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue,
+						Boolean newPropertyValue) {
+					if (newPropertyValue) {
+					} else {
+						String[] name = CLI_NAME.getText().split(" ");
+						CLI_NAME.setText(name[0] + " " + name[1] + " " + CLI_MIDDLE_NAME.getText());
+
+						String[] name_sh = CLI_SH_NAME.getText().split(" ");
+						CLI_SH_NAME.setText(name_sh[0] + " " + name_sh[1].substring(0, 1) + ". "
+								+ CLI_MIDDLE_NAME.getText().substring(0, 1));
+
+						CLI_MIDDLE_NAME.setDisable(false);
+					}
+				}
+			});
+//			CLI_LAST_NAME.setOnKeyPressed(new EventHandler<KeyEvent>() {
+//				@Override
+//				public void handle(KeyEvent ke) {
+//
+//				}
+//			});
+			//
 			new ConvConst().FormatDatePiker(CLI_DATE_REG);
 			new ConvConst().FormatDatePiker(CLI_DOC_START);
 			new ConvConst().FormatDatePiker(CLI_DOC_END);
@@ -539,7 +597,7 @@ public class AddClients {
 			}
 		});
 	}
-	
+
 	private void CombDocType(ComboBox<DOC_TYPES> cmb) {
 		cmb.setConverter(new StringConverter<DOC_TYPES>() {
 			@Override

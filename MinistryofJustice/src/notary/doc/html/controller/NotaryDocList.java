@@ -39,19 +39,24 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableRow;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
+import mj.msg.Msg;
 import mj.util.ConvConst;
 import notary.doc.html.model.V_NT_DOC;
 import pl.jsolve.templ4docx.core.Docx;
@@ -205,7 +210,76 @@ public class NotaryDocList {
 	@FXML
 	void Delete(ActionEvent event) {
 		try {
+			if (NT_DOC.getSelectionModel().getSelectedItem() == null) {
+				Msg.Message("Выберите строку!");
+			} else {
+//				if (DBUtil.OdbAction(106) == 0) {
+//					Msg.Message("Нет доступа!");
+//					return;
+//				}
 
+				Stage stage = (Stage) NT_DOC.getScene().getWindow();
+				Label alert = new Label("Удалить запись?");
+				alert.setLayoutX(75.0);
+				alert.setLayoutY(11.0);
+				alert.setPrefHeight(17.0);
+
+				Button no = new Button();
+				no.setText("Нет");
+				no.setLayoutX(111.0);
+				no.setLayoutY(56.0);
+				no.setPrefWidth(72.0);
+				no.setPrefHeight(21.0);
+
+				Button yes = new Button();
+				yes.setText("Да");
+				yes.setLayoutX(14.0);
+				yes.setLayoutY(56.0);
+				yes.setPrefWidth(72.0);
+				yes.setPrefHeight(21.0);
+
+				AnchorPane yn = new AnchorPane();
+				yn.getChildren().add(alert);
+				yn.getChildren().add(no);
+				yn.getChildren().add(yes);
+				Scene ynScene = new Scene(yn, 250, 100);
+				Stage newWindow_yn = new Stage();
+				no.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						newWindow_yn.close();
+					}
+				});
+				yes.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						try {
+							PreparedStatement delete = conn
+									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
+											+ " delete from NT_DOC where ID = ?;" + "commit;" + "end;");
+							V_NT_DOC cl = NT_DOC.getSelectionModel().getSelectedItem();
+							delete.setInt(1, cl.getID());
+							delete.executeUpdate();
+							delete.close();
+
+							Init();
+						} catch (SQLException e) {
+							try {
+								conn.rollback();
+							} catch (SQLException e1) {
+								DBUtil.LOG_ERROR(e1);
+							}
+							DBUtil.LOG_ERROR(e);
+						}
+						newWindow_yn.close();
+					}
+				});
+				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setScene(ynScene);
+				newWindow_yn.initModality(Modality.WINDOW_MODAL);
+				newWindow_yn.initOwner(stage);
+				newWindow_yn.setResizable(false);
+				newWindow_yn.getIcons().add(new Image("/icon.png"));
+				newWindow_yn.show();
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

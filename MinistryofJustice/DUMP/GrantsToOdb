@@ -48,7 +48,8 @@ begin
                                        'MJ_ALL_OBJ',
                                        'V_AU_CUR_TRIGGERS',
                                        'V_AU_TRIGGER',
-                                       'V_AU_TRIGGER2')
+                                       'V_AU_TRIGGER2',
+                                       'ALL_TABLE_MJ')
              order by OBJECT_NAME) loop
     dbms_output.put_line(r.object_name);
     EXECUTE IMMEDIATE ('grant select on ' || r.object_name || ' to odb');

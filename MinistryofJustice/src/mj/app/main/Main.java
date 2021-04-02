@@ -84,7 +84,7 @@ public class Main extends Application {
 	public static Stage primaryStage;
 	public static BorderPane rootLayout;
 	public static Stage enterdtage = null;
-	//Только одна форма
+	// Только одна форма
 	public static boolean CusWin = true;
 	public static boolean BActWin = true;
 	public static boolean UsrWin = true;
@@ -115,7 +115,7 @@ public class Main extends Application {
 	public static boolean NtTempWin = true;
 	public static boolean NtDocWin = true;
 	public static boolean NtCliWin = true;
-	//______________________________________
+	// ______________________________________
 	public static DesktopPane desktopPane;
 
 	/**
@@ -217,7 +217,7 @@ public class Main extends Application {
 //			JMetro jMetro = new JMetro(startingStyle);
 //			System.setProperty("prism.lcdtext", "false");
 //			jMetro.setScene(scene);
-			//Scene scene = new Scene(new RootPane(primaryStage, rootLayout, true, true));
+			// Scene scene = new Scene(new RootPane(primaryStage, rootLayout, true, true));
 			primaryStage.setScene(scene); // Set the scene in primary stage.
 			primaryStage.show(); // Display the primary stage
 		} catch (Exception e) {
@@ -378,7 +378,8 @@ public class Main extends Application {
 			if (NtTempWin) {
 				NtTempWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/template/html/view/NT_TEMPLATE.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/notary/template/html/view/NT_TEMPLATE.fxml"));
 
 				NtTemplate controller = new NtTemplate();
 				loader.setController(controller);
@@ -437,6 +438,7 @@ public class Main extends Application {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+
 	public static void NtClients() {
 		try {
 			if (NtCliWin) {
@@ -467,6 +469,7 @@ public class Main extends Application {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+
 	public static void Nt_Doc() {
 		try {
 			if (NtDocWin) {

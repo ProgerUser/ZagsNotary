@@ -20,8 +20,24 @@ public class NT_TEMP_LIST_PARAM {
 	private IntegerProperty PRM_TYPE;
 	/** Ссылка на таблицу */
 	private StringProperty PRM_TBL_REF;
+	/** Нет данных */
+	private IntegerProperty PRM_PADEJ;
+	/** Нет данных */
+	private StringProperty TYPE_NAME;
+	/** Нет данных */
+	private StringProperty REQUIRED;
+	/** Нет данных */
+	private StringProperty PRM_R_NAME;
+	/** Нет данных */
+	private StringProperty PDJ_NAME;
 
 	public NT_TEMP_LIST_PARAM() {
+		this.PDJ_NAME = new SimpleStringProperty();
+
+		this.PRM_R_NAME = new SimpleStringProperty();
+		this.REQUIRED = new SimpleStringProperty();
+		this.PRM_PADEJ = new SimpleIntegerProperty();
+		this.TYPE_NAME = new SimpleStringProperty();
 		this.PRM_FOR_PRM_SQL = new SimpleStringProperty();
 		this.PRM_ID = new SimpleIntegerProperty();
 		this.PRM_NAME = new SimpleStringProperty();
@@ -29,6 +45,66 @@ public class NT_TEMP_LIST_PARAM {
 		this.PRM_SQL = new SimpleStringProperty();
 		this.PRM_TYPE = new SimpleIntegerProperty();
 		this.PRM_TBL_REF = new SimpleStringProperty();
+	}
+
+	public void setPDJ_NAME(String PDJ_NAME) {
+		this.PDJ_NAME.set(PDJ_NAME);
+	}
+
+	public String getPDJ_NAME() {
+		return PDJ_NAME.get();
+	}
+
+	public StringProperty PDJ_NAMEProperty() {
+		return PDJ_NAME;
+	}
+
+	public void setPRM_R_NAME(String PRM_R_NAME) {
+		this.PRM_R_NAME.set(PRM_R_NAME);
+	}
+
+	public String getPRM_R_NAME() {
+		return PRM_R_NAME.get();
+	}
+
+	public StringProperty PRM_R_NAMEProperty() {
+		return PRM_R_NAME;
+	}
+
+	public void setREQUIRED(String REQUIRED) {
+		this.REQUIRED.set(REQUIRED);
+	}
+
+	public String getREQUIRED() {
+		return REQUIRED.get();
+	}
+
+	public StringProperty REQUIREDProperty() {
+		return REQUIRED;
+	}
+
+	public void setTYPE_NAME(String TYPE_NAME) {
+		this.TYPE_NAME.set(TYPE_NAME);
+	}
+
+	public String getTYPE_NAME() {
+		return TYPE_NAME.get();
+	}
+
+	public StringProperty TYPE_NAMEProperty() {
+		return TYPE_NAME;
+	}
+
+	public void setPRM_PADEJ(Integer PRM_PADEJ) {
+		this.PRM_PADEJ.set(PRM_PADEJ);
+	}
+
+	public Integer getPRM_PADEJ() {
+		return PRM_PADEJ.get();
+	}
+
+	public IntegerProperty PRM_PADEJProperty() {
+		return PRM_PADEJ;
 	}
 
 	public void setPRM_FOR_PRM_SQL(String PRM_FOR_PRM_SQL) {
