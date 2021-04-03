@@ -1,20 +1,18 @@
 package notary.doc.html.controller;
 
+import java.sql.CallableStatement;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import com.sun.javafx.webkit.Accessor;
-import com.sun.webkit.WebPage;
-
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -27,16 +25,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.FontSmoothingType;
-import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -48,14 +41,14 @@ import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.DbmsOutputCapture;
 import netscape.javascript.JSObject;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
-@SuppressWarnings("restriction")
-public class AddDoc {
+public class AddDoc_ {
 
-	public AddDoc() {
+	public AddDoc_() {
 		Main.logger = Logger.getLogger(getClass());
 		this.status = new SimpleBooleanProperty();
 	}
@@ -77,34 +70,43 @@ public class AddDoc {
 	private ComboBox<V_NT_TEMP_LIST> TYPE_NAME;
 
 	@FXML
+	private WebView webView;
+
+	@FXML
 	void CENCEL(ActionEvent event) {
 		onclose();
 	}
 
 	void onclose() {
-		Stage stage = (Stage) TYPE_NAME.getScene().getWindow();
+		Stage stage = (Stage) webView.getScene().getWindow();
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
 	@FXML
 	void Print(ActionEvent event) {
 		try {
-
+			
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
 
-	NT_TEMP_LIST_PARAM list = null;
+	public class JsToJava {
+		public void run(String id) {
+			ListVal(id);
+		}
 
-	@FXML
-	private HTMLEditor HtmlEditor;
+		public void Text(String Mes) {
+			Msg.Message(Mes);
+		}
+	}
+
+	NT_TEMP_LIST_PARAM list = null;
 
 	void ListVal(String id) {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				WebView webView = (WebView) HtmlEditor.lookup("WebView");
 				PreparedStatement prp = conn
 						.prepareStatement("select * from VNT_TEMP_LIST_PARAM t where PRM_NAME = ? and PRM_TMP_ID = ?");
 				prp.setString(1, id);
@@ -199,101 +201,12 @@ public class AddDoc {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@FXML
-	void TYPE_NAME(ActionEvent event) {
-		try {
-			{
-				Node node = HtmlEditor.lookup(".top-toolbar");
-
-				if (node instanceof ToolBar) {
-					boolean check = true;
-					ToolBar bar = (ToolBar) node;
-					ObservableList<Node> list = bar.getItems();
-					for (Node item : list) {
-						if (item.getId() != null && item.getId().equals("MJAddParam")) {
-							check = false;
-							break;
-						}
-					}
-					if (check) {
-						FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
-						icon.setFontSmoothingType(FontSmoothingType.LCD);
-						icon.setSize("18");
-						Button myButton = new Button("Добавить параметр", icon);
-						myButton.setId("MJAddParam");
-
-						bar.getItems().add(myButton);
-						myButton.setOnAction(new EventHandler<ActionEvent>() {
-							@Override
-							public void handle(ActionEvent arg0) {
-								WebView webView = (WebView) HtmlEditor.lookup("WebView");
-								WebPage webPage = Accessor.getPageFor(webView.getEngine());
-								webPage.executeCommand("insertHTML", "<input id=\"nt_ruk_sh\" type=\"text\" />");
-
-							}
-						});
-					}
-				}
-
-//			Node node = HtmlEditor.lookup(".bottom-toolbar");
-//			ToolBar bar = (ToolBar) node;
-//			ObservableList<Node> list = bar.getItems();
-//			for (Node item : list) {
-//				System.out.println(item.getTypeSelector() + " " + item.getId());
-//			}
-				// modify font selections.
-				int i = 0;
-				for (Node candidate : (HtmlEditor.lookupAll("ComboBox"))) {
-					// fonts are selected by the second menu in the htmlEditor.
-					if (candidate instanceof ComboBox && i == 1) {
-						System.out.println("`````");
-						// limit the font selections to our predefined list.
-						ComboBox menuButton = (ComboBox) candidate;
-						menuButton.setMinWidth(200);
-						System.out.println(menuButton.getSelectionModel().getSelectedItem());
-						List<String> removalList = FXCollections.observableArrayList();
-						final List<String> fontSelections = menuButton.getItems();
-						for (String item : fontSelections) {
-							if (!limitedFonts.contains(item)) {
-								removalList.add(item);
-							}
-						}
-						fontSelections.removeAll(removalList);
-					}
-					i++;
-				}
-			}
-			Reload();
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	@FXML
-	void DelSelType(ActionEvent event) {
-		try {
-			TYPE_NAME.getSelectionModel().select(null);
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	public class JsToJava {
-		public void run(String id) {
-			ListVal(id);
-		}
-
-		public void Text(String Mes) {
-			Msg.Message(Mes);
-		}
-	}
+	// private WebEngine webEngine;
 
 	void Reload() {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				WebView webView = (WebView) HtmlEditor.lookup("WebView");
 				final WebEngine webEngine = webView.getEngine();
 				final JsToJava jstojava = new JsToJava();
 				String HTML = "";
@@ -348,11 +261,66 @@ public class AddDoc {
 	}
 
 	@FXML
+	void TYPE_NAME(ActionEvent event) {
+		Reload();
+	}
+
+	@FXML
+	void DelSelType(ActionEvent event) {
+		try {
+			TYPE_NAME.getSelectionModel().select(null);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
 	void OK(ActionEvent event) {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
-
+				String KeyValue = "";
+				PreparedStatement prp = conn
+						.prepareStatement("select * from NT_TEMP_LIST_PARAM t where PRM_TMP_ID = ?");
+				prp.setInt(1, val.getID());
+				ResultSet rs = prp.executeQuery();
+				while (rs.next()) {
+					KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + (String) webView.getEngine()
+							.executeScript("ReturnValue('" + rs.getString("PRM_NAME") + "')") + "\r\n";
+				}
+				prp.close();
+				rs.close();
+				System.out.print(KeyValue);
+				if (!KeyValue.equals("")) {
+					CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC_HTML(?,?,?)}");
+					cls.registerOutParameter(1, Types.VARCHAR);
+					cls.setInt(2, val.getID());
+					Clob clob = conn.createClob();
+					clob.setString(1, KeyValue);
+					cls.setClob(3, clob);
+					// DbmsOutput
+					try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
+						List<String> lines = capture.execute(cls);
+						System.out.println(lines);
+					} catch (Exception e) {
+						DBUtil.LOG_ERROR(e);
+					}
+					// --------------
+					if (cls.getString(1) == null) {
+						conn.commit();
+						setStatus(true);
+						onclose();
+					} else {
+						conn.rollback();
+						setStatus(false);
+						Msg.Message(cls.getString(1));
+					}
+					cls.close();
+					setStatus(true);
+					onclose();
+				} else {
+					Msg.Message("ПУСТО!");
+				}
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -400,14 +368,13 @@ public class AddDoc {
 		});
 	}
 
-	// limits the fonts a user can select from in the html editor.
-	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman");
-
 	@FXML
 	private void initialize() {
 		try {
 			dbConnect();
 			DBUtil.RunProcess(conn);
+			webView.getStyleClass().add("mylistview");
+			webView.getStylesheets().add("/ScrPane.css");
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from V_NT_TEMP_LIST");
 				ResultSet rs = stsmt.executeQuery();
@@ -431,11 +398,10 @@ public class AddDoc {
 				FilteredList<V_NT_TEMP_LIST> filterednationals = new FilteredList<V_NT_TEMP_LIST>(combolist);
 				TYPE_NAME.getEditor().textProperty()
 						.addListener(new InputFilter<V_NT_TEMP_LIST>(TYPE_NAME, filterednationals, false));
-				TYPE_NAME.setItems(filterednationals);
+				TYPE_NAME.setItems(combolist);
 				convert_TYPE_NAME(TYPE_NAME);
 				rs.close();
 			}
-
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

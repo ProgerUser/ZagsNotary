@@ -190,8 +190,14 @@ public class HtmlEditor {
 
 			CodeHtml.getStylesheets().add(
 					getClass().getResource("/notary/template/html/controller/xml-highlighting.css").toExternalForm());
+
+			// String IMAGE_URL = "http://...";
+			
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+
+	
 }
