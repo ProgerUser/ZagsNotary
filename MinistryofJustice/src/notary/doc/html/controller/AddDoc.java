@@ -1,15 +1,25 @@
 package notary.doc.html.controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.javafx.webkit.Accessor;
 import com.sun.webkit.WebPage;
 
@@ -199,6 +209,68 @@ public class AddDoc {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked" })
+	void AddParam() {
+		try {
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				WebPage webPage = Accessor.getPageFor(webView.getEngine());
+
+				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+				Map<String, String> result = new ObjectMapper().readValue(json, HashMap.class);
+				String JsonStr = "";
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
+				}
+				// ------------------
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) HtmlEditor.getScene().getWindow();
+
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/doc/html/view/AddParam.fxml"));
+
+				AddParam controller = new AddParam();
+				controller.setConn(conn, JsonStr.trim(), val);
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("");
+				stage.initOwner(stage_);
+				stage.setResizable(false);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						if (controller.getStatus()) {
+
+//							System.out.println("document.execCommand('insertHTML', false, '"
+//									+ controller.prm.getHTML_CODE() + "');");
+
+//							webView.getEngine().executeScript("document.execCommand('insertHTML', false, '"
+//									+ controller.prm.getHTML_CODE() + "');");
+
+//							String html = HtmlEditor.getHtmlText();
+
+							webPage.executeCommand("insertHTML", controller.prm.getHTML_CODE());
+
+							String html = (String) webView.getEngine()
+									.executeScript("document.documentElement.innerHTML");
+							//System.out.println("-------" + controller.prm.getHTML_CODE());
+							System.out.println(html);
+							// Запишем в файл
+							//Reload2(html);
+						}
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	void TYPE_NAME(ActionEvent event) {
@@ -227,10 +299,7 @@ public class AddDoc {
 						myButton.setOnAction(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent arg0) {
-								WebView webView = (WebView) HtmlEditor.lookup("WebView");
-								WebPage webPage = Accessor.getPageFor(webView.getEngine());
-								webPage.executeCommand("insertHTML", "<input id=\"nt_ruk_sh\" type=\"text\" />");
-
+								AddParam();
 							}
 						});
 					}
@@ -289,6 +358,36 @@ public class AddDoc {
 		}
 	}
 
+	void Reload2(String html) {
+		try {
+			WebView webView = (WebView) HtmlEditor.lookup("WebView");
+			final WebEngine webEngine = webView.getEngine();
+			final JsToJava jstojava = new JsToJava();
+			// Запишем в файл
+			{
+				Writer out = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/HTML.html"), StandardCharsets.UTF_8));
+				out.write(html);
+				out.close();
+			}
+			URL url = new File(System.getenv("MJ_PATH") + "HTML/HTML.html").toURI().toURL();
+			webEngine.load(url.toExternalForm());
+			webView.setContextMenuEnabled(false);
+			webEngine.setJavaScriptEnabled(true);
+			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+				@Override
+				public void changed(ObservableValue<? extends State> observableValue, State oldState, State newState) {
+					if (newState == State.SUCCEEDED) {
+						JSObject window = (JSObject) webEngine.executeScript("window");
+						window.setMember("invoke", jstojava);
+					}
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	void Reload() {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
@@ -296,22 +395,33 @@ public class AddDoc {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
 				final WebEngine webEngine = webView.getEngine();
 				final JsToJava jstojava = new JsToJava();
-				String HTML = "";
+				// Запишем в файл
 				{
-					PreparedStatement prp = conn
-							.prepareStatement("select * from NT_TEMP_LIST_JS where TMP_LIST_ID = ?");
-					prp.setInt(1, val.getID());
-					ResultSet rs = prp.executeQuery();
-					while (rs.next()) {
-						HTML = HTML + val.getHTML_TEMP().replace("{" + rs.getString("JSNAME") + "}",
-								new ConvConst().ClobToString(rs.getClob("JSFILE")));
-					}
-					prp.close();
-					rs.close();
+					Writer out = new BufferedWriter(new OutputStreamWriter(
+							new FileOutputStream(System.getenv("MJ_PATH") + "HTML/HTML.html"), StandardCharsets.UTF_8));
+					out.write(val.getHTML_TEMP());
+					out.close();
 				}
-//				URL url = HtmlEditorTest.class.getResource("/notary/doc/html/controller/HTML.html");
-//				webEngine.load(url.toExternalForm());
-				webEngine.loadContent(HTML);
+//				String HTML = "";
+//				{
+//					// Добавление js скриптов
+//					PreparedStatement prp = conn
+//							.prepareStatement("select * from NT_TEMP_LIST_JS where TMP_LIST_ID = ?");
+//					prp.setInt(1, val.getID());
+//					ResultSet rs = prp.executeQuery();
+//					while (rs.next()) {
+//						HTML = HTML + val.getHTML_TEMP().replace("{" + rs.getString("JSNAME") + "}",
+//								new ConvConst().ClobToString(rs.getClob("JSFILE")));
+//					}
+//					prp.close();
+//					rs.close();
+//				}
+				// URL url =
+				// HtmlEditorTest.class.getResource("/notary/doc/html/controller/Test.html");
+				// webEngine.load(url.toExternalForm());
+				URL url = new File(System.getenv("MJ_PATH") + "HTML/HTML.html").toURI().toURL();
+				webEngine.load(url.toExternalForm());
+				// webEngine.loadContent(HTML);
 				webView.setContextMenuEnabled(false);
 				webEngine.setJavaScriptEnabled(true);
 				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
@@ -322,19 +432,21 @@ public class AddDoc {
 							JSObject window = (JSObject) webEngine.executeScript("window");
 							window.setMember("invoke", jstojava);
 							try {
-								PreparedStatement prp = conn.prepareStatement(
-										TYPE_NAME.getSelectionModel().getSelectedItem().getREP_QUERY());
-								ResultSet rs = prp.executeQuery();
-								while (rs.next()) {
-									System.out.println("------------SetValue('" + rs.getString("NAME_").toLowerCase()
-											+ "','" + rs.getString("VALUE_") + "')");
-									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-										webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
-												+ "','" + rs.getString("VALUE_") + "')");
+								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();
+								if (vals.getREP_QUERY() != null) {
+									PreparedStatement prp = conn.prepareStatement(vals.getREP_QUERY());
+									ResultSet rs = prp.executeQuery();
+									while (rs.next()) {
+//										System.out.println("------------SetValue('" + rs.getString("NAME_").toLowerCase()
+//												+ "','" + rs.getString("VALUE_") + "')");
+										if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
+											webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
+													+ "','" + rs.getString("VALUE_") + "')");
+										}
 									}
+									prp.close();
+									rs.close();
 								}
-								prp.close();
-								rs.close();
 							} catch (Exception e) {
 								DBUtil.LOG_ERROR(e);
 							}

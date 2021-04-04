@@ -30,10 +30,15 @@ public class NT_TEMP_LIST_PARAM {
 	private StringProperty PRM_R_NAME;
 	/** Нет данных */
 	private StringProperty PDJ_NAME;
+	/** Разметка в Html */
+	private StringProperty HTML_CODE;
+	/** Ссылка на род. парам. */
+	private IntegerProperty PARENTS;
 
 	public NT_TEMP_LIST_PARAM() {
+		this.PARENTS = new SimpleIntegerProperty();
 		this.PDJ_NAME = new SimpleStringProperty();
-
+		this.HTML_CODE = new SimpleStringProperty();
 		this.PRM_R_NAME = new SimpleStringProperty();
 		this.REQUIRED = new SimpleStringProperty();
 		this.PRM_PADEJ = new SimpleIntegerProperty();
@@ -45,6 +50,30 @@ public class NT_TEMP_LIST_PARAM {
 		this.PRM_SQL = new SimpleStringProperty();
 		this.PRM_TYPE = new SimpleIntegerProperty();
 		this.PRM_TBL_REF = new SimpleStringProperty();
+	}
+
+	public void setPARENTS(Integer PARENTS) {
+		this.PARENTS.set(PARENTS);
+	}
+
+	public Integer getPARENTS() {
+		return PARENTS.get();
+	}
+
+	public IntegerProperty PARENTSProperty() {
+		return PARENTS;
+	}
+
+	public void setHTML_CODE(String HTML_CODE) {
+		this.HTML_CODE.set(HTML_CODE);
+	}
+
+	public String getHTML_CODE() {
+		return HTML_CODE.get();
+	}
+
+	public StringProperty HTML_CODEProperty() {
+		return HTML_CODE;
 	}
 
 	public void setPDJ_NAME(String PDJ_NAME) {

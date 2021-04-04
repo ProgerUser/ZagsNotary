@@ -125,7 +125,7 @@ public class NtTemplate {
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("Параметры " + tmp.getNAME());
 				stage.initOwner(stage_);
-				stage.setResizable(false);
+				stage.setResizable(true);
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {
@@ -347,6 +347,10 @@ public class NtTemplate {
 							delete.executeUpdate();
 							delete.close();
 							conn.commit();
+							TreeItem<NT_TEMPLATE> tmp = NT_TEMPLATE.getSelectionModel().getSelectedItem();
+							if (tmp != null) {
+								Init(tmp.getValue().getNT_ID());
+							}
 						} catch (SQLException e) {
 							try {
 								conn.rollback();

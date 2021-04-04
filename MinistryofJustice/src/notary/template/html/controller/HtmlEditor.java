@@ -15,11 +15,13 @@ import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.HTMLEditor;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
@@ -76,7 +78,9 @@ public class HtmlEditor {
 	@FXML
 	void ViewHtmlTag(ActionEvent event) {
 		try {
-			CodeHtml.replaceText(0, 0, VisHtml.getHtmlText());
+			WebView webView = (WebView) VisHtml.lookup("WebView");
+			String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
+			CodeHtml.replaceText(0, 0, html);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -177,11 +181,18 @@ public class HtmlEditor {
 //			String text = IOUtils.toString(is, StandardCharsets.UTF_8.name());
 
 			Split.getItems().add(new StackPane(new VirtualizedScrollPane<>(CodeHtml)));
-			VisHtml.setHtmlText(val_list.getHTML_TEMP());
 
 			CodeHtml.setParagraphGraphicFactory(LineNumberFactory.get(CodeHtml));
 			CodeHtml.textProperty().addListener((obs, oldText, newText) -> {
 				CodeHtml.setStyleSpans(0, computeHighlighting(newText));
+			});
+
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					WebView webView = (WebView) VisHtml.lookup("WebView");
+					webView.getEngine().loadContent(val_list.getHTML_TEMP());
+				}
 			});
 
 			if (val_list.getHTML_TEMP() != null) {
@@ -192,12 +203,10 @@ public class HtmlEditor {
 					getClass().getResource("/notary/template/html/controller/xml-highlighting.css").toExternalForm());
 
 			// String IMAGE_URL = "http://...";
-			
 
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
 
-	
 }
