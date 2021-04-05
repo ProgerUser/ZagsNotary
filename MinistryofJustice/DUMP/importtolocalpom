@@ -1,4 +1,5 @@
-mvn install:install-file -Dfile=D:\syntheticaFX.jar -DgroupId=syntheticaFX -DartifactId=syntheticaFX -Dversion=1.0 -Dpackaging=jar
+mvn install:install-file -Dfile=D:\icepdf-core-4.3.3.jar -DgroupId=icepdf-core -DartifactId=icepdf-core -Dversion=1.0 -Dpackaging=jar
+mvn install:install-file -Dfile=D:\icepdf-viewer-4.3.3.jar -DgroupId=icepdf-viewer -DartifactId=icepdf-viewer -Dversion=1.0 -Dpackaging=jar
 mvn install:install-file -Dfile=D:\xTableView.jar -DgroupId=xTableView -DartifactId=xTableView -Dversion=1.0 -Dpackaging=jar
 mvn install:install-file -Dfile=D:\jfoenix-8.0.10.jar -DgroupId=com.jfoenix -DartifactId=jfoenix -Dversion=8.0.10 -Dpackaging=jar
 mvn install:install-file -Dfile=G:\jmetro-8.6.14.jar -DgroupId=jmetro -DartifactId=jmetro -Dversion=8.6.14 -Dpackaging=jar

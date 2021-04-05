@@ -15,8 +15,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 
 import org.apache.log4j.Logger;
 
@@ -37,6 +41,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.print.Printer.MarginType;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -99,6 +109,38 @@ public class EditDoc {
 	@FXML
 	void Print(ActionEvent event) {
 		try {
+			WebView webView = (WebView) HtmlEditor.lookup("WebView");
+			webView.getEngine().executeScript("	function Setup() {\n" + 
+					"		$('input').each(function() {\n" + 
+					"			$(this).replaceWith(\"<span>\" + this.value + \"</span>\");\n" + 
+					"		});\n" + 
+					"	}\n" + 
+					"	Setup();");
+			
+			Printer pdfPrinter = null;
+			Iterator<Printer> iter = Printer.getAllPrinters().iterator();
+			while (iter.hasNext()) {
+				Printer printer = iter.next();
+				if (printer.getName().equals(PRINTER_ID.getValue())) {
+					pdfPrinter = printer;
+				}
+			}
+			
+			PrinterJob job = null;
+			try {
+				// clear margins
+				PageLayout layout = pdfPrinter.createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
+						MarginType.DEFAULT);
+				job = PrinterJob.createPrinterJob(pdfPrinter);
+				job.getJobSettings().setPageLayout(layout);
+				job.getJobSettings().setJobName("Sample Printing Job");
+				webView.getEngine().print(job);
+				job.endJob();
+			} finally {
+				if (job != null) {
+					job.endJob();
+				}
+			}
 
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -216,6 +258,9 @@ public class EditDoc {
 		}
 	}
 
+    @FXML
+    private ComboBox<String> PRINTER_ID;
+    
 	@SuppressWarnings({ "unchecked" })
 	void AddParam() {
 		try {
@@ -350,58 +395,6 @@ public class EditDoc {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				{
-					Node node = HtmlEditor.lookup(".top-toolbar");
-					if (node instanceof ToolBar) {
-						boolean check = true;
-						ToolBar bar = (ToolBar) node;
-						ObservableList<Node> list = bar.getItems();
-						for (Node item : list) {
-							if (item.getId() != null && item.getId().equals("MJAddParam")) {
-								check = false;
-								break;
-							}
-						}
-						if (check) {
-							FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
-							icon.setFontSmoothingType(FontSmoothingType.LCD);
-							icon.setSize("18");
-							Button myButton = new Button("Добавить параметр", icon);
-							myButton.setId("MJAddParam");
-
-							bar.getItems().add(myButton);
-							myButton.setOnAction(new EventHandler<ActionEvent>() {
-								@Override
-								public void handle(ActionEvent arg0) {
-									AddParam();
-								}
-							});
-						}
-					}
-					// modify font selections.
-					int i = 0;
-					for (Node candidate : (HtmlEditor.lookupAll("ComboBox"))) {
-						// fonts are selected by the second menu in the htmlEditor.
-						if (candidate instanceof ComboBox && i == 1) {
-							System.out.println("`````");
-							// limit the font selections to our predefined list.
-							ComboBox menuButton = (ComboBox) candidate;
-							menuButton.setMinWidth(200);
-							System.out.println(menuButton.getSelectionModel().getSelectedItem());
-							List<String> removalList = FXCollections.observableArrayList();
-							final List<String> fontSelections = menuButton.getItems();
-							for (String item : fontSelections) {
-								if (!limitedFonts.contains(item)) {
-									removalList.add(item);
-								}
-							}
-							fontSelections.removeAll(removalList);
-						}
-						i++;
-					}
-				}
-				// ________________
-
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
 				final WebEngine webEngine = webView.getEngine();
 				final JsToJava jstojava = new JsToJava();
@@ -424,6 +417,58 @@ public class EditDoc {
 						if (newState == State.SUCCEEDED) {
 							JSObject window = (JSObject) webEngine.executeScript("window");
 							window.setMember("invoke", jstojava);
+							//Оформление
+							{
+								Node node = HtmlEditor.lookup(".top-toolbar");
+								if (node instanceof ToolBar) {
+									boolean check = true;
+									ToolBar bar = (ToolBar) node;
+									ObservableList<Node> list = bar.getItems();
+									for (Node item : list) {
+										if (item.getId() != null && item.getId().equals("MJAddParam")) {
+											check = false;
+											break;
+										}
+									}
+									if (check) {
+										FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
+										icon.setFontSmoothingType(FontSmoothingType.LCD);
+										icon.setSize("18");
+										Button myButton = new Button("Добавить параметр", icon);
+										myButton.setId("MJAddParam");
+
+										bar.getItems().add(myButton);
+										myButton.setOnAction(new EventHandler<ActionEvent>() {
+											@Override
+											public void handle(ActionEvent arg0) {
+												AddParam();
+											}
+										});
+									}
+								}
+								// modify font selections.
+								int i = 0;
+								for (Node candidate : (HtmlEditor.lookupAll("ComboBox"))) {
+									// fonts are selected by the second menu in the htmlEditor.
+									if (candidate instanceof ComboBox && i == 1) {
+										System.out.println("`````");
+										// limit the font selections to our predefined list.
+										ComboBox menuButton = (ComboBox) candidate;
+										menuButton.setMinWidth(200);
+										System.out.println(menuButton.getSelectionModel().getSelectedItem());
+										List<String> removalList = FXCollections.observableArrayList();
+										final List<String> fontSelections = menuButton.getItems();
+										for (String item : fontSelections) {
+											if (!limitedFonts.contains(item)) {
+												removalList.add(item);
+											}
+										}
+										fontSelections.removeAll(removalList);
+									}
+									i++;
+								}
+							}
+							// ________________
 							// При открытии
 							try {
 								// Сами параметры
@@ -734,6 +779,15 @@ public class EditDoc {
 	@FXML
 	private void initialize() {
 		try {
+			
+			PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+
+	        PrintService service = PrintServiceLookup.lookupDefaultPrintService(); 
+	        for (PrintService printer : printServices) {
+	            PRINTER_ID.getItems().add(printer.getName());
+	        }
+	        PRINTER_ID.getSelectionModel().select(service.getName());
+	        
 			HtmlEditor.getStyleClass().add("mylistview");
 			HtmlEditor.getStylesheets().add("/ScrPane.css");
 			{

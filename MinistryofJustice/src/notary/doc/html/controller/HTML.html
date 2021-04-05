@@ -3,215 +3,131 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"
 	charset="UTF-8"></meta>
+<script src="petrovich.min.js"></script>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="mj_def.js"></script>
 <script>
-	function GetAtrVal(Ids) {
-		var div1 = document.getElementById(Ids);
-		var align = div1.getAttribute("value");
-		return align;
-	}
-	GetAtrVal();
-
-	function insertHTML() {
-		var sel, range;
-		if (window.getSelection && (sel = window.getSelection()).rangeCount) {
-			range = sel.getRangeAt(0);
-			range.collapse(true);
-			var input = document.createElement("input");
-			input.setAttribute('type', 'text');
-			input.setAttribute('id', 'doveritel');
-			input.setAttribute('onclick', 'GetValue()');
-			input.setAttribute('placeholder', 'Доверитель!');
-			input.setAttribute('readonly', 'readonly');
-			input.setAttribute('size', '30');
-			range.insertNode(input);
-			// Move the caret immediately after the inserted span
-			range.setStartAfter(input);
-			range.collapse(true);
-			sel.removeAllRanges();
-			sel.addRange(range);
-		}
-	}
-	insertHTML();
-
-	function GetValue() {
-		invoke.run(event.target.id);
-	}
-	function ReturnValue(name) {
-		return document.getElementById(name).value;
-	}
-
-	function SetValue(name, value) {
-		document.getElementById(name).value = value;
-	}
-
-	function SetValuePadej(name, value, PdjType) {
-		document.getElementById(name).value = Padej(name, PdjType);
-	}
-
-	function Padej(FioStr, PadejName) {
-		//var Fio = FioStr;
-		//var NumCommaSpace = Fio.substr(0, Fio.indexOf('.') + 1);
-		//var GoodData = Fio.substr(Fio.indexOf('.') + 1);
-		var tmp = FioStr.split(" ");
-
-		var LasteName = tmp[1];
-		var FirstName = tmp[2];
-		var MiddleName = tmp[3];
-
-		var person = {
-			first : FirstName,
-			middle : MiddleName,
-			last : LasteName
-		};
-		alert(LasteName + " " + FirstName + " " + MiddleName);
-		var RodFio = petrovich(person, PadejName);
-
-		var varStrFio = NumCommaSpace + " " + RodFio.last + " " + RodFio.first
-				+ " " + RodFio.middle;
-		return varStrFio;
-	}
-	/* ----- JavaScript ----- */
-	function writeJSONfile() {
-		var
-		/* Create an object. */
-		obj = {},
-		/* Create a variable that references the current object (default → obj). */
-		ref = obj;
-		/* Iterate over every input. */
-		$("input").each(function() {
-			/* Cache the id of the input. */
-			var id = this.id;
-			/* Check whether the nodetype attribute is set to 'parent'. */
-			if (this.getAttribute("nodetype") == "parent") {
-				/* Set a new object to the property and set ref to refer to it. */
-				ref = obj[id] = {};
-			} else {
-				/* Set the value of the input to the referred object. */
-				ref[id] = $(this).val();
-			}
+	function Setup() {
+		$('#container').find('input').each(function() {
+			$(this).replaceWith("<span>" + this.value + "</span>");
 		});
-		/* Stringify the object and return it. */
-		return JSON.stringify(obj);
 	}
+	Setup();
 </script>
 </head>
 <body>
-	<form id="info">
-		<p style="text-align: center;">
-			<input id="blank_seria" type="text" placeholder="Серия бланка!" />
-		</p>
-		<h1 style="text-align: center;">
-			<strong>ДОВЕРЕННОСТЬ</strong>
-		</h1>
-		<p style="text-align: center;">
-			<input id="country_city" type="text" size="50"
-				placeholder="Респ. город!" />
-		</p>
-		<p style="text-align: center;">
-			<input id="doc_date_word" type="text" size="60"
-				placeholder="Дата прописью!" />
-		</p>
-		<p>
-			Я, гр. <input id="doveritel" readonly="readonly" type="text"
-				size="30" placeholder="Доверитель!" onclick="GetValue()" />
-			/паспорт <input id="dov_doc_seria" type="text" readonly="readonly"
-				placeholder="Дов. серия докум.!" /> <input id="dov_doc_number"
-				type="text" readonly="readonly" placeholder="Дов. номер докум.!" />,
-			выдан <input id="dov_doc_agency" type="text" readonly="readonly"
-				size="60" placeholder="Дов. докум. выдан!" /> <input
-				id="dov_doc_start" type="text" readonly="readonly"
-				placeholder="Дов. докум. дата выд.!" /> к.п. <input
-				id="dov_doc_subdiv" type="text" readonly="readonly"
-				placeholder="Дов. докум. КП!" /> / <input id="dov_br_date"
-				type="text" readonly="readonly" placeholder="Дов. дата рожд.!" />
-			г.р., прож. по адресу: <input id="dov_place" size="50" type="text"
-				readonly="readonly" placeholder="Дов. место жит.!" />
-		</p>
-		<p>
-			настоящей доверенностью уполномочиваю <input id="predstavitel"
-				onclick="GetValue()" placeholder="Представитель!" type="text"
-				size="30" readonly="readonly" /> /паспорт <input id="pr_doc_seria"
-				type="text" readonly="readonly" placeholder="Пр. серия докум.!" />
-			<input id="pr_doc_number" type="text" readonly="readonly"
-				placeholder="Пр. номер докум.!" />, выдан <input id="pr_doc_agency"
-				type="text" readonly="readonly" size="60"
-				placeholder="Пр. докум. выдан!" /> <input id="pr_doc_start"
-				type="text" readonly="readonly" placeholder="Пр. докум. дата выд.!" />
-			г. к.п. <input id="pr_doc_subdiv" type="text" readonly="readonly"
-				placeholder="Пр. докум. КП!" />/ <input id="pr_br_date" type="text"
-				readonly="readonly" placeholder="Пр. дата рожд.!" /> г.р., прож. по
-			адресу: <input id="pr_place" type="text" size="50"
-				readonly="readonly" placeholder="Пр. место жит.!" />
-		</p>
-		<p>
-			<strong><em>получать причитающуюся мне пенсию во всех
-					структурных подразделениях Акционерного Коммерческого
-					Сберегательного банка Республики Абхазия (открытое Акционерное
-					общество), для чего предоставляю ей право расписываться за меня в
-					получении и совершать все прочие действия, связанные с данным
-					поручением.</em></strong>
-		</p>
-		<p>
-			<strong><em>Доверенность выдана сроком на три года.</em></strong>
-		</p>
-		<table style="width: 717px;">
-			<tbody>
-				<tr>
-					<td style="width: 73px;">Подпись:&nbsp;</td>
-					<td style="width: 628px; text-align: right;">&nbsp;/ <input
-						id="dov_sh_name" type="text" readonly="readonly"
-						placeholder="Дов. ФИО кор.!" />/
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<p>
-			&nbsp;<input id="doc_date" type="text" placeholder="Дата документа.!" />
-			года настоящая доверенность удостоверена и зачитана мной, <input
-				id="notary_ruk_rod" type="text" size="50"
-				placeholder="Руководитель нотариуса!" />, нотариусом <input
-				id="not_name" type="text" size="60"
-				placeholder="Наименование нотариуса!" />. Доверенность подписана <input
-				id="dov_name" type="text" readonly="readonly"
-				placeholder="Доверитель ФИО!" /> в моем присутствии. Личность его
-			установлена, дееспособность проверена.
-		</p>
-		<table style="width: 749px; height: 194px;">
-			<tbody>
-				<tr>
-					<td style="width: 387px;">
-						<h3>
-							<strong><em>Зарегистрировано в реестре за №</em></strong>
-						</h3>
-					</td>
-					<td style="width: 346px;"><input id="reestr_number"
-						type="text" placeholder="№ в реестре!" /></td>
-				</tr>
-				<tr>
-					<td style="width: 387px;">
-						<h3>
-							<strong><em>Взыскано госпошлины:</em></strong>
-						</h3>
-					</td>
-					<td style="width: 346px;">&nbsp;</td>
-				</tr>
+	<p style="text-align: center;">
+		<input id="blank_seria" type="text" placeholder="Серия бланка!" />
+	</p>
+	<h1 style="text-align: center;">
+		<strong>ДОВЕРЕННОСТЬ</strong>
+	</h1>
+	<p style="text-align: center;">
+		<input id="country_city" type="text" size="50"
+			placeholder="Респ. город!" />
+	</p>
+	<p style="text-align: center;">
+		<input id="doc_date_word" type="text" size="60"
+			placeholder="Дата прописью!" />
+	</p>
+	<p>
+		Я, гр. <input id="doveritel" readonly="readonly" type="text" size="30"
+			placeholder="Доверитель!" onclick="GetValue()" /> /паспорт <input
+			id="dov_doc_seria" type="text" readonly="readonly"
+			placeholder="Дов. серия докум.!" /> <input id="dov_doc_number"
+			type="text" readonly="readonly" placeholder="Дов. номер докум.!" />,
+		выдан <input id="dov_doc_agency" type="text" readonly="readonly"
+			size="60" placeholder="Дов. докум. выдан!" /> <input
+			id="dov_doc_start" type="text" readonly="readonly"
+			placeholder="Дов. докум. дата выд.!" /> к.п. <input
+			id="dov_doc_subdiv" type="text" readonly="readonly"
+			placeholder="Дов. докум. КП!" /> / <input id="dov_br_date"
+			type="text" readonly="readonly" placeholder="Дов. дата рожд.!" />
+		г.р., прож. по адресу: <input id="dov_place" size="50" type="text"
+			readonly="readonly" placeholder="Дов. место жит.!" />
+	</p>
+	<p>
+		настоящей доверенностью уполномочиваю <input id="predstavitel"
+			onclick="GetValue()" placeholder="Представитель!" type="text"
+			size="30" readonly="readonly" /> /паспорт <input id="pr_doc_seria"
+			type="text" readonly="readonly" placeholder="Пр. серия докум.!" /> <input
+			id="pr_doc_number" type="text" readonly="readonly"
+			placeholder="Пр. номер докум.!" />, выдан <input id="pr_doc_agency"
+			type="text" readonly="readonly" size="60"
+			placeholder="Пр. докум. выдан!" /> <input id="pr_doc_start"
+			type="text" readonly="readonly" placeholder="Пр. докум. дата выд.!" />
+		г. к.п. <input id="pr_doc_subdiv" type="text" readonly="readonly"
+			placeholder="Пр. докум. КП!" />/ <input id="pr_br_date" type="text"
+			readonly="readonly" placeholder="Пр. дата рожд.!" /> г.р., прож. по
+		адресу: <input id="pr_place" type="text" size="50" readonly="readonly"
+			placeholder="Пр. место жит.!" />
+	</p>
+	<p>
+		<strong><em>получать причитающуюся мне пенсию во всех
+				структурных подразделениях Акционерного Коммерческого
+				Сберегательного банка Республики Абхазия (открытое Акционерное
+				общество), для чего предоставляю ей право расписываться за меня в
+				получении и совершать все прочие действия, связанные с данным
+				поручением.</em></strong>
+	</p>
+	<p>
+		<strong><em>Доверенность выдана сроком на три года.</em></strong>
+	</p>
+	<table style="width: 717px;">
+		<tbody>
+			<tr>
+				<td style="width: 73px;">Подпись:&nbsp;</td>
+				<td style="width: 628px; text-align: right;">&nbsp;/ <input
+					id="dov_sh_name" type="text" readonly="readonly"
+					placeholder="Дов. ФИО кор.!" />/
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p>
+		&nbsp;<input id="doc_date" type="text" placeholder="Дата документа.!" />
+		года настоящая доверенность удостоверена и зачитана мной, <input
+			id="notary_ruk_rod" type="text" size="50"
+			placeholder="Руководитель нотариуса!" />, нотариусом <input
+			id="not_name" type="text" size="60"
+			placeholder="Наименование нотариуса!" />. Доверенность подписана <input
+			id="dov_name" type="text" readonly="readonly"
+			placeholder="Доверитель ФИО!" /> в моем присутствии. Личность его
+		установлена, дееспособность проверена.
+	</p>
+	<table style="width: 749px; height: 194px;">
+		<tbody>
+			<tr>
+				<td style="width: 387px;">
+					<h3>
+						<strong><em>Зарегистрировано в реестре за №</em></strong>
+					</h3>
+				</td>
+				<td style="width: 346px;"><input id="reestr_number" type="text"
+					placeholder="№ в реестре!" /></td>
+			</tr>
+			<tr>
+				<td style="width: 387px;">
+					<h3>
+						<strong><em>Взыскано госпошлины:</em></strong>
+					</h3>
+				</td>
+				<td style="width: 346px;">&nbsp;</td>
+			</tr>
 
-				<tr>
-					<td style="width: 387px;">
-						<h3>Гос. нотариус</h3>
-					</td>
-					<td style="width: 346px;">
-						<h3 style="text-align: right;">
-							<em>/<input id="nt_ruk_sh" type="text"
-								placeholder="Руководитель ФИО коротк.!" />/
-							</em>
-						</h3>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</form>
-	<script src="petrovich.min.js"></script>
-	<script src="jquery-3.6.0.min.js"></script>
+			<tr>
+				<td style="width: 387px;">
+					<h3>Гос. нотариус</h3>
+				</td>
+				<td style="width: 346px;">
+					<h3 style="text-align: right;">
+						<em>/<input id="nt_ruk_sh" type="text"
+							placeholder="Руководитель ФИО коротк.!" />/
+						</em>
+					</h3>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>

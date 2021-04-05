@@ -82,12 +82,6 @@ public class HtmlEditorTest {
 
 	void print() {
 		Printer pdfPrinter = null;
-		// Windows: Instal PDF24 from http://en.pdf24.org
-		// Linux: Install cups-pdf http://www.cups-pdf.de
-		// Optionally PDF24 could be configured for silent mode from
-		// "C:\Program Files (x86)\PDF24\pdf24-SettingsUITool.exe" from the Menu "PDF
-		// Printer"
-		// Set "Automatically save..." checkbox to true
 		Iterator<Printer> iter = Printer.getAllPrinters().iterator();
 		while (iter.hasNext()) {
 			Printer printer = iter.next();

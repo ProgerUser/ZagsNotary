@@ -20,7 +20,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -421,6 +428,18 @@ public class AddDoc {
 							JSObject window = (JSObject) webEngine.executeScript("window");
 							window.setMember("invoke", jstojava);
 							try {
+								{
+									Document doc = webEngine.getDocument();
+									Transformer transformer = TransformerFactory.newInstance().newTransformer();
+									transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+									transformer.setOutputProperty(OutputKeys.METHOD, "html");
+									transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+									transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+									transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+									transformer.transform(new DOMSource(doc),
+											new StreamResult(new OutputStreamWriter(System.out, "UTF-8")));
+								}
+
 								// текущие поля на странице
 								String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();
@@ -471,14 +490,13 @@ public class AddDoc {
 						if (rs.getInt("PRM_TYPE") == 1) {
 							// Если параметр присутствует на странице
 							if (json.contains(rs.getString("PRM_NAME"))) {
-								// Выполнить функцию которая вернет значение атрибута "value" 
+								// Выполнить функцию которая вернет значение атрибута "value"
 								String values = (String) webView.getEngine()
-										.executeScript("	function GetAtrVal(Ids) {\n" + 
-												"		var div1 = document.getElementById(Ids);\n" + 
-												"		var align = div1.getAttribute(\"value\");\n" + 
-												"		return align;\n" + 
-												"	}\n" + 
-												"	GetAtrVal('"+rs.getString("PRM_NAME")+"');");
+										.executeScript("	function GetAtrVal(Ids) {\n"
+												+ "		var div1 = document.getElementById(Ids);\n"
+												+ "		var align = div1.getAttribute(\"value\");\n"
+												+ "		return align;\n" + "	}\n" + "	GetAtrVal('"
+												+ rs.getString("PRM_NAME") + "');");
 								// Если параметр еще не инициализирован значением
 								if (values == null) {
 									KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + "\r\n";
@@ -514,8 +532,7 @@ public class AddDoc {
 				clob.setString(1, KeyValue.trim());
 				cls.setClob(3, clob);
 				Clob PAGE = conn.createClob();
-				PAGE.setString(1, (String) webView.getEngine()
-						.executeScript("document.documentElement.outerHTML"));
+				PAGE.setString(1, (String) webView.getEngine().executeScript("document.documentElement.outerHTML"));
 				cls.setClob(4, PAGE);
 				// DbmsOutput
 				try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
