@@ -41,7 +41,17 @@
                                  </font>
                               </Button>
                               <Separator orientation="VERTICAL" />
-                              <Button layoutX="500.0" layoutY="10.0" mnemonicParsing="false" onAction="#Print">
+                          </items>
+                           <VBox.margin>
+                              <Insets left="-5.0" right="-5.0" top="-5.0" />
+                           </VBox.margin>
+                        </ToolBar>
+                        <ToolBar>
+                           <items>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Принтер" />
+                              <ComboBox fx:id="PRINTER_ID" prefWidth="350.0" />
+                              <Separator orientation="VERTICAL" />
+                              <Button mnemonicParsing="false" onAction="#Print">
                                  <graphic>
                                     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PRINT" size="17" />
                                  </graphic>
@@ -56,7 +66,7 @@
                                     </Tooltip>
                                  </tooltip>
                               </Button>
-                          </items>
+                           </items>
                            <VBox.margin>
                               <Insets left="-5.0" right="-5.0" top="-5.0" />
                            </VBox.margin>
