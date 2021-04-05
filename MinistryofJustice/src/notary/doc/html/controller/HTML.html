@@ -4,6 +4,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"
 	charset="UTF-8"></meta>
 <script>
+	function GetAtrVal(Ids) {
+		var div1 = document.getElementById(Ids);
+		var align = div1.getAttribute("value");
+		return align;
+	}
+	GetAtrVal();
+
 	function insertHTML() {
 		var sel, range;
 		if (window.getSelection && (sel = window.getSelection()).rangeCount) {
@@ -42,10 +49,10 @@
 	}
 
 	function Padej(FioStr, PadejName) {
-		var Fio = FioStr;
-		var NumCommaSpace = Fio.substr(0, Fio.indexOf('.') + 1);
-		var GoodData = Fio.substr(Fio.indexOf('.') + 1);
-		var tmp = GoodData.split(" ");
+		//var Fio = FioStr;
+		//var NumCommaSpace = Fio.substr(0, Fio.indexOf('.') + 1);
+		//var GoodData = Fio.substr(Fio.indexOf('.') + 1);
+		var tmp = FioStr.split(" ");
 
 		var LasteName = tmp[1];
 		var FirstName = tmp[2];
@@ -56,7 +63,7 @@
 			middle : MiddleName,
 			last : LasteName
 		};
-
+		alert(LasteName + " " + FirstName + " " + MiddleName);
 		var RodFio = petrovich(person, PadejName);
 
 		var varStrFio = NumCommaSpace + " " + RodFio.last + " " + RodFio.first

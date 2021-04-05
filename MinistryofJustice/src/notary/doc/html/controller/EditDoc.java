@@ -1,17 +1,30 @@
 package notary.doc.html.controller;
 
-import java.awt.Desktop;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -24,11 +37,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.FontSmoothingType;
+import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -39,14 +57,11 @@ import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.DbmsOutputCapture;
 import netscape.javascript.JSObject;
 import notary.doc.html.model.V_NT_DOC;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
-import pl.jsolve.templ4docx.core.Docx;
-import pl.jsolve.templ4docx.core.VariablePattern;
-import pl.jsolve.templ4docx.variable.TextVariable;
-import pl.jsolve.templ4docx.variable.Variables;
 
 public class EditDoc {
 
@@ -56,15 +71,6 @@ public class EditDoc {
 	}
 
 	private BooleanProperty status;
-
-	Connection conn;
-
-	public void setConn(Connection conn, V_NT_DOC val) {
-		this.conn = conn;
-		this.NT_DOC = val;
-	}
-
-	V_NT_DOC NT_DOC;
 
 	public void setStatus(Boolean status) {
 		this.status.set(status);
@@ -81,80 +87,19 @@ public class EditDoc {
 	private ComboBox<V_NT_TEMP_LIST> TYPE_NAME;
 
 	@FXML
-	private WebView webView;
-
-	@FXML
 	void CENCEL(ActionEvent event) {
 		onclose();
 	}
 
 	void onclose() {
-		Stage stage = (Stage) webView.getScene().getWindow();
+		Stage stage = (Stage) TYPE_NAME.getScene().getWindow();
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
-	public class JsToJava {
-		public void run(String id) {
-			ListVal(id);
-		}
-
-		public void Text(String Mes) {
-			Msg.Message(Mes);
-		}
-	}
-
-	@SuppressWarnings("unused")
 	@FXML
 	void Print(ActionEvent event) {
 		try {
-			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
-			if (val != null) {
-				String path = null;
-				String sql = null;
-				{
-					PreparedStatement prp = conn
-							.prepareStatement("select DOCX_PATH,REP_QUERY from NT_TEMP_LIST t where t.id = ? ");
-					prp.setInt(1, val.getID());
-					ResultSet rs = prp.executeQuery();
-					if (rs.next()) {
-						path = rs.getString("DOCX_PATH");
-						sql = rs.getString("REP_QUERY");
-						if (rs.getClob("REP_QUERY") != null) {
-							sql = new ConvConst().ClobToString(rs.getClob("REP_QUERY"));
-						}
-					}
-					rs.close();
-					prp.close();
-				}
-				// Вызов
-				Docx docx = new Docx(System.getenv("MJ_PATH") + path);
-				docx.setVariablePattern(new VariablePattern("#{", "}"));
-				// preparing variables
-				Variables variables = new Variables();
-				PreparedStatement prepStmt = DBUtil.conn.prepareStatement(
-						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrintNtDocPrmVals"));
-				prepStmt.setInt(1, NT_DOC.getID());
-				ResultSet rs = prepStmt.executeQuery();
-				while (rs.next()) {
-					variables.addTextVariable(new TextVariable("#{" + rs.getString("NAME").toLowerCase() + "}",
-							(rs.getString("VALUE") == null || rs.getString("VALUE").length() < 2 ? "ПУСТО!"
-									: rs.getString("VALUE"))));
-				}
-				rs.close();
-				prepStmt.close();
 
-				// fill template
-				docx.fillTemplate(variables);
-				File tempFile = File.createTempFile("Документ", ".docx",
-						new File(System.getenv("MJ_PATH") + "OutReports"));
-				FileOutputStream str = new FileOutputStream(tempFile);
-				docx.save(str);
-				str.close();
-				tempFile.deleteOnExit();
-				if (Desktop.isDesktopSupported()) {
-					Desktop.getDesktop().open(tempFile);
-				}
-			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -162,178 +107,314 @@ public class EditDoc {
 
 	NT_TEMP_LIST_PARAM list = null;
 
+	@FXML
+	private HTMLEditor HtmlEditor;
+
 	void ListVal(String id) {
-		try {
-			PreparedStatement prp = conn.prepareStatement("select * from NT_TEMP_LIST_PARAM t where PRM_NAME = ?");
-			prp.setString(1, id);
-			ResultSet rs = prp.executeQuery();
-			while (rs.next()) {
-				list = new NT_TEMP_LIST_PARAM();
-				list.setPRM_ID(rs.getInt("PRM_ID"));
-				list.setPRM_NAME(rs.getString("PRM_NAME"));
-				list.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
-				list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
-				list.setPRM_SQL(rs.getString("PRM_SQL"));
-				list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
-				list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
-				list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
-				if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
-					list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
-				}
-				list.setPDJ_NAME(rs.getString("PDJ_NAME"));
-				list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
-				list.setTYPE_NAME(rs.getString("TYPE_NAME"));
-				list.setREQUIRED(rs.getString("REQUIRED"));
-			}
-			prp.close();
-			rs.close();
-
-			Stage stage = new Stage();
-			Stage stage_ = (Stage) webView.getScene().getWindow();
-
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/notary/doc/html/view/ParamList.fxml"));
-
-			ParamList controller = new ParamList();
-			controller.setQuery(list.getPRM_SQL());
-			controller.setConn(conn);
-			loader.setController(controller);
-
-			Parent root = loader.load();
-			stage.setScene(new Scene(root));
-			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Список");
-			stage.initOwner(stage_);
-			stage.setResizable(true);
-			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				@Override
-				public void handle(WindowEvent paramT) {
-					if (controller.getStatus()) {
-						try {
-							// Инициализация
-							System.out.println("!!-------------controller.getCode_s()=" + controller.getCode_s());
-							System.out.println("1____PDJ_NAME=" + list.getPDJ_NAME());
-							System.out.println("2____PRM_NAME=" + id);
-							// Если падеж не пуст
-							if (list.getPDJ_NAME() != null) {
-								// Получить измененный падеж
-								String FioPod = (String) webView.getEngine()
-										.executeScript("Padej('" + controller.getCode_s() + ". "
-												+ controller.getName_s() + "','" + list.getPDJ_NAME() + "')");
-								System.out.println("........FioPod=" + FioPod);
-								webView.getEngine().executeScript("SetValue('" + id + "','" + FioPod + "')");
-							} else {
-								webView.getEngine().executeScript("SetValue('" + id + "','" + controller.getCode_s()
-										+ ". " + controller.getName_s() + "')");
-							}
-							{
-								PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
-								prp.setInt(1, Integer.valueOf(controller.getCode_s()));
-								ResultSet rs = prp.executeQuery();
-								while (rs.next()) {
-									System.out.println(
-											rs.getString("NAME_").toLowerCase() + "=" + rs.getString("VALUE_"));
-									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-										webView.getEngine()
-												.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
-														+ "','" + rs.getString("VALUE_") + "')");
-									}
-								}
-								prp.close();
-								rs.close();
-							}
-						} catch (Exception e) {
-							DBUtil.LOG_ERROR(e);
-						}
-					}
-				}
-			});
-			stage.show();
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	// private WebEngine webEngine;
-
-	void Reload() {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				final WebEngine webEngine = webView.getEngine();
-				final JsToJava jstojava = new JsToJava();
-				String HTML = "";
-				{
-					PreparedStatement prp = conn
-							.prepareStatement("select * from NT_TEMP_LIST_JS where TMP_LIST_ID = ?");
-					prp.setInt(1, val.getID());
-					ResultSet rs = prp.executeQuery();
-					while (rs.next()) {
-						HTML = HTML + val.getHTML_TEMP().replace("{" + rs.getString("JSNAME") + "}",
-								new ConvConst().ClobToString(rs.getClob("JSFILE")));
+				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				PreparedStatement prp = conn
+						.prepareStatement("select * from VNT_TEMP_LIST_PARAM t where PRM_NAME = ? and PRM_TMP_ID = ?");
+				prp.setString(1, id);
+				prp.setInt(2, val.getID());
+				ResultSet rs = prp.executeQuery();
+				while (rs.next()) {
+					list = new NT_TEMP_LIST_PARAM();
+					list.setPRM_ID(rs.getInt("PRM_ID"));
+					list.setPRM_NAME(rs.getString("PRM_NAME"));
+					list.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
+					list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+					list.setPRM_SQL(rs.getString("PRM_SQL"));
+					list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+					list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
+					if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
+						list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 					}
-					prp.close();
-					rs.close();
+					list.setPDJ_NAME(rs.getString("PDJ_NAME"));
+					list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					list.setTYPE_NAME(rs.getString("TYPE_NAME"));
+					list.setREQUIRED(rs.getString("REQUIRED"));
 				}
-//				URL url = HtmlEditorTest.class.getResource("/notary/doc/html/controller/HTML.html");
-//				webEngine.load(url.toExternalForm());
-				webEngine.loadContent(HTML);
-				webView.setContextMenuEnabled(false);
-				webEngine.setJavaScriptEnabled(true);
-				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
-					@Override
-					public void changed(ObservableValue<? extends State> observableValue, State oldState,
-							State newState) {
-						if (newState == State.SUCCEEDED) {
-							JSObject window = (JSObject) webEngine.executeScript("window");
-							window.setMember("invoke", jstojava);
-							try {
-								PreparedStatement prp = conn.prepareStatement(
-										TYPE_NAME.getSelectionModel().getSelectedItem().getREP_QUERY());
-								ResultSet rs = prp.executeQuery();
-								while (rs.next()) {
-									System.out.println("------------SetValue('" + rs.getString("NAME_").toLowerCase()
-											+ "','" + rs.getString("VALUE_") + "')");
-									if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-										webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
-												+ "','" + rs.getString("VALUE_") + "')");
+				prp.close();
+				rs.close();
+
+				if (list != null) {
+					// текущие поля на странице
+					String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+
+					Stage stage = new Stage();
+					Stage stage_ = (Stage) webView.getScene().getWindow();
+
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/notary/doc/html/view/ParamList.fxml"));
+
+					ParamList controller = new ParamList();
+					controller.setQuery(list.getPRM_SQL());
+					controller.setConn(conn);
+					loader.setController(controller);
+
+					Parent root = loader.load();
+					stage.setScene(new Scene(root));
+					stage.getIcons().add(new Image("/icon.png"));
+					stage.setTitle("Список");
+					stage.initOwner(stage_);
+					stage.setResizable(true);
+					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+						@Override
+						public void handle(WindowEvent paramT) {
+							if (controller.getStatus()) {
+								try {
+									// Инициализация
+									// Если падеж не пуст
+									if (list.getPDJ_NAME() != null) {
+										// Получить измененный падеж
+										String FioPod = (String) webView.getEngine().executeScript(
+												"Padej('" + controller.getName_s() + "','" + list.getPDJ_NAME() + "')");
+										webView.getEngine().executeScript("SetValue('" + id + "','" + FioPod + "')");
+
+										webView.getEngine().executeScript("document.getElementById(\"" + id
+												+ "\").setAttribute(\"value\", \"" + controller.getCode_s() + "\");");
+//										System.out.println((String) webView.getEngine()
+//												.executeScript("document.documentElement.outerHTML"));
+									} else {
+										webView.getEngine().executeScript(
+												"SetValue('" + id + "','" + controller.getName_s() + "')");
 									}
+									// _______________________
+									// Сами данные
+									{
+										PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
+										prp.setInt(1, Integer.valueOf(controller.getCode_s()));
+										ResultSet rs = prp.executeQuery();
+										while (rs.next()) {
+											if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
+												// Если на странице расположен тот элемент
+												if (json.contains(rs.getString("NAME_").toLowerCase())) {
+													webView.getEngine().executeScript(
+															"SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
+																	+ rs.getString("VALUE_") + "')");
+												}
+											}
+										}
+										prp.close();
+										rs.close();
+									}
+								} catch (Exception e) {
+									DBUtil.LOG_ERROR(e);
 								}
-								prp.close();
-								rs.close();
-							} catch (Exception e) {
-								DBUtil.LOG_ERROR(e);
 							}
 						}
-					}
-				});
+					});
+					stage.show();
+				}
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
 
+	@SuppressWarnings({ "unchecked" })
+	void AddParam() {
+		try {
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				// WebPage webPage = Accessor.getPageFor(webView.getEngine());
+
+				// Получить поля из страницы
+				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+				// String html = (String)
+				// webView.getEngine().executeScript("document.documentElement.outerHTML");
+				System.out.println("-------\r\n" + json);
+				Map<String, String> result = new ObjectMapper().readValue(json, HashMap.class);
+				String JsonStr = "";
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
+				}
+				// System.out.println(JsonStr.trim());
+				// ------------------
+				// открыть формы с параметрами за минусом тех, что находятся на странице
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) HtmlEditor.getScene().getWindow();
+
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/doc/html/view/AddParam.fxml"));
+
+				AddParam controller = new AddParam();
+				controller.setConn(conn, JsonStr.trim(), val);
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("");
+				stage.initOwner(stage_);
+				stage.setResizable(false);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						// если выбран параметр
+						// 1. получить html разметку параметра
+						// 2. постараться внедрить в то место где стоит курсор
+						if (controller.getStatus()) {
+							webView.getEngine().executeScript(controller.prm_ret.getHTML_CODE());
+							String html = (String) webView.getEngine()
+									.executeScript("document.documentElement.outerHTML");
+							// Запишем в файл
+							Reload2(html);
+							System.out.println("JS_CODE_ID\r\n" + controller.prm_ret.getPRM_NAME());
+							System.out.println("JS_CODE_\r\n" + controller.prm_ret.getHTML_CODE());
+						}
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@FXML
+	void TYPE_NAME(ActionEvent event) {
+		try {
+			{
+				Node node = HtmlEditor.lookup(".top-toolbar");
+
+				if (node instanceof ToolBar) {
+					boolean check = true;
+					ToolBar bar = (ToolBar) node;
+					ObservableList<Node> list = bar.getItems();
+					for (Node item : list) {
+						if (item.getId() != null && item.getId().equals("MJAddParam")) {
+							check = false;
+							break;
+						}
+					}
+					if (check) {
+						FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
+						icon.setFontSmoothingType(FontSmoothingType.LCD);
+						icon.setSize("18");
+						Button myButton = new Button("Добавить параметр", icon);
+						myButton.setId("MJAddParam");
+
+						bar.getItems().add(myButton);
+						myButton.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent arg0) {
+								AddParam();
+							}
+						});
+					}
+				}
+
+//			Node node = HtmlEditor.lookup(".bottom-toolbar");
+//			ToolBar bar = (ToolBar) node;
+//			ObservableList<Node> list = bar.getItems();
+//			for (Node item : list) {
+//				System.out.println(item.getTypeSelector() + " " + item.getId());
+//			}
+				// modify font selections.
+				int i = 0;
+				for (Node candidate : (HtmlEditor.lookupAll("ComboBox"))) {
+					// fonts are selected by the second menu in the htmlEditor.
+					if (candidate instanceof ComboBox && i == 1) {
+						System.out.println("`````");
+						// limit the font selections to our predefined list.
+						ComboBox menuButton = (ComboBox) candidate;
+						menuButton.setMinWidth(200);
+						System.out.println(menuButton.getSelectionModel().getSelectedItem());
+						List<String> removalList = FXCollections.observableArrayList();
+						final List<String> fontSelections = menuButton.getItems();
+						for (String item : fontSelections) {
+							if (!limitedFonts.contains(item)) {
+								removalList.add(item);
+							}
+						}
+						fontSelections.removeAll(removalList);
+					}
+					i++;
+				}
+			}
+			Reload();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	void Init() {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
+				{
+					Node node = HtmlEditor.lookup(".top-toolbar");
+					if (node instanceof ToolBar) {
+						boolean check = true;
+						ToolBar bar = (ToolBar) node;
+						ObservableList<Node> list = bar.getItems();
+						for (Node item : list) {
+							if (item.getId() != null && item.getId().equals("MJAddParam")) {
+								check = false;
+								break;
+							}
+						}
+						if (check) {
+							FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
+							icon.setFontSmoothingType(FontSmoothingType.LCD);
+							icon.setSize("18");
+							Button myButton = new Button("Добавить параметр", icon);
+							myButton.setId("MJAddParam");
+
+							bar.getItems().add(myButton);
+							myButton.setOnAction(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent arg0) {
+									AddParam();
+								}
+							});
+						}
+					}
+					// modify font selections.
+					int i = 0;
+					for (Node candidate : (HtmlEditor.lookupAll("ComboBox"))) {
+						// fonts are selected by the second menu in the htmlEditor.
+						if (candidate instanceof ComboBox && i == 1) {
+							System.out.println("`````");
+							// limit the font selections to our predefined list.
+							ComboBox menuButton = (ComboBox) candidate;
+							menuButton.setMinWidth(200);
+							System.out.println(menuButton.getSelectionModel().getSelectedItem());
+							List<String> removalList = FXCollections.observableArrayList();
+							final List<String> fontSelections = menuButton.getItems();
+							for (String item : fontSelections) {
+								if (!limitedFonts.contains(item)) {
+									removalList.add(item);
+								}
+							}
+							fontSelections.removeAll(removalList);
+						}
+						i++;
+					}
+				}
+				// ________________
+
+				WebView webView = (WebView) HtmlEditor.lookup("WebView");
 				final WebEngine webEngine = webView.getEngine();
 				final JsToJava jstojava = new JsToJava();
-
-				String HTML = "";
+				// Запишем в файл
 				{
-					PreparedStatement prp = conn
-							.prepareStatement("select * from NT_TEMP_LIST_JS where TMP_LIST_ID = ?");
-					prp.setInt(1, val.getID());
-					ResultSet rs = prp.executeQuery();
-					while (rs.next()) {
-						HTML = HTML + val.getHTML_TEMP().replace("{" + rs.getString("JSNAME") + "}",
-								new ConvConst().ClobToString(rs.getClob("JSFILE")));
-					}
-					prp.close();
-					rs.close();
+					Writer out = new BufferedWriter(new OutputStreamWriter(
+							new FileOutputStream(System.getenv("MJ_PATH") + "HTML/EDIT_HTML.html"),
+							StandardCharsets.UTF_8));
+					out.write(NT_DOC.getHTML_DOCUMENT());
+					out.close();
 				}
-				webEngine.loadContent(HTML);
+				URL url = new File(System.getenv("MJ_PATH") + "HTML/EDIT_HTML.html").toURI().toURL();
+				webEngine.load(url.toExternalForm());
 				webView.setContextMenuEnabled(false);
 				webEngine.setJavaScriptEnabled(true);
 				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
@@ -352,13 +433,53 @@ public class EditDoc {
 									stsmt.setInt(1, NT_DOC.getID());
 									ResultSet rs = stsmt.executeQuery();
 									while (rs.next()) {
-										if (rs.getString("PRM_NAME") != null & rs.getString("VAL_NT_VALUE") != null) {
-											System.out.println(
-													"------------SetValue('" + rs.getString("PRM_NAME").toLowerCase()
-															+ "','" + rs.getString("VAL_NT_VALUE") + "')");
-											webView.getEngine()
-													.executeScript("SetValue('" + rs.getString("PRM_NAME").toLowerCase()
-															+ "','" + rs.getString("VAL_NT_VALUE") + "')");
+										if (rs.getString("PRM_NAME") != null) {
+											if (rs.getInt("PRM_TYPE") == 1) {
+												// Получение буквенного значения
+												String SelVal = "";
+												{
+													PreparedStatement prp = conn.prepareStatement(
+															rs.getString("PRM_SQL") + " where code = ?");
+													prp.setInt(1, Integer.valueOf(rs.getString("VAL_NT_VALUE")));
+													ResultSet rs_ = prp.executeQuery();
+													if (rs_.next()) {
+														SelVal = rs_.getString("name");
+													}
+													rs_.close();
+													prp.close();
+												}
+												// Если падеж не пуст
+												if (rs.getString("PDJ_NAME") != null) {
+													String json = (String) webView.getEngine()
+															.executeScript("writeJSONfile()");
+													if (json.contains(rs.getString("PRM_NAME").toLowerCase())) {
+														// Получить измененный падеж
+														String FioPod = (String) webView.getEngine()
+																.executeScript("Padej('" + SelVal + "','"
+																		+ rs.getString("PDJ_NAME") + "')");
+														webView.getEngine().executeScript("SetValue('"
+																+ rs.getString("PRM_NAME") + "','" + FioPod + "')");
+													}
+												} else {
+													String json = (String) webView.getEngine()
+															.executeScript("writeJSONfile()");
+													if (json.contains(rs.getString("PRM_NAME").toLowerCase())) {
+														webView.getEngine()
+																.executeScript("SetValue('"
+																		+ rs.getString("PRM_NAME").toLowerCase() + "','"
+																		+ SelVal + "');");
+													}
+												}
+											} else {
+												String json = (String) webView.getEngine()
+														.executeScript("writeJSONfile()");
+												if (json.contains(rs.getString("PRM_NAME").toLowerCase())) {
+													webView.getEngine()
+															.executeScript("SetValue('"
+																	+ rs.getString("PRM_NAME").toLowerCase() + "','"
+																	+ rs.getString("VAL_NT_VALUE") + "');");
+												}
+											}
 										}
 									}
 									stsmt.close();
@@ -377,14 +498,106 @@ public class EditDoc {
 	}
 
 	@FXML
-	void TYPE_NAME(ActionEvent event) {
-		Reload();
-	}
-
-	@FXML
 	void DelSelType(ActionEvent event) {
 		try {
 			TYPE_NAME.getSelectionModel().select(null);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	public class JsToJava {
+		public void run(String id) {
+			ListVal(id);
+		}
+
+		public void Text(String Mes) {
+			Msg.Message(Mes);
+		}
+	}
+
+	void Reload2(String html) {
+		try {
+			WebView webView = (WebView) HtmlEditor.lookup("WebView");
+			final WebEngine webEngine = webView.getEngine();
+			final JsToJava jstojava = new JsToJava();
+			// Запишем в файл
+			{
+				Writer out = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/HTML.html"), StandardCharsets.UTF_8));
+				out.write(html);
+				out.close();
+			}
+			URL url = new File(System.getenv("MJ_PATH") + "HTML/HTML.html").toURI().toURL();
+			webEngine.load(url.toExternalForm());
+			webView.setContextMenuEnabled(false);
+			webEngine.setJavaScriptEnabled(true);
+			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+				@Override
+				public void changed(ObservableValue<? extends State> observableValue, State oldState, State newState) {
+					if (newState == State.SUCCEEDED) {
+						JSObject window = (JSObject) webEngine.executeScript("window");
+						window.setMember("invoke", jstojava);
+					}
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	void Reload() {
+		try {
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				final WebEngine webEngine = webView.getEngine();
+				final JsToJava jstojava = new JsToJava();
+				// Запишем в файл
+				{
+					Writer out = new BufferedWriter(new OutputStreamWriter(
+							new FileOutputStream(System.getenv("MJ_PATH") + "HTML/HTML.html"), StandardCharsets.UTF_8));
+					out.write(val.getHTML_TEMP());
+					out.close();
+				}
+
+				URL url = new File(System.getenv("MJ_PATH") + "HTML/HTML.html").toURI().toURL();
+				webEngine.load(url.toExternalForm());
+				webView.setContextMenuEnabled(false);
+				webEngine.setJavaScriptEnabled(true);
+				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+					@Override
+					public void changed(ObservableValue<? extends State> observableValue, State oldState,
+							State newState) {
+						if (newState == State.SUCCEEDED) {
+							JSObject window = (JSObject) webEngine.executeScript("window");
+							window.setMember("invoke", jstojava);
+							try {
+								// текущие поля на странице
+								String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();
+								if (vals.getREP_QUERY() != null) {
+									PreparedStatement prp = conn.prepareStatement(vals.getREP_QUERY());
+									ResultSet rs = prp.executeQuery();
+									while (rs.next()) {
+										if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
+											if (json.contains(rs.getString("NAME_").toLowerCase())) {
+												webEngine.executeScript(
+														"SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
+																+ rs.getString("VALUE_") + "')");
+											}
+										}
+									}
+									prp.close();
+									rs.close();
+								}
+							} catch (Exception e) {
+								DBUtil.LOG_ERROR(e);
+							}
+						}
+					}
+				});
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -395,43 +608,110 @@ public class EditDoc {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
+				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				// Получить поля из страницы
+				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+				// Список связанных параметров из шаблона
 				String KeyValue = "";
-				PreparedStatement prp = conn
-						.prepareStatement("select * from NT_TEMP_LIST_PARAM t where PRM_TMP_ID = ?");
-				prp.setInt(1, val.getID());
-				ResultSet rs = prp.executeQuery();
-				while (rs.next()) {
-					KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + (String) webView.getEngine()
-							.executeScript("ReturnValue('" + rs.getString("PRM_NAME") + "')") + "\r\n";
-				}
-				prp.close();
-				rs.close();
-				System.out.print(KeyValue);
-				if (!KeyValue.equals("")) {
-					CallableStatement cls = conn.prepareCall("{call NT_PKG.EDIT_DOC_HTML(?,?,?,?)}");
-					cls.registerOutParameter(1, Types.VARCHAR);
-					cls.setInt(2, NT_DOC.getID());
-					Clob clob = conn.createClob();
-					clob.setString(1, KeyValue);
-					cls.setClob(3, clob);
-					cls.setInt(4, val.getID());
-					cls.execute();
-					if (cls.getString(1) == null) {
-						setStatus(true);
-						onclose();
-					} else {
-						setStatus(false);
-						Msg.Message(cls.getString(1));
+				{
+					PreparedStatement prp = conn
+							.prepareStatement("select * from NT_TEMP_LIST_PARAM t where PRM_TMP_ID = ?");
+					prp.setInt(1, val.getID());
+					ResultSet rs = prp.executeQuery();
+					while (rs.next()) {
+						// Если тип параметра список
+						if (rs.getInt("PRM_TYPE") == 1) {
+							// Если параметр присутствует на странице
+							if (json.contains(rs.getString("PRM_NAME"))) {
+								// Выполнить функцию которая вернет значение атрибута "value"
+								String values = (String) webView.getEngine()
+										.executeScript("	function GetAtrVal(Ids) {\n"
+												+ "		var div1 = document.getElementById(Ids);\n"
+												+ "		var align = div1.getAttribute(\"value\");\n"
+												+ "		return align;\n" + "	}\n" + "	GetAtrVal('"
+												+ rs.getString("PRM_NAME") + "');");
+								// Если параметр еще не инициализирован значением
+								if (values == null) {
+									KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + "\r\n";
+								} // Иначе
+								else if (values != null) {
+									KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + values + "\r\n";
+								}
+							} // Если параметр отсутствует на странице
+							else {
+								KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + "\r\n";
+							}
+						} // Если тип параметра не список
+						else {
+							// Если параметр присутствует на странице
+							if (json.contains(rs.getString("PRM_NAME"))) {
+								KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|"
+										+ (String) webView.getEngine()
+												.executeScript("ReturnValue('" + rs.getString("PRM_NAME") + "')")
+										+ "\r\n";
+							} else {
+								KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + "\r\n";
+							}
+						}
 					}
-					cls.close();
-				} else {
-					Msg.Message("ПУСТО!");
+					prp.close();
+					rs.close();
+					System.out.print(KeyValue.trim());
 				}
+				CallableStatement cls = conn.prepareCall("{call NT_PKG.EDIT_DOC_HTML(?,?,?,?,?)}");
+				cls.registerOutParameter(1, Types.VARCHAR);
+				cls.setInt(2, NT_DOC.getID());
+				Clob clob = conn.createClob();
+				clob.setString(1, KeyValue.trim());
+				cls.setClob(3, clob);
+				cls.setInt(4, val.getID());
+				Clob PAGE = conn.createClob();
+				PAGE.setString(1, (String) webView.getEngine().executeScript("document.documentElement.outerHTML"));
+				cls.setClob(5, PAGE);
+				// DbmsOutput
+				try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
+					List<String> lines = capture.execute(cls);
+					System.out.println(lines);
+				} catch (Exception e) {
+					DBUtil.LOG_ERROR(e);
+				}
+				// --------------
+				if (cls.getString(1) == null) {
+					conn.commit();
+					setStatus(true);
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Msg.Message(cls.getString(1));
+				}
+				cls.close();
+			} else {
+				Msg.Message("ПУСТО!");
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+
+	public void dbDisconnect() {
+		try {
+			if (conn != null && !conn.isClosed()) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	private Connection conn;
+
+	public void setConn(Connection conn, V_NT_DOC val) {
+		this.conn = conn;
+		this.NT_DOC = val;
+	}
+
+	V_NT_DOC NT_DOC;
 
 	private void convert_TYPE_NAME(ComboBox<V_NT_TEMP_LIST> cmbbx) {
 		cmbbx.setConverter(new StringConverter<V_NT_TEMP_LIST>() {
@@ -448,11 +728,14 @@ public class EditDoc {
 		});
 	}
 
+	// limits the fonts a user can select from in the html editor.
+	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman");
+
 	@FXML
 	private void initialize() {
 		try {
-			webView.getStyleClass().add("mylistview");
-			webView.getStylesheets().add("/ScrPane.css");
+			HtmlEditor.getStyleClass().add("mylistview");
+			HtmlEditor.getStylesheets().add("/ScrPane.css");
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from V_NT_TEMP_LIST");
 				ResultSet rs = stsmt.executeQuery();
@@ -476,7 +759,7 @@ public class EditDoc {
 				FilteredList<V_NT_TEMP_LIST> filterednationals = new FilteredList<V_NT_TEMP_LIST>(combolist);
 				TYPE_NAME.getEditor().textProperty()
 						.addListener(new InputFilter<V_NT_TEMP_LIST>(TYPE_NAME, filterednationals, false));
-				TYPE_NAME.setItems(combolist);
+				TYPE_NAME.setItems(filterednationals);
 				convert_TYPE_NAME(TYPE_NAME);
 				rs.close();
 			}
@@ -488,7 +771,9 @@ public class EditDoc {
 					}
 				}
 			}
-			Init();
+			Platform.runLater(() -> {
+				Init();
+			});
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

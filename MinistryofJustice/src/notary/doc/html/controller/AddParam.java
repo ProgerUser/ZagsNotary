@@ -42,7 +42,7 @@ public class AddParam {
 	public String getInput() {
 		return Input.get();
 	}
-	
+
 	@FXML
 	private TreeTableView<NT_TEMP_LIST_PARAM> param;
 
@@ -63,8 +63,9 @@ public class AddParam {
 		this.vals = vals;
 		this.json = json;
 	}
-	
+
 	private StringProperty Input;
+
 	@FXML
 	void cenc(ActionEvent event) {
 		try {
@@ -88,6 +89,7 @@ public class AddParam {
 		try {
 			NT_TEMP_LIST_PARAM val = param.getSelectionModel().getSelectedItem().getValue();
 			if (val != null) {
+				prm_ret = val;
 				setStatus(true);
 				onclose();
 			}
@@ -97,8 +99,11 @@ public class AddParam {
 	}
 
 	public NT_TEMP_LIST_PARAM prm;
+	public NT_TEMP_LIST_PARAM prm_ret;
+	
 	@SuppressWarnings("rawtypes")
 	TreeItem root = new TreeItem<>("Root");
+	
 	V_NT_TEMP_LIST vals;
 
 	@SuppressWarnings("unchecked")

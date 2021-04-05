@@ -7,11 +7,14 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.CallableStatement;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +59,7 @@ import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.DbmsOutputCapture;
 import netscape.javascript.JSObject;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
@@ -168,13 +172,17 @@ public class AddDoc {
 									// Если падеж не пуст
 									if (list.getPDJ_NAME() != null) {
 										// Получить измененный падеж
-										String FioPod = (String) webView.getEngine()
-												.executeScript("Padej('" + controller.getCode_s() + ". "
-														+ controller.getName_s() + "','" + list.getPDJ_NAME() + "')");
+										String FioPod = (String) webView.getEngine().executeScript(
+												"Padej('" + controller.getName_s() + "','" + list.getPDJ_NAME() + "')");
 										webView.getEngine().executeScript("SetValue('" + id + "','" + FioPod + "')");
+
+										webView.getEngine().executeScript("document.getElementById(\"" + id
+												+ "\").setAttribute(\"value\", \"" + controller.getCode_s() + "\");");
+//										System.out.println((String) webView.getEngine()
+//												.executeScript("document.documentElement.outerHTML"));
 									} else {
-										webView.getEngine().executeScript("SetValue('" + id + "','"
-												+ controller.getCode_s() + ". " + controller.getName_s() + "')");
+										webView.getEngine().executeScript(
+												"SetValue('" + id + "','" + controller.getName_s() + "')");
 									}
 									// _______________________
 									// Сами данные
@@ -184,7 +192,7 @@ public class AddDoc {
 										ResultSet rs = prp.executeQuery();
 										while (rs.next()) {
 											if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-												//Если на странице расположен тот элемент
+												// Если на странице расположен тот элемент
 												if (json.contains(rs.getString("NAME_").toLowerCase())) {
 													webView.getEngine().executeScript(
 															"SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
@@ -219,12 +227,15 @@ public class AddDoc {
 
 				// Получить поля из страницы
 				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+				// String html = (String)
+				// webView.getEngine().executeScript("document.documentElement.outerHTML");
+				System.out.println("-------\r\n" + json);
 				Map<String, String> result = new ObjectMapper().readValue(json, HashMap.class);
 				String JsonStr = "";
 				for (Map.Entry<String, String> entry : result.entrySet()) {
 					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
 				}
-				//System.out.println(JsonStr.trim());
+				// System.out.println(JsonStr.trim());
 				// ------------------
 				// открыть формы с параметрами за минусом тех, что находятся на странице
 				Stage stage = new Stage();
@@ -250,20 +261,13 @@ public class AddDoc {
 						// 1. получить html разметку параметра
 						// 2. постараться внедрить в то место где стоит курсор
 						if (controller.getStatus()) {
-							webView.getEngine().executeScript(controller.prm.getHTML_CODE());
-//							System.out.println("document.execCommand('insertHTML', false, '"
-//									+ controller.prm.getHTML_CODE() + "');");
-//							webView.getEngine().executeScript("document.execCommand('insertHTML', false, '"
-//									+ controller.prm.getHTML_CODE() + "');");
-//							String html = HtmlEditor.getHtmlText();
-							// не учитывает onclick атрибут input-а...
-//							webPage.executeCommand("insertHTML", controller.prm.getHTML_CODE());
+							webView.getEngine().executeScript(controller.prm_ret.getHTML_CODE());
 							String html = (String) webView.getEngine()
 									.executeScript("document.documentElement.outerHTML");
-							// System.out.println("-------" + controller.prm.getHTML_CODE());
-//							System.out.println(html);
 							// Запишем в файл
 							Reload2(html);
+							System.out.println("JS_CODE_ID\r\n" + controller.prm_ret.getPRM_NAME());
+							System.out.println("JS_CODE_\r\n" + controller.prm_ret.getHTML_CODE());
 						}
 					}
 				});
@@ -280,7 +284,6 @@ public class AddDoc {
 		try {
 			{
 				Node node = HtmlEditor.lookup(".top-toolbar");
-
 				if (node instanceof ToolBar) {
 					boolean check = true;
 					ToolBar bar = (ToolBar) node;
@@ -405,26 +408,9 @@ public class AddDoc {
 					out.write(val.getHTML_TEMP());
 					out.close();
 				}
-//				String HTML = "";
-//				{
-//					// Добавление js скриптов
-//					PreparedStatement prp = conn
-//							.prepareStatement("select * from NT_TEMP_LIST_JS where TMP_LIST_ID = ?");
-//					prp.setInt(1, val.getID());
-//					ResultSet rs = prp.executeQuery();
-//					while (rs.next()) {
-//						HTML = HTML + val.getHTML_TEMP().replace("{" + rs.getString("JSNAME") + "}",
-//								new ConvConst().ClobToString(rs.getClob("JSFILE")));
-//					}
-//					prp.close();
-//					rs.close();
-//				}
-				// URL url =
-				// HtmlEditorTest.class.getResource("/notary/doc/html/controller/Test.html");
-				// webEngine.load(url.toExternalForm());
+
 				URL url = new File(System.getenv("MJ_PATH") + "HTML/HTML.html").toURI().toURL();
 				webEngine.load(url.toExternalForm());
-				// webEngine.loadContent(HTML);
 				webView.setContextMenuEnabled(false);
 				webEngine.setJavaScriptEnabled(true);
 				webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
@@ -435,16 +421,19 @@ public class AddDoc {
 							JSObject window = (JSObject) webEngine.executeScript("window");
 							window.setMember("invoke", jstojava);
 							try {
+								// текущие поля на странице
+								String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();
 								if (vals.getREP_QUERY() != null) {
 									PreparedStatement prp = conn.prepareStatement(vals.getREP_QUERY());
 									ResultSet rs = prp.executeQuery();
 									while (rs.next()) {
-//										System.out.println("------------SetValue('" + rs.getString("NAME_").toLowerCase()
-//												+ "','" + rs.getString("VALUE_") + "')");
 										if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-											webEngine.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
-													+ "','" + rs.getString("VALUE_") + "')");
+											if (json.contains(rs.getString("NAME_").toLowerCase())) {
+												webEngine.executeScript(
+														"SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
+																+ rs.getString("VALUE_") + "')");
+											}
 										}
 									}
 									prp.close();
@@ -467,7 +456,87 @@ public class AddDoc {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
-
+				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				// Получить поля из страницы
+				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+				// Список связанных параметров из шаблона
+				String KeyValue = "";
+				{
+					PreparedStatement prp = conn
+							.prepareStatement("select * from NT_TEMP_LIST_PARAM t where PRM_TMP_ID = ?");
+					prp.setInt(1, val.getID());
+					ResultSet rs = prp.executeQuery();
+					while (rs.next()) {
+						// Если тип параметра список
+						if (rs.getInt("PRM_TYPE") == 1) {
+							// Если параметр присутствует на странице
+							if (json.contains(rs.getString("PRM_NAME"))) {
+								// Выполнить функцию которая вернет значение атрибута "value" 
+								String values = (String) webView.getEngine()
+										.executeScript("	function GetAtrVal(Ids) {\n" + 
+												"		var div1 = document.getElementById(Ids);\n" + 
+												"		var align = div1.getAttribute(\"value\");\n" + 
+												"		return align;\n" + 
+												"	}\n" + 
+												"	GetAtrVal('"+rs.getString("PRM_NAME")+"');");
+								// Если параметр еще не инициализирован значением
+								if (values == null) {
+									KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + "\r\n";
+								} // Иначе
+								else if (values != null) {
+									KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + values + "\r\n";
+								}
+							} // Если параметр отсутствует на странице
+							else {
+								KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + "\r\n";
+							}
+						} // Если тип параметра не список
+						else {
+							// Если параметр присутствует на странице
+							if (json.contains(rs.getString("PRM_NAME"))) {
+								KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|"
+										+ (String) webView.getEngine()
+												.executeScript("ReturnValue('" + rs.getString("PRM_NAME") + "')")
+										+ "\r\n";
+							} else {
+								KeyValue = KeyValue + rs.getString("PRM_ID") + "|~|~|" + "\r\n";
+							}
+						}
+					}
+					prp.close();
+					rs.close();
+					System.out.print(KeyValue.trim());
+				}
+				CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC_HTML(?,?,?,?)}");
+				cls.registerOutParameter(1, Types.VARCHAR);
+				cls.setInt(2, val.getID());
+				Clob clob = conn.createClob();
+				clob.setString(1, KeyValue.trim());
+				cls.setClob(3, clob);
+				Clob PAGE = conn.createClob();
+				PAGE.setString(1, (String) webView.getEngine()
+						.executeScript("document.documentElement.outerHTML"));
+				cls.setClob(4, PAGE);
+				// DbmsOutput
+				try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
+					List<String> lines = capture.execute(cls);
+					System.out.println(lines);
+				} catch (Exception e) {
+					DBUtil.LOG_ERROR(e);
+				}
+				// --------------
+				if (cls.getString(1) == null) {
+					conn.commit();
+					setStatus(true);
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Msg.Message(cls.getString(1));
+				}
+				cls.close();
+			} else {
+				Msg.Message("ПУСТО!");
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -521,6 +590,8 @@ public class AddDoc {
 	@FXML
 	private void initialize() {
 		try {
+			HtmlEditor.getStyleClass().add("mylistview");
+			HtmlEditor.getStylesheets().add("/ScrPane.css");
 			dbConnect();
 			DBUtil.RunProcess(conn);
 			{
@@ -550,7 +621,6 @@ public class AddDoc {
 				convert_TYPE_NAME(TYPE_NAME);
 				rs.close();
 			}
-
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
