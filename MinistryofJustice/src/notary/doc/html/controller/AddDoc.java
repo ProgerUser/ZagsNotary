@@ -20,8 +20,6 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.javafx.webkit.Accessor;
-import com.sun.webkit.WebPage;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -62,7 +60,6 @@ import netscape.javascript.JSObject;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
-@SuppressWarnings("restriction")
 public class AddDoc {
 
 	public AddDoc() {
@@ -141,68 +138,71 @@ public class AddDoc {
 				prp.close();
 				rs.close();
 
-				Stage stage = new Stage();
-				Stage stage_ = (Stage) webView.getScene().getWindow();
+				if (list != null) {
+					// текущие поля на странице
+					String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/doc/html/view/ParamList.fxml"));
+					Stage stage = new Stage();
+					Stage stage_ = (Stage) webView.getScene().getWindow();
 
-				ParamList controller = new ParamList();
-				controller.setQuery(list.getPRM_SQL());
-				controller.setConn(conn);
-				loader.setController(controller);
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/notary/doc/html/view/ParamList.fxml"));
 
-				Parent root = loader.load();
-				stage.setScene(new Scene(root));
-				stage.getIcons().add(new Image("/icon.png"));
-				stage.setTitle("Список");
-				stage.initOwner(stage_);
-				stage.setResizable(true);
-				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-					@Override
-					public void handle(WindowEvent paramT) {
-						if (controller.getStatus()) {
-							try {
-								// Инициализация
-								System.out.println("!!-------------controller.getCode_s()=" + controller.getCode_s());
-								System.out.println("1____PDJ_NAME=" + list.getPDJ_NAME());
-								System.out.println("2____PRM_NAME=" + id);
-								// Если падеж не пуст
-								if (list.getPDJ_NAME() != null) {
-									// Получить измененный падеж
-									String FioPod = (String) webView.getEngine()
-											.executeScript("Padej('" + controller.getCode_s() + ". "
-													+ controller.getName_s() + "','" + list.getPDJ_NAME() + "')");
-									System.out.println("........FioPod=" + FioPod);
-									webView.getEngine().executeScript("SetValue('" + id + "','" + FioPod + "')");
-								} else {
-									webView.getEngine().executeScript("SetValue('" + id + "','" + controller.getCode_s()
-											+ ". " + controller.getName_s() + "')");
-								}
-								// _______________________
-								{
-									PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
-									prp.setInt(1, Integer.valueOf(controller.getCode_s()));
-									ResultSet rs = prp.executeQuery();
-									while (rs.next()) {
-										System.out.println(
-												rs.getString("NAME_").toLowerCase() + "=" + rs.getString("VALUE_"));
-										if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-											webView.getEngine()
-													.executeScript("SetValue('" + rs.getString("NAME_").toLowerCase()
-															+ "','" + rs.getString("VALUE_") + "')");
-										}
+					ParamList controller = new ParamList();
+					controller.setQuery(list.getPRM_SQL());
+					controller.setConn(conn);
+					loader.setController(controller);
+
+					Parent root = loader.load();
+					stage.setScene(new Scene(root));
+					stage.getIcons().add(new Image("/icon.png"));
+					stage.setTitle("Список");
+					stage.initOwner(stage_);
+					stage.setResizable(true);
+					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+						@Override
+						public void handle(WindowEvent paramT) {
+							if (controller.getStatus()) {
+								try {
+									// Инициализация
+									// Если падеж не пуст
+									if (list.getPDJ_NAME() != null) {
+										// Получить измененный падеж
+										String FioPod = (String) webView.getEngine()
+												.executeScript("Padej('" + controller.getCode_s() + ". "
+														+ controller.getName_s() + "','" + list.getPDJ_NAME() + "')");
+										webView.getEngine().executeScript("SetValue('" + id + "','" + FioPod + "')");
+									} else {
+										webView.getEngine().executeScript("SetValue('" + id + "','"
+												+ controller.getCode_s() + ". " + controller.getName_s() + "')");
 									}
-									prp.close();
-									rs.close();
+									// _______________________
+									// Сами данные
+									{
+										PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
+										prp.setInt(1, Integer.valueOf(controller.getCode_s()));
+										ResultSet rs = prp.executeQuery();
+										while (rs.next()) {
+											if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
+												//Если на странице расположен тот элемент
+												if (json.contains(rs.getString("NAME_").toLowerCase())) {
+													webView.getEngine().executeScript(
+															"SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
+																	+ rs.getString("VALUE_") + "')");
+												}
+											}
+										}
+										prp.close();
+										rs.close();
+									}
+								} catch (Exception e) {
+									DBUtil.LOG_ERROR(e);
 								}
-							} catch (Exception e) {
-								DBUtil.LOG_ERROR(e);
 							}
 						}
-					}
-				});
-				stage.show();
+					});
+					stage.show();
+				}
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -215,15 +215,18 @@ public class AddDoc {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
-				WebPage webPage = Accessor.getPageFor(webView.getEngine());
+				// WebPage webPage = Accessor.getPageFor(webView.getEngine());
 
+				// Получить поля из страницы
 				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 				Map<String, String> result = new ObjectMapper().readValue(json, HashMap.class);
 				String JsonStr = "";
 				for (Map.Entry<String, String> entry : result.entrySet()) {
 					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
 				}
+				//System.out.println(JsonStr.trim());
 				// ------------------
+				// открыть формы с параметрами за минусом тех, что находятся на странице
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) HtmlEditor.getScene().getWindow();
 
@@ -243,24 +246,24 @@ public class AddDoc {
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {
+						// если выбран параметр
+						// 1. получить html разметку параметра
+						// 2. постараться внедрить в то место где стоит курсор
 						if (controller.getStatus()) {
-
+							webView.getEngine().executeScript(controller.prm.getHTML_CODE());
 //							System.out.println("document.execCommand('insertHTML', false, '"
 //									+ controller.prm.getHTML_CODE() + "');");
-
 //							webView.getEngine().executeScript("document.execCommand('insertHTML', false, '"
 //									+ controller.prm.getHTML_CODE() + "');");
-
 //							String html = HtmlEditor.getHtmlText();
-
-							webPage.executeCommand("insertHTML", controller.prm.getHTML_CODE());
-
+							// не учитывает onclick атрибут input-а...
+//							webPage.executeCommand("insertHTML", controller.prm.getHTML_CODE());
 							String html = (String) webView.getEngine()
-									.executeScript("document.documentElement.innerHTML");
-							//System.out.println("-------" + controller.prm.getHTML_CODE());
-							System.out.println(html);
+									.executeScript("document.documentElement.outerHTML");
+							// System.out.println("-------" + controller.prm.getHTML_CODE());
+//							System.out.println(html);
 							// Запишем в файл
-							//Reload2(html);
+							Reload2(html);
 						}
 					}
 				});

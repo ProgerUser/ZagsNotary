@@ -198,7 +198,10 @@ public class HtmlEditor {
 			if (val_list.getHTML_TEMP() != null) {
 				CodeHtml.replaceText(0, 0, val_list.getHTML_TEMP());
 			}
-
+			
+			Split.getStyleClass().add("mylistview");
+			Split.getStylesheets().add("/ScrPane.css");
+			
 			CodeHtml.getStylesheets().add(
 					getClass().getResource("/notary/template/html/controller/xml-highlighting.css").toExternalForm());
 

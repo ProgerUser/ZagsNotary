@@ -4,8 +4,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"
 	charset="UTF-8"></meta>
 <script>
-	doveritel.onclick = GetValue();
-	
+	function insertHTML() {
+		var sel, range;
+		if (window.getSelection && (sel = window.getSelection()).rangeCount) {
+			range = sel.getRangeAt(0);
+			range.collapse(true);
+			var input = document.createElement("input");
+			input.setAttribute('type', 'text');
+			input.setAttribute('id', 'doveritel');
+			input.setAttribute('onclick', 'GetValue()');
+			input.setAttribute('placeholder', 'Доверитель!');
+			input.setAttribute('readonly', 'readonly');
+			input.setAttribute('size', '30');
+			range.insertNode(input);
+			// Move the caret immediately after the inserted span
+			range.setStartAfter(input);
+			range.collapse(true);
+			sel.removeAllRanges();
+			sel.addRange(range);
+		}
+	}
+	insertHTML();
+
 	function GetValue() {
 		invoke.run(event.target.id);
 	}
@@ -86,8 +106,8 @@
 		</p>
 		<p>
 			Я, гр. <input id="doveritel" readonly="readonly" type="text"
-				size="30" placeholder="Доверитель!" /> /паспорт <input
-				id="dov_doc_seria" type="text" readonly="readonly"
+				size="30" placeholder="Доверитель!" onclick="GetValue()" />
+			/паспорт <input id="dov_doc_seria" type="text" readonly="readonly"
 				placeholder="Дов. серия докум.!" /> <input id="dov_doc_number"
 				type="text" readonly="readonly" placeholder="Дов. номер докум.!" />,
 			выдан <input id="dov_doc_agency" type="text" readonly="readonly"
@@ -102,10 +122,10 @@
 		</p>
 		<p>
 			настоящей доверенностью уполномочиваю <input id="predstavitel"
-				placeholder="Представитель!" type="text" size="30"
-				readonly="readonly" /> /паспорт <input id="pr_doc_seria"
-				type="text" readonly="readonly" placeholder="Пр. серия докум.!" /> <input
-				id="pr_doc_number" type="text" readonly="readonly"
+				onclick="GetValue()" placeholder="Представитель!" type="text"
+				size="30" readonly="readonly" /> /паспорт <input id="pr_doc_seria"
+				type="text" readonly="readonly" placeholder="Пр. серия докум.!" />
+			<input id="pr_doc_number" type="text" readonly="readonly"
 				placeholder="Пр. номер докум.!" />, выдан <input id="pr_doc_agency"
 				type="text" readonly="readonly" size="60"
 				placeholder="Пр. докум. выдан!" /> <input id="pr_doc_start"

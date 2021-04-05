@@ -7,9 +7,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
+import org.fxmisc.richtext.model.StyleSpans;
+import org.fxmisc.richtext.model.StyleSpansBuilder;
+import org.reactfx.Subscription;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -18,13 +32,15 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
@@ -40,6 +56,35 @@ import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
 public class IUTempParamIU {
 
+	private static final String[] KEYWORDS = new String[] { "abstract", "assert", "boolean", "break", "byte", "case",
+			"catch", "char", "class", "const", "continue", "default", "do", "double", "else", "enum", "extends",
+			"final", "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int", "interface",
+			"long", "native", "new", "package", "private", "protected", "public", "return", "short", "static",
+			"strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient", "try", "void",
+			"volatile", "while" };
+
+	private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
+	private static final String PAREN_PATTERN = "\\(|\\)";
+	private static final String BRACE_PATTERN = "\\{|\\}";
+	private static final String BRACKET_PATTERN = "\\[|\\]";
+	private static final String SEMICOLON_PATTERN = "\\;";
+	private static final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
+	private static final String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/";
+
+	private static final Pattern PATTERN = Pattern.compile(
+			"(?<KEYWORD>" + KEYWORD_PATTERN + ")" + "|(?<PAREN>" + PAREN_PATTERN + ")" + "|(?<BRACE>" + BRACE_PATTERN
+					+ ")" + "|(?<BRACKET>" + BRACKET_PATTERN + ")" + "|(?<SEMICOLON>" + SEMICOLON_PATTERN + ")"
+					+ "|(?<STRING>" + STRING_PATTERN + ")" + "|(?<COMMENT>" + COMMENT_PATTERN + ")");
+
+	private ExecutorService executor;
+
+	@FXML
+	private VBox vb_js;
+	@FXML
+	private VBox vb_sql_param;
+	@FXML
+	private VBox vb_sql_list;
+
 	private IntegerProperty ID;
 	private StringProperty type;
 
@@ -49,10 +94,9 @@ public class IUTempParamIU {
 	@FXML
 	private ComboBox<NT_PRM_TYPE> PRM_TYPE;
 
-	@FXML
-	private TextArea PRM_SQL;
-	@FXML
-	private TextArea HTML_CODE;
+	private CodeArea PRM_SQL;
+
+	private CodeArea HTML_CODE;
 
 	public IUTempParamIU() {
 		Main.logger = Logger.getLogger(getClass());
@@ -86,8 +130,7 @@ public class IUTempParamIU {
 	@FXML
 	private ComboBox<ALL_TABLE> PRM_TBL_REF;
 
-	@FXML
-	private TextArea PRM_FOR_PRM_SQL;
+	private CodeArea PRM_FOR_PRM_SQL;
 
 	@FXML
 	private ComboBox<NT_PADEJ> PRM_PADEJ;
@@ -119,9 +162,13 @@ public class IUTempParamIU {
 					// PRM_PADEJ.getSelectionModel().select(null);
 					// PRM_PADEJ.setDisable(true);
 					PRM_FOR_PRM_SQL.setEditable(false);
-					PRM_FOR_PRM_SQL.setText("");
+
+					PRM_FOR_PRM_SQL.replaceText(0, 0, "");
+
 					PRM_SQL.setEditable(false);
-					PRM_SQL.setText("");
+
+					PRM_SQL.replaceText(0, 0, "");
+
 				}
 			}
 		} catch (Exception e) {
@@ -252,9 +299,79 @@ public class IUTempParamIU {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@FXML
 	private void initialize() {
 		try {
+
+			HTML_CODE = new CodeArea();
+			PRM_FOR_PRM_SQL = new CodeArea();
+			PRM_SQL = new CodeArea();
+
+			vb_js.getChildren().add(new StackPane(new VirtualizedScrollPane<>(HTML_CODE)));
+			vb_sql_param.getChildren().add(new StackPane(new VirtualizedScrollPane<>(PRM_FOR_PRM_SQL)));
+			vb_sql_list.getChildren().add(new StackPane(new VirtualizedScrollPane<>(PRM_SQL)));
+
+			PRM_SQL.setParagraphGraphicFactory(LineNumberFactory.get(PRM_SQL));
+			PRM_FOR_PRM_SQL.setParagraphGraphicFactory(LineNumberFactory.get(PRM_FOR_PRM_SQL));
+			HTML_CODE.setParagraphGraphicFactory(LineNumberFactory.get(HTML_CODE));
+
+			vb_js.getStyleClass().add("mylistview");
+			vb_js.getStylesheets().add("/ScrPane.css");
+
+			vb_sql_param.getStyleClass().add("mylistview");
+			vb_sql_param.getStylesheets().add("/ScrPane.css");
+
+			vb_sql_list.getStyleClass().add("mylistview");
+			vb_sql_list.getStylesheets().add("/ScrPane.css");
+
+			{
+				//Region spacer = new Region();
+				HTML_CODE.setPrefHeight(1000);
+				PRM_FOR_PRM_SQL.setPrefHeight(1000);
+				PRM_SQL.setPrefHeight(1000);
+				
+				HTML_CODE.setMaxHeight(Double.MAX_VALUE);
+				HTML_CODE.setMaxWidth(Double.MAX_VALUE);
+				
+				executor = Executors.newSingleThreadExecutor();
+				Subscription cleanupWhenDone = HTML_CODE.multiPlainChanges().successionEnds(Duration.ofMillis(500))
+						.supplyTask(this::computeHighlightingAsync).awaitLatest(HTML_CODE.multiPlainChanges())
+						.filterMap(t -> {
+							if (t.isSuccess()) {
+								return Optional.of(t.get());
+							} else {
+								t.getFailure().printStackTrace();
+								return Optional.empty();
+							}
+						}).subscribe(this::applyHighlighting);
+				Subscription cleanupWhenDone1 = PRM_FOR_PRM_SQL.multiPlainChanges()
+						.successionEnds(Duration.ofMillis(500)).supplyTask(this::computeHighlightingAsync1)
+						.awaitLatest(PRM_FOR_PRM_SQL.multiPlainChanges()).filterMap(t -> {
+							if (t.isSuccess()) {
+								return Optional.of(t.get());
+							} else {
+								t.getFailure().printStackTrace();
+								return Optional.empty();
+							}
+						}).subscribe(this::applyHighlighting1);
+				Subscription cleanupWhenDone2 = PRM_SQL.multiPlainChanges().successionEnds(Duration.ofMillis(500))
+						.supplyTask(this::computeHighlightingAsync2).awaitLatest(HTML_CODE.multiPlainChanges())
+						.filterMap(t -> {
+							if (t.isSuccess()) {
+								return Optional.of(t.get());
+							} else {
+								t.getFailure().printStackTrace();
+								return Optional.empty();
+							}
+						}).subscribe(this::applyHighlighting2);
+				HTML_CODE.getStylesheets().add(
+						getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
+				PRM_FOR_PRM_SQL.getStylesheets().add(
+						getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
+				PRM_SQL.getStylesheets().add(
+						getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
+			}
 			dbConnect();
 			DBUtil.RunProcess(conn);
 			// Таблицы
@@ -383,13 +500,21 @@ public class IUTempParamIU {
 					PARENTS.setItems(filterednationals);
 					convert_PARENTS(PARENTS);
 				}
-
-				PRM_FOR_PRM_SQL.setText(cl.getPRM_FOR_PRM_SQL());
+				if (cl.getPRM_FOR_PRM_SQL() != null) {
+					PRM_FOR_PRM_SQL.replaceText(0, 0, cl.getPRM_FOR_PRM_SQL());
+				}
 				PRM_NAME.setText(cl.getPRM_NAME());
 				OK.setText("Сохранить");
-				PRM_SQL.setText(cl.getPRM_SQL());
+
+				if (cl.getPRM_SQL() != null) {
+					PRM_SQL.replaceText(0, 0, cl.getPRM_SQL());
+				}
+
 				PRM_R_NAME.setText(cl.getPRM_R_NAME());
-				HTML_CODE.setText(cl.getHTML_CODE());
+
+				if (cl.getHTML_CODE() != null) {
+					HTML_CODE.replaceText(0, 0, cl.getHTML_CODE());
+				}
 				// Признак необходимости
 				if (cl.getREQUIRED() != null) {
 					if (cl.getREQUIRED().equals("Y")) {
@@ -447,7 +572,8 @@ public class IUTempParamIU {
 				} else {
 					PRM_SQL.setEditable(false);
 					PRM_FOR_PRM_SQL.setEditable(false);
-					PRM_SQL.setText("");
+
+					PRM_SQL.replaceText(0, 0, "");
 					// PRM_PADEJ.setDisable(true);
 					// PRM_PADEJ.getSelectionModel().select(null);
 				}
@@ -516,4 +642,74 @@ public class IUTempParamIU {
 			}
 		});
 	}
+
+	private Task<StyleSpans<Collection<String>>> computeHighlightingAsync() {
+		String text = HTML_CODE.getText();
+		Task<StyleSpans<Collection<String>>> task = new Task<StyleSpans<Collection<String>>>() {
+			@Override
+			protected StyleSpans<Collection<String>> call() throws Exception {
+				return computeHighlighting(text);
+			}
+		};
+		executor.execute(task);
+		return task;
+	}
+
+	private Task<StyleSpans<Collection<String>>> computeHighlightingAsync1() {
+		String text = PRM_FOR_PRM_SQL.getText();
+		Task<StyleSpans<Collection<String>>> task = new Task<StyleSpans<Collection<String>>>() {
+			@Override
+			protected StyleSpans<Collection<String>> call() throws Exception {
+				return computeHighlighting(text);
+			}
+		};
+		executor.execute(task);
+		return task;
+	}
+
+	private Task<StyleSpans<Collection<String>>> computeHighlightingAsync2() {
+		String text = PRM_SQL.getText();
+		Task<StyleSpans<Collection<String>>> task = new Task<StyleSpans<Collection<String>>>() {
+			@Override
+			protected StyleSpans<Collection<String>> call() throws Exception {
+				return computeHighlighting(text);
+			}
+		};
+		executor.execute(task);
+		return task;
+	}
+
+	private void applyHighlighting1(StyleSpans<Collection<String>> highlighting) {
+		PRM_FOR_PRM_SQL.setStyleSpans(0, highlighting);
+	}
+
+	private void applyHighlighting(StyleSpans<Collection<String>> highlighting) {
+		HTML_CODE.setStyleSpans(0, highlighting);
+	}
+
+	private void applyHighlighting2(StyleSpans<Collection<String>> highlighting) {
+		PRM_SQL.setStyleSpans(0, highlighting);
+	}
+
+	private static StyleSpans<Collection<String>> computeHighlighting(String text) {
+		Matcher matcher = PATTERN.matcher(text);
+		int lastKwEnd = 0;
+		StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
+		while (matcher.find()) {
+			String styleClass = matcher.group("KEYWORD") != null ? "keyword"
+					: matcher.group("PAREN") != null ? "paren"
+							: matcher.group("BRACE") != null ? "brace"
+									: matcher.group("BRACKET") != null ? "bracket"
+											: matcher.group("SEMICOLON") != null ? "semicolon"
+													: matcher.group("STRING") != null ? "string"
+															: matcher.group("COMMENT") != null ? "comment" : null;
+			/* never happens */ assert styleClass != null;
+			spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
+			spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
+			lastKwEnd = matcher.end();
+		}
+		spansBuilder.add(Collections.emptyList(), text.length() - lastKwEnd);
+		return spansBuilder.create();
+	}
+
 }
