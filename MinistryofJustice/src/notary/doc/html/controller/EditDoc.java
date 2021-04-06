@@ -1,12 +1,17 @@
 package notary.doc.html.controller;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Blob;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -24,9 +29,14 @@ import java.util.Map;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
+import org.icepdf.ri.common.SwingController;
+import org.icepdf.ri.common.SwingViewBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -56,6 +66,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToolBar;
@@ -65,6 +77,8 @@ import javafx.scene.text.FontSmoothingType;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
@@ -122,10 +136,23 @@ public class EditDoc {
 	@FXML
 	private TableColumn<NT_SCANS, String> SC_TYPE;
 
+	@FXML
+	private TableColumn<NT_SCANS, String> SC_OPER;
+
+	@FXML
+	private TableColumn<Object, LocalDateTime> SC_DATE;
+
+	@FXML
+	private TabPane Tabs;
+
+	@FXML
+	private Tab scans;
+
 	void InitScans() {
 		try {
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			PreparedStatement prp = conn.prepareStatement("select * from NT_SCANS where sc_doc = ?");
+			PreparedStatement prp = conn.prepareStatement("select SC_ID," + "SC_FILE_NAME," + " SC_DATE," + "SC_OPER,"
+					+ "SC_TYPE," + "SC_DOC " + "from NT_SCANS where sc_doc = ?");
 			prp.setInt(1, NT_DOC.getID());
 			ResultSet rs = prp.executeQuery();
 			ObservableList<NT_SCANS> dlist = FXCollections.observableArrayList();
@@ -826,8 +853,149 @@ public class EditDoc {
 	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman");
 
 	@FXML
+	void PrintScan(ActionEvent event) {
+		try {
+			NT_SCANS val = NT_SCANS.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				PreparedStatement prp = conn.prepareStatement("select sc_file from nt_scans where sc_id=?");
+				prp.setInt(1, val.getSC_ID());
+				ResultSet rs = prp.executeQuery();
+				Blob blob = null;
+				if (rs.next()) {
+					blob = rs.getBlob("sc_file");
+				}
+				prp.close();
+				rs.close();
+				// ---------------------
+				int blobLength = (int) blob.length();
+				byte[] blobAsBytes = blob.getBytes(1, blobLength);
+				// build a component controller
+				SwingController controller = new SwingController();
+				SwingViewBuilder factory = new SwingViewBuilder(controller);
+				JPanel viewerComponentPanel = factory.buildViewerPanel();
+				// add interactive mouse link annotation support via callback
+				controller.getDocumentViewController().setAnnotationCallback(
+						new org.icepdf.ri.common.MyAnnotationCallback(controller.getDocumentViewController()));
+				JFrame applicationFrame = new JFrame();
+				// applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				applicationFrame.getContentPane().add(viewerComponentPanel);
+				// Now that the GUI is all in place, we can try openning a PDF
+				// controller.openDocument(filename);
+				// controller.openDocument(arg0, arg1, arg2);
+				controller.openDocument(blobAsBytes, 0, blobAsBytes.length, "", "");
+				controller.isDocumentViewMode(0);
+				// show the component
+				applicationFrame.pack();
+				applicationFrame.setVisible(true);
+				blob.free();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void DeleteScan(ActionEvent event) {
+		try {
+			NT_SCANS val = NT_SCANS.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				PreparedStatement prp = conn.prepareStatement("delete from nt_scans where sc_id = ?");
+				prp.setInt(1, val.getSC_ID());
+				prp.executeUpdate();
+				prp.close();
+				//
+				conn.commit();
+				InitScans();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void EditScan(ActionEvent event) {
+		try {
+			NT_SCANS val = NT_SCANS.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Выбрать файл");
+				fileChooser.getExtensionFilters().addAll(new ExtensionFilter("PDF документ", "*.pdf"));
+				File file = fileChooser.showOpenDialog(null);
+				if (file != null) {
+					String name = file.getName();
+					String paths = file.getAbsolutePath();
+					String ext = FilenameUtils.getExtension(file.getAbsolutePath());
+					System.out.println(ext);
+					// получить файл
+					byte[] bArray = null;
+					Path path = Paths.get(paths);
+					bArray = java.nio.file.Files.readAllBytes(path);
+					InputStream is = new ByteArrayInputStream(bArray);
+					// Вставить
+					PreparedStatement prp = conn.prepareStatement(
+							"update NT_SCANS " + " set SC_FILE = ?, SC_FILE_NAME=?, SC_TYPE = ? where sc_id = ?");
+					prp.setBlob(1, is, bArray.length);
+					prp.setString(2, name);
+					prp.setString(3, ext);
+					prp.setInt(4, val.getSC_ID());
+					prp.executeUpdate();
+					prp.close();
+					// Сохраним транзакцию
+					conn.commit();
+					// Обновим
+					InitScans();
+				}
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void AddScan(ActionEvent event) {
+		try {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Выбрать файл");
+			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("PDF документ", "*.pdf"));
+			File file = fileChooser.showOpenDialog(null);
+			if (file != null) {
+				String name = file.getName();
+				String paths = file.getAbsolutePath();
+				String ext = FilenameUtils.getExtension(file.getAbsolutePath());
+				System.out.println(ext);
+				// получить файл
+				byte[] bArray = null;
+				Path path = Paths.get(paths);
+				bArray = java.nio.file.Files.readAllBytes(path);
+				InputStream is = new ByteArrayInputStream(bArray);
+				// Вставить
+				PreparedStatement prp = conn.prepareStatement(
+						"insert into NT_SCANS " + "(SC_DOC,SC_FILE,SC_FILE_NAME,SC_TYPE) " + "values " + "(?,?,?,?)");
+				prp.setInt(1, NT_DOC.getID());
+				prp.setBlob(2, is, bArray.length);
+				prp.setString(3, name);
+				prp.setString(4, ext);
+				prp.executeUpdate();
+				prp.close();
+				// Сохраним транзакцию
+				conn.commit();
+				// Обновим
+				InitScans();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
 	private void initialize() {
 		try {
+			new ConvConst().TableColumnDateTime(SC_DATE);
+
+			SC_TYPE.setCellValueFactory(cellData -> cellData.getValue().SC_TYPEProperty());
+			SC_FILE_NAME.setCellValueFactory(cellData -> cellData.getValue().SC_FILE_NAMEProperty());
+			SC_OPER.setCellValueFactory(cellData -> cellData.getValue().SC_OPERProperty());
+			SC_DATE.setCellValueFactory(cellData -> ((NT_SCANS) cellData.getValue()).SC_DATEProperty());
 
 			PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
 

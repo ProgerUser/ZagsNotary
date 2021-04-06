@@ -30,7 +30,6 @@ import com.jyloo.syntheticafx.XTableView;
 import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -121,6 +120,8 @@ public class NotaryDocList {
 						if (controller.getStatus()) {
 							Init();
 							controller.dbDisconnect();
+							NT_DOC.getSelectionModel().select(controller.NT_DOC);
+							Edit();
 						}
 					}
 				});
@@ -172,36 +173,6 @@ public class NotaryDocList {
 					stage.show();
 				}
 			}
-		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
-		}
-	}
-
-	public void HtmlEditor(Stage stage_) {
-		try {
-			Stage stage = new Stage();
-
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/notary/doc/old/view/IUHtmlDoc.fxml"));
-
-			HtmlEditorTest controller = new HtmlEditorTest();
-			loader.setController(controller);
-
-			Parent root = loader.load();
-			stage.setScene(new Scene(root));
-			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("HTML");
-			stage.initOwner(stage_);
-			stage.setResizable(true);
-			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				@Override
-				public void handle(WindowEvent paramT) {
-					DBUtil.dbDisconnect();
-					Platform.exit();
-					System.exit(0);
-				}
-			});
-			stage.show();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

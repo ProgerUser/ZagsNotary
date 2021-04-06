@@ -15,6 +15,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +53,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
@@ -68,6 +73,7 @@ import mj.msg.Msg;
 import mj.util.ConvConst;
 import mj.widgets.DbmsOutputCapture;
 import netscape.javascript.JSObject;
+import notary.doc.html.model.V_NT_DOC;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
@@ -95,6 +101,12 @@ public class AddDoc {
 	private ComboBox<V_NT_TEMP_LIST> TYPE_NAME;
 
 	@FXML
+	private Button PrintBtn;
+
+	@FXML
+	private ToolBar PrintToolbar;
+
+	@FXML
 	void CENCEL(ActionEvent event) {
 		onclose();
 	}
@@ -114,6 +126,12 @@ public class AddDoc {
 	}
 
 	NT_TEMP_LIST_PARAM list = null;
+
+	@FXML
+	private TabPane Tabs;
+
+	@FXML
+	private Tab scans;
 
 	@FXML
 	private HTMLEditor HtmlEditor;
@@ -525,8 +543,9 @@ public class AddDoc {
 					rs.close();
 					System.out.print(KeyValue.trim());
 				}
-				CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC_HTML(?,?,?,?)}");
+				CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC_HTML(?,?,?,?,?)}");
 				cls.registerOutParameter(1, Types.VARCHAR);
+				cls.registerOutParameter(5, Types.VARCHAR);
 				cls.setInt(2, val.getID());
 				Clob clob = conn.createClob();
 				clob.setString(1, KeyValue.trim());
@@ -544,6 +563,7 @@ public class AddDoc {
 				// --------------
 				if (cls.getString(1) == null) {
 					conn.commit();
+					AddDocId(cls.getInt(5));
 					setStatus(true);
 					onclose();
 				} else {
@@ -555,6 +575,40 @@ public class AddDoc {
 			} else {
 				Msg.Message("осярн!");
 			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	public V_NT_DOC NT_DOC;
+
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+	void AddDocId(Integer Ids) {
+		try {
+			PreparedStatement prp = conn.prepareStatement("select * from V_NT_DOC where ID = ?");
+			prp.setInt(1, Ids);
+			ResultSet rs = prp.executeQuery();
+			ObservableList<V_NT_DOC> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				NT_DOC = new V_NT_DOC();
+				if (rs.getClob("HTML_DOCUMENT") != null) {
+					NT_DOC.setHTML_DOCUMENT(new ConvConst().ClobToString(rs.getClob("HTML_DOCUMENT")));
+				}
+				NT_DOC.setCR_TIME(rs.getString("CR_TIME"));
+				NT_DOC.setID(rs.getInt("ID"));
+				NT_DOC.setOPER(rs.getString("OPER"));
+				NT_DOC.setNOTARY(rs.getInt("NOTARY"));
+				NT_DOC.setNT_TYPE(rs.getInt("NT_TYPE"));
+				NT_DOC.setCR_DATE((rs.getDate("CR_DATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
+						: null);
+				NT_DOC.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+				NT_DOC.setTYPE_NAME(rs.getString("TYPE_NAME"));
+				dlist.add(NT_DOC);
+			}
+			prp.close();
+			rs.close();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -601,12 +655,35 @@ public class AddDoc {
 		});
 	}
 
+	@FXML
+	void PrintScan(ActionEvent event) {
+
+	}
+
+	@FXML
+	void EditScan(ActionEvent event) {
+
+	}
+
+	@FXML
+	void AddScan(ActionEvent event) {
+
+	}
+
+	@FXML
+	void DeleteScan(ActionEvent event) {
+
+	}
+
 	// limits the fonts a user can select from in the html editor.
 	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman");
 
 	@FXML
 	private void initialize() {
 		try {
+			PrintToolbar.setDisable(true);
+			Tabs.getTabs().remove(scans);
+
 			HtmlEditor.getStyleClass().add("mylistview");
 			HtmlEditor.getStylesheets().add("/ScrPane.css");
 			dbConnect();

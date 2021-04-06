@@ -46,12 +46,12 @@
                               <Insets left="-5.0" right="-5.0" top="-5.0" />
                            </VBox.margin>
                         </ToolBar>
-                        <ToolBar>
+                        <ToolBar fx:id="PrintToolbar">
                            <items>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Принтер" />
                               <ComboBox fx:id="PRINTER_ID" prefWidth="350.0" />
                               <Separator orientation="VERTICAL" />
-                              <Button mnemonicParsing="false" onAction="#Print">
+                              <Button fx:id="PrintBtn" mnemonicParsing="false" onAction="#Print">
                                  <graphic>
                                     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PRINT" size="17" />
                                  </graphic>
@@ -85,23 +85,23 @@
                      <children>
                         <ToolBar>
                           <items>
-                            <Button mnemonicParsing="false">
+                            <Button mnemonicParsing="false" onAction="#AddScan">
                                  <graphic>
                                     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="17" />
                                  </graphic>
                               </Button>
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false">
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#EditScan">
                                  <graphic>
                                     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="17" />
                                  </graphic>
                               </Button>
-                              <Button layoutX="44.0" layoutY="10.0" mnemonicParsing="false">
+                              <Button layoutX="44.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteScan">
                                  <graphic>
                                     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="17" />
                                  </graphic>
                               </Button>
                               <Separator orientation="VERTICAL" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false">
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#PrintScan">
                                  <graphic>
                                     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PRINT" size="17" />
                                  </graphic>
@@ -114,7 +114,9 @@
                         <TableView fx:id="NT_SCANS" VBox.vgrow="ALWAYS">
                           <columns>
                             <TableColumn fx:id="SC_FILE_NAME" prefWidth="350.0" text="Название файла" />
-                            <TableColumn fx:id="SC_TYPE" prefWidth="150.0" text="Расширение" />
+                            <TableColumn fx:id="SC_TYPE" text="Расширение" />
+                              <TableColumn fx:id="SC_OPER" text="Опер." />
+                              <TableColumn fx:id="SC_DATE" prefWidth="150.0" text="Дата" />
                           </columns>
                         </TableView>
                      </children>
