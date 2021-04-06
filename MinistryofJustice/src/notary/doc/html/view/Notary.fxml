@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<BorderPane fx:id="ROOT">
 			<top>
@@ -81,22 +81,6 @@
 									</font>
 									<graphic>
 										<FontAwesomeIconView fontSmoothingType="LCD" glyphName="REFRESH" size="18" />
-									</graphic>
-								</Button>
-								<Separator layoutX="104.0" layoutY="10.0" orientation="VERTICAL" />
-								<Button mnemonicParsing="false" onAction="#Print">
-									<tooltip>
-										<Tooltip text="Печать">
-											<font>
-												<Font size="14.0" />
-											</font>
-										</Tooltip>
-									</tooltip>
-									<font>
-										<Font size="10.0" />
-									</font>
-									<graphic>
-										<FontAwesomeIconView fontSmoothingType="LCD" glyphName="PRINT" size="18" />
 									</graphic>
 								</Button>
 							</items>

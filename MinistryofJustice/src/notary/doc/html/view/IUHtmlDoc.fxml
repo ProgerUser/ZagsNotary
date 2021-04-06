@@ -17,12 +17,12 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.HTMLEditor?>
 
-<VBox fx:id="root" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="root" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
 	<children>
-      <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="floating" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+      <TabPane fx:id="Tabs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="floating" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
           <Tab text="Документ">
                <content>
@@ -79,7 +79,7 @@
                   </VBox>
                </content>
             </Tab>
-          <Tab text="Скан копии">
+          <Tab fx:id="scans" text="Скан копии">
                <content>
                   <VBox spacing="5.0">
                      <children>
@@ -111,10 +111,10 @@
                               <Insets left="-5.0" right="-5.0" top="-5.0" />
                            </VBox.margin>
                         </ToolBar>
-                        <TableView VBox.vgrow="ALWAYS">
+                        <TableView fx:id="NT_SCANS" VBox.vgrow="ALWAYS">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
+                            <TableColumn fx:id="SC_FILE_NAME" prefWidth="350.0" text="Название файла" />
+                            <TableColumn fx:id="SC_TYPE" prefWidth="150.0" text="Расширение" />
                           </columns>
                         </TableView>
                      </children>

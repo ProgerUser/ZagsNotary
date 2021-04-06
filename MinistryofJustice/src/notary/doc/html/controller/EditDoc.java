@@ -14,6 +14,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +26,7 @@ import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 
 import org.apache.log4j.Logger;
+import org.controlsfx.control.table.TableFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -45,13 +49,15 @@ import javafx.print.PageLayout;
 import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.Printer;
-import javafx.print.PrinterJob;
 import javafx.print.Printer.MarginType;
+import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
@@ -69,6 +75,7 @@ import mj.msg.Msg;
 import mj.util.ConvConst;
 import mj.widgets.DbmsOutputCapture;
 import netscape.javascript.JSObject;
+import notary.doc.html.model.NT_SCANS;
 import notary.doc.html.model.V_NT_DOC;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
@@ -107,16 +114,59 @@ public class EditDoc {
 	}
 
 	@FXML
+	private TableView<NT_SCANS> NT_SCANS;
+
+	@FXML
+	private TableColumn<NT_SCANS, String> SC_FILE_NAME;
+
+	@FXML
+	private TableColumn<NT_SCANS, String> SC_TYPE;
+
+	void InitScans() {
+		try {
+			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+			PreparedStatement prp = conn.prepareStatement("select * from NT_SCANS where sc_doc = ?");
+			prp.setInt(1, NT_DOC.getID());
+			ResultSet rs = prp.executeQuery();
+			ObservableList<NT_SCANS> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				NT_SCANS list = new NT_SCANS();
+				list.setSC_ID(rs.getInt("SC_ID"));
+				list.setSC_FILE_NAME(rs.getString("SC_FILE_NAME"));
+				list.setSC_DATE((rs.getDate("SC_DATE") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("SC_DATE")), formatterwt) : null);
+				list.setSC_OPER(rs.getString("SC_OPER"));
+				list.setSC_TYPE(rs.getString("SC_TYPE"));
+				list.setSC_DOC(rs.getInt("SC_DOC"));
+
+				dlist.add(list);
+			}
+			prp.close();
+			rs.close();
+			NT_SCANS.setItems(dlist);
+
+			TableFilter<NT_SCANS> tableFilter = TableFilter.forTableView(NT_SCANS).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
 	void Print(ActionEvent event) {
 		try {
 			WebView webView = (WebView) HtmlEditor.lookup("WebView");
-			webView.getEngine().executeScript("	function Setup() {\n" + 
-					"		$('input').each(function() {\n" + 
-					"			$(this).replaceWith(\"<span>\" + this.value + \"</span>\");\n" + 
-					"		});\n" + 
-					"	}\n" + 
-					"	Setup();");
-			
+			webView.getEngine()
+					.executeScript("	function Setup() {\n" + "		$('input').each(function() {\n"
+							+ "			$(this).replaceWith(\"<span>\" + this.value + \"</span>\");\n" + "		});\n"
+							+ "	}\n" + "	Setup();");
+
 			Printer pdfPrinter = null;
 			Iterator<Printer> iter = Printer.getAllPrinters().iterator();
 			while (iter.hasNext()) {
@@ -125,12 +175,11 @@ public class EditDoc {
 					pdfPrinter = printer;
 				}
 			}
-			
+
 			PrinterJob job = null;
 			try {
 				// clear margins
-				PageLayout layout = pdfPrinter.createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
-						MarginType.DEFAULT);
+				PageLayout layout = pdfPrinter.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, MarginType.DEFAULT);
 				job = PrinterJob.createPrinterJob(pdfPrinter);
 				job.getJobSettings().setPageLayout(layout);
 				job.getJobSettings().setJobName("Sample Printing Job");
@@ -258,9 +307,9 @@ public class EditDoc {
 		}
 	}
 
-    @FXML
-    private ComboBox<String> PRINTER_ID;
-    
+	@FXML
+	private ComboBox<String> PRINTER_ID;
+
 	@SuppressWarnings({ "unchecked" })
 	void AddParam() {
 		try {
@@ -417,7 +466,7 @@ public class EditDoc {
 						if (newState == State.SUCCEEDED) {
 							JSObject window = (JSObject) webEngine.executeScript("window");
 							window.setMember("invoke", jstojava);
-							//ќформление
+							// ќформление
 							{
 								Node node = HtmlEditor.lookup(".top-toolbar");
 								if (node instanceof ToolBar) {
@@ -779,15 +828,15 @@ public class EditDoc {
 	@FXML
 	private void initialize() {
 		try {
-			
+
 			PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
 
-	        PrintService service = PrintServiceLookup.lookupDefaultPrintService(); 
-	        for (PrintService printer : printServices) {
-	            PRINTER_ID.getItems().add(printer.getName());
-	        }
-	        PRINTER_ID.getSelectionModel().select(service.getName());
-	        
+			PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+			for (PrintService printer : printServices) {
+				PRINTER_ID.getItems().add(printer.getName());
+			}
+			PRINTER_ID.getSelectionModel().select(service.getName());
+
 			HtmlEditor.getStyleClass().add("mylistview");
 			HtmlEditor.getStylesheets().add("/ScrPane.css");
 			{
@@ -828,6 +877,7 @@ public class EditDoc {
 			Platform.runLater(() -> {
 				Init();
 			});
+			InitScans();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
