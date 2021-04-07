@@ -147,10 +147,12 @@ public class AddParam {
 				Integer parent = parents.get(key);
 				if (parent.equals(key)) {
 					root = entry.getValue();
+					root.setExpanded(true);
 				} else {
 					TreeItem<NT_TEMP_LIST_PARAM> parentItem = itemById.get(parent);
 					if (parentItem == null) {
 						root.getChildren().add(entry.getValue());
+						root.setExpanded(true);
 					} else {
 						parentItem.getChildren().add(entry.getValue());
 					}
@@ -158,6 +160,7 @@ public class AddParam {
 			}
 			root.setExpanded(true);
 			param.setRoot(root);
+			param.setShowRoot(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

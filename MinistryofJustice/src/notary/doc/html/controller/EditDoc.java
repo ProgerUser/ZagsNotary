@@ -59,7 +59,6 @@ import javafx.print.PageLayout;
 import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.Printer;
-import javafx.print.Printer.MarginType;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -188,12 +187,12 @@ public class EditDoc {
 	@FXML
 	void Print(ActionEvent event) {
 		try {
+			// при печати сохраним содержимое страницы
+			Save(true);
+			// Замена input = span
 			WebView webView = (WebView) HtmlEditor.lookup("WebView");
 			webView.getEngine()
-					.executeScript("	function Setup() {\n" + "		$('input').each(function() {\n"
-							+ "			$(this).replaceWith(\"<span>\" + this.value + \"</span>\");\n" + "		});\n"
-							+ "	}\n" + "	Setup();");
-
+					.executeScript(DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "HTMLInputToSpan"));
 			Printer pdfPrinter = null;
 			Iterator<Printer> iter = Printer.getAllPrinters().iterator();
 			while (iter.hasNext()) {
@@ -206,7 +205,10 @@ public class EditDoc {
 			PrinterJob job = null;
 			try {
 				// clear margins
-				PageLayout layout = pdfPrinter.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, MarginType.DEFAULT);
+				PageLayout layout = pdfPrinter.// .createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
+												// MarginType.EQUAL);
+						createPageLayout(Paper.A4, PageOrientation.PORTRAIT,50 /* lMargin */,25 /* rMargin */,
+								25 /* tMargin */, 25 /* bMargin */);
 				job = PrinterJob.createPrinterJob(pdfPrinter);
 				job.getJobSettings().setPageLayout(layout);
 				job.getJobSettings().setJobName("Sample Printing Job");
@@ -217,7 +219,8 @@ public class EditDoc {
 					job.endJob();
 				}
 			}
-
+			// Заново заполнить страницу
+			Init();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -724,8 +727,7 @@ public class EditDoc {
 		}
 	}
 
-	@FXML
-	void OK(ActionEvent event) {
+	void Save(Boolean OnPrint) {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
@@ -800,7 +802,9 @@ public class EditDoc {
 				if (cls.getString(1) == null) {
 					conn.commit();
 					setStatus(true);
-					onclose();
+					if (!OnPrint) {
+						onclose();
+					}
 				} else {
 					conn.rollback();
 					setStatus(false);
@@ -810,6 +814,15 @@ public class EditDoc {
 			} else {
 				Msg.Message("ПУСТО!");
 			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void OK(ActionEvent event) {
+		try {
+			Save(false);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

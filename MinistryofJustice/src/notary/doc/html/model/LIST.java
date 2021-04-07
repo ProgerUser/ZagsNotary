@@ -1,5 +1,4 @@
-package notary.doc.old.model;
-
+package notary.doc.html.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -7,9 +6,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class LIST {
-	/** Код */
+
 	private IntegerProperty CODE;
-	/** Наименование */
+
 	private StringProperty NAME;
 
 	public LIST() {

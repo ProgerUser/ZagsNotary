@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
-import notary.doc.old.model.LIST;
+import notary.doc.html.model.LIST;
 
 public class ParamList {
 
