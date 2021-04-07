@@ -60,6 +60,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.web.HTMLEditor;
@@ -118,7 +120,7 @@ public class AddDoc {
 				for (Map.Entry<String, String> entry : result.entrySet()) {
 					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
 				}
-				
+
 				roots = new TreeItem<>("Root");
 				Map<Integer, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
 				Map<Integer, Integer> parents = new HashMap<>();
@@ -538,7 +540,7 @@ public class AddDoc {
 							JSObject window = (JSObject) webEngine.executeScript("window");
 							window.setMember("invoke", jstojava);
 							try {
-								//Fill
+								// Fill
 								fillTree();
 								{
 									Document doc = webEngine.getDocument();
@@ -774,6 +776,41 @@ public class AddDoc {
 	@FXML
 	private void initialize() {
 		try {
+
+			HtmlEditor.setOnKeyReleased(new EventHandler<KeyEvent>() {
+				@Override
+				public void handle(KeyEvent event) {
+					if (isValidEvent(event)) {
+						System.out.println(HtmlEditor.getHtmlText());
+					}
+				}
+
+				private boolean isValidEvent(KeyEvent event) {
+					return !isSelectAllEvent(event) && ((isPasteEvent(event)) || isCharacterKeyReleased(event));
+				}
+
+				private boolean isSelectAllEvent(KeyEvent event) {
+					return event.isShortcutDown() && event.getCode() == KeyCode.A;
+				}
+
+				private boolean isPasteEvent(KeyEvent event) {
+					return event.isShortcutDown() && event.getCode() == KeyCode.V;
+				}
+
+				private boolean isCharacterKeyReleased(KeyEvent event) {
+					// Make custom changes here..
+					switch (event.getCode()) {
+					case ALT:
+					case COMMAND:
+					case CONTROL:
+					case SHIFT:
+						return false;
+					default:
+						return true;
+					}
+				}
+			});
+
 			PrintToolbar.setDisable(true);
 			Tabs.getTabs().remove(scans);
 
