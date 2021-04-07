@@ -5,38 +5,38 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class NT_CLI_TYPES {
-	/** ид */
-	private IntegerProperty CODE;
-	/** название */
+public class COUNTRIES {
+	/** Название */
 	private StringProperty NAME;
+	/** Код */
+	private IntegerProperty CODE;
 
-	public NT_CLI_TYPES() {
-		this.CODE = new SimpleIntegerProperty();
+	public COUNTRIES() {
 		this.NAME = new SimpleStringProperty();
-	}
-
-	public void setCODE(Integer CODE) {
-		this.CODE.set(CODE);
+		this.CODE = new SimpleIntegerProperty();
 	}
 
 	public void setNAME(String NAME) {
 		this.NAME.set(NAME);
 	}
 
-	public Integer getCODE() {
-		return CODE.get();
+	public void setCODE(Integer CODE) {
+		this.CODE.set(CODE);
 	}
 
 	public String getNAME() {
 		return NAME.get();
 	}
 
-	public IntegerProperty CODEProperty() {
-		return CODE;
+	public Integer getCODE() {
+		return CODE.get();
 	}
 
 	public StringProperty NAMEProperty() {
 		return NAME;
+	}
+
+	public IntegerProperty CODEProperty() {
+		return CODE;
 	}
 }

@@ -67,7 +67,6 @@ import mj.report.Report;
 import mj.users.UsrC;
 import mj.widgets.DbTracer;
 import mj.zags.ZagsList;
-import notary.client.controller.ClientsList;
 import notary.doc.html.controller.NotaryDocList;
 import notary.template.html.controller.NtTemplate;
 
@@ -444,9 +443,9 @@ public class Main extends Application {
 			if (NtCliWin) {
 				NtCliWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/client/view/ClientList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/client/view/CusList.fxml"));
 
-				ClientsList controller = new ClientsList();
+				notary.client.controller.CusList controller = new notary.client.controller.CusList();
 				loader.setController(controller);
 
 				Parent root = loader.load();
