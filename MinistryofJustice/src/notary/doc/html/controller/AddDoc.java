@@ -56,6 +56,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.FontSmoothingType;
@@ -84,7 +87,96 @@ public class AddDoc {
 		this.status = new SimpleBooleanProperty();
 	}
 
+	@FXML
+	private TreeTableView<NT_TEMP_LIST_PARAM> param;
+
+	@FXML
+	private TreeTableColumn<NT_TEMP_LIST_PARAM, Integer> id;
+
+	@FXML
+	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> name;
+
+	@FXML
+	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> req;
+
 	private BooleanProperty status;
+	@SuppressWarnings("rawtypes")
+	TreeItem roots = new TreeItem<>("Root");
+
+	public NT_TEMP_LIST_PARAM prm;
+
+	@SuppressWarnings("unchecked")
+	void fillTree() {
+		try {
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				// ѕолучить пол€ из страницы
+				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+				Map<String, String> result = new ObjectMapper().readValue(json, HashMap.class);
+				String JsonStr = "";
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
+				}
+				
+				roots = new TreeItem<>("Root");
+				Map<Integer, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
+				Map<Integer, Integer> parents = new HashMap<>();
+
+				PreparedStatement prp = conn.prepareStatement(
+						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
+				Clob clob = conn.createClob();
+				clob.setString(1, JsonStr.trim());
+				prp.setInt(1, val.getID());
+				prp.setClob(2, clob);
+				ResultSet rs = prp.executeQuery();
+				while (rs.next()) {
+					prm = new NT_TEMP_LIST_PARAM();
+					prm.setPRM_ID(rs.getInt("PRM_ID"));
+					prm.setPRM_NAME(rs.getString("PRM_NAME"));
+					prm.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
+					prm.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+					prm.setPRM_SQL(rs.getString("PRM_SQL"));
+					prm.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+					prm.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					prm.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
+					if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
+						prm.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
+					}
+					prm.setTYPE_NAME(rs.getString("TYPE_NAME"));
+					prm.setREQUIRED(rs.getString("REQUIRED"));
+					prm.setPARENTS(rs.getInt("PARENTS"));
+					prm.setHTML_CODE(rs.getString("HTML_CODE"));
+					itemById.put(rs.getInt("PRM_ID"), new TreeItem<>(prm));
+					parents.put(rs.getInt("PRM_ID"), rs.getInt("PARENTS"));
+				}
+				prp.close();
+				rs.close();
+
+				for (Map.Entry<Integer, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
+					Integer key = entry.getKey();
+					Integer parent = parents.get(key);
+					if (parent.equals(key)) {
+						roots = entry.getValue();
+						roots.setExpanded(true);
+					} else {
+						TreeItem<NT_TEMP_LIST_PARAM> parentItem = itemById.get(parent);
+						if (parentItem == null) {
+							roots.getChildren().add(entry.getValue());
+							roots.setExpanded(true);
+						} else {
+							parentItem.getChildren().add(entry.getValue());
+						}
+					}
+				}
+				roots.setExpanded(true);
+				param.setRoot(roots);
+				param.setShowRoot(false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void setStatus(Boolean status) {
 		this.status.set(status);
@@ -446,6 +538,8 @@ public class AddDoc {
 							JSObject window = (JSObject) webEngine.executeScript("window");
 							window.setMember("invoke", jstojava);
 							try {
+								//Fill
+								fillTree();
 								{
 									Document doc = webEngine.getDocument();
 									Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -457,7 +551,6 @@ public class AddDoc {
 									transformer.transform(new DOMSource(doc),
 											new StreamResult(new OutputStreamWriter(System.out, "UTF-8")));
 								}
-
 								// текущие пол€ на странице
 								String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();

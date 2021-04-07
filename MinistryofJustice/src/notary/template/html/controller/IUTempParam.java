@@ -300,13 +300,14 @@ public class IUTempParam {
 					}
 				}
 			}
-			root.setExpanded(true);
+			
 			NT_TEMP_LIST_PARAM.setRoot(root);
+			NT_TEMP_LIST_PARAM.setShowRoot(false);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
