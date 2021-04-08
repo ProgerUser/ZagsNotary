@@ -22812,3 +22812,4 @@ ORA-06512: на  "XXI.MJCUS", line 1784
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Unknown Source)
 
+[08.04.2021 10:45:16] [AddUser] INFO :144 - Пользователь TextField[id=CUSRLOGNAME, styleClass=text-input text-field] Создан~JavaFX Application Thread

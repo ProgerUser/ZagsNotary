@@ -553,6 +553,7 @@ public class EditDoc {
 				roots.setExpanded(true);
 				param.setRoot(roots);
 				param.setShowRoot(false);
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1118,7 +1119,7 @@ public class EditDoc {
 	@FXML
 	private void initialize() {
 		try {
-
+			
 			// Двойной щелчок по строке для открытия документа
 			param.setRowFactory(tv -> {
 				TreeTableRow<NT_TEMP_LIST_PARAM> row = new TreeTableRow<>();

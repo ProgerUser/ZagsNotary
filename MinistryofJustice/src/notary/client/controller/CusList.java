@@ -628,11 +628,12 @@ public class CusList {
 	public void Edit(Integer docid, Stage stage_/* , Connection conn */) {
 		try {
 			if (isopen == false) {
+				
 				if (DBUtil.OdbAction(28) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
-				Main.logger = Logger.getLogger(getClass());
+				
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from cus where  ICUSNUM = ? for update nowait");
 				VCUS cl = Init2(docid, conn);
@@ -670,8 +671,7 @@ public class CusList {
 
 						stage.setScene(scene);
 						stage.getIcons().add(new Image("/icon.png"));
-						stage.setTitle("Редактирование: " + cl.getCCUSLAST_NAME() + " " + cl.getCCUSFIRST_NAME() + " "
-								+ cl.getCCUSMIDDLE_NAME());
+						stage.setTitle("Редактирование: " + cl.getCCUSNAME());
 						stage.initOwner(stage_);
 						stage.setResizable(false);
 						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -681,6 +681,8 @@ public class CusList {
 									// Если нажали сохранить
 									// обновление без сохранения
 									controller.CallSaveToCompare();
+									// заполняем xml
+									//XmlsForCompare(docid, conn);
 									if (controller.getStatus()) {
 										if (formname.equals("norm")) {
 											InitVCus(null, null, null, null, null, "edit", controller.getId());
