@@ -40,10 +40,9 @@ import org.icepdf.ri.common.SwingViewBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -63,16 +62,20 @@ import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableRow;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.FontSmoothingType;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -207,7 +210,7 @@ public class EditDoc {
 				// clear margins
 				PageLayout layout = pdfPrinter.// .createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
 												// MarginType.EQUAL);
-						createPageLayout(Paper.A4, PageOrientation.PORTRAIT,50 /* lMargin */,25 /* rMargin */,
+						createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50 /* lMargin */, 25 /* rMargin */,
 								25 /* tMargin */, 25 /* bMargin */);
 				job = PrinterJob.createPrinterJob(pdfPrinter);
 				job.getJobSettings().setPageLayout(layout);
@@ -419,19 +422,19 @@ public class EditDoc {
 						}
 					}
 					if (check) {
-						FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
-						icon.setFontSmoothingType(FontSmoothingType.LCD);
-						icon.setSize("18");
-						Button myButton = new Button("Добавить параметр", icon);
-						myButton.setId("MJAddParam");
-
-						bar.getItems().add(myButton);
-						myButton.setOnAction(new EventHandler<ActionEvent>() {
-							@Override
-							public void handle(ActionEvent arg0) {
-								AddParam();
-							}
-						});
+//						FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
+//						icon.setFontSmoothingType(FontSmoothingType.LCD);
+//						icon.setSize("18");
+//						Button myButton = new Button("Добавить параметр", icon);
+//						myButton.setId("MJAddParam");
+//
+//						bar.getItems().add(myButton);
+//						myButton.setOnAction(new EventHandler<ActionEvent>() {
+//							@Override
+//							public void handle(ActionEvent arg0) {
+//								AddParam();
+//							}
+//						});
 					}
 				}
 
@@ -464,6 +467,113 @@ public class EditDoc {
 				}
 			}
 			Reload();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	private TreeTableView<NT_TEMP_LIST_PARAM> param;
+
+	@FXML
+	private TreeTableColumn<NT_TEMP_LIST_PARAM, Integer> id;
+
+	@FXML
+	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> name;
+
+	@FXML
+	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> req;
+	@SuppressWarnings("rawtypes")
+	TreeItem roots = new TreeItem<>("Root");
+
+	@SuppressWarnings("unchecked")
+	void fillTree() {
+		try {
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				// Получить поля из страницы
+				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+				Map<String, String> result = new ObjectMapper().readValue(json, HashMap.class);
+				String JsonStr = "";
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
+				}
+
+				System.out.println(JsonStr);
+
+				roots = new TreeItem<>("Root");
+				Map<Integer, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
+				Map<Integer, Integer> parents = new HashMap<>();
+
+				PreparedStatement prp = conn.prepareStatement(
+						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
+				Clob clob = conn.createClob();
+				clob.setString(1, JsonStr.trim());
+				prp.setInt(1, val.getID());
+				prp.setClob(2, clob);
+				ResultSet rs = prp.executeQuery();
+				while (rs.next()) {
+					prm = new NT_TEMP_LIST_PARAM();
+					prm.setPRM_ID(rs.getInt("PRM_ID"));
+					prm.setPRM_NAME(rs.getString("PRM_NAME"));
+					prm.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
+					prm.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+					prm.setPRM_SQL(rs.getString("PRM_SQL"));
+					prm.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+					prm.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					prm.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
+					if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
+						prm.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
+					}
+					prm.setTYPE_NAME(rs.getString("TYPE_NAME"));
+					prm.setREQUIRED(rs.getString("REQUIRED"));
+					prm.setPARENTS(rs.getInt("PARENTS"));
+					prm.setHTML_CODE(rs.getString("HTML_CODE"));
+					itemById.put(rs.getInt("PRM_ID"), new TreeItem<>(prm));
+					parents.put(rs.getInt("PRM_ID"), rs.getInt("PARENTS"));
+				}
+				prp.close();
+				rs.close();
+
+				for (Map.Entry<Integer, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
+					Integer key = entry.getKey();
+					Integer parent = parents.get(key);
+					if (parent.equals(key)) {
+						roots = entry.getValue();
+					} else {
+						TreeItem<NT_TEMP_LIST_PARAM> parentItem = itemById.get(parent);
+						if (parentItem == null) {
+							roots.getChildren().add(entry.getValue());
+						} else {
+							parentItem.getChildren().add(entry.getValue());
+						}
+					}
+				}
+				roots.setExpanded(true);
+				param.setRoot(roots);
+				param.setShowRoot(false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public NT_TEMP_LIST_PARAM prm;
+
+	@FXML
+	void AddParamLocal() {
+		try {
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			TreeItem<NT_TEMP_LIST_PARAM> tbl = param.getSelectionModel().getSelectedItem();
+			if (val != null & tbl != null) {
+				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				webView.getEngine().executeScript(tbl.getValue().getHTML_CODE());
+				String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
+				// Запишем в файл
+				Reload2(html);
+				fillTree();
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -510,19 +620,19 @@ public class EditDoc {
 										}
 									}
 									if (check) {
-										FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
-										icon.setFontSmoothingType(FontSmoothingType.LCD);
-										icon.setSize("18");
-										Button myButton = new Button("Добавить параметр", icon);
-										myButton.setId("MJAddParam");
-
-										bar.getItems().add(myButton);
-										myButton.setOnAction(new EventHandler<ActionEvent>() {
-											@Override
-											public void handle(ActionEvent arg0) {
-												AddParam();
-											}
-										});
+//										FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
+//										icon.setFontSmoothingType(FontSmoothingType.LCD);
+//										icon.setSize("18");
+//										Button myButton = new Button("Добавить параметр", icon);
+//										myButton.setId("MJAddParam");
+//
+//										bar.getItems().add(myButton);
+//										myButton.setOnAction(new EventHandler<ActionEvent>() {
+//											@Override
+//											public void handle(ActionEvent arg0) {
+//												AddParam();
+//											}
+//										});
 									}
 								}
 								// modify font selections.
@@ -647,12 +757,13 @@ public class EditDoc {
 			final JsToJava jstojava = new JsToJava();
 			// Запишем в файл
 			{
-				Writer out = new BufferedWriter(new OutputStreamWriter(
-						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/HTML.html"), StandardCharsets.UTF_8));
+				Writer out = new BufferedWriter(
+						new OutputStreamWriter(new FileOutputStream(System.getenv("MJ_PATH") + "HTML/EDIT_HTML.html"),
+								StandardCharsets.UTF_8));
 				out.write(html);
 				out.close();
 			}
-			URL url = new File(System.getenv("MJ_PATH") + "HTML/HTML.html").toURI().toURL();
+			URL url = new File(System.getenv("MJ_PATH") + "HTML/EDIT_HTML.html").toURI().toURL();
 			webEngine.load(url.toExternalForm());
 			webView.setContextMenuEnabled(false);
 			webEngine.setJavaScriptEnabled(true);
@@ -680,12 +791,13 @@ public class EditDoc {
 				// Запишем в файл
 				{
 					Writer out = new BufferedWriter(new OutputStreamWriter(
-							new FileOutputStream(System.getenv("MJ_PATH") + "HTML/HTML.html"), StandardCharsets.UTF_8));
+							new FileOutputStream(System.getenv("MJ_PATH") + "HTML/EDIT_HTML.html"),
+							StandardCharsets.UTF_8));
 					out.write(val.getHTML_TEMP());
 					out.close();
 				}
 
-				URL url = new File(System.getenv("MJ_PATH") + "HTML/HTML.html").toURI().toURL();
+				URL url = new File(System.getenv("MJ_PATH") + "HTML/EDIT_HTML.html").toURI().toURL();
 				webEngine.load(url.toExternalForm());
 				webView.setContextMenuEnabled(false);
 				webEngine.setJavaScriptEnabled(true);
@@ -697,6 +809,8 @@ public class EditDoc {
 							JSObject window = (JSObject) webEngine.executeScript("window");
 							window.setMember("invoke", jstojava);
 							try {
+								// Fill
+								fillTree();
 								// текущие поля на странице
 								String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();
@@ -1000,9 +1114,75 @@ public class EditDoc {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
 		try {
+
+			// Двойной щелчок по строке для открытия документа
+			param.setRowFactory(tv -> {
+				TreeTableRow<NT_TEMP_LIST_PARAM> row = new TreeTableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						AddParamLocal();
+					}
+				});
+				return row;
+			});
+
+			id.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof NT_TEMP_LIST_PARAM) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getPRM_ID());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			req.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof NT_TEMP_LIST_PARAM) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getREQUIRED());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			name.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof NT_TEMP_LIST_PARAM) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getPRM_R_NAME());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+
+			HtmlEditor.setOnKeyReleased(new EventHandler<KeyEvent>() {
+				@Override
+				public void handle(KeyEvent event) {
+					if (isValidEvent(event)) {
+						fillTree();
+					}
+				}
+
+				private boolean isValidEvent(KeyEvent event) {
+					return !isSelectAllEvent(event) && ((isPasteEvent(event)) || isCharacterKeyReleased(event));
+				}
+
+				private boolean isSelectAllEvent(KeyEvent event) {
+					return event.isShortcutDown() && event.getCode() == KeyCode.A;
+				}
+
+				private boolean isPasteEvent(KeyEvent event) {
+					return event.isShortcutDown() && event.getCode() == KeyCode.V;
+				}
+
+				private boolean isCharacterKeyReleased(KeyEvent event) {
+					// Make custom changes here..
+					switch (event.getCode()) {
+					case ALT:
+					case COMMAND:
+					case CONTROL:
+					case SHIFT:
+						return false;
+					default:
+						return true;
+					}
+				}
+			});
+
 			new ConvConst().TableColumnDateTime(SC_DATE);
 
 			SC_TYPE.setCellValueFactory(cellData -> cellData.getValue().SC_TYPEProperty());

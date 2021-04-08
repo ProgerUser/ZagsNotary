@@ -22,21 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -58,12 +47,12 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.FontSmoothingType;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -121,6 +110,8 @@ public class AddDoc {
 					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
 				}
 
+				System.out.println(JsonStr);
+
 				roots = new TreeItem<>("Root");
 				Map<Integer, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
 				Map<Integer, Integer> parents = new HashMap<>();
@@ -160,12 +151,10 @@ public class AddDoc {
 					Integer parent = parents.get(key);
 					if (parent.equals(key)) {
 						roots = entry.getValue();
-						roots.setExpanded(true);
 					} else {
 						TreeItem<NT_TEMP_LIST_PARAM> parentItem = itemById.get(parent);
 						if (parentItem == null) {
 							roots.getChildren().add(entry.getValue());
-							roots.setExpanded(true);
 						} else {
 							parentItem.getChildren().add(entry.getValue());
 						}
@@ -336,61 +325,18 @@ public class AddDoc {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked" })
-	void AddParam() {
+	@FXML
+	void AddParamLocal() {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
-			if (val != null) {
+			TreeItem<NT_TEMP_LIST_PARAM> tbl = param.getSelectionModel().getSelectedItem();
+			if (val != null & tbl != null) {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
-				// WebPage webPage = Accessor.getPageFor(webView.getEngine());
-
-				// ѕолучить пол€ из страницы
-				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
-				// String html = (String)
-				// webView.getEngine().executeScript("document.documentElement.outerHTML");
-				System.out.println("-------\r\n" + json);
-				Map<String, String> result = new ObjectMapper().readValue(json, HashMap.class);
-				String JsonStr = "";
-				for (Map.Entry<String, String> entry : result.entrySet()) {
-					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
-				}
-				// System.out.println(JsonStr.trim());
-				// ------------------
-				// открыть формы с параметрами за минусом тех, что наход€тс€ на странице
-				Stage stage = new Stage();
-				Stage stage_ = (Stage) HtmlEditor.getScene().getWindow();
-
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/doc/html/view/AddParam.fxml"));
-
-				AddParam controller = new AddParam();
-				controller.setConn(conn, JsonStr.trim(), val);
-				loader.setController(controller);
-
-				Parent root = loader.load();
-				stage.setScene(new Scene(root));
-				stage.getIcons().add(new Image("/icon.png"));
-				stage.setTitle("");
-				stage.initOwner(stage_);
-				stage.setResizable(false);
-				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-					@Override
-					public void handle(WindowEvent paramT) {
-						// если выбран параметр
-						// 1. получить html разметку параметра
-						// 2. постаратьс€ внедрить в то место где стоит курсор
-						if (controller.getStatus()) {
-							webView.getEngine().executeScript(controller.prm_ret.getHTML_CODE());
-							String html = (String) webView.getEngine()
-									.executeScript("document.documentElement.outerHTML");
-							// «апишем в файл
-							Reload2(html);
-							System.out.println("JS_CODE_ID\r\n" + controller.prm_ret.getPRM_NAME());
-							System.out.println("JS_CODE_\r\n" + controller.prm_ret.getHTML_CODE());
-						}
-					}
-				});
-				stage.show();
+				webView.getEngine().executeScript(tbl.getValue().getHTML_CODE());
+				String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
+				// «апишем в файл
+				Reload2(html);
+				fillTree();
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -414,28 +360,10 @@ public class AddDoc {
 						}
 					}
 					if (check) {
-						FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
-						icon.setFontSmoothingType(FontSmoothingType.LCD);
-						icon.setSize("18");
-						Button myButton = new Button("ƒобавить параметр", icon);
-						myButton.setId("MJAddParam");
 
-						bar.getItems().add(myButton);
-						myButton.setOnAction(new EventHandler<ActionEvent>() {
-							@Override
-							public void handle(ActionEvent arg0) {
-								AddParam();
-							}
-						});
 					}
 				}
 
-//			Node node = HtmlEditor.lookup(".bottom-toolbar");
-//			ToolBar bar = (ToolBar) node;
-//			ObservableList<Node> list = bar.getItems();
-//			for (Node item : list) {
-//				System.out.println(item.getTypeSelector() + " " + item.getId());
-//			}
 				// modify font selections.
 				int i = 0;
 				for (Node candidate : (HtmlEditor.lookupAll("ComboBox"))) {
@@ -542,17 +470,6 @@ public class AddDoc {
 							try {
 								// Fill
 								fillTree();
-								{
-									Document doc = webEngine.getDocument();
-									Transformer transformer = TransformerFactory.newInstance().newTransformer();
-									transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-									transformer.setOutputProperty(OutputKeys.METHOD, "html");
-									transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-									transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-									transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-									transformer.transform(new DOMSource(doc),
-											new StreamResult(new OutputStreamWriter(System.out, "UTF-8")));
-								}
 								// текущие пол€ на странице
 								String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();
@@ -773,15 +690,53 @@ public class AddDoc {
 	// limits the fonts a user can select from in the html editor.
 	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman");
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
 		try {
+
+//			Platform.runLater(new Runnable() {
+//				@Override
+//				public void run() {
+//
+//				}
+//			});
+
+// ƒвойной щелчок по строке дл€ открыти€ документа
+			param.setRowFactory(tv -> {
+				TreeTableRow<NT_TEMP_LIST_PARAM> row = new TreeTableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						AddParamLocal();
+					}
+				});
+				return row;
+			});
+
+			id.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof NT_TEMP_LIST_PARAM) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getPRM_ID());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			req.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof NT_TEMP_LIST_PARAM) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getREQUIRED());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			name.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof NT_TEMP_LIST_PARAM) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getPRM_R_NAME());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
 
 			HtmlEditor.setOnKeyReleased(new EventHandler<KeyEvent>() {
 				@Override
 				public void handle(KeyEvent event) {
 					if (isValidEvent(event)) {
-						System.out.println(HtmlEditor.getHtmlText());
+						fillTree();
 					}
 				}
 
