@@ -661,7 +661,7 @@ public class AddDoc {
 
 			@Override
 			public V_NT_TEMP_LIST fromString(final String string) {
-				return cmbbx.getItems().stream().filter(product -> product.getNAMES().equals(string)).findFirst()
+				return cmbbx.getItems().stream().filter(product -> product.getNAMES().contains(string)).findFirst()
 						.orElse(null);
 			}
 		});
