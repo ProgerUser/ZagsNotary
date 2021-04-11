@@ -33,7 +33,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -79,7 +78,6 @@ import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.app.model.InputFilter;
 import mj.app.model.OTD;
 import mj.app.model.SqlMap;
 import mj.dbutil.DBUtil;
@@ -93,6 +91,7 @@ import mj.doc.patern.AddPatern;
 import mj.init.HttpsTrustManager;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.FxUtilTest;
 import mj.widgets.KeyBoard;
 import notary.client.model.ALL_DOCS;
 import notary.client.model.COUNTRIES;
@@ -1011,12 +1010,17 @@ public class EditCus {
 				sqlStatement.close();
 				rs.close();
 
-				FilteredList<String> filterednationals = new FilteredList<String>(np);
+//				FilteredList<String> filterednationals = new FilteredList<String>(np);
+//
+//				PUNCT_NAME.getEditor().textProperty()
+//						.addListener(new InputFilter<String>(PUNCT_NAME, filterednationals, false));
+//				PUNCT_NAME.setItems(filterednationals);
 
-				PUNCT_NAME.getEditor().textProperty()
-						.addListener(new InputFilter<String>(PUNCT_NAME, filterednationals, false));
-				PUNCT_NAME.setItems(filterednationals);
-				rs.close();
+				PUNCT_NAME.setItems(np);
+
+				FxUtilTest.getComboBoxValue(PUNCT_NAME);
+				FxUtilTest.autoCompleteComboBoxPlus(PUNCT_NAME,
+						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
 			}
 
 		} catch (Exception e) {
@@ -1374,8 +1378,8 @@ public class EditCus {
 	 */
 	void CallSave() {
 		try {
-			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call MJCUS.UPDATE_NT_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall(
+					"{ ? = call MJCUS.UPDATE_NT_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setDate(2,
 					(DCUSBIRTHDAY.getValue() != null) ? java.sql.Date.valueOf(DCUSBIRTHDAY.getValue()) : null);
@@ -1422,8 +1426,8 @@ public class EditCus {
 			callStmt.setInt(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
 			// адрес-населенный пункт если текст
 			callStmt.setInt(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
-			
-			//Новые поля
+
+			// Новые поля
 			NT_CLI_TYPES val = CUS_TYPE.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				callStmt.setInt(26, val.getCODE());
@@ -1437,7 +1441,7 @@ public class EditCus {
 					(ORG_DATE_REG.getValue() != null) ? java.sql.Date.valueOf(ORG_DATE_REG.getValue()) : null);
 			callStmt.setString(31, CCUSNAME.getText());
 			callStmt.setString(32, CCUSNAME_SH.getText());
-			
+
 			callStmt.execute();
 			String ret = callStmt.getString(1);
 			callStmt.close();
@@ -1472,8 +1476,8 @@ public class EditCus {
 	 */
 	void CallSaveToCompare() {
 		try {
-			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call MJCUS.UPDATE_NT_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall(
+					"{ ? = call MJCUS.UPDATE_NT_CUS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			callStmt.setDate(2,
 					(DCUSBIRTHDAY.getValue() != null) ? java.sql.Date.valueOf(DCUSBIRTHDAY.getValue()) : null);
@@ -1520,8 +1524,8 @@ public class EditCus {
 			callStmt.setInt(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
 			// адрес-населенный пункт если текст
 			callStmt.setInt(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
-			
-			//Новые поля
+
+			// Новые поля
 			NT_CLI_TYPES val = CUS_TYPE.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				callStmt.setInt(26, val.getCODE());
@@ -1535,7 +1539,7 @@ public class EditCus {
 					(ORG_DATE_REG.getValue() != null) ? java.sql.Date.valueOf(ORG_DATE_REG.getValue()) : null);
 			callStmt.setString(31, CCUSNAME.getText());
 			callStmt.setString(32, CCUSNAME_SH.getText());
-			
+
 			callStmt.execute();
 			callStmt.close();
 		} catch (Exception e) {
@@ -1830,7 +1834,8 @@ public class EditCus {
 			if (val != null) {
 				if (val.getCODE() == 1 | val.getCODE() == 3) {
 					Statement sqlStatement = conn.createStatement();
-					String readRecordSQL = "select count(*) from NATIONALITY where name = '" + CCUSNATIONALITY.getValue() + "'";
+					String readRecordSQL = "select count(*) from NATIONALITY where name = '"
+							+ CCUSNATIONALITY.getValue() + "'";
 					ResultSet rs = sqlStatement.executeQuery(readRecordSQL);
 					// Проверка существования национальности
 					if (CCUSNATIONALITY.getValue() != null) {
@@ -2181,7 +2186,7 @@ public class EditCus {
 			 * Заполнение данными *****************************
 			 */
 			CUS cus = INIT_CUS();
-			
+
 			CCUSNAME.setText(cus.getCCUSNAME());
 			CCUSNAME_SH.setText(cus.getCCUSNAME_SH());
 			ORG_DATE_REG.setValue(cus.getORG_DATE_REG());
@@ -2189,8 +2194,7 @@ public class EditCus {
 
 			CUS_INN.setText(cus.getCUS_INN());
 			CUS_KPP.setText(cus.getCUS_KPP());
-			
-			
+
 			ForAddFioAndId = cus;
 
 			// тип клиента
@@ -2237,12 +2241,19 @@ public class EditCus {
 					countryes.setNAME(rs.getString("NAME"));
 					nationals.add(countryes);
 				}
-				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
-				CombCountry.getEditor().textProperty()
-						.addListener(new InputFilter<COUNTRIES>(CombCountry, filterednationals, false));
-				CombCountry.setItems(filterednationals);
 				rs.close();
 				sqlStatement.close();
+
+//				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
+//				CombCountry.getEditor().textProperty()
+//						.addListener(new InputFilter<COUNTRIES>(CombCountry, filterednationals, false));
+
+				CombCountry.setItems(nationals);
+
+				FxUtilTest.getComboBoxValue(CombCountry);
+				FxUtilTest.autoCompleteComboBoxPlus(CombCountry, (typedText, itemToCompare) -> itemToCompare.getNAME()
+						.toLowerCase().contains(typedText.toLowerCase()));
+
 				CombCountry(CombCountry);
 
 				for (COUNTRIES value : CombCountry.getItems()) {
@@ -2265,12 +2276,18 @@ public class EditCus {
 					countryes.setNAME(rs.getString("NAME"));
 					nationals.add(countryes);
 				}
-				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
-				CombCountryAddr.getEditor().textProperty()
-						.addListener(new InputFilter<COUNTRIES>(CombCountryAddr, filterednationals, false));
-				CombCountryAddr.setItems(filterednationals);
 				rs.close();
 				sqlStatement.close();
+//				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
+//				CombCountryAddr.getEditor().textProperty()
+//						.addListener(new InputFilter<COUNTRIES>(CombCountryAddr, filterednationals, false));
+
+				CombCountryAddr.setItems(nationals);
+
+				FxUtilTest.getComboBoxValue(CombCountryAddr);
+				FxUtilTest.autoCompleteComboBoxPlus(CombCountryAddr, (typedText, itemToCompare) -> itemToCompare
+						.getNAME().toLowerCase().contains(typedText.toLowerCase()));
+
 				CombCountry(CombCountryAddr);
 
 				for (COUNTRIES value : CombCountryAddr.getItems()) {
@@ -2332,11 +2349,16 @@ public class EditCus {
 				sqlStatement.close();
 				rs.close();
 
-				FilteredList<String> filterednationals = new FilteredList<String>(np);
+//				FilteredList<String> filterednationals = new FilteredList<String>(np);
+//
+//				PUNCT_NAME.getEditor().textProperty()
+//						.addListener(new InputFilter<String>(PUNCT_NAME, filterednationals, false));
 
-				PUNCT_NAME.getEditor().textProperty()
-						.addListener(new InputFilter<String>(PUNCT_NAME, filterednationals, false));
-				PUNCT_NAME.setItems(filterednationals);
+				PUNCT_NAME.setItems(np);
+
+				FxUtilTest.getComboBoxValue(PUNCT_NAME);
+				FxUtilTest.autoCompleteComboBoxPlus(PUNCT_NAME,
+						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
 
 				for (String value : PUNCT_NAME.getItems()) {
 					if (value.equals(cus.getINF())) {
@@ -2454,10 +2476,16 @@ public class EditCus {
 				while (rs.next()) {
 					nationals.add(rs.getString(1));
 				}
-				FilteredList<String> filterednationals = new FilteredList<String>(nationals);
-				CCUSNATIONALITY.getEditor().textProperty()
-						.addListener(new InputFilter<String>(CCUSNATIONALITY, filterednationals, false));
-				CCUSNATIONALITY.setItems(filterednationals);
+				
+//				FilteredList<String> filterednationals = new FilteredList<String>(nationals);
+//				CCUSNATIONALITY.getEditor().textProperty()
+//						.addListener(new InputFilter<String>(CCUSNATIONALITY, filterednationals, false));
+				
+				CCUSNATIONALITY.setItems(nationals);
+				
+				FxUtilTest.getComboBoxValue(CCUSNATIONALITY);
+				FxUtilTest.autoCompleteComboBoxPlus(CCUSNATIONALITY,
+						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
 
 				sqlStatement.close();
 				rs.close();

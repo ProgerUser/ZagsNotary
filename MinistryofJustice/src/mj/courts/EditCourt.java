@@ -112,8 +112,8 @@ public class EditCourt {
 	private void convertComboDisplayList() {
 		OTD.setConverter(new StringConverter<OTD>() {
 			@Override
-			public String toString(OTD product) {
-				return product.getCOTDNAME();
+			public String toString(OTD object) {
+				return object != null ? object.getCOTDNAME() : "";
 			}
 
 			@Override

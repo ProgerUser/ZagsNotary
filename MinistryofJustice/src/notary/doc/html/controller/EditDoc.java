@@ -48,7 +48,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -85,11 +84,11 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
 import mj.widgets.DbmsOutputCapture;
+import mj.widgets.FxUtilTest;
 import netscape.javascript.JSObject;
 import notary.doc.html.model.NT_SCANS;
 import notary.doc.html.model.V_NT_DOC;
@@ -966,7 +965,7 @@ public class EditDoc {
 		cmbbx.setConverter(new StringConverter<V_NT_TEMP_LIST>() {
 			@Override
 			public String toString(V_NT_TEMP_LIST product) {
-				return product != null ? product.getNAMES() : null;
+				return product != null ? product.getNAMES() : "";
 			}
 
 			@Override
@@ -1221,12 +1220,16 @@ public class EditDoc {
 				}
 				stsmt.close();
 				rs.close();
-				FilteredList<V_NT_TEMP_LIST> filterednationals = new FilteredList<V_NT_TEMP_LIST>(combolist);
-				TYPE_NAME.getEditor().textProperty()
-						.addListener(new InputFilter<V_NT_TEMP_LIST>(TYPE_NAME, filterednationals, false));
-				TYPE_NAME.setItems(filterednationals);
+//				FilteredList<V_NT_TEMP_LIST> filterednationals = new FilteredList<V_NT_TEMP_LIST>(combolist);
+//				TYPE_NAME.getEditor().textProperty()
+//						.addListener(new InputFilter<V_NT_TEMP_LIST>(TYPE_NAME, filterednationals, false));
+				TYPE_NAME.setItems(combolist);
+				
+				FxUtilTest.getComboBoxValue(TYPE_NAME);
+				FxUtilTest.autoCompleteComboBoxPlus(TYPE_NAME, (typedText, itemToCompare) -> itemToCompare.getNAMES()
+						.toLowerCase().contains(typedText.toLowerCase()));
+				
 				convert_TYPE_NAME(TYPE_NAME);
-				rs.close();
 			}
 			if (NT_DOC.getNT_TYPE() != null) {
 				for (V_NT_TEMP_LIST ld : TYPE_NAME.getItems()) {

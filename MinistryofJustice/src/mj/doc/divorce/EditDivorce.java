@@ -161,7 +161,7 @@ public class EditDivorce {
 		DIVC_ZOSCN2.setConverter(new StringConverter<VCOURTS>() {
 			@Override
 			public String toString(VCOURTS product) {
-				return product != null ? product.getNAME() : null;
+				return product != null ? product.getNAME() : "";
 			}
 
 			@Override
@@ -176,7 +176,7 @@ public class EditDivorce {
 		DIVC_ZOSCN.setConverter(new StringConverter<VCOURTS>() {
 			@Override
 			public String toString(VCOURTS product) {
-				return product != null ? product.getNAME() : null;
+				return product != null ? product.getNAME() : "";
 			}
 
 			@Override
@@ -190,7 +190,7 @@ public class EditDivorce {
 		DIVC_CAN.setConverter(new StringConverter<VCOURTS>() {
 			@Override
 			public String toString(VCOURTS product) {
-				return product != null ? product.getNAME() : null;
+				return product != null ? product.getNAME() : "";
 			}
 
 			@Override

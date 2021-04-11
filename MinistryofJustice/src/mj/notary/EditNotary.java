@@ -52,9 +52,9 @@ public class EditNotary {
 	private void convertComboDisplayList() {
 		NOT_OTD.setConverter(new StringConverter<OTD>() {
 			@Override
-			public String toString(OTD product) {
-				return product.getCOTDNAME();
-			}
+			public String toString(OTD object) {
+				return object != null ? object.getCOTDNAME() : "";
+			}			
 
 			@Override
 			public OTD fromString(final String string) {

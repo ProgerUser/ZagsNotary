@@ -98,7 +98,7 @@ public class AddOtd {
 		cmbbx.setConverter(new StringConverter<RAION>() {
 			@Override
 			public String toString(RAION product) {
-				return product != null ? product.getNAME() : null;
+				return product != null ? product.getNAME() : "";
 			}
 
 			@Override

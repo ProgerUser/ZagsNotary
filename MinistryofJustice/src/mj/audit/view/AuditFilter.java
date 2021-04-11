@@ -13,7 +13,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,10 +33,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.FxUtilTest;
 
 public class AuditFilter {
 
@@ -421,8 +420,8 @@ public class AuditFilter {
 	private void convertComboDisplayList() {
 		CTABLE.setConverter(new StringConverter<AU_TABLE>() {
 			@Override
-			public String toString(AU_TABLE product) {
-				return (product != null ? product.getTABLENAME() : "");
+			public String toString(AU_TABLE object) {
+				return object != null ? object.getTABLENAME() : "";
 			}
 
 			@Override
@@ -454,11 +453,16 @@ public class AuditFilter {
 				sqlStatement.close();
 				rs.close();
 				// 1. Сначала фильтр !
-				FilteredList<AU_TABLE> filterednationals = new FilteredList<AU_TABLE>(areas);
-				CTABLE.getEditor().textProperty()
-						.addListener(new InputFilter<AU_TABLE>(CTABLE, filterednationals, false));
+//				FilteredList<AU_TABLE> filterednationals = new FilteredList<AU_TABLE>(areas);
+//				CTABLE.getEditor().textProperty()
+//						.addListener(new InputFilter<AU_TABLE>(CTABLE, filterednationals, false));
 				// 2. Потом данные
 				CTABLE.setItems(areas);
+				
+				FxUtilTest.getComboBoxValue(CTABLE);
+				FxUtilTest.autoCompleteComboBoxPlus(CTABLE, (typedText, itemToCompare) -> itemToCompare.getTABLENAME()
+						.toLowerCase().contains(typedText.toLowerCase()));
+				
 				convertComboDisplayList();
 				// CTABLE.getSelectionModel().select(0);
 				rs.close();

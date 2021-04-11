@@ -22,7 +22,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -47,17 +46,17 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
-import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
+import mj.widgets.FxUtilTest;
 
 public class EditUpdNat {
 
 	@FXML
 	private TextField DOC_NUMBER;
-	
+
 	@FXML
 	private TextField BRN_ACT_ID;
 
@@ -546,14 +545,26 @@ public class EditUpdNat {
 				}
 				sqlStatement.close();
 
-				FilteredList<NATIONALITY> filterednationals1 = new FilteredList<NATIONALITY>(nationals);
-				FilteredList<NATIONALITY> filterednationals2 = new FilteredList<NATIONALITY>(nationals);
-				NEW_NAT.getEditor().textProperty()
-						.addListener(new InputFilter<NATIONALITY>(NEW_NAT, filterednationals1, false));
-				NEW_NAT.setItems(filterednationals1);
-				OLD_NAT.getEditor().textProperty()
-						.addListener(new InputFilter<NATIONALITY>(OLD_NAT, filterednationals2, false));
-				OLD_NAT.setItems(filterednationals2);
+				NEW_NAT.setItems(nationals);
+
+				FxUtilTest.getComboBoxValue(NEW_NAT);
+				FxUtilTest.autoCompleteComboBoxPlus(NEW_NAT, (typedText, itemToCompare) -> itemToCompare.getNAME()
+						.toLowerCase().contains(typedText.toLowerCase()));
+
+				OLD_NAT.setItems(nationals);
+				
+				FxUtilTest.getComboBoxValue(OLD_NAT);
+				FxUtilTest.autoCompleteComboBoxPlus(OLD_NAT, (typedText, itemToCompare) -> itemToCompare.getNAME()
+						.toLowerCase().contains(typedText.toLowerCase()));
+				
+//				FilteredList<NATIONALITY> filterednationals1 = new FilteredList<NATIONALITY>(nationals);
+//				FilteredList<NATIONALITY> filterednationals2 = new FilteredList<NATIONALITY>(nationals);
+//				NEW_NAT.getEditor().textProperty()
+//						.addListener(new InputFilter<NATIONALITY>(NEW_NAT, filterednationals1, false));
+//				NEW_NAT.setItems(filterednationals1);
+//				OLD_NAT.getEditor().textProperty()
+//						.addListener(new InputFilter<NATIONALITY>(OLD_NAT, filterednationals2, false));
+//				OLD_NAT.setItems(filterednationals2);
 
 				rs.close();
 				convertCombo(NEW_NAT);

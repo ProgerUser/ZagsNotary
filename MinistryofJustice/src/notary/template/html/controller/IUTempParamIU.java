@@ -31,7 +31,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,9 +45,9 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.util.ConvConst;
+import mj.widgets.FxUtilTest;
 import notary.template.html.model.ALL_TABLE;
 import notary.template.html.model.NT_PADEJ;
 import notary.template.html.model.NT_PRM_TYPE;
@@ -326,14 +325,14 @@ public class IUTempParamIU {
 			vb_sql_list.getStylesheets().add("/ScrPane.css");
 
 			{
-				//Region spacer = new Region();
+				// Region spacer = new Region();
 				HTML_CODE.setPrefHeight(1000);
 				PRM_FOR_PRM_SQL.setPrefHeight(1000);
 				PRM_SQL.setPrefHeight(1000);
-				
+
 				HTML_CODE.setMaxHeight(Double.MAX_VALUE);
 				HTML_CODE.setMaxWidth(Double.MAX_VALUE);
-				
+
 				executor = Executors.newSingleThreadExecutor();
 				Subscription cleanupWhenDone = HTML_CODE.multiPlainChanges().successionEnds(Duration.ofMillis(500))
 						.supplyTask(this::computeHighlightingAsync).awaitLatest(HTML_CODE.multiPlainChanges())
@@ -388,10 +387,16 @@ public class IUTempParamIU {
 				stsmt.close();
 				rs.close();
 
-				FilteredList<ALL_TABLE> filterednationals = new FilteredList<ALL_TABLE>(combolist);
-				PRM_TBL_REF.getEditor().textProperty()
-						.addListener(new InputFilter<ALL_TABLE>(PRM_TBL_REF, filterednationals, false));
-				PRM_TBL_REF.setItems(filterednationals);
+//				FilteredList<ALL_TABLE> filterednationals = new FilteredList<ALL_TABLE>(combolist);
+//				PRM_TBL_REF.getEditor().textProperty()
+//						.addListener(new InputFilter<ALL_TABLE>(PRM_TBL_REF, filterednationals, false));
+
+				PRM_TBL_REF.setItems(combolist);
+
+				FxUtilTest.getComboBoxValue(PRM_TBL_REF);
+				FxUtilTest.autoCompleteComboBoxPlus(PRM_TBL_REF, (typedText, itemToCompare) -> itemToCompare
+						.getTABLE_NAME().toLowerCase().contains(typedText.toLowerCase()));
+
 				convert_TablrList(PRM_TBL_REF);
 			}
 			// Параметры
@@ -422,10 +427,16 @@ public class IUTempParamIU {
 				stsmt.close();
 				rs.close();
 
-				FilteredList<NT_TEMP_LIST_PARAM> filterednationals = new FilteredList<NT_TEMP_LIST_PARAM>(combolist);
-				PARENTS.getEditor().textProperty()
-						.addListener(new InputFilter<NT_TEMP_LIST_PARAM>(PARENTS, filterednationals, false));
-				PARENTS.setItems(filterednationals);
+//				FilteredList<NT_TEMP_LIST_PARAM> filterednationals = new FilteredList<NT_TEMP_LIST_PARAM>(combolist);
+//				PARENTS.getEditor().textProperty()
+//						.addListener(new InputFilter<NT_TEMP_LIST_PARAM>(PARENTS, filterednationals, false));
+				
+				PARENTS.setItems(combolist);
+				
+				FxUtilTest.getComboBoxValue(PRM_TBL_REF);
+				FxUtilTest.autoCompleteComboBoxPlus(PRM_TBL_REF, (typedText, itemToCompare) -> itemToCompare
+						.getTABLE_NAME().toLowerCase().contains(typedText.toLowerCase()));
+				
 				convert_PARENTS(PARENTS);
 			}
 			// Тип параметра
@@ -493,11 +504,18 @@ public class IUTempParamIU {
 					stsmt.close();
 					rs.close();
 
-					FilteredList<NT_TEMP_LIST_PARAM> filterednationals = new FilteredList<NT_TEMP_LIST_PARAM>(
-							combolist);
-					PARENTS.getEditor().textProperty()
-							.addListener(new InputFilter<NT_TEMP_LIST_PARAM>(PARENTS, filterednationals, false));
-					PARENTS.setItems(filterednationals);
+//					FilteredList<NT_TEMP_LIST_PARAM> filterednationals = new FilteredList<NT_TEMP_LIST_PARAM>(
+//							combolist);
+//					PARENTS.getEditor().textProperty()
+//							.addListener(new InputFilter<NT_TEMP_LIST_PARAM>(PARENTS, filterednationals, false));
+					
+					PARENTS.setItems(combolist);
+					
+					FxUtilTest.getComboBoxValue(PRM_TBL_REF);
+					FxUtilTest.autoCompleteComboBoxPlus(PRM_TBL_REF, (typedText, itemToCompare) -> itemToCompare
+							.getTABLE_NAME().toLowerCase().contains(typedText.toLowerCase()));
+					
+					
 					convert_PARENTS(PARENTS);
 				}
 				if (cl.getPRM_FOR_PRM_SQL() != null) {

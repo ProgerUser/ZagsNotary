@@ -546,7 +546,7 @@ public class AddDeath {
 		DC_RCNAME.setConverter(new StringConverter<VCOURTS>() {
 			@Override
 			public String toString(VCOURTS product) {
-				return product != null ? product.getNAME() : null;
+				return product != null ? product.getNAME() : "";
 			}
 
 			@Override

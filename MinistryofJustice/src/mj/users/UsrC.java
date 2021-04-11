@@ -821,8 +821,8 @@ public class UsrC {
 	private void convertComboDisplayList() {
 		IUSRBRANCH.setConverter(new StringConverter<OTD>() {
 			@Override
-			public String toString(OTD product) {
-				return product.getCOTDNAME();
+			public String toString(OTD object) {
+				return object != null ? object.getCOTDNAME() : "";
 			}
 
 			@Override
@@ -838,9 +838,10 @@ public class UsrC {
 	 */
 	private void ZagsCombo() {
 		ZAGS.setConverter(new StringConverter<ZAGS>() {
+
 			@Override
-			public String toString(ZAGS product) {
-				return product.getZAGS_NAME();
+			public String toString(ZAGS object) {
+				return object != null ? object.getZAGS_NAME() : "";
 			}
 
 			@Override
@@ -857,8 +858,8 @@ public class UsrC {
 	private void NotaryCombo() {
 		NOTARY.setConverter(new StringConverter<NOTARY>() {
 			@Override
-			public String toString(NOTARY product) {
-				return product.getNOT_NAME();
+			public String toString(NOTARY object) {
+				return object != null ? object.getNOT_NAME() : "";
 			}
 
 			@Override

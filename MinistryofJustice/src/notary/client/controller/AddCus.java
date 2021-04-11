@@ -37,7 +37,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -83,7 +82,6 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.app.model.InputFilter;
 import mj.app.model.OTD;
 import mj.app.model.SqlMap;
 import mj.dbutil.DBUtil;
@@ -91,12 +89,13 @@ import mj.doc.cus.Auth1c;
 import mj.init.HttpsTrustManager;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.FxUtilTest;
 import mj.widgets.KeyBoard;
 import notary.client.model.COUNTRIES;
 import notary.client.model.CUS;
+import notary.client.model.CUS_CITIZEN;
 import notary.client.model.CUS_DOCUM;
 import notary.client.model.NT_CLI_TYPES;
-import notary.client.model.CUS_CITIZEN;
 import notary.client.model.VPUD;
 
 /**
@@ -1601,12 +1600,17 @@ public class AddCus {
 				sqlStatement.close();
 				rs.close();
 
-				FilteredList<String> filterednationals = new FilteredList<String>(np);
+//				FilteredList<String> filterednationals = new FilteredList<String>(np);
+//
+//				PUNCT_NAME.getEditor().textProperty()
+//						.addListener(new InputFilter<String>(PUNCT_NAME, filterednationals, false));
 
-				PUNCT_NAME.getEditor().textProperty()
-						.addListener(new InputFilter<String>(PUNCT_NAME, filterednationals, false));
-				PUNCT_NAME.setItems(filterednationals);
-				rs.close();
+				PUNCT_NAME.setItems(np);
+
+				FxUtilTest.getComboBoxValue(PUNCT_NAME);
+				FxUtilTest.autoCompleteComboBoxPlus(PUNCT_NAME,
+						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
+
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -2072,7 +2076,7 @@ public class AddCus {
 						} else if (vals.getCODE() == 2) {
 							onclose();
 						}
-					}else {
+					} else {
 						onclose();
 					}
 				}
@@ -2414,7 +2418,7 @@ public class AddCus {
 	@FXML
 	private void initialize() {
 		try {
-			
+
 			CCUSLAST_NAME.setDisable(true);
 //			CCUSLAST_NAME.focusedProperty().addListener(new ChangeListener<Boolean>() {
 //				@Override
@@ -2737,12 +2741,17 @@ public class AddCus {
 					countryes.setNAME(rs.getString("NAME"));
 					nationals.add(countryes);
 				}
-				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
-				CombCountry.getEditor().textProperty()
-						.addListener(new InputFilter<COUNTRIES>(CombCountry, filterednationals, false));
-				CombCountry.setItems(filterednationals);
 				rs.close();
 				sqlStatement.close();
+//				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
+//				CombCountry.getEditor().textProperty()
+//						.addListener(new InputFilter<COUNTRIES>(CombCountry, filterednationals, false));
+				CombCountry.setItems(nationals);
+
+				FxUtilTest.getComboBoxValue(CombCountry);
+				FxUtilTest.autoCompleteComboBoxPlus(CombCountry, (typedText, itemToCompare) -> itemToCompare.getNAME()
+						.toLowerCase().contains(typedText.toLowerCase()));
+
 				CombCountry(CombCountry);
 
 				CombCountry.getSelectionModel().select(0);
@@ -2761,12 +2770,17 @@ public class AddCus {
 					countryes.setNAME(rs.getString("NAME"));
 					nationals.add(countryes);
 				}
-				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
-				CombCountryAddr.getEditor().textProperty()
-						.addListener(new InputFilter<COUNTRIES>(CombCountryAddr, filterednationals, false));
-				CombCountryAddr.setItems(filterednationals);
 				rs.close();
 				sqlStatement.close();
+//				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
+//				CombCountryAddr.getEditor().textProperty()
+//						.addListener(new InputFilter<COUNTRIES>(CombCountryAddr, filterednationals, false));
+				CombCountryAddr.setItems(nationals);
+
+				FxUtilTest.getComboBoxValue(CombCountryAddr);
+				FxUtilTest.autoCompleteComboBoxPlus(CombCountryAddr, (typedText, itemToCompare) -> itemToCompare
+						.getNAME().toLowerCase().contains(typedText.toLowerCase()));
+
 				CombCountry(CombCountryAddr);
 
 				CombCountryAddr.getSelectionModel().select(0);
@@ -2783,12 +2797,16 @@ public class AddCus {
 				while (rs.next()) {
 					nationals.add(rs.getString(1));
 				}
-				FilteredList<String> filterednationals = new FilteredList<String>(nationals);
-				CCUSNATIONALITY.getEditor().textProperty()
-						.addListener(new InputFilter<String>(CCUSNATIONALITY, filterednationals, false));
-				CCUSNATIONALITY.setItems(filterednationals);
 				rs.close();
 				sqlStatement.close();
+//				FilteredList<String> filterednationals = new FilteredList<String>(nationals);
+//				CCUSNATIONALITY.getEditor().textProperty()
+//						.addListener(new InputFilter<String>(CCUSNATIONALITY, filterednationals, false));
+				CCUSNATIONALITY.setItems(nationals);
+
+				FxUtilTest.getComboBoxValue(CCUSNATIONALITY);
+				FxUtilTest.autoCompleteComboBoxPlus(CCUSNATIONALITY,
+						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
 			}
 
 			/**
@@ -2830,7 +2848,6 @@ public class AddCus {
 				sqlStatement.close();
 			}
 
-			
 			new ConvConst().FormatDatePiker(ORG_DATE_REG);
 			new ConvConst().FormatDatePiker(DOC_DATE_T);
 			new ConvConst().FormatDatePiker(DCUSBIRTHDAY);

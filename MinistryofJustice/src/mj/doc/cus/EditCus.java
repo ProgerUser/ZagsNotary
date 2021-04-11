@@ -33,7 +33,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -80,7 +79,6 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.app.model.InputFilter;
 import mj.app.model.OTD;
 import mj.app.model.SqlMap;
 import mj.app.rootlayout.Root;
@@ -106,6 +104,7 @@ import mj.doc.updname.UpdNameList;
 import mj.init.HttpsTrustManager;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.FxUtilTest;
 import mj.widgets.KeyBoard;
 
 /**
@@ -116,14 +115,14 @@ import mj.widgets.KeyBoard;
  */
 public class EditCus {
 	@FXML
-    private CheckBox PUNCT_NAME_NOT_LIST;
-    @FXML
-    private CheckBox AREA_NOT_LIST;
-    @FXML
-    private TextField AREA_T;
-    @FXML
-    private TextField PUNCT_NAME_T;
-    
+	private CheckBox PUNCT_NAME_NOT_LIST;
+	@FXML
+	private CheckBox AREA_NOT_LIST;
+	@FXML
+	private TextField AREA_T;
+	@FXML
+	private TextField PUNCT_NAME_T;
+
 	@FXML
 	void AREA_NOT_LIST(ActionEvent event) {
 		try {
@@ -141,7 +140,7 @@ public class EditCus {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	@FXML
 	void PUNCT_NAME_NOT_LIST(ActionEvent event) {
 		try {
@@ -152,7 +151,7 @@ public class EditCus {
 				PUNCT_NAME_T.setVisible(true);
 			} else {
 				PUNCT_NAME.setVisible(true);
-				
+
 				PUNCT_NAME_T.setVisible(false);
 				PUNCT_NAME_T.setText("");
 			}
@@ -160,6 +159,7 @@ public class EditCus {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+
 	@FXML
 	private void OpenKey() {
 		try {
@@ -190,25 +190,25 @@ public class EditCus {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
-    @FXML
-    private RadioButton AB_SUN;
 
-    @FXML
-    private RadioButton AB_DOUTH;
-    
-    @FXML
-    private TextField AB_LAST_NAME;
+	@FXML
+	private RadioButton AB_SUN;
 
-    @FXML
-    private TextField AB_FIRST_NAME;
+	@FXML
+	private RadioButton AB_DOUTH;
 
-    @FXML
-    private TextField AB_MIDDLE_NAME;
+	@FXML
+	private TextField AB_LAST_NAME;
 
-    @FXML
-    private TextField AB_PLACE_BIRTH;
-    
+	@FXML
+	private TextField AB_FIRST_NAME;
+
+	@FXML
+	private TextField AB_MIDDLE_NAME;
+
+	@FXML
+	private TextField AB_PLACE_BIRTH;
+
 	/**
 	 * При изменении "Страна рождения"
 	 */
@@ -316,8 +316,7 @@ public class EditCus {
 
 	@FXML
 	private TableColumn<ALL_DOCS, String> TYPE_DOC;
-	
-	
+
 	@FXML
 	private TableColumn<ALL_DOCS, Integer> DOC_ID;
 
@@ -618,9 +617,9 @@ public class EditCus {
 					delete.setString(1, CCUSNATIONALITY.getValue());
 					delete.executeUpdate();
 					delete.close();
-					if(if_save) {
+					if (if_save) {
 						CallSaveToCompare();
-					}else {
+					} else {
 						CallSave();
 					}
 				} catch (SQLException e) {
@@ -780,10 +779,11 @@ public class EditCus {
 			vb.setPadding(new Insets(10, 10, 10, 10));
 			NAME.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
 
-			debtinfo.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);;
+			debtinfo.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+			;
 			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
 			NAME.setColumnFilter(new PatternColumnFilter<>());
-			
+
 			String selectStmt = "select * from COUNTRIES t order by CODE asc";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
@@ -796,9 +796,9 @@ public class EditCus {
 			}
 			prepStmt.close();
 			rs.close();
-			
+
 			debtinfo.setItems(user_o_list);
-			//autoResizeColumns(debtinfo);
+			// autoResizeColumns(debtinfo);
 			debtinfo.prefWidth(341);
 			debtinfo.prefHeight(490);
 			TableFilter<COUNTRIES> tableFilter = TableFilter.forTableView(debtinfo).apply();
@@ -983,15 +983,16 @@ public class EditCus {
 				}
 				sqlStatement.close();
 				rs.close();
-				
-				FilteredList<String> filterednationals = new FilteredList<String>(np);
 
-				PUNCT_NAME.getEditor().textProperty()
-						.addListener(new InputFilter<String>(PUNCT_NAME, filterednationals, false));
-				PUNCT_NAME.setItems(filterednationals);
-				rs.close();
+//				FilteredList<String> filterednationals = new FilteredList<String>(np);
+
+//				PUNCT_NAME.getEditor().textProperty()
+//						.addListener(new InputFilter<String>(PUNCT_NAME, filterednationals, false));
+				PUNCT_NAME.setItems(np);
+				FxUtilTest.getComboBoxValue(PUNCT_NAME);
+				FxUtilTest.autoCompleteComboBoxPlus(PUNCT_NAME,
+						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
 			}
-
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -1232,107 +1233,104 @@ public class EditCus {
 //			Task<Object> task = new Task<Object>() {
 //				@Override
 //				public Object call() throws Exception {
-					// разрешить любые сертификаты
-					new HttpsTrustManager().allowAllSSL();
-					Auth1c exdb = new Auth1c();
-					String CPU_NAME = exdb.CPU_NAME();
-					String DB_NAME = exdb.DB_NAME();
-					String HDD_SERIAL = exdb.HDD_SERIAL();
-					// String LAST_AUTH = exdb.LAST_AUTH();
-					String ENCRYPT = exdb.ENCRYPT(DB_NAME, HDD_SERIAL, CPU_NAME);
+			// разрешить любые сертификаты
+			new HttpsTrustManager().allowAllSSL();
+			Auth1c exdb = new Auth1c();
+			String CPU_NAME = exdb.CPU_NAME();
+			String DB_NAME = exdb.DB_NAME();
+			String HDD_SERIAL = exdb.HDD_SERIAL();
+			// String LAST_AUTH = exdb.LAST_AUTH();
+			String ENCRYPT = exdb.ENCRYPT(DB_NAME, HDD_SERIAL, CPU_NAME);
 
-					// Обращение к сервису
-					String auth = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
-							+ "<ДанныеДляАвторизации КодДоступа=\"" + ENCRYPT + "\" IDБазы=\"" + exdb.ID() + "\"/>\r\n"
-							+ "</Контейнер>\r\n";
-					URL url = new URL(exdb.FullAddress() + "/Authorization");
-					String AuthReturn = exdb.Call1cHttpService(auth, exdb.LOGIN(), exdb.PASSWORD(), url);
-					System.out.println(AuthReturn);
-					String xml_last_auth = exdb.XML(AuthReturn);
-					exdb.SAVE_AUTH_1C_DATE(xml_last_auth);
+			// Обращение к сервису
+			String auth = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
+					+ "<ДанныеДляАвторизации КодДоступа=\"" + ENCRYPT + "\" IDБазы=\"" + exdb.ID() + "\"/>\r\n"
+					+ "</Контейнер>\r\n";
+			URL url = new URL(exdb.FullAddress() + "/Authorization");
+			String AuthReturn = exdb.Call1cHttpService(auth, exdb.LOGIN(), exdb.PASSWORD(), url);
+			System.out.println(AuthReturn);
+			String xml_last_auth = exdb.XML(AuthReturn);
+			exdb.SAVE_AUTH_1C_DATE(xml_last_auth);
 
-					SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
-					String readRecordSQL = sql.getSql("FOR_1c");
-					String XML = sql.getSql("1C_XML");
-					{
-						PreparedStatement select = conn.prepareStatement(readRecordSQL);
-						select.setInt(1, dbid);
-						ResultSet rs = select.executeQuery();
-						if (rs.next()) {
-							/*
-							 * XML.replace("\"DB_NAME\"", DB_NAME); XML.replace("\"LAST_AUTH\"",
-							 * AUTH_1C_DATE); XML.replace("\"OPERATOR\"", DB_NAME + "/" +
-							 * rs.getString("OPER")); XML.replace("\"ID\"", ""); XML.replace("\"REF_CODE\"",
-							 * ""); XML.replace("\"L_NAME\"", rs.getString("CCUSLAST_NAME"));
-							 * XML.replace("\"F_NAME\"", rs.getString("CCUSFIRST_NAME"));
-							 * XML.replace("\"M_NAME\"", rs.getString("CCUSMIDDLE_NAME"));
-							 * XML.replace("\"B_RDATE\"", rs.getString("BR_DATE"));
-							 * XML.replace("\"SEX_CODE\"", rs.getString("CCUSSEX"));
-							 * XML.replace("\"AREA_CODE\"", rs.getString("CODE_AREA"));
-							 * XML.replace("\"AREA_NAME\"", rs.getString("NAME_AREA"));
-							 * XML.replace("\"NASPUNCT_CODE\"", rs.getString("PUNCT_CODE"));
-							 * XML.replace("\"NASPUNCT_NAME\"", rs.getString("PUNCT_NAME"));
-							 * XML.replace("\"STREET\"", rs.getString("STREET")); XML.replace("\"HOME\"",
-							 * rs.getString("DOM")); XML.replace("\"KORPUS\"", rs.getString("KORP"));
-							 * XML.replace("\"KVARTIRA\"", rs.getString("KV"));
-							 */
-							XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
-									+ "	<ДанныеАвторизации IDБазы=\"" + exdb.ID() + "\" ДатаПоследнейАвторизации=\""
-									+ xml_last_auth + "\"/>\r\n" + "	<РодительскийЭлемент>\r\n"
-									+ "		<ПерсональныеДанные Оператор=\"" + DB_NAME + "/" + rs.getString("OPER")
-									+ "\" ID=\"\" КодСсылки=\"\" Фамилия=\"" + rs.getString("CCUSLAST_NAME")
-									+ "\" Имя=\"" + rs.getString("CCUSFIRST_NAME") + "\" Отчество=\""
-									+ rs.getString("CCUSMIDDLE_NAME") + "\" ДатаРождения=\"" + rs.getString("BR_DATE")
-									+ "\" КодПола=\"" + rs.getString("CCUSSEX") + "\"/>\r\n"
-									+ "		<МестоЖительства КодРайона=\"" + rs.getString("CODE_AREA")
-									+ "\" НаименованиеРайона=\"" + rs.getString("NAME_AREA") + "\" КодНасПункта=\""
-									+ rs.getString("PUNCT_CODE") + "\" НаименованиеНасПункта=\""
-									+ rs.getString("PUNCT_NAME") + "\" Улица=\"" + rs.getString("STREET") + "\" Дом=\""
-									+ rs.getString("DOM") + "\" Корпус=\"" + rs.getString("KORP") + "\" Квартира=\""
-									+ rs.getString("KV") + "\"/>\r\n";
-						}
-						rs.close();
-						select.close();
-					}
-					XML = XML + "		<Паспорта>\r\n";
-					String docs = "";
-					int cnt_doc = 0;
-					{
-						String XML_CUS_DOCUM = sql.getSql("1C_XML_CUS_DOCUM");
-						PreparedStatement doc = conn.prepareStatement(XML_CUS_DOCUM);
-						doc.setInt(1, dbid);
-						ResultSet rs = doc.executeQuery();
-						while (rs.next()) {
-							cnt_doc++;
-							docs = docs + "			<Паспорт" + String.valueOf(cnt_doc) + " ID=\""
-									+ rs.getString("SYS_GUID") + "\" Просрочен=\"0\" КодГосударства=\""
-									+ rs.getString("COUNTRY_CODE") + "\" НаименованиеГосударства=\""
-									+ rs.getString("COUNTRY_NAME") + "\" КодВида=\"" + rs.getString("DOC_CODE")
-									+ "\" НаименованиеВида=\"" + rs.getString("DOC_NAME") + "\" Серия=\""
-									+ rs.getString("DOC_SER") + "\" Номер=\"" + rs.getString("DOC_NUM")
-									+ "\" КемВыдан=\"" + rs.getString("DOC_AGENCY") + "\" ДатаВыдачи=\""
-									+ rs.getString("DOC_DATE") + "\" СрокДействия=\"" + rs.getString("DOC_PERIOD")
-									+ "\"/>\r\n";
-						}
-						doc.close();
-						rs.close();
-					}
-					XML = XML + docs + "		</Паспорта>\r\n	</РодительскийЭлемент>\r\n</Контейнер>";
-					System.out.println(XML);
-					URL url2 = new URL(exdb.FullAddress() + "Sync/ClientPriority");
-					String save_ret_1c = // exdb.SAVEFIO_1C(XML);
-							exdb.Call1cHttpService(XML, exdb.LOGIN(), exdb.PASSWORD(), url2);
-					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
-					System.out.println(save_ret_1c);
-					if (!save_ret_1c.equals("Неудачная попытка авторизации") & !save_ret_1c.contains("{") & save_ret_1c.matches(".*\\d.*")) {
-						// обновим id-шник
-						PreparedStatement doc = conn
-								.prepareStatement("update cus set cus.ID1C = ? where cus.ICUSNUM = ?");
-						doc.setInt(1, Integer.valueOf(save_ret_1c.replace(" ", "")));
-						doc.setInt(2, dbid);
-						doc.executeUpdate();
-						doc.close();
-					}
+			SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+			String readRecordSQL = sql.getSql("FOR_1c");
+			String XML = sql.getSql("1C_XML");
+			{
+				PreparedStatement select = conn.prepareStatement(readRecordSQL);
+				select.setInt(1, dbid);
+				ResultSet rs = select.executeQuery();
+				if (rs.next()) {
+					/*
+					 * XML.replace("\"DB_NAME\"", DB_NAME); XML.replace("\"LAST_AUTH\"",
+					 * AUTH_1C_DATE); XML.replace("\"OPERATOR\"", DB_NAME + "/" +
+					 * rs.getString("OPER")); XML.replace("\"ID\"", ""); XML.replace("\"REF_CODE\"",
+					 * ""); XML.replace("\"L_NAME\"", rs.getString("CCUSLAST_NAME"));
+					 * XML.replace("\"F_NAME\"", rs.getString("CCUSFIRST_NAME"));
+					 * XML.replace("\"M_NAME\"", rs.getString("CCUSMIDDLE_NAME"));
+					 * XML.replace("\"B_RDATE\"", rs.getString("BR_DATE"));
+					 * XML.replace("\"SEX_CODE\"", rs.getString("CCUSSEX"));
+					 * XML.replace("\"AREA_CODE\"", rs.getString("CODE_AREA"));
+					 * XML.replace("\"AREA_NAME\"", rs.getString("NAME_AREA"));
+					 * XML.replace("\"NASPUNCT_CODE\"", rs.getString("PUNCT_CODE"));
+					 * XML.replace("\"NASPUNCT_NAME\"", rs.getString("PUNCT_NAME"));
+					 * XML.replace("\"STREET\"", rs.getString("STREET")); XML.replace("\"HOME\"",
+					 * rs.getString("DOM")); XML.replace("\"KORPUS\"", rs.getString("KORP"));
+					 * XML.replace("\"KVARTIRA\"", rs.getString("KV"));
+					 */
+					XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
+							+ "	<ДанныеАвторизации IDБазы=\"" + exdb.ID() + "\" ДатаПоследнейАвторизации=\""
+							+ xml_last_auth + "\"/>\r\n" + "	<РодительскийЭлемент>\r\n"
+							+ "		<ПерсональныеДанные Оператор=\"" + DB_NAME + "/" + rs.getString("OPER")
+							+ "\" ID=\"\" КодСсылки=\"\" Фамилия=\"" + rs.getString("CCUSLAST_NAME") + "\" Имя=\""
+							+ rs.getString("CCUSFIRST_NAME") + "\" Отчество=\"" + rs.getString("CCUSMIDDLE_NAME")
+							+ "\" ДатаРождения=\"" + rs.getString("BR_DATE") + "\" КодПола=\"" + rs.getString("CCUSSEX")
+							+ "\"/>\r\n" + "		<МестоЖительства КодРайона=\"" + rs.getString("CODE_AREA")
+							+ "\" НаименованиеРайона=\"" + rs.getString("NAME_AREA") + "\" КодНасПункта=\""
+							+ rs.getString("PUNCT_CODE") + "\" НаименованиеНасПункта=\"" + rs.getString("PUNCT_NAME")
+							+ "\" Улица=\"" + rs.getString("STREET") + "\" Дом=\"" + rs.getString("DOM")
+							+ "\" Корпус=\"" + rs.getString("KORP") + "\" Квартира=\"" + rs.getString("KV")
+							+ "\"/>\r\n";
+				}
+				rs.close();
+				select.close();
+			}
+			XML = XML + "		<Паспорта>\r\n";
+			String docs = "";
+			int cnt_doc = 0;
+			{
+				String XML_CUS_DOCUM = sql.getSql("1C_XML_CUS_DOCUM");
+				PreparedStatement doc = conn.prepareStatement(XML_CUS_DOCUM);
+				doc.setInt(1, dbid);
+				ResultSet rs = doc.executeQuery();
+				while (rs.next()) {
+					cnt_doc++;
+					docs = docs + "			<Паспорт" + String.valueOf(cnt_doc) + " ID=\"" + rs.getString("SYS_GUID")
+							+ "\" Просрочен=\"0\" КодГосударства=\"" + rs.getString("COUNTRY_CODE")
+							+ "\" НаименованиеГосударства=\"" + rs.getString("COUNTRY_NAME") + "\" КодВида=\""
+							+ rs.getString("DOC_CODE") + "\" НаименованиеВида=\"" + rs.getString("DOC_NAME")
+							+ "\" Серия=\"" + rs.getString("DOC_SER") + "\" Номер=\"" + rs.getString("DOC_NUM")
+							+ "\" КемВыдан=\"" + rs.getString("DOC_AGENCY") + "\" ДатаВыдачи=\""
+							+ rs.getString("DOC_DATE") + "\" СрокДействия=\"" + rs.getString("DOC_PERIOD") + "\"/>\r\n";
+				}
+				doc.close();
+				rs.close();
+			}
+			XML = XML + docs + "		</Паспорта>\r\n	</РодительскийЭлемент>\r\n</Контейнер>";
+			System.out.println(XML);
+			URL url2 = new URL(exdb.FullAddress() + "Sync/ClientPriority");
+			String save_ret_1c = // exdb.SAVEFIO_1C(XML);
+					exdb.Call1cHttpService(XML, exdb.LOGIN(), exdb.PASSWORD(), url2);
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			System.out.println(save_ret_1c);
+			if (!save_ret_1c.equals("Неудачная попытка авторизации") & !save_ret_1c.contains("{")
+					& save_ret_1c.matches(".*\\d.*")) {
+				// обновим id-шник
+				PreparedStatement doc = conn.prepareStatement("update cus set cus.ID1C = ? where cus.ICUSNUM = ?");
+				doc.setInt(1, Integer.valueOf(save_ret_1c.replace(" ", "")));
+				doc.setInt(2, dbid);
+				doc.executeUpdate();
+				doc.close();
+			}
 //					return null;
 //				}
 //			};
@@ -1508,7 +1506,7 @@ public class EditCus {
 			Statement sqlStatement = conn.createStatement();
 			String readRecordSQL = "select count(*) from NATIONALITY where name = '" + CCUSNATIONALITY.getValue() + "'";
 			ResultSet rs = sqlStatement.executeQuery(readRecordSQL);
-			//Проверка существования национальности
+			// Проверка существования национальности
 			if (CCUSNATIONALITY.getValue() != null) {
 				if (rs.next()) {
 					if (rs.getInt(1) == 0) {
@@ -1557,7 +1555,7 @@ public class EditCus {
 			return cell;
 		});
 	}
-	
+
 	void DateFormatColDT(TableColumn<ALL_DOCS, LocalDateTime> TC) {
 		TC.setCellFactory(column -> {
 			TableCell<ALL_DOCS, LocalDateTime> cell = new TableCell<ALL_DOCS, LocalDateTime>() {
@@ -1841,7 +1839,7 @@ public class EditCus {
 			Statement sqlStatement = conn.createStatement();
 			String readRecordSQL = "select count(*) from NATIONALITY where name = '" + CCUSNATIONALITY.getValue() + "'";
 			ResultSet rs = sqlStatement.executeQuery(readRecordSQL);
-			//Проверка существования национальности
+			// Проверка существования национальности
 			if (CCUSNATIONALITY.getValue() != null) {
 				if (rs.next()) {
 					if (rs.getInt(1) == 0) {
@@ -1893,16 +1891,17 @@ public class EditCus {
 			}
 		});
 	}
-	
+
 	private CUS ForAddFioAndId;
 	@FXML
 	private MenuButton ZAGS_MENU_BUT;
+
 	/**
 	 * Инициализация
 	 */
 	@FXML
 	private void initialize() {
-		try {	
+		try {
 //			final KeyCombination kb = new KeyCodeCombination(KeyCode.BACK_QUOTE, KeyCombination.CONTROL_DOWN);
 //			AB_MIDDLE_NAME.setOnKeyReleased(event -> {
 //				System.out.println(event.getCode());
@@ -1915,7 +1914,7 @@ public class EditCus {
 
 			AB_SUN.setToggleGroup(toggleGroup);
 			AB_DOUTH.setToggleGroup(toggleGroup);
-			
+
 			Root rt = new Root();
 			ZAGS_MENU_BUT.getItems().forEach(menuItem -> {
 				if (rt.chk_menu(Integer.valueOf(menuItem.getId()), Connect.userID) == 1) {
@@ -1924,8 +1923,8 @@ public class EditCus {
 					menuItem.setVisible(false);
 				}
 			});
-			//Проверка, работает ли пользователь в загсе, нотариате или админ
-			if(DBUtil.ACC_LEV().equals("NOT"))
+			// Проверка, работает ли пользователь в загсе, нотариате или админ
+			if (DBUtil.ACC_LEV().equals("NOT"))
 				DocTab.getTabPane().getTabs().remove(DocTab);
 //			addIfNotPresent(BP.getStyleClass(), JMetroStyleClass.BACKGROUND);
 //			addIfNotPresent(all_docs.getStyleClass(), JMetroStyleClass.TABLE_GRID_LINES);
@@ -1936,8 +1935,8 @@ public class EditCus {
 //			
 //			addIfNotPresent(CUS_DOCUM.getStyleClass(), JMetroStyleClass.TABLE_GRID_LINES);
 //			addIfNotPresent(CUS_DOCUM.getStyleClass(), JMetroStyleClass.ALTERNATING_ROW_COLORS);
-			
-			//DateAutoComma(DCUSBIRTHDAY);
+
+			// DateAutoComma(DCUSBIRTHDAY);
 			/**
 			 * Двойной щелчок по строке
 			 */
@@ -1982,7 +1981,7 @@ public class EditCus {
 				return row;
 			});
 
-			//MainTool.getItems().remove(SaveEditB);
+			// MainTool.getItems().remove(SaveEditB);
 //			SaveEditB.setVisible(false);;
 //			
 //			Docs.heightProperty().addListener(
@@ -2008,11 +2007,11 @@ public class EditCus {
 
 			// delete
 			AP.getChildren().remove(DublicateBorder);
-			//DublicateBorder.getChildren().remove(DUBL);
-			//DublicateBorder.getChildren().remove(DUBLIC_TOOL);
+			// DublicateBorder.getChildren().remove(DUBL);
+			// DublicateBorder.getChildren().remove(DUBLIC_TOOL);
 
 			DocTab.setDisable(false);
-			//DocTab.setText("Документы");
+			// DocTab.setText("Документы");
 			// CusTab.setMaxWidth(800);
 			// DublicateBorder.setVisible(false);
 			DOC_DATET.setCellValueFactory(cellData -> cellData.getValue().TM$DOC_DATEProperty());
@@ -2080,7 +2079,7 @@ public class EditCus {
 				FirstWUpp(CCUSLAST_NAME);
 				FirstWUpp(CCUSFIRST_NAME);
 				FirstWUpp(CCUSMIDDLE_NAME);
-				//FirstWUpp(CCUSPLACE_BIRTH);
+				// FirstWUpp(CCUSPLACE_BIRTH);
 				FirstWUpp(INFR_NAME);
 				// UpperCase(DOC_SUBDIV_T);
 				// UpperCase(DOC_AGENCY_T);
@@ -2151,15 +2150,15 @@ public class EditCus {
 			CUS cus = INIT_CUS();
 			ForAddFioAndId = cus;
 
-			//На абхазском
-			//05.03.2021
+			// На абхазском
+			// 05.03.2021
 			{
 				AB_FIRST_NAME.setText(cus.getAB_FIRST_NAME());
 				AB_MIDDLE_NAME.setText(cus.getAB_MIDDLE_NAME());
 				AB_LAST_NAME.setText(cus.getAB_LAST_NAME());
 				AB_PLACE_BIRTH.setText(cus.getAB_PLACE_BIRTH());
 			}
-			
+
 			// страна рождения
 			{
 				Statement sqlStatement = conn.createStatement();
@@ -2172,10 +2171,13 @@ public class EditCus {
 					countryes.setNAME(rs.getString("NAME"));
 					nationals.add(countryes);
 				}
-				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
-				CombCountry.getEditor().textProperty()
-						.addListener(new InputFilter<COUNTRIES>(CombCountry, filterednationals, false));
-				CombCountry.setItems(filterednationals);
+//				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
+//				CombCountry.getEditor().textProperty()
+//						.addListener(new InputFilter<COUNTRIES>(CombCountry, filterednationals, false));
+				CombCountry.setItems(nationals);
+				FxUtilTest.getComboBoxValue(CombCountry);
+				FxUtilTest.autoCompleteComboBoxPlus(CombCountry, (typedText, itemToCompare) -> itemToCompare.getNAME()
+						.toLowerCase().contains(typedText.toLowerCase()));
 				rs.close();
 				sqlStatement.close();
 				CombCountry(CombCountry);
@@ -2200,10 +2202,15 @@ public class EditCus {
 					countryes.setNAME(rs.getString("NAME"));
 					nationals.add(countryes);
 				}
-				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
-				CombCountryAddr.getEditor().textProperty()
-						.addListener(new InputFilter<COUNTRIES>(CombCountryAddr, filterednationals, false));
-				CombCountryAddr.setItems(filterednationals);
+//				FilteredList<COUNTRIES> filterednationals = new FilteredList<COUNTRIES>(nationals);
+//				CombCountryAddr.getEditor().textProperty()
+//						.addListener(new InputFilter<COUNTRIES>(CombCountryAddr, filterednationals, false));
+//				CombCountryAddr.setItems(filterednationals);
+				CombCountryAddr.setItems(nationals);
+
+				FxUtilTest.getComboBoxValue(CombCountryAddr);
+				FxUtilTest.autoCompleteComboBoxPlus(CombCountryAddr, (typedText, itemToCompare) -> itemToCompare
+						.getNAME().toLowerCase().contains(typedText.toLowerCase()));
 				rs.close();
 				sqlStatement.close();
 				CombCountry(CombCountryAddr);
@@ -2266,12 +2273,15 @@ public class EditCus {
 				}
 				sqlStatement.close();
 				rs.close();
-				
-				FilteredList<String> filterednationals = new FilteredList<String>(np);
 
-				PUNCT_NAME.getEditor().textProperty()
-						.addListener(new InputFilter<String>(PUNCT_NAME, filterednationals, false));
-				PUNCT_NAME.setItems(filterednationals);
+//				FilteredList<String> filterednationals = new FilteredList<String>(np);
+//
+//				PUNCT_NAME.getEditor().textProperty()
+//						.addListener(new InputFilter<String>(PUNCT_NAME, filterednationals, false));
+				PUNCT_NAME.setItems(np);
+				FxUtilTest.getComboBoxValue(PUNCT_NAME);
+				FxUtilTest.autoCompleteComboBoxPlus(PUNCT_NAME,
+						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
 
 				for (String value : PUNCT_NAME.getItems()) {
 					if (value.equals(cus.getINF())) {
@@ -2295,10 +2305,10 @@ public class EditCus {
 				}
 				CCUSSEX.setItems(combolist);
 				CCUSSEX.getSelectionModel().select(0);
-				
+
 				sqlStatement.close();
 				rs.close();
-				
+
 			}
 			/**
 			 * ОТДЕЛЕНИЯ
@@ -2321,10 +2331,10 @@ public class EditCus {
 						break;
 					}
 				}
-				
+
 				sqlStatement.close();
 				rs.close();
-				
+
 			}
 			/**
 			 * Адрес
@@ -2339,7 +2349,7 @@ public class EditCus {
 				KV.setText(addr.getKV());
 				AREA_T.setText(addr.getAREA());
 				PUNCT_NAME_T.setText(addr.getPUNCT_NAME());
-				//населенный пункт
+				// населенный пункт
 				if (addr.getPUNCT_NAME_NOT_LIST() == 2) {
 					PUNCT_NAME_NOT_LIST.setSelected(true);
 					PUNCT_NAME.setValue(null);
@@ -2351,7 +2361,7 @@ public class EditCus {
 					PUNCT_NAME_T.setVisible(false);
 					PUNCT_NAME_T.setText("");
 				}
-				//район
+				// район
 				if (addr.getAREA_NOT_LIST() == 2) {
 					AREA_NOT_LIST.setSelected(true);
 					AREA.setValue(null);
@@ -2389,44 +2399,18 @@ public class EditCus {
 				while (rs.next()) {
 					nationals.add(rs.getString(1));
 				}
-				FilteredList<String> filterednationals = new FilteredList<String>(nationals);
-				CCUSNATIONALITY.getEditor().textProperty()
-						.addListener(new InputFilter<String>(CCUSNATIONALITY, filterednationals, false));
-				CCUSNATIONALITY.setItems(filterednationals);
-				
+//				FilteredList<String> filterednationals = new FilteredList<String>(nationals);
+//				CCUSNATIONALITY.getEditor().textProperty()
+//						.addListener(new InputFilter<String>(CCUSNATIONALITY, filterednationals, false));
+				CCUSNATIONALITY.setItems(nationals);
+				FxUtilTest.getComboBoxValue(CCUSNATIONALITY);
+				FxUtilTest.autoCompleteComboBoxPlus(CCUSNATIONALITY,
+						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
+
 				sqlStatement.close();
 				rs.close();
 			}
 
-			/**
-			 * Действия с документами
-			 */
-			/*
-			 * CUS_DOCUM.getSelectionModel().selectedItemProperty().addListener((obs,
-			 * oldSelection, newSelection) -> { if (newSelection != null) { CUS_DOCUM cd =
-			 * CUS_DOCUM.getSelectionModel().getSelectedItem(); try { Statement sqlStatement
-			 * = conn.createStatement(); String readRecordSQL = "select * from VPUD";
-			 * ResultSet rs = sqlStatement.executeQuery(readRecordSQL); ObservableList<VPUD>
-			 * combolist = FXCollections.observableArrayList(); while (rs.next()) { VPUD pud
-			 * = new VPUD(); pud.setCPUDDOC(rs.getString("name"));
-			 * pud.setIPUDID(rs.getInt("code")); combolist.add(pud); }
-			 * ID_DOC_TP_T.setItems(combolist); convertComboDisplayList(); if
-			 * (cd.getID_DOC_TP() != null) { for (VPUD ld : ID_DOC_TP_T.getItems()) { if
-			 * (cd.getID_DOC_TP().equals(ld.getCPUDDOC())) {
-			 * ID_DOC_TP_T.getSelectionModel().select(ld); break; } } } rs.close(); } catch
-			 * (Exception e) { Msg.Message(ExceptionUtils.getStackTrace(e)); Main.logger.error(ExceptionUtils.getStackTrace(e)
-			 * + "~" + Thread.currentThread().getName()); String fullClassName =
-			 * Thread.currentThread().getStackTrace()[2].getClassName(); String methodName =
-			 * Thread.currentThread().getStackTrace()[2].getMethodName(); int lineNumber =
-			 * Thread.currentThread().getStackTrace()[2].getLineNumber();
-			 * DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName); }
-			 * DOC_SER_T.setText(cd.getDOC_SER()); DOC_NUM_T.setText(cd.getDOC_NUM());
-			 * DOC_DATE_T.setValue(cd.getDOC_DATE());
-			 * DOC_PERIOD_T.setValue(cd.getDOC_PERIOD()); if (cd.getPREF().equals("Да"))
-			 * PREF_T.setSelected(true); else PREF_T.setSelected(false);
-			 * DOC_AGENCY_T.setText(cd.getDOC_AGENCY());
-			 * DOC_SUBDIV_T.setText(cd.getDOC_SUBDIV()); } });
-			 */
 			new ConvConst().FormatDatePiker(DOC_DATE_T);
 			new ConvConst().FormatDatePiker(DCUSBIRTHDAY);
 			new ConvConst().FormatDatePiker(DOC_PERIOD_T);
@@ -2477,7 +2461,7 @@ public class EditCus {
 				cus.setAREA(rs.getString("AREA"));
 				cus.setINF(rs.getString("INF"));
 				cus.setBurthCountry(rs.getString("BurthCountry"));
-				
+
 				cus.setAB_FIRST_NAME(rs.getString("AB_FIRST_NAME"));
 				cus.setAB_MIDDLE_NAME(rs.getString("AB_MIDDLE_NAME"));
 				cus.setAB_LAST_NAME(rs.getString("AB_LAST_NAME"));
@@ -2715,10 +2699,10 @@ public class EditCus {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/mj/doc/birthact/IUBirthAct.fxml"));
 			AddBirthAct controller = new AddBirthAct();
-			
+
 			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
 			controller.setCusId(ForAddFioAndId.getICUSNUM());
-			
+
 			loader.setController(controller);
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
@@ -2753,10 +2737,10 @@ public class EditCus {
 			AddPatern controller = new AddPatern();
 			controller.setConn(conn);
 			loader.setController(controller);
-			
+
 			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
 			controller.setCusId(ForAddFioAndId.getICUSNUM());
-			
+
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
@@ -2793,7 +2777,7 @@ public class EditCus {
 			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
 			controller.setCusId(ForAddFioAndId.getICUSNUM());
 			controller.setCusGen(ForAddFioAndId.getCCUSSEX());
-			
+
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
@@ -2830,7 +2814,7 @@ public class EditCus {
 			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
 			controller.setCusId(ForAddFioAndId.getICUSNUM());
 			controller.setCusGen(ForAddFioAndId.getCCUSSEX());
-			
+
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
@@ -2867,7 +2851,7 @@ public class EditCus {
 			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
 			controller.setCusId(ForAddFioAndId.getICUSNUM());
 			controller.setCusGen(ForAddFioAndId.getCCUSSEX());
-			
+
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
@@ -3044,12 +3028,12 @@ public class EditCus {
 
 			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
 			controller.setCusId(ForAddFioAndId.getICUSNUM());
-			
+
 			controller.setCusFname(ForAddFioAndId.getCCUSFIRST_NAME());
 			controller.setCusLname(ForAddFioAndId.getCCUSLAST_NAME());
 			controller.setCusMname(ForAddFioAndId.getCCUSMIDDLE_NAME());
 			controller.setCusBrdate(ForAddFioAndId.getDCUSBIRTHDAY());
-			
+
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));

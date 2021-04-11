@@ -86,8 +86,8 @@ public class Add_Cus_Doc {
 	private void convertComboDisplayList() {
 		ID_DOC_TP_T.setConverter(new StringConverter<VPUD>() {
 			@Override
-			public String toString(VPUD product) {
-				return product.getCPUDDOC();
+			public String toString(VPUD object) {
+				return object != null ? object.getCPUDDOC() : "";
 			}
 
 			@Override

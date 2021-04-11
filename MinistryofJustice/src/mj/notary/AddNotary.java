@@ -55,10 +55,10 @@ public class AddNotary {
 	private void convertComboDisplayList() {
 		NOT_OTD.setConverter(new StringConverter<OTD>() {
 			@Override
-			public String toString(OTD product) {
-				return product.getCOTDNAME();
+			public String toString(OTD object) {
+				return object != null ? object.getCOTDNAME() : "";
 			}
-
+			
 			@Override
 			public OTD fromString(final String string) {
 				return NOT_OTD.getItems().stream().filter(product -> product.getCOTDNAME().equals(string)).findFirst()

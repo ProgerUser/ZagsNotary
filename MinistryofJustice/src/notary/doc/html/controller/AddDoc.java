@@ -22,8 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
 import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -31,7 +34,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -61,11 +63,11 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
 import mj.widgets.DbmsOutputCapture;
+import mj.widgets.FxUtilTest;
 import netscape.javascript.JSObject;
 import notary.doc.html.model.V_NT_DOC;
 import notary.doc.html.model.V_NT_TEMP_LIST;
@@ -655,15 +657,16 @@ public class AddDoc {
 	private void convert_TYPE_NAME(ComboBox<V_NT_TEMP_LIST> cmbbx) {
 		cmbbx.setConverter(new StringConverter<V_NT_TEMP_LIST>() {
 			@Override
-			public String toString(V_NT_TEMP_LIST product) {
-				return product != null ? product.getNAMES() : null;
+			public String toString(V_NT_TEMP_LIST object) {
+				return object != null ? object.getNAMES() : "";
 			}
 
 			@Override
-			public V_NT_TEMP_LIST fromString(final String string) {
-				return cmbbx.getItems().stream().filter(product -> product.getNAMES().equals(string)).findFirst()
+			public V_NT_TEMP_LIST fromString(String string) {
+				return cmbbx.getItems().stream().filter(object -> object.getNAMES().equals(string)).findFirst()
 						.orElse(null);
 			}
+
 		});
 	}
 
@@ -793,12 +796,18 @@ public class AddDoc {
 				}
 				stsmt.close();
 				rs.close();
-				FilteredList<V_NT_TEMP_LIST> filterednationals = new FilteredList<V_NT_TEMP_LIST>(combolist);
-				TYPE_NAME.getEditor().textProperty()
-						.addListener(new InputFilter<V_NT_TEMP_LIST>(TYPE_NAME, filterednationals, false));
-				TYPE_NAME.setItems(filterednationals);
+
+//				FilteredList<V_NT_TEMP_LIST> filterednationals = new FilteredList<V_NT_TEMP_LIST>(combolist);
+//				TYPE_NAME.getEditor().textProperty()
+//						.addListener(new InputFilter<V_NT_TEMP_LIST>(TYPE_NAME, filterednationals, false));
+
+				TYPE_NAME.setItems(combolist);
+
+				FxUtilTest.getComboBoxValue(TYPE_NAME);
+				FxUtilTest.autoCompleteComboBoxPlus(TYPE_NAME, (typedText, itemToCompare) -> itemToCompare.getNAMES()
+						.toLowerCase().contains(typedText.toLowerCase()));
+
 				convert_TYPE_NAME(TYPE_NAME);
-				rs.close();
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
