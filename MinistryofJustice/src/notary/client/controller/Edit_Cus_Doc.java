@@ -293,8 +293,6 @@ public class Edit_Cus_Doc {
 	@FXML
 	private void initialize() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-
 			DateAutoComma(DOC_DATE_T);
 			DateAutoComma(DOC_PERIOD_T);
 			
