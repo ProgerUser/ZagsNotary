@@ -297,21 +297,24 @@ public class AddDoc {
 									// _______________________
 									// Сами данные
 									{
-										PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
-										prp.setInt(1, Integer.valueOf(controller.getCode_s()));
-										ResultSet rs = prp.executeQuery();
-										while (rs.next()) {
-											if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-												// Если на странице расположен тот элемент
-												if (json.contains(rs.getString("NAME_").toLowerCase())) {
-													webView.getEngine().executeScript(
-															"SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
-																	+ rs.getString("VALUE_") + "')");
+										if (list.getPRM_FOR_PRM_SQL().length() > 10) {
+											PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
+											prp.setInt(1, Integer.valueOf(controller.getCode_s()));
+											ResultSet rs = prp.executeQuery();
+											while (rs.next()) {
+												if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
+													// Если на странице расположен тот элемент
+													if (json.contains(rs.getString("NAME_").toLowerCase())) {
+														webView.getEngine()
+																.executeScript("SetValue('"
+																		+ rs.getString("NAME_").toLowerCase() + "','"
+																		+ rs.getString("VALUE_") + "')");
+													}
 												}
 											}
+											prp.close();
+											rs.close();
 										}
-										prp.close();
-										rs.close();
 									}
 								} catch (Exception e) {
 									DBUtil.LOG_ERROR(e);
@@ -470,8 +473,6 @@ public class AddDoc {
 							JSObject window = (JSObject) webEngine.executeScript("window");
 							window.setMember("invoke", jstojava);
 							try {
-								// Fill
-								fillTree();
 								// текущие поля на странице
 								String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();
@@ -490,6 +491,8 @@ public class AddDoc {
 									prp.close();
 									rs.close();
 								}
+								// Fill
+								fillTree();
 							} catch (Exception e) {
 								DBUtil.LOG_ERROR(e);
 							}
@@ -809,6 +812,7 @@ public class AddDoc {
 
 				convert_TYPE_NAME(TYPE_NAME);
 			}
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

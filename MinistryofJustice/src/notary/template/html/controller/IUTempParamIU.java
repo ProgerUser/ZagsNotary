@@ -298,6 +298,16 @@ public class IUTempParamIU {
 		}
 	}
 
+	
+	@FXML
+	private void DelPadej() {
+		try {
+			PRM_PADEJ.setValue(null);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	@SuppressWarnings("unused")
 	@FXML
 	private void initialize() {

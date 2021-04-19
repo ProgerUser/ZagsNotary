@@ -309,21 +309,24 @@ public class EditDoc {
 									// _______________________
 									// Сами данные
 									{
-										PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
-										prp.setInt(1, Integer.valueOf(controller.getCode_s()));
-										ResultSet rs = prp.executeQuery();
-										while (rs.next()) {
-											if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
-												// Если на странице расположен тот элемент
-												if (json.contains(rs.getString("NAME_").toLowerCase())) {
-													webView.getEngine().executeScript(
-															"SetValue('" + rs.getString("NAME_").toLowerCase() + "','"
-																	+ rs.getString("VALUE_") + "')");
+										if (list.getPRM_FOR_PRM_SQL().length() > 10) {
+											PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
+											prp.setInt(1, Integer.valueOf(controller.getCode_s()));
+											ResultSet rs = prp.executeQuery();
+											while (rs.next()) {
+												if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
+													// Если на странице расположен тот элемент
+													if (json.contains(rs.getString("NAME_").toLowerCase())) {
+														webView.getEngine()
+																.executeScript("SetValue('"
+																		+ rs.getString("NAME_").toLowerCase() + "','"
+																		+ rs.getString("VALUE_") + "')");
+													}
 												}
 											}
+											prp.close();
+											rs.close();
 										}
-										prp.close();
-										rs.close();
 									}
 								} catch (Exception e) {
 									DBUtil.LOG_ERROR(e);
@@ -719,6 +722,9 @@ public class EditDoc {
 									stsmt.close();
 									rs.close();
 								}
+								Platform.runLater(() -> {
+									fillTree();
+								});
 							} catch (Exception e) {
 								DBUtil.LOG_ERROR(e);
 							}
@@ -1118,7 +1124,7 @@ public class EditDoc {
 	@FXML
 	private void initialize() {
 		try {
-			
+			fillTree();
 			// Двойной щелчок по строке для открытия документа
 			param.setRowFactory(tv -> {
 				TreeTableRow<NT_TEMP_LIST_PARAM> row = new TreeTableRow<>();
