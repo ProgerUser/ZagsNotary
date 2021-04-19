@@ -44,6 +44,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.ToolBar;
@@ -80,6 +81,8 @@ public class AddDoc {
 		this.status = new SimpleBooleanProperty();
 	}
 
+    @FXML
+    private MenuButton LocalParams;
 	@FXML
 	private TreeTableView<NT_TEMP_LIST_PARAM> param;
 
@@ -291,6 +294,8 @@ public class AddDoc {
 //										System.out.println((String) webView.getEngine()
 //												.executeScript("document.documentElement.outerHTML"));
 									} else {
+										webView.getEngine().executeScript("document.getElementById(\"" + id
+												+ "\").setAttribute(\"value\", \"" + controller.getCode_s() + "\");");
 										webView.getEngine().executeScript(
 												"SetValue('" + id + "','" + controller.getName_s() + "')");
 									}
@@ -693,6 +698,10 @@ public class AddDoc {
 
 	}
 
+	@FXML
+	void PlusDocParamCliRef() {
+		
+	}
 	// limits the fonts a user can select from in the html editor.
 	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman");
 
@@ -700,7 +709,7 @@ public class AddDoc {
 	@FXML
 	private void initialize() {
 		try {
-
+			LocalParams.setVisible(false);
 //			Platform.runLater(new Runnable() {
 //				@Override
 //				public void run() {

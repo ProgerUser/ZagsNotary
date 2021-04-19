@@ -62,6 +62,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -80,6 +81,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
@@ -148,6 +150,48 @@ public class EditDoc {
 
 	@FXML
 	private Tab scans;
+
+    @FXML
+    private MenuButton LocalParams;
+    
+	@FXML
+	void PlusDocParamCliRef() {
+		try {
+			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) Tabs.getScene().getWindow();
+
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/doc/html/view/DocParamAdd.fxml"));
+
+				DocParamAdd controller = new DocParamAdd();
+				controller.setConn(conn, val, NT_DOC);
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Добавить параметр");
+				stage.initOwner(stage_);
+				stage.setResizable(false);
+				stage.initModality(Modality.WINDOW_MODAL);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						try {
+							
+						} catch (Exception e) {
+							DBUtil.LOG_ERROR(e);
+						}
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
 
 	void InitScans() {
 		try {
@@ -238,10 +282,13 @@ public class EditDoc {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
-				PreparedStatement prp = conn
-						.prepareStatement("select * from VNT_TEMP_LIST_PARAM t where PRM_NAME = ? and PRM_TMP_ID = ?");
+				PreparedStatement prp = conn.prepareStatement(
+						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "EditDocListValWithLocPrm"));
 				prp.setString(1, id);
 				prp.setInt(2, val.getID());
+				prp.setString(3, id);
+				prp.setInt(4, val.getID());
+				prp.setInt(5, NT_DOC.getID());
 				ResultSet rs = prp.executeQuery();
 				while (rs.next()) {
 					list = new NT_TEMP_LIST_PARAM();
@@ -260,6 +307,7 @@ public class EditDoc {
 					list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
 					list.setTYPE_NAME(rs.getString("TYPE_NAME"));
 					list.setREQUIRED(rs.getString("REQUIRED"));
+					list.setIS_LOC(rs.getString("IS_LOC"));
 				}
 				prp.close();
 				rs.close();
@@ -303,13 +351,16 @@ public class EditDoc {
 //										System.out.println((String) webView.getEngine()
 //												.executeScript("document.documentElement.outerHTML"));
 									} else {
+										webView.getEngine().executeScript("document.getElementById(\"" + id
+												+ "\").setAttribute(\"value\", \"" + controller.getCode_s() + "\");");
 										webView.getEngine().executeScript(
 												"SetValue('" + id + "','" + controller.getName_s() + "')");
 									}
 									// _______________________
 									// Сами данные
 									{
-										if (list.getPRM_FOR_PRM_SQL().length() > 10) {
+										if (list.getPRM_FOR_PRM_SQL() != null
+												&& list.getPRM_FOR_PRM_SQL().length() > 10) {
 											PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
 											prp.setInt(1, Integer.valueOf(controller.getCode_s()));
 											ResultSet rs = prp.executeQuery();
@@ -514,6 +565,9 @@ public class EditDoc {
 				clob.setString(1, JsonStr.trim());
 				prp.setInt(1, val.getID());
 				prp.setClob(2, clob);
+				prp.setInt(3, val.getID());
+				prp.setInt(4, NT_DOC.getID());
+				prp.setClob(5, clob);
 				ResultSet rs = prp.executeQuery();
 				while (rs.next()) {
 					prm = new NT_TEMP_LIST_PARAM();
@@ -555,10 +609,10 @@ public class EditDoc {
 				roots.setExpanded(true);
 				param.setRoot(roots);
 				param.setShowRoot(false);
-				
+
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -854,6 +908,7 @@ public class EditDoc {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
 				// Получить поля из страницы
 				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+				// System.out.println(json);
 				// Список связанных параметров из шаблона
 				String KeyValue = "";
 				{
@@ -901,6 +956,55 @@ public class EditDoc {
 					rs.close();
 					System.out.print(KeyValue.trim());
 				}
+				//Локальные параметры
+				String KeyValueLoc = "";
+				{
+					PreparedStatement prp = conn
+							.prepareStatement("select * from NT_TEMP_LIST_PARAM_DOC t where PRM_TMP_ID = ? AND DOC_ID = ?");
+					prp.setInt(1, val.getID());
+					prp.setInt(2, NT_DOC.getID());
+					ResultSet rs = prp.executeQuery();
+					while (rs.next()) {
+						// Если тип параметра список
+						if (rs.getInt("PRM_TYPE") == 1) {
+							// Если параметр присутствует на странице
+							if (json.contains(rs.getString("PRM_NAME"))) {
+								// Выполнить функцию которая вернет значение атрибута "value"
+								String values = (String) webView.getEngine()
+										.executeScript("	function GetAtrVal(Ids) {\n"
+												+ "		var div1 = document.getElementById(Ids);\n"
+												+ "		var align = div1.getAttribute(\"value\");\n"
+												+ "		return align;\n" + "	}\n" + "	GetAtrVal('"
+												+ rs.getString("PRM_NAME") + "');");
+								// Если параметр еще не инициализирован значением
+								if (values == null) {
+									KeyValueLoc = KeyValueLoc + rs.getString("PRM_ID") + "|~|~|" + "\r\n";
+								} // Иначе
+								else if (values != null) {
+									KeyValueLoc = KeyValueLoc + rs.getString("PRM_ID") + "|~|~|" + values + "\r\n";
+								}
+							} // Если параметр отсутствует на странице
+							else {
+								KeyValueLoc = KeyValueLoc + rs.getString("PRM_ID") + "|~|~|" + "\r\n";
+							}
+						} // Если тип параметра не список
+						else {
+							// Если параметр присутствует на странице
+							if (json.contains(rs.getString("PRM_NAME"))) {
+								KeyValueLoc = KeyValueLoc + rs.getString("PRM_ID") + "|~|~|"
+										+ (String) webView.getEngine()
+												.executeScript("ReturnValue('" + rs.getString("PRM_NAME") + "')")
+										+ "\r\n";
+							} else {
+								KeyValueLoc = KeyValueLoc + rs.getString("PRM_ID") + "|~|~|" + "\r\n";
+							}
+						}
+					}
+					prp.close();
+					rs.close();
+					System.out.print(KeyValueLoc.trim());
+				}
+				
 				CallableStatement cls = conn.prepareCall("{call NT_PKG.EDIT_DOC_HTML(?,?,?,?,?)}");
 				cls.registerOutParameter(1, Types.VARCHAR);
 				cls.setInt(2, NT_DOC.getID());
@@ -911,6 +1015,10 @@ public class EditDoc {
 				Clob PAGE = conn.createClob();
 				PAGE.setString(1, (String) webView.getEngine().executeScript("document.documentElement.outerHTML"));
 				cls.setClob(5, PAGE);
+				
+				Clob clob_loc = conn.createClob();
+				clob.setString(1, KeyValueLoc.trim());
+				cls.setClob(6, clob_loc);
 				// DbmsOutput
 				try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
 					List<String> lines = capture.execute(cls);
@@ -1124,6 +1232,7 @@ public class EditDoc {
 	@FXML
 	private void initialize() {
 		try {
+			LocalParams.setVisible(true);
 			fillTree();
 			// Двойной щелчок по строке для открытия документа
 			param.setRowFactory(tv -> {
@@ -1230,11 +1339,11 @@ public class EditDoc {
 //				TYPE_NAME.getEditor().textProperty()
 //						.addListener(new InputFilter<V_NT_TEMP_LIST>(TYPE_NAME, filterednationals, false));
 				TYPE_NAME.setItems(combolist);
-				
+
 				FxUtilTest.getComboBoxValue(TYPE_NAME);
 				FxUtilTest.autoCompleteComboBoxPlus(TYPE_NAME, (typedText, itemToCompare) -> itemToCompare.getNAMES()
 						.toLowerCase().contains(typedText.toLowerCase()));
-				
+
 				convert_TYPE_NAME(TYPE_NAME);
 			}
 			if (NT_DOC.getNT_TYPE() != null) {

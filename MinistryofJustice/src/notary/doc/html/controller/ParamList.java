@@ -99,6 +99,7 @@ public class ParamList {
 
 	@FXML
 	private TableColumn<LIST, String> name;
+	
 
 	@FXML
 	void cencel(ActionEvent event) {

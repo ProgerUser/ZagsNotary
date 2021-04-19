@@ -34,8 +34,10 @@ public class NT_TEMP_LIST_PARAM {
 	private StringProperty HTML_CODE;
 	/** —сылка на род. парам. */
 	private IntegerProperty PARENTS;
-
+	private StringProperty IS_LOC;
+	
 	public NT_TEMP_LIST_PARAM() {
+		this.IS_LOC = new SimpleStringProperty();
 		this.PARENTS = new SimpleIntegerProperty();
 		this.PDJ_NAME = new SimpleStringProperty();
 		this.HTML_CODE = new SimpleStringProperty();
@@ -52,6 +54,18 @@ public class NT_TEMP_LIST_PARAM {
 		this.PRM_TBL_REF = new SimpleStringProperty();
 	}
 
+	public void setIS_LOC(String IS_LOC) {
+		this.IS_LOC.set(IS_LOC);
+	}
+
+	public String getIS_LOC() {
+		return IS_LOC.get();
+	}
+
+	public StringProperty IS_LOCProperty() {
+		return IS_LOC;
+	}
+	
 	public void setPARENTS(Integer PARENTS) {
 		this.PARENTS.set(PARENTS);
 	}
