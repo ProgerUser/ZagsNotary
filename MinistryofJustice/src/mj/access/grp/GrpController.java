@@ -784,7 +784,7 @@ public class GrpController {
 					// add to parent tree item
 					parentItem.getChildren().add(entry.getValue());
 				}
-				// parentItem.setExpanded(true);
+				parentItem.setExpanded(true);
 			}
 		}
 		// root.setExpanded(true);
@@ -830,7 +830,7 @@ public class GrpController {
 					// add to parent tree item
 					parentItem.getChildren().add(entry.getValue());
 				}
-				// parentItem.setExpanded(true);
+				parentItem.setExpanded(true);
 			}
 		}
 		// root.setExpanded(true);

@@ -278,10 +278,10 @@ public class EditCus {
 	void FillAllDocs() {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
-			String readRecordSQL = sql.getSql("AllDocs");
-			PreparedStatement sqlStatement = conn.prepareStatement(readRecordSQL);
-			sqlStatement.setInt(1, getId());
+			PreparedStatement sqlStatement = conn
+					.prepareStatement(DBUtil.SqlFromProp("/notary/client/controller/SQL.properties", "AllDocs"));
+			sqlStatement.setString(1, String.valueOf(getId()));
+			sqlStatement.setString(2, String.valueOf(getId()));
 			ResultSet rs = sqlStatement.executeQuery();
 			ObservableList<ALL_DOCS> val = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -290,9 +290,9 @@ public class EditCus {
 						.parse(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")), formatter)
 						: null);
 				list.setDOCNAME(rs.getString("DOCNAME"));
-				list.setTABLE_NAME(rs.getString("TABLE_NAME"));
+				//list.setTABLE_NAME(rs.getString("TABLE_NAME"));
 				list.setDOC_ID(rs.getInt("DOC_ID"));
-				list.setTYPE_DOC(rs.getString("TYPE_DOC"));
+				//list.setTYPE_DOC(rs.getString("TYPE_DOC"));
 				val.add(list);
 			}
 			sqlStatement.close();
@@ -2476,13 +2476,13 @@ public class EditCus {
 				while (rs.next()) {
 					nationals.add(rs.getString(1));
 				}
-				
+
 //				FilteredList<String> filterednationals = new FilteredList<String>(nationals);
 //				CCUSNATIONALITY.getEditor().textProperty()
 //						.addListener(new InputFilter<String>(CCUSNATIONALITY, filterednationals, false));
-				
+
 				CCUSNATIONALITY.setItems(nationals);
-				
+
 				FxUtilTest.getComboBoxValue(CCUSNATIONALITY);
 				FxUtilTest.autoCompleteComboBoxPlus(CCUSNATIONALITY,
 						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));

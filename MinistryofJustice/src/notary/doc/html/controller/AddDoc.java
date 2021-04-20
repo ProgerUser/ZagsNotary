@@ -497,7 +497,7 @@ public class AddDoc {
 								// текущие поля на странице
 								String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();
-								if (vals.getREP_QUERY() != null) {
+								if (vals.getREP_QUERY().length() > 10 ) {
 									PreparedStatement prp = conn.prepareStatement(vals.getREP_QUERY());
 									ResultSet rs = prp.executeQuery();
 									while (rs.next()) {
