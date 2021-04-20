@@ -592,12 +592,11 @@ public class OdbActions {
 					// add to parent tree item
 					parentItem.getChildren().add(entry.getValue());
 				}
-				// parentItem.setExpanded(true);
+				parentItem.setExpanded(true);
 			}
 		}
 		// root.setExpanded(true);
 		Actions.setRoot(root);
-
 	}
 
 	public boolean setTreeItem(ODB_ACTION emp, TreeItem<ODB_ACTION> root_tree) {

@@ -61,7 +61,9 @@ import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -75,6 +77,7 @@ import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
@@ -154,6 +157,123 @@ public class EditDoc {
     @FXML
     private MenuButton LocalParams;
     
+    @FXML
+    private Button EditLocalParam;
+
+    @FXML
+    private Button DeleteLocalParam;
+    
+
+	@FXML
+	void EditLocalParam(ActionEvent event) {
+		try {
+			V_NT_TEMP_LIST val_tp = TYPE_NAME.getSelectionModel().getSelectedItem();
+			TreeItem<NT_TEMP_LIST_PARAM> val = param.getSelectionModel().getSelectedItem();
+			if (val != null & val_tp != null) {
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) Tabs.getScene().getWindow();
+
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/doc/html/view/DocParamAdd.fxml"));
+
+				DocParamEdit controller = new DocParamEdit();
+				controller.setConn(conn, val_tp, NT_DOC, val.getValue());
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Редактировать параметр");
+				stage.initOwner(stage_);
+				stage.setResizable(false);
+				stage.initModality(Modality.WINDOW_MODAL);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						try {
+							fillTree();
+						} catch (Exception e) {
+							DBUtil.LOG_ERROR(e);
+						}
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void DeleteLocalParam(ActionEvent event) {
+		try {
+			TreeItem<NT_TEMP_LIST_PARAM> val = param.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				Stage stage = (Stage) param.getScene().getWindow();
+				Label alert = new Label("Удалить параметр?");
+				alert.setLayoutX(75.0);
+				alert.setLayoutY(11.0);
+				alert.setPrefHeight(17.0);
+
+				Button no = new Button();
+				no.setText("Нет");
+				no.setLayoutX(111.0);
+				no.setLayoutY(56.0);
+				no.setPrefWidth(72.0);
+				no.setPrefHeight(21.0);
+
+				Button yes = new Button();
+				yes.setText("Да");
+				yes.setLayoutX(14.0);
+				yes.setLayoutY(56.0);
+				yes.setPrefWidth(72.0);
+				yes.setPrefHeight(21.0);
+
+				AnchorPane yn = new AnchorPane();
+				yn.getChildren().add(alert);
+				yn.getChildren().add(no);
+				yn.getChildren().add(yes);
+				Scene ynScene = new Scene(yn, 250, 100);
+				Stage newWindow_yn = new Stage();
+				no.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						newWindow_yn.close();
+					}
+				});
+				yes.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						try {
+							PreparedStatement delete = conn
+									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
+											+ " delete from nt_temp_list_param_doc where PRM_ID = ?;" + "commit;" + "end;");
+							delete.setInt(1, val.getValue().getPRM_ID());
+							delete.executeUpdate();
+							delete.close();
+							fillTree();
+						} catch (Exception e) {
+							try {
+								conn.rollback();
+							} catch (SQLException e1) {
+								DBUtil.LOG_ERROR(e1);
+							}
+							DBUtil.LOG_ERROR(e);
+						}
+						newWindow_yn.close();
+					}
+				});
+				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setScene(ynScene);
+				newWindow_yn.initModality(Modality.WINDOW_MODAL);
+				newWindow_yn.initOwner(stage);
+				newWindow_yn.setResizable(false);
+				newWindow_yn.getIcons().add(new Image("/icon.png"));
+				newWindow_yn.show();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+    
 	@FXML
 	void PlusDocParamCliRef() {
 		try {
@@ -180,7 +300,7 @@ public class EditDoc {
 					@Override
 					public void handle(WindowEvent paramT) {
 						try {
-							
+							fillTree();
 						} catch (Exception e) {
 							DBUtil.LOG_ERROR(e);
 						}
@@ -586,6 +706,7 @@ public class EditDoc {
 					prm.setREQUIRED(rs.getString("REQUIRED"));
 					prm.setPARENTS(rs.getInt("PARENTS"));
 					prm.setHTML_CODE(rs.getString("HTML_CODE"));
+					prm.setIS_LOC(rs.getString("IS_LOC"));
 					itemById.put(rs.getInt("PRM_ID"), new TreeItem<>(prm));
 					parents.put(rs.getInt("PRM_ID"), rs.getInt("PARENTS"));
 				}
@@ -722,6 +843,7 @@ public class EditDoc {
 									PreparedStatement stsmt = conn.prepareStatement(DBUtil.SqlFromProp(
 											"/notary/doc/html/controller/Sql.properties", "EditNtDocPrmVals"));
 									stsmt.setInt(1, NT_DOC.getID());
+									stsmt.setInt(2, NT_DOC.getID());
 									ResultSet rs = stsmt.executeQuery();
 									while (rs.next()) {
 										if (rs.getString("PRM_NAME") != null) {
@@ -738,6 +860,10 @@ public class EditDoc {
 													}
 													rs_.close();
 													prp.close();
+												}
+												if (rs.getString("IS_LOC").equals("Y")) {
+													System.out.println(
+															"~~~~~~~~~~~~~~~~~~~~~IS_LOC~" + rs.getString("IS_LOC"));
 												}
 												// Если падеж не пуст
 												if (rs.getString("PDJ_NAME") != null) {
@@ -954,7 +1080,7 @@ public class EditDoc {
 					}
 					prp.close();
 					rs.close();
-					System.out.print(KeyValue.trim());
+					//System.out.print(KeyValue.trim());
 				}
 				//Локальные параметры
 				String KeyValueLoc = "";
@@ -1002,10 +1128,10 @@ public class EditDoc {
 					}
 					prp.close();
 					rs.close();
-					System.out.print(KeyValueLoc.trim());
+					System.out.print("~~~~~~loc_prm~~~~~\r\n"+KeyValueLoc.trim());
 				}
 				
-				CallableStatement cls = conn.prepareCall("{call NT_PKG.EDIT_DOC_HTML(?,?,?,?,?)}");
+				CallableStatement cls = conn.prepareCall("{call NT_PKG.EDIT_DOC_HTML(?,?,?,?,?,?)}");
 				cls.registerOutParameter(1, Types.VARCHAR);
 				cls.setInt(2, NT_DOC.getID());
 				Clob clob = conn.createClob();
@@ -1015,9 +1141,8 @@ public class EditDoc {
 				Clob PAGE = conn.createClob();
 				PAGE.setString(1, (String) webView.getEngine().executeScript("document.documentElement.outerHTML"));
 				cls.setClob(5, PAGE);
-				
 				Clob clob_loc = conn.createClob();
-				clob.setString(1, KeyValueLoc.trim());
+				clob_loc.setString(1, KeyValueLoc.trim());
 				cls.setClob(6, clob_loc);
 				// DbmsOutput
 				try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
@@ -1232,6 +1357,22 @@ public class EditDoc {
 	@FXML
 	private void initialize() {
 		try {
+			EditLocalParam.setVisible(false);
+			DeleteLocalParam.setVisible(false);
+			
+			param.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+				TreeItem<NT_TEMP_LIST_PARAM> val = param.getSelectionModel().getSelectedItem();
+				if (val != null) {
+					if (val.getValue().getIS_LOC().equals("Y")) {
+						EditLocalParam.setVisible(true);
+						DeleteLocalParam.setVisible(true);
+					} else if (val.getValue().getIS_LOC().equals("N")) {
+						EditLocalParam.setVisible(false);
+						DeleteLocalParam.setVisible(false);
+					}
+				}
+			});
+			
 			LocalParams.setVisible(true);
 			fillTree();
 			// Двойной щелчок по строке для открытия документа

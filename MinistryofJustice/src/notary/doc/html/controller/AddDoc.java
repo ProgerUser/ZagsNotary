@@ -82,6 +82,12 @@ public class AddDoc {
 	}
 
     @FXML
+    private Button EditLocalParam;
+
+    @FXML
+    private Button DeleteLocalParam;
+    
+    @FXML
     private MenuButton LocalParams;
 	@FXML
 	private TreeTableView<NT_TEMP_LIST_PARAM> param;
@@ -101,6 +107,16 @@ public class AddDoc {
 
 	public NT_TEMP_LIST_PARAM prm;
 
+    @FXML
+    void EditLocalParam(ActionEvent event) {
+
+    }
+
+    @FXML
+    void DeleteLocalParam(ActionEvent event) {
+
+    }
+    
 	@SuppressWarnings("unchecked")
 	void fillTree() {
 		try {
@@ -122,7 +138,7 @@ public class AddDoc {
 				Map<Integer, Integer> parents = new HashMap<>();
 
 				PreparedStatement prp = conn.prepareStatement(
-						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
+						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc1"));
 				Clob clob = conn.createClob();
 				clob.setString(1, JsonStr.trim());
 				prp.setInt(1, val.getID());
@@ -481,7 +497,7 @@ public class AddDoc {
 								// текущие поля на странице
 								String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();
-								if (vals.getREP_QUERY() != null) {
+								if (vals.getREP_QUERY().length() > 10 ) {
 									PreparedStatement prp = conn.prepareStatement(vals.getREP_QUERY());
 									ResultSet rs = prp.executeQuery();
 									while (rs.next()) {
@@ -709,6 +725,9 @@ public class AddDoc {
 	@FXML
 	private void initialize() {
 		try {
+			EditLocalParam.setVisible(false);
+			DeleteLocalParam.setVisible(false);
+			
 			LocalParams.setVisible(false);
 //			Platform.runLater(new Runnable() {
 //				@Override
@@ -717,7 +736,7 @@ public class AddDoc {
 //				}
 //			});
 
-// Двойной щелчок по строке для открытия документа
+            // Двойной щелчок по строке для открытия документа
 			param.setRowFactory(tv -> {
 				TreeTableRow<NT_TEMP_LIST_PARAM> row = new TreeTableRow<>();
 				row.setOnMouseClicked(event -> {
