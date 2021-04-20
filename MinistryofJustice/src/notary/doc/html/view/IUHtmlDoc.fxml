@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.HTMLEditor?>
 
-<VBox fx:id="root" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="root" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.281" xmlns:fx="http://javafx.com/fxml/1">
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
@@ -129,6 +129,28 @@
                                                             <MenuItem mnemonicParsing="false" onAction="#PlusDocParamCliRef" text="Ссылка на клиента" />
                                                          </items>
                                                       </MenuButton>
+                                                      <Button fx:id="EditLocalParam" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#EditLocalParam">
+                                                         <graphic>
+                                                            <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="17" />
+                                                         </graphic>
+                                                         <font>
+                                                            <Font size="10.0" />
+                                                         </font>
+                                                         <tooltip>
+                                                            <Tooltip text="Редактировать" />
+                                                         </tooltip>
+                                                      </Button>
+                                                      <Button fx:id="DeleteLocalParam" layoutX="89.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteLocalParam">
+                                                         <graphic>
+                                                            <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="17" />
+                                                         </graphic>
+                                                         <font>
+                                                            <Font size="10.0" />
+                                                         </font>
+                                                         <tooltip>
+                                                            <Tooltip text="Удалить параметр" />
+                                                         </tooltip>
+                                                      </Button>
                                                   </items>
                                                    <VBox.margin>
                                                       <Insets left="-10.0" right="-10.0" top="-10.0" />
