@@ -279,6 +279,7 @@ public class NtTemplate {
 							delete.executeUpdate();
 							delete.close();
 							conn.commit();
+							fillTreeNtTemp();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
