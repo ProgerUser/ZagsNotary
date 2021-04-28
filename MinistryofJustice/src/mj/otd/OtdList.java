@@ -8,7 +8,10 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.controlsfx.control.table.TableFilter;
+import org.controlsfx.control.tableview2.FilteredTableColumn;
+import org.controlsfx.control.tableview2.FilteredTableView;
+import org.controlsfx.control.tableview2.cell.TextField2TableCell;
+import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,9 +23,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -48,26 +49,35 @@ public class OtdList {
 	private BorderPane BP;
 
 	@FXML
-	private TableColumn<OTD, String> COTDNAME;
+	private FilteredTableColumn<OTD, String> COTDNAME;
 
 	@FXML
-	private TableColumn<OTD, Integer> IOTDNUM;
+	private FilteredTableColumn<OTD, Integer> IOTDNUM;
 
     @FXML
-    private TableColumn<OTD, String> RAION;
+    private FilteredTableColumn<OTD, String> RAION;
     
 	@FXML
-	private TableView<OTD> OTD;
-
+	private FilteredTableView<OTD> OTD;
+	
 	@FXML
 	void Add(ActionEvent event) {
-
 		try {
+//			Form login = Form.of(Group.of(Field.ofStringType("CHF").label("Currency"),
+//					Field.ofSingleSelectionType(Arrays.asList("`12`12", "Bern (BE)"), 1)
+//							.label("Capital"))
+//			).title("Login");
+//			
+//			BP.setBottom(new FormRenderer(login));
+//			
+//			BP.setRight(SCB);
+			
 			// проверка доступа
 			if (DBUtil.OdbAction(122) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
+		
 			
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) OTD.getScene().getWindow();
@@ -290,6 +300,7 @@ public class OtdList {
 		}
 	}
 
+
 	@FXML
 	private void initialize() {
 		try {
@@ -308,6 +319,17 @@ public class OtdList {
 			COTDNAME.setCellValueFactory(cellData -> cellData.getValue().COTDNAMEProperty());
 			IOTDNUM.setCellValueFactory(cellData -> cellData.getValue().IOTDNUMProperty().asObject());
 			RAION.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
+			
+			COTDNAME.setCellFactory(TextField2TableCell.forTableColumn());
+			
+			OTD.rowHeaderVisibleProperty().set(true);
+			SouthFilter<OTD, String> editorCOTDNAME = new SouthFilter<>(COTDNAME, String.class);
+			SouthFilter<OTD, Integer> editorIOTDNUM = new SouthFilter<>(IOTDNUM, Integer.class);
+			SouthFilter<OTD, String> editorRAION = new SouthFilter<>(RAION, String.class);
+			COTDNAME.setSouthNode(editorCOTDNAME);
+			IOTDNUM.setSouthNode(editorIOTDNUM);
+			RAION.setSouthNode(editorRAION);
+			
 			
 			// двойной щелчок
 			OTD.setRowFactory(tv -> {
@@ -371,16 +393,17 @@ public class OtdList {
 			prepStmt.close();
 			rs.close();
 
-			OTD.setItems(dlist);
+			FilteredTableView.configureForFiltering(OTD, dlist);
+			//OTD.setItems(dlist);
 
-			TableFilter<OTD> tableFilter = TableFilter.forTableView(OTD).apply();
-			tableFilter.setSearchStrategy((input, target) -> {
-				try {
-					return target.toLowerCase().contains(input.toLowerCase());
-				} catch (Exception e) {
-					return false;
-				}
-			});
+//			TableFilter<OTD> tableFilter = TableFilter.forTableView(OTD).apply();
+//			tableFilter.setSearchStrategy((input, target) -> {
+//				try {
+//					return target.toLowerCase().contains(input.toLowerCase());
+//				} catch (Exception e) {
+//					return false;
+//				}
+//			});
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

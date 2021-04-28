@@ -19,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
@@ -66,9 +67,13 @@ public class AddOtd {
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
+    @FXML
+    private BorderPane BP;
+    
 	@FXML
 	private void initialize() {
 		try {
+
 			dbConnect();
 			DBUtil.RunProcess(conn);
 			// Районы
@@ -88,7 +93,9 @@ public class AddOtd {
 				convert_RAION(RAION);
 				rs.close();
 			}
+			
 
+			
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

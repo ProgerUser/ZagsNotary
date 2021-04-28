@@ -18,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.controlsfx.control.SearchableComboBox;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
@@ -144,6 +145,9 @@ public class IUTempParamIU {
 	private ComboBox<NT_TEMP_LIST_PARAM> PARENTS;
 
 	@FXML
+	private SearchableComboBox<ALL_TABLE> PRM_TBL_REF2;
+
+	@FXML
 	void Cencel(ActionEvent event) {
 		onclose();
 	}
@@ -264,6 +268,9 @@ public class IUTempParamIU {
 					onclose();
 				}
 			}
+			
+			//Msg.Message(PRM_TBL_REF2.getSelectionModel().getSelectedItem().getTABLE_NAME());
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -298,7 +305,6 @@ public class IUTempParamIU {
 		}
 	}
 
-	
 	@FXML
 	private void DelPadej() {
 		try {
@@ -403,11 +409,15 @@ public class IUTempParamIU {
 
 				PRM_TBL_REF.setItems(combolist);
 
+				PRM_TBL_REF2.setItems(combolist);
+
 				FxUtilTest.getComboBoxValue(PRM_TBL_REF);
 				FxUtilTest.autoCompleteComboBoxPlus(PRM_TBL_REF, (typedText, itemToCompare) -> itemToCompare
 						.getTABLE_NAME().toLowerCase().contains(typedText.toLowerCase()));
 
 				convert_TablrList(PRM_TBL_REF);
+
+				convert_TablrList(PRM_TBL_REF2);
 			}
 			// Параметры
 			{
@@ -440,13 +450,13 @@ public class IUTempParamIU {
 //				FilteredList<NT_TEMP_LIST_PARAM> filterednationals = new FilteredList<NT_TEMP_LIST_PARAM>(combolist);
 //				PARENTS.getEditor().textProperty()
 //						.addListener(new InputFilter<NT_TEMP_LIST_PARAM>(PARENTS, filterednationals, false));
-				
+
 				PARENTS.setItems(combolist);
-				
+
 				FxUtilTest.getComboBoxValue(PRM_TBL_REF);
 				FxUtilTest.autoCompleteComboBoxPlus(PRM_TBL_REF, (typedText, itemToCompare) -> itemToCompare
 						.getTABLE_NAME().toLowerCase().contains(typedText.toLowerCase()));
-				
+
 				convert_PARENTS(PARENTS);
 			}
 			// Тип параметра
@@ -518,14 +528,13 @@ public class IUTempParamIU {
 //							combolist);
 //					PARENTS.getEditor().textProperty()
 //							.addListener(new InputFilter<NT_TEMP_LIST_PARAM>(PARENTS, filterednationals, false));
-					
+
 					PARENTS.setItems(combolist);
-					
+
 					FxUtilTest.getComboBoxValue(PRM_TBL_REF);
 					FxUtilTest.autoCompleteComboBoxPlus(PRM_TBL_REF, (typedText, itemToCompare) -> itemToCompare
 							.getTABLE_NAME().toLowerCase().contains(typedText.toLowerCase()));
-					
-					
+
 					convert_PARENTS(PARENTS);
 				}
 				if (cl.getPRM_FOR_PRM_SQL() != null) {

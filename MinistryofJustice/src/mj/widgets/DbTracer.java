@@ -33,7 +33,6 @@ public class DbTracer {
 	@FXML
 	private CheckBox Turn;
 
-	@SuppressWarnings("resource")
 	@FXML
 	void Refresh(ActionEvent event) {
 		try {
