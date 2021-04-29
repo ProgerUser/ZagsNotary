@@ -323,9 +323,11 @@ public class OtdList {
 			COTDNAME.setCellFactory(TextField2TableCell.forTableColumn());
 			
 			OTD.rowHeaderVisibleProperty().set(true);
+			
 			SouthFilter<OTD, String> editorCOTDNAME = new SouthFilter<>(COTDNAME, String.class);
 			SouthFilter<OTD, Integer> editorIOTDNUM = new SouthFilter<>(IOTDNUM, Integer.class);
 			SouthFilter<OTD, String> editorRAION = new SouthFilter<>(RAION, String.class);
+			
 			COTDNAME.setSouthNode(editorCOTDNAME);
 			IOTDNUM.setSouthNode(editorIOTDNUM);
 			RAION.setSouthNode(editorRAION);
@@ -335,6 +337,7 @@ public class OtdList {
 			OTD.setRowFactory(tv -> {
 				TableRow<OTD> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
+
 					if (DBUtil.OdbAction(123) == 0) {
 						Msg.Message("Нет доступа!");
 						return;
@@ -346,7 +349,9 @@ public class OtdList {
 				});
 				return row;
 			});
+
 			Init();
+			
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
