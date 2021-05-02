@@ -218,7 +218,11 @@ public class EditPatern {
 	 */
 	@FXML
 	void FindMother(ActionEvent event) {
-		CusList(PÑ_M, PÑ_M_NAME);
+		
+		UtilCus cus = new UtilCus();
+		cus.Find_Cus(PÑ_M, PÑ_M_NAME, (Stage) PÑ_M_NAME.getScene().getWindow());
+		
+//		CusList(PÑ_M, PÑ_M_NAME);
 	}
 
 	/**
@@ -228,7 +232,10 @@ public class EditPatern {
 	 */
 	@FXML
 	void FindFather(ActionEvent event) {
-		CusList(PÑ_F, PÑ_F_NAME);
+		
+		UtilCus cus = new UtilCus();
+		cus.Find_Cus(PÑ_F, PÑ_F_NAME, (Stage) PÑ_F_NAME.getScene().getWindow());
+//		CusList(PÑ_F, PÑ_F_NAME);
 	}
 
 	/**
@@ -395,7 +402,7 @@ public class EditPatern {
 	 * @param num
 	 * @param name
 	 */
-	void CusList(TextField number, TextField name) {
+	void CusList0(TextField number, TextField name) {
 		try {
 			Button Update = new Button();
 			Update.setText("Âûáðàòü");

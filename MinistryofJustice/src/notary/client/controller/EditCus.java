@@ -668,10 +668,12 @@ public class EditCus {
 	@FXML
 	void AB_DOUTH(ActionEvent event) {
 		try {
-			if ((CCUSSEX.getValue().equals("Женский") & AB_MIDDLE_NAME.getText() != null)
+			if (CCUSSEX.getValue() != null && (CCUSSEX.getValue().equals("Женский") & AB_MIDDLE_NAME.getText() != null)
 					&& (!AB_MIDDLE_NAME.getText().toLowerCase().contains("иԥа")
 							& !AB_MIDDLE_NAME.getText().toLowerCase().contains("иԥҳа"))) {
 				AB_MIDDLE_NAME.setText(AB_MIDDLE_NAME.getText() + "-иԥҳа");
+			} else if (CCUSSEX.getValue() == null) {
+				Msg.Message("Выберите пол!");
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -681,16 +683,17 @@ public class EditCus {
 	@FXML
 	void AB_SUN(ActionEvent event) {
 		try {
-			if ((CCUSSEX.getValue().equals("Мужской") & AB_MIDDLE_NAME.getText() != null)
+			if (CCUSSEX.getValue() != null && (CCUSSEX.getValue().equals("Мужской") & AB_MIDDLE_NAME.getText() != null)
 					&& (!AB_MIDDLE_NAME.getText().toLowerCase().contains("иԥа")
 							& !AB_MIDDLE_NAME.getText().toLowerCase().contains("иԥҳа"))) {
 				AB_MIDDLE_NAME.setText(AB_MIDDLE_NAME.getText() + "-иԥа");
+			} else if (CCUSSEX.getValue() == null) {
+				Msg.Message("Выберите пол!");
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-
 	/**
 	 * Добавить страну - Адрес
 	 * 

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.controlsfx.control.Notifications;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
 import org.controlsfx.control.tableview2.cell.TextField2TableCell;
@@ -30,9 +31,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
@@ -73,7 +77,7 @@ public class OtdList {
 			Edit(OTD.getSelectionModel().getSelectedItem().getIOTDNUM(), (Stage) OTD.getScene().getWindow());
 		}
 	}
-
+    
 	@FXML
 	void Add(ActionEvent event) {
 		try {
@@ -85,7 +89,10 @@ public class OtdList {
 //			BP.setBottom(new FormRenderer(login));
 //			
 //			BP.setRight(SCB);
-
+			
+			Notifications.create().darkStyle().title("Title").graphic(new Rectangle(600, 400, Color.AQUA))
+					.hideAfter(Duration.seconds(10)).show();
+	        
 			// проверка доступа
 			if (DBUtil.OdbAction(122) == 0) {
 				Msg.Message("Нет доступа!");
