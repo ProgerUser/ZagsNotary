@@ -4,16 +4,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
-<?import org.controlsfx.control.tableview2.FilteredTableView?>
 <?import org.controlsfx.control.tableview2.FilteredTableColumn?>
+<?import org.controlsfx.control.tableview2.FilteredTableView?>
 
 <BorderPane fx:id="BP" onKeyPressed="#F5" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<padding>
@@ -68,7 +66,7 @@
 		</ToolBar>
 	</top>
 	<center>
-		<FilteredTableView fx:id="OTD" BorderPane.alignment="CENTER">
+		<FilteredTableView fx:id="OTD" onMouseClicked="#Tbl2Click" BorderPane.alignment="CENTER">
 			<columns>
 				<FilteredTableColumn fx:id="IOTDNUM" prefWidth="65.0" text="Номер" />
 				<FilteredTableColumn fx:id="COTDNAME" prefWidth="181.0" text="Название" />

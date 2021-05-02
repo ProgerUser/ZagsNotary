@@ -122,6 +122,9 @@ public class EditDoc {
 
 	@FXML
 	private ComboBox<V_NT_TEMP_LIST> TYPE_NAME;
+	
+	@FXML
+	private Button DelSelType;
 
 	@FXML
 	void CENCEL(ActionEvent event) {
@@ -1357,6 +1360,8 @@ public class EditDoc {
 	@FXML
 	private void initialize() {
 		try {
+			DelSelType.setDisable(true);
+			TYPE_NAME.setDisable(true);
 			EditLocalParam.setVisible(false);
 			DeleteLocalParam.setVisible(false);
 			

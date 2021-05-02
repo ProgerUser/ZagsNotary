@@ -27,11 +27,13 @@ import javafx.scene.control.TableRow;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
@@ -54,12 +56,24 @@ public class OtdList {
 	@FXML
 	private FilteredTableColumn<OTD, Integer> IOTDNUM;
 
-    @FXML
-    private FilteredTableColumn<OTD, String> RAION;
-    
+	@FXML
+	private FilteredTableColumn<OTD, String> RAION;
+
 	@FXML
 	private FilteredTableView<OTD> OTD;
-	
+
+	@FXML
+	public void Tbl2Click(MouseEvent event) {
+		if (event.getClickCount() == 2) // Checking double click
+		{
+			if (DBUtil.OdbAction(123) == 0) {
+				Msg.Message("Нет доступа!");
+				return;
+			}
+			Edit(OTD.getSelectionModel().getSelectedItem().getIOTDNUM(), (Stage) OTD.getScene().getWindow());
+		}
+	}
+
 	@FXML
 	void Add(ActionEvent event) {
 		try {
@@ -71,14 +85,13 @@ public class OtdList {
 //			BP.setBottom(new FormRenderer(login));
 //			
 //			BP.setRight(SCB);
-			
+
 			// проверка доступа
 			if (DBUtil.OdbAction(122) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
-		
-			
+
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) OTD.getScene().getWindow();
 
@@ -290,7 +303,7 @@ public class OtdList {
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {
-						
+
 					}
 				});
 				stage.show();
@@ -299,7 +312,6 @@ public class OtdList {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-
 
 	@FXML
 	private void initialize() {
@@ -319,20 +331,32 @@ public class OtdList {
 			COTDNAME.setCellValueFactory(cellData -> cellData.getValue().COTDNAMEProperty());
 			IOTDNUM.setCellValueFactory(cellData -> cellData.getValue().IOTDNUMProperty().asObject());
 			RAION.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
-			
+
 			COTDNAME.setCellFactory(TextField2TableCell.forTableColumn());
+			IOTDNUM.setCellFactory(TextField2TableCell.forTableColumn(new StringConverter<Integer>() {
+				@Override
+				public String toString(Integer object) {
+					return String.valueOf(object);
+				}
+
+				@Override
+				public Integer fromString(String string) {
+					return Integer.parseInt(string);
+				}
+			}));
 			
+			RAION.setCellFactory(TextField2TableCell.forTableColumn());
+
 			OTD.rowHeaderVisibleProperty().set(true);
-			
+
 			SouthFilter<OTD, String> editorCOTDNAME = new SouthFilter<>(COTDNAME, String.class);
 			SouthFilter<OTD, Integer> editorIOTDNUM = new SouthFilter<>(IOTDNUM, Integer.class);
 			SouthFilter<OTD, String> editorRAION = new SouthFilter<>(RAION, String.class);
-			
+
 			COTDNAME.setSouthNode(editorCOTDNAME);
 			IOTDNUM.setSouthNode(editorIOTDNUM);
 			RAION.setSouthNode(editorRAION);
-			
-			
+
 			// двойной щелчок
 			OTD.setRowFactory(tv -> {
 				TableRow<OTD> row = new TableRow<>();
@@ -351,7 +375,7 @@ public class OtdList {
 			});
 
 			Init();
-			
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -399,7 +423,7 @@ public class OtdList {
 			rs.close();
 
 			FilteredTableView.configureForFiltering(OTD, dlist);
-			//OTD.setItems(dlist);
+			// OTD.setItems(dlist);
 
 //			TableFilter<OTD> tableFilter = TableFilter.forTableView(OTD).apply();
 //			tableFilter.setSearchStrategy((input, target) -> {

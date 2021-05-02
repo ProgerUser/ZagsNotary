@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.HTMLEditor?>
 
-<VBox fx:id="root" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.281" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="root" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
@@ -71,7 +71,7 @@
                                                   <items>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Шаблон" />
                                                       <ComboBox fx:id="TYPE_NAME" editable="true" onAction="#TYPE_NAME" prefWidth="450.0" />
-                                                      <Button mnemonicParsing="false" onAction="#DelSelType">
+                                                      <Button fx:id="DelSelType" mnemonicParsing="false" onAction="#DelSelType">
                                                          <graphic>
                                                             <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TIMES" size="17" />
                                                          </graphic>
