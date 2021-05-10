@@ -1863,8 +1863,7 @@ public class EditCus {
 		}
 	}
 
-	@FXML
-	void CUS_TYPE() {
+	void custype() {
 		try {
 			NT_CLI_TYPES val = CUS_TYPE.getSelectionModel().getSelectedItem();
 			if (val != null) {
@@ -1883,7 +1882,8 @@ public class EditCus {
 					CCUSLAST_NAME.setDisable(true);
 					CCUSFIRST_NAME.setDisable(true);
 					CCUSMIDDLE_NAME.setDisable(true);
-
+					
+					DCUSBIRTHDAY.setDisable(true);
 				} else if (val.getCODE().equals(1) || val.getCODE().equals(3)) {
 
 //					CCUSNAME.setEditable(true);
@@ -1895,12 +1895,18 @@ public class EditCus {
 
 					CCUSNAME.setText("");
 					CCUSNAME_SH.setText("");
+					
+					DCUSBIRTHDAY.setDisable(false);
 
 				}
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
+	}
+	@FXML
+	void CUS_TYPE() {
+		custype();
 	}
 
 	/**
@@ -1950,6 +1956,7 @@ public class EditCus {
 	@FXML
 	private void initialize() {
 		try {
+			
 			CCUSLAST_NAME.setEditable(true);
 //			final KeyCombination kb = new KeyCodeCombination(KeyCode.BACK_QUOTE, KeyCombination.CONTROL_DOWN);
 //			AB_MIDDLE_NAME.setOnKeyReleased(event -> {
@@ -2498,12 +2505,14 @@ public class EditCus {
 			new ConvConst().FormatDatePiker(DOC_DATE_T);
 			new ConvConst().FormatDatePiker(DCUSBIRTHDAY);
 			new ConvConst().FormatDatePiker(DOC_PERIOD_T);
+			
+			custype();
+			
 		} catch (SQLException e) {
 			DBUtil.LOG_ERROR(e);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
-
 	}
 
 	/**

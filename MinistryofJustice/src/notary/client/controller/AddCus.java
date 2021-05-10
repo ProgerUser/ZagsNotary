@@ -2382,6 +2382,8 @@ public class AddCus {
 					CCUSLAST_NAME.setDisable(true);
 					CCUSFIRST_NAME.setDisable(true);
 					CCUSMIDDLE_NAME.setDisable(true);
+					
+					DCUSBIRTHDAY.setDisable(true);
 
 				} else if (val.getCODE().equals(1) || val.getCODE().equals(3)) {
 					setDisable();
@@ -2394,6 +2396,8 @@ public class AddCus {
 
 					CCUSNAME.setText("");
 					CCUSNAME_SH.setText("");
+					
+					DCUSBIRTHDAY.setDisable(false);
 				}
 			}
 		} catch (Exception e) {

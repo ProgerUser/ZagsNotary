@@ -18,7 +18,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.controlsfx.control.SearchableComboBox;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
@@ -144,8 +143,8 @@ public class IUTempParamIU {
 	@FXML
 	private ComboBox<NT_TEMP_LIST_PARAM> PARENTS;
 
-	@FXML
-	private SearchableComboBox<ALL_TABLE> PRM_TBL_REF2;
+//	@FXML
+//	private SearchableComboBox<ALL_TABLE> PRM_TBL_REF2;
 
 	@FXML
 	void Cencel(ActionEvent event) {
@@ -409,21 +408,18 @@ public class IUTempParamIU {
 
 				PRM_TBL_REF.setItems(combolist);
 
-				PRM_TBL_REF2.setItems(combolist);
-
 				FxUtilTest.getComboBoxValue(PRM_TBL_REF);
 				FxUtilTest.autoCompleteComboBoxPlus(PRM_TBL_REF, (typedText, itemToCompare) -> itemToCompare
 						.getTABLE_NAME().toLowerCase().contains(typedText.toLowerCase()));
 
 				convert_TablrList(PRM_TBL_REF);
 
-				convert_TablrList(PRM_TBL_REF2);
 			}
 			// Параметры
 			{
 				PreparedStatement stsmt = conn.prepareStatement(
 						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrmForAddParents"));
-				stsmt.setInt(1, getID());
+				stsmt.setInt(1, cl.getPRM_TMP_ID());
 				ResultSet rs = stsmt.executeQuery();
 				ObservableList<NT_TEMP_LIST_PARAM> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
@@ -500,7 +496,7 @@ public class IUTempParamIU {
 				{
 					PreparedStatement stsmt = conn.prepareStatement(
 							DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrmForAddParents"));
-					stsmt.setInt(1, cl.getPRM_ID());
+					stsmt.setInt(1, cl.getPRM_TMP_ID());
 					ResultSet rs = stsmt.executeQuery();
 					ObservableList<NT_TEMP_LIST_PARAM> combolist = FXCollections.observableArrayList();
 					while (rs.next()) {

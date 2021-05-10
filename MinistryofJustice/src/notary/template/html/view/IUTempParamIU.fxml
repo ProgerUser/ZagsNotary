@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<?import org.controlsfx.control.SearchableComboBox?>
 
 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="700.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -39,7 +38,6 @@
                               <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наименование" GridPane.halignment="RIGHT">
@@ -59,12 +57,12 @@
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Падеж" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Падеж" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
-                              <ComboBox fx:id="PRM_PADEJ" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <ComboBox fx:id="PRM_PADEJ" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Обязательный" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
@@ -77,20 +75,20 @@
                                  </GridPane.margin>
                               </Text>
                               <TextField fx:id="PRM_R_NAME" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ссылка на парам." GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ссылка на парам." GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
                               <ComboBox fx:id="PRM_TBL_REF" editable="true" maxWidth="1.7976931348623157E308" onAction="#PRM_TBL_REF" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <ComboBox fx:id="PARENTS" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ссылка на поле" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                              <ComboBox fx:id="PARENTS" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ссылка на поле" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
-                              <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Button mnemonicParsing="false" onAction="#DelPadej" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                              <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Button mnemonicParsing="false" onAction="#DelPadej" GridPane.columnIndex="2" GridPane.rowIndex="7">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
@@ -98,7 +96,6 @@
                                     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
                                  </graphic>
                               </Button>
-                              <SearchableComboBox fx:id="PRM_TBL_REF2" maxHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                            </children>
                         </GridPane>
                      </children>

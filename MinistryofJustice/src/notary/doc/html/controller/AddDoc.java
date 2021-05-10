@@ -181,15 +181,24 @@ public class AddDoc {
 						}
 					}
 				}
-				roots.setExpanded(true);
 				param.setRoot(roots);
 				param.setShowRoot(false);
 			}
+			expandTreeView(roots);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	private void expandTreeView(TreeItem<NT_TEMP_LIST_PARAM> item) {
+		if (item != null && !item.isLeaf()) {
+			item.setExpanded(true);
+			for (TreeItem<NT_TEMP_LIST_PARAM> child : item.getChildren()) {
+				expandTreeView(child);
+			}
+		}
+	}
+	
 	public void setStatus(Boolean status) {
 		this.status.set(status);
 	}
@@ -803,8 +812,8 @@ public class AddDoc {
 			PrintToolbar.setDisable(true);
 			Tabs.getTabs().remove(scans);
 
-			HtmlEditor.getStyleClass().add("mylistview");
-			HtmlEditor.getStylesheets().add("/ScrPane.css");
+			//HtmlEditor.getStyleClass().add("mylistview");
+			//HtmlEditor.getStylesheets().add("/ScrPane.css");
 			dbConnect();
 			DBUtil.RunProcess(conn);
 			{

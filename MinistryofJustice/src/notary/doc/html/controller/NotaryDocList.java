@@ -353,7 +353,7 @@ public class NotaryDocList {
 			DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 			OPER.setCellValueFactory(cellData -> cellData.getValue().OPERProperty());
 			CR_TIME.setCellValueFactory(cellData -> cellData.getValue().CR_TIMEProperty());
-			NT_TYPE.setCellValueFactory(cellData -> cellData.getValue().TYPE_NAMEProperty());
+			NT_TYPE.setCellValueFactory(cellData -> cellData.getValue().TYPE_NODEProperty());
 			CR_DATE.setCellValueFactory(cellData -> ((V_NT_DOC) cellData.getValue()).CR_DATEProperty());
 			// Фильтр
 			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
@@ -425,6 +425,7 @@ public class NotaryDocList {
 						: null);
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				list.setTYPE_NAME(rs.getString("TYPE_NAME"));
+				list.setTYPE_NODE(rs.getString("TYPE_NODE"));
 				dlist.add(list);
 			}
 			prepStmt.close();

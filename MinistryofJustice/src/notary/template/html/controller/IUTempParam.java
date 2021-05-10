@@ -303,11 +303,21 @@ public class IUTempParam {
 			
 			NT_TEMP_LIST_PARAM.setRoot(root);
 			NT_TEMP_LIST_PARAM.setShowRoot(false);
-		
+			expandTreeView(root);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	private void expandTreeView(TreeItem<NT_TEMP_LIST_PARAM> item) {
+		if (item != null && !item.isLeaf()) {
+			item.setExpanded(true);
+			for (TreeItem<NT_TEMP_LIST_PARAM> child : item.getChildren()) {
+				expandTreeView(child);
+			}
+		}
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {

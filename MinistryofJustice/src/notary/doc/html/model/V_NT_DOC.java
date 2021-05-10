@@ -26,8 +26,10 @@ public class V_NT_DOC {
 	private StringProperty DOC_NUMBER;
 	/** Нет данных */
 	private StringProperty TYPE_NAME;
+	private StringProperty TYPE_NODE;
 
 	public V_NT_DOC() {
+		this.TYPE_NODE = new SimpleStringProperty();
 		this.HTML_DOCUMENT = new SimpleStringProperty();
 		this.ID = new SimpleIntegerProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
@@ -39,6 +41,10 @@ public class V_NT_DOC {
 		this.TYPE_NAME = new SimpleStringProperty();
 	}
 
+	public void setTYPE_NODE(String TYPE_NODE) {
+		this.TYPE_NODE.set(TYPE_NODE);
+	}
+	
 	public void setHTML_DOCUMENT(String HTML_DOCUMENT) {
 		this.HTML_DOCUMENT.set(HTML_DOCUMENT);
 	}
@@ -75,6 +81,10 @@ public class V_NT_DOC {
 		this.TYPE_NAME.set(TYPE_NAME);
 	}
 
+	public String getTYPE_NODE() {
+		return TYPE_NODE.get();
+	}
+	
 	public String getHTML_DOCUMENT() {
 		return HTML_DOCUMENT.get();
 	}
@@ -111,6 +121,10 @@ public class V_NT_DOC {
 		return TYPE_NAME.get();
 	}
 
+	public StringProperty TYPE_NODEProperty() {
+		return TYPE_NODE;
+	}
+	
 	public StringProperty HTML_DOCUMENTProperty() {
 		return HTML_DOCUMENT;
 	}

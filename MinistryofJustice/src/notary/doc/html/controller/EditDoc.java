@@ -1,10 +1,12 @@
 package notary.doc.html.controller;
 
+import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
@@ -29,14 +31,10 @@ import java.util.Map;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
-import org.icepdf.ri.common.SwingController;
-import org.icepdf.ri.common.SwingViewBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -625,11 +623,11 @@ public class EditDoc {
 				for (Node candidate : (HtmlEditor.lookupAll("ComboBox"))) {
 					// fonts are selected by the second menu in the htmlEditor.
 					if (candidate instanceof ComboBox && i == 1) {
-						System.out.println("`````");
+						//System.out.println("`````");
 						// limit the font selections to our predefined list.
 						ComboBox menuButton = (ComboBox) candidate;
 						menuButton.setMinWidth(200);
-						System.out.println(menuButton.getSelectionModel().getSelectedItem());
+						//System.out.println(menuButton.getSelectionModel().getSelectedItem());
 						List<String> removalList = FXCollections.observableArrayList();
 						final List<String> fontSelections = menuButton.getItems();
 						for (String item : fontSelections) {
@@ -676,7 +674,7 @@ public class EditDoc {
 					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
 				}
 
-				System.out.println(JsonStr);
+				//System.out.println(JsonStr);
 
 				roots = new TreeItem<>("Root");
 				Map<Integer, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
@@ -730,16 +728,24 @@ public class EditDoc {
 						}
 					}
 				}
-				roots.setExpanded(true);
 				param.setRoot(roots);
 				param.setShowRoot(false);
-
 			}
+			expandTreeView(roots);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
 
+	private void expandTreeView(TreeItem<NT_TEMP_LIST_PARAM> item) {
+		if (item != null && !item.isLeaf()) {
+			item.setExpanded(true);
+			for (TreeItem<NT_TEMP_LIST_PARAM> child : item.getChildren()) {
+				expandTreeView(child);
+			}
+		}
+	}
+	
 	public NT_TEMP_LIST_PARAM prm;
 
 	@FXML
@@ -766,6 +772,15 @@ public class EditDoc {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				
+//				Stage stage = (Stage) TYPE_NAME.getScene().getWindow();
+//				
+//				webView.prefHeightProperty().bind(stage.heightProperty());
+//				webView.prefWidthProperty().bind(stage.widthProperty());
+				
+//				StackPane stackPane = new StackPane();
+//				stackPane.getChildren().add(webview);
+		        
 				final WebEngine webEngine = webView.getEngine();
 				final JsToJava jstojava = new JsToJava();
 				// Запишем в файл
@@ -821,11 +836,11 @@ public class EditDoc {
 								for (Node candidate : (HtmlEditor.lookupAll("ComboBox"))) {
 									// fonts are selected by the second menu in the htmlEditor.
 									if (candidate instanceof ComboBox && i == 1) {
-										System.out.println("`````");
+										//System.out.println("`````");
 										// limit the font selections to our predefined list.
 										ComboBox menuButton = (ComboBox) candidate;
 										menuButton.setMinWidth(200);
-										System.out.println(menuButton.getSelectionModel().getSelectedItem());
+										//System.out.println(menuButton.getSelectionModel().getSelectedItem());
 										List<String> removalList = FXCollections.observableArrayList();
 										final List<String> fontSelections = menuButton.getItems();
 										for (String item : fontSelections) {
@@ -1161,6 +1176,7 @@ public class EditDoc {
 					if (!OnPrint) {
 						onclose();
 					}
+					onclose();
 				} else {
 					conn.rollback();
 					setStatus(false);
@@ -1226,37 +1242,56 @@ public class EditDoc {
 		try {
 			NT_SCANS val = NT_SCANS.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				PreparedStatement prp = conn.prepareStatement("select sc_file from nt_scans where sc_id=?");
+				PreparedStatement prp = conn.prepareStatement("select sc_file ,SC_TYPE,substr(SC_FILE_NAME, 1, instr(SC_FILE_NAME, '.') - 1) fname from nt_scans where sc_id=?");
 				prp.setInt(1, val.getSC_ID());
 				ResultSet rs = prp.executeQuery();
+				String file_format = "";
+				String fname = "";
 				Blob blob = null;
 				if (rs.next()) {
 					blob = rs.getBlob("sc_file");
+					file_format = rs.getString("SC_TYPE");
+					fname = rs.getString("fname");
 				}
 				prp.close();
 				rs.close();
 				// ---------------------
 				int blobLength = (int) blob.length();
 				byte[] blobAsBytes = blob.getBytes(1, blobLength);
-				// build a component controller
-				SwingController controller = new SwingController();
-				SwingViewBuilder factory = new SwingViewBuilder(controller);
-				JPanel viewerComponentPanel = factory.buildViewerPanel();
-				// add interactive mouse link annotation support via callback
-				controller.getDocumentViewController().setAnnotationCallback(
-						new org.icepdf.ri.common.MyAnnotationCallback(controller.getDocumentViewController()));
-				JFrame applicationFrame = new JFrame();
-				// applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				applicationFrame.getContentPane().add(viewerComponentPanel);
-				// Now that the GUI is all in place, we can try openning a PDF
-				// controller.openDocument(filename);
-				// controller.openDocument(arg0, arg1, arg2);
-				controller.openDocument(blobAsBytes, 0, blobAsBytes.length, "", "");
-				controller.isDocumentViewMode(0);
-				// show the component
-				applicationFrame.pack();
-				applicationFrame.setVisible(true);
+
+				//InputStream targetStream = new ByteArrayInputStream(blobAsBytes);
+
+				File tempFile = File.createTempFile(fname, "."+file_format,
+						new File(System.getenv("MJ_PATH") + "OutReports"));
+			    OutputStream outStream = new FileOutputStream(tempFile);
+			    outStream.write(blobAsBytes);
+			    
+				tempFile.deleteOnExit();
+				if (Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(tempFile);
+				}
+				outStream.close();
 				blob.free();
+				
+//				// build a component controller
+//				SwingController controller = new SwingController();
+//				SwingViewBuilder factory = new SwingViewBuilder(controller);
+//				JPanel viewerComponentPanel = factory.buildViewerPanel();
+//				// add interactive mouse link annotation support via callback
+//				controller.getDocumentViewController().setAnnotationCallback(
+//						new org.icepdf.ri.common.MyAnnotationCallback(controller.getDocumentViewController()));
+//				JFrame applicationFrame = new JFrame();
+//				// applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//				applicationFrame.getContentPane().add(viewerComponentPanel);
+//				// Now that the GUI is all in place, we can try openning a PDF
+//				// controller.openDocument(filename);
+//				// controller.openDocument(arg0, arg1, arg2);
+//				controller.openDocument(blobAsBytes, 0, blobAsBytes.length, "", "");
+//				controller.isDocumentViewMode(0);
+//				// show the component
+//				applicationFrame.pack();
+//				applicationFrame.setVisible(true);
+				
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -1268,13 +1303,65 @@ public class EditDoc {
 		try {
 			NT_SCANS val = NT_SCANS.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				PreparedStatement prp = conn.prepareStatement("delete from nt_scans where sc_id = ?");
-				prp.setInt(1, val.getSC_ID());
-				prp.executeUpdate();
-				prp.close();
-				//
-				conn.commit();
-				InitScans();
+				Stage stage = (Stage) NT_SCANS.getScene().getWindow();
+				Label alert = new Label("Удалить запись?");
+				alert.setLayoutX(75.0);
+				alert.setLayoutY(11.0);
+				alert.setPrefHeight(17.0);
+
+				Button no = new Button();
+				no.setText("Нет");
+				no.setLayoutX(111.0);
+				no.setLayoutY(56.0);
+				no.setPrefWidth(72.0);
+				no.setPrefHeight(21.0);
+
+				Button yes = new Button();
+				yes.setText("Да");
+				yes.setLayoutX(14.0);
+				yes.setLayoutY(56.0);
+				yes.setPrefWidth(72.0);
+				yes.setPrefHeight(21.0);
+
+				AnchorPane yn = new AnchorPane();
+				yn.getChildren().add(alert);
+				yn.getChildren().add(no);
+				yn.getChildren().add(yes);
+				Scene ynScene = new Scene(yn, 250, 100);
+				Stage newWindow_yn = new Stage();
+				no.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						newWindow_yn.close();
+					}
+				});
+				yes.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						try {
+							PreparedStatement prp = conn.prepareStatement("delete from nt_scans where sc_id = ?");
+							prp.setInt(1, val.getSC_ID());
+							prp.executeUpdate();
+							prp.close();
+							//
+							conn.commit();
+							InitScans();
+						} catch (SQLException e) {
+							try {
+								conn.rollback();
+							} catch (SQLException e1) {
+								DBUtil.LOG_ERROR(e1);
+							}
+							DBUtil.LOG_ERROR(e);
+						}
+						newWindow_yn.close();
+					}
+				});
+				newWindow_yn.setTitle("Внимание");
+				newWindow_yn.setScene(ynScene);
+				newWindow_yn.initModality(Modality.WINDOW_MODAL);
+				newWindow_yn.initOwner(stage);
+				newWindow_yn.setResizable(false);
+				newWindow_yn.getIcons().add(new Image("/icon.png"));
+				newWindow_yn.show();
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -1325,7 +1412,8 @@ public class EditDoc {
 		try {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Выбрать файл");
-			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("PDF документ", "*.pdf"));
+			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("PDF документ", "*.pdf"),
+					new ExtensionFilter("JPEG документ", "*.jpeg"),new ExtensionFilter("JPG документ", "*.jpg"));
 			File file = fileChooser.showOpenDialog(null);
 			if (file != null) {
 				String name = file.getName();
@@ -1459,8 +1547,8 @@ public class EditDoc {
 			}
 			PRINTER_ID.getSelectionModel().select(service.getName());
 
-			HtmlEditor.getStyleClass().add("mylistview");
-			HtmlEditor.getStylesheets().add("/ScrPane.css");
+//			HtmlEditor.getStyleClass().add("mylistview");
+//			HtmlEditor.getStylesheets().add("/ScrPane.css");
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from V_NT_TEMP_LIST");
 				ResultSet rs = stsmt.executeQuery();

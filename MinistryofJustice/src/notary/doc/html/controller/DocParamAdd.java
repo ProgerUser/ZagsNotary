@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Types;
 
 import org.apache.log4j.Logger;
@@ -21,6 +22,7 @@ import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import notary.client.model.NT_CLI_TYPES;
 import notary.doc.html.model.V_NT_DOC;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_PADEJ;
@@ -41,6 +43,9 @@ public class DocParamAdd {
 	private Button OK;
 
 	private Connection conn;
+
+	@FXML
+	private ComboBox<NT_CLI_TYPES> CUS_TYPE;
 
 	public void setConn(Connection conn, V_NT_TEMP_LIST val, V_NT_DOC DOC) {
 		this.conn = conn;
@@ -85,7 +90,14 @@ public class DocParamAdd {
 	void OK(ActionEvent event) {
 		try {
 			if (!PRM_R_NAME.getText().equals("") & PRM_R_NAME.getText().length() > 5) {
-				CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC_PARAM(?,?,?,?,?)}");
+				
+				NT_CLI_TYPES val = CUS_TYPE.getSelectionModel().getSelectedItem();
+				if (val == null) {
+					Msg.Message("Выберите тип клиента!");
+					return;
+				}
+				
+				CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC_PARAM(?,?,?,?,?,?)}");
 				cls.registerOutParameter(1, Types.VARCHAR);
 				cls.setInt(2, NT_DOC.getID());
 				if (PRM_PADEJ.getSelectionModel().getSelectedItem() != null) {
@@ -95,6 +107,9 @@ public class DocParamAdd {
 				}
 				cls.setString(4, PRM_R_NAME.getText());
 				cls.setInt(5, DOC.getID());
+				
+				cls.setInt(6, val.getCODE());
+				
 				cls.execute();
 				// --------------
 				if (cls.getString(1) == null) {
@@ -138,8 +153,42 @@ public class DocParamAdd {
 				PRM_PADEJ.setItems(combolist);
 				convert_PRM_PADEJ(PRM_PADEJ);
 			}
+
+			// тип клиента
+			{
+				Statement sqlStatement = conn.createStatement();
+				String readRecordSQL = "select * from NT_CLI_TYPES";
+				ResultSet rs = sqlStatement.executeQuery(readRecordSQL);
+				ObservableList<NT_CLI_TYPES> areas = FXCollections.observableArrayList();
+				while (rs.next()) {
+					NT_CLI_TYPES list = new NT_CLI_TYPES();
+					list.setNAME(rs.getString("NAME"));
+					list.setCODE(rs.getInt("CODE"));
+					areas.add(list);
+				}
+				CUS_TYPE.setItems(areas);
+				CombCusType(CUS_TYPE);
+				rs.close();
+				sqlStatement.close();
+			}
+			
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
+	}
+
+	private void CombCusType(ComboBox<NT_CLI_TYPES> cmb) {
+		cmb.setConverter(new StringConverter<NT_CLI_TYPES>() {
+			@Override
+			public String toString(NT_CLI_TYPES product) {
+				return (product != null) ? product.getNAME() : "";
+			}
+
+			@Override
+			public NT_CLI_TYPES fromString(final String string) {
+				return cmb.getItems().stream().filter(product -> product.getNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
 	}
 }

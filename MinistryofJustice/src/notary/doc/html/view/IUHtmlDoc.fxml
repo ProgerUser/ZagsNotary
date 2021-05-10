@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.HTMLEditor?>
 
-<VBox fx:id="root" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
@@ -32,7 +32,7 @@
         <tabs>
           <Tab text="Документ">
                <content>
-                  <VBox spacing="5.0">
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
                      <children>
                         <ToolBar fx:id="PrintToolbar">
                            <items>
@@ -71,6 +71,7 @@
                                                   <items>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Шаблон" />
                                                       <ComboBox fx:id="TYPE_NAME" editable="true" onAction="#TYPE_NAME" prefWidth="450.0" />
+                                                      <Separator orientation="VERTICAL" />
                                                       <Button fx:id="DelSelType" mnemonicParsing="false" onAction="#DelSelType">
                                                          <graphic>
                                                             <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TIMES" size="17" />
@@ -79,7 +80,6 @@
                                                             <Font size="10.0" />
                                                          </font>
                                                       </Button>
-                                                      <Separator orientation="VERTICAL" />
                                                   </items>
                                                    <VBox.margin>
                                                       <Insets left="-10.0" right="-10.0" top="-10.0" />
