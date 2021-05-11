@@ -1456,7 +1456,8 @@ public class EditCus {
 					NT_CLI_TYPES vals = CUS_TYPE.getSelectionModel().getSelectedItem();
 					if (vals != null) {
 						if (vals.getCODE() == 1 | vals.getCODE() == 3) {
-							Save1c(getId());
+							//Save1c(getId());
+							onclose();
 						} else if (vals.getCODE() == 2) {
 							onclose();
 						}
@@ -1884,11 +1885,17 @@ public class EditCus {
 					CCUSMIDDLE_NAME.setDisable(true);
 					
 					DCUSBIRTHDAY.setDisable(true);
+					
+					CCUSNAME.setDisable(false);
+					CCUSNAME_SH.setDisable(false);
 				} else if (val.getCODE().equals(1) || val.getCODE().equals(3)) {
 
 //					CCUSNAME.setEditable(true);
 //					CCUSNAME_SH.setEditable(true);
-
+					
+					CCUSNAME.setDisable(true);
+					CCUSNAME_SH.setDisable(true);
+					
 					CCUSLAST_NAME.setDisable(false);
 					CCUSFIRST_NAME.setDisable(false);
 					CCUSMIDDLE_NAME.setDisable(false);

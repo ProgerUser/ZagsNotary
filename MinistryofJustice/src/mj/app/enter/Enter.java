@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,10 +30,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
+import mj.app.model.InputFilter1;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.users.Set_Up_Pass;
-import mj.widgets.FxUtilTest;
 
 public class Enter {
 
@@ -277,12 +278,12 @@ public class Enter {
 //				rs.close();
 //			}
 
-//			FilteredList<String> filteredlogin = new FilteredList<String>(logins);
-//			login.getEditor().textProperty().addListener(new InputFilter<String>(login, filteredlogin, true));
+			FilteredList<String> filteredlogin = new FilteredList<String>(logins);
+			login.getEditor().textProperty().addListener(new InputFilter1<String>(login, filteredlogin, true));
 			login.setItems(logins);
-			FxUtilTest.getComboBoxValue(login);
-			FxUtilTest.autoCompleteComboBoxPlus(login, (typedText, itemToCompare) -> itemToCompare
-					.toLowerCase().contains(typedText.toLowerCase()));
+//			FxUtilTest.getComboBoxValue(login);
+//			FxUtilTest.autoCompleteComboBoxPlus(login, (typedText, itemToCompare) -> itemToCompare
+//					.toLowerCase().contains(typedText.toLowerCase()));
 			
 
 			final SplashScreen splash = SplashScreen.getSplashScreen();

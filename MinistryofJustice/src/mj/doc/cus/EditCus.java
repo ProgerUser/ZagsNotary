@@ -1424,8 +1424,9 @@ public class EditCus {
 				setStatus(true);
 				// сохранить, обновить
 				{
-					Save1c(getId());
+					//Save1c(getId());
 				}
+				onclose();
 			} else {
 				conn.rollback();
 				setStatus(false);

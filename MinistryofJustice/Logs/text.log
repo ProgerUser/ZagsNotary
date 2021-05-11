@@ -25444,3 +25444,194 @@ ORA-06512: на  line 1
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Thread.java:748)
 
+[11.05.2021 10:18:51] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="0002554025660254802557025650255402552025490255202548025670256602547025470254702547025470256502577025680253202582026210262202601026100253202551025320255002550025480254802571025320261902605026160260402532025820259702600026010261102610025320258602601026030259702532025710261402597026120260402605025990261502547025470254702547025470354703540035430355702532035570354003548035440253203556035400354103554035580354025" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[11.05.2021 10:18:51] [Auth1c] INFO :380 - User
+[11.05.2021 10:18:51] [Auth1c] INFO :381 - User
+[11.05.2021 10:18:51] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.05.2021 10:18:51] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="01.01.0001 0:00:00"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД РАБОТА/Дзкуя Кристина Леонидовна" ID="" КодСсылки="" Фамилия="Гамисония" Имя="Ясмин" Отчество="Раминовна" ДатаРождения="16.12.2020 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="1" НаименованиеРайона="Гагрский р-он" КодНасПункта="103" НаименованиеНасПункта="п. Цандрипш" Улица="Спортивная " Дом="8" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="C194C4AF-B306-743F-E053-4740470A1A2A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="129690" КемВыдан="ЗАГС г.Гагра " ДатаВыдачи="19.01.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.05.2021 10:18:51] [Auth1c] INFO :380 - User
+[11.05.2021 10:18:51] [Auth1c] INFO :381 - User
+[11.05.2021 10:18:51] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.05.2021 10:19:00] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="5203206032180320003209032170320603204032010320403200032190321803199031990319903199031990321703229032200318403234032730327403253032620318403203031840320203202032000320003223031840327103257032680325603184032340324903252032530326303262031840323803253032550324903184032230326603249032640325603257032510326703199031990319903199031990419904192041950420903184042090419204200041960318404208041920419304206042100419231" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[11.05.2021 10:19:00] [Auth1c] INFO :380 - User
+[11.05.2021 10:19:00] [Auth1c] INFO :381 - User
+[11.05.2021 10:19:00] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.05.2021 10:19:00] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="01.01.0001 0:00:00"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД РАБОТА/Агрба Инара И." ID="" КодСсылки="" Фамилия="Пачулия" Имя="Саид" Отчество="Викторович" ДатаРождения="30.04.1996 0:00:00" КодПола="1"/>
+		<МестоЖительства КодРайона="null" НаименованиеРайона="null" КодНасПункта="null" НаименованиеНасПункта="null" Улица="null" Дом="null" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BC9F745B-2CC7-7C46-E053-4740470A0AC7" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="22" Номер="22" КемВыдан="null" ДатаВыдачи="03.03.2021 0:00:00" СрокДействия=" 0:00:00"/>
+			<Паспорт2 ID="BC9E643A-C9E8-6789-E053-4740470A034A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="01" Номер="01" КемВыдан="null" ДатаВыдачи="01.03.2021 0:00:00" СрокДействия="01.03.2021 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.05.2021 10:19:00] [Auth1c] INFO :380 - User
+[11.05.2021 10:19:00] [Auth1c] INFO :381 - User
+[11.05.2021 10:19:00] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.05.2021 10:22:40] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="3208486084980848008489084970848608484084810848408480084990849808479084790847908479084790849708509085000846408514085530855408533085420846408483084640848208482084800848008503084640855108537085480853608464085140852908532085330854308542084640851808533085350852908464085030854608529085440853608537085310854708479084790847908479084790947909472094750948908464094890947209480094760846409488094720947309486094900947284" IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78"/>
+</Контейнер>
+
+[11.05.2021 10:22:40] [Auth1c] INFO :380 - User
+[11.05.2021 10:22:40] [Auth1c] INFO :381 - User
+[11.05.2021 10:22:40] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.05.2021 10:22:40] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="1a9f42ec-3785-4c77-8caf-4a302b2b1c78" ДатаПоследнейАвторизации="01.01.0001 0:00:00"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД РАБОТА/Дзкуя Кристина Леонидовна" ID="" КодСсылки="" Фамилия="Гамисония" Имя="Ясмин" Отчество="Раминовна" ДатаРождения="16.12.2020 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="1" НаименованиеРайона="Гагрский р-он" КодНасПункта="103" НаименованиеНасПункта="п. Цандрипш" Улица="Спортивная " Дом="8" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="C194C4AF-B306-743F-E053-4740470A1A2A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="129690" КемВыдан="ЗАГС г.Гагра " ДатаВыдачи="19.01.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.05.2021 10:22:40] [Auth1c] INFO :380 - User
+[11.05.2021 10:22:40] [Auth1c] INFO :381 - User
+[11.05.2021 10:22:40] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.05.2021 10:23:04] [Setup] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляРегистрации ПерсональныйНомерБазы="4205696057080569005699057070569605694056910569405690057090570805689056890568905689056890570705719057100567405724057630576405743057520567405693056740569205692056900569005713056740576105747057580574605674057240573905742057430575305752056740572805743057450573905674057130575605739057540574605747057410575705689056890568905689056890668906682066850669905674066990668206690066860567406698066820668306696067000668256" ЭлектронныйАдресРегистратора="said.pachuliya@mail.ru"/>
+</Контейнер>
+
+[11.05.2021 10:23:04] [Setup] INFO :380 - User
+[11.05.2021 10:23:04] [Setup] INFO :381 - User
+[11.05.2021 10:23:04] [Setup] INFO :382 - https://62.182.8.67:443/PD/hs//Registration
+[11.05.2021 10:24:16] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="4205696057080569005699057070569605694056910569405690057090570805689056890568905689056890570705719057100567405724057630576405743057520567405693056740569205692056900569005713056740576105747057580574605674057240573905742057430575305752056740572805743057450573905674057130575605739057540574605747057410575705689056890568905689056890668906682066850669905674066990668206690066860567406698066820668306696067000668256" IDБазы="33f845a3-42b6-4230-98eb-7d5804056c44"/>
+</Контейнер>
+
+[11.05.2021 10:24:16] [Auth1c] INFO :380 - User
+[11.05.2021 10:24:16] [Auth1c] INFO :381 - User
+[11.05.2021 10:24:16] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.05.2021 10:24:19] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<РодительскийЭлемент>
+ <ТестовыеДанные Привет="Привет"/>
+
+</РодительскийЭлемент>
+</Контейнер>
+
+[11.05.2021 10:24:19] [Auth1c] INFO :380 - User
+[11.05.2021 10:24:19] [Auth1c] INFO :381 - User
+[11.05.2021 10:24:19] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//TestConnection
+[11.05.2021 10:24:26] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="2509179091910917309182091900917909177091740917709173091920919109172091720917209172091720919009202091930915709207092460924709226092350915709176091570917509175091730917309196091570924409230092410922909157092070922209225092260923609235091570921109226092280922209157091960923909222092370922909230092240924009172091720917209172091721017210165101681018209157101821016510173101690915710181101651016610179101831016591" IDБазы="33f845a3-42b6-4230-98eb-7d5804056c44"/>
+</Контейнер>
+
+[11.05.2021 10:24:26] [Auth1c] INFO :380 - User
+[11.05.2021 10:24:26] [Auth1c] INFO :381 - User
+[11.05.2021 10:24:26] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.05.2021 10:24:26] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="33f845a3-42b6-4230-98eb-7d5804056c44" ДатаПоследнейАвторизации="11.05.2021 10:24:45"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД РАБОТА/Дзкуя Кристина Леонидовна" ID="" КодСсылки="" Фамилия="Гамисония" Имя="Ясмин" Отчество="Раминовна" ДатаРождения="16.12.2020 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="1" НаименованиеРайона="Гагрский р-он" КодНасПункта="103" НаименованиеНасПункта="п. Цандрипш" Улица="Спортивная " Дом="8" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="C194C4AF-B306-743F-E053-4740470A1A2A" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="3" НаименованиеВида="Свидетельство о рождении" Серия="АБ" Номер="129690" КемВыдан="ЗАГС г.Гагра " ДатаВыдачи="19.01.2021 0:00:00" СрокДействия=" 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.05.2021 10:24:26] [Auth1c] INFO :380 - User
+[11.05.2021 10:24:26] [Auth1c] INFO :381 - User
+[11.05.2021 10:24:26] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.05.2021 10:24:41] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+<ДанныеДляАвторизации КодДоступа="0401758017700175201761017690175801756017530175601752017710177001751017510175101751017510176901781017720173601786018250182601805018140173601755017360175401754017520175201775017360182301809018200180801736017860180101804018050181501814017360179001805018070180101736017750181801801018160180801809018030181901751017510175101751017510275102744027470276101736027610274402752027480173602760027440274502758027620274417" IDБазы="33f845a3-42b6-4230-98eb-7d5804056c44"/>
+</Контейнер>
+
+[11.05.2021 10:24:41] [Auth1c] INFO :380 - User
+[11.05.2021 10:24:41] [Auth1c] INFO :381 - User
+[11.05.2021 10:24:41] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs//Authorization
+[11.05.2021 10:24:41] [Auth1c] INFO :379 - <?xml version="1.0" encoding="UTF-8"?>
+<Контейнер>
+	<ДанныеАвторизации IDБазы="33f845a3-42b6-4230-98eb-7d5804056c44" ДатаПоследнейАвторизации="11.05.2021 10:25:00"/>
+	<РодительскийЭлемент>
+		<ПерсональныеДанные Оператор="ЗАГС САИД РАБОТА/Барциц Алефтина Юрьевна" ID="" КодСсылки="" Фамилия="Дзимистарашвили  " Имя="Нино  " Отчество="Тароевна " ДатаРождения="26.06.1989 0:00:00" КодПола="2"/>
+		<МестоЖительства КодРайона="5" НаименованиеРайона="Очамчырский р-он" КодНасПункта="501" НаименованиеНасПункта="г. Очамчыра" Улица="Квициния " Дом="41" Корпус="null" Квартира="null"/>
+		<Паспорта>
+			<Паспорт1 ID="BDBC1114-F3A3-5AC9-E053-4740470A8EF4" Просрочен="0" КодГосударства="1" НаименованиеГосударства="Абхазия" КодВида="1" НаименованиеВида="Паспорт" Серия="160" Номер="185997" КемВыдан="ПВС Очамчирского РОВД " ДатаВыдачи="23.04.2010 0:00:00" СрокДействия="23.04.2015 0:00:00"/>
+		</Паспорта>
+	</РодительскийЭлемент>
+</Контейнер>
+[11.05.2021 10:24:41] [Auth1c] INFO :380 - User
+[11.05.2021 10:24:41] [Auth1c] INFO :381 - User
+[11.05.2021 10:24:41] [Auth1c] INFO :382 - https://62.182.8.67:443/PD/hs/Sync/ClientPriority
+[11.05.2021 14:00:57] [Enter] ERROR:169 - java.sql.SQLException: Задан неверный URL Oracle
+	at oracle.jdbc.driver.PhysicalConnection.parseUrl(PhysicalConnection.java:1213)
+	at oracle.jdbc.driver.PhysicalConnection.readConnectionProperties(PhysicalConnection.java:982)
+	at oracle.jdbc.driver.PhysicalConnection.<init>(PhysicalConnection.java:646)
+	at oracle.jdbc.driver.T4CConnection.<init>(T4CConnection.java:428)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:38)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:208)
+	at mj.dbutil.DBUtil.dbConnect(DBUtil.java:44)
+	at mj.app.enter.Enter.Check_Enter(Enter.java:114)
+	at mj.app.enter.Enter.EnterMeth(Enter.java:172)
+	at mj.app.enter.Enter.enter_(Enter.java:189)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$KeyHandler.process(Scene.java:3964)
+	at javafx.scene.Scene$KeyHandler.access$1800(Scene.java:3910)
+	at javafx.scene.Scene.impl_processKeyEvent(Scene.java:2040)
+	at javafx.scene.Scene$ScenePeerListener.keyEvent(Scene.java:2501)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:217)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:149)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleKeyEvent$1(GlassViewEventHandler.java:248)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleKeyEvent(GlassViewEventHandler.java:247)
+	at com.sun.glass.ui.View.handleKeyEvent(View.java:546)
+	at com.sun.glass.ui.View.notifyKey(View.java:970)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
+	at java.lang.Thread.run(Thread.java:748)
+

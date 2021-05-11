@@ -510,6 +510,7 @@ public class AddCus {
 	@FXML
 	void EnterBirthDate(ActionEvent event) throws MalformedURLException {
 		// ScrollPaneCus.vvalueProperty().bind(OsnVbox.heightProperty());
+		@SuppressWarnings("unused")
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 		if (!CCUSFIRST_NAME.getText().equals("") & !CCUSLAST_NAME.getText().equals("")
 				& !CCUSMIDDLE_NAME.getText().equals("") & DCUSBIRTHDAY.getValue() != null) {
@@ -517,146 +518,146 @@ public class AddCus {
 					CCUSMIDDLE_NAME.getText(), DCUSBIRTHDAY.getValue());
 			System.out.println("~" + exists);
 			if (exists == false) {
-				// Если многопоточность
-//				BP.setDisable(true);
-//				PROGRESS.setVisible(true);
-//				Task<Object> task = new Task<Object>() {
-//					@Override
-//					public Object call() throws Exception {
-				// разрешить любые сертификаты
-				new HttpsTrustManager().allowAllSSL();
-				Auth1c exdb = new Auth1c();
-
-				// вычисляем зашифрованную строку
-				String CPU_NAME = exdb.CPU_NAME();
-				String DB_NAME = exdb.DB_NAME();
-				String HDD_SERIAL = exdb.HDD_SERIAL();
-				// String LAST_AUTH = exdb.LAST_AUTH();
-				String ENCRYPT = exdb.ENCRYPT(DB_NAME, HDD_SERIAL, CPU_NAME);
-
-				// Обращение к сервису
-				String auth = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
-						+ "<ДанныеДляАвторизации КодДоступа=\"" + ENCRYPT + "\" IDБазы=\"" + exdb.ID() + "\"/>\r\n"
-						+ "</Контейнер>\r\n";
-				URL url = new URL(exdb.FullAddress() + "/Authorization");
-				String AuthReturn = exdb.Call1cHttpService(auth, exdb.LOGIN(), exdb.PASSWORD(), url);
-				Main.logger.info("~~~~~~~~~~~~~~~");
-				Main.logger.info("AuthReturn=<" + AuthReturn + ">");
-				Main.logger.info("~~~~~~~~~~~~~~~");
-				String xml_last_auth = exdb.XML(AuthReturn);
-				exdb.SAVE_AUTH_1C_DATE(xml_last_auth);
-				String request;
-				{
-					request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
-							+ "	<ДанныеАвторизации IDБазы=\"" + exdb.ID() + "\" ДатаПоследнейАвторизации=\""
-							+ xml_last_auth + "\"/>\r\n" + "	<РодительскийЭлемент>\r\n"
-							+ "		<ПерсональныеДанные Фамилия=\"" + CCUSLAST_NAME.getText() + "\" Имя=\""
-							+ CCUSFIRST_NAME.getText() + "\" Отчество=\"" + CCUSMIDDLE_NAME.getText()
-							+ "\" ДатаРождения=\"" + DCUSBIRTHDAY.getValue().format(formatter) + " 0:00:00\"/>\r\n"
-							+ "	</РодительскийЭлемент>\r\n" + "</Контейнер>";
-					System.out.println(request);
-				}
-				URL url2 = new URL(exdb.FullAddress() + "GetData/FIO");
-				String SENDFIO_1C = exdb.Call1cHttpService(request, exdb.LOGIN(), exdb.PASSWORD(), url2);// exdb.SENDFIO_1C(request);
-				System.out.println(SENDFIO_1C);
-				// если длина возвращенной строки больше одного символа и не пусто
-				if (!SENDFIO_1C.equals("")) {
-					Platform.runLater(() -> {
-						try {
-							// osn data
-							{
-								SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
-								String readRecordSQL = sql.getSql("osn_data1c");
-								// xml как clob
-								Clob xml_clob = conn.createClob();
-								xml_clob.setString(1, SENDFIO_1C);
-								PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-								prepStmt.setClob(1, xml_clob);
-								ResultSet rs = prepStmt.executeQuery();
-								if (rs.next()) {
-									// -----------основные___данные----------
-									CCUSLAST_NAME.setText(rs.getString("LAST_NAME"));
-									CCUSFIRST_NAME.setText(rs.getString("FIRST_NAME"));
-									CCUSMIDDLE_NAME.setText(rs.getString("MIDDLE_NAME"));
-									/*
-									 * if (rs.getDate("BIRTH_DATE") != null) { DCUSBIRTHDAY
-									 * .setValue((rs.getDate("BIRTH_DATE") != null) ? LocalDate.parse(new
-									 * SimpleDateFormat("dd.MM.yyyy") .format(rs.getDate("BIRTH_DATE")), formatter)
-									 * : null); }
-									 */
-									if (rs.getInt("SEX_CODE") == 1) {
-										CCUSSEX.getSelectionModel().select("Мужской");
-									}
-									if (rs.getInt("SEX_CODE") == 2) {
-										CCUSSEX.getSelectionModel().select("Женский");
-									}
-									// ---------------------
-								}
-								prepStmt.close();
-								rs.close();
-							}
-							// address
-							{
-								SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
-								String readRecordSQL = sql.getSql("address1c");
-								// xml как clob
-								Clob xml_clob = conn.createClob();
-								xml_clob.setString(1, SENDFIO_1C);
-								PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-								prepStmt.setClob(1, xml_clob);
-								ResultSet rs = prepStmt.executeQuery();
-								if (rs.next()) {
-									Address.setExpanded(true);
-									// CALFA_2.setText(String.valueOf(rs.getInt("AREA_CODE")));
-									// CLONGNAMET.setText(rs.getString("AREA_NAME"));
-									AREA.getSelectionModel().select(rs.getString("AREA_NAME"));
-									PUNCT_NAME.getSelectionModel().select(rs.getString("NASPUNCT_NAME"));
-									INFR_NAME.setText(rs.getString("STREET"));
-									DOM.setText(rs.getString("DOM"));
-									KORP.setText(rs.getString("KORPUS"));
-									KV.setText(rs.getString("KV"));
-									// ---------------------
-								}
-								prepStmt.close();
-								rs.close();
-							}
-							// documents
-							{
-								SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
-								String readRecordSQL = sql.getSql("docs1c");
-								String insert_doc_temp = sql.getSql("insert_doc_temp");
-								// xml как clob
-								Clob xml_clob = conn.createClob();
-								xml_clob.setString(1, SENDFIO_1C);
-								PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-								prepStmt.setClob(1, xml_clob);
-								ResultSet rs = prepStmt.executeQuery();
-								Docs.setExpanded(true);
-								while (rs.next()) {
-									PreparedStatement insert = conn.prepareStatement(insert_doc_temp);
-									insert.setInt(1, rs.getInt("DOC_TYPE"));
-									insert.setString(2, rs.getString("NOMER"));
-									insert.setString(3, rs.getString("SERIA"));
-									insert.setDate(4, rs.getDate("DATE_VID"));
-									insert.setDate(5, rs.getDate("DATE_DEIST"));
-									insert.setString(6, rs.getString("GUID"));
-									insert.setString(7, rs.getString("KEM_VIDAN"));
-									insert.execute();
-									insert.close();
-								}
-								prepStmt.close();
-								rs.close();
-							}
-							// refresh doc table
-							InitCusDocum();
-							setUnDisable();
-						} catch (Exception e) {
-							DBUtil.LOG_ERROR(e);
-						}
-					});
-				} else {
-					setUnDisable();
-				}
+//				// Если многопоточность
+////				BP.setDisable(true);
+////				PROGRESS.setVisible(true);
+////				Task<Object> task = new Task<Object>() {
+////					@Override
+////					public Object call() throws Exception {
+//				// разрешить любые сертификаты
+//				new HttpsTrustManager().allowAllSSL();
+//				Auth1c exdb = new Auth1c();
+//
+//				// вычисляем зашифрованную строку
+//				String CPU_NAME = exdb.CPU_NAME();
+//				String DB_NAME = exdb.DB_NAME();
+//				String HDD_SERIAL = exdb.HDD_SERIAL();
+//				// String LAST_AUTH = exdb.LAST_AUTH();
+//				String ENCRYPT = exdb.ENCRYPT(DB_NAME, HDD_SERIAL, CPU_NAME);
+//
+//				// Обращение к сервису
+//				String auth = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
+//						+ "<ДанныеДляАвторизации КодДоступа=\"" + ENCRYPT + "\" IDБазы=\"" + exdb.ID() + "\"/>\r\n"
+//						+ "</Контейнер>\r\n";
+//				URL url = new URL(exdb.FullAddress() + "/Authorization");
+//				String AuthReturn = exdb.Call1cHttpService(auth, exdb.LOGIN(), exdb.PASSWORD(), url);
+//				Main.logger.info("~~~~~~~~~~~~~~~");
+//				Main.logger.info("AuthReturn=<" + AuthReturn + ">");
+//				Main.logger.info("~~~~~~~~~~~~~~~");
+//				String xml_last_auth = exdb.XML(AuthReturn);
+//				exdb.SAVE_AUTH_1C_DATE(xml_last_auth);
+//				String request;
+//				{
+//					request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
+//							+ "	<ДанныеАвторизации IDБазы=\"" + exdb.ID() + "\" ДатаПоследнейАвторизации=\""
+//							+ xml_last_auth + "\"/>\r\n" + "	<РодительскийЭлемент>\r\n"
+//							+ "		<ПерсональныеДанные Фамилия=\"" + CCUSLAST_NAME.getText() + "\" Имя=\""
+//							+ CCUSFIRST_NAME.getText() + "\" Отчество=\"" + CCUSMIDDLE_NAME.getText()
+//							+ "\" ДатаРождения=\"" + DCUSBIRTHDAY.getValue().format(formatter) + " 0:00:00\"/>\r\n"
+//							+ "	</РодительскийЭлемент>\r\n" + "</Контейнер>";
+//					System.out.println(request);
+//				}
+//				URL url2 = new URL(exdb.FullAddress() + "GetData/FIO");
+//				String SENDFIO_1C = exdb.Call1cHttpService(request, exdb.LOGIN(), exdb.PASSWORD(), url2);// exdb.SENDFIO_1C(request);
+//				System.out.println(SENDFIO_1C);
+//				// если длина возвращенной строки больше одного символа и не пусто
+//				if (!SENDFIO_1C.equals("")) {
+//					Platform.runLater(() -> {
+//						try {
+//							// osn data
+//							{
+//								SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+//								String readRecordSQL = sql.getSql("osn_data1c");
+//								// xml как clob
+//								Clob xml_clob = conn.createClob();
+//								xml_clob.setString(1, SENDFIO_1C);
+//								PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
+//								prepStmt.setClob(1, xml_clob);
+//								ResultSet rs = prepStmt.executeQuery();
+//								if (rs.next()) {
+//									// -----------основные___данные----------
+//									CCUSLAST_NAME.setText(rs.getString("LAST_NAME"));
+//									CCUSFIRST_NAME.setText(rs.getString("FIRST_NAME"));
+//									CCUSMIDDLE_NAME.setText(rs.getString("MIDDLE_NAME"));
+//									/*
+//									 * if (rs.getDate("BIRTH_DATE") != null) { DCUSBIRTHDAY
+//									 * .setValue((rs.getDate("BIRTH_DATE") != null) ? LocalDate.parse(new
+//									 * SimpleDateFormat("dd.MM.yyyy") .format(rs.getDate("BIRTH_DATE")), formatter)
+//									 * : null); }
+//									 */
+//									if (rs.getInt("SEX_CODE") == 1) {
+//										CCUSSEX.getSelectionModel().select("Мужской");
+//									}
+//									if (rs.getInt("SEX_CODE") == 2) {
+//										CCUSSEX.getSelectionModel().select("Женский");
+//									}
+//									// ---------------------
+//								}
+//								prepStmt.close();
+//								rs.close();
+//							}
+//							// address
+//							{
+//								SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+//								String readRecordSQL = sql.getSql("address1c");
+//								// xml как clob
+//								Clob xml_clob = conn.createClob();
+//								xml_clob.setString(1, SENDFIO_1C);
+//								PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
+//								prepStmt.setClob(1, xml_clob);
+//								ResultSet rs = prepStmt.executeQuery();
+//								if (rs.next()) {
+//									Address.setExpanded(true);
+//									// CALFA_2.setText(String.valueOf(rs.getInt("AREA_CODE")));
+//									// CLONGNAMET.setText(rs.getString("AREA_NAME"));
+//									AREA.getSelectionModel().select(rs.getString("AREA_NAME"));
+//									PUNCT_NAME.getSelectionModel().select(rs.getString("NASPUNCT_NAME"));
+//									INFR_NAME.setText(rs.getString("STREET"));
+//									DOM.setText(rs.getString("DOM"));
+//									KORP.setText(rs.getString("KORPUS"));
+//									KV.setText(rs.getString("KV"));
+//									// ---------------------
+//								}
+//								prepStmt.close();
+//								rs.close();
+//							}
+//							// documents
+//							{
+//								SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+//								String readRecordSQL = sql.getSql("docs1c");
+//								String insert_doc_temp = sql.getSql("insert_doc_temp");
+//								// xml как clob
+//								Clob xml_clob = conn.createClob();
+//								xml_clob.setString(1, SENDFIO_1C);
+//								PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
+//								prepStmt.setClob(1, xml_clob);
+//								ResultSet rs = prepStmt.executeQuery();
+//								Docs.setExpanded(true);
+//								while (rs.next()) {
+//									PreparedStatement insert = conn.prepareStatement(insert_doc_temp);
+//									insert.setInt(1, rs.getInt("DOC_TYPE"));
+//									insert.setString(2, rs.getString("NOMER"));
+//									insert.setString(3, rs.getString("SERIA"));
+//									insert.setDate(4, rs.getDate("DATE_VID"));
+//									insert.setDate(5, rs.getDate("DATE_DEIST"));
+//									insert.setString(6, rs.getString("GUID"));
+//									insert.setString(7, rs.getString("KEM_VIDAN"));
+//									insert.execute();
+//									insert.close();
+//								}
+//								prepStmt.close();
+//								rs.close();
+//							}
+//							// refresh doc table
+//							InitCusDocum();
+//							setUnDisable();
+//						} catch (Exception e) {
+//							DBUtil.LOG_ERROR(e);
+//						}
+//					});
+//				} else {
+//					setUnDisable();
+//				}
 //						return null;
 //					}
 //				};
@@ -669,6 +670,7 @@ public class AddCus {
 //					PROGRESS.setVisible(false);
 //				});
 //				exec.execute(task);
+				setUnDisable();
 			} else {
 				// setUnDisable();
 			}
@@ -2044,9 +2046,10 @@ public class AddCus {
 				setId(retid);
 				// сохранить
 				{
-					Save1c(retid, edit);
+					//Save1c(retid, edit);
 				}
 				callStmt.close();
+				onclose();
 			} else {
 				conn.rollback();
 				setStatus(false);

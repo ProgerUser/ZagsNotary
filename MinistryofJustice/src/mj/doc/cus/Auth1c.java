@@ -376,6 +376,7 @@ public class Auth1c {
 	public String Call1cHttpService(String xml, String username, String password, URL url) {
 		String ret = "";
 		try {
+	        
 			Main.logger.info(xml);
 			Main.logger.info(username);
 			Main.logger.info(password);
@@ -415,8 +416,8 @@ public class Auth1c {
 			String theString = IOUtils.toString(inputStream, "UTF-8");
 			ret = theString;
 		} catch (Exception e) {
-			//DBUtil.LOG_ERROR(e);
-			Main.logger.error(e);
+			DBUtil.LOG_ERROR(e);
+			//Main.logger.error(e);
 		}
 		return ret;
 	}
