@@ -40,6 +40,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableRow;
@@ -52,12 +53,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
 import notary.doc.html.model.V_NT_DOC;
+import notary.doc.html.model.V_NT_TEMP_LIST;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -93,6 +96,30 @@ public class NotaryDocList {
 	static boolean AddWin = true;
 	static boolean EditWin = true;
 
+	@FXML
+	private ComboBox<?> ParamList;
+
+	@FXML
+	private Button Search;
+
+	@FXML
+	private ComboBox<?> Vals;
+
+	@FXML
+	void Search(ActionEvent event) {
+
+	}
+
+	@FXML
+	void Vals(ActionEvent event) {
+
+	}
+
+	@FXML
+	void ParamList(ActionEvent event) {
+
+	}
+    
 	@FXML
 	void Add(ActionEvent event) {
 		try {
@@ -342,6 +369,22 @@ public class NotaryDocList {
 		}
 	}
 
+	private void convert_ParamList(ComboBox<V_NT_TEMP_LIST> cmbbx) {
+		cmbbx.setConverter(new StringConverter<V_NT_TEMP_LIST>() {
+			@Override
+			public String toString(V_NT_TEMP_LIST object) {
+				return object != null ? object.getNAMES() : "";
+			}
+
+			@Override
+			public V_NT_TEMP_LIST fromString(String string) {
+				return cmbbx.getItems().stream().filter(object -> object.getNAMES().equals(string)).findFirst()
+						.orElse(null);
+			}
+
+		});
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
