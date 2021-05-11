@@ -14,7 +14,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -31,9 +30,9 @@ import com.jyloo.syntheticafx.filter.ComparisonType;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -234,7 +233,7 @@ public class FIND_CUS {
 	 * ИД документа
 	 */
 	@FXML
-	private XTableColumn<VCUS, Integer> ICUSNUM;
+	private XTableColumn<VCUS, Long> ICUSNUM;
 
 	/**
 	 * Обновление Таблицы Граждан
@@ -278,13 +277,7 @@ public class FIND_CUS {
 			task.setOnSucceeded(e -> BlockMain());
 			exec.execute(task);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -390,7 +383,7 @@ public class FIND_CUS {
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_PERIOD")), formatter) : null);
 				list.setAREA(rs.getString("AREA"));
 				list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
-				list.setICUSNUM(rs.getInt("ICUSNUM"));
+				list.setICUSNUM(rs.getLong("ICUSNUM"));
 				list.setDOC_NUM(rs.getString("DOC_NUM"));
 				list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
 				list.setDOC_SUBDIV(rs.getString("DOC_SUBDIV"));
@@ -420,13 +413,7 @@ public class FIND_CUS {
 			});
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -465,12 +452,7 @@ public class FIND_CUS {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -484,12 +466,7 @@ public class FIND_CUS {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -548,12 +525,7 @@ public class FIND_CUS {
 			Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
 					DT2.getValue());
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -569,12 +541,7 @@ public class FIND_CUS {
 			Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
 					DT2.getValue());
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -631,7 +598,7 @@ public class FIND_CUS {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(ICUSNUM.filterableProperty());
 
@@ -797,9 +764,9 @@ public class FIND_CUS {
 				TableColumnLocalDate(DOC_PERIOD);
 			}
 
-			ICUSNUM.setOnEditCommit(new EventHandler<CellEditEvent<VCUS, Integer>>() {
+			ICUSNUM.setOnEditCommit(new EventHandler<CellEditEvent<VCUS, Long>>() {
 				@Override
-				public void handle(CellEditEvent<VCUS, Integer> t) {
+				public void handle(CellEditEvent<VCUS, Long> t) {
 					((VCUS) t.getTableView().getItems().get(t.getTablePosition().getRow())).setICUSNUM(t.getNewValue());
 				}
 			});
@@ -863,13 +830,7 @@ public class FIND_CUS {
 			new ConvConst().TableColumnDate(CR_DATE);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -912,7 +873,7 @@ public class FIND_CUS {
 
 	private StringProperty Fio;
 	private BooleanProperty Status;
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public String getFio() {
 		return this.Fio.get();
@@ -930,11 +891,11 @@ public class FIND_CUS {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
@@ -942,7 +903,7 @@ public class FIND_CUS {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 		this.Fio = new SimpleStringProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 }

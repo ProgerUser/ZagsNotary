@@ -11,9 +11,9 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -41,23 +41,23 @@ public class IUTempParam {
 
 	public IUTempParam() {
 		Main.logger = Logger.getLogger(getClass());
-		this.ID = new SimpleIntegerProperty();
+		this.ID = new SimpleLongProperty();
 	}
 
-	private IntegerProperty ID;
+	private LongProperty ID;
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
 	@FXML
 	private TreeTableView<NT_TEMP_LIST_PARAM> NT_TEMP_LIST_PARAM;
 	@FXML
-	private TreeTableColumn<NT_TEMP_LIST_PARAM, Integer> PRM_ID;
+	private TreeTableColumn<NT_TEMP_LIST_PARAM, Long> PRM_ID;
 	@FXML
 	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> PRM_NAME;
 	@FXML
@@ -151,7 +151,7 @@ public class IUTempParam {
 						try {
 							PreparedStatement delete = conn
 									.prepareStatement("delete from NT_TEMP_LIST_PARAM where PRM_ID = ?");
-							delete.setInt(1, tmp.getPRM_ID());
+							delete.setLong(1, tmp.getPRM_ID());
 							delete.executeUpdate();
 							delete.close();
 							conn.commit();
@@ -245,42 +245,42 @@ public class IUTempParam {
 	@SuppressWarnings("unchecked")
 	void fillTree() {
 		root = new TreeItem<>("Root");
-		Map<Integer, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
-		Map<Integer, Integer> parents = new HashMap<>();
+		Map<Long, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
+		Map<Long, Long> parents = new HashMap<>();
 		try {
 			PreparedStatement prepStmt = conn
 					.prepareStatement("select * from VNT_TEMP_LIST_PARAM where PRM_TMP_ID = ? order by PRM_NAME");
-			prepStmt.setInt(1, getID());
+			prepStmt.setLong(1, getID());
 			// System.out.println("`````" + getID());
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
-				// System.out.println("PRM_ID=" + rs.getInt("PRM_ID") + ";" + "PARENTS=" +
-				// rs.getInt("PARENTS"));
+				// System.out.println("PRM_ID=" + rs.getLong("PRM_ID") + ";" + "PARENTS=" +
+				// rs.getLong("PARENTS"));
 				prm = new NT_TEMP_LIST_PARAM();
-				prm.setPRM_ID(rs.getInt("PRM_ID"));
+				prm.setPRM_ID(rs.getLong("PRM_ID"));
 				prm.setPRM_NAME(rs.getString("PRM_NAME"));
 				prm.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
-				prm.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+				prm.setPRM_TMP_ID(rs.getLong("PRM_TMP_ID"));
 				prm.setPRM_SQL(rs.getString("PRM_SQL"));
-				prm.setPRM_TYPE(rs.getInt("PRM_TYPE"));
-				prm.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+				prm.setPRM_TYPE(rs.getLong("PRM_TYPE"));
+				prm.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
 				prm.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 				if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
 					prm.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 				}
 				prm.setTYPE_NAME(rs.getString("TYPE_NAME"));
 				prm.setREQUIRED(rs.getString("REQUIRED"));
-				prm.setPARENTS(rs.getInt("PARENTS"));
+				prm.setPARENTS(rs.getLong("PARENTS"));
 				prm.setHTML_CODE(rs.getString("HTML_CODE"));
-				itemById.put(rs.getInt("PRM_ID"), new TreeItem<>(prm));
-				parents.put(rs.getInt("PRM_ID"), rs.getInt("PARENTS"));
+				itemById.put(rs.getLong("PRM_ID"), new TreeItem<>(prm));
+				parents.put(rs.getLong("PRM_ID"), rs.getLong("PARENTS"));
 			}
 			prepStmt.close();
 			rs.close();
 
-			for (Map.Entry<Integer, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
-				Integer key = entry.getKey();
-				Integer parent = parents.get(key);
+			for (Map.Entry<Long, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
+				Long key = entry.getKey();
+				Long parent = parents.get(key);
 				//System.out.println("parent=" + parent + ";" + "key=" + key);
 				if (parent.equals(key)) {
 					//System.out.println("(parent.equals(key))=" + entry.getValue().getValue().getPRM_ID());

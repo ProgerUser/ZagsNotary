@@ -3,8 +3,8 @@ package notary.client.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -20,12 +20,12 @@ public class CUS {
 	private StringProperty CCUSIDOPEN;/* Кто завел */
 	private SimpleObjectProperty<LocalDate> DCUSEDIT;/* Дата окончания срока действия документов */
 	private SimpleObjectProperty<LocalDateTime> DCUSOPEN;/* Дата заведения */
-	private IntegerProperty ICUSNUM;/* Уникальный номер клиента */
+	private LongProperty ICUSNUM;/* Уникальный номер клиента */
 	private StringProperty CCUS_OK_SM;/* Код страны рождения */
 	private StringProperty BurthCountry;/* Страна рождения */
-	private IntegerProperty ICUSOTD;/* ссылка на номер отделения */
+	private LongProperty ICUSOTD;/* ссылка на номер отделения */
 	private StringProperty CCUSPLACE_BIRTH;/* Место рождения */
-	private IntegerProperty CCUSSEX;/* Пол */
+	private LongProperty CCUSSEX;/* Пол */
 	private StringProperty CCUSNATIONALITY;/* Национальность */
 	private StringProperty OTD_NAME;/* Нет данных */
 	private StringProperty CITY;/* Нет данных */
@@ -47,7 +47,7 @@ public class CUS {
 	/** ОГРН */
 	private StringProperty CUS_OGRN;
 	/** Тип клиента (по умолчанию 1-физ.) */
-	private IntegerProperty CUS_TYPE;
+	private LongProperty CUS_TYPE;
 	/** Дата регистрации */
 	private SimpleObjectProperty<LocalDate> ORG_DATE_REG;
 
@@ -55,7 +55,7 @@ public class CUS {
 		this.CUS_INN = new SimpleStringProperty();
 		this.CUS_KPP = new SimpleStringProperty();
 		this.CUS_OGRN = new SimpleStringProperty();
-		this.CUS_TYPE = new SimpleIntegerProperty();
+		this.CUS_TYPE = new SimpleLongProperty();
 		this.ORG_DATE_REG = new SimpleObjectProperty<>();
 
 		this.AB_FIRST_NAME = new SimpleStringProperty();
@@ -75,11 +75,11 @@ public class CUS {
 		this.CCUSIDOPEN = new SimpleStringProperty();
 		this.DCUSEDIT = new SimpleObjectProperty<>();
 		this.DCUSOPEN = new SimpleObjectProperty<>();
-		this.ICUSNUM = new SimpleIntegerProperty();
+		this.ICUSNUM = new SimpleLongProperty();
 		this.CCUS_OK_SM = new SimpleStringProperty();
-		this.ICUSOTD = new SimpleIntegerProperty();
+		this.ICUSOTD = new SimpleLongProperty();
 		this.CCUSPLACE_BIRTH = new SimpleStringProperty();
-		this.CCUSSEX = new SimpleIntegerProperty();
+		this.CCUSSEX = new SimpleLongProperty();
 		this.CCUSNATIONALITY = new SimpleStringProperty();
 		this.OTD_NAME = new SimpleStringProperty();
 		this.CITY = new SimpleStringProperty();
@@ -99,15 +99,15 @@ public class CUS {
 		return ORG_DATE_REG;
 	}
 
-	public void setCUS_TYPE(Integer CUS_TYPE) {
+	public void setCUS_TYPE(Long CUS_TYPE) {
 		this.CUS_TYPE.set(CUS_TYPE);
 	}
 
-	public Integer getCUS_TYPE() {
+	public Long getCUS_TYPE() {
 		return CUS_TYPE.get();
 	}
 
-	public IntegerProperty CUS_TYPEProperty() {
+	public LongProperty CUS_TYPEProperty() {
 		return CUS_TYPE;
 	}
 
@@ -259,7 +259,7 @@ public class CUS {
 		this.DCUSOPEN.set(DCUSOPEN);
 	}
 
-	public void setICUSNUM(Integer ICUSNUM) {
+	public void setICUSNUM(Long ICUSNUM) {
 		this.ICUSNUM.set(ICUSNUM);
 	}
 
@@ -267,7 +267,7 @@ public class CUS {
 		this.CCUS_OK_SM.set(CCUS_OK_SM);
 	}
 
-	public void setICUSOTD(Integer ICUSOTD) {
+	public void setICUSOTD(Long ICUSOTD) {
 		this.ICUSOTD.set(ICUSOTD);
 	}
 
@@ -275,7 +275,7 @@ public class CUS {
 		this.CCUSPLACE_BIRTH.set(CCUSPLACE_BIRTH);
 	}
 
-	public void setCCUSSEX(Integer CCUSSEX) {
+	public void setCCUSSEX(Long CCUSSEX) {
 		this.CCUSSEX.set(CCUSSEX);
 	}
 
@@ -343,7 +343,7 @@ public class CUS {
 		return DCUSOPEN.get();
 	}
 
-	public Integer getICUSNUM() {
+	public Long getICUSNUM() {
 		return ICUSNUM.get();
 	}
 
@@ -351,7 +351,7 @@ public class CUS {
 		return CCUS_OK_SM.get();
 	}
 
-	public Integer getICUSOTD() {
+	public Long getICUSOTD() {
 		return ICUSOTD.get();
 	}
 
@@ -359,7 +359,7 @@ public class CUS {
 		return CCUSPLACE_BIRTH.get();
 	}
 
-	public Integer getCCUSSEX() {
+	public Long getCCUSSEX() {
 		return CCUSSEX.get();
 	}
 
@@ -427,7 +427,7 @@ public class CUS {
 		return DCUSOPEN;
 	}
 
-	public IntegerProperty ICUSNUMProperty() {
+	public LongProperty ICUSNUMProperty() {
 		return ICUSNUM;
 	}
 
@@ -435,7 +435,7 @@ public class CUS {
 		return CCUS_OK_SM;
 	}
 
-	public IntegerProperty ICUSOTDProperty() {
+	public LongProperty ICUSOTDProperty() {
 		return ICUSOTD;
 	}
 
@@ -443,7 +443,7 @@ public class CUS {
 		return CCUSPLACE_BIRTH;
 	}
 
-	public IntegerProperty CCUSSEXProperty() {
+	public LongProperty CCUSSEXProperty() {
 		return CCUSSEX;
 	}
 

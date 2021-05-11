@@ -4,12 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -51,14 +50,14 @@ import mj.msg.Msg;
 public class DocList {
 
 	@FXML
-	private TableColumn<DOCS, Integer> DocCnt;
+	private TableColumn<DOCS, Long> DocCnt;
 
 	@FXML
 	private TableView<DOCS> Docs;
-	
+
 	@FXML
 	private Button OpenDocs;
-	
+
 	@FXML
 	private TableColumn<DOCS, String> DocType;
 
@@ -67,10 +66,7 @@ public class DocList {
 		try {
 			OpenDoc();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -302,10 +298,7 @@ public class DocList {
 				}
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -314,10 +307,7 @@ public class DocList {
 		try {
 			OpenDoc();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -330,12 +320,12 @@ public class DocList {
 			String readRecordSQL = sql.getSql("DocsList");
 			Connection conn = DBUtil.conn;
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-			prepStmt.setInt(1, getId());
+			prepStmt.setLong(1, getId());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<DOCS> Docs = FXCollections.observableArrayList();
 			while (rs.next()) {
 				DOCS list = new DOCS();
-				list.setDOCCNT(rs.getInt("DOCCNT"));
+				list.setDOCCNT(rs.getLong("DOCCNT"));
 				list.setTABLE_NAME(rs.getString("TABLE_NAME"));
 				list.setDOCNAME(rs.getString("DOCNAME"));
 				Docs.add(list);
@@ -356,10 +346,7 @@ public class DocList {
 				}
 			});
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -383,24 +370,23 @@ public class DocList {
 			DocCnt.setCellValueFactory(cellData -> cellData.getValue().DOCCNTProperty().asObject());
 			refresh();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public DocList() {
 		Main.logger = Logger.getLogger(getClass());
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 }

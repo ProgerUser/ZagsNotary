@@ -2,8 +2,8 @@ package mj.doc.updname;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -18,15 +18,15 @@ public class UPDATE_NAME {
 	/** Нет данных */
 	private StringProperty SVID_NUMBER;
 	/** Нет данных */
-	private IntegerProperty CUSID;
+	private LongProperty CUSID;
 	/** Нет данных */
-	private IntegerProperty ZAGS_ID;
+	private LongProperty ZAGS_ID;
 	/** Нет данных */
 	private StringProperty OPER;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDateTime> TM$DOC_DATE;
 	/** Нет данных */
-	private IntegerProperty BRN_ACT_ID;
+	private LongProperty BRN_ACT_ID;
 	/** Нет данных */
 	private StringProperty NEW_MIDDLNAME;
 	/** Нет данных */
@@ -40,7 +40,7 @@ public class UPDATE_NAME {
 	/** Нет данных */
 	private StringProperty OLD_LASTNAME;
 	/** Нет данных */
-	private IntegerProperty ID;
+	private LongProperty ID;
 	/** Нет данных */
 	private StringProperty FIO;
 	/** Фамилия до перемены АБХ */
@@ -72,18 +72,18 @@ public class UPDATE_NAME {
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.SVID_SERIA = new SimpleStringProperty();
 		this.SVID_NUMBER = new SimpleStringProperty();
-		this.CUSID = new SimpleIntegerProperty();
-		this.ZAGS_ID = new SimpleIntegerProperty();
+		this.CUSID = new SimpleLongProperty();
+		this.ZAGS_ID = new SimpleLongProperty();
 		this.OPER = new SimpleStringProperty();
 		this.TM$DOC_DATE = new SimpleObjectProperty<>();
-		this.BRN_ACT_ID = new SimpleIntegerProperty();
+		this.BRN_ACT_ID = new SimpleLongProperty();
 		this.NEW_MIDDLNAME = new SimpleStringProperty();
 		this.NEW_FIRSTNAME = new SimpleStringProperty();
 		this.NEW_LASTNAME = new SimpleStringProperty();
 		this.OLD_MIDDLNAME = new SimpleStringProperty();
 		this.OLD_FIRSTNAME = new SimpleStringProperty();
 		this.OLD_LASTNAME = new SimpleStringProperty();
-		this.ID = new SimpleIntegerProperty();
+		this.ID = new SimpleLongProperty();
 		this.FIO = new SimpleStringProperty();
 	}
 
@@ -187,11 +187,11 @@ public class UPDATE_NAME {
 		this.SVID_NUMBER.set(SVID_NUMBER);
 	}
 
-	public void setCUSID(Integer CUSID) {
+	public void setCUSID(Long CUSID) {
 		this.CUSID.set(CUSID);
 	}
 
-	public void setZAGS_ID(Integer ZAGS_ID) {
+	public void setZAGS_ID(Long ZAGS_ID) {
 		this.ZAGS_ID.set(ZAGS_ID);
 	}
 
@@ -203,7 +203,7 @@ public class UPDATE_NAME {
 		this.TM$DOC_DATE.set(TM$DOC_DATE);
 	}
 
-	public void setBRN_ACT_ID(Integer BRN_ACT_ID) {
+	public void setBRN_ACT_ID(Long BRN_ACT_ID) {
 		this.BRN_ACT_ID.set(BRN_ACT_ID);
 	}
 
@@ -231,7 +231,7 @@ public class UPDATE_NAME {
 		this.OLD_LASTNAME.set(OLD_LASTNAME);
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
@@ -255,11 +255,11 @@ public class UPDATE_NAME {
 		return SVID_NUMBER.get();
 	}
 
-	public Integer getCUSID() {
+	public Long getCUSID() {
 		return CUSID.get();
 	}
 
-	public Integer getZAGS_ID() {
+	public Long getZAGS_ID() {
 		return ZAGS_ID.get();
 	}
 
@@ -271,7 +271,7 @@ public class UPDATE_NAME {
 		return TM$DOC_DATE.get();
 	}
 
-	public Integer getBRN_ACT_ID() {
+	public Long getBRN_ACT_ID() {
 		return BRN_ACT_ID.get();
 	}
 
@@ -299,7 +299,7 @@ public class UPDATE_NAME {
 		return OLD_LASTNAME.get();
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -323,11 +323,11 @@ public class UPDATE_NAME {
 		return SVID_NUMBER;
 	}
 
-	public IntegerProperty CUSIDProperty() {
+	public LongProperty CUSIDProperty() {
 		return CUSID;
 	}
 
-	public IntegerProperty ZAGS_IDProperty() {
+	public LongProperty ZAGS_IDProperty() {
 		return ZAGS_ID;
 	}
 
@@ -339,7 +339,7 @@ public class UPDATE_NAME {
 		return TM$DOC_DATE;
 	}
 
-	public IntegerProperty BRN_ACT_IDProperty() {
+	public LongProperty BRN_ACT_IDProperty() {
 		return BRN_ACT_ID;
 	}
 
@@ -367,7 +367,7 @@ public class UPDATE_NAME {
 		return OLD_LASTNAME;
 	}
 
-	public IntegerProperty IDProperty() {
+	public LongProperty IDProperty() {
 		return ID;
 	}
 

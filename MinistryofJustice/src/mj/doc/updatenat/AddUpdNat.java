@@ -14,15 +14,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -99,7 +98,7 @@ public class AddUpdNat {
 						ObservableList<NATIONALITY> nationals = FXCollections.observableArrayList();
 						while (rs.next()) {
 							NATIONALITY list = new NATIONALITY();
-							list.setID(rs.getInt("ID"));
+							list.setID(rs.getLong("ID"));
 							list.setNAME(rs.getString("NAME"));
 							nationals.add(list);
 						}
@@ -146,13 +145,7 @@ public class AddUpdNat {
 					}
 
 				} catch (SQLException e) {
-					e.printStackTrace();
-					Msg.Message(ExceptionUtils.getStackTrace(e));
-					Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-					String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-					String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-					int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-					DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+					DBUtil.LOG_ERROR(e);
 				}
 			}
 		});
@@ -201,7 +194,7 @@ public class AddUpdNat {
 
 			TableView<ACTFORLIST> cusllists = new TableView<ACTFORLIST>();
 
-			TableColumn<ACTFORLIST, Integer> BR_ACT_ID = new TableColumn<>("Номер");
+			TableColumn<ACTFORLIST, Long> BR_ACT_ID = new TableColumn<>("Номер");
 
 			BR_ACT_ID.setCellValueFactory(new PropertyValueFactory<>("BR_ACT_ID"));
 
@@ -284,7 +277,7 @@ public class AddUpdNat {
 				list.setBR_ACT_DATE((rs.getDate("BR_ACT_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("BR_ACT_DATE")), formatterDT)
 						: null);
-				list.setBR_ACT_ID(rs.getInt("BR_ACT_ID"));
+				list.setBR_ACT_ID(rs.getLong("BR_ACT_ID"));
 
 				cuslist.add(list);
 			}
@@ -337,13 +330,7 @@ public class AddUpdNat {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -357,7 +344,7 @@ public class AddUpdNat {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Номер");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -400,7 +387,7 @@ public class AddUpdNat {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
-				list.setICUSNUM(rs.getInt("ICUSNUM"));
+				list.setICUSNUM(rs.getLong("ICUSNUM"));
 				list.setDCUSOPEN((rs.getDate("DCUSOPEN") != null)
 						? LocalDateTime.parse(
 								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DCUSOPEN")), formatterdt)
@@ -417,9 +404,9 @@ public class AddUpdNat {
 				list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
 				list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
 				list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
-				list.setCCUSSEX(rs.getInt("CCUSSEX"));
+				list.setCCUSSEX(rs.getLong("CCUSSEX"));
 				list.setCCUSPLACE_BIRTH(rs.getString("CCUSPLACE_BIRTH"));
-				list.setICUSOTD(rs.getInt("ICUSOTD"));
+				list.setICUSOTD(rs.getLong("ICUSOTD"));
 				list.setCCUS_OK_SM(rs.getString("CCUS_OK_SM"));
 
 				cuslist.add(list);
@@ -473,13 +460,7 @@ public class AddUpdNat {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -495,26 +476,26 @@ public class AddUpdNat {
 
 			if (NEW_NAT.getSelectionModel().getSelectedItem() != null) {
 				NATIONALITY nat = NEW_NAT.getSelectionModel().getSelectedItem();
-				callStmt.setInt(3, nat.getID());
+				callStmt.setLong(3, nat.getID());
 			} else {
 				callStmt.setNull(3, java.sql.Types.INTEGER);
 			}
 
 			if (OLD_NAT.getSelectionModel().getSelectedItem() != null) {
 				NATIONALITY nat = OLD_NAT.getSelectionModel().getSelectedItem();
-				callStmt.setInt(4, nat.getID());
+				callStmt.setLong(4, nat.getID());
 			} else {
 				callStmt.setNull(4, java.sql.Types.INTEGER);
 			}
 
 			if (!BRN_ACT_ID.getText().equals("")) {
-				callStmt.setInt(5, Integer.valueOf(BRN_ACT_ID.getText()));
+				callStmt.setLong(5, Long.valueOf(BRN_ACT_ID.getText()));
 			} else {
 				callStmt.setNull(5, java.sql.Types.INTEGER);
 			}
 
 			if (!CUSID.getText().equals("")) {
-				callStmt.setInt(6, Integer.valueOf(CUSID.getText()));
+				callStmt.setLong(6, Long.valueOf(CUSID.getText()));
 			} else {
 				callStmt.setNull(6, java.sql.Types.INTEGER);
 			}
@@ -526,7 +507,7 @@ public class AddUpdNat {
 			if (callStmt.getString(1) == null) {
 				conn.commit();
 				setStatus(true);
-				setId(callStmt.getInt(2));
+				setId(callStmt.getLong(2));
 				callStmt.close();
 				onclose();
 			} else {
@@ -537,13 +518,7 @@ public class AddUpdNat {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -619,7 +594,7 @@ public class AddUpdNat {
 				ObservableList<NATIONALITY> nationals = FXCollections.observableArrayList();
 				while (rs.next()) {
 					NATIONALITY list = new NATIONALITY();
-					list.setID(rs.getInt("ID"));
+					list.setID(rs.getLong("ID"));
 					list.setNAME(rs.getString("NAME"));
 					nationals.add(list);
 				}
@@ -653,13 +628,7 @@ public class AddUpdNat {
 				convertCombo(OLD_NAT);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -676,12 +645,7 @@ public class AddUpdNat {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -692,18 +656,13 @@ public class AddUpdNat {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -713,7 +672,7 @@ public class AddUpdNat {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
@@ -722,14 +681,14 @@ public class AddUpdNat {
 		this.conn.setAutoCommit(false);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public AddUpdNat() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 }

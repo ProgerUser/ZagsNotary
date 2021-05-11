@@ -15,9 +15,9 @@ import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -198,7 +198,7 @@ public class EditMercer {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<DEATH_CERT> cusllists = new TableView<DEATH_CERT>();
-			TableColumn<DEATH_CERT, Integer> DC_ID = new TableColumn<>("Номер");
+			TableColumn<DEATH_CERT, Long> DC_ID = new TableColumn<>("Номер");
 			DC_ID.setCellValueFactory(new PropertyValueFactory<>("DC_ID"));
 			TableColumn<DEATH_CERT, String> DieFio = new TableColumn<>("ФИО");
 			DieFio.setCellValueFactory(new PropertyValueFactory<>("DieFio"));
@@ -243,8 +243,8 @@ public class EditMercer {
 				//DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
 				list.setDFIO(rs.getString("DFIO"));
-				list.setDC_ID(rs.getInt("DC_ID"));
-				list.setDC_CUS(rs.getInt("DC_CUS"));
+				list.setDC_ID(rs.getLong("DC_ID"));
+				list.setDC_CUS(rs.getLong("DC_CUS"));
 				list.setDC_DD((rs.getDate("DC_DD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DC_DD")), formatter)
 						: null);
@@ -256,7 +256,7 @@ public class EditMercer {
 						: null);
 				list.setDC_FTYPE(rs.getString("DC_FTYPE"));
 				list.setDC_FMON(rs.getString("DC_FMON"));
-				list.setDC_RCNAME(rs.getInt("DC_RCNAME"));
+				list.setDC_RCNAME(rs.getLong("DC_RCNAME"));
 				list.setDC_NRNAME(rs.getString("DC_NRNAME"));
 				list.setDC_LLOC(rs.getString("DC_LLOC"));
 				list.setDC_ZTP(rs.getString("DC_ZTP"));
@@ -271,7 +271,7 @@ public class EditMercer {
 				list.setDC_USR(rs.getString("DC_USR"));
 				/*list.setTM$DC_OPEN((rs.getDate("TM$DC_OPEN") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DC_OPEN")), formatterdt) : null);*/
-				list.setDC_ZAGS(rs.getInt("DC_ZAGS"));
+				list.setDC_ZAGS(rs.getLong("DC_ZAGS"));
 
 				cuslist.add(list);
 			}
@@ -336,7 +336,7 @@ public class EditMercer {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<DIVORCE_CERT> cusllists = new TableView<DIVORCE_CERT>();
-			TableColumn<DIVORCE_CERT, Integer> DIVC_ID = new TableColumn<>("Номер");
+			TableColumn<DIVORCE_CERT, Long> DIVC_ID = new TableColumn<>("Номер");
 			DIVC_ID.setCellValueFactory(new PropertyValueFactory<>("DIVC_ID"));
 			TableColumn<DIVORCE_CERT, String> SheFio = new TableColumn<>("Ее ФИО");
 			SheFio.setCellValueFactory(new PropertyValueFactory<>("SheFio"));
@@ -390,9 +390,9 @@ public class EditMercer {
 
 				list.setHEFIO(rs.getString("HeFio"));
 				list.setSHEFIO(rs.getString("SheFio"));
-				list.setDIVC_ID(rs.getInt("DIVC_ID"));
-				list.setDIVC_HE(rs.getInt("DIVC_HE"));
-				list.setDIVC_SHE(rs.getInt("DIVC_SHE"));
+				list.setDIVC_ID(rs.getLong("DIVC_ID"));
+				list.setDIVC_HE(rs.getLong("DIVC_HE"));
+				list.setDIVC_SHE(rs.getLong("DIVC_SHE"));
 				list.setDIVC_HE_LNBEF(rs.getString("DIVC_HE_LNBEF"));
 				list.setDIVC_HE_LNAFT(rs.getString("DIVC_HE_LNAFT"));
 				list.setDIVC_SHE_LNBEF(rs.getString("DIVC_SHE_LNBEF"));
@@ -409,23 +409,23 @@ public class EditMercer {
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_TCHD")), formatter)
 						: null);
 				list.setDIVC_TCHNUM(rs.getString("DIVC_TCHNUM"));
-				list.setDIVC_CAN(rs.getInt("DIVC_CAN"));
+				list.setDIVC_CAN(rs.getLong("DIVC_CAN"));
 				list.setDIVC_CAD((rs.getDate("DIVC_CAD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_CAD")), formatter)
 						: null);
-				list.setDIVC_ZOSCN(rs.getInt("DIVC_ZOSCN"));
+				list.setDIVC_ZOSCN(rs.getLong("DIVC_ZOSCN"));
 				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
 				list.setDIVC_ZOSFIO(rs.getString("DIVC_ZOSFIO"));
-				list.setDIVC_ZOSCN2(rs.getInt("DIVC_ZOSCN2"));
+				list.setDIVC_ZOSCN2(rs.getLong("DIVC_ZOSCN2"));
 				list.setDIVC_ZOSCD2((rs.getDate("DIVC_ZOSCD2") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD2")), formatter) : null);
 				list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));
-				list.setDIVC_ZOSPRISON(rs.getInt("DIVC_ZOSPRISON"));
-				list.setDIVC_MC_MERCER(rs.getInt("DIVC_MC_MERCER"));
+				list.setDIVC_ZOSPRISON(rs.getLong("DIVC_ZOSPRISON"));
+				list.setDIVC_MC_MERCER(rs.getLong("DIVC_MC_MERCER"));
 				list.setDIVC_NUM(rs.getString("DIVC_NUM"));
 				list.setDIVC_SERIA(rs.getString("DIVC_SERIA"));
-				list.setDIVC_ZAGS(rs.getInt("DIVC_ZAGS"));
+				list.setDIVC_ZAGS(rs.getLong("DIVC_ZAGS"));
 				list.setDIVC_ZMNAME(rs.getString("DIVC_ZMNAME"));
 				list.setDIVC_ZLNAME(rs.getString("DIVC_ZLNAME"));
 				list.setDIVC_ZPLACE(rs.getString("DIVC_ZPLACE"));
@@ -495,7 +495,7 @@ public class EditMercer {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Номер");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -536,7 +536,7 @@ public class EditMercer {
 				CUS cus = new CUS();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				String DCUSBIRTHDAYt = new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY"));
-				cus.setICUSNUM(rs.getInt("ICUSNUM"));
+				cus.setICUSNUM(rs.getLong("ICUSNUM"));
 				cus.setCCUSNAME(rs.getString("CCUSNAME"));
 				cus.setDCUSBIRTHDAY(LocalDate.parse(DCUSBIRTHDAYt, formatter));
 				cuslist.add(cus);
@@ -602,12 +602,12 @@ public class EditMercer {
 			callStmt.registerOutParameter(2, Types.INTEGER);
 			callStmt.setString(3, MERCER_OTHER.getText());
 			if (!MERCER_DIEHE.getText().equals("")) {
-				callStmt.setInt(4, Integer.valueOf(MERCER_DIEHE.getText()));
+				callStmt.setLong(4, Long.valueOf(MERCER_DIEHE.getText()));
 			} else {
 				callStmt.setNull(4, java.sql.Types.INTEGER);
 			}
 			if (!MERCER_DIESHE.getText().equals("")) {
-				callStmt.setInt(5, Integer.valueOf(MERCER_DIESHE.getText()));
+				callStmt.setLong(5, Long.valueOf(MERCER_DIESHE.getText()));
 			} else {
 				callStmt.setNull(5, java.sql.Types.INTEGER);
 			}
@@ -615,22 +615,22 @@ public class EditMercer {
 			callStmt.setString(7, MERCER_NUM.getText());
 			callStmt.setString(8, MERCER_DSPMT_HE.getValue());
 			if (!MERCER_DIVHE.getText().equals("")) {
-				callStmt.setInt(9, Integer.valueOf(MERCER_DIVHE.getText()));
+				callStmt.setLong(9, Long.valueOf(MERCER_DIVHE.getText()));
 			} else {
 				callStmt.setNull(9, java.sql.Types.INTEGER);
 			}
 			if (!MERCER_DIVSHE.getText().equals("")) {
-				callStmt.setInt(10, Integer.valueOf(MERCER_DIVSHE.getText()));
+				callStmt.setLong(10, Long.valueOf(MERCER_DIVSHE.getText()));
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
 			if (!MERCER_SHEAGE.getText().equals("")) {
-				callStmt.setInt(11, Integer.valueOf(MERCER_SHEAGE.getText()));
+				callStmt.setLong(11, Long.valueOf(MERCER_SHEAGE.getText()));
 			} else {
 				callStmt.setNull(11, java.sql.Types.INTEGER);
 			}
 			if (!MERCER_HEAGE.getText().equals("")) {
-				callStmt.setInt(12, Integer.valueOf(MERCER_HEAGE.getText()));
+				callStmt.setLong(12, Long.valueOf(MERCER_HEAGE.getText()));
 			} else {
 				callStmt.setNull(12, java.sql.Types.INTEGER);
 			}
@@ -639,12 +639,12 @@ public class EditMercer {
 			callStmt.setString(15, MERCER_HE_LNAFT.getText());
 			callStmt.setString(16, MERCER_HE_LNBEF.getText());
 			if (!MERCER_SHE.getText().equals("")) {
-				callStmt.setInt(17, Integer.valueOf(MERCER_SHE.getText()));
+				callStmt.setLong(17, Long.valueOf(MERCER_SHE.getText()));
 			} else {
 				callStmt.setNull(17, java.sql.Types.INTEGER);
 			}
 			if (!MERCER_HE.getText().equals("")) {
-				callStmt.setInt(18, Integer.valueOf(MERCER_HE.getText()));
+				callStmt.setLong(18, Long.valueOf(MERCER_HE.getText()));
 			} else {
 				callStmt.setNull(18, java.sql.Types.INTEGER);
 			}
@@ -656,7 +656,7 @@ public class EditMercer {
 			if (callStmt.getString(1) == null) {
 				conn.commit();
 				setStatus(true);
-				// setId(callStmt.getInt(2));
+				// setId(callStmt.getLong(2));
 				callStmt.close();
 				onclose();
 			} else {
@@ -676,15 +676,15 @@ public class EditMercer {
 			CallableStatement callStmt = conn
 					.prepareCall("{ call Mercer.EditMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.setInt(2, mercer.getMERCER_ID());
+			callStmt.setLong(2, mercer.getMERCER_ID());
 			callStmt.setString(3, MERCER_OTHER.getText());
 			if (!MERCER_DIEHE.getText().equals("")) {
-				callStmt.setInt(4, Integer.valueOf(MERCER_DIEHE.getText()));
+				callStmt.setLong(4, Long.valueOf(MERCER_DIEHE.getText()));
 			} else {
 				callStmt.setNull(4, java.sql.Types.INTEGER);
 			}
 			if (!MERCER_DIESHE.getText().equals("")) {
-				callStmt.setInt(5, Integer.valueOf(MERCER_DIESHE.getText()));
+				callStmt.setLong(5, Long.valueOf(MERCER_DIESHE.getText()));
 			} else {
 				callStmt.setNull(5, java.sql.Types.INTEGER);
 			}
@@ -692,22 +692,22 @@ public class EditMercer {
 			callStmt.setString(7, MERCER_NUM.getText());
 			callStmt.setString(8, MERCER_DSPMT_HE.getValue());
 			if (!MERCER_DIVHE.getText().equals("")) {
-				callStmt.setInt(9, Integer.valueOf(MERCER_DIVHE.getText()));
+				callStmt.setLong(9, Long.valueOf(MERCER_DIVHE.getText()));
 			} else {
 				callStmt.setNull(9, java.sql.Types.INTEGER);
 			}
 			if (!MERCER_DIVSHE.getText().equals("")) {
-				callStmt.setInt(10, Integer.valueOf(MERCER_DIVSHE.getText()));
+				callStmt.setLong(10, Long.valueOf(MERCER_DIVSHE.getText()));
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
 			if (!MERCER_SHEAGE.getText().equals("")) {
-				callStmt.setInt(11, Integer.valueOf(MERCER_SHEAGE.getText()));
+				callStmt.setLong(11, Long.valueOf(MERCER_SHEAGE.getText()));
 			} else {
 				callStmt.setNull(11, java.sql.Types.INTEGER);
 			}
 			if (!MERCER_HEAGE.getText().equals("")) {
-				callStmt.setInt(12, Integer.valueOf(MERCER_HEAGE.getText()));
+				callStmt.setLong(12, Long.valueOf(MERCER_HEAGE.getText()));
 			} else {
 				callStmt.setNull(12, java.sql.Types.INTEGER);
 			}
@@ -716,12 +716,12 @@ public class EditMercer {
 			callStmt.setString(15, MERCER_HE_LNAFT.getText());
 			callStmt.setString(16, MERCER_HE_LNBEF.getText());
 			if (!MERCER_SHE.getText().equals("")) {
-				callStmt.setInt(17, Integer.valueOf(MERCER_SHE.getText()));
+				callStmt.setLong(17, Long.valueOf(MERCER_SHE.getText()));
 			} else {
 				callStmt.setNull(17, java.sql.Types.INTEGER);
 			}
 			if (!MERCER_HE.getText().equals("")) {
-				callStmt.setInt(18, Integer.valueOf(MERCER_HE.getText()));
+				callStmt.setLong(18, Long.valueOf(MERCER_HE.getText()));
 			} else {
 				callStmt.setNull(18, java.sql.Types.INTEGER);
 			}
@@ -844,7 +844,7 @@ public class EditMercer {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -854,18 +854,18 @@ public class EditMercer {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public EditMercer() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 	MC_MERCER mercer;

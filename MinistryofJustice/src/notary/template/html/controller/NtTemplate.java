@@ -59,13 +59,13 @@ public class NtTemplate {
 	@FXML
 	private TableView<NT_TEMP_LIST> NT_TEMP_LIST;
 	@FXML
-	private TableColumn<NT_TEMP_LIST, Integer> ID;
+	private TableColumn<NT_TEMP_LIST, Long> ID;
 	@FXML
 	private TableColumn<NT_TEMP_LIST, String> NAME;
 	@FXML
 	private TextField TextToSearch;
 	@FXML
-	private TableColumn<NT_TEMP_LIST, Integer> NOTARY;
+	private TableColumn<NT_TEMP_LIST, Long> NOTARY;
 
 	TreeItem<NT_TEMPLATE> root = null;
 
@@ -158,18 +158,18 @@ public class NtTemplate {
 		return strBuff.toString();
 	}
 
-	void Init(Integer id) {
+	void Init(Long id) {
 		try {
 			String selectStmt = "select * from nt_temp_list where PARENT = ? order by ID asc";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, id);
+			prepStmt.setLong(1, id);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<NT_TEMP_LIST> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				NT_TEMP_LIST list = new NT_TEMP_LIST();
-				list.setID(rs.getInt("ID"));
+				list.setID(rs.getLong("ID"));
 				list.setNAME(rs.getString("NAME"));
-				list.setPARENT(rs.getInt("PARENT"));
+				list.setPARENT(rs.getLong("PARENT"));
 				if (rs.getClob("REP_QUERY") != null) {
 					list.setREP_QUERY(new ConvConst().ClobToString(rs.getClob("REP_QUERY")));
 				}
@@ -177,7 +177,7 @@ public class NtTemplate {
 					list.setHTML_TEMP(new ConvConst().ClobToString(rs.getClob("HTML_TEMP")));
 				}
 				list.setDOCX_PATH(rs.getString("DOCX_PATH"));
-				list.setNOTARY(rs.getInt("NOTARY"));
+				list.setNOTARY(rs.getLong("NOTARY"));
 
 				dlist.add(list);
 			}
@@ -275,7 +275,7 @@ public class NtTemplate {
 					public void handle(ActionEvent event) {
 						try {
 							PreparedStatement delete = conn.prepareStatement("delete from NT_TEMPLATE where NT_ID = ?");
-							delete.setInt(1, tmp.getValue().getNT_ID());
+							delete.setLong(1, tmp.getValue().getNT_ID());
 							delete.executeUpdate();
 							delete.close();
 							conn.commit();
@@ -344,7 +344,7 @@ public class NtTemplate {
 					public void handle(ActionEvent event) {
 						try {
 							PreparedStatement delete = conn.prepareStatement("delete from NT_TEMP_LIST where ID = ?");
-							delete.setInt(1, tmp.getID());
+							delete.setLong(1, tmp.getID());
 							delete.executeUpdate();
 							delete.close();
 							conn.commit();
@@ -502,8 +502,8 @@ public class NtTemplate {
 	}
 
 	void fillTreeNtTemp() {
-		Map<Integer, TreeItem<NT_TEMPLATE>> itemById = new HashMap<>();
-		Map<Integer, Integer> parents = new HashMap<>();
+		Map<Long, TreeItem<NT_TEMPLATE>> itemById = new HashMap<>();
+		Map<Long, Long> parents = new HashMap<>();
 		String query = "select * from NT_TEMPLATE";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(query);
@@ -511,11 +511,11 @@ public class NtTemplate {
 			while (rs.next()) {
 				nt_template = new NT_TEMPLATE();
 				nt_template.setNT_NAME(rs.getString("NT_NAME"));
-				nt_template.setNT_PARENT(rs.getInt("NT_PARENT"));
-				nt_template.setNT_ID(rs.getInt("NT_ID"));
-				nt_template.setNT_NPP(rs.getInt("NT_NPP"));
-				itemById.put(rs.getInt("NT_ID"), new TreeItem<>(nt_template));
-				parents.put(rs.getInt("NT_ID"), rs.getInt("NT_PARENT"));
+				nt_template.setNT_PARENT(rs.getLong("NT_PARENT"));
+				nt_template.setNT_ID(rs.getLong("NT_ID"));
+				nt_template.setNT_NPP(rs.getLong("NT_NPP"));
+				itemById.put(rs.getLong("NT_ID"), new TreeItem<>(nt_template));
+				parents.put(rs.getLong("NT_ID"), rs.getLong("NT_PARENT"));
 			}
 			pstmt.close();
 			rs.close();
@@ -523,9 +523,9 @@ public class NtTemplate {
 			e.printStackTrace();
 		}
 
-		for (Map.Entry<Integer, TreeItem<NT_TEMPLATE>> entry : itemById.entrySet()) {
-			Integer key = entry.getKey();
-			Integer parent = parents.get(key);
+		for (Map.Entry<Long, TreeItem<NT_TEMPLATE>> entry : itemById.entrySet()) {
+			Long key = entry.getKey();
+			Long parent = parents.get(key);
 			if (parent.equals(key)) {
 				// in case the root item points to itself, this is it
 				root = entry.getValue();

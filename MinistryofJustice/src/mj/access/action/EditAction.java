@@ -11,9 +11,9 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -53,14 +53,14 @@ public class EditAction {
 			CallableStatement callStmt = conn.prepareCall("{ call MJUsers.EditOdbActionItem(?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			if (!ACT_PARENT.getText().equals("")) {
-				callStmt.setInt(2, Integer.valueOf(ACT_PARENT.getText()));
+				callStmt.setLong(2, Long.valueOf(ACT_PARENT.getText()));
 			} else {
 				callStmt.setNull(2, java.sql.Types.INTEGER);
 			}
 			callStmt.setString(3, ACT_NAME.getText());
 
 			if (!ACT_PARENT_NEW.getText().equals("")) {
-				callStmt.setInt(4, Integer.valueOf(ACT_PARENT_NEW.getText()));
+				callStmt.setLong(4, Long.valueOf(ACT_PARENT_NEW.getText()));
 			} else {
 				callStmt.setNull(4, java.sql.Types.INTEGER);
 			}
@@ -87,7 +87,7 @@ public class EditAction {
 			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
 			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
@@ -114,7 +114,7 @@ public class EditAction {
 			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
 			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
@@ -142,7 +142,7 @@ public class EditAction {
 			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
 			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
@@ -162,7 +162,7 @@ public class EditAction {
 			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
 			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
@@ -192,7 +192,7 @@ public class EditAction {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -202,19 +202,19 @@ public class EditAction {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
-	Integer parantid;
+	Long parantid;
 
 	String txt;
 
-	public void setParantid(Integer ID, String txt) {
+	public void setParantid(Long ID, String txt) {
 		this.parantid = ID;
 		this.txt = txt;
 	}
@@ -222,7 +222,7 @@ public class EditAction {
 	public EditAction() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 }

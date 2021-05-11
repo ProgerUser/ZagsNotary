@@ -1,7 +1,7 @@
 package mj.zags;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,9 +9,9 @@ public class VZAGS {
 	/** Нет данных */
 	private StringProperty COTDNAME;
 	/** Нет данных */
-	private IntegerProperty ZAGS_ID;
+	private LongProperty ZAGS_ID;
 	/** Нет данных */
-	private IntegerProperty ZAGS_OTD;
+	private LongProperty ZAGS_OTD;
 	/** Нет данных */
 	private StringProperty ZAGS_NAME;
 	/** Нет данных */
@@ -32,8 +32,8 @@ public class VZAGS {
 	public VZAGS() {
 		this.ADDR_ABH = new SimpleStringProperty();
 		this.COTDNAME = new SimpleStringProperty();
-		this.ZAGS_ID = new SimpleIntegerProperty();
-		this.ZAGS_OTD = new SimpleIntegerProperty();
+		this.ZAGS_ID = new SimpleLongProperty();
+		this.ZAGS_OTD = new SimpleLongProperty();
 		this.ZAGS_NAME = new SimpleStringProperty();
 		this.ZAGS_RUK = new SimpleStringProperty();
 		this.ZAGS_ADR = new SimpleStringProperty();
@@ -59,11 +59,11 @@ public class VZAGS {
 		this.COTDNAME.set(COTDNAME);
 	}
 
-	public void setZAGS_ID(Integer ZAGS_ID) {
+	public void setZAGS_ID(Long ZAGS_ID) {
 		this.ZAGS_ID.set(ZAGS_ID);
 	}
 
-	public void setZAGS_OTD(Integer ZAGS_OTD) {
+	public void setZAGS_OTD(Long ZAGS_OTD) {
 		this.ZAGS_OTD.set(ZAGS_OTD);
 	}
 
@@ -99,11 +99,11 @@ public class VZAGS {
 		return COTDNAME.get();
 	}
 
-	public Integer getZAGS_ID() {
+	public Long getZAGS_ID() {
 		return ZAGS_ID.get();
 	}
 
-	public Integer getZAGS_OTD() {
+	public Long getZAGS_OTD() {
 		return ZAGS_OTD.get();
 	}
 
@@ -139,11 +139,11 @@ public class VZAGS {
 		return COTDNAME;
 	}
 
-	public IntegerProperty ZAGS_IDProperty() {
+	public LongProperty ZAGS_IDProperty() {
 		return ZAGS_ID;
 	}
 
-	public IntegerProperty ZAGS_OTDProperty() {
+	public LongProperty ZAGS_OTDProperty() {
 		return ZAGS_OTD;
 	}
 

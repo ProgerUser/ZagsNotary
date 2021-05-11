@@ -1,19 +1,19 @@
 package mj.report;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class REP_PARAMS {
 	/** Ссылка на отчет */
-	private IntegerProperty REP_ID;
+	private LongProperty REP_ID;
 	/** Название параметра */
 	private StringProperty PRM_NAME;
 	/** Значение по умолчанию для параметра */
 	private StringProperty PRM_DEF_VALUE;
 	/** Номер параметра */
-	private IntegerProperty PRM_ID;
+	private LongProperty PRM_ID;
 	/** Список? */
 	private StringProperty IS_LIST;
 	/** Запрос списка */
@@ -23,10 +23,10 @@ public class REP_PARAMS {
 
 	public REP_PARAMS() {
 		this.PARAMS = new SimpleStringProperty();
-		this.REP_ID = new SimpleIntegerProperty();
+		this.REP_ID = new SimpleLongProperty();
 		this.PRM_NAME = new SimpleStringProperty();
 		this.PRM_DEF_VALUE = new SimpleStringProperty();
-		this.PRM_ID = new SimpleIntegerProperty();
+		this.PRM_ID = new SimpleLongProperty();
 		this.IS_LIST = new SimpleStringProperty();
 		this.LIST_QUERY = new SimpleStringProperty();
 	}
@@ -43,7 +43,7 @@ public class REP_PARAMS {
 		return PARAMS.get();
 	}
 	
-	public void setREP_ID(Integer REP_ID) {
+	public void setREP_ID(Long REP_ID) {
 		this.REP_ID.set(REP_ID);
 	}
 
@@ -55,7 +55,7 @@ public class REP_PARAMS {
 		this.PRM_DEF_VALUE.set(PRM_DEF_VALUE);
 	}
 
-	public void setPRM_ID(Integer PRM_ID) {
+	public void setPRM_ID(Long PRM_ID) {
 		this.PRM_ID.set(PRM_ID);
 	}
 
@@ -67,7 +67,7 @@ public class REP_PARAMS {
 		this.LIST_QUERY.set(LIST_QUERY);
 	}
 
-	public Integer getREP_ID() {
+	public Long getREP_ID() {
 		return REP_ID.get();
 	}
 
@@ -79,7 +79,7 @@ public class REP_PARAMS {
 		return PRM_DEF_VALUE.get();
 	}
 
-	public Integer getPRM_ID() {
+	public Long getPRM_ID() {
 		return PRM_ID.get();
 	}
 
@@ -91,7 +91,7 @@ public class REP_PARAMS {
 		return LIST_QUERY.get();
 	}
 
-	public IntegerProperty REP_IDProperty() {
+	public LongProperty REP_IDProperty() {
 		return REP_ID;
 	}
 
@@ -103,7 +103,7 @@ public class REP_PARAMS {
 		return PRM_DEF_VALUE;
 	}
 
-	public IntegerProperty PRM_IDProperty() {
+	public LongProperty PRM_IDProperty() {
 		return PRM_ID;
 	}
 

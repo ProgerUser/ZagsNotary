@@ -68,7 +68,7 @@ public class UtilCus {
 		try {
 
 			// проверка доступа
-			if (DBUtil.OdbAction(27) == 0) {
+			if (DBUtil.OdbAction(27l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -93,7 +93,7 @@ public class UtilCus {
 						try {
 							PreparedStatement sttmt = conn
 									.prepareStatement("select CCUSNAME from cus where ICUSNUM = ?");
-							sttmt.setInt(1, controller.getId());
+							sttmt.setLong(1, controller.getId());
 							ResultSet rs = sttmt.executeQuery();
 							if (rs.next()) {
 								fio.setText(rs.getString("CCUSNAME"));
@@ -219,7 +219,7 @@ public class UtilCus {
 			
 			cusllists.setMaxWidth(Double.MAX_VALUE);
 			cusllists.setMaxHeight(Double.MAX_VALUE);
-			XTableColumn<MC_MERCER, Integer> MERCER_ID = new XTableColumn<>("Номер");
+			XTableColumn<MC_MERCER, Long> MERCER_ID = new XTableColumn<>("Номер");
 			MERCER_ID.setCellValueFactory(new PropertyValueFactory<>("MERCER_ID"));
 
 			
@@ -291,27 +291,27 @@ public class UtilCus {
 
 				list.setSHEFIO(rs.getString("SheFio"));
 				list.setHEFIO(rs.getString("HeFio"));
-				list.setMERCER_ID(rs.getInt("MERCER_ID"));
-				list.setMERCER_HE(rs.getInt("MERCER_HE"));
-				list.setMERCER_SHE(rs.getInt("MERCER_SHE"));
+				list.setMERCER_ID(rs.getLong("MERCER_ID"));
+				list.setMERCER_HE(rs.getLong("MERCER_HE"));
+				list.setMERCER_SHE(rs.getLong("MERCER_SHE"));
 				list.setMERCER_HE_LNBEF(rs.getString("MERCER_HE_LNBEF"));
 				list.setMERCER_HE_LNAFT(rs.getString("MERCER_HE_LNAFT"));
 				list.setMERCER_SHE_LNBEF(rs.getString("MERCER_SHE_LNBEF"));
 				list.setMERCER_SHE_LNBAFT(rs.getString("MERCER_SHE_LNBAFT"));
-				list.setMERCER_HEAGE(rs.getInt("MERCER_HEAGE"));
-				list.setMERCER_SHEAGE(rs.getInt("MERCER_SHEAGE"));
+				list.setMERCER_HEAGE(rs.getLong("MERCER_HEAGE"));
+				list.setMERCER_SHEAGE(rs.getLong("MERCER_SHEAGE"));
 				list.setTM$MERCER_DATE((rs.getDate("MERCER_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("MERCER_DATE")), formatterdt)
 						: null);
 				list.setMERCER_USR(rs.getString("MERCER_USR"));
-				list.setMERCER_ZAGS(rs.getInt("MERCER_ZAGS"));
-				list.setMERCER_DIVSHE(rs.getInt("MERCER_DIVSHE"));
-				list.setMERCER_DIVHE(rs.getInt("MERCER_DIVHE"));
+				list.setMERCER_ZAGS(rs.getLong("MERCER_ZAGS"));
+				list.setMERCER_DIVSHE(rs.getLong("MERCER_DIVSHE"));
+				list.setMERCER_DIVHE(rs.getLong("MERCER_DIVHE"));
 				list.setMERCER_DSPMT_HE(rs.getString("MERCER_DSPMT_HE"));
 				list.setMERCER_NUM(rs.getString("MERCER_NUM"));
 				list.setMERCER_SERIA(rs.getString("MERCER_SERIA"));
-				list.setMERCER_DIESHE(rs.getInt("MERCER_DIESHE"));
-				list.setMERCER_DIEHE(rs.getInt("MERCER_DIEHE"));
+				list.setMERCER_DIESHE(rs.getLong("MERCER_DIESHE"));
+				list.setMERCER_DIEHE(rs.getLong("MERCER_DIEHE"));
 				list.setMERCER_OTHER(rs.getString("MERCER_OTHER"));
 				list.setMERCER_DSPMT_SHE(rs.getString("MERCER_DSPMT_SHE"));
 
@@ -411,7 +411,7 @@ public class UtilCus {
 			cusllists.setMaxWidth(Double.MAX_VALUE);
 			cusllists.setMaxHeight(Double.MAX_VALUE);
 			
-			XTableColumn<PATERN_CERT, Integer> PC_ID = new XTableColumn<>("Номер");
+			XTableColumn<PATERN_CERT, Long> PC_ID = new XTableColumn<>("Номер");
 			PC_ID.setCellValueFactory(new PropertyValueFactory<>("PC_ID"));
 			
 			PC_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
@@ -484,7 +484,7 @@ public class UtilCus {
 			while (rs.next()) {
 				PATERN_CERT list = new PATERN_CERT();
 
-				list.setPС_M(rs.getInt("PС_M"));
+				list.setPС_M(rs.getLong("PС_M"));
 				list.setFATHERFIO(rs.getString("FATHERFIO"));
 				list.setPС_AFT_FNAME(rs.getString("PС_AFT_FNAME"));
 				list.setPC_ZPLACE(rs.getString("PC_ZPLACE"));
@@ -496,13 +496,13 @@ public class UtilCus {
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MOTHERBIRTHDATE")), formatter) : null);
 				list.setPC_ZLNAME(rs.getString("PC_ZLNAME"));
 				list.setMOTHERFIO(rs.getString("MOTHERFIO"));
-				list.setPС_CH(rs.getInt("PС_CH"));
+				list.setPС_CH(rs.getLong("PС_CH"));
 				list.setCHILDFIO(rs.getString("CHILDFIO"));
 				list.setPС_FZ((rs.getDate("PС_FZ") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_FZ")), formatter)
 						: null);
-				list.setPC_ID(rs.getInt("PC_ID"));
-				list.setPC_ACT_ID(rs.getInt("PC_ACT_ID"));
+				list.setPC_ID(rs.getLong("PC_ID"));
+				list.setPC_ACT_ID(rs.getLong("PC_ACT_ID"));
 				list.setPC_ZMNAME(rs.getString("PC_ZMNAME"));
 				list.setCHILDRENBIRTH((rs.getDate("CHILDRENBIRTH") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CHILDRENBIRTH")), formatter) : null);
@@ -511,8 +511,8 @@ public class UtilCus {
 				list.setPС_CRDATE((rs.getDate("PС_CRDATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_CRDATE")), formatter)
 						: null);
-				list.setPС_F(rs.getInt("PС_F"));
-				list.setPС_ZAGS(rs.getInt("PС_ZAGS"));
+				list.setPС_F(rs.getLong("PС_F"));
+				list.setPС_ZAGS(rs.getLong("PС_ZAGS"));
 				list.setPС_SERIA(rs.getString("PС_SERIA"));
 				list.setPC_ZFNAME(rs.getString("PC_ZFNAME"));
 				list.setFATHERBIRTHDATE((rs.getDate("FATHERBIRTHDATE") != null) ? LocalDate.parse(
@@ -617,7 +617,7 @@ public class UtilCus {
 			cusllists.setMaxWidth(Double.MAX_VALUE);
 			cusllists.setMaxHeight(Double.MAX_VALUE);
 			
-			XTableColumn<DEATH_CERT, Integer> DC_ID = new XTableColumn<>("Номер");
+			XTableColumn<DEATH_CERT, Long> DC_ID = new XTableColumn<>("Номер");
 			DC_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
 					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
 			
@@ -670,8 +670,8 @@ public class UtilCus {
 				//DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
 				list.setDFIO(rs.getString("DFIO"));
-				list.setDC_ID(rs.getInt("DC_ID"));
-				list.setDC_CUS(rs.getInt("DC_CUS"));
+				list.setDC_ID(rs.getLong("DC_ID"));
+				list.setDC_CUS(rs.getLong("DC_CUS"));
 				list.setDC_DD((rs.getDate("DC_DD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DC_DD")), formatter)
 						: null);
@@ -683,7 +683,7 @@ public class UtilCus {
 						: null);
 				list.setDC_FTYPE(rs.getString("DC_FTYPE"));
 				list.setDC_FMON(rs.getString("DC_FMON"));
-				list.setDC_RCNAME(rs.getInt("DC_RCNAME"));
+				list.setDC_RCNAME(rs.getLong("DC_RCNAME"));
 				list.setDC_NRNAME(rs.getString("DC_NRNAME"));
 				list.setDC_LLOC(rs.getString("DC_LLOC"));
 				list.setDC_ZTP(rs.getString("DC_ZTP"));
@@ -698,7 +698,7 @@ public class UtilCus {
 				list.setDC_USR(rs.getString("DC_USR"));
 				/*list.setTM$DC_OPEN((rs.getDate("TM$DC_OPEN") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DC_OPEN")), formatterdt) : null);*/
-				list.setDC_ZAGS(rs.getInt("DC_ZAGS"));
+				list.setDC_ZAGS(rs.getLong("DC_ZAGS"));
 
 				cuslist.add(list);
 			}
@@ -780,7 +780,7 @@ public class UtilCus {
 			cusllists.setMaxWidth(Double.MAX_VALUE);
 			cusllists.setMaxHeight(Double.MAX_VALUE);
 			
-			XTableColumn<DIVORCE_CERT, Integer> DIVC_ID = new XTableColumn<>("Номер");
+			XTableColumn<DIVORCE_CERT, Long> DIVC_ID = new XTableColumn<>("Номер");
 			DIVC_ID.setCellValueFactory(new PropertyValueFactory<>("DIVC_ID"));
 			
 			DIVC_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
@@ -845,9 +845,9 @@ public class UtilCus {
 
 				list.setHEFIO(rs.getString("HeFio"));
 				list.setSHEFIO(rs.getString("SheFio"));
-				list.setDIVC_ID(rs.getInt("DIVC_ID"));
-				list.setDIVC_HE(rs.getInt("DIVC_HE"));
-				list.setDIVC_SHE(rs.getInt("DIVC_SHE"));
+				list.setDIVC_ID(rs.getLong("DIVC_ID"));
+				list.setDIVC_HE(rs.getLong("DIVC_HE"));
+				list.setDIVC_SHE(rs.getLong("DIVC_SHE"));
 				list.setDIVC_HE_LNBEF(rs.getString("DIVC_HE_LNBEF"));
 				list.setDIVC_HE_LNAFT(rs.getString("DIVC_HE_LNAFT"));
 				list.setDIVC_SHE_LNBEF(rs.getString("DIVC_SHE_LNBEF"));
@@ -864,23 +864,23 @@ public class UtilCus {
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_TCHD")), formatter)
 						: null);
 				list.setDIVC_TCHNUM(rs.getString("DIVC_TCHNUM"));
-				list.setDIVC_CAN(rs.getInt("DIVC_CAN"));
+				list.setDIVC_CAN(rs.getLong("DIVC_CAN"));
 				list.setDIVC_CAD((rs.getDate("DIVC_CAD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_CAD")), formatter)
 						: null);
-				list.setDIVC_ZOSCN(rs.getInt("DIVC_ZOSCN"));
+				list.setDIVC_ZOSCN(rs.getLong("DIVC_ZOSCN"));
 				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
 				list.setDIVC_ZOSFIO(rs.getString("DIVC_ZOSFIO"));
-				list.setDIVC_ZOSCN2(rs.getInt("DIVC_ZOSCN2"));
+				list.setDIVC_ZOSCN2(rs.getLong("DIVC_ZOSCN2"));
 				list.setDIVC_ZOSCD2((rs.getDate("DIVC_ZOSCD2") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD2")), formatter) : null);
 				list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));
-				list.setDIVC_ZOSPRISON(rs.getInt("DIVC_ZOSPRISON"));
-				list.setDIVC_MC_MERCER(rs.getInt("DIVC_MC_MERCER"));
+				list.setDIVC_ZOSPRISON(rs.getLong("DIVC_ZOSPRISON"));
+				list.setDIVC_MC_MERCER(rs.getLong("DIVC_MC_MERCER"));
 				list.setDIVC_NUM(rs.getString("DIVC_NUM"));
 				list.setDIVC_SERIA(rs.getString("DIVC_SERIA"));
-				list.setDIVC_ZAGS(rs.getInt("DIVC_ZAGS"));
+				list.setDIVC_ZAGS(rs.getLong("DIVC_ZAGS"));
 				list.setDIVC_ZMNAME(rs.getString("DIVC_ZMNAME"));
 				list.setDIVC_ZLNAME(rs.getString("DIVC_ZLNAME"));
 				list.setDIVC_ZPLACE(rs.getString("DIVC_ZPLACE"));

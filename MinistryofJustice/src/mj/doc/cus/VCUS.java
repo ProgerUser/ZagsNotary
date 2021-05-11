@@ -2,8 +2,8 @@ package mj.doc.cus;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -58,7 +58,7 @@ public class VCUS {
 	/** Дата заведения */
 	private SimpleObjectProperty<LocalDateTime> TM$DCUSOPEN;
 	/** ID документа */
-	private IntegerProperty ICUSNUM;
+	private LongProperty ICUSNUM;
 
 	public VCUS() {
 		this.NAME = new SimpleStringProperty();
@@ -85,7 +85,7 @@ public class VCUS {
 		this.DCUSBIRTHDAY = new SimpleObjectProperty<>();
 		this.CCUSIDOPEN = new SimpleStringProperty();
 		this.TM$DCUSOPEN = new SimpleObjectProperty<>();
-		this.ICUSNUM = new SimpleIntegerProperty();
+		this.ICUSNUM = new SimpleLongProperty();
 	}
 
 	public void setNAME(String NAME) {
@@ -184,7 +184,7 @@ public class VCUS {
 		this.TM$DCUSOPEN.set(TM$DCUSOPEN);
 	}
 
-	public void setICUSNUM(Integer ICUSNUM) {
+	public void setICUSNUM(Long ICUSNUM) {
 		this.ICUSNUM.set(ICUSNUM);
 	}
 
@@ -284,7 +284,7 @@ public class VCUS {
 		return TM$DCUSOPEN.get();
 	}
 
-	public Integer getICUSNUM() {
+	public Long getICUSNUM() {
 		return ICUSNUM.get();
 	}
 
@@ -384,7 +384,7 @@ public class VCUS {
 		return TM$DCUSOPEN;
 	}
 
-	public IntegerProperty ICUSNUMProperty() {
+	public LongProperty ICUSNUMProperty() {
 		return ICUSNUM;
 	}
 }

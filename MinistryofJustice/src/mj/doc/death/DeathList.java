@@ -119,7 +119,7 @@ public class DeathList {
 	 * ид документа
 	 */
 	@FXML
-	private XTableColumn<DEATH_CERT, Integer> DC_ID;
+	private XTableColumn<DEATH_CERT, Long> DC_ID;
 
 	@FXML
 	private XTableColumn<DEATH_CERT, LocalDate> CR_DATE;
@@ -173,7 +173,7 @@ public class DeathList {
 	 * 
 	 * @param ID
 	 */
-	void Init(Integer ID) {
+	void Init(Long ID) {
 
 	}
 
@@ -182,7 +182,7 @@ public class DeathList {
 	 */
 	void Add() {
 		try {
-			if (DBUtil.OdbAction(104) == 0) {
+			if (DBUtil.OdbAction(104l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -225,7 +225,7 @@ public class DeathList {
 			if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите строку!");
 			} else {
-				if (DBUtil.OdbAction(106) == 0) {
+				if (DBUtil.OdbAction(106l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -268,7 +268,7 @@ public class DeathList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from DEATH_CERT where DC_ID = ?;" + "commit;" + "end;");
 							DEATH_CERT cl = DEATH_CERT.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getDC_ID());
+							delete.setLong(1, cl.getDC_ID());
 							delete.executeUpdate();
 							delete.close();
 
@@ -303,14 +303,14 @@ public class DeathList {
 	 */
 	boolean isopen = false;
 
-	DEATH_CERT Initialize2(Integer docid) {
+	DEATH_CERT Initialize2(Long docid) {
 		DEATH_CERT list = null;
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			String selectStmt = "select * from vdeath_cert t where DC_ID  = ?";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, docid);
+			prepStmt.setLong(1, docid);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<DEATH_CERT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -342,13 +342,13 @@ public class DeathList {
 						: null);
 				list.setDC_NRNAME(rs.getString("DC_NRNAME"));
 				list.setDC_FADMIDDLE_NAME(rs.getString("DC_FADMIDDLE_NAME"));
-				list.setDC_RCNAME(rs.getInt("DC_RCNAME"));
+				list.setDC_RCNAME(rs.getLong("DC_RCNAME"));
 				list.setDC_FADFIRST_NAME(rs.getString("DC_FADFIRST_NAME"));
 				list.setDC_FADLOCATION(rs.getString("DC_FADLOCATION"));
-				list.setDC_ID(rs.getInt("DC_ID"));
-				list.setDC_CUS(rs.getInt("DC_CUS"));
+				list.setDC_ID(rs.getLong("DC_ID"));
+				list.setDC_CUS(rs.getLong("DC_CUS"));
 				list.setDC_CD(rs.getString("DC_CD"));
-				list.setDC_ZAGS(rs.getInt("DC_ZAGS"));
+				list.setDC_ZAGS(rs.getLong("DC_ZAGS"));
 				list.setDC_DD((rs.getDate("DC_DD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DC_DD")), formatter)
 						: null);
@@ -369,10 +369,10 @@ public class DeathList {
 	/**
 	 * Редактировать
 	 */
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
-				if (DBUtil.OdbAction(105) == 0) {
+				if (DBUtil.OdbAction(105l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -380,7 +380,7 @@ public class DeathList {
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from DEATH_CERT where  DC_ID = ? for update nowait");
 				DEATH_CERT cl = Initialize2(docid);
-				selforupd.setInt(1, cl.getDC_ID());
+				selforupd.setLong(1, cl.getDC_ID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -542,7 +542,7 @@ public class DeathList {
 						Variables variables = new Variables();
 						PreparedStatement prepStmt = conn
 								.prepareStatement("select * from v_rep_death_cert where DC_ID = ?");
-						prepStmt.setInt(1, DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID());
+						prepStmt.setLong(1, DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID());
 						ResultSet rs = prepStmt.executeQuery();
 						V_REP_DEATH_CERT list = null;
 						if (rs.next()) {
@@ -704,13 +704,13 @@ public class DeathList {
 						: null);
 				list.setDC_NRNAME(rs.getString("DC_NRNAME"));
 				list.setDC_FADMIDDLE_NAME(rs.getString("DC_FADMIDDLE_NAME"));
-				list.setDC_RCNAME(rs.getInt("DC_RCNAME"));
+				list.setDC_RCNAME(rs.getLong("DC_RCNAME"));
 				list.setDC_FADFIRST_NAME(rs.getString("DC_FADFIRST_NAME"));
 				list.setDC_FADLOCATION(rs.getString("DC_FADLOCATION"));
-				list.setDC_ID(rs.getInt("DC_ID"));
-				list.setDC_CUS(rs.getInt("DC_CUS"));
+				list.setDC_ID(rs.getLong("DC_ID"));
+				list.setDC_CUS(rs.getLong("DC_CUS"));
 				list.setDC_CD(rs.getString("DC_CD"));
-				list.setDC_ZAGS(rs.getInt("DC_ZAGS"));
+				list.setDC_ZAGS(rs.getLong("DC_ZAGS"));
 				list.setDC_DD((rs.getDate("DC_DD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DC_DD")), formatter)
 						: null);
@@ -756,7 +756,7 @@ public class DeathList {
 			// preparing variables
 			Variables variables = new Variables();
 			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_DEATH_34 where DC_ID = ?");
-			prepStmt.setInt(1, DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID());
+			prepStmt.setLong(1, DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID());
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
 				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
@@ -888,7 +888,7 @@ public class DeathList {
 			// System.out.print(fields.getFields());
 
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_DEATH_CERT where DC_ID = ?");
-			prp.setInt(1, DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID());
+			prp.setLong(1, DEATH_CERT.getSelectionModel().getSelectedItem().getDC_ID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				fields.setField("Текст1", rs.getString("AB_LAST_NAME"));
@@ -1059,7 +1059,7 @@ public class DeathList {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(DC_ID.filterableProperty());
 
@@ -1176,20 +1176,20 @@ public class DeathList {
 	 * 
 	 * @return
 	 */
-	int CompareBeforeClose(Integer docid) {
-		int ret = 0;
+	Long CompareBeforeClose(Long docid) {
+		Long ret = 0l;
 		try {
 			Clob lob = conn.createClob();
 			lob.setString(1, RetXml);
 			CallableStatement callStmt = conn.prepareCall("{ call Deatch.CompareXmls(?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.setClob(2, lob);
 			callStmt.registerOutParameter(3, Types.VARCHAR);
 			callStmt.registerOutParameter(4, Types.INTEGER);
 			callStmt.execute();
 			if (callStmt.getString(3) == null) {
-				ret = callStmt.getInt(4);
-				System.out.println("ret=" + callStmt.getInt(4));
+				ret = callStmt.getLong(4);
+				System.out.println("ret=" + callStmt.getLong(4));
 			} else {
 				Msg.Message(callStmt.getString(3));
 				Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
@@ -1207,10 +1207,10 @@ public class DeathList {
 	/**
 	 * Возврат XML файлов для сравнения
 	 */
-	void XmlsForCompare(Integer docid) {
+	void XmlsForCompare(Long docid) {
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ call Deatch.RetXmls(?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
 			callStmt.execute();

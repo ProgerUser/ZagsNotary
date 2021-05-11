@@ -110,7 +110,7 @@ public class UpdAbhNameList {
 	private XTableColumn<UPDATE_ABH_NAME, String> NEW_LASTNAME;
 
 	@FXML
-	private XTableColumn<UPDATE_ABH_NAME, Integer> ID;
+	private XTableColumn<UPDATE_ABH_NAME, Long> ID;
 
 	@FXML
 	private XTableColumn<UPDATE_ABH_NAME, String> OLD_FIRSTNAME;
@@ -132,7 +132,7 @@ public class UpdAbhNameList {
 
 	void Add() {
 		try {
-			if (DBUtil.OdbAction(113) == 0) {
+			if (DBUtil.OdbAction(113l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -173,7 +173,7 @@ public class UpdAbhNameList {
 				Msg.Message("Выберите строку!");
 			} else {
 
-				if (DBUtil.OdbAction(115) == 0) {
+				if (DBUtil.OdbAction(115l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -216,7 +216,7 @@ public class UpdAbhNameList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from UPDATE_NAME where ID = ?;" + "commit;" + "end;");
 							UPDATE_ABH_NAME cl = UPDATE_NAME.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getID());
+							delete.setLong(1, cl.getID());
 							delete.executeUpdate();
 							delete.close();
 							Refresh();
@@ -246,7 +246,7 @@ public class UpdAbhNameList {
 
 	boolean isopen = false;
 
-	UPDATE_ABH_NAME Initialize2(Integer docid) {
+	UPDATE_ABH_NAME Initialize2(Long docid) {
 		UPDATE_ABH_NAME list = null;
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -255,7 +255,7 @@ public class UpdAbhNameList {
 			String selectStmt = "select * from VUPDATE_ABH_NAME t\r\n where ID = ?";
 
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, docid);
+			prepStmt.setLong(1, docid);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<UPDATE_ABH_NAME> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -268,19 +268,19 @@ public class UpdAbhNameList {
 				list.setOLD_MIDDLNAME(rs.getString("OLD_MIDDLNAME"));
 				list.setOLD_FIRSTNAME(rs.getString("OLD_FIRSTNAME"));
 				list.setCR_TIME(rs.getString("CR_TIME"));
-				list.setBRN_ACT_ID(rs.getInt("BRN_ACT_ID"));
+				list.setBRN_ACT_ID(rs.getLong("BRN_ACT_ID"));
 				list.setNEW_LASTNAME(rs.getString("NEW_LASTNAME"));
 				list.setTM$DOC_DATE((rs.getDate("TM$DOC_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")), formatterwt)
 						: null);
-				list.setCUSID(rs.getInt("CUSID"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
+				list.setCUSID(rs.getLong("CUSID"));
+				list.setZAGS_ID(rs.getLong("ZAGS_ID"));
 				list.setFIO(rs.getString("FIO"));
 				list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
 				list.setOPER(rs.getString("OPER"));
 				list.setSVID_SERIA(rs.getString("SVID_SERIA"));
 				list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
-				list.setID(rs.getInt("ID"));
+				list.setID(rs.getLong("ID"));
 				list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				list.setOLD_LASTNAME_AB(rs.getString("OLD_LASTNAME_AB"));
@@ -308,17 +308,17 @@ public class UpdAbhNameList {
 		this.conn.setAutoCommit(false);
 	}
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
-				if (DBUtil.OdbAction(114) == 0) {
+				if (DBUtil.OdbAction(114l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from UPDATE_ABH_NAME where  ID = ? for update nowait");
 				UPDATE_ABH_NAME cl = Initialize2(docid);
-				selforupd.setInt(1, cl.getID());
+				selforupd.setLong(1, cl.getID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -480,12 +480,12 @@ public class UpdAbhNameList {
 						// String readRecordSQL = sql.getSql("QueryForReport");
 						PreparedStatement prepStmt = conn
 								.prepareStatement("select * from v_rep_UPDATE_ABH_NAME where ID = ?");
-						prepStmt.setInt(1, UPDATE_NAME.getSelectionModel().getSelectedItem().getID());
+						prepStmt.setLong(1, UPDATE_NAME.getSelectionModel().getSelectedItem().getID());
 						ResultSet rs = prepStmt.executeQuery();
 						V_REP_UPDATE_NAME list = null;
 						if (rs.next()) {
 							list = new V_REP_UPDATE_NAME();
-							list.setID(rs.getInt("ID"));
+							list.setID(rs.getLong("ID"));
 							list.setDCUSBIRTHDAY(rs.getString("DCUSBIRTHDAY"));
 							list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
 							list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
@@ -493,7 +493,7 @@ public class UpdAbhNameList {
 							list.setNEW_MIDDLNAME(rs.getString("NEW_MIDDLNAME"));
 							list.setADDRESS(rs.getString("ADDRESS"));
 							list.setOLD_MIDDLNAME(rs.getString("OLD_MIDDLNAME"));
-							list.setBR_ACT_ID(rs.getInt("BR_ACT_ID"));
+							list.setBR_ACT_ID(rs.getLong("BR_ACT_ID"));
 							list.setBR_ACT_DATE(rs.getString("BR_ACT_DATE"));
 							list.setCCUSPLACE_BIRTH(rs.getString("CCUSPLACE_BIRTH"));
 							list.setNEW_LASTNAME(rs.getString("NEW_LASTNAME"));
@@ -625,19 +625,19 @@ public class UpdAbhNameList {
 				list.setOLD_MIDDLNAME(rs.getString("OLD_MIDDLNAME"));
 				list.setOLD_FIRSTNAME(rs.getString("OLD_FIRSTNAME"));
 				list.setCR_TIME(rs.getString("CR_TIME"));
-				list.setBRN_ACT_ID(rs.getInt("BRN_ACT_ID"));
+				list.setBRN_ACT_ID(rs.getLong("BRN_ACT_ID"));
 				list.setNEW_LASTNAME(rs.getString("NEW_LASTNAME"));
 				list.setTM$DOC_DATE((rs.getDate("TM$DOC_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")), formatterwt)
 						: null);
-				list.setCUSID(rs.getInt("CUSID"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
+				list.setCUSID(rs.getLong("CUSID"));
+				list.setZAGS_ID(rs.getLong("ZAGS_ID"));
 				list.setFIO(rs.getString("FIO"));
 				list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
 				list.setOPER(rs.getString("OPER"));
 				list.setSVID_SERIA(rs.getString("SVID_SERIA"));
 				list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
-				list.setID(rs.getInt("ID"));
+				list.setID(rs.getLong("ID"));
 				list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				list.setOLD_LASTNAME_AB(rs.getString("OLD_LASTNAME_AB"));
@@ -706,7 +706,7 @@ public class UpdAbhNameList {
 //			}
 			
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_UPDATE_ABH_NAME where ID = ?");
-			prp.setInt(1, UPDATE_NAME.getSelectionModel().getSelectedItem().getID());
+			prp.setLong(1, UPDATE_NAME.getSelectionModel().getSelectedItem().getID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				fields.setField("Текст1", rs.getString("F1"));
@@ -872,7 +872,7 @@ public class UpdAbhNameList {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(ID.filterableProperty());
 
@@ -997,20 +997,20 @@ public class UpdAbhNameList {
 	 * 
 	 * @return
 	 */
-	int CompareBeforeClose(Integer docid) {
-		int ret = 0;
+	Long CompareBeforeClose(Long docid) {
+		Long ret = 0l;
 		try {
 			Clob lob = conn.createClob();
 			lob.setString(1, RetXml);
 			CallableStatement callStmt = conn.prepareCall("{ call UpdAbhName.CompareXmls(?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.setClob(2, lob);
 			callStmt.registerOutParameter(3, Types.VARCHAR);
 			callStmt.registerOutParameter(4, Types.INTEGER);
 			callStmt.execute();
 			if (callStmt.getString(3) == null) {
-				ret = callStmt.getInt(4);
-				System.out.println("ret=" + callStmt.getInt(4));
+				ret = callStmt.getLong(4);
+				System.out.println("ret=" + callStmt.getLong(4));
 			} else {
 				Msg.Message(callStmt.getString(3));
 				Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
@@ -1028,10 +1028,10 @@ public class UpdAbhNameList {
 	/**
 	 * Возврат XML файлов для сравнения
 	 */
-	void XmlsForCompare(Integer docid) {
+	void XmlsForCompare(Long docid) {
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ call UpdAbhName.RetXmls(?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
 			callStmt.execute();

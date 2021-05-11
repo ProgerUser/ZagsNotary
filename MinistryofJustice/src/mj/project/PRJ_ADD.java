@@ -15,9 +15,9 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -99,7 +99,7 @@ public class PRJ_ADD {
 				callStmt.setString(3, path.getFileName().toString());
 				callStmt.setString(4, "N");
 				callStmt.setBlob(5, is, bArray.length);
-				callStmt.setInt(6, getId());
+				callStmt.setLong(6, getId());
 				callStmt.setLong(7, file_size);
 
 			} else {
@@ -107,7 +107,7 @@ public class PRJ_ADD {
 				callStmt.setString(3, null);
 				callStmt.setString(4, "Y");
 				callStmt.setNull(5, Types.BLOB);
-				callStmt.setInt(6, getId());
+				callStmt.setLong(6, getId());
 				callStmt.setNull(7, Types.INTEGER);
 			}
 
@@ -199,7 +199,7 @@ public class PRJ_ADD {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -209,18 +209,18 @@ public class PRJ_ADD {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public PRJ_ADD() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 }

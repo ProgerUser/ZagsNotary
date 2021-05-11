@@ -36,8 +36,8 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LocalDateTimeStringConverter;
+import javafx.util.converter.LongStringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
@@ -62,13 +62,13 @@ public class LogList {
 	private XTableColumn<LOGS, String> ERROR;
 
 	@FXML
-	private XTableColumn<LOGS, Integer> ID;
+	private XTableColumn<LOGS, Long> ID;
 
 	@FXML
 	private XTableColumn<LOGS, String> OPER;
 
 	@FXML
-	private XTableColumn<LOGS, Integer> LINENUMBER;
+	private XTableColumn<LOGS, Long> LINENUMBER;
 
 	@FXML
 	private XTableColumn<LOGS, String> CLASSNAME;
@@ -117,7 +117,7 @@ public class LogList {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(ID.filterableProperty());
 
@@ -187,10 +187,10 @@ public class LogList {
 //
 //			
 //			
-			ID.setCellFactory(TextFieldTableCell.<LOGS, Integer>forTableColumn(new IntegerStringConverter()));
-			ID.setOnEditCommit(new EventHandler<CellEditEvent<LOGS, Integer>>() {
+			ID.setCellFactory(TextFieldTableCell.<LOGS, Long>forTableColumn(new LongStringConverter()));
+			ID.setOnEditCommit(new EventHandler<CellEditEvent<LOGS, Long>>() {
 				@Override
-				public void handle(CellEditEvent<LOGS, Integer> t) {
+				public void handle(CellEditEvent<LOGS, Long> t) {
 					((LOGS) t.getTableView().getItems().get(t.getTablePosition().getRow())).setID(t.getNewValue());
 				}
 			});
@@ -208,10 +208,10 @@ public class LogList {
 //
 //			
 //			
-			LINENUMBER.setCellFactory(TextFieldTableCell.<LOGS, Integer>forTableColumn(new IntegerStringConverter()));
-			LINENUMBER.setOnEditCommit(new EventHandler<CellEditEvent<LOGS, Integer>>() {
+			LINENUMBER.setCellFactory(TextFieldTableCell.<LOGS, Long>forTableColumn(new LongStringConverter()));
+			LINENUMBER.setOnEditCommit(new EventHandler<CellEditEvent<LOGS, Long>>() {
 				@Override
-				public void handle(CellEditEvent<LOGS, Integer> t) {
+				public void handle(CellEditEvent<LOGS, Long> t) {
 					((LOGS) t.getTableView().getItems().get(t.getTablePosition().getRow()))
 							.setLINENUMBER(t.getNewValue());
 				}
@@ -287,11 +287,11 @@ public class LogList {
 				list.setLOGDATE((rs.getDate("LOGDATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("LOGDATE")), formatter) : null);
 				list.setOPER(rs.getString("OPER"));
-				list.setLINENUMBER(rs.getInt("LINENUMBER"));
+				list.setLINENUMBER(rs.getLong("LINENUMBER"));
 				list.setMETHODNAME(rs.getString("METHODNAME"));
 				list.setCLASSNAME(rs.getString("CLASSNAME"));
 				//list.setERROR(rs.getString("ERROR"));
-				list.setID(rs.getInt("ID"));
+				list.setID(rs.getLong("ID"));
 				dlist.add(list);
 			}
 			prepStmt.close();

@@ -77,7 +77,7 @@ public class UsrC {
     private TableView<ODB_GROUP_USR> USR_GRP;
     
     @FXML
-    private TableColumn<ODB_GROUP_USR, Integer> GRP_ID;
+    private TableColumn<ODB_GROUP_USR, Long> GRP_ID;
 
     @FXML
     private TableColumn<ODB_GROUP_USR, String> GRP_NAME;
@@ -146,7 +146,7 @@ public class UsrC {
 	private ComboBox<ZAGS> ZAGS;
 
 	@FXML
-	private XTableColumn<USR, Integer> USRID;
+	private XTableColumn<USR, Long> USRID;
 
 	@FXML
 	private TextField CUSRPOSITION;
@@ -234,7 +234,7 @@ public class UsrC {
 	void Add() {
 		try {
 
-			if (DBUtil.OdbAction(3) == 0) {
+			if (DBUtil.OdbAction(3l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -276,7 +276,7 @@ public class UsrC {
 				Msg.Message("Выберите пользователя!");
 			} else {
 
-				if (DBUtil.OdbAction(61) == 0) {
+				if (DBUtil.OdbAction(61l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -357,7 +357,7 @@ public class UsrC {
 	void UpdateUser(ActionEvent event) {
 		try {
 
-			if (DBUtil.OdbAction(6) == 0) {
+			if (DBUtil.OdbAction(6l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -370,7 +370,7 @@ public class UsrC {
 				callStmt.registerOutParameter(1, Types.VARCHAR);
 
 				if (IUSRBRANCH.getSelectionModel().getSelectedItem() != null) {
-					callStmt.setInt(2, IUSRBRANCH.getValue().getIOTDNUM());
+					callStmt.setLong(2, IUSRBRANCH.getValue().getIOTDNUM());
 				} else {
 					callStmt.setNull(2, java.sql.Types.INTEGER);
 				}
@@ -389,22 +389,22 @@ public class UsrC {
 					callStmt.setDate(5, java.sql.Date.valueOf(DUSRFIRE.getValue()));
 				}
 				if (ZAGS.getValue() != null) {
-					callStmt.setInt(6, ZAGS.getValue().getZAGS_ID());
+					callStmt.setLong(6, ZAGS.getValue().getZAGS_ID());
 				} else {
 					callStmt.setNull(6, Types.INTEGER);
 				}
 
-				callStmt.setInt(7, Integer.valueOf(IUSRPWD_LENGTH.getText()));
-				callStmt.setInt(8, Integer.valueOf(IUSRCHR_QUANTITY.getText()));
-				callStmt.setInt(9, Integer.valueOf(IUSRNUM_QUANTITY.getText()));
-				callStmt.setInt(10, Integer.valueOf(IUSRSPEC_QUANTITY.getText()));
+				callStmt.setLong(7, Long.valueOf(IUSRPWD_LENGTH.getText()));
+				callStmt.setLong(8, Long.valueOf(IUSRCHR_QUANTITY.getText()));
+				callStmt.setLong(9, Long.valueOf(IUSRNUM_QUANTITY.getText()));
+				callStmt.setLong(10, Long.valueOf(IUSRSPEC_QUANTITY.getText()));
 				callStmt.setString(11, (MUST_CHANGE_PASSWORD.isSelected()) ? "Y" : "N");
 				USR usr = USRLST.getSelectionModel().getSelectedItem();
-				callStmt.setInt(12, usr.getIUSRID());
+				callStmt.setLong(12, usr.getIUSRID());
 				callStmt.setString(13, CUSRNAME.getText());
 
 				if (NOTARY.getValue() != null) {
-					callStmt.setInt(14, NOTARY.getValue().getNOT_ID());
+					callStmt.setLong(14, NOTARY.getValue().getNOT_ID());
 				} else {
 					callStmt.setNull(14, Types.INTEGER);
 				}
@@ -453,21 +453,21 @@ public class UsrC {
 			ObservableList<USR> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				USR list = new USR();
-				list.setIUSRID(rs.getInt("IUSRID"));
+				list.setIUSRID(rs.getLong("IUSRID"));
 				list.setCUSRLOGNAME(rs.getString("CUSRLOGNAME"));
 				list.setCUSRNAME(rs.getString("CUSRNAME"));
 				list.setCUSRPOSITION(rs.getString("CUSRPOSITION"));
 				list.setDUSRHIRE((rs.getDate("DUSRHIRE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DUSRHIRE")), formatter)
 						: null);
-				list.setIUSRBRANCH(rs.getInt("IUSRBRANCH"));
+				list.setIUSRBRANCH(rs.getLong("IUSRBRANCH"));
 				list.setDUSRFIRE((rs.getDate("DUSRFIRE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DUSRFIRE")), formatter)
 						: null);
-				list.setIUSRPWD_LENGTH(rs.getInt("IUSRPWD_LENGTH"));
-				list.setIUSRCHR_QUANTITY(rs.getInt("IUSRCHR_QUANTITY"));
-				list.setIUSRNUM_QUANTITY(rs.getInt("IUSRNUM_QUANTITY"));
-				list.setIUSREXP_DAYS(rs.getInt("IUSREXP_DAYS"));
+				list.setIUSRPWD_LENGTH(rs.getLong("IUSRPWD_LENGTH"));
+				list.setIUSRCHR_QUANTITY(rs.getLong("IUSRCHR_QUANTITY"));
+				list.setIUSRNUM_QUANTITY(rs.getLong("IUSRNUM_QUANTITY"));
+				list.setIUSREXP_DAYS(rs.getLong("IUSREXP_DAYS"));
 				list.setCUSROFFPHONE(rs.getString("CUSROFFPHONE"));
 				list.setTWRTSTART((rs.getDate("TWRTSTART") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("TWRTSTART")), formatter)
@@ -477,8 +477,8 @@ public class UsrC {
 						: null);
 				list.setCEMAIL(rs.getString("CEMAIL"));
 				list.setCRESTRICT_TERM(rs.getString("CRESTRICT_TERM"));
-				list.setIUSRPWDREUSE(rs.getInt("IUSRPWDREUSE"));
-				list.setIUSRSPEC_QUANTITY(rs.getInt("IUSRSPEC_QUANTITY"));
+				list.setIUSRPWDREUSE(rs.getLong("IUSRPWDREUSE"));
+				list.setIUSRSPEC_QUANTITY(rs.getLong("IUSRSPEC_QUANTITY"));
 				list.setWELCOME_MESSAGE(rs.getString("WELCOME_MESSAGE"));
 				list.setSHORT_NAME(rs.getString("SHORT_NAME"));
 				list.setLOCK_DATE_TIME((rs.getDate("LOCK_DATE_TIME") != null) ? LocalDate.parse(
@@ -490,8 +490,8 @@ public class UsrC {
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("WORKDAY_TIME_END")), formatter) : null);
 				list.setWORKDAY_TIME_BEGIN((rs.getDate("WORKDAY_TIME_BEGIN") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("WORKDAY_TIME_BEGIN")), formatter) : null);
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
-				list.setNOTARY_ID(rs.getInt("NOTARY_ID"));
+				list.setZAGS_ID(rs.getLong("ZAGS_ID"));
+				list.setNOTARY_ID(rs.getLong("NOTARY_ID"));
 				list.setACCESS_LEVEL(rs.getString("access_level"));
 				list.setFIO_SH(rs.getString("FIO_SH"));
 				list.setFIO_ABH_SH(rs.getString("FIO_ABH_SH"));
@@ -678,7 +678,7 @@ public class UsrC {
 			ObservableList<ODB_GROUP_USR> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				ODB_GROUP_USR list = new ODB_GROUP_USR();
-				list.setGRP_ID(rs.getInt("GRP_ID"));
+				list.setGRP_ID(rs.getLong("GRP_ID"));
 				list.setGRP_NAME(rs.getString("GRP_NAME"));
 				list.setNAME(rs.getString("NAME"));
 				dlist.add(list);
@@ -713,7 +713,7 @@ public class UsrC {
 					ObservableList<OTD> combolist = FXCollections.observableArrayList();
 					while (rs.next()) {
 						OTD list = new OTD();
-						list.setIOTDNUM(rs.getInt("IOTDNUM"));
+						list.setIOTDNUM(rs.getLong("IOTDNUM"));
 						list.setCOTDNAME(rs.getString("COTDNAME"));
 						combolist.add(list);
 					}
@@ -736,8 +736,8 @@ public class UsrC {
 					ObservableList<ZAGS> combolist = FXCollections.observableArrayList();
 					while (rs.next()) {
 						ZAGS list = new ZAGS();
-						list.setZAGS_ID(rs.getInt("ZAGS_ID"));
-						list.setZAGS_OTD(rs.getInt("ZAGS_OTD"));
+						list.setZAGS_ID(rs.getLong("ZAGS_ID"));
+						list.setZAGS_OTD(rs.getLong("ZAGS_OTD"));
 						list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
 						list.setZAGS_RUK(rs.getString("ZAGS_RUK"));
 						combolist.add(list);
@@ -763,8 +763,8 @@ public class UsrC {
 					ObservableList<NOTARY> combolist = FXCollections.observableArrayList();
 					while (rs.next()) {
 						NOTARY list = new NOTARY();
-						list.setNOT_ID(rs.getInt("NOT_ID"));
-						list.setNOT_OTD(rs.getInt("NOT_OTD"));
+						list.setNOT_ID(rs.getLong("NOT_ID"));
+						list.setNOT_OTD(rs.getLong("NOT_OTD"));
 						list.setNOT_NAME(rs.getString("NOT_NAME"));
 						list.setNOT_RUK(rs.getString("NOT_RUK"));
 						combolist.add(list);
@@ -876,7 +876,7 @@ public class UsrC {
 			if (USRLST.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите пользователя!");
 			} else {
-				if (DBUtil.OdbAction(4) == 0) {
+				if (DBUtil.OdbAction(4l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -918,7 +918,7 @@ public class UsrC {
 							USR val = USRLST.getSelectionModel().getSelectedItem();
 							CallableStatement callStmt = conn.prepareCall("{ call MJUsers.DeleteUser(?,?)}");
 							callStmt.registerOutParameter(1, Types.VARCHAR);
-							callStmt.setInt(2, val.getIUSRID());
+							callStmt.setLong(2, val.getIUSRID());
 							callStmt.execute();
 							if (callStmt.getString(1) == null) {
 								Msg.Message("Пользователь: " + val.getCUSRNAME() + " удален");

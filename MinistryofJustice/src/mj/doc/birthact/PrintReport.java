@@ -9,13 +9,11 @@ import java.util.HashMap;
 
 import javax.swing.JFrame;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import mj.app.main.Main;
 import mj.app.model.SqlMap;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -33,7 +31,7 @@ public class PrintReport extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public void showReport(Integer actid) {
+	public void showReport(Long actid) {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			InputStream input = this.getClass().getResourceAsStream("/br_act/BrAct.jrxml");
@@ -46,7 +44,7 @@ public class PrintReport extends JFrame {
 			SqlMap sql = new SqlMap().load("/SqlBurn.xml");
 			String readRecordSQL = sql.getSql("ForReport");
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-			prepStmt.setInt(1, actid);
+			prepStmt.setLong(1, actid);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				parameters.put("BR_ACT_ID", rs.getString("br_act_id"));
@@ -81,13 +79,7 @@ public class PrintReport extends JFrame {
 			this.setSize(700, 500);
 			this.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 }

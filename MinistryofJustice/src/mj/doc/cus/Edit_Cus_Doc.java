@@ -12,8 +12,8 @@ import java.time.format.DateTimeParseException;
 
 import org.apache.log4j.Logger;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -115,20 +115,20 @@ public class Edit_Cus_Doc {
 		this.conn.setAutoCommit(false);
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		System.out.println(value);
 		this.Id.set(value);
 	}
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public Edit_Cus_Doc() {
 		Main.logger = Logger.getLogger(getClass());
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class Edit_Cus_Doc {
 			callStmt.setString(2, (PREF_T.isSelected()) ? "Y" : "N");
 			if (ID_DOC_TP_T.getValue() != null) {
 				VPUD vp = ID_DOC_TP_T.getSelectionModel().getSelectedItem();
-				callStmt.setInt(3, vp.getIPUDID());
+				callStmt.setLong(3, vp.getIPUDID());
 			} else {
 				callStmt.setNull(3, java.sql.Types.INTEGER);
 			}
@@ -190,7 +190,7 @@ public class Edit_Cus_Doc {
 			callStmt.setDate(8,
 					(DOC_PERIOD_T.getValue() != null) ? java.sql.Date.valueOf(DOC_PERIOD_T.getValue()) : null);
 			callStmt.setString(9, DOC_SUBDIV_T.getText());
-			callStmt.setInt(10, getId());
+			callStmt.setLong(10, getId());
 
 			callStmt.execute();
 			String ret = callStmt.getString(1);
@@ -218,7 +218,7 @@ public class Edit_Cus_Doc {
 			callStmt.setString(2, (PREF_T.isSelected()) ? "Y" : "N");
 			if (ID_DOC_TP_T.getValue() != null) {
 				VPUD vp = ID_DOC_TP_T.getSelectionModel().getSelectedItem();
-				callStmt.setInt(3, vp.getIPUDID());
+				callStmt.setLong(3, vp.getIPUDID());
 			} else {
 				callStmt.setNull(3, java.sql.Types.INTEGER);
 			}
@@ -229,7 +229,7 @@ public class Edit_Cus_Doc {
 			callStmt.setDate(8,
 					(DOC_PERIOD_T.getValue() != null) ? java.sql.Date.valueOf(DOC_PERIOD_T.getValue()) : null);
 			callStmt.setString(9, DOC_SUBDIV_T.getText());
-			callStmt.setInt(10, getId());
+			callStmt.setLong(10, getId());
 
 			System.out.println(getId());
 
@@ -307,7 +307,7 @@ public class Edit_Cus_Doc {
 				while (rs.next()) {
 					VPUD pud = new VPUD();
 					pud.setCPUDDOC(rs.getString("name"));
-					pud.setIPUDID(rs.getInt("code"));
+					pud.setIPUDID(rs.getLong("code"));
 					combolist.add(pud);
 				}
 				ID_DOC_TP_T.setItems(combolist);

@@ -1,13 +1,13 @@
 package mj.doc.updatenat;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class V_REP_UPD_NAT {
 	/** Нет данных */
-	private IntegerProperty ID;
+	private LongProperty ID;
 	/** Нет данных */
 	private StringProperty DCUSBIRTHDAY;
 	/** Нет данных */
@@ -17,7 +17,7 @@ public class V_REP_UPD_NAT {
 	/** Нет данных */
 	private StringProperty CCUSPLACE_BIRTH;
 	/** Нет данных */
-	private IntegerProperty BR_ACT_ID;
+	private LongProperty BR_ACT_ID;
 	/** Нет данных */
 	private StringProperty BR_ACT_DATE;
 	/** Нет данных */
@@ -42,12 +42,12 @@ public class V_REP_UPD_NAT {
 	private StringProperty MIDDLNAME;
 
 	public V_REP_UPD_NAT() {
-		this.ID = new SimpleIntegerProperty();
+		this.ID = new SimpleLongProperty();
 		this.DCUSBIRTHDAY = new SimpleStringProperty();
 		this.OLD_NAT = new SimpleStringProperty();
 		this.NEW_NAT = new SimpleStringProperty();
 		this.CCUSPLACE_BIRTH = new SimpleStringProperty();
-		this.BR_ACT_ID = new SimpleIntegerProperty();
+		this.BR_ACT_ID = new SimpleLongProperty();
 		this.BR_ACT_DATE = new SimpleStringProperty();
 		this.ZAGS_NAME = new SimpleStringProperty();
 		this.COUNTRY_NAME = new SimpleStringProperty();
@@ -61,7 +61,7 @@ public class V_REP_UPD_NAT {
 		this.MIDDLNAME = new SimpleStringProperty();
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
@@ -81,7 +81,7 @@ public class V_REP_UPD_NAT {
 		this.CCUSPLACE_BIRTH.set(CCUSPLACE_BIRTH);
 	}
 
-	public void setBR_ACT_ID(Integer BR_ACT_ID) {
+	public void setBR_ACT_ID(Long BR_ACT_ID) {
 		this.BR_ACT_ID.set(BR_ACT_ID);
 	}
 
@@ -129,7 +129,7 @@ public class V_REP_UPD_NAT {
 		this.MIDDLNAME.set(MIDDLNAME);
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -149,7 +149,7 @@ public class V_REP_UPD_NAT {
 		return CCUSPLACE_BIRTH.get();
 	}
 
-	public Integer getBR_ACT_ID() {
+	public Long getBR_ACT_ID() {
 		return BR_ACT_ID.get();
 	}
 
@@ -197,7 +197,7 @@ public class V_REP_UPD_NAT {
 		return MIDDLNAME.get();
 	}
 
-	public IntegerProperty IDProperty() {
+	public LongProperty IDProperty() {
 		return ID;
 	}
 
@@ -217,7 +217,7 @@ public class V_REP_UPD_NAT {
 		return CCUSPLACE_BIRTH;
 	}
 
-	public IntegerProperty BR_ACT_IDProperty() {
+	public LongProperty BR_ACT_IDProperty() {
 		return BR_ACT_ID;
 	}
 

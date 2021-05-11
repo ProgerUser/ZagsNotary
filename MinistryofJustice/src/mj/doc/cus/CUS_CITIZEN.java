@@ -1,32 +1,32 @@
 package mj.doc.cus;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class CUS_CITIZEN {
 	private BooleanProperty OSN;/* Основной */
-	private IntegerProperty ICUSNUM;/* Идентификатор контрагента */
+	private LongProperty ICUSNUM;/* Идентификатор контрагента */
 	private StringProperty COUNTRY_NAME;/* Полное наименование */
-	private IntegerProperty COUNTRY_CODE;/* Страна */
-	private IntegerProperty ID;/* ID */
+	private LongProperty COUNTRY_CODE;/* Страна */
+	private LongProperty ID;/* ID */
 
 	public CUS_CITIZEN() {
 		this.OSN = new SimpleBooleanProperty();
-		this.ICUSNUM = new SimpleIntegerProperty();
+		this.ICUSNUM = new SimpleLongProperty();
 		this.COUNTRY_NAME = new SimpleStringProperty();
-		this.COUNTRY_CODE = new SimpleIntegerProperty();
-		this.ID = new SimpleIntegerProperty();
+		this.COUNTRY_CODE = new SimpleLongProperty();
+		this.ID = new SimpleLongProperty();
 	}
 
 	public void setOSN(Boolean OSN) {
 		this.OSN.set(OSN);
 	}
 
-	public void setICUSNUM(Integer ICUSNUM) {
+	public void setICUSNUM(Long ICUSNUM) {
 		this.ICUSNUM.set(ICUSNUM);
 	}
 
@@ -34,11 +34,11 @@ public class CUS_CITIZEN {
 		this.COUNTRY_NAME.set(COUNTRY_NAME);
 	}
 
-	public void setCOUNTRY_CODE(Integer COUNTRY_CODE) {
+	public void setCOUNTRY_CODE(Long COUNTRY_CODE) {
 		this.COUNTRY_CODE.set(COUNTRY_CODE);
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
@@ -46,7 +46,7 @@ public class CUS_CITIZEN {
 		return OSN.get();
 	}
 
-	public Integer getICUSNUM() {
+	public Long getICUSNUM() {
 		return ICUSNUM.get();
 	}
 
@@ -54,11 +54,11 @@ public class CUS_CITIZEN {
 		return COUNTRY_NAME.get();
 	}
 
-	public Integer getCOUNTRY_CODE() {
+	public Long getCOUNTRY_CODE() {
 		return COUNTRY_CODE.get();
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -66,7 +66,7 @@ public class CUS_CITIZEN {
 		return OSN;
 	}
 
-	public IntegerProperty ICUSNUMProperty() {
+	public LongProperty ICUSNUMProperty() {
 		return ICUSNUM;
 	}
 
@@ -74,11 +74,11 @@ public class CUS_CITIZEN {
 		return COUNTRY_NAME;
 	}
 
-	public IntegerProperty COUNTRY_CODEProperty() {
+	public LongProperty COUNTRY_CODEProperty() {
 		return COUNTRY_CODE;
 	}
 
-	public IntegerProperty IDProperty() {
+	public LongProperty IDProperty() {
 		return ID;
 	}
 }

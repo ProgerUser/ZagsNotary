@@ -15,9 +15,9 @@ import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -256,7 +256,7 @@ public class EditPatern {
 
 			TableView<ACTFORLIST> cusllists = new TableView<ACTFORLIST>();
 
-			TableColumn<ACTFORLIST, Integer> BR_ACT_ID = new TableColumn<>("Íîìåð");
+			TableColumn<ACTFORLIST, Long> BR_ACT_ID = new TableColumn<>("Íîìåð");
 
 			BR_ACT_ID.setCellValueFactory(new PropertyValueFactory<>("BR_ACT_ID"));
 
@@ -338,7 +338,7 @@ public class EditPatern {
 				list.setBR_ACT_DATE((rs.getDate("BR_ACT_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("BR_ACT_DATE")), formatterDT)
 						: null);
-				list.setBR_ACT_ID(rs.getInt("BR_ACT_ID"));
+				list.setBR_ACT_ID(rs.getLong("BR_ACT_ID"));
 
 				cuslist.add(list);
 			}
@@ -411,7 +411,7 @@ public class EditPatern {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Íîìåð");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Íîìåð");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ÔÈÎ");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -452,7 +452,7 @@ public class EditPatern {
 				CUS cus = new CUS();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				String DCUSBIRTHDAYt = new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY"));
-				cus.setICUSNUM(rs.getInt("ICUSNUM"));
+				cus.setICUSNUM(rs.getLong("ICUSNUM"));
 				cus.setCCUSNAME(rs.getString("CCUSNAME"));
 				cus.setDCUSBIRTHDAY(LocalDate.parse(DCUSBIRTHDAYt, formatter));
 				cuslist.add(cus);
@@ -558,7 +558,7 @@ public class EditPatern {
 			CallableStatement callStmt = conn
 					.prepareCall("{ call PATERN.EditPatern(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.setInt(2, pat_cert.getPC_ID());
+			callStmt.setLong(2, pat_cert.getPC_ID());
 			callStmt.setString(3, PÑ_NUMBER.getText());
 			callStmt.setString(4, PÑ_SERIA.getText());
 			callStmt.setDate(5, (PÑ_CRDATE.getValue() != null) ? java.sql.Date.valueOf(PÑ_CRDATE.getValue()) : null);
@@ -567,17 +567,17 @@ public class EditPatern {
 			callStmt.setDate(8, (PÑ_TRZ.getValue() != null) ? java.sql.Date.valueOf(PÑ_TRZ.getValue()) : null);
 			callStmt.setString(9, PÑ_TYPE.getValue());
 			if (!PÑ_M.getText().equals("")) {
-				callStmt.setInt(10, Integer.valueOf(PÑ_M.getText()));
+				callStmt.setLong(10, Long.valueOf(PÑ_M.getText()));
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
 			if (!PÑ_F.getText().equals("")) {
-				callStmt.setInt(11, Integer.valueOf(PÑ_F.getText()));
+				callStmt.setLong(11, Long.valueOf(PÑ_F.getText()));
 			} else {
 				callStmt.setNull(11, java.sql.Types.INTEGER);
 			}
 			if (!PÑ_CH.getText().equals("")) {
-				callStmt.setInt(12, Integer.valueOf(PÑ_CH.getText()));
+				callStmt.setLong(12, Long.valueOf(PÑ_CH.getText()));
 			} else {
 				callStmt.setNull(12, java.sql.Types.INTEGER);
 			}
@@ -585,7 +585,7 @@ public class EditPatern {
 			callStmt.setString(14, PÑ_AFT_FNAME.getText());
 			callStmt.setString(15, PÑ_AFT_LNAME.getText());
 			if (!PC_ACT_ID.getText().equals("")) {
-				callStmt.setInt(16, Integer.valueOf(PC_ACT_ID.getText()));
+				callStmt.setLong(16, Long.valueOf(PC_ACT_ID.getText()));
 			} else {
 				callStmt.setNull(16, java.sql.Types.INTEGER);
 			}
@@ -604,7 +604,7 @@ public class EditPatern {
 			if (callStmt.getString(1) == null) {
 				conn.commit();
 				setStatus(true);
-				// setId(callStmt.getInt(20));
+				// setId(callStmt.getLong(20));
 				callStmt.close();
 				onclose();
 			} else {
@@ -624,7 +624,7 @@ public class EditPatern {
 			CallableStatement callStmt = conn
 					.prepareCall("{ call PATERN.EditPatern(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.setInt(2, pat_cert.getPC_ID());
+			callStmt.setLong(2, pat_cert.getPC_ID());
 			callStmt.setString(3, PÑ_NUMBER.getText());
 			callStmt.setString(4, PÑ_SERIA.getText());
 			callStmt.setDate(5, (PÑ_CRDATE.getValue() != null) ? java.sql.Date.valueOf(PÑ_CRDATE.getValue()) : null);
@@ -633,17 +633,17 @@ public class EditPatern {
 			callStmt.setDate(8, (PÑ_TRZ.getValue() != null) ? java.sql.Date.valueOf(PÑ_TRZ.getValue()) : null);
 			callStmt.setString(9, PÑ_TYPE.getValue());
 			if (!PÑ_M.getText().equals("")) {
-				callStmt.setInt(10, Integer.valueOf(PÑ_M.getText()));
+				callStmt.setLong(10, Long.valueOf(PÑ_M.getText()));
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
 			if (!PÑ_F.getText().equals("")) {
-				callStmt.setInt(11, Integer.valueOf(PÑ_F.getText()));
+				callStmt.setLong(11, Long.valueOf(PÑ_F.getText()));
 			} else {
 				callStmt.setNull(11, java.sql.Types.INTEGER);
 			}
 			if (!PÑ_CH.getText().equals("")) {
-				callStmt.setInt(12, Integer.valueOf(PÑ_CH.getText()));
+				callStmt.setLong(12, Long.valueOf(PÑ_CH.getText()));
 			} else {
 				callStmt.setNull(12, java.sql.Types.INTEGER);
 			}
@@ -651,7 +651,7 @@ public class EditPatern {
 			callStmt.setString(14, PÑ_AFT_FNAME.getText());
 			callStmt.setString(15, PÑ_AFT_LNAME.getText());
 			if (!PC_ACT_ID.getText().equals("")) {
-				callStmt.setInt(16, Integer.valueOf(PC_ACT_ID.getText()));
+				callStmt.setLong(16, Long.valueOf(PC_ACT_ID.getText()));
 			} else {
 				callStmt.setNull(16, java.sql.Types.INTEGER);
 			}
@@ -842,7 +842,7 @@ public class EditPatern {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -852,18 +852,18 @@ public class EditPatern {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public EditPatern() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 }

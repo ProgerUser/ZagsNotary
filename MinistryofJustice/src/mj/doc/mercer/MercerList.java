@@ -103,7 +103,7 @@ public class MercerList {
 	private XTableColumn<MC_MERCER, String> SheFio;
 
 	@FXML
-	private XTableColumn<MC_MERCER, Integer> MERCER_ID;
+	private XTableColumn<MC_MERCER, Long> MERCER_ID;
 
 	@FXML
 	private XTableColumn<MC_MERCER, String> OPER;
@@ -127,7 +127,7 @@ public class MercerList {
 			// preparing variables
 			Variables variables = new Variables();
 			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_MC_MERCER where MERCER_ID = ?");
-			prepStmt.setInt(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
+			prepStmt.setLong(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
 				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
@@ -170,7 +170,7 @@ public class MercerList {
 			// preparing variables
 			Variables variables = new Variables();
 			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_MC_MERCER where MERCER_ID = ?");
-			prepStmt.setInt(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
+			prepStmt.setLong(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
 				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
@@ -206,7 +206,7 @@ public class MercerList {
 	void Add() {
 		try {
 
-			if (DBUtil.OdbAction(95) == 0) {
+			if (DBUtil.OdbAction(95l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -244,7 +244,7 @@ public class MercerList {
 	void Delete() {
 		try {
 
-			if (DBUtil.OdbAction(97) == 0) {
+			if (DBUtil.OdbAction(97l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -292,7 +292,7 @@ public class MercerList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from MC_MERCER where MERCER_ID = ?;" + "commit;" + "end;");
 							MC_MERCER cl = MC_MERCER.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getMERCER_ID());
+							delete.setLong(1, cl.getMERCER_ID());
 							delete.executeUpdate();
 							delete.close();
 							Refresh();
@@ -322,7 +322,7 @@ public class MercerList {
 
 	boolean isopen = false;
 
-	MC_MERCER Initialize2(Integer docid) {
+	MC_MERCER Initialize2(Long docid) {
 		MC_MERCER list = null;
 		try {
 			
@@ -332,7 +332,7 @@ public class MercerList {
 			String selectStmt = "select * from vmc_mercer t\n where MERCER_ID = ? ";
 
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, docid);
+			prepStmt.setLong(1, docid);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<MC_MERCER> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -340,16 +340,16 @@ public class MercerList {
 				list.setTM$MERCER_DATE((rs.getDate("TM$MERCER_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$MERCER_DATE")), formatterwt)
 						: null);
-				list.setMERCER_DIESHE(rs.getInt("MERCER_DIESHE"));
-				list.setMERCER_DIVSHE(rs.getInt("MERCER_DIVSHE"));
-				list.setMERCER_DIEHE(rs.getInt("MERCER_DIEHE"));
+				list.setMERCER_DIESHE(rs.getLong("MERCER_DIESHE"));
+				list.setMERCER_DIVSHE(rs.getLong("MERCER_DIVSHE"));
+				list.setMERCER_DIEHE(rs.getLong("MERCER_DIEHE"));
 				list.setMERCER_USR(rs.getString("MERCER_USR"));
-				list.setMERCER_HEAGE(rs.getInt("MERCER_HEAGE"));
-				list.setMERCER_HE(rs.getInt("MERCER_HE"));
+				list.setMERCER_HEAGE(rs.getLong("MERCER_HEAGE"));
+				list.setMERCER_HE(rs.getLong("MERCER_HE"));
 				list.setMERCER_NUM(rs.getString("MERCER_NUM"));
 				list.setCR_TIME(rs.getString("CR_TIME"));
 				list.setMERCER_SHE_LNBEF(rs.getString("MERCER_SHE_LNBEF"));
-				list.setMERCER_DIVHE(rs.getInt("MERCER_DIVHE"));
+				list.setMERCER_DIVHE(rs.getLong("MERCER_DIVHE"));
 				list.setMERCER_DSPMT_SHE(rs.getString("MERCER_DSPMT_SHE"));
 				list.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
@@ -358,13 +358,13 @@ public class MercerList {
 				list.setMERCER_SERIA(rs.getString("MERCER_SERIA"));
 				list.setMERCER_OTHER(rs.getString("MERCER_OTHER"));
 				list.setMERCER_SHE_LNBAFT(rs.getString("MERCER_SHE_LNBAFT"));
-				list.setMERCER_ID(rs.getInt("MERCER_ID"));
+				list.setMERCER_ID(rs.getLong("MERCER_ID"));
 				list.setHEFIO(rs.getString("HEFIO"));
-				list.setMERCER_SHEAGE(rs.getInt("MERCER_SHEAGE"));
+				list.setMERCER_SHEAGE(rs.getLong("MERCER_SHEAGE"));
 				list.setSHEFIO(rs.getString("SHEFIO"));
-				list.setMERCER_SHE(rs.getInt("MERCER_SHE"));
+				list.setMERCER_SHE(rs.getLong("MERCER_SHE"));
 				list.setMERCER_HE_LNBEF(rs.getString("MERCER_HE_LNBEF"));
-				list.setMERCER_ZAGS(rs.getInt("MERCER_ZAGS"));
+				list.setMERCER_ZAGS(rs.getLong("MERCER_ZAGS"));
 				list.setMERCER_HE_LNAFT(rs.getString("MERCER_HE_LNAFT"));
 				list.setMC_DATE((rs.getDate("MC_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MC_DATE")), formatter)
@@ -380,11 +380,11 @@ public class MercerList {
 		return list;
 	}
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
 
-				if (DBUtil.OdbAction(96) == 0) {
+				if (DBUtil.OdbAction(96l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -392,7 +392,7 @@ public class MercerList {
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from MC_MERCER where  MERCER_ID = ? for update nowait");
 				MC_MERCER cl = Initialize2(docid);
-				selforupd.setInt(1, cl.getMERCER_ID());
+				selforupd.setLong(1, cl.getMERCER_ID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -550,7 +550,7 @@ public class MercerList {
 						Variables variables = new Variables();
 						PreparedStatement prepStmt = conn
 								.prepareStatement("select * from V_REP_MC_MERCER where MERCER_ID = ?");
-						prepStmt.setInt(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
+						prepStmt.setLong(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
 						ResultSet rs = prepStmt.executeQuery();
 						V_REP_MC_MERCER list = null;
 						if (rs.next()) {
@@ -724,16 +724,16 @@ public class MercerList {
 				list.setTM$MERCER_DATE((rs.getDate("TM$MERCER_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$MERCER_DATE")), formatterwt)
 						: null);
-				list.setMERCER_DIESHE(rs.getInt("MERCER_DIESHE"));
-				list.setMERCER_DIVSHE(rs.getInt("MERCER_DIVSHE"));
-				list.setMERCER_DIEHE(rs.getInt("MERCER_DIEHE"));
+				list.setMERCER_DIESHE(rs.getLong("MERCER_DIESHE"));
+				list.setMERCER_DIVSHE(rs.getLong("MERCER_DIVSHE"));
+				list.setMERCER_DIEHE(rs.getLong("MERCER_DIEHE"));
 				list.setMERCER_USR(rs.getString("MERCER_USR"));
-				list.setMERCER_HEAGE(rs.getInt("MERCER_HEAGE"));
-				list.setMERCER_HE(rs.getInt("MERCER_HE"));
+				list.setMERCER_HEAGE(rs.getLong("MERCER_HEAGE"));
+				list.setMERCER_HE(rs.getLong("MERCER_HE"));
 				list.setMERCER_NUM(rs.getString("MERCER_NUM"));
 				list.setCR_TIME(rs.getString("CR_TIME"));
 				list.setMERCER_SHE_LNBEF(rs.getString("MERCER_SHE_LNBEF"));
-				list.setMERCER_DIVHE(rs.getInt("MERCER_DIVHE"));
+				list.setMERCER_DIVHE(rs.getLong("MERCER_DIVHE"));
 				list.setMERCER_DSPMT_SHE(rs.getString("MERCER_DSPMT_SHE"));
 				list.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
@@ -742,13 +742,13 @@ public class MercerList {
 				list.setMERCER_SERIA(rs.getString("MERCER_SERIA"));
 				list.setMERCER_OTHER(rs.getString("MERCER_OTHER"));
 				list.setMERCER_SHE_LNBAFT(rs.getString("MERCER_SHE_LNBAFT"));
-				list.setMERCER_ID(rs.getInt("MERCER_ID"));
+				list.setMERCER_ID(rs.getLong("MERCER_ID"));
 				list.setHEFIO(rs.getString("HEFIO"));
-				list.setMERCER_SHEAGE(rs.getInt("MERCER_SHEAGE"));
+				list.setMERCER_SHEAGE(rs.getLong("MERCER_SHEAGE"));
 				list.setSHEFIO(rs.getString("SHEFIO"));
-				list.setMERCER_SHE(rs.getInt("MERCER_SHE"));
+				list.setMERCER_SHE(rs.getLong("MERCER_SHE"));
 				list.setMERCER_HE_LNBEF(rs.getString("MERCER_HE_LNBEF"));
-				list.setMERCER_ZAGS(rs.getInt("MERCER_ZAGS"));
+				list.setMERCER_ZAGS(rs.getLong("MERCER_ZAGS"));
 				list.setMERCER_HE_LNAFT(rs.getString("MERCER_HE_LNAFT"));
 				list.setMC_DATE((rs.getDate("MC_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MC_DATE")), formatter)
@@ -840,7 +840,7 @@ public class MercerList {
 //			}
 
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_MC_MERCER where MERCER_ID = ?");
-			prp.setInt(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
+			prp.setLong(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				fields.setField("Текст1", rs.getString("F1"));
@@ -1003,7 +1003,7 @@ public class MercerList {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(MERCER_ID.filterableProperty());
 
@@ -1119,20 +1119,20 @@ public class MercerList {
 	 * 
 	 * @return
 	 */
-	int CompareBeforeClose(Integer docid) {
-		int ret = 0;
+	Long CompareBeforeClose(Long docid) {
+		Long ret = 0l;
 		try {
 			Clob lob = conn.createClob();
 			lob.setString(1, RetXml);
 			CallableStatement callStmt = conn.prepareCall("{ call Mercer.CompareXmls(?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.setClob(2, lob);
 			callStmt.registerOutParameter(3, Types.VARCHAR);
 			callStmt.registerOutParameter(4, Types.INTEGER);
 			callStmt.execute();
 			if (callStmt.getString(3) == null) {
-				ret = callStmt.getInt(4);
-				System.out.println("ret=" + callStmt.getInt(4));
+				ret = callStmt.getLong(4);
+				System.out.println("ret=" + callStmt.getLong(4));
 			} else {
 				Msg.Message(callStmt.getString(3));
 				Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
@@ -1150,10 +1150,10 @@ public class MercerList {
 	/**
 	 * Возврат XML файлов для сравнения
 	 */
-	void XmlsForCompare(Integer docid) {
+	void XmlsForCompare(Long docid) {
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ call Mercer.RetXmls(?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
 			callStmt.execute();

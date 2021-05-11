@@ -21,7 +21,7 @@ import javafx.application.Application;
 import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -98,13 +98,13 @@ public class XTableViewDemo extends Application {
 		DateColumnFilter dateFilter = new DateColumnFilter();
 		date.setColumnFilter(dateFilter);
 
-		XTableColumn<Person, Integer> period = new XTableColumn<>("Days to Now");
+		XTableColumn<Person, Long> period = new XTableColumn<>("Days to Now");
 		table.getColumns().addAll(period);
 		period.setCellValueFactory(c -> {
 			LocalDate lucky = c.getValue().getLuckyDay();
-			return new SimpleIntegerProperty((int) ChronoUnit.DAYS.between(lucky, LocalDate.now())).asObject();
+			return new SimpleLongProperty((int) ChronoUnit.DAYS.between(lucky, LocalDate.now())).asObject();
 		});
-		SimpleFilterModel<Person, Integer> model = new SimpleFilterModel<>(
+		SimpleFilterModel<Person, Long> model = new SimpleFilterModel<>(
 				(c, matchValue) -> c != null ? c < matchValue : false);
 		period.setColumnFilter(new SimpleColumnFilter(model, TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
 

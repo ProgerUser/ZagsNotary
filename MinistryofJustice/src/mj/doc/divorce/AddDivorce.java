@@ -15,9 +15,9 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -201,7 +201,7 @@ public class AddDivorce {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Номер");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -242,7 +242,7 @@ public class AddDivorce {
 				CUS cus = new CUS();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				String DCUSBIRTHDAYt = new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY"));
-				cus.setICUSNUM(rs.getInt("ICUSNUM"));
+				cus.setICUSNUM(rs.getLong("ICUSNUM"));
 				cus.setCCUSNAME(rs.getString("CCUSNAME"));
 				cus.setDCUSBIRTHDAY(LocalDate.parse(DCUSBIRTHDAYt, formatter));
 				cuslist.add(cus);
@@ -385,12 +385,12 @@ public class AddDivorce {
 			callStmt.setString(2, DIVC_SERIA.getText());
 			callStmt.setString(3, DIVC_NUM.getText());
 			if (!DIVC_MC_MERCER.getText().equals("")) {
-				callStmt.setInt(4, Integer.valueOf(DIVC_MC_MERCER.getText()));
+				callStmt.setLong(4, Long.valueOf(DIVC_MC_MERCER.getText()));
 			} else {
 				callStmt.setNull(4, java.sql.Types.INTEGER);
 			}
 			if (!DIVC_ZOSPRISON.getText().equals("")) {
-				callStmt.setInt(5, Integer.valueOf(DIVC_ZOSPRISON.getText()));
+				callStmt.setLong(5, Long.valueOf(DIVC_ZOSPRISON.getText()));
 			} else {
 				callStmt.setNull(5, java.sql.Types.INTEGER);
 			}
@@ -398,20 +398,20 @@ public class AddDivorce {
 			callStmt.setDate(7,
 					(DIVC_ZOSCD2.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD2.getValue()) : null);
 			if (DIVC_ZOSCN2.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setInt(8, DIVC_ZOSCN2.getSelectionModel().getSelectedItem().getID());
+				callStmt.setLong(8, DIVC_ZOSCN2.getSelectionModel().getSelectedItem().getID());
 			} else {
 				callStmt.setNull(8, java.sql.Types.INTEGER);
 			}
 			callStmt.setString(9, DIVC_ZOSFIO.getText());
 			callStmt.setDate(10, (DIVC_ZOSCD.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD.getValue()) : null);
 			if (DIVC_ZOSCN.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setInt(11, DIVC_ZOSCN.getSelectionModel().getSelectedItem().getID());
+				callStmt.setLong(11, DIVC_ZOSCN.getSelectionModel().getSelectedItem().getID());
 			} else {
 				callStmt.setNull(11, java.sql.Types.INTEGER);
 			}
 			callStmt.setDate(12, (DIVC_CAD.getValue() != null) ? java.sql.Date.valueOf(DIVC_CAD.getValue()) : null);
 			if (DIVC_CAN.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setInt(13, DIVC_CAN.getSelectionModel().getSelectedItem().getID());
+				callStmt.setLong(13, DIVC_CAN.getSelectionModel().getSelectedItem().getID());
 			} else {
 				callStmt.setNull(13, java.sql.Types.INTEGER);
 			}
@@ -424,12 +424,12 @@ public class AddDivorce {
 			callStmt.setString(20, DIVC_HE_LNAFT.getText());
 			callStmt.setString(21, DIVC_HE_LNBEF.getText());
 			if (!DIVC_SHE.getText().equals("")) {
-				callStmt.setInt(22, Integer.valueOf(DIVC_SHE.getText()));
+				callStmt.setLong(22, Long.valueOf(DIVC_SHE.getText()));
 			} else {
 				callStmt.setNull(22, java.sql.Types.INTEGER);
 			}
 			if (!DIVC_HE.getText().equals("")) {
-				callStmt.setInt(23, Integer.valueOf(DIVC_HE.getText()));
+				callStmt.setLong(23, Long.valueOf(DIVC_HE.getText()));
 			} else {
 				callStmt.setNull(23, java.sql.Types.INTEGER);
 			}
@@ -444,7 +444,7 @@ public class AddDivorce {
 			if (callStmt.getString(1) == null) {
 				conn.commit();
 				setStatus(true);
-				setId(callStmt.getInt(28));
+				setId(callStmt.getLong(28));
 				callStmt.close();
 				onclose();
 			} else {
@@ -488,7 +488,7 @@ public class AddDivorce {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<MC_MERCER> cusllists = new TableView<MC_MERCER>();
-			TableColumn<MC_MERCER, Integer> MERCER_ID = new TableColumn<>("Номер");
+			TableColumn<MC_MERCER, Long> MERCER_ID = new TableColumn<>("Номер");
 			MERCER_ID.setCellValueFactory(new PropertyValueFactory<>("MERCER_ID"));
 
 			TableColumn<MC_MERCER, String> HE = new TableColumn<>("Он");
@@ -549,27 +549,27 @@ public class AddDivorce {
 
 				list.setSHEFIO(rs.getString("SheFio"));
 				list.setHEFIO(rs.getString("HeFio"));
-				list.setMERCER_ID(rs.getInt("MERCER_ID"));
-				list.setMERCER_HE(rs.getInt("MERCER_HE"));
-				list.setMERCER_SHE(rs.getInt("MERCER_SHE"));
+				list.setMERCER_ID(rs.getLong("MERCER_ID"));
+				list.setMERCER_HE(rs.getLong("MERCER_HE"));
+				list.setMERCER_SHE(rs.getLong("MERCER_SHE"));
 				list.setMERCER_HE_LNBEF(rs.getString("MERCER_HE_LNBEF"));
 				list.setMERCER_HE_LNAFT(rs.getString("MERCER_HE_LNAFT"));
 				list.setMERCER_SHE_LNBEF(rs.getString("MERCER_SHE_LNBEF"));
 				list.setMERCER_SHE_LNBAFT(rs.getString("MERCER_SHE_LNBAFT"));
-				list.setMERCER_HEAGE(rs.getInt("MERCER_HEAGE"));
-				list.setMERCER_SHEAGE(rs.getInt("MERCER_SHEAGE"));
+				list.setMERCER_HEAGE(rs.getLong("MERCER_HEAGE"));
+				list.setMERCER_SHEAGE(rs.getLong("MERCER_SHEAGE"));
 				list.setTM$MERCER_DATE((rs.getDate("MERCER_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("MERCER_DATE")), formatterdt)
 						: null);
 				list.setMERCER_USR(rs.getString("MERCER_USR"));
-				list.setMERCER_ZAGS(rs.getInt("MERCER_ZAGS"));
-				list.setMERCER_DIVSHE(rs.getInt("MERCER_DIVSHE"));
-				list.setMERCER_DIVHE(rs.getInt("MERCER_DIVHE"));
+				list.setMERCER_ZAGS(rs.getLong("MERCER_ZAGS"));
+				list.setMERCER_DIVSHE(rs.getLong("MERCER_DIVSHE"));
+				list.setMERCER_DIVHE(rs.getLong("MERCER_DIVHE"));
 				list.setMERCER_DSPMT_HE(rs.getString("MERCER_DSPMT_HE"));
 				list.setMERCER_NUM(rs.getString("MERCER_NUM"));
 				list.setMERCER_SERIA(rs.getString("MERCER_SERIA"));
-				list.setMERCER_DIESHE(rs.getInt("MERCER_DIESHE"));
-				list.setMERCER_DIEHE(rs.getInt("MERCER_DIEHE"));
+				list.setMERCER_DIESHE(rs.getLong("MERCER_DIESHE"));
+				list.setMERCER_DIEHE(rs.getLong("MERCER_DIEHE"));
 				list.setMERCER_OTHER(rs.getString("MERCER_OTHER"));
 				list.setMERCER_DSPMT_SHE(rs.getString("MERCER_DSPMT_SHE"));
 
@@ -742,13 +742,13 @@ public class AddDivorce {
 				while (rs.next()) {
 					VCOURTS list = new VCOURTS();
 					list.setCOTDNAME(rs.getString("COTDNAME"));
-					list.setID(rs.getInt("ID"));
+					list.setID(rs.getLong("ID"));
 					list.setABH_NAME(rs.getString("ABH_NAME"));
 					list.setNAME_ROD(rs.getString("NAME_ROD"));
 					list.setNAME(rs.getString("NAME"));
-					list.setAREA_ID(rs.getInt("AREA_ID"));
-					list.setOTD(rs.getInt("OTD"));
-					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					list.setAREA_ID(rs.getLong("AREA_ID"));
+					list.setOTD(rs.getLong("OTD"));
+					list.setIOTDNUM(rs.getLong("IOTDNUM"));
 					combolist.add(list);
 				}
 
@@ -813,7 +813,7 @@ public class AddDivorce {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -823,30 +823,30 @@ public class AddDivorce {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 	
 	//
 	// если открыт от гражданина
 	//
-	private IntegerProperty CusId;
-	private IntegerProperty CusGen;
+	private LongProperty CusId;
+	private LongProperty CusGen;
 	private StringProperty CusFio;
 
-	public void setCusGen(Integer value) {
+	public void setCusGen(Long value) {
 		this.CusGen.set(value);
 	}
 	
-	public Integer getCusGen() {
+	public Long getCusGen() {
 		return this.CusGen.get();
 	}
 	
-	public void setCusId(Integer value) {
+	public void setCusId(Long value) {
 		this.CusId.set(value);
 	}
 
@@ -854,7 +854,7 @@ public class AddDivorce {
 		this.CusFio.set(value);
 	}
 
-	public Integer getCusId() {
+	public Long getCusId() {
 		return this.CusId.get();
 	}
 
@@ -869,11 +869,11 @@ public class AddDivorce {
 	public AddDivorce() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 		
-		this.CusId = new SimpleIntegerProperty();
+		this.CusId = new SimpleLongProperty();
 		this.CusFio = new SimpleStringProperty();
-		this.CusGen = new SimpleIntegerProperty();
+		this.CusGen = new SimpleLongProperty();
 	}
 
 }

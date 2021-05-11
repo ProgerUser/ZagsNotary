@@ -2,8 +2,8 @@ package mj.doc.birthact;
 
 import java.time.LocalDate;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -16,13 +16,13 @@ public class VBRN {
 	/** Нет данных */
 	private StringProperty CHILDRENNAME;
 	/** Нет данных */
-	private IntegerProperty BR_ACT_PATCER;
+	private LongProperty BR_ACT_PATCER;
 	/** Нет данных */
 	private StringProperty BR_ACT_SERIA;
 	/** Нет данных */
 	private StringProperty BR_ACT_NUM;
 	/** Нет данных */
-	private IntegerProperty BR_ACT_MERCER_ID;
+	private LongProperty BR_ACT_MERCER_ID;
 	/** Нет данных */
 	private StringProperty BR_ACT_FADREG_ADR;
 	/** Нет данных */
@@ -52,11 +52,11 @@ public class VBRN {
 	/** Нет данных */
 	private StringProperty BR_ACT_MEDORGA;
 	/** Нет данных */
-	private IntegerProperty BR_ACT_M;
+	private LongProperty BR_ACT_M;
 	/** Нет данных */
-	private IntegerProperty BR_ACT_F;
+	private LongProperty BR_ACT_F;
 	/** Нет данных */
-	private IntegerProperty BR_ACT_CH;
+	private LongProperty BR_ACT_CH;
 	/** Нет данных */
 	private StringProperty BR_ACT_DBF;
 	/** Нет данных */
@@ -66,17 +66,17 @@ public class VBRN {
 	/** Нет данных */
 	private StringProperty BR_ACT_USER;
 	/** Нет данных */
-	private IntegerProperty BR_ACT_ZGID;
+	private LongProperty BR_ACT_ZGID;
 	/** Нет данных */
 	private StringProperty BR_ACT_LD;
 	/** Нет данных */
-	private IntegerProperty BR_ACT_BRCHCNT;
+	private LongProperty BR_ACT_BRCHCNT;
 	/** Нет данных */
 	private StringProperty BR_ACT_ZTP;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> BR_ACT_DATE;
 	/** Нет данных */
-	private IntegerProperty BR_ACT_ID;
+	private LongProperty BR_ACT_ID;
 	/** Мать одиночка */
 	private StringProperty MOTHERALONE;
 	/** Номер документа */
@@ -92,10 +92,10 @@ public class VBRN {
 		this.MOTHERNAME = new SimpleStringProperty();
 		this.FATHERNAME = new SimpleStringProperty();
 		this.CHILDRENNAME = new SimpleStringProperty();
-		this.BR_ACT_PATCER = new SimpleIntegerProperty();
+		this.BR_ACT_PATCER = new SimpleLongProperty();
 		this.BR_ACT_SERIA = new SimpleStringProperty();
 		this.BR_ACT_NUM = new SimpleStringProperty();
-		this.BR_ACT_MERCER_ID = new SimpleIntegerProperty();
+		this.BR_ACT_MERCER_ID = new SimpleLongProperty();
 		this.BR_ACT_FADREG_ADR = new SimpleStringProperty();
 		this.BR_ACT_FADORG_NAME = new SimpleStringProperty();
 		this.BR_ACT_FADLOCATION = new SimpleStringProperty();
@@ -110,19 +110,19 @@ public class VBRN {
 		this.BR_ACT_NDOCA = new SimpleStringProperty();
 		this.BR_ACT_DATEDOCA = new SimpleObjectProperty<>();
 		this.BR_ACT_MEDORGA = new SimpleStringProperty();
-		this.BR_ACT_M = new SimpleIntegerProperty();
-		this.BR_ACT_F = new SimpleIntegerProperty();
-		this.BR_ACT_CH = new SimpleIntegerProperty();
+		this.BR_ACT_M = new SimpleLongProperty();
+		this.BR_ACT_F = new SimpleLongProperty();
+		this.BR_ACT_CH = new SimpleLongProperty();
 		this.BR_ACT_DBF = new SimpleStringProperty();
 		this.BR_ACT_MZDATE = new SimpleObjectProperty<>();
 		this.BR_ACT_TGRABF = new SimpleStringProperty();
 		this.BR_ACT_USER = new SimpleStringProperty();
-		this.BR_ACT_ZGID = new SimpleIntegerProperty();
+		this.BR_ACT_ZGID = new SimpleLongProperty();
 		this.BR_ACT_LD = new SimpleStringProperty();
-		this.BR_ACT_BRCHCNT = new SimpleIntegerProperty();
+		this.BR_ACT_BRCHCNT = new SimpleLongProperty();
 		this.BR_ACT_ZTP = new SimpleStringProperty();
 		this.BR_ACT_DATE = new SimpleObjectProperty<>();
-		this.BR_ACT_ID = new SimpleIntegerProperty();
+		this.BR_ACT_ID = new SimpleLongProperty();
 	}
 
 	public void setIFMAL_F_LAST_NAME(String IFMAL_F_LAST_NAME) {
@@ -173,7 +173,7 @@ public class VBRN {
 		this.CHILDRENNAME.set(CHILDRENNAME);
 	}
 
-	public void setBR_ACT_PATCER(Integer BR_ACT_PATCER) {
+	public void setBR_ACT_PATCER(Long BR_ACT_PATCER) {
 		this.BR_ACT_PATCER.set(BR_ACT_PATCER);
 	}
 
@@ -185,7 +185,7 @@ public class VBRN {
 		this.BR_ACT_NUM.set(BR_ACT_NUM);
 	}
 
-	public void setBR_ACT_MERCER_ID(Integer BR_ACT_MERCER_ID) {
+	public void setBR_ACT_MERCER_ID(Long BR_ACT_MERCER_ID) {
 		this.BR_ACT_MERCER_ID.set(BR_ACT_MERCER_ID);
 	}
 
@@ -245,15 +245,15 @@ public class VBRN {
 		this.BR_ACT_MEDORGA.set(BR_ACT_MEDORGA);
 	}
 
-	public void setBR_ACT_M(Integer BR_ACT_M) {
+	public void setBR_ACT_M(Long BR_ACT_M) {
 		this.BR_ACT_M.set(BR_ACT_M);
 	}
 
-	public void setBR_ACT_F(Integer BR_ACT_F) {
+	public void setBR_ACT_F(Long BR_ACT_F) {
 		this.BR_ACT_F.set(BR_ACT_F);
 	}
 
-	public void setBR_ACT_CH(Integer BR_ACT_CH) {
+	public void setBR_ACT_CH(Long BR_ACT_CH) {
 		this.BR_ACT_CH.set(BR_ACT_CH);
 	}
 
@@ -273,7 +273,7 @@ public class VBRN {
 		this.BR_ACT_USER.set(BR_ACT_USER);
 	}
 
-	public void setBR_ACT_ZGID(Integer BR_ACT_ZGID) {
+	public void setBR_ACT_ZGID(Long BR_ACT_ZGID) {
 		this.BR_ACT_ZGID.set(BR_ACT_ZGID);
 	}
 
@@ -281,7 +281,7 @@ public class VBRN {
 		this.BR_ACT_LD.set(BR_ACT_LD);
 	}
 
-	public void setBR_ACT_BRCHCNT(Integer BR_ACT_BRCHCNT) {
+	public void setBR_ACT_BRCHCNT(Long BR_ACT_BRCHCNT) {
 		this.BR_ACT_BRCHCNT.set(BR_ACT_BRCHCNT);
 	}
 
@@ -293,7 +293,7 @@ public class VBRN {
 		this.BR_ACT_DATE.set(BR_ACT_DATE);
 	}
 
-	public void setBR_ACT_ID(Integer BR_ACT_ID) {
+	public void setBR_ACT_ID(Long BR_ACT_ID) {
 		this.BR_ACT_ID.set(BR_ACT_ID);
 	}
 
@@ -309,7 +309,7 @@ public class VBRN {
 		return CHILDRENNAME.get();
 	}
 
-	public Integer getBR_ACT_PATCER() {
+	public Long getBR_ACT_PATCER() {
 		return BR_ACT_PATCER.get();
 	}
 
@@ -321,7 +321,7 @@ public class VBRN {
 		return BR_ACT_NUM.get();
 	}
 
-	public Integer getBR_ACT_MERCER_ID() {
+	public Long getBR_ACT_MERCER_ID() {
 		return BR_ACT_MERCER_ID.get();
 	}
 
@@ -381,15 +381,15 @@ public class VBRN {
 		return BR_ACT_MEDORGA.get();
 	}
 
-	public Integer getBR_ACT_M() {
+	public Long getBR_ACT_M() {
 		return BR_ACT_M.get();
 	}
 
-	public Integer getBR_ACT_F() {
+	public Long getBR_ACT_F() {
 		return BR_ACT_F.get();
 	}
 
-	public Integer getBR_ACT_CH() {
+	public Long getBR_ACT_CH() {
 		return BR_ACT_CH.get();
 	}
 
@@ -409,7 +409,7 @@ public class VBRN {
 		return BR_ACT_USER.get();
 	}
 
-	public Integer getBR_ACT_ZGID() {
+	public Long getBR_ACT_ZGID() {
 		return BR_ACT_ZGID.get();
 	}
 
@@ -417,7 +417,7 @@ public class VBRN {
 		return BR_ACT_LD.get();
 	}
 
-	public Integer getBR_ACT_BRCHCNT() {
+	public Long getBR_ACT_BRCHCNT() {
 		return BR_ACT_BRCHCNT.get();
 	}
 
@@ -429,7 +429,7 @@ public class VBRN {
 		return BR_ACT_DATE.get();
 	}
 
-	public Integer getBR_ACT_ID() {
+	public Long getBR_ACT_ID() {
 		return BR_ACT_ID.get();
 	}
 
@@ -445,7 +445,7 @@ public class VBRN {
 		return CHILDRENNAME;
 	}
 
-	public IntegerProperty BR_ACT_PATCERProperty() {
+	public LongProperty BR_ACT_PATCERProperty() {
 		return BR_ACT_PATCER;
 	}
 
@@ -457,7 +457,7 @@ public class VBRN {
 		return BR_ACT_NUM;
 	}
 
-	public IntegerProperty BR_ACT_MERCER_IDProperty() {
+	public LongProperty BR_ACT_MERCER_IDProperty() {
 		return BR_ACT_MERCER_ID;
 	}
 
@@ -517,15 +517,15 @@ public class VBRN {
 		return BR_ACT_MEDORGA;
 	}
 
-	public IntegerProperty BR_ACT_MProperty() {
+	public LongProperty BR_ACT_MProperty() {
 		return BR_ACT_M;
 	}
 
-	public IntegerProperty BR_ACT_FProperty() {
+	public LongProperty BR_ACT_FProperty() {
 		return BR_ACT_F;
 	}
 
-	public IntegerProperty BR_ACT_CHProperty() {
+	public LongProperty BR_ACT_CHProperty() {
 		return BR_ACT_CH;
 	}
 
@@ -545,7 +545,7 @@ public class VBRN {
 		return BR_ACT_USER;
 	}
 
-	public IntegerProperty BR_ACT_ZGIDProperty() {
+	public LongProperty BR_ACT_ZGIDProperty() {
 		return BR_ACT_ZGID;
 	}
 
@@ -553,7 +553,7 @@ public class VBRN {
 		return BR_ACT_LD;
 	}
 
-	public IntegerProperty BR_ACT_BRCHCNTProperty() {
+	public LongProperty BR_ACT_BRCHCNTProperty() {
 		return BR_ACT_BRCHCNT;
 	}
 
@@ -565,7 +565,7 @@ public class VBRN {
 		return BR_ACT_DATE;
 	}
 
-	public IntegerProperty BR_ACT_IDProperty() {
+	public LongProperty BR_ACT_IDProperty() {
 		return BR_ACT_ID;
 	}
 }

@@ -32,6 +32,7 @@ import com.jyloo.syntheticafx.filter.ComparisonType;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -56,11 +57,14 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
+import mj.app.model.InputFilter1;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.FxUtilTest;
+import notary.doc.html.model.NT_CUS_LIST_FOR_SEARCH;
+import notary.doc.html.model.NT_PRM_SEARCH;
 import notary.doc.html.model.V_NT_DOC;
-import notary.doc.html.model.V_NT_TEMP_LIST;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -79,7 +83,7 @@ public class NotaryDocList {
 	@FXML
 	private XTableView<V_NT_DOC> NT_DOC;
 	@FXML
-	private XTableColumn<V_NT_DOC, Integer> ID;
+	private XTableColumn<V_NT_DOC, Long> ID;
 	@FXML
 	private XTableColumn<V_NT_DOC, String> DOC_NUMBER;
 	@FXML
@@ -97,27 +101,91 @@ public class NotaryDocList {
 	static boolean EditWin = true;
 
 	@FXML
-	private ComboBox<?> ParamList;
+	private ComboBox<NT_PRM_SEARCH> ParamList;
 
 	@FXML
 	private Button Search;
 
 	@FXML
-	private ComboBox<?> Vals;
+	private ComboBox<NT_CUS_LIST_FOR_SEARCH> Vals;
 
+	/**
+	 * Выполнить поиск после выбора
+	 * @param event
+	 */
 	@FXML
 	void Search(ActionEvent event) {
-
+		try {
+			NT_PRM_SEARCH val_prm = ParamList.getSelectionModel().getSelectedItem();
+			NT_CUS_LIST_FOR_SEARCH val_val = Vals.getSelectionModel().getSelectedItem();
+			if (val_prm != null & val_val != null) {
+				Init(val_val.getID());
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
 	}
 
 	@FXML
 	void Vals(ActionEvent event) {
-
+		try {
+			NT_PRM_SEARCH val_prm = ParamList.getSelectionModel().getSelectedItem();
+			NT_CUS_LIST_FOR_SEARCH val_val = Vals.getSelectionModel().getSelectedItem();
+			if (val_prm != null & val_val != null) {
+				
+			}
+		}catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
 	}
 
+	
+	/**
+	 * При выборе параметра для дальнейшего поиска по нему 
+	 * @param event
+	 */
 	@FXML
 	void ParamList(ActionEvent event) {
-
+		try {
+			NT_PRM_SEARCH val = ParamList.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				//если список "Ссылка на клиента"
+				if(val.getSRCH_ID().equals(1)) {
+					//параметры для поиска
+					{
+						PreparedStatement stsmt = conn.prepareStatement("select * from NT_CUS_LIST_FOR_SEARCH");
+						ResultSet rs = stsmt.executeQuery();
+						ObservableList<NT_CUS_LIST_FOR_SEARCH> combolist = FXCollections.observableArrayList();
+						while (rs.next()) {
+							NT_CUS_LIST_FOR_SEARCH list = new NT_CUS_LIST_FOR_SEARCH();
+							list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
+							list.setDCUSBIRTHDAY((rs.getDate("DCUSBIRTHDAY") != null) ? LocalDate.parse(
+									new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY")), formatter)
+									: null);
+							list.setCCUSNAME_SH(rs.getString("CCUSNAME_SH"));
+							list.setID(rs.getLong("ID"));
+							list.setICUSNUM(rs.getLong("ICUSNUM"));
+							list.setCUS_TYPE(rs.getString("CUS_TYPE"));
+							list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
+							list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
+							list.setCCUSNAME(rs.getString("CCUSNAME"));
+							combolist.add(list);
+						}
+						stsmt.close();
+						rs.close();
+						// фильтр
+						FilteredList<NT_CUS_LIST_FOR_SEARCH> filteredlogin = new FilteredList<NT_CUS_LIST_FOR_SEARCH>(
+								combolist);
+						Vals.getEditor().textProperty()
+								.addListener(new InputFilter1<NT_CUS_LIST_FOR_SEARCH>(Vals, filteredlogin, false));
+						Vals.setItems(filteredlogin);
+						convert_Vals(Vals);
+					}
+				}
+			}
+		}catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
 	}
     
 	@FXML
@@ -254,7 +322,7 @@ public class NotaryDocList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from NT_DOC where ID = ?;" + "commit;" + "end;");
 							V_NT_DOC cl = NT_DOC.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getID());
+							delete.setLong(1, cl.getID());
 							delete.executeUpdate();
 							delete.close();
 
@@ -314,7 +382,7 @@ public class NotaryDocList {
 				{
 					PreparedStatement prp = conn
 							.prepareStatement("select DOCX_PATH,REP_QUERY from NT_TEMP_LIST t where t.id = ? ");
-					prp.setInt(1, val.getNT_TYPE());
+					prp.setLong(1, val.getNT_TYPE());
 					ResultSet rs = prp.executeQuery();
 					if (rs.next()) {
 						path = rs.getString("DOCX_PATH");
@@ -333,7 +401,7 @@ public class NotaryDocList {
 				Variables variables = new Variables();
 				PreparedStatement prepStmt = DBUtil.conn.prepareStatement(
 						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrintNtDocPrmVals"));
-				prepStmt.setInt(1, val.getID());
+				prepStmt.setLong(1, val.getID());
 				ResultSet rs = prepStmt.executeQuery();
 				while (rs.next()) {
 					variables.addTextVariable(new TextVariable("#{" + rs.getString("NAME").toLowerCase() + "}",
@@ -369,16 +437,32 @@ public class NotaryDocList {
 		}
 	}
 
-	private void convert_ParamList(ComboBox<V_NT_TEMP_LIST> cmbbx) {
-		cmbbx.setConverter(new StringConverter<V_NT_TEMP_LIST>() {
+	private void convert_Vals(ComboBox<NT_CUS_LIST_FOR_SEARCH> cmbbx) {
+		cmbbx.setConverter(new StringConverter<NT_CUS_LIST_FOR_SEARCH>() {
 			@Override
-			public String toString(V_NT_TEMP_LIST object) {
-				return object != null ? object.getNAMES() : "";
+			public String toString(NT_CUS_LIST_FOR_SEARCH object) {
+				return object != null ? object.getCCUSNAME() : "";
 			}
 
 			@Override
-			public V_NT_TEMP_LIST fromString(String string) {
-				return cmbbx.getItems().stream().filter(object -> object.getNAMES().equals(string)).findFirst()
+			public NT_CUS_LIST_FOR_SEARCH fromString(String string) {
+				return cmbbx.getItems().stream().filter(object -> object.getCCUSNAME().equals(string)).findFirst()
+						.orElse(null);
+			}
+
+		});
+	}
+	
+	private void convert_ParamList(ComboBox<NT_PRM_SEARCH> cmbbx) {
+		cmbbx.setConverter(new StringConverter<NT_PRM_SEARCH>() {
+			@Override
+			public String toString(NT_PRM_SEARCH object) {
+				return object != null ? object.getSRCH_NAME() : "";
+			}
+
+			@Override
+			public NT_PRM_SEARCH fromString(String string) {
+				return cmbbx.getItems().stream().filter(object -> object.getSRCH_NAME().equals(string)).findFirst()
 						.orElse(null);
 			}
 
@@ -420,6 +504,28 @@ public class NotaryDocList {
 			});
 			new ConvConst().TableColumnDate(CR_DATE);
 			Init();
+			
+			//параметры для поиска
+			{
+				PreparedStatement stsmt = conn.prepareStatement("select * from NT_PRM_SEARCH");
+				ResultSet rs = stsmt.executeQuery();
+				ObservableList<NT_PRM_SEARCH> combolist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					NT_PRM_SEARCH list = new NT_PRM_SEARCH();
+					list.setSRCH_ID(rs.getLong("SRCH_ID"));
+					list.setSRCH_NAME(rs.getString("SRCH_NAME"));
+					combolist.add(list);
+				}
+				stsmt.close();
+				rs.close();
+				ParamList.setItems(combolist);
+
+				FxUtilTest.getComboBoxValue(ParamList);
+				FxUtilTest.autoCompleteComboBoxPlus(ParamList, (typedText, itemToCompare) -> itemToCompare.getSRCH_NAME()
+						.toLowerCase().contains(typedText.toLowerCase()));
+				convert_ParamList(ParamList);
+			}
+			
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -450,7 +556,8 @@ public class NotaryDocList {
 
 	void Init() {
 		try {
-			PreparedStatement prepStmt = conn.prepareStatement("select * from V_NT_DOC");
+			PreparedStatement prepStmt  = conn.prepareStatement("select * from V_NT_DOC");
+
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<V_NT_DOC> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -459,10 +566,10 @@ public class NotaryDocList {
 					list.setHTML_DOCUMENT(new ConvConst().ClobToString(rs.getClob("HTML_DOCUMENT")));
 				}
 				list.setCR_TIME(rs.getString("CR_TIME"));
-				list.setID(rs.getInt("ID"));
+				list.setID(rs.getLong("ID"));
 				list.setOPER(rs.getString("OPER"));
-				list.setNOTARY(rs.getInt("NOTARY"));
-				list.setNT_TYPE(rs.getInt("NT_TYPE"));
+				list.setNOTARY(rs.getLong("NOTARY"));
+				list.setNT_TYPE(rs.getLong("NT_TYPE"));
 				list.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
 						: null);
@@ -494,6 +601,47 @@ public class NotaryDocList {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+	
+	void Init(Long val) {
+		try {
+			PreparedStatement prepStmt  = conn.prepareStatement("select * from V_NT_DOC where id = ?");
+			prepStmt.setLong(1, val);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<V_NT_DOC> dlist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				V_NT_DOC list = new V_NT_DOC();
+				if (rs.getClob("HTML_DOCUMENT") != null) {
+					list.setHTML_DOCUMENT(new ConvConst().ClobToString(rs.getClob("HTML_DOCUMENT")));
+				}
+				list.setCR_TIME(rs.getString("CR_TIME"));
+				list.setID(rs.getLong("ID"));
+				list.setOPER(rs.getString("OPER"));
+				list.setNOTARY(rs.getLong("NOTARY"));
+				list.setNT_TYPE(rs.getLong("NT_TYPE"));
+				list.setCR_DATE((rs.getDate("CR_DATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
+						: null);
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+				list.setTYPE_NAME(rs.getString("TYPE_NAME"));
+				list.setTYPE_NODE(rs.getString("TYPE_NODE"));
+				dlist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+			NT_DOC.setItems(dlist);
+			TableFilter<V_NT_DOC> tableFilter = TableFilter.forTableView(NT_DOC).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 
 	public void dbDisconnect() {
 		try {

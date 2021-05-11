@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -83,7 +82,7 @@ public class OdbMNU {
 	@FXML
 	void Add(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(156) == 0) {
+			if (DBUtil.OdbAction(156l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -97,11 +96,11 @@ public class OdbMNU {
 					USR usr = Users.getSelectionModel().getSelectedItem();
 					ODB_MNU odb_act = MNU.getSelectionModel().getSelectedItem().getValue();
 					// String acts = MNU.getSelectionModel().getSelectedItem().getValue();
-					// Integer act = Integer.valueOf(acts.substring(0, acts.indexOf(":")));
+					// Integer act = Long.valueOf(acts.substring(0, acts.indexOf(":")));
 					CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuUsrAdd(?,?)}");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
-					callStmt.setInt(2, usr.getIUSRID());
-					callStmt.setInt(3, odb_act.getMNU_ID());
+					callStmt.setLong(2, usr.getIUSRID());
+					callStmt.setLong(3, odb_act.getMNU_ID());
 					callStmt.execute();
 					String ret = callStmt.getString(1);
 					
@@ -120,28 +119,16 @@ public class OdbMNU {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				e.printStackTrace();
-				Msg.Message(ExceptionUtils.getStackTrace(e1));
-				Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
-				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+				DBUtil.LOG_ERROR(e1);
 			}
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void Delete(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(157) == 0) {
+			if (DBUtil.OdbAction(157l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -154,12 +141,12 @@ public class OdbMNU {
 					USR usr = Users.getSelectionModel().getSelectedItem();
 					ODB_MNU odb_act = MNU.getSelectionModel().getSelectedItem().getValue();
 					// String acts = MNU.getSelectionModel().getSelectedItem().getValue();
-					// Integer act = Integer.valueOf(acts.substring(0, acts.indexOf(":")));
+					// Integer act = Long.valueOf(acts.substring(0, acts.indexOf(":")));
 
 					CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuUsrDelete(?,?)}");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
-					callStmt.setInt(2, usr.getIUSRID());
-					callStmt.setInt(3, odb_act.getMNU_ID());
+					callStmt.setLong(2, usr.getIUSRID());
+					callStmt.setLong(3, odb_act.getMNU_ID());
 					callStmt.execute();
 					String ret = callStmt.getString(1);
 					callStmt.close();
@@ -190,7 +177,7 @@ public class OdbMNU {
 	@FXML
 	void DeleteAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(160) == 0) {
+			if (DBUtil.OdbAction(160l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -231,7 +218,7 @@ public class OdbMNU {
 						PreparedStatement delete = conn.prepareStatement("declare " + "pragma autonomous_transaction;"
 								+ "begin " + " delete from odb_mnu where MNU_ID = ?;" + "commit;" + "end;");
 
-						delete.setInt(1, MNU.getSelectionModel().getSelectedItem().getValue().getMNU_ID());
+						delete.setLong(1, MNU.getSelectionModel().getSelectedItem().getValue().getMNU_ID());
 						delete.executeUpdate();
 						delete.close();
 						fillTree();
@@ -267,7 +254,7 @@ public class OdbMNU {
 	@FXML
 	void EdtAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(159) == 0) {
+			if (DBUtil.OdbAction(159l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -300,13 +287,7 @@ public class OdbMNU {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -318,7 +299,7 @@ public class OdbMNU {
 	@FXML
 	void AddChildAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(158) == 0) {
+			if (DBUtil.OdbAction(158l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -352,13 +333,7 @@ public class OdbMNU {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -387,8 +362,8 @@ public class OdbMNU {
 
 								USR usr = Users.getSelectionModel().getSelectedItem();
 
-								Integer act = item.getMNU_ID();
-								// Integer act = Integer.valueOf(item.substring(0, item.indexOf(":")));
+								Long act = item.getMNU_ID();
+								// Integer act = Long.valueOf(item.substring(0, item.indexOf(":")));
 
 								if (DBUtil.ODB_MNU(usr.getIUSRID(), act) == 1) {
 									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
@@ -445,7 +420,7 @@ public class OdbMNU {
 			while (rs.next()) {
 				USR usr = new USR();
 				usr.setCUSRLOGNAME(rs.getString("CUSRLOGNAME"));
-				usr.setIUSRID(rs.getInt("IUSRID"));
+				usr.setIUSRID(rs.getLong("IUSRID"));
 				usr.setCUSRNAME(rs.getString("CUSRNAME"));
 				usr_list.add(usr);
 			}
@@ -453,30 +428,24 @@ public class OdbMNU {
 			rs.close();
 			Users.setItems(usr_list);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/*
 	 * void fillTree2() { Map<Integer, TreeItem<String>> itemById = new HashMap<>();
-	 * Map<Integer, Integer> parents = new HashMap<>(); String query =
+	 * Map<Integer, Long> parents = new HashMap<>(); String query =
 	 * "select * from ODB_MNU"; try { PreparedStatement pstmt =
 	 * conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery(); while
 	 * (rs.next()) { adb_act = new ODB_MNU();
-	 * adb_act.setMNU_ID(rs.getInt("MNU_ID"));
-	 * adb_act.setMNU_NPP(rs.getInt("MNU_NPP"));
-	 * adb_act.setMNU_PARENT(rs.getInt("MNU_PARENT"));
+	 * adb_act.setMNU_ID(rs.getLong("MNU_ID"));
+	 * adb_act.setMNU_NPP(rs.getLong("MNU_NPP"));
+	 * adb_act.setMNU_PARENT(rs.getLong("MNU_PARENT"));
 	 * adb_act.setMNU_NAME(rs.getString("MNU_NAME"));
-	 * itemById.put(rs.getInt("MNU_ID"), new
-	 * TreeItem<>(String.valueOf(rs.getInt("MNU_ID")) + ":" +
-	 * rs.getString("MNU_NAME"))); parents.put(rs.getInt("MNU_ID"),
-	 * rs.getInt("MNU_PARENT")); } pstmt.close(); rs.close(); } catch (SQLException
+	 * itemById.put(rs.getLong("MNU_ID"), new
+	 * TreeItem<>(String.valueOf(rs.getLong("MNU_ID")) + ":" +
+	 * rs.getString("MNU_NAME"))); parents.put(rs.getLong("MNU_ID"),
+	 * rs.getLong("MNU_PARENT")); } pstmt.close(); rs.close(); } catch (SQLException
 	 * e) { e.printStackTrace(); }
 	 * 
 	 * for (Map.Entry<Integer, TreeItem<String>> entry : itemById.entrySet()) {
@@ -491,20 +460,20 @@ public class OdbMNU {
 	 * }
 	 */
 	void fillTree() {
-		Map<Integer, TreeItem<ODB_MNU>> itemById = new HashMap<>();
-		Map<Integer, Integer> parents = new HashMap<>();
+		Map<Long, TreeItem<ODB_MNU>> itemById = new HashMap<>();
+		Map<Long, Long> parents = new HashMap<>();
 		String query = "select * from ODB_MNU";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				adb_act = new ODB_MNU();
-				adb_act.setMNU_ID(rs.getInt("MNU_ID"));
-				adb_act.setMNU_NPP(rs.getInt("MNU_NPP"));
-				adb_act.setMNU_PARENT(rs.getInt("MNU_PARENT"));
+				adb_act.setMNU_ID(rs.getLong("MNU_ID"));
+				adb_act.setMNU_NPP(rs.getLong("MNU_NPP"));
+				adb_act.setMNU_PARENT(rs.getLong("MNU_PARENT"));
 				adb_act.setMNU_NAME(rs.getString("MNU_NAME"));
-				itemById.put(rs.getInt("MNU_ID"), new TreeItem<>(adb_act));
-				parents.put(rs.getInt("MNU_ID"), rs.getInt("MNU_PARENT"));
+				itemById.put(rs.getLong("MNU_ID"), new TreeItem<>(adb_act));
+				parents.put(rs.getLong("MNU_ID"), rs.getLong("MNU_PARENT"));
 			}
 			pstmt.close();
 			rs.close();
@@ -512,9 +481,9 @@ public class OdbMNU {
 			e.printStackTrace();
 		}
 
-		for (Map.Entry<Integer, TreeItem<ODB_MNU>> entry : itemById.entrySet()) {
-			Integer key = entry.getKey();
-			Integer parent = parents.get(key);
+		for (Map.Entry<Long, TreeItem<ODB_MNU>> entry : itemById.entrySet()) {
+			Long key = entry.getKey();
+			Long parent = parents.get(key);
 			if (parent.equals(key)) {
 				// in case the root item points to itself, this is it
 				root = entry.getValue();
@@ -554,8 +523,8 @@ public class OdbMNU {
 	void Clear(TreeItem<String> root) {
 		for (TreeItem<String> child : root.getChildren()) {
 			child.setValue(child.getValue()
-					.replace(String.valueOf(Character.toChars(Integer.parseUnsignedInt("2713", 16))), "")
-					.replace(String.valueOf(Character.toChars(Integer.parseUnsignedInt("2718", 16))), ""));
+					.replace(String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2713", 16))), "")
+					.replace(String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2718", 16))), ""));
 			if (child.getChildren().isEmpty()) {
 
 			} else {
@@ -564,15 +533,15 @@ public class OdbMNU {
 		}
 	}
 
-	void printChildren(TreeItem<String> root, Integer usrid) {
+	void printChildren(TreeItem<String> root, Long usrid) {
 		for (TreeItem<String> child : root.getChildren()) {
-			Integer act = Integer.valueOf(child.getValue().substring(0, child.getValue().indexOf(":")));
+			Long act = Long.valueOf(child.getValue().substring(0, child.getValue().indexOf(":")));
 			if (DBUtil.ODB_MNU(usrid, act) == 1) {
 				child.setValue(
-						child.getValue() + String.valueOf(Character.toChars(Integer.parseUnsignedInt("2713", 16))));
+						child.getValue() + String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2713", 16))));
 			} else {
 				child.setValue(
-						child.getValue() + String.valueOf(Character.toChars(Integer.parseUnsignedInt("2718", 16))));
+						child.getValue() + String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2718", 16))));
 			}
 			if (child.getChildren().isEmpty()) {
 
@@ -595,12 +564,7 @@ public class OdbMNU {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -611,12 +575,7 @@ public class OdbMNU {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -643,13 +602,7 @@ public class OdbMNU {
 				// getTreeItem().getChildren().add(newEmployee);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -688,7 +641,7 @@ public class OdbMNU {
 			} else {
 				if (Users.getSelectionModel().getSelectedItem() != null) {
 					USR usr = Users.getSelectionModel().getSelectedItem();
-					Integer act = Integer.valueOf(item.substring(0, item.indexOf(":")));
+					Long act = Long.valueOf(item.substring(0, item.indexOf(":")));
 					if (DBUtil.ODB_MNU(usr.getIUSRID(), act) == 1) {
 						setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 					} else {
@@ -717,34 +670,28 @@ public class OdbMNU {
 
 				ODB_MNU partext = selectedItem.getParent().getValue();
 
-				Integer pact = partext.getMNU_ID();
-				// Integer pact = Integer.valueOf(partext.substring(0, partext.indexOf(":")));
+				Long pact = partext.getMNU_ID();
+				// Integer pact = Long.valueOf(partext.substring(0, partext.indexOf(":")));
 				String text = partext.getMNU_NAME();
 				// str.substring(str.indexOf(":"));
-				Integer act = Integer.valueOf(str.substring(0, str.indexOf(":")));
+				Long act = Long.valueOf(str.substring(0, str.indexOf(":")));
 
 				String generatedColumns[] = { "MNU_ID" };
 				PreparedStatement pstmt = conn.prepareStatement(
 						"insert into ODB_MNU (MNU_PARENT,MNU_NPP,MNU_NAME) values (?,?,?) ", generatedColumns);
-				pstmt.setInt(1, pact);
-				pstmt.setInt(2, act);
+				pstmt.setLong(1, pact);
+				pstmt.setLong(2, act);
 				pstmt.setString(3, text);
 				pstmt.executeUpdate();
 				ResultSet rs = pstmt.getGeneratedKeys();
 				if (rs.next()) {
-					ret = String.valueOf(rs.getInt(1)) + ":" + text;
+					ret = String.valueOf(rs.getLong(1)) + ":" + text;
 					conn.commit();
 				}
 				pstmt.close();
 				rs.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
-				Msg.Message(ExceptionUtils.getStackTrace(e));
-				Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+				DBUtil.LOG_ERROR(e);
 			}
 			return ret;
 		}

@@ -1,31 +1,31 @@
 package mj.users;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class OTD {
 	/** Нет данных */
-	private IntegerProperty IOTDNUM;
+	private LongProperty IOTDNUM;
 	/** Нет данных */
 	private StringProperty COTDNAME;
 	/** Нет данных */
-	private IntegerProperty AREA_ID;
+	private LongProperty AREA_ID;
 	/** Нет данных */
-	private IntegerProperty CODE;
+	private LongProperty CODE;
 	/** Нет данных */
 	private StringProperty NAME;
 
 	public OTD() {
-		this.IOTDNUM = new SimpleIntegerProperty();
+		this.IOTDNUM = new SimpleLongProperty();
 		this.COTDNAME = new SimpleStringProperty();
-		this.AREA_ID = new SimpleIntegerProperty();
-		this.CODE = new SimpleIntegerProperty();
+		this.AREA_ID = new SimpleLongProperty();
+		this.CODE = new SimpleLongProperty();
 		this.NAME = new SimpleStringProperty();
 	}
 
-	public void setIOTDNUM(Integer IOTDNUM) {
+	public void setIOTDNUM(Long IOTDNUM) {
 		this.IOTDNUM.set(IOTDNUM);
 	}
 
@@ -33,11 +33,11 @@ public class OTD {
 		this.COTDNAME.set(COTDNAME);
 	}
 
-	public void setAREA_ID(Integer AREA_ID) {
+	public void setAREA_ID(Long AREA_ID) {
 		this.AREA_ID.set(AREA_ID);
 	}
 
-	public void setCODE(Integer CODE) {
+	public void setCODE(Long CODE) {
 		this.CODE.set(CODE);
 	}
 
@@ -45,7 +45,7 @@ public class OTD {
 		this.NAME.set(NAME);
 	}
 
-	public Integer getIOTDNUM() {
+	public Long getIOTDNUM() {
 		return IOTDNUM.get();
 	}
 
@@ -53,11 +53,11 @@ public class OTD {
 		return COTDNAME.get();
 	}
 
-	public Integer getAREA_ID() {
+	public Long getAREA_ID() {
 		return AREA_ID.get();
 	}
 
-	public Integer getCODE() {
+	public Long getCODE() {
 		return CODE.get();
 	}
 
@@ -65,7 +65,7 @@ public class OTD {
 		return NAME.get();
 	}
 
-	public IntegerProperty IOTDNUMProperty() {
+	public LongProperty IOTDNUMProperty() {
 		return IOTDNUM;
 	}
 
@@ -73,11 +73,11 @@ public class OTD {
 		return COTDNAME;
 	}
 
-	public IntegerProperty AREA_IDProperty() {
+	public LongProperty AREA_IDProperty() {
 		return AREA_ID;
 	}
 
-	public IntegerProperty CODEProperty() {
+	public LongProperty CODEProperty() {
 		return CODE;
 	}
 

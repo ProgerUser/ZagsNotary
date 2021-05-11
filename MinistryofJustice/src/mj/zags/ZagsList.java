@@ -53,12 +53,12 @@ public class ZagsList {
 	private TableView<VZAGS> ZAGS;
 
 	@FXML
-	private TableColumn<VZAGS, Integer> ZAGS_ID;
+	private TableColumn<VZAGS, Long> ZAGS_ID;
 
 	@FXML
 	void Add(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(126) == 0) {
+		if (DBUtil.OdbAction(126l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -98,7 +98,7 @@ public class ZagsList {
 	@FXML
 	void Edit(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(127) == 0) {
+		if (DBUtil.OdbAction(127l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -112,7 +112,7 @@ public class ZagsList {
 	@FXML
 	void Delete(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(128) == 0) {
+		if (DBUtil.OdbAction(128l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -161,7 +161,7 @@ public class ZagsList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from ZAGS where ZAGS_ID = ?;" + "commit;" + "end;");
 							VZAGS cl = ZAGS.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getZAGS_ID());
+							delete.setLong(1, cl.getZAGS_ID());
 							delete.executeUpdate();
 							delete.close();
 
@@ -174,12 +174,7 @@ public class ZagsList {
 								Main.logger.error(
 										ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
@@ -199,14 +194,14 @@ public class ZagsList {
 
 	boolean isopen = false;
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
 				Main.logger = Logger.getLogger(getClass());
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from ZAGS where ZAGS_ID = ? /*for update nowait*/");
 				VZAGS VZAGS = Init2(docid);
-				selforupd.setInt(1, VZAGS.getZAGS_ID());
+				selforupd.setLong(1, VZAGS.getZAGS_ID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -276,7 +271,7 @@ public class ZagsList {
 			ZAGS.setRowFactory(tv -> {
 				TableRow<VZAGS> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
-					if (DBUtil.OdbAction(127) == 0) {
+					if (DBUtil.OdbAction(127l) == 0) {
 						Msg.Message("Нет доступа!");
 						return;
 					}
@@ -293,26 +288,26 @@ public class ZagsList {
 		}
 	}
 
-	VZAGS Init2(Integer id) {
+	VZAGS Init2(Long id) {
 		VZAGS list = null;
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			String selectStmt = "select * from VZAGS where ZAGS_ID = ? ";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, id);
+			prepStmt.setLong(1, id);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				list = new VZAGS();
 				list.setZAGS_RUK(rs.getString("ZAGS_RUK"));
 				list.setZAGS_CITY_ABH(rs.getString("ZAGS_CITY_ABH"));
 				list.setZAGS_ADR(rs.getString("ZAGS_ADR"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
+				list.setZAGS_ID(rs.getLong("ZAGS_ID"));
 				list.setADDR(rs.getString("ADDR"));
 				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
 				list.setCOTDNAME(rs.getString("COTDNAME"));
 				list.setZAGS_RUK_ABH(rs.getString("ZAGS_RUK_ABH"));
 				list.setZAGS_ADR_ABH(rs.getString("ZAGS_ADR_ABH"));
-				list.setZAGS_OTD(rs.getInt("ZAGS_OTD"));
+				list.setZAGS_OTD(rs.getLong("ZAGS_OTD"));
 				list.setADDR_ABH(rs.getString("ADDR_ABH"));
 			}
 			prepStmt.close();
@@ -335,13 +330,13 @@ public class ZagsList {
 				list.setZAGS_RUK(rs.getString("ZAGS_RUK"));
 				list.setZAGS_CITY_ABH(rs.getString("ZAGS_CITY_ABH"));
 				list.setZAGS_ADR(rs.getString("ZAGS_ADR"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
+				list.setZAGS_ID(rs.getLong("ZAGS_ID"));
 				list.setADDR(rs.getString("ADDR"));
 				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
 				list.setCOTDNAME(rs.getString("COTDNAME"));
 				list.setZAGS_RUK_ABH(rs.getString("ZAGS_RUK_ABH"));
 				list.setZAGS_ADR_ABH(rs.getString("ZAGS_ADR_ABH"));
-				list.setZAGS_OTD(rs.getInt("ZAGS_OTD"));
+				list.setZAGS_OTD(rs.getLong("ZAGS_OTD"));
 				list.setADDR_ABH(rs.getString("ADDR_ABH"));
 				dlist.add(list);
 			}

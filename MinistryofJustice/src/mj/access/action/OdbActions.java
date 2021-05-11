@@ -100,13 +100,7 @@ public class OdbActions {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -134,7 +128,7 @@ public class OdbActions {
 	@FXML
 	void EdtAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(165) == 0) {
+			if (DBUtil.OdbAction(165l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -167,13 +161,7 @@ public class OdbActions {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -185,7 +173,7 @@ public class OdbActions {
 	@FXML
 	void DeleteAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(166) == 0) {
+			if (DBUtil.OdbAction(166l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -227,7 +215,7 @@ public class OdbActions {
 						PreparedStatement delete = conn.prepareStatement("declare " + "pragma autonomous_transaction;"
 								+ "begin " + " delete from odb_action where ACT_ID = ?;" + "commit;" + "end;");
 
-						delete.setInt(1, Actions.getSelectionModel().getSelectedItem().getValue().getACT_ID());
+						delete.setLong(1, Actions.getSelectionModel().getSelectedItem().getValue().getACT_ID());
 						delete.executeUpdate();
 						delete.close();
 						fillTree();
@@ -238,12 +226,7 @@ public class OdbActions {
 							Msg.Message(ExceptionUtils.getStackTrace(e1));
 							Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 						}
-						Msg.Message(ExceptionUtils.getStackTrace(e));
-						Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-						String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-						String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-						int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-						DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+						DBUtil.LOG_ERROR(e);
 					}
 					newWindow_yn.close();
 				}
@@ -257,13 +240,7 @@ public class OdbActions {
 			newWindow_yn.show();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -275,7 +252,7 @@ public class OdbActions {
 	@FXML
 	void AddChildAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(164) == 0) {
+			if (DBUtil.OdbAction(164l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -307,20 +284,14 @@ public class OdbActions {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void Add(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(162) == 0) {
+			if (DBUtil.OdbAction(162l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -335,11 +306,11 @@ public class OdbActions {
 					USR usr = Users.getSelectionModel().getSelectedItem();
 					ODB_ACTION odb_act = Actions.getSelectionModel().getSelectedItem().getValue();
 					// String acts = Actions.getSelectionModel().getSelectedItem().getValue();
-					// Integer act = Integer.valueOf(acts.substring(0, acts.indexOf(":")));
+					// Integer act = Long.valueOf(acts.substring(0, acts.indexOf(":")));
 					CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbActUsrAdd(?,?)}");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
-					callStmt.setInt(2, usr.getIUSRID());
-					callStmt.setInt(3, odb_act.getACT_ID());
+					callStmt.setLong(2, usr.getIUSRID());
+					callStmt.setLong(3, odb_act.getACT_ID());
 					callStmt.execute();
 					String ret = callStmt.getString(1);
 					callStmt.close();
@@ -365,7 +336,7 @@ public class OdbActions {
 	@FXML
 	void Delete(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(163) == 0) {
+			if (DBUtil.OdbAction(163l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -379,12 +350,12 @@ public class OdbActions {
 					USR usr = Users.getSelectionModel().getSelectedItem();
 					ODB_ACTION odb_act = Actions.getSelectionModel().getSelectedItem().getValue();
 					// String acts = Actions.getSelectionModel().getSelectedItem().getValue();
-					// Integer act = Integer.valueOf(acts.substring(0, acts.indexOf(":")));
+					// Integer act = Long.valueOf(acts.substring(0, acts.indexOf(":")));
 
 					CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbActUsrDelete(?,?)}");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
-					callStmt.setInt(2, usr.getIUSRID());
-					callStmt.setInt(3, odb_act.getACT_ID());
+					callStmt.setLong(2, usr.getIUSRID());
+					callStmt.setLong(3, odb_act.getACT_ID());
 					callStmt.execute();
 					String ret = callStmt.getString(1);
 					callStmt.close();
@@ -401,21 +372,9 @@ public class OdbActions {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				e.printStackTrace();
-				Msg.Message(ExceptionUtils.getStackTrace(e));
-				Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+				DBUtil.LOG_ERROR(e1);
 			}
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -445,8 +404,8 @@ public class OdbActions {
 
 								USR usr = Users.getSelectionModel().getSelectedItem();
 
-								Integer act = item.getACT_ID();
-								// Integer act = Integer.valueOf(item.substring(0, item.indexOf(":")));
+								Long act = item.getACT_ID();
+								// Integer act = Long.valueOf(item.substring(0, item.indexOf(":")));
 								if (DBUtil.ODB_ACTION(usr.getIUSRID(), act) == 1) {
 									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 								} else {
@@ -488,13 +447,7 @@ public class OdbActions {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -507,7 +460,7 @@ public class OdbActions {
 			while (rs.next()) {
 				USR usr = new USR();
 				usr.setCUSRLOGNAME(rs.getString("CUSRLOGNAME"));
-				usr.setIUSRID(rs.getInt("IUSRID"));
+				usr.setIUSRID(rs.getLong("IUSRID"));
 				usr.setCUSRNAME(rs.getString("CUSRNAME"));
 				usr_list.add(usr);
 			}
@@ -515,30 +468,24 @@ public class OdbActions {
 			rs.close();
 			Users.setItems(usr_list);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	/*
 	 * void fillTree2() { Map<Integer, TreeItem<String>> itemById = new HashMap<>();
-	 * Map<Integer, Integer> parents = new HashMap<>(); String query =
+	 * Map<Integer, Long> parents = new HashMap<>(); String query =
 	 * "select * from ODB_ACTION"; try { PreparedStatement pstmt =
 	 * conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery(); while
 	 * (rs.next()) { adb_act = new ODB_ACTION();
-	 * adb_act.setACT_ID(rs.getInt("ACT_ID"));
-	 * adb_act.setACT_NPP(rs.getInt("ACT_NPP"));
-	 * adb_act.setACT_PARENT(rs.getInt("ACT_PARENT"));
+	 * adb_act.setACT_ID(rs.getLong("ACT_ID"));
+	 * adb_act.setACT_NPP(rs.getLong("ACT_NPP"));
+	 * adb_act.setACT_PARENT(rs.getLong("ACT_PARENT"));
 	 * adb_act.setACT_NAME(rs.getString("ACT_NAME"));
-	 * itemById.put(rs.getInt("ACT_ID"), new
-	 * TreeItem<>(String.valueOf(rs.getInt("ACT_ID")) + ":" +
-	 * rs.getString("ACT_NAME"))); parents.put(rs.getInt("ACT_ID"),
-	 * rs.getInt("ACT_PARENT")); } pstmt.close(); rs.close(); } catch (SQLException
+	 * itemById.put(rs.getLong("ACT_ID"), new
+	 * TreeItem<>(String.valueOf(rs.getLong("ACT_ID")) + ":" +
+	 * rs.getString("ACT_NAME"))); parents.put(rs.getLong("ACT_ID"),
+	 * rs.getLong("ACT_PARENT")); } pstmt.close(); rs.close(); } catch (SQLException
 	 * e) { e.printStackTrace(); }
 	 * 
 	 * for (Map.Entry<Integer, TreeItem<String>> entry : itemById.entrySet()) {
@@ -554,8 +501,8 @@ public class OdbActions {
 	 * }
 	 */
 	void fillTree() {
-		Map<Integer, TreeItem<ODB_ACTION>> itemById = new HashMap<>();
-		Map<Integer, Integer> parents = new HashMap<>();
+		Map<Long, TreeItem<ODB_ACTION>> itemById = new HashMap<>();
+		Map<Long, Long> parents = new HashMap<>();
 		String query = "select * from ODB_ACTION "
 				+ ((!ID_FIND.getText().equals("") ? "where ACT_ID = " + ID_FIND.getText() + "" : ""));
 		try {
@@ -563,12 +510,12 @@ public class OdbActions {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				adb_act = new ODB_ACTION();
-				adb_act.setACT_ID(rs.getInt("ACT_ID"));
-				adb_act.setACT_NPP(rs.getInt("ACT_NPP"));
-				adb_act.setACT_PARENT(rs.getInt("ACT_PARENT"));
+				adb_act.setACT_ID(rs.getLong("ACT_ID"));
+				adb_act.setACT_NPP(rs.getLong("ACT_NPP"));
+				adb_act.setACT_PARENT(rs.getLong("ACT_PARENT"));
 				adb_act.setACT_NAME(rs.getString("ACT_NAME"));
-				itemById.put(rs.getInt("ACT_ID"), new TreeItem<>(adb_act));
-				parents.put(rs.getInt("ACT_ID"), rs.getInt("ACT_PARENT"));
+				itemById.put(rs.getLong("ACT_ID"), new TreeItem<>(adb_act));
+				parents.put(rs.getLong("ACT_ID"), rs.getLong("ACT_PARENT"));
 			}
 			pstmt.close();
 			rs.close();
@@ -576,9 +523,9 @@ public class OdbActions {
 			e.printStackTrace();
 		}
 
-		for (Map.Entry<Integer, TreeItem<ODB_ACTION>> entry : itemById.entrySet()) {
-			Integer key = entry.getKey();
-			Integer parent = parents.get(key);
+		for (Map.Entry<Long, TreeItem<ODB_ACTION>> entry : itemById.entrySet()) {
+			Long key = entry.getKey();
+			Long parent = parents.get(key);
 			if (parent.equals(key)) {
 				// in case the root item points to itself, this is it
 				root = entry.getValue();
@@ -618,8 +565,8 @@ public class OdbActions {
 	void Clear(TreeItem<String> root) {
 		for (TreeItem<String> child : root.getChildren()) {
 			child.setValue(child.getValue()
-					.replace(String.valueOf(Character.toChars(Integer.parseUnsignedInt("2713", 16))), "")
-					.replace(String.valueOf(Character.toChars(Integer.parseUnsignedInt("2718", 16))), ""));
+					.replace(String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2713", 16))), "")
+					.replace(String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2718", 16))), ""));
 			if (child.getChildren().isEmpty()) {
 
 			} else {
@@ -628,15 +575,15 @@ public class OdbActions {
 		}
 	}
 
-	void printChildren(TreeItem<String> root, Integer usrid) {
+	void printChildren(TreeItem<String> root, Long usrid) {
 		for (TreeItem<String> child : root.getChildren()) {
-			Integer act = Integer.valueOf(child.getValue().substring(0, child.getValue().indexOf(":")));
+			Long act = Long.valueOf(child.getValue().substring(0, child.getValue().indexOf(":")));
 			if (DBUtil.ODB_ACTION(usrid, act) == 1) {
 				child.setValue(
-						child.getValue() + String.valueOf(Character.toChars(Integer.parseUnsignedInt("2713", 16))));
+						child.getValue() + String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2713", 16))));
 			} else {
 				child.setValue(
-						child.getValue() + String.valueOf(Character.toChars(Integer.parseUnsignedInt("2718", 16))));
+						child.getValue() + String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2718", 16))));
 			}
 			if (child.getChildren().isEmpty()) {
 
@@ -695,13 +642,7 @@ public class OdbActions {
 				// getTreeItem().getChildren().add(newEmployee);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -740,7 +681,7 @@ public class OdbActions {
 			} else {
 				if (Users.getSelectionModel().getSelectedItem() != null) {
 					USR usr = Users.getSelectionModel().getSelectedItem();
-					Integer act = Integer.valueOf(item.substring(0, item.indexOf(":")));
+					Long act = Long.valueOf(item.substring(0, item.indexOf(":")));
 					if (DBUtil.ODB_ACTION(usr.getIUSRID(), act) == 1) {
 						setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 					} else {
@@ -769,34 +710,28 @@ public class OdbActions {
 
 				ODB_ACTION partext = selectedItem.getParent().getValue();
 
-				Integer pact = partext.getACT_ID();
-				// Integer pact = Integer.valueOf(partext.substring(0, partext.indexOf(":")));
+				Long pact = partext.getACT_ID();
+				// Integer pact = Long.valueOf(partext.substring(0, partext.indexOf(":")));
 				String text = partext.getACT_NAME();
 				// str.substring(str.indexOf(":"));
-				Integer act = Integer.valueOf(str.substring(0, str.indexOf(":")));
+				Long act = Long.valueOf(str.substring(0, str.indexOf(":")));
 
 				String generatedColumns[] = { "ACT_ID" };
 				PreparedStatement pstmt = conn.prepareStatement(
 						"insert into ODB_ACTION (ACT_PARENT,ACT_NPP,ACT_NAME) values (?,?,?) ", generatedColumns);
-				pstmt.setInt(1, pact);
-				pstmt.setInt(2, act);
+				pstmt.setLong(1, pact);
+				pstmt.setLong(2, act);
 				pstmt.setString(3, text);
 				pstmt.executeUpdate();
 				ResultSet rs = pstmt.getGeneratedKeys();
 				if (rs.next()) {
-					ret = String.valueOf(rs.getInt(1)) + ":" + text;
+					ret = String.valueOf(rs.getLong(1)) + ":" + text;
 					conn.commit();
 				}
 				pstmt.close();
 				rs.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
-				Msg.Message(ExceptionUtils.getStackTrace(e));
-				Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+				DBUtil.LOG_ERROR(e);
 			}
 			return ret;
 		}

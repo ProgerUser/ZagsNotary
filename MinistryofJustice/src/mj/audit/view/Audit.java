@@ -115,7 +115,7 @@ public class Audit {
 			ObservableList<AU_ACTION> au_action = FXCollections.observableArrayList();
 			while (rs.next()) {
 				AU_ACTION au = new AU_ACTION();
-				au.setIACTION_ID(rs.getInt("IACTION_ID"));
+				au.setIACTION_ID(rs.getLong("IACTION_ID"));
 				String DATE_LOAD = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getTimestamp("DAUDDATE"));
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 				au.setDAUDDATE(LocalDateTime.parse(DATE_LOAD, formatter));
@@ -127,7 +127,7 @@ public class Audit {
 				au.setRROWID(rs.getString("RROWID"));
 				au.setCAUDACTION(rs.getString("CAUDACTION"));
 				au.setCAUDMODULE(rs.getString("CAUDMODULE"));
-				au.setIAUDSESSION(rs.getInt("IAUDSESSION"));
+				au.setIAUDSESSION(rs.getLong("IAUDSESSION"));
 				au.setCAUDIP_ADDRESS(rs.getString("CAUDIP_ADDRESS"));
 				au.setID_NUM(rs.getString("ID_NUM"));
 				au.setID_ANUM(rs.getString("ID_ANUM"));
@@ -220,12 +220,12 @@ public class Audit {
 						AU_ACTION auc = AU_ACTION.getSelectionModel().getSelectedItem();
 						String seldata = "select * from V_AU_DATA where IACTION_ID = ?";
 						PreparedStatement pst = conn.prepareStatement(seldata);
-						pst.setInt(1, auc.getIACTION_ID());
+						pst.setLong(1, auc.getIACTION_ID());
 						ResultSet res = pst.executeQuery();
 						ObservableList<V_AU_DATA> au_action2 = FXCollections.observableArrayList();
 						while (res.next()) {
 							V_AU_DATA au = new V_AU_DATA();
-							au.setIACTION_ID(res.getInt("IACTION_ID"));
+							au.setIACTION_ID(res.getLong("IACTION_ID"));
 							au.setCFIELD(res.getString("CFIELD"));
 							au.setCNEWDATA(res.getString("CNEWDATA"));
 							au.setCOLDDATA(res.getString("COLDDATA"));

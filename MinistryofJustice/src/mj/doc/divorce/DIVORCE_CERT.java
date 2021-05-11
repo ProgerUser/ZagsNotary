@@ -2,8 +2,8 @@ package mj.doc.divorce;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -22,31 +22,31 @@ public class DIVORCE_CERT {
 	/** Нет данных */
 	private StringProperty DIVC_ZLNAME;
 	/** Нет данных */
-	private IntegerProperty DIVC_ZAGS;
+	private LongProperty DIVC_ZAGS;
 	/** Нет данных */
 	private StringProperty DIVC_SERIA;
 	/** Нет данных */
 	private StringProperty DIVC_NUM;
 	/** Нет данных */
-	private IntegerProperty DIVC_MC_MERCER;
+	private LongProperty DIVC_MC_MERCER;
 	/** Нет данных */
-	private IntegerProperty DIVC_ZOSPRISON;
+	private LongProperty DIVC_ZOSPRISON;
 	/** Нет данных */
 	private StringProperty DIVC_ZOSFIO2;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> DIVC_ZOSCD2;
 	/** Нет данных */
-	private IntegerProperty DIVC_ZOSCN2;
+	private LongProperty DIVC_ZOSCN2;
 	/** Нет данных */
 	private StringProperty DIVC_ZOSFIO;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> DIVC_ZOSCD;
 	/** Нет данных */
-	private IntegerProperty DIVC_ZOSCN;
+	private LongProperty DIVC_ZOSCN;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> DIVC_CAD;
 	/** Нет данных */
-	private IntegerProperty DIVC_CAN;
+	private LongProperty DIVC_CAN;
 	/** Нет данных */
 	private StringProperty DIVC_TCHNUM;
 	/** Нет данных */
@@ -68,11 +68,11 @@ public class DIVORCE_CERT {
 	/** Нет данных */
 	private StringProperty DIVC_HE_LNBEF;
 	/** Нет данных */
-	private IntegerProperty DIVC_SHE;
+	private LongProperty DIVC_SHE;
 	/** Нет данных */
-	private IntegerProperty DIVC_HE;
+	private LongProperty DIVC_HE;
 	/** Нет данных */
-	private IntegerProperty DIVC_ID;
+	private LongProperty DIVC_ID;
 	/** Нет данных */
 	private StringProperty SHEFIO;
 	/** Нет данных */
@@ -88,19 +88,19 @@ public class DIVORCE_CERT {
 		this.DIVC_ZMNAME = new SimpleStringProperty();
 		this.DIVC_ZАNAME = new SimpleStringProperty();
 		this.DIVC_ZLNAME = new SimpleStringProperty();
-		this.DIVC_ZAGS = new SimpleIntegerProperty();
+		this.DIVC_ZAGS = new SimpleLongProperty();
 		this.DIVC_SERIA = new SimpleStringProperty();
 		this.DIVC_NUM = new SimpleStringProperty();
-		this.DIVC_MC_MERCER = new SimpleIntegerProperty();
-		this.DIVC_ZOSPRISON = new SimpleIntegerProperty();
+		this.DIVC_MC_MERCER = new SimpleLongProperty();
+		this.DIVC_ZOSPRISON = new SimpleLongProperty();
 		this.DIVC_ZOSFIO2 = new SimpleStringProperty();
 		this.DIVC_ZOSCD2 = new SimpleObjectProperty<>();
-		this.DIVC_ZOSCN2 = new SimpleIntegerProperty();
+		this.DIVC_ZOSCN2 = new SimpleLongProperty();
 		this.DIVC_ZOSFIO = new SimpleStringProperty();
 		this.DIVC_ZOSCD = new SimpleObjectProperty<>();
-		this.DIVC_ZOSCN = new SimpleIntegerProperty();
+		this.DIVC_ZOSCN = new SimpleLongProperty();
 		this.DIVC_CAD = new SimpleObjectProperty<>();
-		this.DIVC_CAN = new SimpleIntegerProperty();
+		this.DIVC_CAN = new SimpleLongProperty();
 		this.DIVC_TCHNUM = new SimpleStringProperty();
 		this.DIVC_TCHD = new SimpleObjectProperty<>();
 		this.DIVC_TYPE = new SimpleStringProperty();
@@ -111,9 +111,9 @@ public class DIVORCE_CERT {
 		this.DIVC_SHE_LNBEF = new SimpleStringProperty();
 		this.DIVC_HE_LNAFT = new SimpleStringProperty();
 		this.DIVC_HE_LNBEF = new SimpleStringProperty();
-		this.DIVC_SHE = new SimpleIntegerProperty();
-		this.DIVC_HE = new SimpleIntegerProperty();
-		this.DIVC_ID = new SimpleIntegerProperty();
+		this.DIVC_SHE = new SimpleLongProperty();
+		this.DIVC_HE = new SimpleLongProperty();
+		this.DIVC_ID = new SimpleLongProperty();
 		this.SHEFIO = new SimpleStringProperty();
 		this.HEFIO = new SimpleStringProperty();
 	}
@@ -154,7 +154,7 @@ public class DIVORCE_CERT {
 		this.DIVC_ZLNAME.set(DIVC_ZLNAME);
 	}
 
-	public void setDIVC_ZAGS(Integer DIVC_ZAGS) {
+	public void setDIVC_ZAGS(Long DIVC_ZAGS) {
 		this.DIVC_ZAGS.set(DIVC_ZAGS);
 	}
 
@@ -166,11 +166,11 @@ public class DIVORCE_CERT {
 		this.DIVC_NUM.set(DIVC_NUM);
 	}
 
-	public void setDIVC_MC_MERCER(Integer DIVC_MC_MERCER) {
+	public void setDIVC_MC_MERCER(Long DIVC_MC_MERCER) {
 		this.DIVC_MC_MERCER.set(DIVC_MC_MERCER);
 	}
 
-	public void setDIVC_ZOSPRISON(Integer DIVC_ZOSPRISON) {
+	public void setDIVC_ZOSPRISON(Long DIVC_ZOSPRISON) {
 		this.DIVC_ZOSPRISON.set(DIVC_ZOSPRISON);
 	}
 
@@ -182,7 +182,7 @@ public class DIVORCE_CERT {
 		this.DIVC_ZOSCD2.set(DIVC_ZOSCD2);
 	}
 
-	public void setDIVC_ZOSCN2(Integer DIVC_ZOSCN2) {
+	public void setDIVC_ZOSCN2(Long DIVC_ZOSCN2) {
 		this.DIVC_ZOSCN2.set(DIVC_ZOSCN2);
 	}
 
@@ -194,7 +194,7 @@ public class DIVORCE_CERT {
 		this.DIVC_ZOSCD.set(DIVC_ZOSCD);
 	}
 
-	public void setDIVC_ZOSCN(Integer DIVC_ZOSCN) {
+	public void setDIVC_ZOSCN(Long DIVC_ZOSCN) {
 		this.DIVC_ZOSCN.set(DIVC_ZOSCN);
 	}
 
@@ -202,7 +202,7 @@ public class DIVORCE_CERT {
 		this.DIVC_CAD.set(DIVC_CAD);
 	}
 
-	public void setDIVC_CAN(Integer DIVC_CAN) {
+	public void setDIVC_CAN(Long DIVC_CAN) {
 		this.DIVC_CAN.set(DIVC_CAN);
 	}
 
@@ -246,15 +246,15 @@ public class DIVORCE_CERT {
 		this.DIVC_HE_LNBEF.set(DIVC_HE_LNBEF);
 	}
 
-	public void setDIVC_SHE(Integer DIVC_SHE) {
+	public void setDIVC_SHE(Long DIVC_SHE) {
 		this.DIVC_SHE.set(DIVC_SHE);
 	}
 
-	public void setDIVC_HE(Integer DIVC_HE) {
+	public void setDIVC_HE(Long DIVC_HE) {
 		this.DIVC_HE.set(DIVC_HE);
 	}
 
-	public void setDIVC_ID(Integer DIVC_ID) {
+	public void setDIVC_ID(Long DIVC_ID) {
 		this.DIVC_ID.set(DIVC_ID);
 	}
 
@@ -290,7 +290,7 @@ public class DIVORCE_CERT {
 		return DIVC_ZLNAME.get();
 	}
 
-	public Integer getDIVC_ZAGS() {
+	public Long getDIVC_ZAGS() {
 		return DIVC_ZAGS.get();
 	}
 
@@ -302,11 +302,11 @@ public class DIVORCE_CERT {
 		return DIVC_NUM.get();
 	}
 
-	public Integer getDIVC_MC_MERCER() {
+	public Long getDIVC_MC_MERCER() {
 		return DIVC_MC_MERCER.get();
 	}
 
-	public Integer getDIVC_ZOSPRISON() {
+	public Long getDIVC_ZOSPRISON() {
 		return DIVC_ZOSPRISON.get();
 	}
 
@@ -318,7 +318,7 @@ public class DIVORCE_CERT {
 		return DIVC_ZOSCD2.get();
 	}
 
-	public Integer getDIVC_ZOSCN2() {
+	public Long getDIVC_ZOSCN2() {
 		return DIVC_ZOSCN2.get();
 	}
 
@@ -330,7 +330,7 @@ public class DIVORCE_CERT {
 		return DIVC_ZOSCD.get();
 	}
 
-	public Integer getDIVC_ZOSCN() {
+	public Long getDIVC_ZOSCN() {
 		return DIVC_ZOSCN.get();
 	}
 
@@ -338,7 +338,7 @@ public class DIVORCE_CERT {
 		return DIVC_CAD.get();
 	}
 
-	public Integer getDIVC_CAN() {
+	public Long getDIVC_CAN() {
 		return DIVC_CAN.get();
 	}
 
@@ -382,15 +382,15 @@ public class DIVORCE_CERT {
 		return DIVC_HE_LNBEF.get();
 	}
 
-	public Integer getDIVC_SHE() {
+	public Long getDIVC_SHE() {
 		return DIVC_SHE.get();
 	}
 
-	public Integer getDIVC_HE() {
+	public Long getDIVC_HE() {
 		return DIVC_HE.get();
 	}
 
-	public Integer getDIVC_ID() {
+	public Long getDIVC_ID() {
 		return DIVC_ID.get();
 	}
 
@@ -426,7 +426,7 @@ public class DIVORCE_CERT {
 		return DIVC_ZLNAME;
 	}
 
-	public IntegerProperty DIVC_ZAGSProperty() {
+	public LongProperty DIVC_ZAGSProperty() {
 		return DIVC_ZAGS;
 	}
 
@@ -438,11 +438,11 @@ public class DIVORCE_CERT {
 		return DIVC_NUM;
 	}
 
-	public IntegerProperty DIVC_MC_MERCERProperty() {
+	public LongProperty DIVC_MC_MERCERProperty() {
 		return DIVC_MC_MERCER;
 	}
 
-	public IntegerProperty DIVC_ZOSPRISONProperty() {
+	public LongProperty DIVC_ZOSPRISONProperty() {
 		return DIVC_ZOSPRISON;
 	}
 
@@ -454,7 +454,7 @@ public class DIVORCE_CERT {
 		return DIVC_ZOSCD2;
 	}
 
-	public IntegerProperty DIVC_ZOSCN2Property() {
+	public LongProperty DIVC_ZOSCN2Property() {
 		return DIVC_ZOSCN2;
 	}
 
@@ -466,7 +466,7 @@ public class DIVORCE_CERT {
 		return DIVC_ZOSCD;
 	}
 
-	public IntegerProperty DIVC_ZOSCNProperty() {
+	public LongProperty DIVC_ZOSCNProperty() {
 		return DIVC_ZOSCN;
 	}
 
@@ -474,7 +474,7 @@ public class DIVORCE_CERT {
 		return DIVC_CAD;
 	}
 
-	public IntegerProperty DIVC_CANProperty() {
+	public LongProperty DIVC_CANProperty() {
 		return DIVC_CAN;
 	}
 
@@ -518,15 +518,15 @@ public class DIVORCE_CERT {
 		return DIVC_HE_LNBEF;
 	}
 
-	public IntegerProperty DIVC_SHEProperty() {
+	public LongProperty DIVC_SHEProperty() {
 		return DIVC_SHE;
 	}
 
-	public IntegerProperty DIVC_HEProperty() {
+	public LongProperty DIVC_HEProperty() {
 		return DIVC_HE;
 	}
 
-	public IntegerProperty DIVC_IDProperty() {
+	public LongProperty DIVC_IDProperty() {
 		return DIVC_ID;
 	}
 

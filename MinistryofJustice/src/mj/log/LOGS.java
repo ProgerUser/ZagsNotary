@@ -1,8 +1,8 @@
 package mj.log;
 
 import java.time.LocalDateTime;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -15,22 +15,22 @@ public class LOGS {
 	/** Класс */
 	private StringProperty CLASSNAME;
 	/** Строка */
-	private IntegerProperty LINENUMBER;
+	private LongProperty LINENUMBER;
 	/** Пользователь */
 	private StringProperty OPER;
 	/** Время */
 	private SimpleObjectProperty<LocalDateTime> LOGDATE;
 	/** ИД */
-	private IntegerProperty ID;
+	private LongProperty ID;
 
 	public LOGS() {
 		this.METHODNAME = new SimpleStringProperty();
 		this.ERROR = new SimpleStringProperty();
 		this.CLASSNAME = new SimpleStringProperty();
-		this.LINENUMBER = new SimpleIntegerProperty();
+		this.LINENUMBER = new SimpleLongProperty();
 		this.OPER = new SimpleStringProperty();
 		this.LOGDATE = new SimpleObjectProperty<>();
-		this.ID = new SimpleIntegerProperty();
+		this.ID = new SimpleLongProperty();
 	}
 
 	public void setMETHODNAME(String METHODNAME) {
@@ -45,7 +45,7 @@ public class LOGS {
 		this.CLASSNAME.set(CLASSNAME);
 	}
 
-	public void setLINENUMBER(Integer LINENUMBER) {
+	public void setLINENUMBER(Long LINENUMBER) {
 		this.LINENUMBER.set(LINENUMBER);
 	}
 
@@ -57,7 +57,7 @@ public class LOGS {
 		this.LOGDATE.set(LOGDATE);
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
@@ -73,7 +73,7 @@ public class LOGS {
 		return CLASSNAME.get();
 	}
 
-	public Integer getLINENUMBER() {
+	public Long getLINENUMBER() {
 		return LINENUMBER.get();
 	}
 
@@ -85,7 +85,7 @@ public class LOGS {
 		return LOGDATE.get();
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -101,7 +101,7 @@ public class LOGS {
 		return CLASSNAME;
 	}
 
-	public IntegerProperty LINENUMBERProperty() {
+	public LongProperty LINENUMBERProperty() {
 		return LINENUMBER;
 	}
 
@@ -113,7 +113,7 @@ public class LOGS {
 		return LOGDATE;
 	}
 
-	public IntegerProperty IDProperty() {
+	public LongProperty IDProperty() {
 		return ID;
 	}
 }

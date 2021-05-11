@@ -123,7 +123,7 @@ public class Enter {
 					Msg.Message("Ошибка ввода логина или пароля");
 					Main.logger.error("Ошибка ввода логина или пароля" + "~" + Thread.currentThread().getName());
 				} else {
-					if (myResultSet.getInt("cnt") > 0) {
+					if (myResultSet.getLong("cnt") > 0) {
 						PreparedStatement stsmt = conn.prepareStatement("select null from usr "
 								+ "where upper(usr.CUSRLOGNAME) = ? " + "and MUST_CHANGE_PASSWORD = 'Y'");
 						stsmt.setString(1, Connect.userID.toUpperCase());
@@ -222,7 +222,7 @@ public class Enter {
 				stmt.setString(1, logname);
 				ResultSet rs = stmt.executeQuery();
 				if (rs.next()) {
-					if (rs.getInt("cnt") == 0) {
+					if (rs.getLong("cnt") == 0) {
 						PreparedStatement insert = sqllite_conn
 								.prepareStatement("insert into users (USR_NAME) values (?)");
 						insert.setString(1, logname);

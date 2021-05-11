@@ -8,8 +8,8 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -24,8 +24,8 @@ import mj.dbutil.DBUtil;
 
 public class IUTemplate {
 	
-	private IntegerProperty NT_PARENT;
-	private IntegerProperty ID;
+	private LongProperty NT_PARENT;
+	private LongProperty ID;
 	private StringProperty type;
 	private StringProperty NAME;
 	
@@ -34,8 +34,8 @@ public class IUTemplate {
     
 	public IUTemplate() {
 		Main.logger = Logger.getLogger(getClass());
-		this.NT_PARENT = new SimpleIntegerProperty();
-		this.ID = new SimpleIntegerProperty();
+		this.NT_PARENT = new SimpleLongProperty();
+		this.ID = new SimpleLongProperty();
 		this.type = new SimpleStringProperty();
 		this.NAME = new SimpleStringProperty();
 	}
@@ -53,17 +53,17 @@ public class IUTemplate {
 		return type.get();
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 	
-	public void setNT_PARENT(Integer NT_PARENT) {
+	public void setNT_PARENT(Long NT_PARENT) {
 		this.NT_PARENT.set(NT_PARENT);
 	}
-	public Integer getNT_PARENT() {
+	public Long getNT_PARENT() {
 		return NT_PARENT.get();
 	}
 
@@ -83,7 +83,7 @@ public class IUTemplate {
 				if (gettype().equals("I")) {
 					PreparedStatement prp = conn
 							.prepareStatement("insert into NT_TEMPLATE (NT_PARENT,NT_NAME) values (?,?)");
-					prp.setInt(1, getNT_PARENT());
+					prp.setLong(1, getNT_PARENT());
 					prp.setString(2, NT_NAME.getText());
 					prp.executeUpdate();
 					prp.close();
@@ -91,7 +91,7 @@ public class IUTemplate {
 					onclose();
 				} else if (gettype().equals("U")) {
 					PreparedStatement prp = conn.prepareStatement("update NT_TEMPLATE set NT_NAME = ? where NT_ID = ?");
-					prp.setInt(2, getID());
+					prp.setLong(2, getID());
 					prp.setString(1, NT_NAME.getText());
 					prp.executeUpdate();
 					prp.close();

@@ -1,7 +1,7 @@
 package mj.doc.cus;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,18 +9,18 @@ public class COUNTRIES {
 	/** Название */
 	private StringProperty NAME;
 	/** Код */
-	private IntegerProperty CODE;
+	private LongProperty CODE;
 
 	public COUNTRIES() {
 		this.NAME = new SimpleStringProperty();
-		this.CODE = new SimpleIntegerProperty();
+		this.CODE = new SimpleLongProperty();
 	}
 
 	public void setNAME(String NAME) {
 		this.NAME.set(NAME);
 	}
 
-	public void setCODE(Integer CODE) {
+	public void setCODE(Long CODE) {
 		this.CODE.set(CODE);
 	}
 
@@ -28,7 +28,7 @@ public class COUNTRIES {
 		return NAME.get();
 	}
 
-	public Integer getCODE() {
+	public Long getCODE() {
 		return CODE.get();
 	}
 
@@ -36,7 +36,7 @@ public class COUNTRIES {
 		return NAME;
 	}
 
-	public IntegerProperty CODEProperty() {
+	public LongProperty CODEProperty() {
 		return CODE;
 	}
 }

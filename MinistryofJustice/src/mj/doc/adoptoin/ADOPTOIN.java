@@ -2,8 +2,8 @@ package mj.doc.adoptoin;
 
 import java.time.LocalDate;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -30,25 +30,25 @@ public class ADOPTOIN {
 	/** Нет данных */
 	private StringProperty ADOPT_PARENTS;
 	/** Нет данных */
-	private IntegerProperty CUSID_F_AD;
+	private LongProperty CUSID_F_AD;
 	/** Нет данных */
-	private IntegerProperty CUSID_M_AD;
+	private LongProperty CUSID_M_AD;
 	/** Нет данных */
 	private StringProperty SVID_NOMER;
 	/** Нет данных */
 	private StringProperty SVID_SERIA;
 	/** Нет данных */
-	private IntegerProperty BRNACT;
+	private LongProperty BRNACT;
 	/** Нет данных */
-	private IntegerProperty CUSID_F;
+	private LongProperty CUSID_F;
 	/** Нет данных */
-	private IntegerProperty CUSID_M;
+	private LongProperty CUSID_M;
 	/** Нет данных */
 	private StringProperty OPER;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> DOC_DATE;
 	/** Нет данных */
-	private IntegerProperty CUSID_CH;
+	private LongProperty CUSID_CH;
 	/** Нет данных */
 	private StringProperty NEW_MIDDLNAME;
 	/** Нет данных */
@@ -62,9 +62,9 @@ public class ADOPTOIN {
 	/** Нет данных */
 	private StringProperty OLD_LASTNAME;
 	/** Нет данных */
-	private IntegerProperty ZAGS_ID;
+	private LongProperty ZAGS_ID;
 	/** Нет данных */
-	private IntegerProperty ID;
+	private LongProperty ID;
 	/** Нет данных */
 	private StringProperty ZAGS_NAME;
 	/** Нет данных */
@@ -101,13 +101,13 @@ public class ADOPTOIN {
 	/** Решение суда дата */
 	private SimpleObjectProperty<LocalDate> GR_COURT_DATE;
 	/** Решение суда ссылка на суд */
-	private IntegerProperty GR_COURT;
+	private LongProperty GR_COURT;
 
 	public ADOPTOIN() {
 
 		this.GR_ADOPT = new SimpleStringProperty();
 		this.GR_COURT_DATE = new SimpleObjectProperty<>();
-		this.GR_COURT = new SimpleIntegerProperty();
+		this.GR_COURT = new SimpleLongProperty();
 
 		this.OLD_LASTNAME_AB = new SimpleStringProperty();
 		this.OLD_FIRSTNAME_AB = new SimpleStringProperty();
@@ -127,24 +127,24 @@ public class ADOPTOIN {
 		this.ZAP_SOVET_DEP_TRUD = new SimpleStringProperty();
 		this.ZAP_ISPOLKOM_RESH = new SimpleStringProperty();
 		this.ADOPT_PARENTS = new SimpleStringProperty();
-		this.CUSID_F_AD = new SimpleIntegerProperty();
-		this.CUSID_M_AD = new SimpleIntegerProperty();
+		this.CUSID_F_AD = new SimpleLongProperty();
+		this.CUSID_M_AD = new SimpleLongProperty();
 		this.SVID_NOMER = new SimpleStringProperty();
 		this.SVID_SERIA = new SimpleStringProperty();
-		this.BRNACT = new SimpleIntegerProperty();
-		this.CUSID_F = new SimpleIntegerProperty();
-		this.CUSID_M = new SimpleIntegerProperty();
+		this.BRNACT = new SimpleLongProperty();
+		this.CUSID_F = new SimpleLongProperty();
+		this.CUSID_M = new SimpleLongProperty();
 		this.OPER = new SimpleStringProperty();
 		this.DOC_DATE = new SimpleObjectProperty<>();
-		this.CUSID_CH = new SimpleIntegerProperty();
+		this.CUSID_CH = new SimpleLongProperty();
 		this.NEW_MIDDLNAME = new SimpleStringProperty();
 		this.NEW_FIRSTNAME = new SimpleStringProperty();
 		this.NEW_LASTNAME = new SimpleStringProperty();
 		this.OLD_MIDDLNAME = new SimpleStringProperty();
 		this.OLD_FIRSTNAME = new SimpleStringProperty();
 		this.OLD_LASTNAME = new SimpleStringProperty();
-		this.ZAGS_ID = new SimpleIntegerProperty();
-		this.ID = new SimpleIntegerProperty();
+		this.ZAGS_ID = new SimpleLongProperty();
+		this.ID = new SimpleLongProperty();
 		this.ZAGS_NAME = new SimpleStringProperty();
 		this.ADFATHERFIO = new SimpleStringProperty();
 		this.ADMOTHERFIO = new SimpleStringProperty();
@@ -163,7 +163,7 @@ public class ADOPTOIN {
 		this.GR_COURT_DATE.set(GR_COURT_DATE);
 	}
 
-	public void setGR_COURT(Integer GR_COURT) {
+	public void setGR_COURT(Long GR_COURT) {
 		this.GR_COURT.set(GR_COURT);
 	}
 
@@ -175,7 +175,7 @@ public class ADOPTOIN {
 		return GR_COURT_DATE.get();
 	}
 
-	public Integer getGR_COURT() {
+	public Long getGR_COURT() {
 		return GR_COURT.get();
 	}
 
@@ -187,7 +187,7 @@ public class ADOPTOIN {
 		return GR_COURT_DATE;
 	}
 
-	public IntegerProperty GR_COURTProperty() {
+	public LongProperty GR_COURTProperty() {
 		return GR_COURT;
 	}
 
@@ -315,11 +315,11 @@ public class ADOPTOIN {
 		this.ADOPT_PARENTS.set(ADOPT_PARENTS);
 	}
 
-	public void setCUSID_F_AD(Integer CUSID_F_AD) {
+	public void setCUSID_F_AD(Long CUSID_F_AD) {
 		this.CUSID_F_AD.set(CUSID_F_AD);
 	}
 
-	public void setCUSID_M_AD(Integer CUSID_M_AD) {
+	public void setCUSID_M_AD(Long CUSID_M_AD) {
 		this.CUSID_M_AD.set(CUSID_M_AD);
 	}
 
@@ -331,15 +331,15 @@ public class ADOPTOIN {
 		this.SVID_SERIA.set(SVID_SERIA);
 	}
 
-	public void setBRNACT(Integer BRNACT) {
+	public void setBRNACT(Long BRNACT) {
 		this.BRNACT.set(BRNACT);
 	}
 
-	public void setCUSID_F(Integer CUSID_F) {
+	public void setCUSID_F(Long CUSID_F) {
 		this.CUSID_F.set(CUSID_F);
 	}
 
-	public void setCUSID_M(Integer CUSID_M) {
+	public void setCUSID_M(Long CUSID_M) {
 		this.CUSID_M.set(CUSID_M);
 	}
 
@@ -351,7 +351,7 @@ public class ADOPTOIN {
 		this.DOC_DATE.set(DOC_DATE);
 	}
 
-	public void setCUSID_CH(Integer CUSID_CH) {
+	public void setCUSID_CH(Long CUSID_CH) {
 		this.CUSID_CH.set(CUSID_CH);
 	}
 
@@ -379,11 +379,11 @@ public class ADOPTOIN {
 		this.OLD_LASTNAME.set(OLD_LASTNAME);
 	}
 
-	public void setZAGS_ID(Integer ZAGS_ID) {
+	public void setZAGS_ID(Long ZAGS_ID) {
 		this.ZAGS_ID.set(ZAGS_ID);
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
@@ -459,11 +459,11 @@ public class ADOPTOIN {
 		return ADOPT_PARENTS.get();
 	}
 
-	public Integer getCUSID_F_AD() {
+	public Long getCUSID_F_AD() {
 		return CUSID_F_AD.get();
 	}
 
-	public Integer getCUSID_M_AD() {
+	public Long getCUSID_M_AD() {
 		return CUSID_M_AD.get();
 	}
 
@@ -475,15 +475,15 @@ public class ADOPTOIN {
 		return SVID_SERIA.get();
 	}
 
-	public Integer getBRNACT() {
+	public Long getBRNACT() {
 		return BRNACT.get();
 	}
 
-	public Integer getCUSID_F() {
+	public Long getCUSID_F() {
 		return CUSID_F.get();
 	}
 
-	public Integer getCUSID_M() {
+	public Long getCUSID_M() {
 		return CUSID_M.get();
 	}
 
@@ -495,7 +495,7 @@ public class ADOPTOIN {
 		return DOC_DATE.get();
 	}
 
-	public Integer getCUSID_CH() {
+	public Long getCUSID_CH() {
 		return CUSID_CH.get();
 	}
 
@@ -523,11 +523,11 @@ public class ADOPTOIN {
 		return OLD_LASTNAME.get();
 	}
 
-	public Integer getZAGS_ID() {
+	public Long getZAGS_ID() {
 		return ZAGS_ID.get();
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -603,11 +603,11 @@ public class ADOPTOIN {
 		return ADOPT_PARENTS;
 	}
 
-	public IntegerProperty CUSID_F_ADProperty() {
+	public LongProperty CUSID_F_ADProperty() {
 		return CUSID_F_AD;
 	}
 
-	public IntegerProperty CUSID_M_ADProperty() {
+	public LongProperty CUSID_M_ADProperty() {
 		return CUSID_M_AD;
 	}
 
@@ -619,15 +619,15 @@ public class ADOPTOIN {
 		return SVID_SERIA;
 	}
 
-	public IntegerProperty BRNACTProperty() {
+	public LongProperty BRNACTProperty() {
 		return BRNACT;
 	}
 
-	public IntegerProperty CUSID_FProperty() {
+	public LongProperty CUSID_FProperty() {
 		return CUSID_F;
 	}
 
-	public IntegerProperty CUSID_MProperty() {
+	public LongProperty CUSID_MProperty() {
 		return CUSID_M;
 	}
 
@@ -639,7 +639,7 @@ public class ADOPTOIN {
 		return DOC_DATE;
 	}
 
-	public IntegerProperty CUSID_CHProperty() {
+	public LongProperty CUSID_CHProperty() {
 		return CUSID_CH;
 	}
 
@@ -667,11 +667,11 @@ public class ADOPTOIN {
 		return OLD_LASTNAME;
 	}
 
-	public IntegerProperty ZAGS_IDProperty() {
+	public LongProperty ZAGS_IDProperty() {
 		return ZAGS_ID;
 	}
 
-	public IntegerProperty IDProperty() {
+	public LongProperty IDProperty() {
 		return ID;
 	}
 

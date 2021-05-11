@@ -108,7 +108,7 @@ public class HtmlEditor {
 			clob.setString(1,
 					CodeHtml.getText().replace("<html dir=\"ltr\"><head>", "<!DOCTYPE html>\r\n<html>\r\n<head>"));
 			prp.setClob(1, clob);
-			prp.setInt(2, val_list.getID());
+			prp.setLong(2, val_list.getID());
 			prp.executeUpdate();
 			prp.close();
 			clob.free();

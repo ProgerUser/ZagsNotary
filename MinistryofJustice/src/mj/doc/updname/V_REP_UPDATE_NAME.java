@@ -1,7 +1,7 @@
 package mj.doc.updname;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -23,7 +23,7 @@ public class V_REP_UPDATE_NAME {
 	/** Нет данных */
 	private StringProperty BR_ACT_DATE;
 	/** Нет данных */
-	private IntegerProperty BR_ACT_ID;
+	private LongProperty BR_ACT_ID;
 	/** Нет данных */
 	private StringProperty CCUSPLACE_BIRTH;
 	/** Нет данных */
@@ -41,7 +41,7 @@ public class V_REP_UPDATE_NAME {
 	/** Нет данных */
 	private StringProperty OLD_LASTNAME;
 	/** Нет данных */
-	private IntegerProperty ID;
+	private LongProperty ID;
 
 	public V_REP_UPDATE_NAME() {
 		this.CURDATE = new SimpleStringProperty();
@@ -52,7 +52,7 @@ public class V_REP_UPDATE_NAME {
 		this.COUNTRY_NAME = new SimpleStringProperty();
 		this.ZAGS_NAME = new SimpleStringProperty();
 		this.BR_ACT_DATE = new SimpleStringProperty();
-		this.BR_ACT_ID = new SimpleIntegerProperty();
+		this.BR_ACT_ID = new SimpleLongProperty();
 		this.CCUSPLACE_BIRTH = new SimpleStringProperty();
 		this.DCUSBIRTHDAY = new SimpleStringProperty();
 		this.NEW_MIDDLNAME = new SimpleStringProperty();
@@ -61,7 +61,7 @@ public class V_REP_UPDATE_NAME {
 		this.OLD_MIDDLNAME = new SimpleStringProperty();
 		this.OLD_FIRSTNAME = new SimpleStringProperty();
 		this.OLD_LASTNAME = new SimpleStringProperty();
-		this.ID = new SimpleIntegerProperty();
+		this.ID = new SimpleLongProperty();
 	}
 
 	public void setCURDATE(String CURDATE) {
@@ -96,7 +96,7 @@ public class V_REP_UPDATE_NAME {
 		this.BR_ACT_DATE.set(BR_ACT_DATE);
 	}
 
-	public void setBR_ACT_ID(Integer BR_ACT_ID) {
+	public void setBR_ACT_ID(Long BR_ACT_ID) {
 		this.BR_ACT_ID.set(BR_ACT_ID);
 	}
 
@@ -132,7 +132,7 @@ public class V_REP_UPDATE_NAME {
 		this.OLD_LASTNAME.set(OLD_LASTNAME);
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
@@ -168,7 +168,7 @@ public class V_REP_UPDATE_NAME {
 		return BR_ACT_DATE.get();
 	}
 
-	public Integer getBR_ACT_ID() {
+	public Long getBR_ACT_ID() {
 		return BR_ACT_ID.get();
 	}
 
@@ -204,7 +204,7 @@ public class V_REP_UPDATE_NAME {
 		return OLD_LASTNAME.get();
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -240,7 +240,7 @@ public class V_REP_UPDATE_NAME {
 		return BR_ACT_DATE;
 	}
 
-	public IntegerProperty BR_ACT_IDProperty() {
+	public LongProperty BR_ACT_IDProperty() {
 		return BR_ACT_ID;
 	}
 
@@ -276,7 +276,7 @@ public class V_REP_UPDATE_NAME {
 		return OLD_LASTNAME;
 	}
 
-	public IntegerProperty IDProperty() {
+	public LongProperty IDProperty() {
 		return ID;
 	}
 }

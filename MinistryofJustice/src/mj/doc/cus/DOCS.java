@@ -1,25 +1,25 @@
 package mj.doc.cus;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class DOCS {
 	/** Нет данных */
-	private IntegerProperty DOCCNT;
+	private LongProperty DOCCNT;
 	/** Нет данных */
 	private StringProperty DOCNAME;
 	/** Нет данных */
 	private StringProperty TABLE_NAME;
 
 	public DOCS() {
-		this.DOCCNT = new SimpleIntegerProperty();
+		this.DOCCNT = new SimpleLongProperty();
 		this.DOCNAME = new SimpleStringProperty();
 		this.TABLE_NAME = new SimpleStringProperty();
 	}
 
-	public void setDOCCNT(Integer DOCCNT) {
+	public void setDOCCNT(Long DOCCNT) {
 		this.DOCCNT.set(DOCCNT);
 	}
 
@@ -31,7 +31,7 @@ public class DOCS {
 		this.TABLE_NAME.set(TABLE_NAME);
 	}
 
-	public Integer getDOCCNT() {
+	public Long getDOCCNT() {
 		return DOCCNT.get();
 	}
 
@@ -43,7 +43,7 @@ public class DOCS {
 		return TABLE_NAME.get();
 	}
 
-	public IntegerProperty DOCCNTProperty() {
+	public LongProperty DOCCNTProperty() {
 		return DOCCNT;
 	}
 

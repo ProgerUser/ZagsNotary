@@ -30,7 +30,7 @@ public class PrintReport2 extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public void showReport(String tablename, Integer actid) {
+	public void showReport(String tablename, Long actid) {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			InputStream input = this.getClass().getResourceAsStream("/mj/audit/view/Audit.jrxml");
@@ -45,7 +45,7 @@ public class PrintReport2 extends JFrame {
 			String readRecordSQL = sql.getSql("AUDIT_REPORT");
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
 			prepStmt.setString(1, tablename);
-			prepStmt.setInt(2, actid);
+			prepStmt.setLong(2, actid);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				AUDIT_REPORT list = new AUDIT_REPORT();
@@ -59,7 +59,7 @@ public class PrintReport2 extends JFrame {
 				list.setCNEWDATA(rs.getString("CNEWDATA"));
 				list.setCFIELDNAME(rs.getString("CFIELDNAME"));
 				list.setCFIELD(rs.getString("CFIELD"));
-				list.setIACTIONID(rs.getInt("IACTION_ID"));
+				list.setIACTIONID(rs.getLong("IACTION_ID"));
 				listItems.add(list);
 			}
 			rs.close();

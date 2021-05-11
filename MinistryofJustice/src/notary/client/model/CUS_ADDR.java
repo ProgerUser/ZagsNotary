@@ -1,15 +1,15 @@
 package notary.client.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class CUS_ADDR {
-	private IntegerProperty ADDR_TYPE;/* Тип адреса */
-	private IntegerProperty ICUSNUM;/* Идентификатор контрагента */
-	private IntegerProperty ID_ADDR;/* ID адреса */
-	private IntegerProperty STROY_TYPE;/* Признак строения */
+	private LongProperty ADDR_TYPE;/* Тип адреса */
+	private LongProperty ICUSNUM;/* Идентификатор контрагента */
+	private LongProperty ID_ADDR;/* ID адреса */
+	private LongProperty STROY_TYPE;/* Признак строения */
 	private StringProperty ADDRESS_INLINE;/* Адрес для нерезидентов(не по КЛАДР) в одну строку. */
 	private StringProperty OKSM_CODE;/* Код ОКСМ территории */
 	private StringProperty PORCH;/* Подъезд */
@@ -27,25 +27,25 @@ public class CUS_ADDR {
 	private StringProperty CITY;/* Город */
 	private StringProperty REG_NAME;/* Наименование региона */
 	private StringProperty AREA;/* Район */
-	private IntegerProperty REG_NUM;/* Номер региона */
+	private LongProperty REG_NUM;/* Номер региона */
 	private StringProperty POST_INDEX;/* Почтовый индекс */
 	private StringProperty COUNTRY;/* Страна */
 	private StringProperty CODE;/* Код адреса */
 	private StringProperty CLONGNAMET;
 	/** адрес-район если текст */
-	private IntegerProperty AREA_NOT_LIST;
+	private LongProperty AREA_NOT_LIST;
 	/** адрес-населенный пункт если текст */
-	private IntegerProperty PUNCT_NAME_NOT_LIST;
+	private LongProperty PUNCT_NAME_NOT_LIST;
 
 	public CUS_ADDR() {
-		this.AREA_NOT_LIST = new SimpleIntegerProperty();
-		this.PUNCT_NAME_NOT_LIST = new SimpleIntegerProperty();
+		this.AREA_NOT_LIST = new SimpleLongProperty();
+		this.PUNCT_NAME_NOT_LIST = new SimpleLongProperty();
 
 		this.CLONGNAMET = new SimpleStringProperty();
-		this.ADDR_TYPE = new SimpleIntegerProperty();
-		this.ICUSNUM = new SimpleIntegerProperty();
-		this.ID_ADDR = new SimpleIntegerProperty();
-		this.STROY_TYPE = new SimpleIntegerProperty();
+		this.ADDR_TYPE = new SimpleLongProperty();
+		this.ICUSNUM = new SimpleLongProperty();
+		this.ID_ADDR = new SimpleLongProperty();
+		this.STROY_TYPE = new SimpleLongProperty();
 		this.ADDRESS_INLINE = new SimpleStringProperty();
 		this.OKSM_CODE = new SimpleStringProperty();
 		this.PORCH = new SimpleStringProperty();
@@ -63,33 +63,33 @@ public class CUS_ADDR {
 		this.CITY = new SimpleStringProperty();
 		this.REG_NAME = new SimpleStringProperty();
 		this.AREA = new SimpleStringProperty();
-		this.REG_NUM = new SimpleIntegerProperty();
+		this.REG_NUM = new SimpleLongProperty();
 		this.POST_INDEX = new SimpleStringProperty();
 		this.COUNTRY = new SimpleStringProperty();
 		this.CODE = new SimpleStringProperty();
 	}
 
-	public void setAREA_NOT_LIST(Integer AREA_NOT_LIST) {
+	public void setAREA_NOT_LIST(Long AREA_NOT_LIST) {
 		this.AREA_NOT_LIST.set(AREA_NOT_LIST);
 	}
 
-	public void setPUNCT_NAME_NOT_LIST(Integer PUNCT_NAME_NOT_LIST) {
+	public void setPUNCT_NAME_NOT_LIST(Long PUNCT_NAME_NOT_LIST) {
 		this.PUNCT_NAME_NOT_LIST.set(PUNCT_NAME_NOT_LIST);
 	}
 
-	public Integer getAREA_NOT_LIST() {
+	public Long getAREA_NOT_LIST() {
 		return AREA_NOT_LIST.get();
 	}
 
-	public Integer getPUNCT_NAME_NOT_LIST() {
+	public Long getPUNCT_NAME_NOT_LIST() {
 		return PUNCT_NAME_NOT_LIST.get();
 	}
 
-	public IntegerProperty AREA_NOT_LISTProperty() {
+	public LongProperty AREA_NOT_LISTProperty() {
 		return AREA_NOT_LIST;
 	}
 
-	public IntegerProperty PUNCT_NAME_NOT_LISTProperty() {
+	public LongProperty PUNCT_NAME_NOT_LISTProperty() {
 		return PUNCT_NAME_NOT_LIST;
 	}
 
@@ -97,19 +97,19 @@ public class CUS_ADDR {
 		this.CLONGNAMET.set(CLONGNAMET);
 	}
 
-	public void setADDR_TYPE(Integer ADDR_TYPE) {
+	public void setADDR_TYPE(Long ADDR_TYPE) {
 		this.ADDR_TYPE.set(ADDR_TYPE);
 	}
 
-	public void setICUSNUM(Integer ICUSNUM) {
+	public void setICUSNUM(Long ICUSNUM) {
 		this.ICUSNUM.set(ICUSNUM);
 	}
 
-	public void setID_ADDR(Integer ID_ADDR) {
+	public void setID_ADDR(Long ID_ADDR) {
 		this.ID_ADDR.set(ID_ADDR);
 	}
 
-	public void setSTROY_TYPE(Integer STROY_TYPE) {
+	public void setSTROY_TYPE(Long STROY_TYPE) {
 		this.STROY_TYPE.set(STROY_TYPE);
 	}
 
@@ -181,7 +181,7 @@ public class CUS_ADDR {
 		this.AREA.set(AREA);
 	}
 
-	public void setREG_NUM(Integer REG_NUM) {
+	public void setREG_NUM(Long REG_NUM) {
 		this.REG_NUM.set(REG_NUM);
 	}
 
@@ -197,19 +197,19 @@ public class CUS_ADDR {
 		this.CODE.set(CODE);
 	}
 
-	public Integer getADDR_TYPE() {
+	public Long getADDR_TYPE() {
 		return ADDR_TYPE.get();
 	}
 
-	public Integer getICUSNUM() {
+	public Long getICUSNUM() {
 		return ICUSNUM.get();
 	}
 
-	public Integer getID_ADDR() {
+	public Long getID_ADDR() {
 		return ID_ADDR.get();
 	}
 
-	public Integer getSTROY_TYPE() {
+	public Long getSTROY_TYPE() {
 		return STROY_TYPE.get();
 	}
 
@@ -285,7 +285,7 @@ public class CUS_ADDR {
 		return AREA.get();
 	}
 
-	public Integer getREG_NUM() {
+	public Long getREG_NUM() {
 		return REG_NUM.get();
 	}
 
@@ -301,19 +301,19 @@ public class CUS_ADDR {
 		return CODE.get();
 	}
 
-	public IntegerProperty ADDR_TYPEProperty() {
+	public LongProperty ADDR_TYPEProperty() {
 		return ADDR_TYPE;
 	}
 
-	public IntegerProperty ICUSNUMProperty() {
+	public LongProperty ICUSNUMProperty() {
 		return ICUSNUM;
 	}
 
-	public IntegerProperty ID_ADDRProperty() {
+	public LongProperty ID_ADDRProperty() {
 		return ID_ADDR;
 	}
 
-	public IntegerProperty STROY_TYPEProperty() {
+	public LongProperty STROY_TYPEProperty() {
 		return STROY_TYPE;
 	}
 
@@ -389,7 +389,7 @@ public class CUS_ADDR {
 		return AREA;
 	}
 
-	public IntegerProperty REG_NUMProperty() {
+	public LongProperty REG_NUMProperty() {
 		return REG_NUM;
 	}
 

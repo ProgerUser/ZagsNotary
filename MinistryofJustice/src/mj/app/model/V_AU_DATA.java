@@ -1,19 +1,19 @@
 package mj.app.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class V_AU_DATA {
-	private IntegerProperty IACTION_ID;
+	private LongProperty IACTION_ID;
 	private StringProperty CFIELD;
 	private StringProperty CNEWDATA;
 	private StringProperty COLDDATA;
 
 	/* CONSTRUCTOR */
 	public V_AU_DATA() {
-		this.IACTION_ID = new SimpleIntegerProperty();
+		this.IACTION_ID = new SimpleLongProperty();
 		this.CFIELD = new SimpleStringProperty();
 		this.CNEWDATA = new SimpleStringProperty();
 		this.COLDDATA = new SimpleStringProperty();
@@ -46,15 +46,15 @@ public class V_AU_DATA {
 	}
 
 	/* IACTION_ID */
-	public Integer getIACTION_ID() {
+	public Long getIACTION_ID() {
 		return IACTION_ID.get();
 	}
 
-	public void setIACTION_ID(Integer IACTION_ID) {
+	public void setIACTION_ID(Long IACTION_ID) {
 		this.IACTION_ID.set(IACTION_ID);
 	}
 
-	public IntegerProperty IACTION_IDProperty() {
+	public LongProperty IACTION_IDProperty() {
 		return IACTION_ID;
 	}
 

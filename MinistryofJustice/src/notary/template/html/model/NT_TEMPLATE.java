@@ -1,36 +1,36 @@
 package notary.template.html.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class NT_TEMPLATE {
 	/** Идентификатор шаблона */
-	private IntegerProperty NT_ID;
+	private LongProperty NT_ID;
 	/** Идентификатор родительского шаблона */
-	private IntegerProperty NT_PARENT;
+	private LongProperty NT_PARENT;
 	/** Порядковый номер внутри иерархии */
-	private IntegerProperty NT_NPP;
+	private LongProperty NT_NPP;
 	/** Наименование шаблона */
 	private StringProperty NT_NAME;
 
 	public NT_TEMPLATE() {
-		this.NT_ID = new SimpleIntegerProperty();
-		this.NT_PARENT = new SimpleIntegerProperty();
-		this.NT_NPP = new SimpleIntegerProperty();
+		this.NT_ID = new SimpleLongProperty();
+		this.NT_PARENT = new SimpleLongProperty();
+		this.NT_NPP = new SimpleLongProperty();
 		this.NT_NAME = new SimpleStringProperty();
 	}
 
-	public void setNT_ID(Integer NT_ID) {
+	public void setNT_ID(Long NT_ID) {
 		this.NT_ID.set(NT_ID);
 	}
 
-	public void setNT_PARENT(Integer NT_PARENT) {
+	public void setNT_PARENT(Long NT_PARENT) {
 		this.NT_PARENT.set(NT_PARENT);
 	}
 
-	public void setNT_NPP(Integer NT_NPP) {
+	public void setNT_NPP(Long NT_NPP) {
 		this.NT_NPP.set(NT_NPP);
 	}
 
@@ -38,15 +38,15 @@ public class NT_TEMPLATE {
 		this.NT_NAME.set(NT_NAME);
 	}
 
-	public Integer getNT_ID() {
+	public Long getNT_ID() {
 		return NT_ID.get();
 	}
 
-	public Integer getNT_PARENT() {
+	public Long getNT_PARENT() {
 		return NT_PARENT.get();
 	}
 
-	public Integer getNT_NPP() {
+	public Long getNT_NPP() {
 		return NT_NPP.get();
 	}
 
@@ -54,15 +54,15 @@ public class NT_TEMPLATE {
 		return NT_NAME.get();
 	}
 
-	public IntegerProperty NT_IDProperty() {
+	public LongProperty NT_IDProperty() {
 		return NT_ID;
 	}
 
-	public IntegerProperty NT_PARENTProperty() {
+	public LongProperty NT_PARENTProperty() {
 		return NT_PARENT;
 	}
 
-	public IntegerProperty NT_NPPProperty() {
+	public LongProperty NT_NPPProperty() {
 		return NT_NPP;
 	}
 

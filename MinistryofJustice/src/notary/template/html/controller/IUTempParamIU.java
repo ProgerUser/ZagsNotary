@@ -25,8 +25,8 @@ import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 import org.reactfx.Subscription;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -84,7 +84,7 @@ public class IUTempParamIU {
 	@FXML
 	private VBox vb_sql_list;
 
-	private IntegerProperty ID;
+	private LongProperty ID;
 	private StringProperty type;
 
 	@FXML
@@ -99,7 +99,7 @@ public class IUTempParamIU {
 
 	public IUTempParamIU() {
 		Main.logger = Logger.getLogger(getClass());
-		this.ID = new SimpleIntegerProperty();
+		this.ID = new SimpleLongProperty();
 		this.type = new SimpleStringProperty();
 	}
 
@@ -115,11 +115,11 @@ public class IUTempParamIU {
 		return type.get();
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -203,9 +203,9 @@ public class IUTempParamIU {
 									+ "PRM_TBL_REF," + "PRM_FOR_PRM_SQL," + "PRM_PADEJ," + "REQUIRED,"
 									+ "PRM_R_NAME,HTML_CODE,PARENTS)" + " values" + " (?,?,?,?,?,?,?,?,?,?,?)");
 					prp.setString(1, PRM_NAME.getText());
-					prp.setInt(2, getID());
+					prp.setLong(2, getID());
 					prp.setString(3, PRM_SQL.getText());
-					prp.setInt(4, PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID());
+					prp.setLong(4, PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID());
 					if (alltbl != null) {
 						prp.setString(5, alltbl.getTABLE_NAME());
 					} else {
@@ -215,7 +215,7 @@ public class IUTempParamIU {
 					clob.setString(1, PRM_FOR_PRM_SQL.getText());
 					prp.setClob(6, clob);
 					if (PRM_PADEJ.getSelectionModel().getSelectedItem() != null) {
-						prp.setInt(7, PRM_PADEJ.getSelectionModel().getSelectedItem().getPDJ_ID());
+						prp.setLong(7, PRM_PADEJ.getSelectionModel().getSelectedItem().getPDJ_ID());
 					} else {
 						prp.setNull(7, Types.INTEGER);
 					}
@@ -224,7 +224,7 @@ public class IUTempParamIU {
 					prp.setString(10, HTML_CODE.getText());
 
 					if (PARENTS.getSelectionModel().getSelectedItem() != null) {
-						prp.setInt(11, PARENTS.getSelectionModel().getSelectedItem().getPRM_ID());
+						prp.setLong(11, PARENTS.getSelectionModel().getSelectedItem().getPRM_ID());
 					} else {
 						prp.setNull(11, Types.INTEGER);
 					}
@@ -238,7 +238,7 @@ public class IUTempParamIU {
 							+ "REQUIRED=?, " + "PRM_R_NAME=?, " + "HTML_CODE=?,PARENTS=? where PRM_ID = ?");
 					prp.setString(1, PRM_NAME.getText());
 					prp.setString(2, PRM_SQL.getText());
-					prp.setInt(3, PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID());
+					prp.setLong(3, PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID());
 					if (alltbl != null) {
 						prp.setString(4, alltbl.getTABLE_NAME());
 					} else {
@@ -248,7 +248,7 @@ public class IUTempParamIU {
 					clob.setString(1, PRM_FOR_PRM_SQL.getText());
 					prp.setClob(5, clob);
 					if (PRM_PADEJ.getSelectionModel().getSelectedItem() != null) {
-						prp.setInt(6, PRM_PADEJ.getSelectionModel().getSelectedItem().getPDJ_ID());
+						prp.setLong(6, PRM_PADEJ.getSelectionModel().getSelectedItem().getPDJ_ID());
 					} else {
 						prp.setNull(6, Types.INTEGER);
 					}
@@ -256,11 +256,11 @@ public class IUTempParamIU {
 					prp.setString(8, PRM_R_NAME.getText());
 					prp.setString(9, HTML_CODE.getText());
 					if (PARENTS.getSelectionModel().getSelectedItem() != null) {
-						prp.setInt(10, PARENTS.getSelectionModel().getSelectedItem().getPRM_ID());
+						prp.setLong(10, PARENTS.getSelectionModel().getSelectedItem().getPRM_ID());
 					} else {
 						prp.setNull(10, Types.INTEGER);
 					}
-					prp.setInt(11, cl.getPRM_ID());
+					prp.setLong(11, cl.getPRM_ID());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
@@ -419,25 +419,25 @@ public class IUTempParamIU {
 			{
 				PreparedStatement stsmt = conn.prepareStatement(
 						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrmForAddParents"));
-				stsmt.setInt(1, cl.getPRM_TMP_ID());
+				stsmt.setLong(1, cl.getPRM_TMP_ID());
 				ResultSet rs = stsmt.executeQuery();
 				ObservableList<NT_TEMP_LIST_PARAM> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					NT_TEMP_LIST_PARAM list = new NT_TEMP_LIST_PARAM();
-					list.setPRM_ID(rs.getInt("PRM_ID"));
+					list.setPRM_ID(rs.getLong("PRM_ID"));
 					list.setPRM_NAME(rs.getString("PRM_NAME"));
-					list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+					list.setPRM_TMP_ID(rs.getLong("PRM_TMP_ID"));
 					list.setPRM_SQL(rs.getString("PRM_SQL"));
-					list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+					list.setPRM_TYPE(rs.getLong("PRM_TYPE"));
 					list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 					if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
 						list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 					}
-					list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					list.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
 					list.setREQUIRED(rs.getString("REQUIRED"));
 					list.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
 					list.setHTML_CODE(rs.getString("HTML_CODE"));
-					list.setPARENTS(rs.getInt("PARENTS"));
+					list.setPARENTS(rs.getLong("PARENTS"));
 					combolist.add(list);
 				}
 				stsmt.close();
@@ -462,7 +462,7 @@ public class IUTempParamIU {
 				ObservableList<NT_PRM_TYPE> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					NT_PRM_TYPE list = new NT_PRM_TYPE();
-					list.setTYPE_ID(rs.getInt("TYPE_ID"));
+					list.setTYPE_ID(rs.getLong("TYPE_ID"));
 					list.setTYPE_NAME(rs.getString("TYPE_NAME"));
 					combolist.add(list);
 				}
@@ -479,7 +479,7 @@ public class IUTempParamIU {
 				ObservableList<NT_PADEJ> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					NT_PADEJ list = new NT_PADEJ();
-					list.setPDJ_ID(rs.getInt("PDJ_ID"));
+					list.setPDJ_ID(rs.getLong("PDJ_ID"));
 					list.setPDJ_NAME(rs.getString("PDJ_NAME"));
 					list.setPDJ_R_NAME(rs.getString("PDJ_R_NAME"));
 					combolist.add(list);
@@ -496,25 +496,25 @@ public class IUTempParamIU {
 				{
 					PreparedStatement stsmt = conn.prepareStatement(
 							DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrmForAddParents"));
-					stsmt.setInt(1, cl.getPRM_TMP_ID());
+					stsmt.setLong(1, cl.getPRM_TMP_ID());
 					ResultSet rs = stsmt.executeQuery();
 					ObservableList<NT_TEMP_LIST_PARAM> combolist = FXCollections.observableArrayList();
 					while (rs.next()) {
 						NT_TEMP_LIST_PARAM list = new NT_TEMP_LIST_PARAM();
-						list.setPRM_ID(rs.getInt("PRM_ID"));
+						list.setPRM_ID(rs.getLong("PRM_ID"));
 						list.setPRM_NAME(rs.getString("PRM_NAME"));
-						list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+						list.setPRM_TMP_ID(rs.getLong("PRM_TMP_ID"));
 						list.setPRM_SQL(rs.getString("PRM_SQL"));
-						list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
+						list.setPRM_TYPE(rs.getLong("PRM_TYPE"));
 						list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 						if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
 							list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 						}
-						list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+						list.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
 						list.setREQUIRED(rs.getString("REQUIRED"));
 						list.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
 						list.setHTML_CODE(rs.getString("HTML_CODE"));
-						list.setPARENTS(rs.getInt("PARENTS"));
+						list.setPARENTS(rs.getLong("PARENTS"));
 						combolist.add(list);
 					}
 					stsmt.close();

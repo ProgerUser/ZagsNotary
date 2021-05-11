@@ -1,8 +1,8 @@
 package mj.audit.view;
 
 import java.sql.Timestamp;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -18,7 +18,7 @@ public class AUDIT_REPORT {
 	private StringProperty CNEWDATA;/* Нет данных */
 	private StringProperty CFIELDNAME;/* Нет данных */
 	private StringProperty CFIELD;/* Нет данных */
-	private IntegerProperty IACTIONID;/* Нет данных */
+	private LongProperty IACTIONID;/* Нет данных */
 
 	public AUDIT_REPORT() {
 		this.CAUDOPERATION = new SimpleStringProperty();
@@ -31,7 +31,7 @@ public class AUDIT_REPORT {
 		this.CNEWDATA = new SimpleStringProperty();
 		this.CFIELDNAME = new SimpleStringProperty();
 		this.CFIELD = new SimpleStringProperty();
-		this.IACTIONID = new SimpleIntegerProperty();
+		this.IACTIONID = new SimpleLongProperty();
 	}
 
 	public void setCAUDOPERATION(String CAUDOPERATION) {
@@ -74,7 +74,7 @@ public class AUDIT_REPORT {
 		this.CFIELD.set(CFIELD);
 	}
 
-	public void setIACTIONID(Integer IACTIONID) {
+	public void setIACTIONID(Long IACTIONID) {
 		this.IACTIONID.set(IACTIONID);
 	}
 
@@ -118,7 +118,7 @@ public class AUDIT_REPORT {
 		return CFIELD.get();
 	}
 
-	public Integer getIACTIONID() {
+	public Long getIACTIONID() {
 		return IACTIONID.get();
 	}
 
@@ -162,7 +162,7 @@ public class AUDIT_REPORT {
 		return CFIELD;
 	}
 
-	public IntegerProperty IACTIONIDProperty() {
+	public LongProperty IACTIONIDProperty() {
 		return IACTIONID;
 	}
 }

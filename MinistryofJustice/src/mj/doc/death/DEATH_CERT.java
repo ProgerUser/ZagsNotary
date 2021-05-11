@@ -2,8 +2,8 @@ package mj.doc.death;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -14,7 +14,7 @@ public class DEATH_CERT {
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> CR_DATE;
 	/** Нет данных */
-	private IntegerProperty DC_ZAGS;
+	private LongProperty DC_ZAGS;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDateTime> TM$DC_OPEN;
 	/** Нет данных */
@@ -42,7 +42,7 @@ public class DEATH_CERT {
 	/** Нет данных */
 	private StringProperty DC_NRNAME;
 	/** Нет данных */
-	private IntegerProperty DC_RCNAME;
+	private LongProperty DC_RCNAME;
 	/** Нет данных */
 	private StringProperty DC_FMON;
 	/** Нет данных */
@@ -58,9 +58,9 @@ public class DEATH_CERT {
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> DC_DD;
 	/** Нет данных */
-	private IntegerProperty DC_CUS;
+	private LongProperty DC_CUS;
 	/** Нет данных */
-	private IntegerProperty DC_ID;
+	private LongProperty DC_ID;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> DBDATE;
 	/** Нет данных */
@@ -73,7 +73,7 @@ public class DEATH_CERT {
 
 		this.CR_TIME = new SimpleStringProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
-		this.DC_ZAGS = new SimpleIntegerProperty();
+		this.DC_ZAGS = new SimpleLongProperty();
 		this.TM$DC_OPEN = new SimpleObjectProperty<>();
 		this.DC_USR = new SimpleStringProperty();
 		this.DC_NUMBER = new SimpleStringProperty();
@@ -87,7 +87,7 @@ public class DEATH_CERT {
 		this.DC_ZTP = new SimpleStringProperty();
 		this.DC_LLOC = new SimpleStringProperty();
 		this.DC_NRNAME = new SimpleStringProperty();
-		this.DC_RCNAME = new SimpleIntegerProperty();
+		this.DC_RCNAME = new SimpleLongProperty();
 		this.DC_FMON = new SimpleStringProperty();
 		this.DC_FTYPE = new SimpleStringProperty();
 		this.DC_FD = new SimpleObjectProperty<>();
@@ -95,8 +95,8 @@ public class DEATH_CERT {
 		this.DC_CD = new SimpleStringProperty();
 		this.DC_DPL = new SimpleStringProperty();
 		this.DC_DD = new SimpleObjectProperty<>();
-		this.DC_CUS = new SimpleIntegerProperty();
-		this.DC_ID = new SimpleIntegerProperty();
+		this.DC_CUS = new SimpleLongProperty();
+		this.DC_ID = new SimpleLongProperty();
 		this.DBDATE = new SimpleObjectProperty<>();
 		this.DFIO = new SimpleStringProperty();
 	}
@@ -121,7 +121,7 @@ public class DEATH_CERT {
 		this.CR_DATE.set(CR_DATE);
 	}
 
-	public void setDC_ZAGS(Integer DC_ZAGS) {
+	public void setDC_ZAGS(Long DC_ZAGS) {
 		this.DC_ZAGS.set(DC_ZAGS);
 	}
 
@@ -177,7 +177,7 @@ public class DEATH_CERT {
 		this.DC_NRNAME.set(DC_NRNAME);
 	}
 
-	public void setDC_RCNAME(Integer DC_RCNAME) {
+	public void setDC_RCNAME(Long DC_RCNAME) {
 		this.DC_RCNAME.set(DC_RCNAME);
 	}
 
@@ -209,11 +209,11 @@ public class DEATH_CERT {
 		this.DC_DD.set(DC_DD);
 	}
 
-	public void setDC_CUS(Integer DC_CUS) {
+	public void setDC_CUS(Long DC_CUS) {
 		this.DC_CUS.set(DC_CUS);
 	}
 
-	public void setDC_ID(Integer DC_ID) {
+	public void setDC_ID(Long DC_ID) {
 		this.DC_ID.set(DC_ID);
 	}
 
@@ -233,7 +233,7 @@ public class DEATH_CERT {
 		return CR_DATE.get();
 	}
 
-	public Integer getDC_ZAGS() {
+	public Long getDC_ZAGS() {
 		return DC_ZAGS.get();
 	}
 
@@ -289,7 +289,7 @@ public class DEATH_CERT {
 		return DC_NRNAME.get();
 	}
 
-	public Integer getDC_RCNAME() {
+	public Long getDC_RCNAME() {
 		return DC_RCNAME.get();
 	}
 
@@ -321,11 +321,11 @@ public class DEATH_CERT {
 		return DC_DD.get();
 	}
 
-	public Integer getDC_CUS() {
+	public Long getDC_CUS() {
 		return DC_CUS.get();
 	}
 
-	public Integer getDC_ID() {
+	public Long getDC_ID() {
 		return DC_ID.get();
 	}
 
@@ -345,7 +345,7 @@ public class DEATH_CERT {
 		return CR_DATE;
 	}
 
-	public IntegerProperty DC_ZAGSProperty() {
+	public LongProperty DC_ZAGSProperty() {
 		return DC_ZAGS;
 	}
 
@@ -401,7 +401,7 @@ public class DEATH_CERT {
 		return DC_NRNAME;
 	}
 
-	public IntegerProperty DC_RCNAMEProperty() {
+	public LongProperty DC_RCNAMEProperty() {
 		return DC_RCNAME;
 	}
 
@@ -433,11 +433,11 @@ public class DEATH_CERT {
 		return DC_DD;
 	}
 
-	public IntegerProperty DC_CUSProperty() {
+	public LongProperty DC_CUSProperty() {
 		return DC_CUS;
 	}
 
-	public IntegerProperty DC_IDProperty() {
+	public LongProperty DC_IDProperty() {
 		return DC_ID;
 	}
 

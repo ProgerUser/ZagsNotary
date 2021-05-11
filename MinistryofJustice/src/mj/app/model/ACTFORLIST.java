@@ -2,8 +2,8 @@ package mj.app.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -12,13 +12,13 @@ public class ACTFORLIST {
 	private SimpleObjectProperty<LocalDate> DCUSBIRTHDAY;/* Нет данных */
 	private SimpleObjectProperty<LocalDateTime> BR_ACT_DATE;/* Нет данных */
 	private StringProperty CCUSNAME;/* Нет данных */
-	private IntegerProperty BR_ACT_ID;/* Нет данных */
+	private LongProperty BR_ACT_ID;/* Нет данных */
 
 	public ACTFORLIST() {
 		this.DCUSBIRTHDAY = new SimpleObjectProperty<>();
 		this.BR_ACT_DATE = new SimpleObjectProperty<>();
 		this.CCUSNAME = new SimpleStringProperty();
-		this.BR_ACT_ID = new SimpleIntegerProperty();
+		this.BR_ACT_ID = new SimpleLongProperty();
 	}
 
 	public void setDCUSBIRTHDAY(LocalDate DCUSBIRTHDAY) {
@@ -33,7 +33,7 @@ public class ACTFORLIST {
 		this.CCUSNAME.set(CCUSNAME);
 	}
 
-	public void setBR_ACT_ID(Integer BR_ACT_ID) {
+	public void setBR_ACT_ID(Long BR_ACT_ID) {
 		this.BR_ACT_ID.set(BR_ACT_ID);
 	}
 
@@ -49,7 +49,7 @@ public class ACTFORLIST {
 		return CCUSNAME.get();
 	}
 
-	public Integer getBR_ACT_ID() {
+	public Long getBR_ACT_ID() {
 		return BR_ACT_ID.get();
 	}
 
@@ -65,7 +65,7 @@ public class ACTFORLIST {
 		return CCUSNAME;
 	}
 
-	public IntegerProperty BR_ACT_IDProperty() {
+	public LongProperty BR_ACT_IDProperty() {
 		return BR_ACT_ID;
 	}
 }

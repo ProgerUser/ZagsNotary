@@ -25,7 +25,7 @@ import net.sf.jasperreports.swing.JRViewer;
 public class DynamicRep extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	public void showReport(Integer ID) {
+	public void showReport(Long ID) {
 		try {
 			Connection conn = DBUtil.conn;
 			{
@@ -46,7 +46,7 @@ public class DynamicRep extends JFrame {
 								"           and prm_id = 3) DT2\r\n" + 
 								"  from dual\r\n" + 
 								"");
-				prp.setInt(1, ID);
+				prp.setLong(1, ID);
 				ResultSet rs = prp.executeQuery();
 				if (rs.next()) {
 					
@@ -62,7 +62,7 @@ public class DynamicRep extends JFrame {
 			String readRecordSQL = sql.getSql("AUDIT_REPORT");
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
 			prepStmt.setString(1, "USR");
-			prepStmt.setInt(2, 3247);
+			prepStmt.setLong(2, 3247);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				AUDIT_REPORT list = new AUDIT_REPORT();
@@ -76,7 +76,7 @@ public class DynamicRep extends JFrame {
 				list.setCNEWDATA(rs.getString("CNEWDATA"));
 				list.setCFIELDNAME(rs.getString("CFIELDNAME"));
 				list.setCFIELD(rs.getString("CFIELD"));
-				list.setIACTIONID(rs.getInt("IACTION_ID"));
+				list.setIACTIONID(rs.getLong("IACTION_ID"));
 				listItems.add(list);
 			}
 			

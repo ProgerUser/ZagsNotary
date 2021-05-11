@@ -15,9 +15,9 @@ import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -281,7 +281,7 @@ public class EditAdopt {
 
 			TableView<ACTFORLIST> cusllists = new TableView<ACTFORLIST>();
 
-			TableColumn<ACTFORLIST, Integer> BR_ACT_ID = new TableColumn<>("Номер");
+			TableColumn<ACTFORLIST, Long> BR_ACT_ID = new TableColumn<>("Номер");
 
 			BR_ACT_ID.setCellValueFactory(new PropertyValueFactory<>("BR_ACT_ID"));
 
@@ -364,7 +364,7 @@ public class EditAdopt {
 				list.setBR_ACT_DATE((rs.getDate("BR_ACT_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("BR_ACT_DATE")), formatterDT)
 						: null);
-				list.setBR_ACT_ID(rs.getInt("BR_ACT_ID"));
+				list.setBR_ACT_ID(rs.getLong("BR_ACT_ID"));
 
 				cuslist.add(list);
 			}
@@ -430,7 +430,7 @@ public class EditAdopt {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Номер");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -473,7 +473,7 @@ public class EditAdopt {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
-				list.setICUSNUM(rs.getInt("ICUSNUM"));
+				list.setICUSNUM(rs.getLong("ICUSNUM"));
 				list.setDCUSOPEN((rs.getDate("DCUSOPEN") != null)
 						? LocalDateTime.parse(
 								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DCUSOPEN")), formatterdt)
@@ -490,9 +490,9 @@ public class EditAdopt {
 				list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
 				list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
 				list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
-				list.setCCUSSEX(rs.getInt("CCUSSEX"));
+				list.setCCUSSEX(rs.getLong("CCUSSEX"));
 				list.setCCUSPLACE_BIRTH(rs.getString("CCUSPLACE_BIRTH"));
-				list.setICUSOTD(rs.getInt("ICUSOTD"));
+				list.setICUSOTD(rs.getLong("ICUSOTD"));
 				list.setCCUS_OK_SM(rs.getString("CCUS_OK_SM"));
 
 				cuslist.add(list);
@@ -565,7 +565,7 @@ public class EditAdopt {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Номер");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -608,7 +608,7 @@ public class EditAdopt {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
-				list.setICUSNUM(rs.getInt("ICUSNUM"));
+				list.setICUSNUM(rs.getLong("ICUSNUM"));
 				list.setDCUSOPEN((rs.getDate("DCUSOPEN") != null)
 						? LocalDateTime.parse(
 								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DCUSOPEN")), formatterdt)
@@ -625,9 +625,9 @@ public class EditAdopt {
 				list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
 				list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
 				list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
-				list.setCCUSSEX(rs.getInt("CCUSSEX"));
+				list.setCCUSSEX(rs.getLong("CCUSSEX"));
 				list.setCCUSPLACE_BIRTH(rs.getString("CCUSPLACE_BIRTH"));
-				list.setICUSOTD(rs.getInt("ICUSOTD"));
+				list.setICUSOTD(rs.getLong("ICUSOTD"));
 				list.setCCUS_OK_SM(rs.getString("CCUS_OK_SM"));
 
 				cuslist.add(list);
@@ -703,7 +703,7 @@ public class EditAdopt {
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 
-			callStmt.setInt(2, adopt.getID());
+			callStmt.setLong(2, adopt.getID());
 
 			callStmt.setString(3, OLD_LASTNAME.getText());
 			callStmt.setString(4, OLD_FIRSTNAME.getText());
@@ -712,34 +712,34 @@ public class EditAdopt {
 			callStmt.setString(7, NEW_FIRSTNAME.getText());
 			callStmt.setString(8, NEW_MIDDLNAME.getText());
 			if (!CUSID_CH.getText().equals("")) {
-				callStmt.setInt(9, Integer.valueOf(CUSID_CH.getText()));
+				callStmt.setLong(9, Long.valueOf(CUSID_CH.getText()));
 			} else {
 				callStmt.setNull(9, java.sql.Types.INTEGER);
 			}
 			if (!CUSID_M.getText().equals("")) {
-				callStmt.setInt(10, Integer.valueOf(CUSID_M.getText()));
+				callStmt.setLong(10, Long.valueOf(CUSID_M.getText()));
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
 			if (!CUSID_F.getText().equals("")) {
-				callStmt.setInt(11, Integer.valueOf(CUSID_F.getText()));
+				callStmt.setLong(11, Long.valueOf(CUSID_F.getText()));
 			} else {
 				callStmt.setNull(11, java.sql.Types.INTEGER);
 			}
 			if (!BRNACT.getText().equals("")) {
-				callStmt.setInt(12, Integer.valueOf(BRNACT.getText()));
+				callStmt.setLong(12, Long.valueOf(BRNACT.getText()));
 			} else {
 				callStmt.setNull(12, java.sql.Types.INTEGER);
 			}
 			callStmt.setString(13, SVID_SERIA.getText());
 			callStmt.setString(14, SVID_NOMER.getText());
 			if (!CUSID_M_AD.getText().equals("")) {
-				callStmt.setInt(15, Integer.valueOf(CUSID_M_AD.getText()));
+				callStmt.setLong(15, Long.valueOf(CUSID_M_AD.getText()));
 			} else {
 				callStmt.setNull(15, java.sql.Types.INTEGER);
 			}
 			if (!CUSID_F_AD.getText().equals("")) {
-				callStmt.setInt(16, Integer.valueOf(CUSID_F_AD.getText()));
+				callStmt.setLong(16, Long.valueOf(CUSID_F_AD.getText()));
 			} else {
 				callStmt.setNull(16, java.sql.Types.INTEGER);
 			}
@@ -771,7 +771,7 @@ public class EditAdopt {
 					(GR_COURT_DATE.getValue() != null) ? java.sql.Date.valueOf(GR_COURT_DATE.getValue()) : null);
 			// Решение суда дата
 			if (GR_COURT.getValue() != null) {
-				callStmt.setInt(36, GR_COURT.getSelectionModel().getSelectedItem().getID());
+				callStmt.setLong(36, GR_COURT.getSelectionModel().getSelectedItem().getID());
 			} else {
 				callStmt.setNull(36, java.sql.Types.INTEGER);
 			}
@@ -781,7 +781,7 @@ public class EditAdopt {
 			if (callStmt.getString(1) == null) {
 				conn.commit();
 				setStatus(true);
-				// setId(callStmt.getInt(2));
+				// setId(callStmt.getLong(2));
 				callStmt.close();
 				onclose();
 			} else {
@@ -803,7 +803,7 @@ public class EditAdopt {
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 
-			callStmt.setInt(2, adopt.getID());
+			callStmt.setLong(2, adopt.getID());
 
 			callStmt.setString(3, OLD_LASTNAME.getText());
 			callStmt.setString(4, OLD_FIRSTNAME.getText());
@@ -812,34 +812,34 @@ public class EditAdopt {
 			callStmt.setString(7, NEW_FIRSTNAME.getText());
 			callStmt.setString(8, NEW_MIDDLNAME.getText());
 			if (!CUSID_CH.getText().equals("")) {
-				callStmt.setInt(9, Integer.valueOf(CUSID_CH.getText()));
+				callStmt.setLong(9, Long.valueOf(CUSID_CH.getText()));
 			} else {
 				callStmt.setNull(9, java.sql.Types.INTEGER);
 			}
 			if (!CUSID_M.getText().equals("")) {
-				callStmt.setInt(10, Integer.valueOf(CUSID_M.getText()));
+				callStmt.setLong(10, Long.valueOf(CUSID_M.getText()));
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
 			if (!CUSID_F.getText().equals("")) {
-				callStmt.setInt(11, Integer.valueOf(CUSID_F.getText()));
+				callStmt.setLong(11, Long.valueOf(CUSID_F.getText()));
 			} else {
 				callStmt.setNull(11, java.sql.Types.INTEGER);
 			}
 			if (!BRNACT.getText().equals("")) {
-				callStmt.setInt(12, Integer.valueOf(BRNACT.getText()));
+				callStmt.setLong(12, Long.valueOf(BRNACT.getText()));
 			} else {
 				callStmt.setNull(12, java.sql.Types.INTEGER);
 			}
 			callStmt.setString(13, SVID_SERIA.getText());
 			callStmt.setString(14, SVID_NOMER.getText());
 			if (!CUSID_M_AD.getText().equals("")) {
-				callStmt.setInt(15, Integer.valueOf(CUSID_M_AD.getText()));
+				callStmt.setLong(15, Long.valueOf(CUSID_M_AD.getText()));
 			} else {
 				callStmt.setNull(15, java.sql.Types.INTEGER);
 			}
 			if (!CUSID_F_AD.getText().equals("")) {
-				callStmt.setInt(16, Integer.valueOf(CUSID_F_AD.getText()));
+				callStmt.setLong(16, Long.valueOf(CUSID_F_AD.getText()));
 			} else {
 				callStmt.setNull(16, java.sql.Types.INTEGER);
 			}
@@ -871,7 +871,7 @@ public class EditAdopt {
 					(GR_COURT_DATE.getValue() != null) ? java.sql.Date.valueOf(GR_COURT_DATE.getValue()) : null);
 			// Решение суда дата
 			if (GR_COURT.getValue() != null) {
-				callStmt.setInt(36, GR_COURT.getSelectionModel().getSelectedItem().getID());
+				callStmt.setLong(36, GR_COURT.getSelectionModel().getSelectedItem().getID());
 			} else {
 				callStmt.setNull(36, java.sql.Types.INTEGER);
 			}
@@ -1046,13 +1046,13 @@ public class EditAdopt {
 				while (rs.next()) {
 					VCOURTS list = new VCOURTS();
 					list.setCOTDNAME(rs.getString("COTDNAME"));
-					list.setID(rs.getInt("ID"));
+					list.setID(rs.getLong("ID"));
 					list.setABH_NAME(rs.getString("ABH_NAME"));
 					list.setNAME_ROD(rs.getString("NAME_ROD"));
 					list.setNAME(rs.getString("NAME"));
-					list.setAREA_ID(rs.getInt("AREA_ID"));
-					list.setOTD(rs.getInt("OTD"));
-					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					list.setAREA_ID(rs.getLong("AREA_ID"));
+					list.setOTD(rs.getLong("OTD"));
+					list.setIOTDNUM(rs.getLong("IOTDNUM"));
 					combolist.add(list);
 				}
 
@@ -1095,7 +1095,7 @@ public class EditAdopt {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -1105,18 +1105,18 @@ public class EditAdopt {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public EditAdopt() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 	public void setConn(Connection conn, ADOPTOIN updnm) throws SQLException {

@@ -57,7 +57,7 @@ public class EditGrp {
 					.prepareStatement("update ODB_GROUP_USR set GRP_NAME = ?,NAME = ? where GRP_ID = ? ");
 			prp.setString(1, GRP_NAME.getText());
 			prp.setString(2, NAME.getText());
-			prp.setInt(3, grp.getGRP_ID());
+			prp.setLong(3, grp.getGRP_ID());
 			prp.executeUpdate();
 			prp.close();
 			conn.commit();

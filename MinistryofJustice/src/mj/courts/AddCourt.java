@@ -10,9 +10,9 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -54,9 +54,9 @@ public class AddCourt {
 	void Save(ActionEvent event) {
 		try {
 			PreparedStatement oper = conn.prepareStatement("insert into  courts (ID, NAME, OTD,ABH_NAME,NAME_ROD) values (?,?,?,?,?)");
-			oper.setInt(1, Integer.valueOf(ID.getText()));
+			oper.setLong(1, Long.valueOf(ID.getText()));
 			oper.setString(2, NAME.getText());
-			oper.setInt(3, OTD.getSelectionModel().getSelectedItem().getIOTDNUM());
+			oper.setLong(3, OTD.getSelectionModel().getSelectedItem().getIOTDNUM());
 			oper.setString(4, ABH_NAME.getText());
 			oper.setString(5, NAME_ROD.getText());
 			oper.executeUpdate();
@@ -124,7 +124,7 @@ public class AddCourt {
 				ObservableList<OTD> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					OTD list = new OTD();
-					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					list.setIOTDNUM(rs.getLong("IOTDNUM"));
 					list.setCOTDNAME(rs.getString("COTDNAME"));
 					combolist.add(list);
 				}
@@ -183,7 +183,7 @@ public class AddCourt {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -193,17 +193,17 @@ public class AddCourt {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public AddCourt() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 }

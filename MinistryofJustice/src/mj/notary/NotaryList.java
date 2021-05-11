@@ -56,12 +56,12 @@ public class NotaryList {
     private TableColumn<VNOTARY, String> TELEPHONE;
 
 	@FXML
-	private TableColumn<VNOTARY, Integer> NOT_ID;
+	private TableColumn<VNOTARY, Long> NOT_ID;
 
 	@FXML
 	void Add(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(126) == 0) {
+		if (DBUtil.OdbAction(126l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -102,7 +102,7 @@ public class NotaryList {
 	@FXML
 	void Edit(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(127) == 0) {
+		if (DBUtil.OdbAction(127l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -116,7 +116,7 @@ public class NotaryList {
 	@FXML
 	void Delete(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(128) == 0) {
+		if (DBUtil.OdbAction(128l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -165,7 +165,7 @@ public class NotaryList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from NOTARY where NOT_ID = ?;" + "commit;" + "end;");
 							VNOTARY cl = NOTARY.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getNOT_ID());
+							delete.setLong(1, cl.getNOT_ID());
 							delete.executeUpdate();
 							delete.close();
 
@@ -196,13 +196,13 @@ public class NotaryList {
 
 	boolean isopen = false;
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from NOTARY where NOT_ID = ? /*for update nowait*/");
 				VNOTARY VNOTARY = Init2(docid);
-				selforupd.setInt(1, VNOTARY.getNOT_ID());
+				selforupd.setLong(1, VNOTARY.getNOT_ID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -274,7 +274,7 @@ public class NotaryList {
 			NOTARY.setRowFactory(tv -> {
 				TableRow<VNOTARY> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
-					if (DBUtil.OdbAction(127) == 0) {
+					if (DBUtil.OdbAction(127l) == 0) {
 						Msg.Message("Нет доступа!");
 						return;
 					}
@@ -291,12 +291,12 @@ public class NotaryList {
 		}
 	}
 
-	VNOTARY Init2(Integer id) {
+	VNOTARY Init2(Long id) {
 		VNOTARY list = null;
 		try {
 			String selectStmt = "select * from VNOTARY where NOT_ID = ? ";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, id);
+			prepStmt.setLong(1, id);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				list = new VNOTARY();
@@ -304,7 +304,7 @@ public class NotaryList {
 				list.setNOT_ADDRESS(rs.getString("NOT_ADDRESS"));
 				list.setNOT_TELEPHONE(rs.getString("NOT_TELEPHONE"));
 				list.setCOTDNAME(rs.getString("COTDNAME"));
-				list.setNOT_ID(rs.getInt("NOT_ID"));
+				list.setNOT_ID(rs.getLong("NOT_ID"));
 				list.setNOT_RUK(rs.getString("NOT_RUK"));
 			}
 
@@ -329,7 +329,7 @@ public class NotaryList {
 				list.setNOT_ADDRESS(rs.getString("NOT_ADDRESS"));
 				list.setNOT_TELEPHONE(rs.getString("NOT_TELEPHONE"));
 				list.setCOTDNAME(rs.getString("COTDNAME"));
-				list.setNOT_ID(rs.getInt("NOT_ID"));
+				list.setNOT_ID(rs.getLong("NOT_ID"));
 				list.setNOT_RUK(rs.getString("NOT_RUK"));
 				dlist.add(list);
 			}

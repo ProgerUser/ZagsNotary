@@ -47,7 +47,7 @@ public class CourtList {
 	    private TableView<VCOURTS> COURTS;
 
 	    @FXML
-	    private TableColumn<VCOURTS, Integer> ID;
+	    private TableColumn<VCOURTS, Long> ID;
 
 	    @FXML
 	    private TableColumn<VCOURTS, String> NAME;
@@ -61,7 +61,7 @@ public class CourtList {
 	@FXML
 	void Add(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(202) == 0) {
+		if (DBUtil.OdbAction(202l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -100,7 +100,7 @@ public class CourtList {
 	@FXML
 	void Edit(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(123) == 0) {
+		if (DBUtil.OdbAction(123l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -114,7 +114,7 @@ public class CourtList {
 	@FXML
 	void Delete(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(204) == 0) {
+		if (DBUtil.OdbAction(204l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -161,7 +161,7 @@ public class CourtList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from COURTS where ID = ?;" + "commit;" + "end;");
 							VCOURTS cl = COURTS.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getID());
+							delete.setLong(1, cl.getID());
 							delete.executeUpdate();
 							delete.close();
 							Init();
@@ -191,13 +191,13 @@ public class CourtList {
 
 	boolean isopen = false;
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from VCOURTS where  ID = ? /*for update nowait*/");
 				VCOURTS courts = Init2(docid);
-				selforupd.setInt(1, courts.getID());
+				selforupd.setLong(1, courts.getID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -280,7 +280,7 @@ public class CourtList {
 			COURTS.setRowFactory(tv -> {
 				TableRow<VCOURTS> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
-					if (DBUtil.OdbAction(203) == 0) {
+					if (DBUtil.OdbAction(203l) == 0) {
 						Msg.Message("Нет доступа!");
 						return;
 					}
@@ -297,23 +297,23 @@ public class CourtList {
 		}
 	}
 
-	VCOURTS Init2(Integer id) {
+	VCOURTS Init2(Long id) {
 		VCOURTS list = null;
 		try {
 			String selectStmt = "select * from VCOURTS where ID = ? ";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, id);
+			prepStmt.setLong(1, id);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				list = new VCOURTS();
 				list.setCOTDNAME(rs.getString("COTDNAME"));
-				list.setID(rs.getInt("ID"));
+				list.setID(rs.getLong("ID"));
 				list.setABH_NAME(rs.getString("ABH_NAME"));
 				list.setNAME_ROD(rs.getString("NAME_ROD"));
 				list.setNAME(rs.getString("NAME"));
-				list.setAREA_ID(rs.getInt("AREA_ID"));
-				list.setOTD(rs.getInt("OTD"));
-				list.setIOTDNUM(rs.getInt("IOTDNUM"));
+				list.setAREA_ID(rs.getLong("AREA_ID"));
+				list.setOTD(rs.getLong("OTD"));
+				list.setIOTDNUM(rs.getLong("IOTDNUM"));
 			}
 			prepStmt.close();
 			rs.close();
@@ -332,13 +332,13 @@ public class CourtList {
 			while (rs.next()) {
 				VCOURTS list = new VCOURTS();
 				list.setCOTDNAME(rs.getString("COTDNAME"));
-				list.setID(rs.getInt("ID"));
+				list.setID(rs.getLong("ID"));
 				list.setABH_NAME(rs.getString("ABH_NAME"));
 				list.setNAME_ROD(rs.getString("NAME_ROD"));
 				list.setNAME(rs.getString("NAME"));
-				list.setAREA_ID(rs.getInt("AREA_ID"));
-				list.setOTD(rs.getInt("OTD"));
-				list.setIOTDNUM(rs.getInt("IOTDNUM"));
+				list.setAREA_ID(rs.getLong("AREA_ID"));
+				list.setOTD(rs.getLong("OTD"));
+				list.setIOTDNUM(rs.getLong("IOTDNUM"));
 				dlist.add(list);
 			}
 			prepStmt.close();

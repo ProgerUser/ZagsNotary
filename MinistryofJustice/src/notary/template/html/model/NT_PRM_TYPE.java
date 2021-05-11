@@ -1,22 +1,22 @@
 package notary.template.html.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class NT_PRM_TYPE {
 	/** ИД */
-	private IntegerProperty TYPE_ID;
+	private LongProperty TYPE_ID;
 	/** Название */
 	private StringProperty TYPE_NAME;
 
 	public NT_PRM_TYPE() {
-		this.TYPE_ID = new SimpleIntegerProperty();
+		this.TYPE_ID = new SimpleLongProperty();
 		this.TYPE_NAME = new SimpleStringProperty();
 	}
 
-	public void setTYPE_ID(Integer TYPE_ID) {
+	public void setTYPE_ID(Long TYPE_ID) {
 		this.TYPE_ID.set(TYPE_ID);
 	}
 
@@ -24,7 +24,7 @@ public class NT_PRM_TYPE {
 		this.TYPE_NAME.set(TYPE_NAME);
 	}
 
-	public Integer getTYPE_ID() {
+	public Long getTYPE_ID() {
 		return TYPE_ID.get();
 	}
 
@@ -32,7 +32,7 @@ public class NT_PRM_TYPE {
 		return TYPE_NAME.get();
 	}
 
-	public IntegerProperty TYPE_IDProperty() {
+	public LongProperty TYPE_IDProperty() {
 		return TYPE_ID;
 	}
 

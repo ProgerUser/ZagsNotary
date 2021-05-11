@@ -122,7 +122,7 @@ public class UpdNatList {
 	private XTableColumn<VUPD_NAT, String> OPER;
 
 	@FXML
-	private XTableColumn<VUPD_NAT, Integer> ID;
+	private XTableColumn<VUPD_NAT, Long> ID;
 
 	@FXML
 	private XTableColumn<VUPD_NAT, LocalDate> CR_DATE;
@@ -137,7 +137,7 @@ public class UpdNatList {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 
-			if (DBUtil.OdbAction(110) == 0) {
+			if (DBUtil.OdbAction(110l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -178,7 +178,7 @@ public class UpdNatList {
 				Msg.Message("Выберите строку!");
 			} else {
 
-				if (DBUtil.OdbAction(112) == 0) {
+				if (DBUtil.OdbAction(112l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -221,7 +221,7 @@ public class UpdNatList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from UPD_NAT where ID = ?;" + "commit;" + "end;");
 							VUPD_NAT cl = UPD_NAT.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getID());
+							delete.setLong(1, cl.getID());
 							delete.executeUpdate();
 							delete.close();
 							
@@ -260,11 +260,11 @@ public class UpdNatList {
 		this.conn.setAutoCommit(false);
 	}
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
 
-				if (DBUtil.OdbAction(111) == 0) {
+				if (DBUtil.OdbAction(111l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -273,8 +273,8 @@ public class UpdNatList {
 						.prepareStatement(
 								"select * from UPD_NAT where  ID = ? for update nowait");
 				UPD_NAT cl = Initialize2(docid);
-				selforupd.setInt(1, cl.getID());
-				//selforupd.setInt(2, cl.getCUSID());
+				selforupd.setLong(1, cl.getID());
+				//selforupd.setLong(2, cl.getCUSID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -438,7 +438,7 @@ public class UpdNatList {
 						// SqlMap sql = new SqlMap().load("/updname/sql.xml");
 						// String readRecordSQL = sql.getSql("QueryForReport");
 						PreparedStatement prepStmt = conn.prepareStatement("select * from V_REP_UPD_NAT where ID = ?");
-						prepStmt.setInt(1, UPD_NAT.getSelectionModel().getSelectedItem().getID());
+						prepStmt.setLong(1, UPD_NAT.getSelectionModel().getSelectedItem().getID());
 						ResultSet rs = prepStmt.executeQuery();
 						V_REP_UPD_NAT list = null;
 						if (rs.next()) {
@@ -454,11 +454,11 @@ public class UpdNatList {
 							list.setADDRESS(rs.getString("ADDRESS"));
 							list.setNATIONALITY(rs.getString("NATIONALITY"));
 							list.setLASTNAME(rs.getString("LASTNAME"));
-							list.setID(rs.getInt("ID"));
+							list.setID(rs.getLong("ID"));
 							list.setMIDDLNAME(rs.getString("MIDDLNAME"));
 							list.setOLD_NAT(rs.getString("OLD_NAT"));
 							list.setFIRSTNAME(rs.getString("FIRSTNAME"));
-							list.setBR_ACT_ID(rs.getInt("BR_ACT_ID"));
+							list.setBR_ACT_ID(rs.getLong("BR_ACT_ID"));
 							list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
 							list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
 						}
@@ -607,19 +607,19 @@ public class UpdNatList {
 			ObservableList<VUPD_NAT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				VUPD_NAT list = new VUPD_NAT();
-				list.setCUSID(rs.getInt("CUSID"));
+				list.setCUSID(rs.getLong("CUSID"));
 				list.setOLD_NAT(rs.getString("OLD_NAT"));
 				list.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
 						: null);
 				list.setCR_TIME(rs.getString("CR_TIME"));
 				list.setOPER(rs.getString("OPER"));
-				list.setID(rs.getInt("ID"));
-				list.setBRN_ACT_ID(rs.getInt("BRN_ACT_ID"));
+				list.setID(rs.getLong("ID"));
+				list.setBRN_ACT_ID(rs.getLong("BRN_ACT_ID"));
 				list.setFIO(rs.getString("FIO"));
 				list.setNEW_NAT(rs.getString("NEW_NAT"));
 				list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
+				list.setZAGS_ID(rs.getLong("ZAGS_ID"));
 				list.setTM$DOC_DATE((rs.getDate("TM$DOC_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")), formatterdt)
 						: null);
@@ -650,7 +650,7 @@ public class UpdNatList {
 		}
 	}
 
-	UPD_NAT Initialize2(Integer docid) {
+	UPD_NAT Initialize2(Long docid) {
 		UPD_NAT list = null;
 		try {
 			Main.logger = Logger.getLogger(getClass());
@@ -658,22 +658,22 @@ public class UpdNatList {
 			String selectStmt = "" + "select " + "(select g.ccusname from cus g where g.icusnum = t.cusid) FIO,"
 					+ " t.*" + " from UPD_NAT t " + "where t.ID = ?";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, docid);
+			prepStmt.setLong(1, docid);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<UPD_NAT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				list = new UPD_NAT();
-				list.setID(rs.getInt("ID"));
-				list.setCUSID(rs.getInt("CUSID"));
+				list.setID(rs.getLong("ID"));
+				list.setCUSID(rs.getLong("CUSID"));
 				list.setOPER(rs.getString("OPER"));
 				list.setDOC_DATE((rs.getDate("DOC_DATE") != null)
 						? LocalDateTime.parse(
 								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DOC_DATE")), formatterdt)
 						: null);
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
-				list.setBRN_ACT_ID(rs.getInt("BRN_ACT_ID"));
-				list.setOLD_NAT(rs.getInt("OLD_NAT"));
-				list.setNEW_NAT(rs.getInt("NEW_NAT"));
+				list.setZAGS_ID(rs.getLong("ZAGS_ID"));
+				list.setBRN_ACT_ID(rs.getLong("BRN_ACT_ID"));
+				list.setOLD_NAT(rs.getLong("OLD_NAT"));
+				list.setNEW_NAT(rs.getLong("NEW_NAT"));
 				list.setFIO(rs.getString("FIO"));
 				list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
 				list.setSVID_SERIA(rs.getString("SVID_SERIA"));
@@ -752,7 +752,7 @@ public class UpdNatList {
 
 
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_UPD_NAT where ID = ?");
-			prp.setInt(1, UPD_NAT.getSelectionModel().getSelectedItem().getID());
+			prp.setLong(1, UPD_NAT.getSelectionModel().getSelectedItem().getID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				fields.setField("Текст1", rs.getString("ABH_LNAME"));
@@ -921,7 +921,7 @@ public class UpdNatList {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(ID.filterableProperty());
 
@@ -1029,20 +1029,20 @@ public class UpdNatList {
 	 * 
 	 * @return
 	 */
-	int CompareBeforeClose(Integer docid) {
-		int ret = 0;
+	Long CompareBeforeClose(Long docid) {
+		Long ret = 0l;
 		try {
 			Clob lob = conn.createClob();
 			lob.setString(1, RetXml);
 			CallableStatement callStmt = conn.prepareCall("{ call UDPNAT.CompareXmls(?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.setClob(2, lob);
 			callStmt.registerOutParameter(3, Types.VARCHAR);
 			callStmt.registerOutParameter(4, Types.INTEGER);
 			callStmt.execute();
 			if (callStmt.getString(3) == null) {
-				ret = callStmt.getInt(4);
-				System.out.println("ret=" + callStmt.getInt(4));
+				ret = callStmt.getLong(4);
+				System.out.println("ret=" + callStmt.getLong(4));
 			} else {
 				Msg.Message(callStmt.getString(3));
 				Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
@@ -1059,10 +1059,10 @@ public class UpdNatList {
 	/**
 	 * Возврат XML файлов для сравнения
 	 */
-	void XmlsForCompare(Integer docid) {
+	void XmlsForCompare(Long docid) {
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ call UDPNAT.RetXmls(?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
 			callStmt.execute();

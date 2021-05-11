@@ -32,9 +32,9 @@ import com.jyloo.syntheticafx.filter.ComparisonType;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -84,7 +84,7 @@ public class FindBirth {
 	private Button BIRTH_ACT_PRINT;
 
 	@FXML
-	private XTableColumn<SELECTBIRTH, Integer> BIRTH_ACT_ID;
+	private XTableColumn<SELECTBIRTH, Long> BIRTH_ACT_ID;
 
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_MNAME;
@@ -194,13 +194,13 @@ public class FindBirth {
 
 	boolean isopen = false;
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
 				/* LOG */
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from brn_birth_act where  BR_ACT_ID = ? /*for update nowait*/");
-				selforupd.setInt(1, docid);
+				selforupd.setLong(1, docid);
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -342,7 +342,7 @@ public class FindBirth {
 				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
 				list.setLIVE_DEAD(rs.getString("LIVE_DEAD"));
 				list.setFFIO(rs.getString("FFIO"));
-				list.setBRN_AC_ID(rs.getInt("BRN_AC_ID"));
+				list.setBRN_AC_ID(rs.getLong("BRN_AC_ID"));
 				list.setCHILDREN_FIO(rs.getString("CHILDREN_FIO"));
 				list.setMFIO(rs.getString("MFIO"));
 				cus_list.add(list);
@@ -370,7 +370,7 @@ public class FindBirth {
 		}
 	}
 
-	private void AfterAdd(Integer id) {
+	private void AfterAdd(Long id) {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			// SqlMap sql = new SqlMap().load("/BirthSql.xml");
@@ -386,7 +386,7 @@ public class FindBirth {
 				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
 				list.setLIVE_DEAD(rs.getString("LIVE_DEAD"));
 				list.setFFIO(rs.getString("FFIO"));
-				list.setBRN_AC_ID(rs.getInt("BRN_AC_ID"));
+				list.setBRN_AC_ID(rs.getLong("BRN_AC_ID"));
 				list.setCHILDREN_FIO(rs.getString("CHILDREN_FIO"));
 				list.setMFIO(rs.getString("MFIO"));
 				cus_list.add(list);
@@ -520,7 +520,7 @@ public class FindBirth {
 							PreparedStatement prst = conn
 									.prepareStatement(" " + "declare " + "pragma autonomous_transaction;" + "begin "
 											+ "delete from brn_birth_act where br_act_id = ?;" + "commit;" + "end;");
-							prst.setInt(1, id.getBRN_AC_ID());
+							prst.setLong(1, id.getBRN_AC_ID());
 							prst.executeUpdate();
 							prst.close();
 							InitBirths();
@@ -689,7 +689,7 @@ public class FindBirth {
 				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
 				list.setLIVE_DEAD(rs.getString("LIVE_DEAD"));
 				list.setFFIO(rs.getString("FFIO"));
-				list.setBRN_AC_ID(rs.getInt("BRN_AC_ID"));
+				list.setBRN_AC_ID(rs.getLong("BRN_AC_ID"));
 				list.setCHILDREN_FIO(rs.getString("CHILDREN_FIO"));
 				list.setMFIO(rs.getString("MFIO"));
 				cus_list.add(list);
@@ -782,13 +782,13 @@ public class FindBirth {
 			FFIO.setCellValueFactory(cellData -> cellData.getValue().FFIOProperty());
 			/*
 			 * BIRTH_ACT_ID.setCellFactory( TextFieldTableCell.<BIRTH_ACT,
-			 * Integer>forTableColumn(new IntegerStringConverter()));
+			 * Long>forTableColumn(new IntegerStringConverter()));
 			 * BIRTH_ACT_DATE.setCellFactory( TextFieldTableCell.<BIRTH_ACT,
 			 * LocalDateTime>forTableColumn(new LocalDateTimeStringConverter()));
 			 */
-			BIRTH_ACT_ID.setOnEditCommit(new EventHandler<CellEditEvent<SELECTBIRTH, Integer>>() {
+			BIRTH_ACT_ID.setOnEditCommit(new EventHandler<CellEditEvent<SELECTBIRTH, Long>>() {
 				@Override
-				public void handle(CellEditEvent<SELECTBIRTH, Integer> t) {
+				public void handle(CellEditEvent<SELECTBIRTH, Long> t) {
 					((SELECTBIRTH) t.getTableView().getItems().get(t.getTablePosition().getRow()))
 							.setBRN_AC_ID(t.getNewValue());
 				}
@@ -832,20 +832,20 @@ public class FindBirth {
 	 * 
 	 * @return
 	 */
-	int CompareBeforeClose(Integer docid) {
-		int ret = 0;
+	Long CompareBeforeClose(Long docid) {
+		Long ret = 0l;
 		try {
 			Clob lob = conn.createClob();
 			lob.setString(1, RetXml);
 			CallableStatement callStmt = conn.prepareCall("{ call BURN_UTIL.CompareXmls(?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.setClob(2, lob);
 			callStmt.registerOutParameter(3, Types.VARCHAR);
 			callStmt.registerOutParameter(4, Types.INTEGER);
 			callStmt.execute();
 			if (callStmt.getString(3) == null) {
-				ret = callStmt.getInt(4);
-				System.out.println("ret=" + callStmt.getInt(4));
+				ret = callStmt.getLong(4);
+				System.out.println("ret=" + callStmt.getLong(4));
 				callStmt.close();
 			} else {
 				Msg.Message(callStmt.getString(3));
@@ -863,7 +863,7 @@ public class FindBirth {
 
 	private StringProperty Fio;
 	private BooleanProperty Status;
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public String getFio() {
 		return this.Fio.get();
@@ -881,11 +881,11 @@ public class FindBirth {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
@@ -893,17 +893,17 @@ public class FindBirth {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 		this.Fio = new SimpleStringProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 		this.Where = new SimpleStringProperty();
 	}
 
 	/**
 	 * Возврат XML файлов для сравнения
 	 */
-	void XmlsForCompare(Integer docid) {
+	void XmlsForCompare(Long docid) {
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ call BURN_UTIL.RetXmls(?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
 			callStmt.execute();

@@ -117,7 +117,7 @@ public class DivorceList {
 	private XTableColumn<DIVORCE_CERT, String> HeFio;
 
 	@FXML
-	private XTableColumn<DIVORCE_CERT, Integer> DIVC_ID;
+	private XTableColumn<DIVORCE_CERT, Long> DIVC_ID;
 
 	@FXML
 	private XTableColumn<DIVORCE_CERT, LocalDate> CR_DATE;
@@ -144,7 +144,7 @@ public class DivorceList {
 //			}
 
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_DIVORCE_CERT where DIVC_ID = ?");
-			prp.setInt(1, DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID());
+			prp.setLong(1, DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				fields.setField("Текст1", rs.getString("F1"));
@@ -239,7 +239,7 @@ public class DivorceList {
 			// preparing variables
 			Variables variables = new Variables();
 			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_DIVORCE where DIVC_ID = ?");
-			prepStmt.setInt(1, DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID());
+			prepStmt.setLong(1, DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID());
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
 				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
@@ -282,7 +282,7 @@ public class DivorceList {
     
 	void Add() {
 		try {
-			if (DBUtil.OdbAction(98) == 0) {
+			if (DBUtil.OdbAction(98l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -320,7 +320,7 @@ public class DivorceList {
 	void Delete() {
 		try {
 
-			if (DBUtil.OdbAction(100) == 0) {
+			if (DBUtil.OdbAction(100l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -368,7 +368,7 @@ public class DivorceList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from DIVORCE_CERT where DIVC_ID = ?;" + "commit;" + "end;");
 							DIVORCE_CERT cl = DIVORCE_CERT.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getDIVC_ID());
+							delete.setLong(1, cl.getDIVC_ID());
 							delete.executeUpdate();
 							delete.close();
 							Refresh();
@@ -379,12 +379,7 @@ public class DivorceList {
 								Msg.Message(ExceptionUtils.getStackTrace(e1));
 								Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 							}
-							Msg.Message(ExceptionUtils.getStackTrace(e));
-							Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-							String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-							String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-							int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-							DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+							DBUtil.LOG_ERROR(e);
 						}
 						newWindow_yn.close();
 					}
@@ -404,13 +399,13 @@ public class DivorceList {
 
 	boolean isopen = false;
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
 
 				Main.logger = Logger.getLogger(getClass());
 
-				if (DBUtil.OdbAction(99) == 0) {
+				if (DBUtil.OdbAction(99l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -418,7 +413,7 @@ public class DivorceList {
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from DIVORCE_CERT where  DIVC_ID = ? for update nowait");
 				DIVORCE_CERT cl = Initialize2(docid);
-				selforupd.setInt(1, cl.getDIVC_ID());
+				selforupd.setLong(1, cl.getDIVC_ID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -579,7 +574,7 @@ public class DivorceList {
 						Variables variables = new Variables();
 						PreparedStatement prepStmt = conn
 								.prepareStatement("select * from V_REP_DIVORCE_CERT where DIVC_ID = ?");
-						prepStmt.setInt(1, DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID());
+						prepStmt.setLong(1, DIVORCE_CERT.getSelectionModel().getSelectedItem().getDIVC_ID());
 						ResultSet rs = prepStmt.executeQuery();
 						V_REP_DIVORCE_CERT list = null;
 						if (rs.next()) {
@@ -761,10 +756,10 @@ public class DivorceList {
 
 				list.setDIVC_SHE_LNBEF(rs.getString("DIVC_SHE_LNBEF"));
 				list.setDIVC_ZMNAME(rs.getString("DIVC_ZMNAME"));
-				list.setDIVC_ZOSCN2(rs.getInt("DIVC_ZOSCN2"));
+				list.setDIVC_ZOSCN2(rs.getLong("DIVC_ZOSCN2"));
 				list.setDIVC_NUM(rs.getString("DIVC_NUM"));
 				list.setSHEFIO(rs.getString("SHEFIO"));
-				list.setDIVC_ZOSPRISON(rs.getInt("DIVC_ZOSPRISON"));
+				list.setDIVC_ZOSPRISON(rs.getLong("DIVC_ZOSPRISON"));
 				list.setDIVC_ZАNAME(rs.getString("DIVC_ZАNAME"));
 				list.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
@@ -772,10 +767,10 @@ public class DivorceList {
 				list.setCR_TIME(rs.getString("CR_TIME"));
 				list.setDIVC_SERIA(rs.getString("DIVC_SERIA"));
 				list.setDIVC_ZLNAME(rs.getString("DIVC_ZLNAME"));
-				list.setDIVC_ID(rs.getInt("DIVC_ID"));
+				list.setDIVC_ID(rs.getLong("DIVC_ID"));
 				list.setDIVC_USR(rs.getString("DIVC_USR"));
-				list.setDIVC_CAN(rs.getInt("DIVC_CAN"));
-				list.setDIVC_MC_MERCER(rs.getInt("DIVC_MC_MERCER"));
+				list.setDIVC_CAN(rs.getLong("DIVC_CAN"));
+				list.setDIVC_MC_MERCER(rs.getLong("DIVC_MC_MERCER"));
 				list.setDIVC_HE_LNBEF(rs.getString("DIVC_HE_LNBEF"));
 				list.setDIVC_SHE_LNAFT(rs.getString("DIVC_SHE_LNAFT"));
 				list.setDIVC_ZOSCD2((rs.getDate("DIVC_ZOSCD2") != null) ? LocalDate
@@ -787,11 +782,11 @@ public class DivorceList {
 				list.setDIVC_DT((rs.getDate("DIVC_DT") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_DT")), formatter)
 						: null);
-				list.setDIVC_ZOSCN(rs.getInt("DIVC_ZOSCN"));
+				list.setDIVC_ZOSCN(rs.getLong("DIVC_ZOSCN"));
 				list.setDIVC_TYPE(rs.getString("DIVC_TYPE"));
 				list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));
 				list.setDIVC_ZPLACE(rs.getString("DIVC_ZPLACE"));
-				list.setDIVC_HE(rs.getInt("DIVC_HE"));
+				list.setDIVC_HE(rs.getLong("DIVC_HE"));
 				list.setTM$DIVC_DATE((rs.getDate("TM$DIVC_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DIVC_DATE")), formatterwt)
 						: null);
@@ -799,9 +794,9 @@ public class DivorceList {
 				list.setDIVC_TCHD((rs.getDate("DIVC_TCHD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_TCHD")), formatter)
 						: null);
-				list.setDIVC_SHE(rs.getInt("DIVC_SHE"));
+				list.setDIVC_SHE(rs.getLong("DIVC_SHE"));
 				list.setDIVC_HE_LNAFT(rs.getString("DIVC_HE_LNAFT"));
-				list.setDIVC_ZAGS(rs.getInt("DIVC_ZAGS"));
+				list.setDIVC_ZAGS(rs.getLong("DIVC_ZAGS"));
 				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
 				list.setHEFIO(rs.getString("HEFIO"));
@@ -898,7 +893,7 @@ public class DivorceList {
 		}
 	}
 
-	DIVORCE_CERT Initialize2(Integer docid) {
+	DIVORCE_CERT Initialize2(Long docid) {
 		DIVORCE_CERT list = null;
 		try {
 			Main.logger = Logger.getLogger(getClass());
@@ -909,17 +904,17 @@ public class DivorceList {
 			String selectStmt = "select * from VDIVORCE_CERT t where DIVC_ID = ? ";
 
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, docid);
+			prepStmt.setLong(1, docid);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<DIVORCE_CERT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				list = new DIVORCE_CERT();
 				list.setDIVC_SHE_LNBEF(rs.getString("DIVC_SHE_LNBEF"));
 				list.setDIVC_ZMNAME(rs.getString("DIVC_ZMNAME"));
-				list.setDIVC_ZOSCN2(rs.getInt("DIVC_ZOSCN2"));
+				list.setDIVC_ZOSCN2(rs.getLong("DIVC_ZOSCN2"));
 				list.setDIVC_NUM(rs.getString("DIVC_NUM"));
 				list.setSHEFIO(rs.getString("SHEFIO"));
-				list.setDIVC_ZOSPRISON(rs.getInt("DIVC_ZOSPRISON"));
+				list.setDIVC_ZOSPRISON(rs.getLong("DIVC_ZOSPRISON"));
 				list.setDIVC_ZАNAME(rs.getString("DIVC_ZАNAME"));
 				list.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
@@ -927,10 +922,10 @@ public class DivorceList {
 				list.setCR_TIME(rs.getString("CR_TIME"));
 				list.setDIVC_SERIA(rs.getString("DIVC_SERIA"));
 				list.setDIVC_ZLNAME(rs.getString("DIVC_ZLNAME"));
-				list.setDIVC_ID(rs.getInt("DIVC_ID"));
+				list.setDIVC_ID(rs.getLong("DIVC_ID"));
 				list.setDIVC_USR(rs.getString("DIVC_USR"));
-				list.setDIVC_CAN(rs.getInt("DIVC_CAN"));
-				list.setDIVC_MC_MERCER(rs.getInt("DIVC_MC_MERCER"));
+				list.setDIVC_CAN(rs.getLong("DIVC_CAN"));
+				list.setDIVC_MC_MERCER(rs.getLong("DIVC_MC_MERCER"));
 				list.setDIVC_HE_LNBEF(rs.getString("DIVC_HE_LNBEF"));
 				list.setDIVC_SHE_LNAFT(rs.getString("DIVC_SHE_LNAFT"));
 				list.setDIVC_ZOSCD2((rs.getDate("DIVC_ZOSCD2") != null) ? LocalDate
@@ -942,11 +937,11 @@ public class DivorceList {
 				list.setDIVC_DT((rs.getDate("DIVC_DT") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_DT")), formatter)
 						: null);
-				list.setDIVC_ZOSCN(rs.getInt("DIVC_ZOSCN"));
+				list.setDIVC_ZOSCN(rs.getLong("DIVC_ZOSCN"));
 				list.setDIVC_TYPE(rs.getString("DIVC_TYPE"));
 				list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));
 				list.setDIVC_ZPLACE(rs.getString("DIVC_ZPLACE"));
-				list.setDIVC_HE(rs.getInt("DIVC_HE"));
+				list.setDIVC_HE(rs.getLong("DIVC_HE"));
 				list.setTM$DIVC_DATE((rs.getDate("TM$DIVC_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DIVC_DATE")), formatterwt)
 						: null);
@@ -954,9 +949,9 @@ public class DivorceList {
 				list.setDIVC_TCHD((rs.getDate("DIVC_TCHD") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_TCHD")), formatter)
 						: null);
-				list.setDIVC_SHE(rs.getInt("DIVC_SHE"));
+				list.setDIVC_SHE(rs.getLong("DIVC_SHE"));
 				list.setDIVC_HE_LNAFT(rs.getString("DIVC_HE_LNAFT"));
-				list.setDIVC_ZAGS(rs.getInt("DIVC_ZAGS"));
+				list.setDIVC_ZAGS(rs.getLong("DIVC_ZAGS"));
 				list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate
 						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
 				list.setHEFIO(rs.getString("HEFIO"));
@@ -1033,7 +1028,7 @@ public class DivorceList {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(DIVC_ID.filterableProperty());
 
@@ -1137,20 +1132,20 @@ public class DivorceList {
 	 * 
 	 * @return
 	 */
-	int CompareBeforeClose(Integer docid) {
-		int ret = 0;
+	Long CompareBeforeClose(Long docid) {
+		Long ret = 0l;
 		try {
 			Clob lob = conn.createClob();
 			lob.setString(1, RetXml);
 			CallableStatement callStmt = conn.prepareCall("{ call Divorce.CompareXmls(?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.setClob(2, lob);
 			callStmt.registerOutParameter(3, Types.VARCHAR);
 			callStmt.registerOutParameter(4, Types.INTEGER);
 			callStmt.execute();
 			if (callStmt.getString(3) == null) {
-				ret = callStmt.getInt(4);
-				System.out.println("ret=" + callStmt.getInt(4));
+				ret = callStmt.getLong(4);
+				System.out.println("ret=" + callStmt.getLong(4));
 			} else {
 				Msg.Message(callStmt.getString(3));
 				Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
@@ -1168,10 +1163,10 @@ public class DivorceList {
 	/**
 	 * Возврат XML файлов для сравнения
 	 */
-	void XmlsForCompare(Integer docid) {
+	void XmlsForCompare(Long docid) {
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ call Divorce.RetXmls(?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
 			callStmt.execute();

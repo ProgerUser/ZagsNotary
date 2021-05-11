@@ -1,15 +1,15 @@
 package notary.doc.html.model;
 
 import java.time.LocalDateTime;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class NT_SCANS {
 	/** Ссылка на документ */
-	private IntegerProperty SC_DOC;
+	private LongProperty SC_DOC;
 	/** Название файла */
 	private StringProperty SC_FILE_NAME;
 	/** Дата добавления */
@@ -17,20 +17,20 @@ public class NT_SCANS {
 	/** Пользователь */
 	private StringProperty SC_OPER;
 	/** ИД файла */
-	private IntegerProperty SC_ID;
+	private LongProperty SC_ID;
 	/** Тип документа (возможно что только PDF) */
 	private StringProperty SC_TYPE;
 
 	public NT_SCANS() {
-		this.SC_DOC = new SimpleIntegerProperty();
+		this.SC_DOC = new SimpleLongProperty();
 		this.SC_FILE_NAME = new SimpleStringProperty();
 		this.SC_DATE = new SimpleObjectProperty<>();
 		this.SC_OPER = new SimpleStringProperty();
-		this.SC_ID = new SimpleIntegerProperty();
+		this.SC_ID = new SimpleLongProperty();
 		this.SC_TYPE = new SimpleStringProperty();
 	}
 
-	public void setSC_DOC(Integer SC_DOC) {
+	public void setSC_DOC(Long SC_DOC) {
 		this.SC_DOC.set(SC_DOC);
 	}
 
@@ -46,7 +46,7 @@ public class NT_SCANS {
 		this.SC_OPER.set(SC_OPER);
 	}
 
-	public void setSC_ID(Integer SC_ID) {
+	public void setSC_ID(Long SC_ID) {
 		this.SC_ID.set(SC_ID);
 	}
 
@@ -54,7 +54,7 @@ public class NT_SCANS {
 		this.SC_TYPE.set(SC_TYPE);
 	}
 
-	public Integer getSC_DOC() {
+	public Long getSC_DOC() {
 		return SC_DOC.get();
 	}
 
@@ -70,7 +70,7 @@ public class NT_SCANS {
 		return SC_OPER.get();
 	}
 
-	public Integer getSC_ID() {
+	public Long getSC_ID() {
 		return SC_ID.get();
 	}
 
@@ -78,7 +78,7 @@ public class NT_SCANS {
 		return SC_TYPE.get();
 	}
 
-	public IntegerProperty SC_DOCProperty() {
+	public LongProperty SC_DOCProperty() {
 		return SC_DOC;
 	}
 
@@ -94,7 +94,7 @@ public class NT_SCANS {
 		return SC_OPER;
 	}
 
-	public IntegerProperty SC_IDProperty() {
+	public LongProperty SC_IDProperty() {
 		return SC_ID;
 	}
 

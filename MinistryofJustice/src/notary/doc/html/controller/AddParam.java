@@ -47,7 +47,7 @@ public class AddParam {
 	private TreeTableView<NT_TEMP_LIST_PARAM> param;
 
 	@FXML
-	private TreeTableColumn<NT_TEMP_LIST_PARAM, Integer> id;
+	private TreeTableColumn<NT_TEMP_LIST_PARAM, Long> id;
 
 	@FXML
 	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> name;
@@ -109,42 +109,42 @@ public class AddParam {
 	@SuppressWarnings("unchecked")
 	void fillTree() {
 		root = new TreeItem<>("Root");
-		Map<Integer, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
-		Map<Integer, Integer> parents = new HashMap<>();
+		Map<Long, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
+		Map<Long, Long> parents = new HashMap<>();
 		try {
 			PreparedStatement prp = conn.prepareStatement(
 					DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
 			Clob clob = conn.createClob();
 			clob.setString(1, json);
-			prp.setInt(1, vals.getID());
+			prp.setLong(1, vals.getID());
 			prp.setClob(2, clob);
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				prm = new NT_TEMP_LIST_PARAM();
-				prm.setPRM_ID(rs.getInt("PRM_ID"));
+				prm.setPRM_ID(rs.getLong("PRM_ID"));
 				prm.setPRM_NAME(rs.getString("PRM_NAME"));
 				prm.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
-				prm.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+				prm.setPRM_TMP_ID(rs.getLong("PRM_TMP_ID"));
 				prm.setPRM_SQL(rs.getString("PRM_SQL"));
-				prm.setPRM_TYPE(rs.getInt("PRM_TYPE"));
-				prm.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+				prm.setPRM_TYPE(rs.getLong("PRM_TYPE"));
+				prm.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
 				prm.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 				if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
 					prm.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 				}
 				prm.setTYPE_NAME(rs.getString("TYPE_NAME"));
 				prm.setREQUIRED(rs.getString("REQUIRED"));
-				prm.setPARENTS(rs.getInt("PARENTS"));
+				prm.setPARENTS(rs.getLong("PARENTS"));
 				prm.setHTML_CODE(rs.getString("HTML_CODE"));
-				itemById.put(rs.getInt("PRM_ID"), new TreeItem<>(prm));
-				parents.put(rs.getInt("PRM_ID"), rs.getInt("PARENTS"));
+				itemById.put(rs.getLong("PRM_ID"), new TreeItem<>(prm));
+				parents.put(rs.getLong("PRM_ID"), rs.getLong("PARENTS"));
 			}
 			prp.close();
 			rs.close();
 
-			for (Map.Entry<Integer, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
-				Integer key = entry.getKey();
-				Integer parent = parents.get(key);
+			for (Map.Entry<Long, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
+				Long key = entry.getKey();
+				Long parent = parents.get(key);
 				if (parent.equals(key)) {
 					root = entry.getValue();
 					root.setExpanded(true);

@@ -93,7 +93,7 @@ public class AddDoc {
 	private TreeTableView<NT_TEMP_LIST_PARAM> param;
 
 	@FXML
-	private TreeTableColumn<NT_TEMP_LIST_PARAM, Integer> id;
+	private TreeTableColumn<NT_TEMP_LIST_PARAM, Long> id;
 
 	@FXML
 	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> name;
@@ -134,42 +134,42 @@ public class AddDoc {
 				System.out.println(JsonStr);
 
 				roots = new TreeItem<>("Root");
-				Map<Integer, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
-				Map<Integer, Integer> parents = new HashMap<>();
+				Map<Long, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
+				Map<Long, Long> parents = new HashMap<>();
 
 				PreparedStatement prp = conn.prepareStatement(
 						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc1"));
 				Clob clob = conn.createClob();
 				clob.setString(1, JsonStr.trim());
-				prp.setInt(1, val.getID());
+				prp.setLong(1, val.getID());
 				prp.setClob(2, clob);
 				ResultSet rs = prp.executeQuery();
 				while (rs.next()) {
 					prm = new NT_TEMP_LIST_PARAM();
-					prm.setPRM_ID(rs.getInt("PRM_ID"));
+					prm.setPRM_ID(rs.getLong("PRM_ID"));
 					prm.setPRM_NAME(rs.getString("PRM_NAME"));
 					prm.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
-					prm.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+					prm.setPRM_TMP_ID(rs.getLong("PRM_TMP_ID"));
 					prm.setPRM_SQL(rs.getString("PRM_SQL"));
-					prm.setPRM_TYPE(rs.getInt("PRM_TYPE"));
-					prm.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					prm.setPRM_TYPE(rs.getLong("PRM_TYPE"));
+					prm.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
 					prm.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 					if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
 						prm.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 					}
 					prm.setTYPE_NAME(rs.getString("TYPE_NAME"));
 					prm.setREQUIRED(rs.getString("REQUIRED"));
-					prm.setPARENTS(rs.getInt("PARENTS"));
+					prm.setPARENTS(rs.getLong("PARENTS"));
 					prm.setHTML_CODE(rs.getString("HTML_CODE"));
-					itemById.put(rs.getInt("PRM_ID"), new TreeItem<>(prm));
-					parents.put(rs.getInt("PRM_ID"), rs.getInt("PARENTS"));
+					itemById.put(rs.getLong("PRM_ID"), new TreeItem<>(prm));
+					parents.put(rs.getLong("PRM_ID"), rs.getLong("PARENTS"));
 				}
 				prp.close();
 				rs.close();
 
-				for (Map.Entry<Integer, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
-					Integer key = entry.getKey();
-					Integer parent = parents.get(key);
+				for (Map.Entry<Long, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
+					Long key = entry.getKey();
+					Long parent = parents.get(key);
 					if (parent.equals(key)) {
 						roots = entry.getValue();
 					} else {
@@ -257,23 +257,23 @@ public class AddDoc {
 				PreparedStatement prp = conn
 						.prepareStatement("select * from VNT_TEMP_LIST_PARAM t where PRM_NAME = ? and PRM_TMP_ID = ?");
 				prp.setString(1, id);
-				prp.setInt(2, val.getID());
+				prp.setLong(2, val.getID());
 				ResultSet rs = prp.executeQuery();
 				while (rs.next()) {
 					list = new NT_TEMP_LIST_PARAM();
-					list.setPRM_ID(rs.getInt("PRM_ID"));
+					list.setPRM_ID(rs.getLong("PRM_ID"));
 					list.setPRM_NAME(rs.getString("PRM_NAME"));
 					list.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
-					list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+					list.setPRM_TMP_ID(rs.getLong("PRM_TMP_ID"));
 					list.setPRM_SQL(rs.getString("PRM_SQL"));
-					list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
-					list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					list.setPRM_TYPE(rs.getLong("PRM_TYPE"));
+					list.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
 					list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 					if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
 						list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 					}
 					list.setPDJ_NAME(rs.getString("PDJ_NAME"));
-					list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					list.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
 					list.setTYPE_NAME(rs.getString("TYPE_NAME"));
 					list.setREQUIRED(rs.getString("REQUIRED"));
 				}
@@ -329,7 +329,7 @@ public class AddDoc {
 									{
 										if (list.getPRM_FOR_PRM_SQL().length() > 10) {
 											PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
-											prp.setInt(1, Integer.valueOf(controller.getCode_s()));
+											prp.setLong(1, Long.valueOf(controller.getCode_s()));
 											ResultSet rs = prp.executeQuery();
 											while (rs.next()) {
 												if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
@@ -548,11 +548,11 @@ public class AddDoc {
 				{
 					PreparedStatement prp = conn
 							.prepareStatement("select * from NT_TEMP_LIST_PARAM t where PRM_TMP_ID = ?");
-					prp.setInt(1, val.getID());
+					prp.setLong(1, val.getID());
 					ResultSet rs = prp.executeQuery();
 					while (rs.next()) {
 						// Если тип параметра список
-						if (rs.getInt("PRM_TYPE") == 1) {
+						if (rs.getLong("PRM_TYPE") == 1) {
 							// Если параметр присутствует на странице
 							if (json.contains(rs.getString("PRM_NAME"))) {
 								// Выполнить функцию которая вернет значение атрибута "value"
@@ -593,7 +593,7 @@ public class AddDoc {
 				CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC_HTML(?,?,?,?,?)}");
 				cls.registerOutParameter(1, Types.VARCHAR);
 				cls.registerOutParameter(5, Types.VARCHAR);
-				cls.setInt(2, val.getID());
+				cls.setLong(2, val.getID());
 				Clob clob = conn.createClob();
 				clob.setString(1, KeyValue.trim());
 				cls.setClob(3, clob);
@@ -610,7 +610,7 @@ public class AddDoc {
 				// --------------
 				if (cls.getString(1) == null) {
 					conn.commit();
-					AddDocId(cls.getInt(5));
+					AddDocId(cls.getLong(5));
 					setStatus(true);
 					onclose();
 				} else {
@@ -631,10 +631,10 @@ public class AddDoc {
 
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-	void AddDocId(Integer Ids) {
+	void AddDocId(Long Ids) {
 		try {
 			PreparedStatement prp = conn.prepareStatement("select * from V_NT_DOC where ID = ?");
-			prp.setInt(1, Ids);
+			prp.setLong(1, Ids);
 			ResultSet rs = prp.executeQuery();
 			ObservableList<V_NT_DOC> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -643,10 +643,10 @@ public class AddDoc {
 					NT_DOC.setHTML_DOCUMENT(new ConvConst().ClobToString(rs.getClob("HTML_DOCUMENT")));
 				}
 				NT_DOC.setCR_TIME(rs.getString("CR_TIME"));
-				NT_DOC.setID(rs.getInt("ID"));
+				NT_DOC.setID(rs.getLong("ID"));
 				NT_DOC.setOPER(rs.getString("OPER"));
-				NT_DOC.setNOTARY(rs.getInt("NOTARY"));
-				NT_DOC.setNT_TYPE(rs.getInt("NT_TYPE"));
+				NT_DOC.setNOTARY(rs.getLong("NOTARY"));
+				NT_DOC.setNT_TYPE(rs.getLong("NT_TYPE"));
 				NT_DOC.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
 						: null);
@@ -825,13 +825,13 @@ public class AddDoc {
 					if (rs.getClob("REP_QUERY") != null) {
 						list.setREP_QUERY(new ConvConst().ClobToString(rs.getClob("REP_QUERY")));
 					}
-					list.setPARENT(rs.getInt("PARENT"));
+					list.setPARENT(rs.getLong("PARENT"));
 					list.setNAMES(rs.getString("NAMES"));
 					list.setNAME(rs.getString("NAME"));
 					if (rs.getClob("HTML_TEMP") != null) {
 						list.setHTML_TEMP(new ConvConst().ClobToString(rs.getClob("HTML_TEMP")));
 					}
-					list.setID(rs.getInt("ID"));
+					list.setID(rs.getLong("ID"));
 					combolist.add(list);
 				}
 				stsmt.close();

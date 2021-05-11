@@ -117,7 +117,7 @@ public class AdoptList {
 	private XTableView<ADOPTOIN> ADOPTOIN;
 
 	@FXML
-	private XTableColumn<ADOPTOIN, Integer> ID;
+	private XTableColumn<ADOPTOIN, Long> ID;
 
 	@FXML
 	private XTableColumn<ADOPTOIN, String> OLD_FIRSTNAME;
@@ -143,7 +143,7 @@ public class AdoptList {
 			// preparing variables
 			Variables variables = new Variables();
 			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_ADOPTOIN where ID = ?");
-			prepStmt.setInt(1, ADOPTOIN.getSelectionModel().getSelectedItem().getID());
+			prepStmt.setLong(1, ADOPTOIN.getSelectionModel().getSelectedItem().getID());
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
 				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
@@ -192,7 +192,7 @@ public class AdoptList {
 //			}
 			
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_ADOPTOIN where ID = ?");
-			prp.setInt(1, ADOPTOIN.getSelectionModel().getSelectedItem().getID());
+			prp.setLong(1, ADOPTOIN.getSelectionModel().getSelectedItem().getID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				fields.setField("Текст1", rs.getString("F1"));
@@ -292,7 +292,7 @@ public class AdoptList {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(ID.filterableProperty());
 
@@ -386,7 +386,7 @@ public class AdoptList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from ADOPTOIN where ID = ?;" + "commit;" + "end;");
 							ADOPTOIN cl = ADOPTOIN.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getID());
+							delete.setLong(1, cl.getID());
 							delete.executeUpdate();
 							Refresh();
 						} catch (SQLException e) {
@@ -417,7 +417,7 @@ public class AdoptList {
 
 	boolean isopen = false;
 
-	ADOPTOIN Initialize2(Integer docid) {
+	ADOPTOIN Initialize2(Long docid) {
 		ADOPTOIN list = null;
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -426,18 +426,18 @@ public class AdoptList {
 
 			String selectStmt = "select * from VADOPTOIN t where ID = ? ";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, docid);
+			prepStmt.setLong(1, docid);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<ADOPTOIN> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				list = new ADOPTOIN();
 				list.setOLD_MIDDLNAME(rs.getString("OLD_MIDDLNAME"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
+				list.setZAGS_ID(rs.getLong("ZAGS_ID"));
 				list.setZAP_SOVET_DEP_TRUD(rs.getString("ZAP_SOVET_DEP_TRUD"));
 				list.setNEW_MIDDLNAME(rs.getString("NEW_MIDDLNAME"));
 				list.setADMOTHERFIO(rs.getString("ADMOTHERFIO"));
-				list.setID(rs.getInt("ID"));
-				list.setCUSID_M(rs.getInt("CUSID_M"));
+				list.setID(rs.getLong("ID"));
+				list.setCUSID_M(rs.getLong("CUSID_M"));
 				list.setBRN_CITY(rs.getString("BRN_CITY"));
 				list.setZAP_ISPOLKOM_RESH(rs.getString("ZAP_ISPOLKOM_RESH"));
 				list.setOLD_BRTH((rs.getDate("OLD_BRTH") != null)
@@ -447,14 +447,14 @@ public class AdoptList {
 				list.setCHILDRENFIO(rs.getString("CHILDRENFIO"));
 				list.setZAP_NUMBER(rs.getString("ZAP_NUMBER"));
 				list.setFATHERFIO(rs.getString("FATHERFIO"));
-				list.setCUSID_F_AD(rs.getInt("CUSID_F_AD"));
-				list.setCUSID_F(rs.getInt("CUSID_F"));
+				list.setCUSID_F_AD(rs.getLong("CUSID_F_AD"));
+				list.setCUSID_F(rs.getLong("CUSID_F"));
 				list.setADFATHERFIO(rs.getString("ADFATHERFIO"));
 				list.setSVID_NOMER(rs.getString("SVID_NOMER"));
 				list.setNEW_LASTNAME(rs.getString("NEW_LASTNAME"));
-				list.setBRNACT(rs.getInt("BRNACT"));
+				list.setBRNACT(rs.getLong("BRNACT"));
 				list.setCR_TIME(rs.getString("CR_TIME"));
-				list.setCUSID_CH(rs.getInt("CUSID_CH"));
+				list.setCUSID_CH(rs.getLong("CUSID_CH"));
 				list.setOPER(rs.getString("OPER"));
 				list.setOLD_FIRSTNAME(rs.getString("OLD_FIRSTNAME"));
 				list.setADOPT_PARENTS(rs.getString("ADOPT_PARENTS"));
@@ -469,7 +469,7 @@ public class AdoptList {
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("NEW_BRTH")), formatter)
 						: null);
 				list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
-				list.setCUSID_M_AD(rs.getInt("CUSID_M_AD"));
+				list.setCUSID_M_AD(rs.getLong("CUSID_M_AD"));
 				list.setZAP_DATE((rs.getDate("ZAP_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("ZAP_DATE")), formatter)
 						: null);
@@ -489,7 +489,7 @@ public class AdoptList {
 				list.setGR_ADOPT(rs.getString("GR_ADOPT"));
 				list.setGR_COURT_DATE((rs.getDate("GR_COURT_DATE") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("GR_COURT_DATE")), formatter) : null);
-				list.setGR_COURT(rs.getInt("GR_COURT"));
+				list.setGR_COURT(rs.getLong("GR_COURT"));
 
 				
 				dlist.add(list);
@@ -510,13 +510,13 @@ public class AdoptList {
 		this.conn.setAutoCommit(false);
 	}
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from ADOPTOIN where  ID = ? for update nowait");
 				ADOPTOIN cl = Initialize2(docid);
-				selforupd.setInt(1, cl.getID());
+				selforupd.setLong(1, cl.getID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -679,7 +679,7 @@ public class AdoptList {
 						// preparing variables
 						Variables variables = new Variables();
 						PreparedStatement prepStmt = conn.prepareStatement("select * from V_REP_ADOPTOIN where ID = ?");
-						prepStmt.setInt(1, ADOPTOIN.getSelectionModel().getSelectedItem().getID());
+						prepStmt.setLong(1, ADOPTOIN.getSelectionModel().getSelectedItem().getID());
 						ResultSet rs = prepStmt.executeQuery();
 						V_REP_ADOPTOIN list = null;
 						if (rs.next()) {
@@ -859,12 +859,12 @@ public class AdoptList {
 				ADOPTOIN list = new ADOPTOIN();
 
 				list.setOLD_MIDDLNAME(rs.getString("OLD_MIDDLNAME"));
-				list.setZAGS_ID(rs.getInt("ZAGS_ID"));
+				list.setZAGS_ID(rs.getLong("ZAGS_ID"));
 				list.setZAP_SOVET_DEP_TRUD(rs.getString("ZAP_SOVET_DEP_TRUD"));
 				list.setNEW_MIDDLNAME(rs.getString("NEW_MIDDLNAME"));
 				list.setADMOTHERFIO(rs.getString("ADMOTHERFIO"));
-				list.setID(rs.getInt("ID"));
-				list.setCUSID_M(rs.getInt("CUSID_M"));
+				list.setID(rs.getLong("ID"));
+				list.setCUSID_M(rs.getLong("CUSID_M"));
 				list.setBRN_CITY(rs.getString("BRN_CITY"));
 				list.setZAP_ISPOLKOM_RESH(rs.getString("ZAP_ISPOLKOM_RESH"));
 				list.setOLD_BRTH((rs.getDate("OLD_BRTH") != null)
@@ -874,14 +874,14 @@ public class AdoptList {
 				list.setCHILDRENFIO(rs.getString("CHILDRENFIO"));
 				list.setZAP_NUMBER(rs.getString("ZAP_NUMBER"));
 				list.setFATHERFIO(rs.getString("FATHERFIO"));
-				list.setCUSID_F_AD(rs.getInt("CUSID_F_AD"));
-				list.setCUSID_F(rs.getInt("CUSID_F"));
+				list.setCUSID_F_AD(rs.getLong("CUSID_F_AD"));
+				list.setCUSID_F(rs.getLong("CUSID_F"));
 				list.setADFATHERFIO(rs.getString("ADFATHERFIO"));
 				list.setSVID_NOMER(rs.getString("SVID_NOMER"));
 				list.setNEW_LASTNAME(rs.getString("NEW_LASTNAME"));
-				list.setBRNACT(rs.getInt("BRNACT"));
+				list.setBRNACT(rs.getLong("BRNACT"));
 				list.setCR_TIME(rs.getString("CR_TIME"));
-				list.setCUSID_CH(rs.getInt("CUSID_CH"));
+				list.setCUSID_CH(rs.getLong("CUSID_CH"));
 				list.setOPER(rs.getString("OPER"));
 				list.setOLD_FIRSTNAME(rs.getString("OLD_FIRSTNAME"));
 				list.setADOPT_PARENTS(rs.getString("ADOPT_PARENTS"));
@@ -896,7 +896,7 @@ public class AdoptList {
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("NEW_BRTH")), formatter)
 						: null);
 				list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
-				list.setCUSID_M_AD(rs.getInt("CUSID_M_AD"));
+				list.setCUSID_M_AD(rs.getLong("CUSID_M_AD"));
 				list.setZAP_DATE((rs.getDate("ZAP_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("ZAP_DATE")), formatter)
 						: null);
@@ -909,7 +909,7 @@ public class AdoptList {
 				list.setGR_ADOPT(rs.getString("GR_ADOPT"));
 				list.setGR_COURT_DATE((rs.getDate("GR_COURT_DATE") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("GR_COURT_DATE")), formatter) : null);
-				list.setGR_COURT(rs.getInt("GR_COURT"));
+				list.setGR_COURT(rs.getLong("GR_COURT"));
 
 				dlist.add(list);
 			}
@@ -1162,20 +1162,20 @@ public class AdoptList {
 	 * 
 	 * @return
 	 */
-	int CompareBeforeClose(Integer docid) {
-		int ret = 0;
+	Long CompareBeforeClose(Long docid) {
+		Long ret = 0l;
 		try {
 			Clob lob = conn.createClob();
 			lob.setString(1, RetXml);
 			CallableStatement callStmt = conn.prepareCall("{ call ADOPT.CompareXmls(?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.setClob(2, lob);
 			callStmt.registerOutParameter(3, Types.VARCHAR);
 			callStmt.registerOutParameter(4, Types.INTEGER);
 			callStmt.execute();
 			if (callStmt.getString(3) == null) {
-				ret = callStmt.getInt(4);
-				System.out.println("ret=" + callStmt.getInt(4));
+				ret = callStmt.getLong(4);
+				System.out.println("ret=" + callStmt.getLong(4));
 				callStmt.close();
 			} else {
 				Msg.Message(callStmt.getString(3));
@@ -1194,10 +1194,10 @@ public class AdoptList {
 	/**
 	 * Возврат XML файлов для сравнения
 	 */
-	void XmlsForCompare(Integer docid) {
+	void XmlsForCompare(Long docid) {
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ call ADOPT.RetXmls(?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
 			callStmt.execute();

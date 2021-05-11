@@ -58,7 +58,7 @@ public class OtdList {
 	private FilteredTableColumn<OTD, String> COTDNAME;
 
 	@FXML
-	private FilteredTableColumn<OTD, Integer> IOTDNUM;
+	private FilteredTableColumn<OTD, Long> IOTDNUM;
 
 	@FXML
 	private FilteredTableColumn<OTD, String> RAION;
@@ -70,7 +70,7 @@ public class OtdList {
 	public void Tbl2Click(MouseEvent event) {
 		if (event.getClickCount() == 2) // Checking double click
 		{
-			if (DBUtil.OdbAction(123) == 0) {
+			if (DBUtil.OdbAction(123l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -94,7 +94,7 @@ public class OtdList {
 					.hideAfter(Duration.seconds(10)).show();
 	        
 			// проверка доступа
-			if (DBUtil.OdbAction(122) == 0) {
+			if (DBUtil.OdbAction(122l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -132,7 +132,7 @@ public class OtdList {
 	@FXML
 	void Edit(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(123) == 0) {
+		if (DBUtil.OdbAction(123l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -146,7 +146,7 @@ public class OtdList {
 	@FXML
 	void Delete(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(124) == 0) {
+		if (DBUtil.OdbAction(124l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -194,7 +194,7 @@ public class OtdList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from otd where IOTDNUM = ?;" + "commit;" + "end;");
 							OTD cl = OTD.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getIOTDNUM());
+							delete.setLong(1, cl.getIOTDNUM());
 							delete.executeUpdate();
 							delete.close();
 							Init();
@@ -224,13 +224,13 @@ public class OtdList {
 
 	boolean isopen = false;
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from otd where  IOTDNUM = ? /*for update nowait*/");
 				OTD otd = Init2(docid);
-				selforupd.setInt(1, otd.getIOTDNUM());
+				selforupd.setLong(1, otd.getIOTDNUM());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -340,15 +340,15 @@ public class OtdList {
 			RAION.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
 
 			COTDNAME.setCellFactory(TextField2TableCell.forTableColumn());
-			IOTDNUM.setCellFactory(TextField2TableCell.forTableColumn(new StringConverter<Integer>() {
+			IOTDNUM.setCellFactory(TextField2TableCell.forTableColumn(new StringConverter<Long>() {
 				@Override
-				public String toString(Integer object) {
+				public String toString(Long object) {
 					return String.valueOf(object);
 				}
 
 				@Override
-				public Integer fromString(String string) {
-					return Integer.parseInt(string);
+				public Long fromString(String string) {
+					return Long.parseLong(string);
 				}
 			}));
 			
@@ -357,7 +357,7 @@ public class OtdList {
 			OTD.rowHeaderVisibleProperty().set(true);
 
 			SouthFilter<OTD, String> editorCOTDNAME = new SouthFilter<>(COTDNAME, String.class);
-			SouthFilter<OTD, Integer> editorIOTDNUM = new SouthFilter<>(IOTDNUM, Integer.class);
+			SouthFilter<OTD, Long> editorIOTDNUM = new SouthFilter<>(IOTDNUM, Long.class);
 			SouthFilter<OTD, String> editorRAION = new SouthFilter<>(RAION, String.class);
 
 			COTDNAME.setSouthNode(editorCOTDNAME);
@@ -369,7 +369,7 @@ public class OtdList {
 				TableRow<OTD> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 
-					if (DBUtil.OdbAction(123) == 0) {
+					if (DBUtil.OdbAction(123l) == 0) {
 						Msg.Message("Нет доступа!");
 						return;
 					}
@@ -388,20 +388,20 @@ public class OtdList {
 		}
 	}
 
-	OTD Init2(Integer id) {
+	OTD Init2(Long id) {
 		OTD list = null;
 		try {
 			String selectStmt = "select * from otd_area where IOTDNUM = ? ";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, id);
+			prepStmt.setLong(1, id);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				list = new OTD();
 				list.setCOTDNAME(rs.getString("COTDNAME"));
-				list.setAREA_ID(rs.getInt("AREA_ID"));
-				list.setIOTDNUM(rs.getInt("IOTDNUM"));
+				list.setAREA_ID(rs.getLong("AREA_ID"));
+				list.setIOTDNUM(rs.getLong("IOTDNUM"));
 				list.setNAME(rs.getString("NAME"));
-				list.setCODE(rs.getInt("CODE"));
+				list.setCODE(rs.getLong("CODE"));
 			}
 			prepStmt.close();
 			rs.close();
@@ -420,10 +420,10 @@ public class OtdList {
 			while (rs.next()) {
 				OTD list = new OTD();
 				list.setCOTDNAME(rs.getString("COTDNAME"));
-				list.setAREA_ID(rs.getInt("AREA_ID"));
-				list.setIOTDNUM(rs.getInt("IOTDNUM"));
+				list.setAREA_ID(rs.getLong("AREA_ID"));
+				list.setIOTDNUM(rs.getLong("IOTDNUM"));
 				list.setNAME(rs.getString("NAME"));
-				list.setCODE(rs.getInt("CODE"));
+				list.setCODE(rs.getLong("CODE"));
 				dlist.add(list);
 			}
 			prepStmt.close();

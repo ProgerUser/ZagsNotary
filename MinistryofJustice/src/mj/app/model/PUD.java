@@ -1,31 +1,31 @@
 package mj.app.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class PUD {
 	private StringProperty CPUDCODE4;/* Код документа по 308-П. */
-	private IntegerProperty IPUDUNISCODE;/* Код по UNISTREAM */
+	private LongProperty IPUDUNISCODE;/* Код по UNISTREAM */
 	private StringProperty CPUDDOCNAME;/* Полное наименование типа документа */
 	private StringProperty CPUDCODE3;/* Код документа по TUTDF */
-	private IntegerProperty IPUDCODE2;/* Код документа по 1417-У */
+	private LongProperty IPUDCODE2;/* Код документа по 1417-У */
 	private StringProperty CPUDCODE;/* Код документа по 207-П */
-	private IntegerProperty IPUDUSE;/* Ограничение по использованию */
+	private LongProperty IPUDUSE;/* Ограничение по использованию */
 	private StringProperty CPUDDOC;/* Краткое наименование (код) типа документа */
 	private StringProperty CPUDCODE10;/* Код документа по CAIS */
 	private StringProperty CPUDNWU;/* Код по WU для нерезидентов основной документ */
 	private StringProperty CPUDDPP;/* Признак: "Y"-документ на право пребывания. */
 	private StringProperty CCONTACT;/* Номер документа в Контакте */
-	private IntegerProperty IPUDBLZCODE;/* Код по BLIZKO */
+	private LongProperty IPUDBLZCODE;/* Код по BLIZKO */
 	private StringProperty CPUDCODE9;/* Код документа по 2-НДФЛ. */
 	private StringProperty CPUDCODE8;/* Код документа для ГИС ГМП. */
 	private StringProperty CPUDLID;/* Код по системе "Лидер" */
 	private StringProperty CPUDDUL;/* Признак документа удостоверяющего личность. */
-	private IntegerProperty IPUDINT_CODE;/* Внутренний уникальный тип документа. */
+	private LongProperty IPUDINT_CODE;/* Внутренний уникальный тип документа. */
 	private StringProperty CPUDCODE7;/* Код документа в RETAIL */
-	private IntegerProperty IPUDID;/* Уникальный идентификатор документа */
+	private LongProperty IPUDID;/* Уникальный идентификатор документа */
 	private StringProperty CPUDCNT;/* Страна-эмитент(гражданства). */
 	private StringProperty CPUDRESIDENT;/* Признак: "Резидент"- Y; "Нерезидент"-"N"; "Не определено"- null . */
 	private StringProperty CPUDWUN;/* Код по WU для нерезидентов */
@@ -35,25 +35,25 @@ public class PUD {
 
 	public PUD() {
 		this.CPUDCODE4 = new SimpleStringProperty();
-		this.IPUDUNISCODE = new SimpleIntegerProperty();
+		this.IPUDUNISCODE = new SimpleLongProperty();
 		this.CPUDDOCNAME = new SimpleStringProperty();
 		this.CPUDCODE3 = new SimpleStringProperty();
-		this.IPUDCODE2 = new SimpleIntegerProperty();
+		this.IPUDCODE2 = new SimpleLongProperty();
 		this.CPUDCODE = new SimpleStringProperty();
-		this.IPUDUSE = new SimpleIntegerProperty();
+		this.IPUDUSE = new SimpleLongProperty();
 		this.CPUDDOC = new SimpleStringProperty();
 		this.CPUDCODE10 = new SimpleStringProperty();
 		this.CPUDNWU = new SimpleStringProperty();
 		this.CPUDDPP = new SimpleStringProperty();
 		this.CCONTACT = new SimpleStringProperty();
-		this.IPUDBLZCODE = new SimpleIntegerProperty();
+		this.IPUDBLZCODE = new SimpleLongProperty();
 		this.CPUDCODE9 = new SimpleStringProperty();
 		this.CPUDCODE8 = new SimpleStringProperty();
 		this.CPUDLID = new SimpleStringProperty();
 		this.CPUDDUL = new SimpleStringProperty();
-		this.IPUDINT_CODE = new SimpleIntegerProperty();
+		this.IPUDINT_CODE = new SimpleLongProperty();
 		this.CPUDCODE7 = new SimpleStringProperty();
-		this.IPUDID = new SimpleIntegerProperty();
+		this.IPUDID = new SimpleLongProperty();
 		this.CPUDCNT = new SimpleStringProperty();
 		this.CPUDRESIDENT = new SimpleStringProperty();
 		this.CPUDWUN = new SimpleStringProperty();
@@ -66,7 +66,7 @@ public class PUD {
 		this.CPUDCODE4.set(CPUDCODE4);
 	}
 
-	public void setIPUDUNISCODE(Integer IPUDUNISCODE) {
+	public void setIPUDUNISCODE(Long IPUDUNISCODE) {
 		this.IPUDUNISCODE.set(IPUDUNISCODE);
 	}
 
@@ -78,7 +78,7 @@ public class PUD {
 		this.CPUDCODE3.set(CPUDCODE3);
 	}
 
-	public void setIPUDCODE2(Integer IPUDCODE2) {
+	public void setIPUDCODE2(Long IPUDCODE2) {
 		this.IPUDCODE2.set(IPUDCODE2);
 	}
 
@@ -86,7 +86,7 @@ public class PUD {
 		this.CPUDCODE.set(CPUDCODE);
 	}
 
-	public void setIPUDUSE(Integer IPUDUSE) {
+	public void setIPUDUSE(Long IPUDUSE) {
 		this.IPUDUSE.set(IPUDUSE);
 	}
 
@@ -110,7 +110,7 @@ public class PUD {
 		this.CCONTACT.set(CCONTACT);
 	}
 
-	public void setIPUDBLZCODE(Integer IPUDBLZCODE) {
+	public void setIPUDBLZCODE(Long IPUDBLZCODE) {
 		this.IPUDBLZCODE.set(IPUDBLZCODE);
 	}
 
@@ -130,7 +130,7 @@ public class PUD {
 		this.CPUDDUL.set(CPUDDUL);
 	}
 
-	public void setIPUDINT_CODE(Integer IPUDINT_CODE) {
+	public void setIPUDINT_CODE(Long IPUDINT_CODE) {
 		this.IPUDINT_CODE.set(IPUDINT_CODE);
 	}
 
@@ -138,7 +138,7 @@ public class PUD {
 		this.CPUDCODE7.set(CPUDCODE7);
 	}
 
-	public void setIPUDID(Integer IPUDID) {
+	public void setIPUDID(Long IPUDID) {
 		this.IPUDID.set(IPUDID);
 	}
 
@@ -170,7 +170,7 @@ public class PUD {
 		return CPUDCODE4.get();
 	}
 
-	public Integer getIPUDUNISCODE() {
+	public Long getIPUDUNISCODE() {
 		return IPUDUNISCODE.get();
 	}
 
@@ -182,7 +182,7 @@ public class PUD {
 		return CPUDCODE3.get();
 	}
 
-	public Integer getIPUDCODE2() {
+	public Long getIPUDCODE2() {
 		return IPUDCODE2.get();
 	}
 
@@ -190,7 +190,7 @@ public class PUD {
 		return CPUDCODE.get();
 	}
 
-	public Integer getIPUDUSE() {
+	public Long getIPUDUSE() {
 		return IPUDUSE.get();
 	}
 
@@ -214,7 +214,7 @@ public class PUD {
 		return CCONTACT.get();
 	}
 
-	public Integer getIPUDBLZCODE() {
+	public Long getIPUDBLZCODE() {
 		return IPUDBLZCODE.get();
 	}
 
@@ -234,7 +234,7 @@ public class PUD {
 		return CPUDDUL.get();
 	}
 
-	public Integer getIPUDINT_CODE() {
+	public Long getIPUDINT_CODE() {
 		return IPUDINT_CODE.get();
 	}
 
@@ -242,7 +242,7 @@ public class PUD {
 		return CPUDCODE7.get();
 	}
 
-	public Integer getIPUDID() {
+	public Long getIPUDID() {
 		return IPUDID.get();
 	}
 
@@ -274,7 +274,7 @@ public class PUD {
 		return CPUDCODE4;
 	}
 
-	public IntegerProperty IPUDUNISCODEProperty() {
+	public LongProperty IPUDUNISCODEProperty() {
 		return IPUDUNISCODE;
 	}
 
@@ -286,7 +286,7 @@ public class PUD {
 		return CPUDCODE3;
 	}
 
-	public IntegerProperty IPUDCODE2Property() {
+	public LongProperty IPUDCODE2Property() {
 		return IPUDCODE2;
 	}
 
@@ -294,7 +294,7 @@ public class PUD {
 		return CPUDCODE;
 	}
 
-	public IntegerProperty IPUDUSEProperty() {
+	public LongProperty IPUDUSEProperty() {
 		return IPUDUSE;
 	}
 
@@ -318,7 +318,7 @@ public class PUD {
 		return CCONTACT;
 	}
 
-	public IntegerProperty IPUDBLZCODEProperty() {
+	public LongProperty IPUDBLZCODEProperty() {
 		return IPUDBLZCODE;
 	}
 
@@ -338,7 +338,7 @@ public class PUD {
 		return CPUDDUL;
 	}
 
-	public IntegerProperty IPUDINT_CODEProperty() {
+	public LongProperty IPUDINT_CODEProperty() {
 		return IPUDINT_CODE;
 	}
 
@@ -346,7 +346,7 @@ public class PUD {
 		return CPUDCODE7;
 	}
 
-	public IntegerProperty IPUDIDProperty() {
+	public LongProperty IPUDIDProperty() {
 		return IPUDID;
 	}
 

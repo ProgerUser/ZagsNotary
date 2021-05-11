@@ -108,13 +108,13 @@ public class IUTemplateList {
 					PreparedStatement prp = conn.prepareStatement(
 							"insert into NT_TEMP_LIST (NAME,PARENT,REP_QUERY,DOCX_PATH,NOTARY) values (?,?,?,?,?)");
 					prp.setString(1, NAME.getText());
-					prp.setInt(2, val.getNT_ID());
+					prp.setLong(2, val.getNT_ID());
 					Clob clob = conn.createClob();
 					clob.setString(1, REP_QUERY.getText());
 					prp.setClob(3, clob);
 					prp.setString(4, DOCX_PATH.getText());
 					if (NOTARY.getSelectionModel().getSelectedItem() != null) {
-						prp.setInt(5, NOTARY.getSelectionModel().getSelectedItem().getNOT_ID());
+						prp.setLong(5, NOTARY.getSelectionModel().getSelectedItem().getNOT_ID());
 					} else {
 						prp.setNull(5, Types.INTEGER);
 					}
@@ -131,11 +131,11 @@ public class IUTemplateList {
 					prp.setClob(2, clob);
 					prp.setString(3, DOCX_PATH.getText());
 					if (NOTARY.getSelectionModel().getSelectedItem() != null) {
-						prp.setInt(4, NOTARY.getSelectionModel().getSelectedItem().getNOT_ID());
+						prp.setLong(4, NOTARY.getSelectionModel().getSelectedItem().getNOT_ID());
 					} else {
 						prp.setNull(4, Types.INTEGER);
 					}
-					prp.setInt(5, val_list.getID());
+					prp.setLong(5, val_list.getID());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
@@ -207,8 +207,8 @@ public class IUTemplateList {
 				ObservableList<NOTARY> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					NOTARY list = new NOTARY();
-					list.setNOT_ID(rs.getInt("NOT_ID"));
-					list.setNOT_OTD(rs.getInt("NOT_OTD"));
+					list.setNOT_ID(rs.getLong("NOT_ID"));
+					list.setNOT_OTD(rs.getLong("NOT_OTD"));
 					list.setNOT_NAME(rs.getString("NOT_NAME"));
 					list.setNOT_RUK(rs.getString("NOT_RUK"));
 					combolist.add(list);

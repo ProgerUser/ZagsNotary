@@ -10,9 +10,9 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,9 +43,9 @@ public class AddOtd {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			PreparedStatement oper = conn.prepareStatement("insert into  otd (IOTDNUM, COTDNAME,AREA_ID) values (?,?,?)");
-			oper.setInt(1, Integer.valueOf(IOTDNUM.getText()));
+			oper.setLong(1, Long.valueOf(IOTDNUM.getText()));
 			oper.setString(2, COTDNAME.getText());
-			oper.setInt(3, RAION.getSelectionModel().getSelectedItem().getCODE());
+			oper.setLong(3, RAION.getSelectionModel().getSelectedItem().getCODE());
 			oper.executeUpdate();
 			oper.close();
 			conn.commit();
@@ -83,7 +83,7 @@ public class AddOtd {
 				ObservableList<RAION> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					RAION list = new RAION();
-					list.setCODE(rs.getInt("CODE"));
+					list.setCODE(rs.getLong("CODE"));
 					list.setNAME(rs.getString("NAME"));
 					combolist.add(list);
 				}
@@ -144,7 +144,7 @@ public class AddOtd {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -154,17 +154,17 @@ public class AddOtd {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public AddOtd() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 }

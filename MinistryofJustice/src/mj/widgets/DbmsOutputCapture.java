@@ -23,7 +23,7 @@ public class DbmsOutputCapture implements AutoCloseable {
 		readLineStmt = dbConn.prepareCall("begin dbms_output.get_lines(?, ?); end;");
 		readLineStmt.registerOutParameter(1, Types.ARRAY, "DBMSOUTPUT_LINESARRAY");
 		readLineStmt.registerOutParameter(2, Types.INTEGER, "INTEGER");
-		readLineStmt.setInt(2, lineBufferSize);
+		readLineStmt.setLong(2, lineBufferSize);
 	}
 
 	public List<String> execute(CallableStatement userCall) throws SQLException {
@@ -31,10 +31,10 @@ public class DbmsOutputCapture implements AutoCloseable {
 		try {
 			enableStmt.executeUpdate();
 			userCall.execute();
-			int fetchedLines;
+			Long fetchedLines;
 			do {
 				readLineStmt.execute();
-				fetchedLines = readLineStmt.getInt(2);
+				fetchedLines = readLineStmt.getLong(2);
 				Array array = null;
 				try {
 					array = readLineStmt.getArray(1);

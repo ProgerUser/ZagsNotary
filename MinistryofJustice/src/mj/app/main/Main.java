@@ -578,7 +578,7 @@ public class Main extends Application {
 				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/report/Report.fxml"));
 
 				Report controller = new Report();
-				controller.setId(1);
+				controller.setId(1l);
 				// FRREPRunner runner = new FRREPRunner();
 				// controller.setDllOption(runner);
 				loader.setController(controller);

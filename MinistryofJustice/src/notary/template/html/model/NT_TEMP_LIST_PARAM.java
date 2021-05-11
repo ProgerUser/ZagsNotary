@@ -1,7 +1,7 @@
 package notary.template.html.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,19 +9,19 @@ public class NT_TEMP_LIST_PARAM {
 	/** Запрос для параметров */
 	private StringProperty PRM_FOR_PRM_SQL;
 	/** ИД */
-	private IntegerProperty PRM_ID;
+	private LongProperty PRM_ID;
 	/** Название */
 	private StringProperty PRM_NAME;
 	/** Ссылка на шаблоны */
-	private IntegerProperty PRM_TMP_ID;
+	private LongProperty PRM_TMP_ID;
 	/** Запрос */
 	private StringProperty PRM_SQL;
 	/** Тип параметра */
-	private IntegerProperty PRM_TYPE;
+	private LongProperty PRM_TYPE;
 	/** Ссылка на таблицу */
 	private StringProperty PRM_TBL_REF;
 	/** Нет данных */
-	private IntegerProperty PRM_PADEJ;
+	private LongProperty PRM_PADEJ;
 	/** Нет данных */
 	private StringProperty TYPE_NAME;
 	/** Нет данных */
@@ -33,24 +33,24 @@ public class NT_TEMP_LIST_PARAM {
 	/** Разметка в Html */
 	private StringProperty HTML_CODE;
 	/** Ссылка на род. парам. */
-	private IntegerProperty PARENTS;
+	private LongProperty PARENTS;
 	private StringProperty IS_LOC;
 	
 	public NT_TEMP_LIST_PARAM() {
 		this.IS_LOC = new SimpleStringProperty();
-		this.PARENTS = new SimpleIntegerProperty();
+		this.PARENTS = new SimpleLongProperty();
 		this.PDJ_NAME = new SimpleStringProperty();
 		this.HTML_CODE = new SimpleStringProperty();
 		this.PRM_R_NAME = new SimpleStringProperty();
 		this.REQUIRED = new SimpleStringProperty();
-		this.PRM_PADEJ = new SimpleIntegerProperty();
+		this.PRM_PADEJ = new SimpleLongProperty();
 		this.TYPE_NAME = new SimpleStringProperty();
 		this.PRM_FOR_PRM_SQL = new SimpleStringProperty();
-		this.PRM_ID = new SimpleIntegerProperty();
+		this.PRM_ID = new SimpleLongProperty();
 		this.PRM_NAME = new SimpleStringProperty();
-		this.PRM_TMP_ID = new SimpleIntegerProperty();
+		this.PRM_TMP_ID = new SimpleLongProperty();
 		this.PRM_SQL = new SimpleStringProperty();
-		this.PRM_TYPE = new SimpleIntegerProperty();
+		this.PRM_TYPE = new SimpleLongProperty();
 		this.PRM_TBL_REF = new SimpleStringProperty();
 	}
 
@@ -66,15 +66,15 @@ public class NT_TEMP_LIST_PARAM {
 		return IS_LOC;
 	}
 	
-	public void setPARENTS(Integer PARENTS) {
+	public void setPARENTS(Long PARENTS) {
 		this.PARENTS.set(PARENTS);
 	}
 
-	public Integer getPARENTS() {
+	public Long getPARENTS() {
 		return PARENTS.get();
 	}
 
-	public IntegerProperty PARENTSProperty() {
+	public LongProperty PARENTSProperty() {
 		return PARENTS;
 	}
 
@@ -138,15 +138,15 @@ public class NT_TEMP_LIST_PARAM {
 		return TYPE_NAME;
 	}
 
-	public void setPRM_PADEJ(Integer PRM_PADEJ) {
+	public void setPRM_PADEJ(Long PRM_PADEJ) {
 		this.PRM_PADEJ.set(PRM_PADEJ);
 	}
 
-	public Integer getPRM_PADEJ() {
+	public Long getPRM_PADEJ() {
 		return PRM_PADEJ.get();
 	}
 
-	public IntegerProperty PRM_PADEJProperty() {
+	public LongProperty PRM_PADEJProperty() {
 		return PRM_PADEJ;
 	}
 
@@ -154,7 +154,7 @@ public class NT_TEMP_LIST_PARAM {
 		this.PRM_FOR_PRM_SQL.set(PRM_FOR_PRM_SQL);
 	}
 
-	public void setPRM_ID(Integer PRM_ID) {
+	public void setPRM_ID(Long PRM_ID) {
 		this.PRM_ID.set(PRM_ID);
 	}
 
@@ -162,7 +162,7 @@ public class NT_TEMP_LIST_PARAM {
 		this.PRM_NAME.set(PRM_NAME);
 	}
 
-	public void setPRM_TMP_ID(Integer PRM_TMP_ID) {
+	public void setPRM_TMP_ID(Long PRM_TMP_ID) {
 		this.PRM_TMP_ID.set(PRM_TMP_ID);
 	}
 
@@ -170,7 +170,7 @@ public class NT_TEMP_LIST_PARAM {
 		this.PRM_SQL.set(PRM_SQL);
 	}
 
-	public void setPRM_TYPE(Integer PRM_TYPE) {
+	public void setPRM_TYPE(Long PRM_TYPE) {
 		this.PRM_TYPE.set(PRM_TYPE);
 	}
 
@@ -182,7 +182,7 @@ public class NT_TEMP_LIST_PARAM {
 		return PRM_FOR_PRM_SQL.get();
 	}
 
-	public Integer getPRM_ID() {
+	public Long getPRM_ID() {
 		return PRM_ID.get();
 	}
 
@@ -190,7 +190,7 @@ public class NT_TEMP_LIST_PARAM {
 		return PRM_NAME.get();
 	}
 
-	public Integer getPRM_TMP_ID() {
+	public Long getPRM_TMP_ID() {
 		return PRM_TMP_ID.get();
 	}
 
@@ -198,7 +198,7 @@ public class NT_TEMP_LIST_PARAM {
 		return PRM_SQL.get();
 	}
 
-	public Integer getPRM_TYPE() {
+	public Long getPRM_TYPE() {
 		return PRM_TYPE.get();
 	}
 
@@ -210,7 +210,7 @@ public class NT_TEMP_LIST_PARAM {
 		return PRM_FOR_PRM_SQL;
 	}
 
-	public IntegerProperty PRM_IDProperty() {
+	public LongProperty PRM_IDProperty() {
 		return PRM_ID;
 	}
 
@@ -218,7 +218,7 @@ public class NT_TEMP_LIST_PARAM {
 		return PRM_NAME;
 	}
 
-	public IntegerProperty PRM_TMP_IDProperty() {
+	public LongProperty PRM_TMP_IDProperty() {
 		return PRM_TMP_ID;
 	}
 
@@ -226,7 +226,7 @@ public class NT_TEMP_LIST_PARAM {
 		return PRM_SQL;
 	}
 
-	public IntegerProperty PRM_TYPEProperty() {
+	public LongProperty PRM_TYPEProperty() {
 		return PRM_TYPE;
 	}
 

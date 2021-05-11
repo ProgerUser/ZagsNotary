@@ -2,8 +2,8 @@ package mj.doc.mercer;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -18,9 +18,9 @@ public class MC_MERCER {
 	/** Нет данных */
 	private StringProperty MERCER_OTHER;
 	/** Нет данных */
-	private IntegerProperty MERCER_DIEHE;
+	private LongProperty MERCER_DIEHE;
 	/** Нет данных */
-	private IntegerProperty MERCER_DIESHE;
+	private LongProperty MERCER_DIESHE;
 	/** Нет данных */
 	private StringProperty MERCER_SERIA;
 	/** Нет данных */
@@ -28,19 +28,19 @@ public class MC_MERCER {
 	/** Нет данных */
 	private StringProperty MERCER_DSPMT_HE;
 	/** Нет данных */
-	private IntegerProperty MERCER_DIVHE;
+	private LongProperty MERCER_DIVHE;
 	/** Нет данных */
-	private IntegerProperty MERCER_DIVSHE;
+	private LongProperty MERCER_DIVSHE;
 	/** Нет данных */
-	private IntegerProperty MERCER_ZAGS;
+	private LongProperty MERCER_ZAGS;
 	/** Нет данных */
 	private StringProperty MERCER_USR;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDateTime> TM$MERCER_DATE;
 	/** Нет данных */
-	private IntegerProperty MERCER_SHEAGE;
+	private LongProperty MERCER_SHEAGE;
 	/** Нет данных */
-	private IntegerProperty MERCER_HEAGE;
+	private LongProperty MERCER_HEAGE;
 	/** Нет данных */
 	private StringProperty MERCER_SHE_LNBAFT;
 	/** Нет данных */
@@ -50,11 +50,11 @@ public class MC_MERCER {
 	/** Нет данных */
 	private StringProperty MERCER_HE_LNBEF;
 	/** Нет данных */
-	private IntegerProperty MERCER_SHE;
+	private LongProperty MERCER_SHE;
 	/** Нет данных */
-	private IntegerProperty MERCER_HE;
+	private LongProperty MERCER_HE;
 	/** Нет данных */
-	private IntegerProperty MERCER_ID;
+	private LongProperty MERCER_ID;
 	/** Нет данных */
 	private StringProperty SHEFIO;
 	/** Нет данных */
@@ -71,25 +71,25 @@ public class MC_MERCER {
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.MERCER_DSPMT_SHE = new SimpleStringProperty();
 		this.MERCER_OTHER = new SimpleStringProperty();
-		this.MERCER_DIEHE = new SimpleIntegerProperty();
-		this.MERCER_DIESHE = new SimpleIntegerProperty();
+		this.MERCER_DIEHE = new SimpleLongProperty();
+		this.MERCER_DIESHE = new SimpleLongProperty();
 		this.MERCER_SERIA = new SimpleStringProperty();
 		this.MERCER_NUM = new SimpleStringProperty();
 		this.MERCER_DSPMT_HE = new SimpleStringProperty();
-		this.MERCER_DIVHE = new SimpleIntegerProperty();
-		this.MERCER_DIVSHE = new SimpleIntegerProperty();
-		this.MERCER_ZAGS = new SimpleIntegerProperty();
+		this.MERCER_DIVHE = new SimpleLongProperty();
+		this.MERCER_DIVSHE = new SimpleLongProperty();
+		this.MERCER_ZAGS = new SimpleLongProperty();
 		this.MERCER_USR = new SimpleStringProperty();
 		this.TM$MERCER_DATE = new SimpleObjectProperty<>();
-		this.MERCER_SHEAGE = new SimpleIntegerProperty();
-		this.MERCER_HEAGE = new SimpleIntegerProperty();
+		this.MERCER_SHEAGE = new SimpleLongProperty();
+		this.MERCER_HEAGE = new SimpleLongProperty();
 		this.MERCER_SHE_LNBAFT = new SimpleStringProperty();
 		this.MERCER_SHE_LNBEF = new SimpleStringProperty();
 		this.MERCER_HE_LNAFT = new SimpleStringProperty();
 		this.MERCER_HE_LNBEF = new SimpleStringProperty();
-		this.MERCER_SHE = new SimpleIntegerProperty();
-		this.MERCER_HE = new SimpleIntegerProperty();
-		this.MERCER_ID = new SimpleIntegerProperty();
+		this.MERCER_SHE = new SimpleLongProperty();
+		this.MERCER_HE = new SimpleLongProperty();
+		this.MERCER_ID = new SimpleLongProperty();
 		this.SHEFIO = new SimpleStringProperty();
 		this.HEFIO = new SimpleStringProperty();
 	}
@@ -134,11 +134,11 @@ public class MC_MERCER {
 		this.MERCER_OTHER.set(MERCER_OTHER);
 	}
 
-	public void setMERCER_DIEHE(Integer MERCER_DIEHE) {
+	public void setMERCER_DIEHE(Long MERCER_DIEHE) {
 		this.MERCER_DIEHE.set(MERCER_DIEHE);
 	}
 
-	public void setMERCER_DIESHE(Integer MERCER_DIESHE) {
+	public void setMERCER_DIESHE(Long MERCER_DIESHE) {
 		this.MERCER_DIESHE.set(MERCER_DIESHE);
 	}
 
@@ -154,15 +154,15 @@ public class MC_MERCER {
 		this.MERCER_DSPMT_HE.set(MERCER_DSPMT_HE);
 	}
 
-	public void setMERCER_DIVHE(Integer MERCER_DIVHE) {
+	public void setMERCER_DIVHE(Long MERCER_DIVHE) {
 		this.MERCER_DIVHE.set(MERCER_DIVHE);
 	}
 
-	public void setMERCER_DIVSHE(Integer MERCER_DIVSHE) {
+	public void setMERCER_DIVSHE(Long MERCER_DIVSHE) {
 		this.MERCER_DIVSHE.set(MERCER_DIVSHE);
 	}
 
-	public void setMERCER_ZAGS(Integer MERCER_ZAGS) {
+	public void setMERCER_ZAGS(Long MERCER_ZAGS) {
 		this.MERCER_ZAGS.set(MERCER_ZAGS);
 	}
 
@@ -174,11 +174,11 @@ public class MC_MERCER {
 		this.TM$MERCER_DATE.set(TM$MERCER_DATE);
 	}
 
-	public void setMERCER_SHEAGE(Integer MERCER_SHEAGE) {
+	public void setMERCER_SHEAGE(Long MERCER_SHEAGE) {
 		this.MERCER_SHEAGE.set(MERCER_SHEAGE);
 	}
 
-	public void setMERCER_HEAGE(Integer MERCER_HEAGE) {
+	public void setMERCER_HEAGE(Long MERCER_HEAGE) {
 		this.MERCER_HEAGE.set(MERCER_HEAGE);
 	}
 
@@ -198,15 +198,15 @@ public class MC_MERCER {
 		this.MERCER_HE_LNBEF.set(MERCER_HE_LNBEF);
 	}
 
-	public void setMERCER_SHE(Integer MERCER_SHE) {
+	public void setMERCER_SHE(Long MERCER_SHE) {
 		this.MERCER_SHE.set(MERCER_SHE);
 	}
 
-	public void setMERCER_HE(Integer MERCER_HE) {
+	public void setMERCER_HE(Long MERCER_HE) {
 		this.MERCER_HE.set(MERCER_HE);
 	}
 
-	public void setMERCER_ID(Integer MERCER_ID) {
+	public void setMERCER_ID(Long MERCER_ID) {
 		this.MERCER_ID.set(MERCER_ID);
 	}
 
@@ -234,11 +234,11 @@ public class MC_MERCER {
 		return MERCER_OTHER.get();
 	}
 
-	public Integer getMERCER_DIEHE() {
+	public Long getMERCER_DIEHE() {
 		return MERCER_DIEHE.get();
 	}
 
-	public Integer getMERCER_DIESHE() {
+	public Long getMERCER_DIESHE() {
 		return MERCER_DIESHE.get();
 	}
 
@@ -254,15 +254,15 @@ public class MC_MERCER {
 		return MERCER_DSPMT_HE.get();
 	}
 
-	public Integer getMERCER_DIVHE() {
+	public Long getMERCER_DIVHE() {
 		return MERCER_DIVHE.get();
 	}
 
-	public Integer getMERCER_DIVSHE() {
+	public Long getMERCER_DIVSHE() {
 		return MERCER_DIVSHE.get();
 	}
 
-	public Integer getMERCER_ZAGS() {
+	public Long getMERCER_ZAGS() {
 		return MERCER_ZAGS.get();
 	}
 
@@ -274,11 +274,11 @@ public class MC_MERCER {
 		return TM$MERCER_DATE.get();
 	}
 
-	public Integer getMERCER_SHEAGE() {
+	public Long getMERCER_SHEAGE() {
 		return MERCER_SHEAGE.get();
 	}
 
-	public Integer getMERCER_HEAGE() {
+	public Long getMERCER_HEAGE() {
 		return MERCER_HEAGE.get();
 	}
 
@@ -298,15 +298,15 @@ public class MC_MERCER {
 		return MERCER_HE_LNBEF.get();
 	}
 
-	public Integer getMERCER_SHE() {
+	public Long getMERCER_SHE() {
 		return MERCER_SHE.get();
 	}
 
-	public Integer getMERCER_HE() {
+	public Long getMERCER_HE() {
 		return MERCER_HE.get();
 	}
 
-	public Integer getMERCER_ID() {
+	public Long getMERCER_ID() {
 		return MERCER_ID.get();
 	}
 
@@ -334,11 +334,11 @@ public class MC_MERCER {
 		return MERCER_OTHER;
 	}
 
-	public IntegerProperty MERCER_DIEHEProperty() {
+	public LongProperty MERCER_DIEHEProperty() {
 		return MERCER_DIEHE;
 	}
 
-	public IntegerProperty MERCER_DIESHEProperty() {
+	public LongProperty MERCER_DIESHEProperty() {
 		return MERCER_DIESHE;
 	}
 
@@ -354,15 +354,15 @@ public class MC_MERCER {
 		return MERCER_DSPMT_HE;
 	}
 
-	public IntegerProperty MERCER_DIVHEProperty() {
+	public LongProperty MERCER_DIVHEProperty() {
 		return MERCER_DIVHE;
 	}
 
-	public IntegerProperty MERCER_DIVSHEProperty() {
+	public LongProperty MERCER_DIVSHEProperty() {
 		return MERCER_DIVSHE;
 	}
 
-	public IntegerProperty MERCER_ZAGSProperty() {
+	public LongProperty MERCER_ZAGSProperty() {
 		return MERCER_ZAGS;
 	}
 
@@ -374,11 +374,11 @@ public class MC_MERCER {
 		return TM$MERCER_DATE;
 	}
 
-	public IntegerProperty MERCER_SHEAGEProperty() {
+	public LongProperty MERCER_SHEAGEProperty() {
 		return MERCER_SHEAGE;
 	}
 
-	public IntegerProperty MERCER_HEAGEProperty() {
+	public LongProperty MERCER_HEAGEProperty() {
 		return MERCER_HEAGE;
 	}
 
@@ -398,15 +398,15 @@ public class MC_MERCER {
 		return MERCER_HE_LNBEF;
 	}
 
-	public IntegerProperty MERCER_SHEProperty() {
+	public LongProperty MERCER_SHEProperty() {
 		return MERCER_SHE;
 	}
 
-	public IntegerProperty MERCER_HEProperty() {
+	public LongProperty MERCER_HEProperty() {
 		return MERCER_HE;
 	}
 
-	public IntegerProperty MERCER_IDProperty() {
+	public LongProperty MERCER_IDProperty() {
 		return MERCER_ID;
 	}
 

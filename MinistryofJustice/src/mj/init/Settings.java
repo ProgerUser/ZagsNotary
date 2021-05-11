@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -42,7 +41,7 @@ public class Settings {
 	private XTableColumn<USERS, String> USR_NAME;
 
 	@FXML
-	private XTableColumn<USERS, Integer> ID;
+	private XTableColumn<USERS, Long> ID;
 
 	@FXML
 	private XTableView<USERS> USERS;
@@ -56,7 +55,7 @@ public class Settings {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(146) == 0) {
+			if (DBUtil.OdbAction(146l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -71,13 +70,7 @@ public class Settings {
 			SQLIETE.commit();
 			onclose();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -92,19 +85,13 @@ public class Settings {
 			if (USERS.getSelectionModel().getSelectedItem() != null) {
 				USERS usr = USERS.getSelectionModel().getSelectedItem();
 				PreparedStatement prepStmt = SQLIETE.prepareStatement("delete from users where ID = ?");
-				prepStmt.setInt(1, usr.getID());
+				prepStmt.setLong(1, usr.getID());
 				prepStmt.executeUpdate();
 				prepStmt.close();
 				Refresh();
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -115,7 +102,7 @@ public class Settings {
 			ObservableList<USERS> usr_list = FXCollections.observableArrayList();
 			while (rs.next()) {
 				USERS list = new USERS();
-				list.setID(rs.getInt("ID"));
+				list.setID(rs.getLong("ID"));
 				list.setUSR_NAME(rs.getString("USR_NAME"));
 				usr_list.add(list);
 			}
@@ -133,13 +120,7 @@ public class Settings {
 				}
 			});
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -173,13 +154,7 @@ public class Settings {
 
 			Refresh();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -199,12 +174,7 @@ public class Settings {
 			SQLIETE = DriverManager.getConnection(url);
 			SQLIETE.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -220,12 +190,7 @@ public class Settings {
 			}
 
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 }

@@ -59,10 +59,10 @@ public class DotNet {
 	 * @param doc
 	 * @return
 	 */
-	public Integer FileName(String doc) {
-		Integer index = 1;
+	public Long FileName(String doc) {
+		Long index = 1l;
 		try {
-			List<Integer> doc_num = new ArrayList<Integer>();
+			List<Long> doc_num = new ArrayList<Long>();
 			File dir = new File(System.getenv("MJ_PATH") + "OutReports");
 			File[] directoryListing = dir.listFiles();
 			Arrays.sort(directoryListing, Comparator.comparingLong(File::lastModified).reversed());
@@ -73,7 +73,7 @@ public class DotNet {
 								child.getName().indexOf("~"));
 						System.out.println("filename=" + filename);
 						if (filename.equals(doc)) {
-							Integer num = Integer.valueOf(child.getName().replace(".docx", "").substring(
+							Long num = Long.valueOf(child.getName().replace(".docx", "").substring(
 									child.getName().indexOf("~") + 1, child.getName().replace(".docx", "").length()));
 							doc_num.add(num);
 							System.out.println("num=" + num);
@@ -82,7 +82,7 @@ public class DotNet {
 				}
 			}
 			if (!doc_num.isEmpty()) {
-				Integer max = Collections.max(doc_num);
+				Long max = Collections.max(doc_num);
 				index = max + 1;
 			}
 		} catch (Exception e) {

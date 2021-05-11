@@ -11,14 +11,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -183,7 +182,7 @@ public class EditUpdAbhName {
 
 			TableView<ACTFORLIST> cusllists = new TableView<ACTFORLIST>();
 
-			TableColumn<ACTFORLIST, Integer> BR_ACT_ID = new TableColumn<>("Номер");
+			TableColumn<ACTFORLIST, Long> BR_ACT_ID = new TableColumn<>("Номер");
 
 			BR_ACT_ID.setCellValueFactory(new PropertyValueFactory<>("BR_ACT_ID"));
 
@@ -266,7 +265,7 @@ public class EditUpdAbhName {
 				list.setBR_ACT_DATE((rs.getDate("BR_ACT_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("BR_ACT_DATE")), formatterDT)
 						: null);
-				list.setBR_ACT_ID(rs.getInt("BR_ACT_ID"));
+				list.setBR_ACT_ID(rs.getLong("BR_ACT_ID"));
 
 				cuslist.add(list);
 			}
@@ -319,13 +318,7 @@ public class EditUpdAbhName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -339,7 +332,7 @@ public class EditUpdAbhName {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Номер");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -380,7 +373,7 @@ public class EditUpdAbhName {
 				CUS cus = new CUS();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				String DCUSBIRTHDAYt = new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY"));
-				cus.setICUSNUM(rs.getInt("ICUSNUM"));
+				cus.setICUSNUM(rs.getLong("ICUSNUM"));
 				cus.setCCUSNAME(rs.getString("CCUSNAME"));
 				cus.setDCUSBIRTHDAY(LocalDate.parse(DCUSBIRTHDAYt, formatter));
 				cuslist.add(cus);
@@ -433,13 +426,7 @@ public class EditUpdAbhName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -450,7 +437,7 @@ public class EditUpdAbhName {
 					.prepareCall("{ call UpdAbhName.EditUpdAbhName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.setInt(2, updname.getID());
+			callStmt.setLong(2, updname.getID());
 			callStmt.setString(3, OLD_LASTNAME.getText());
 			callStmt.setString(4, OLD_FIRSTNAME.getText());
 			callStmt.setString(5, OLD_MIDDLNAME.getText());
@@ -458,12 +445,12 @@ public class EditUpdAbhName {
 			callStmt.setString(7, NEW_FIRSTNAME.getText());
 			callStmt.setString(8, NEW_MIDDLNAME.getText());
 			if (!BRN_ACT_ID.getText().equals("")) {
-				callStmt.setInt(9, Integer.valueOf(BRN_ACT_ID.getText()));
+				callStmt.setLong(9, Long.valueOf(BRN_ACT_ID.getText()));
 			} else {
 				callStmt.setNull(9, java.sql.Types.INTEGER);
 			}
 			if (!CUSID.getText().equals("")) {
-				callStmt.setInt(10, Integer.valueOf(CUSID.getText()));
+				callStmt.setLong(10, Long.valueOf(CUSID.getText()));
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
@@ -483,7 +470,7 @@ public class EditUpdAbhName {
 			if (callStmt.getString(1) == null) {
 				conn.commit();
 				setStatus(true);
-				// setId(callStmt.getInt(2));
+				// setId(callStmt.getLong(2));
 				callStmt.close();
 				onclose();
 			} else {
@@ -504,7 +491,7 @@ public class EditUpdAbhName {
 					.prepareCall("{ call UpdAbhName.EditUpdAbhName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 
 			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.setInt(2, updname.getID());
+			callStmt.setLong(2, updname.getID());
 			callStmt.setString(3, OLD_LASTNAME.getText());
 			callStmt.setString(4, OLD_FIRSTNAME.getText());
 			callStmt.setString(5, OLD_MIDDLNAME.getText());
@@ -512,12 +499,12 @@ public class EditUpdAbhName {
 			callStmt.setString(7, NEW_FIRSTNAME.getText());
 			callStmt.setString(8, NEW_MIDDLNAME.getText());
 			if (!BRN_ACT_ID.getText().equals("")) {
-				callStmt.setInt(9, Integer.valueOf(BRN_ACT_ID.getText()));
+				callStmt.setLong(9, Long.valueOf(BRN_ACT_ID.getText()));
 			} else {
 				callStmt.setNull(9, java.sql.Types.INTEGER);
 			}
 			if (!CUSID.getText().equals("")) {
-				callStmt.setInt(10, Integer.valueOf(CUSID.getText()));
+				callStmt.setLong(10, Long.valueOf(CUSID.getText()));
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
@@ -623,12 +610,7 @@ public class EditUpdAbhName {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -636,7 +618,7 @@ public class EditUpdAbhName {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -646,18 +628,18 @@ public class EditUpdAbhName {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public EditUpdAbhName() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 	public void setConn(Connection conn, UPDATE_ABH_NAME updnm) throws SQLException {

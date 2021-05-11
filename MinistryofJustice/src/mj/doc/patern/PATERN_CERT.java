@@ -2,8 +2,8 @@ package mj.doc.patern;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -22,7 +22,7 @@ public class PATERN_CERT {
 	/** Нет данных */
 	private StringProperty PC_ZMNAME;
 	/** Нет данных */
-	private IntegerProperty PС_ZAGS;
+	private LongProperty PС_ZAGS;
 	/** Нет данных */
 	private StringProperty PС_USER;
 	/** Нет данных */
@@ -42,11 +42,11 @@ public class PATERN_CERT {
 	/** Нет данных */
 	private StringProperty PС_TYPE;
 	/** Нет данных */
-	private IntegerProperty PС_M;
+	private LongProperty PС_M;
 	/** Нет данных */
-	private IntegerProperty PС_F;
+	private LongProperty PС_F;
 	/** Нет данных */
-	private IntegerProperty PС_CH;
+	private LongProperty PС_CH;
 	/** Нет данных */
 	private StringProperty PС_AFT_MNAME;
 	/** Нет данных */
@@ -54,9 +54,9 @@ public class PATERN_CERT {
 	/** Нет данных */
 	private StringProperty PС_AFT_LNAME;
 	/** Нет данных */
-	private IntegerProperty PC_ACT_ID;
+	private LongProperty PC_ACT_ID;
 	/** Нет данных */
-	private IntegerProperty PC_ID;
+	private LongProperty PC_ID;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> CHILDRENBIRTH;
 	/** Нет данных */
@@ -90,7 +90,7 @@ public class PATERN_CERT {
 		this.PC_ZLNAME = new SimpleStringProperty();
 		this.PC_ZFNAME = new SimpleStringProperty();
 		this.PC_ZMNAME = new SimpleStringProperty();
-		this.PС_ZAGS = new SimpleIntegerProperty();
+		this.PС_ZAGS = new SimpleLongProperty();
 		this.PС_USER = new SimpleStringProperty();
 		this.TM$PС_DATE = new SimpleObjectProperty<>();
 		this.PС_NUMBER = new SimpleStringProperty();
@@ -100,14 +100,14 @@ public class PATERN_CERT {
 		this.PС_FZ = new SimpleObjectProperty<>();
 		this.PС_TRZ = new SimpleObjectProperty<>();
 		this.PС_TYPE = new SimpleStringProperty();
-		this.PС_M = new SimpleIntegerProperty();
-		this.PС_F = new SimpleIntegerProperty();
-		this.PС_CH = new SimpleIntegerProperty();
+		this.PС_M = new SimpleLongProperty();
+		this.PС_F = new SimpleLongProperty();
+		this.PС_CH = new SimpleLongProperty();
 		this.PС_AFT_MNAME = new SimpleStringProperty();
 		this.PС_AFT_FNAME = new SimpleStringProperty();
 		this.PС_AFT_LNAME = new SimpleStringProperty();
-		this.PC_ACT_ID = new SimpleIntegerProperty();
-		this.PC_ID = new SimpleIntegerProperty();
+		this.PC_ACT_ID = new SimpleLongProperty();
+		this.PC_ID = new SimpleLongProperty();
 		this.CHILDRENBIRTH = new SimpleObjectProperty<>();
 		this.MOTHERBIRTHDATE = new SimpleObjectProperty<>();
 		this.FATHERBIRTHDATE = new SimpleObjectProperty<>();
@@ -188,7 +188,7 @@ public class PATERN_CERT {
 		this.PC_ZMNAME.set(PC_ZMNAME);
 	}
 
-	public void setPС_ZAGS(Integer PС_ZAGS) {
+	public void setPС_ZAGS(Long PС_ZAGS) {
 		this.PС_ZAGS.set(PС_ZAGS);
 	}
 
@@ -228,15 +228,15 @@ public class PATERN_CERT {
 		this.PС_TYPE.set(PС_TYPE);
 	}
 
-	public void setPС_M(Integer PС_M) {
+	public void setPС_M(Long PС_M) {
 		this.PС_M.set(PС_M);
 	}
 
-	public void setPС_F(Integer PС_F) {
+	public void setPС_F(Long PС_F) {
 		this.PС_F.set(PС_F);
 	}
 
-	public void setPС_CH(Integer PС_CH) {
+	public void setPС_CH(Long PС_CH) {
 		this.PС_CH.set(PС_CH);
 	}
 
@@ -252,11 +252,11 @@ public class PATERN_CERT {
 		this.PС_AFT_LNAME.set(PС_AFT_LNAME);
 	}
 
-	public void setPC_ACT_ID(Integer PC_ACT_ID) {
+	public void setPC_ACT_ID(Long PC_ACT_ID) {
 		this.PC_ACT_ID.set(PC_ACT_ID);
 	}
 
-	public void setPC_ID(Integer PC_ID) {
+	public void setPC_ID(Long PC_ID) {
 		this.PC_ID.set(PC_ID);
 	}
 
@@ -308,7 +308,7 @@ public class PATERN_CERT {
 		return PC_ZMNAME.get();
 	}
 
-	public Integer getPС_ZAGS() {
+	public Long getPС_ZAGS() {
 		return PС_ZAGS.get();
 	}
 
@@ -348,15 +348,15 @@ public class PATERN_CERT {
 		return PС_TYPE.get();
 	}
 
-	public Integer getPС_M() {
+	public Long getPС_M() {
 		return PС_M.get();
 	}
 
-	public Integer getPС_F() {
+	public Long getPС_F() {
 		return PС_F.get();
 	}
 
-	public Integer getPС_CH() {
+	public Long getPС_CH() {
 		return PС_CH.get();
 	}
 
@@ -372,11 +372,11 @@ public class PATERN_CERT {
 		return PС_AFT_LNAME.get();
 	}
 
-	public Integer getPC_ACT_ID() {
+	public Long getPC_ACT_ID() {
 		return PC_ACT_ID.get();
 	}
 
-	public Integer getPC_ID() {
+	public Long getPC_ID() {
 		return PC_ID.get();
 	}
 
@@ -428,7 +428,7 @@ public class PATERN_CERT {
 		return PC_ZMNAME;
 	}
 
-	public IntegerProperty PС_ZAGSProperty() {
+	public LongProperty PС_ZAGSProperty() {
 		return PС_ZAGS;
 	}
 
@@ -468,15 +468,15 @@ public class PATERN_CERT {
 		return PС_TYPE;
 	}
 
-	public IntegerProperty PС_MProperty() {
+	public LongProperty PС_MProperty() {
 		return PС_M;
 	}
 
-	public IntegerProperty PС_FProperty() {
+	public LongProperty PС_FProperty() {
 		return PС_F;
 	}
 
-	public IntegerProperty PС_CHProperty() {
+	public LongProperty PС_CHProperty() {
 		return PС_CH;
 	}
 
@@ -492,11 +492,11 @@ public class PATERN_CERT {
 		return PС_AFT_LNAME;
 	}
 
-	public IntegerProperty PC_ACT_IDProperty() {
+	public LongProperty PC_ACT_IDProperty() {
 		return PC_ACT_ID;
 	}
 
-	public IntegerProperty PC_IDProperty() {
+	public LongProperty PC_IDProperty() {
 		return PC_ID;
 	}
 

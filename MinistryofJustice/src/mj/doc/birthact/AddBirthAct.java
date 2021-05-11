@@ -24,9 +24,9 @@ import com.jyloo.syntheticafx.SyntheticaFX;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -336,7 +336,7 @@ public class AddBirthAct {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<PATERN_CERT> cusllists = new TableView<PATERN_CERT>();
-			TableColumn<PATERN_CERT, Integer> PC_ID = new TableColumn<>("Номер");
+			TableColumn<PATERN_CERT, Long> PC_ID = new TableColumn<>("Номер");
 			PC_ID.setCellValueFactory(new PropertyValueFactory<>("PC_ID"));
 
 			TableColumn<PATERN_CERT, String> Father = new TableColumn<>("Отец");
@@ -400,7 +400,7 @@ public class AddBirthAct {
 			while (rs.next()) {
 				PATERN_CERT list = new PATERN_CERT();
 
-				list.setPС_M(rs.getInt("PС_M"));
+				list.setPС_M(rs.getLong("PС_M"));
 				list.setFATHERFIO(rs.getString("FATHERFIO"));
 				list.setPС_AFT_FNAME(rs.getString("PС_AFT_FNAME"));
 				list.setPC_ZPLACE(rs.getString("PC_ZPLACE"));
@@ -412,13 +412,13 @@ public class AddBirthAct {
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MOTHERBIRTHDATE")), formatter) : null);
 				list.setPC_ZLNAME(rs.getString("PC_ZLNAME"));
 				list.setMOTHERFIO(rs.getString("MOTHERFIO"));
-				list.setPС_CH(rs.getInt("PС_CH"));
+				list.setPС_CH(rs.getLong("PС_CH"));
 				list.setCHILDFIO(rs.getString("CHILDFIO"));
 				list.setPС_FZ((rs.getDate("PС_FZ") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_FZ")), formatter)
 						: null);
-				list.setPC_ID(rs.getInt("PC_ID"));
-				list.setPC_ACT_ID(rs.getInt("PC_ACT_ID"));
+				list.setPC_ID(rs.getLong("PC_ID"));
+				list.setPC_ACT_ID(rs.getLong("PC_ACT_ID"));
 				list.setPC_ZMNAME(rs.getString("PC_ZMNAME"));
 				list.setCHILDRENBIRTH((rs.getDate("CHILDRENBIRTH") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CHILDRENBIRTH")), formatter) : null);
@@ -427,8 +427,8 @@ public class AddBirthAct {
 				list.setPС_CRDATE((rs.getDate("PС_CRDATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_CRDATE")), formatter)
 						: null);
-				list.setPС_F(rs.getInt("PС_F"));
-				list.setPС_ZAGS(rs.getInt("PС_ZAGS"));
+				list.setPС_F(rs.getLong("PС_F"));
+				list.setPС_ZAGS(rs.getLong("PС_ZAGS"));
 				list.setPС_SERIA(rs.getString("PС_SERIA"));
 				list.setPC_ZFNAME(rs.getString("PC_ZFNAME"));
 				list.setFATHERBIRTHDATE((rs.getDate("FATHERBIRTHDATE") != null) ? LocalDate.parse(
@@ -521,7 +521,7 @@ public class AddBirthAct {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<MC_MERCER> cusllists = new TableView<MC_MERCER>();
-			TableColumn<MC_MERCER, Integer> MERCER_ID = new TableColumn<>("Номер");
+			TableColumn<MC_MERCER, Long> MERCER_ID = new TableColumn<>("Номер");
 			MERCER_ID.setCellValueFactory(new PropertyValueFactory<>("MERCER_ID"));
 
 			TableColumn<MC_MERCER, String> HE = new TableColumn<>("Он");
@@ -582,27 +582,27 @@ public class AddBirthAct {
 
 				list.setSHEFIO(rs.getString("SheFio"));
 				list.setHEFIO(rs.getString("HeFio"));
-				list.setMERCER_ID(rs.getInt("MERCER_ID"));
-				list.setMERCER_HE(rs.getInt("MERCER_HE"));
-				list.setMERCER_SHE(rs.getInt("MERCER_SHE"));
+				list.setMERCER_ID(rs.getLong("MERCER_ID"));
+				list.setMERCER_HE(rs.getLong("MERCER_HE"));
+				list.setMERCER_SHE(rs.getLong("MERCER_SHE"));
 				list.setMERCER_HE_LNBEF(rs.getString("MERCER_HE_LNBEF"));
 				list.setMERCER_HE_LNAFT(rs.getString("MERCER_HE_LNAFT"));
 				list.setMERCER_SHE_LNBEF(rs.getString("MERCER_SHE_LNBEF"));
 				list.setMERCER_SHE_LNBAFT(rs.getString("MERCER_SHE_LNBAFT"));
-				list.setMERCER_HEAGE(rs.getInt("MERCER_HEAGE"));
-				list.setMERCER_SHEAGE(rs.getInt("MERCER_SHEAGE"));
+				list.setMERCER_HEAGE(rs.getLong("MERCER_HEAGE"));
+				list.setMERCER_SHEAGE(rs.getLong("MERCER_SHEAGE"));
 				list.setTM$MERCER_DATE((rs.getDate("MERCER_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("MERCER_DATE")), formatterdt)
 						: null);
 				list.setMERCER_USR(rs.getString("MERCER_USR"));
-				list.setMERCER_ZAGS(rs.getInt("MERCER_ZAGS"));
-				list.setMERCER_DIVSHE(rs.getInt("MERCER_DIVSHE"));
-				list.setMERCER_DIVHE(rs.getInt("MERCER_DIVHE"));
+				list.setMERCER_ZAGS(rs.getLong("MERCER_ZAGS"));
+				list.setMERCER_DIVSHE(rs.getLong("MERCER_DIVSHE"));
+				list.setMERCER_DIVHE(rs.getLong("MERCER_DIVHE"));
 				list.setMERCER_DSPMT_HE(rs.getString("MERCER_DSPMT_HE"));
 				list.setMERCER_NUM(rs.getString("MERCER_NUM"));
 				list.setMERCER_SERIA(rs.getString("MERCER_SERIA"));
-				list.setMERCER_DIESHE(rs.getInt("MERCER_DIESHE"));
-				list.setMERCER_DIEHE(rs.getInt("MERCER_DIEHE"));
+				list.setMERCER_DIESHE(rs.getLong("MERCER_DIESHE"));
+				list.setMERCER_DIEHE(rs.getLong("MERCER_DIEHE"));
 				list.setMERCER_OTHER(rs.getString("MERCER_OTHER"));
 				list.setMERCER_DSPMT_SHE(rs.getString("MERCER_DSPMT_SHE"));
 
@@ -687,7 +687,7 @@ public class AddBirthAct {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Номер");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -730,7 +730,7 @@ public class AddBirthAct {
 				CUS cus = new CUS();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				String DCUSBIRTHDAYt = new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY"));
-				cus.setICUSNUM(rs.getInt("ICUSNUM"));
+				cus.setICUSNUM(rs.getLong("ICUSNUM"));
 				cus.setCCUSNAME(rs.getString("CCUSNAME"));
 				cus.setDCUSBIRTHDAY(LocalDate.parse(DCUSBIRTHDAYt, formatter));
 				cuslist.add(cus);
@@ -881,7 +881,7 @@ public class AddBirthAct {
 				}
 				/* Количество родившихся детей */
 				if (!ChildCnt.getText().equals("")) {
-					callStmt.setInt(3, Integer.valueOf(ChildCnt.getText()));
+					callStmt.setLong(3, Long.valueOf(ChildCnt.getText()));
 				} else {
 					callStmt.setNull(3, java.sql.Types.INTEGER);
 				}
@@ -925,19 +925,19 @@ public class AddBirthAct {
 				}
 				/* Ссылка на ребенка */
 				if (!ChildCusId.getText().equals("")) {
-					callStmt.setInt(8, Integer.valueOf(ChildCusId.getText()));
+					callStmt.setLong(8, Long.valueOf(ChildCusId.getText()));
 				} else {
 					callStmt.setNull(8, java.sql.Types.INTEGER);
 				}
 				/* Ссылка на отца */
 				if (!FatherCusId.getText().equals("")) {
-					callStmt.setInt(9, Integer.valueOf(FatherCusId.getText()));
+					callStmt.setLong(9, Long.valueOf(FatherCusId.getText()));
 				} else {
 					callStmt.setNull(9, java.sql.Types.INTEGER);
 				}
 				/* Ссылка на мать */
 				if (!MotherCusId.getText().equals("")) {
-					callStmt.setInt(10, Integer.valueOf(MotherCusId.getText()));
+					callStmt.setLong(10, Long.valueOf(MotherCusId.getText()));
 				} else {
 					callStmt.setNull(10, java.sql.Types.INTEGER);
 				}
@@ -973,7 +973,7 @@ public class AddBirthAct {
 				callStmt.setString(24, FADREG_ADR.getText());
 				/* Ссылка на свидетельство о заключении брака */
 				if (!MARR_CER_ID.getText().equals("")) {
-					callStmt.setInt(25, Integer.valueOf(MARR_CER_ID.getText()));
+					callStmt.setLong(25, Long.valueOf(MARR_CER_ID.getText()));
 				} else {
 					callStmt.setNull(25, java.sql.Types.INTEGER);
 				}
@@ -983,7 +983,7 @@ public class AddBirthAct {
 				callStmt.setString(27, SERIA.getText());
 				/* Ссылка на установлении отцовства */
 				if (!PAT_CER_ID.getText().equals("")) {
-					callStmt.setInt(28, Integer.valueOf(PAT_CER_ID.getText()));
+					callStmt.setLong(28, Long.valueOf(PAT_CER_ID.getText()));
 				} else {
 					callStmt.setNull(28, java.sql.Types.INTEGER);
 				}
@@ -995,7 +995,7 @@ public class AddBirthAct {
 				/* Выполнить */
 				callStmt.execute();
 				String ret = callStmt.getString(1);
-				Integer id = callStmt.getInt(29);
+				Long id = callStmt.getLong(29);
 				if (ret.equals("ok")) {
 					conn.commit();
 					setStatus(true);
@@ -1388,15 +1388,15 @@ public class AddBirthAct {
 	}
 
 	private BooleanProperty Status;
-	private IntegerProperty Id;
+	private LongProperty Id;
 	
 //
 //если открыт от гражданина
 //
-	private IntegerProperty CusId;
+	private LongProperty CusId;
 	private StringProperty CusFio;
 
-	public void setCusId(Integer value) {
+	public void setCusId(Long value) {
 		this.CusId.set(value);
 	}
 
@@ -1404,7 +1404,7 @@ public class AddBirthAct {
 		this.CusFio.set(value);
 	}
 	
-	public Integer getCusId() {
+	public Long getCusId() {
 		return this.CusId.get();
 	}
 	
@@ -1423,19 +1423,19 @@ public class AddBirthAct {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public AddBirthAct() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
-		this.CusId = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
+		this.CusId = new SimpleLongProperty();
 		this.CusFio = new SimpleStringProperty();
 	}
 }

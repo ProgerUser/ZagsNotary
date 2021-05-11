@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import org.apache.log4j.Logger;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -125,8 +125,8 @@ public class EditZags {
 					"ADDR = ?,"+ 
 					"ADDR_ABH = ?"
 					+ " where ZAGS_ID = ?");
-			oper.setInt(1, Integer.valueOf(ZAGS_ID.getText()));
-			oper.setInt(2, ZAGS_OTD.getValue().getIOTDNUM());
+			oper.setLong(1, Long.valueOf(ZAGS_ID.getText()));
+			oper.setLong(2, ZAGS_OTD.getValue().getIOTDNUM());
 			oper.setString(3, ZAGS_NAME.getText());
 			oper.setString(4, ZAGS_RUK.getText());
 			oper.setString(5, ZAGS_ADR.getText());
@@ -135,7 +135,7 @@ public class EditZags {
 			oper.setString(8, ZAGS_RUK_ABH.getText());
 			oper.setString(9, ADDR.getText());
 			oper.setString(10, ADDR_ABH.getText());
-			oper.setInt(11, Integer.valueOf(ZAGS_ID.getText()));
+			oper.setLong(11, Long.valueOf(ZAGS_ID.getText()));
 			oper.executeUpdate();
 			oper.close();
 			
@@ -177,7 +177,7 @@ public class EditZags {
 				ObservableList<OTD> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					OTD list = new OTD();
-					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					list.setIOTDNUM(rs.getLong("IOTDNUM"));
 					list.setCOTDNAME(rs.getString("COTDNAME"));
 					combolist.add(list);
 				}
@@ -208,7 +208,7 @@ public class EditZags {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -218,7 +218,7 @@ public class EditZags {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
@@ -227,13 +227,13 @@ public class EditZags {
 		this.conn = conn;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public EditZags() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 }

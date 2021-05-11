@@ -7,13 +7,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -46,14 +45,14 @@ public class EditMnu {
 				CallableStatement callStmt = conn.prepareCall("{ call MJUsers.EditOdbMenuItem(?,?,?,?) }");
 				callStmt.registerOutParameter(1, Types.VARCHAR);
 				if (!MNU_PARENT.getText().equals("")) {
-					callStmt.setInt(2, Integer.valueOf(MNU_PARENT.getText()));
+					callStmt.setLong(2, Long.valueOf(MNU_PARENT.getText()));
 				} else {
 					callStmt.setNull(2, java.sql.Types.INTEGER);
 				}
 				callStmt.setString(3, MNU_NAME.getText());
 
 				if (!MNU_PARENT_NEW.getText().equals("")) {
-					callStmt.setInt(4, Integer.valueOf(MNU_PARENT_NEW.getText()));
+					callStmt.setLong(4, Long.valueOf(MNU_PARENT_NEW.getText()));
 				} else {
 					callStmt.setNull(4, java.sql.Types.INTEGER);
 				}
@@ -75,13 +74,7 @@ public class EditMnu {
 					callStmt.close();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
-				Msg.Message(ExceptionUtils.getStackTrace(e));
-				Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+				DBUtil.LOG_ERROR(e);
 			}
 		}
 	}
@@ -93,14 +86,14 @@ public class EditMnu {
 			CallableStatement callStmt = conn.prepareCall("{ call MJUsers.EditOdbMenuItem(?,?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			if (!MNU_PARENT.getText().equals("")) {
-				callStmt.setInt(2, Integer.valueOf(MNU_PARENT.getText()));
+				callStmt.setLong(2, Long.valueOf(MNU_PARENT.getText()));
 			} else {
 				callStmt.setNull(2, java.sql.Types.INTEGER);
 			}
 			callStmt.setString(3, MNU_NAME.getText());
 			
 			if (!MNU_PARENT_NEW.getText().equals("")) {
-				callStmt.setInt(4, Integer.valueOf(MNU_PARENT_NEW.getText()));
+				callStmt.setLong(4, Long.valueOf(MNU_PARENT_NEW.getText()));
 			} else {
 				callStmt.setNull(4, java.sql.Types.INTEGER);
 			}
@@ -120,13 +113,7 @@ public class EditMnu {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -146,12 +133,7 @@ public class EditMnu {
 			// FirstWUpp(ACT_NAME);
 
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -174,12 +156,7 @@ public class EditMnu {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -194,12 +171,7 @@ public class EditMnu {
 			}
 
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -228,7 +200,7 @@ public class EditMnu {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -238,19 +210,19 @@ public class EditMnu {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
-	Integer parantid;
+	Long parantid;
 
 	String txt;
 
-	public void setParantid(Integer ID, String txt) {
+	public void setParantid(Long ID, String txt) {
 		this.parantid = ID;
 		this.txt = txt;
 	}
@@ -258,7 +230,7 @@ public class EditMnu {
 	public EditMnu() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 }

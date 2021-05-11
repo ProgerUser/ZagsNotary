@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.apache.log4j.Logger;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -82,10 +82,10 @@ public class EditCourt {
 			PreparedStatement oper = conn
 					.prepareStatement("update courts set NAME = ? , OTD = ?, ABH_NAME = ?,NAME_ROD=? where ID = ?");
 			oper.setString(1, NAME.getText());
-			oper.setInt(2, OTD.getSelectionModel().getSelectedItem().getIOTDNUM());
+			oper.setLong(2, OTD.getSelectionModel().getSelectedItem().getIOTDNUM());
 			oper.setString(3, ABH_NAME.getText());
 			oper.setString(4, NAME_ROD.getText());
-			oper.setInt(5, courts.getID());
+			oper.setLong(5, courts.getID());
 			oper.executeUpdate();
 			oper.close();
 			setStatus(true);
@@ -141,7 +141,7 @@ public class EditCourt {
 				ObservableList<OTD> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					OTD list = new OTD();
-					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					list.setIOTDNUM(rs.getLong("IOTDNUM"));
 					list.setCOTDNAME(rs.getString("COTDNAME"));
 					combolist.add(list);
 				}
@@ -171,7 +171,7 @@ public class EditCourt {
 	VCOURTS courts;
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -181,7 +181,7 @@ public class EditCourt {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
@@ -190,13 +190,13 @@ public class EditCourt {
 		this.conn = conn;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public EditCourt() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 }

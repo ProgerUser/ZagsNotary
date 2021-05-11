@@ -99,16 +99,16 @@ public class DocParamAdd {
 				
 				CallableStatement cls = conn.prepareCall("{call NT_PKG.ADD_DOC_PARAM(?,?,?,?,?,?)}");
 				cls.registerOutParameter(1, Types.VARCHAR);
-				cls.setInt(2, NT_DOC.getID());
+				cls.setLong(2, NT_DOC.getID());
 				if (PRM_PADEJ.getSelectionModel().getSelectedItem() != null) {
-					cls.setInt(3, PRM_PADEJ.getSelectionModel().getSelectedItem().getPDJ_ID());
+					cls.setLong(3, PRM_PADEJ.getSelectionModel().getSelectedItem().getPDJ_ID());
 				} else {
 					cls.setNull(3, Types.INTEGER);
 				}
 				cls.setString(4, PRM_R_NAME.getText());
-				cls.setInt(5, DOC.getID());
+				cls.setLong(5, DOC.getID());
 				
-				cls.setInt(6, val.getCODE());
+				cls.setLong(6, val.getCODE());
 				
 				cls.execute();
 				// --------------
@@ -143,7 +143,7 @@ public class DocParamAdd {
 				ObservableList<NT_PADEJ> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					NT_PADEJ list = new NT_PADEJ();
-					list.setPDJ_ID(rs.getInt("PDJ_ID"));
+					list.setPDJ_ID(rs.getLong("PDJ_ID"));
 					list.setPDJ_NAME(rs.getString("PDJ_NAME"));
 					list.setPDJ_R_NAME(rs.getString("PDJ_R_NAME"));
 					combolist.add(list);
@@ -163,7 +163,7 @@ public class DocParamAdd {
 				while (rs.next()) {
 					NT_CLI_TYPES list = new NT_CLI_TYPES();
 					list.setNAME(rs.getString("NAME"));
-					list.setCODE(rs.getInt("CODE"));
+					list.setCODE(rs.getLong("CODE"));
 					areas.add(list);
 				}
 				CUS_TYPE.setItems(areas);

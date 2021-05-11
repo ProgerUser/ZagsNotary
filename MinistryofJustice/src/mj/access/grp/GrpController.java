@@ -61,7 +61,7 @@ public class GrpController {
 	@FXML private TableColumn<USR_IN_OUT, String> in_login;
 	@FXML private TableColumn<USR_IN_OUT, String> in_fio;
 	@FXML private TableColumn<ODB_GROUP_USR, String> name;
-	@FXML private TableColumn<ODB_GROUP_USR, Integer> id;
+	@FXML private TableColumn<ODB_GROUP_USR, Long> id;
 	@FXML private TableView<USR_IN_OUT> usrout;
 	@FXML private TableView<USR_IN_OUT> usrin;
 	@FXML private TreeView<ODB_MNU> MNU;
@@ -69,31 +69,31 @@ public class GrpController {
 
 	//Report_________________________________________________
     @FXML private TableView<AP_REPORT_TYPE> ap_report_type;
-    @FXML private TableColumn<AP_REPORT_TYPE, Integer> REPORT_TYPE_ID;
+    @FXML private TableColumn<AP_REPORT_TYPE, Long> REPORT_TYPE_ID;
     @FXML private TableColumn<AP_REPORT_TYPE, String> REPORT_TYPE_NAME;
 	//IN
 	@FXML private TableView<AP_REPORT_CAT> ap_report_cat_out;
-	@FXML private TableColumn<AP_REPORT_CAT, Integer> REPORT_ID_OUT;
+	@FXML private TableColumn<AP_REPORT_CAT, Long> REPORT_ID_OUT;
 	@FXML private TableColumn<AP_REPORT_CAT, String> REPORT_NAME_OUT;
 	//OUT
 	@FXML private TableView<AP_REPORT_CAT> ap_report_cat_in;
-	@FXML private TableColumn<AP_REPORT_CAT, Integer> REPORT_ID_IN;
+	@FXML private TableColumn<AP_REPORT_CAT, Long> REPORT_ID_IN;
 	@FXML private TableColumn<AP_REPORT_CAT, String> REPORT_NAME_IN;
 	//________________________________________________________
 	//IN
 	@FXML private TableView<AP_REPORT_TYPE> ap_report_type_out;
-	@FXML private TableColumn<AP_REPORT_TYPE, Integer> REPORT_TYPE_ID_OUT;
+	@FXML private TableColumn<AP_REPORT_TYPE, Long> REPORT_TYPE_ID_OUT;
 	@FXML private TableColumn<AP_REPORT_TYPE, String> REPORT_TYPE_NAME_OUT;
 	//OUT
     @FXML private TableView<AP_REPORT_TYPE> ap_report_type_in;
-    @FXML private TableColumn<AP_REPORT_TYPE, Integer> REPORT_TYPE_ID_IN;
+    @FXML private TableColumn<AP_REPORT_TYPE, Long> REPORT_TYPE_ID_IN;
     @FXML private TableColumn<AP_REPORT_TYPE, String> REPORT_TYPE_NAME_IN;
 	//________________________________________________________
 	
 	@FXML
 	void AddAct(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(162) == 0) {
+			if (DBUtil.OdbAction(162l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -107,11 +107,11 @@ public class GrpController {
 					ODB_GROUP_USR grp_ = grp.getSelectionModel().getSelectedItem();
 					ODB_ACTION odb_act = Actions.getSelectionModel().getSelectedItem().getValue();
 					// String acts = Actions.getSelectionModel().getSelectedItem().getValue();
-					// Integer act = Integer.valueOf(acts.substring(0, acts.indexOf(":")));
+					// Integer act = Long.valueOf(acts.substring(0, acts.indexOf(":")));
 					CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ODB_ACT_GRP_ADD(?,?)}");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
-					callStmt.setInt(2, grp_.getGRP_ID());
-					callStmt.setInt(3, odb_act.getACT_ID());
+					callStmt.setLong(2, grp_.getGRP_ID());
+					callStmt.setLong(3, odb_act.getACT_ID());
 					callStmt.execute();
 					String ret = callStmt.getString(1);
 					callStmt.close();
@@ -137,7 +137,7 @@ public class GrpController {
 	@FXML
 	void DeleteAct(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(163) == 0) {
+			if (DBUtil.OdbAction(163l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -151,12 +151,12 @@ public class GrpController {
 					ODB_GROUP_USR grp_ = grp.getSelectionModel().getSelectedItem();
 					ODB_ACTION odb_act = Actions.getSelectionModel().getSelectedItem().getValue();
 					// String acts = Actions.getSelectionModel().getSelectedItem().getValue();
-					// Integer act = Integer.valueOf(acts.substring(0, acts.indexOf(":")));
+					// Integer act = Long.valueOf(acts.substring(0, acts.indexOf(":")));
 
 					CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ODB_ACT_GRP_DEL(?,?)}");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
-					callStmt.setInt(2, grp_.getGRP_ID());
-					callStmt.setInt(3, odb_act.getACT_ID());
+					callStmt.setLong(2, grp_.getGRP_ID());
+					callStmt.setLong(3, odb_act.getACT_ID());
 					callStmt.execute();
 					String ret = callStmt.getString(1);
 					callStmt.close();
@@ -208,7 +208,7 @@ public class GrpController {
 	void AddMnu(ActionEvent event) {
 		try {
 			
-			if (DBUtil.OdbAction(156) == 0) {
+			if (DBUtil.OdbAction(156l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -222,11 +222,11 @@ public class GrpController {
 					ODB_GROUP_USR grp_ = grp.getSelectionModel().getSelectedItem();
 					ODB_MNU odb_act = MNU.getSelectionModel().getSelectedItem().getValue();
 					// String acts = MNU.getSelectionModel().getSelectedItem().getValue();
-					// Integer act = Integer.valueOf(acts.substring(0, acts.indexOf(":")));
+					// Integer act = Long.valueOf(acts.substring(0, acts.indexOf(":")));
 					CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuGrpAdd(?,?)}");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
-					callStmt.setInt(2, grp_.getGRP_ID());
-					callStmt.setInt(3, odb_act.getMNU_ID());
+					callStmt.setLong(2, grp_.getGRP_ID());
+					callStmt.setLong(3, odb_act.getMNU_ID());
 					callStmt.execute();
 					String ret = callStmt.getString(1);
 					callStmt.close();
@@ -252,7 +252,7 @@ public class GrpController {
 	@FXML
 	void DeleteMnu(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(157) == 0) {
+			if (DBUtil.OdbAction(157l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -265,12 +265,12 @@ public class GrpController {
 					ODB_GROUP_USR grp_ = grp.getSelectionModel().getSelectedItem();
 					ODB_MNU odb_act = MNU.getSelectionModel().getSelectedItem().getValue();
 					// String acts = MNU.getSelectionModel().getSelectedItem().getValue();
-					// Integer act = Integer.valueOf(acts.substring(0, acts.indexOf(":")));
+					// Integer act = Long.valueOf(acts.substring(0, acts.indexOf(":")));
 
 					CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuGrpDelete(?,?)}");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
-					callStmt.setInt(2, grp_.getGRP_ID());
-					callStmt.setInt(3, odb_act.getMNU_ID());
+					callStmt.setLong(2, grp_.getGRP_ID());
+					callStmt.setLong(3, odb_act.getMNU_ID());
 					callStmt.execute();
 					String ret = callStmt.getString(1);
 					callStmt.close();
@@ -312,7 +312,7 @@ public class GrpController {
 								"end;\n" + 
 								"");
 				prp.setString(1, usr.getLOGIN());
-				prp.setInt(2, grp_act.getGRP_ID());
+				prp.setLong(2, grp_act.getGRP_ID());
 				prp.executeUpdate();
 				prp.close();
 				// Обновить
@@ -337,7 +337,7 @@ public class GrpController {
 								+ "  delete from  ODB_GRP_MEMBER where GRP_ID = ? and IUSRID = usr_id;\n"
 								+ "  commit;\n" + "end;\n" + "");
 				prp.setString(1, usr.getLOGIN());
-				prp.setInt(2, grp_act.getGRP_ID());
+				prp.setLong(2, grp_act.getGRP_ID());
 				prp.executeUpdate();
 				prp.close();
 				// Обновить
@@ -462,7 +462,7 @@ public class GrpController {
 						try {
 							ODB_GROUP_USR id = grp.getSelectionModel().getSelectedItem();
 							PreparedStatement prst = conn.prepareStatement("delete from ODB_GROUP_USR where GRP_ID =?");
-							prst.setInt(1, id.getGRP_ID());
+							prst.setLong(1, id.getGRP_ID());
 							prst.executeUpdate();
 							prst.close();
 							conn.commit();
@@ -530,7 +530,7 @@ public class GrpController {
 							setText(item.getACT_NAME());
 							if (grp.getSelectionModel().getSelectedItem() != null) {
 								ODB_GROUP_USR grp_ = grp.getSelectionModel().getSelectedItem();
-								Integer act = item.getACT_ID();
+								Long act = item.getACT_ID();
 								if (DBUtil.ODB_ACT_GRP(grp_.getGRP_ID(), act) == 1) {
 									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 								} else {
@@ -556,7 +556,7 @@ public class GrpController {
 							setText(item.getMNU_NAME());
 							if (grp.getSelectionModel().getSelectedItem() != null) {
 								ODB_GROUP_USR grp_ = grp.getSelectionModel().getSelectedItem();
-								Integer act = item.getMNU_ID();
+								Long act = item.getMNU_ID();
 								if (DBUtil.ODB_MNU_GRP(grp_.getGRP_ID(), act) == 1) {
 									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 								} else {
@@ -647,9 +647,9 @@ public class GrpController {
 						"values\n" + 
 						"  (?,?,?)\n" + 
 						" ");
-				prp.setInt(1, grp_act.getGRP_ID());
-				prp.setInt(2, rep_tp.getREPORT_TYPE_ID());
-				prp.setInt(3, rep_out.getREPORT_ID());
+				prp.setLong(1, grp_act.getGRP_ID());
+				prp.setLong(2, rep_tp.getREPORT_TYPE_ID());
+				prp.setLong(3, rep_out.getREPORT_ID());
 				prp.executeUpdate();
 				prp.close();
 				conn.commit();
@@ -675,8 +675,8 @@ public class GrpController {
 						" where GROUP_ID = ?\n" + 
 						"   and REPORT_TYPE_ID = ?\n" + 
 						"");
-				prp.setInt(1, grp_act.getGRP_ID());
-				prp.setInt(2, rep_tp.getREPORT_TYPE_ID());
+				prp.setLong(1, grp_act.getGRP_ID());
+				prp.setLong(2, rep_tp.getREPORT_TYPE_ID());
 				prp.executeUpdate();
 				prp.close();
 				conn.commit();
@@ -703,8 +703,8 @@ public class GrpController {
 						"values\n" + 
 						"  (?,?)\n" + 
 						" ");
-				prp.setInt(1, grp_act.getGRP_ID());
-				prp.setInt(2, rep_tp.getREPORT_TYPE_ID());
+				prp.setLong(1, grp_act.getGRP_ID());
+				prp.setLong(2, rep_tp.getREPORT_TYPE_ID());
 				prp.executeUpdate();
 				prp.close();
 				conn.commit();
@@ -732,9 +732,9 @@ public class GrpController {
 						"   and REPORT_TYPE_ID = ?\n" + 
 						"   and REPORT_ID = ?\n" + 
 						"");
-				prp.setInt(1, grp_act.getGRP_ID());
-				prp.setInt(2, rep_tp.getREPORT_TYPE_ID());
-				prp.setInt(3, rep_out.getREPORT_ID());
+				prp.setLong(1, grp_act.getGRP_ID());
+				prp.setLong(2, rep_tp.getREPORT_TYPE_ID());
+				prp.setLong(3, rep_out.getREPORT_ID());
 				prp.executeUpdate();
 				prp.close();
 				conn.commit();
@@ -747,20 +747,20 @@ public class GrpController {
     }
     
 	void fillTreeMnu() {
-		Map<Integer, TreeItem<ODB_MNU>> itemById = new HashMap<>();
-		Map<Integer, Integer> parents = new HashMap<>();
+		Map<Long, TreeItem<ODB_MNU>> itemById = new HashMap<>();
+		Map<Long, Long> parents = new HashMap<>();
 		String query = "select * from ODB_MNU";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				adb_act = new ODB_MNU();
-				adb_act.setMNU_ID(rs.getInt("MNU_ID"));
-				adb_act.setMNU_NPP(rs.getInt("MNU_NPP"));
-				adb_act.setMNU_PARENT(rs.getInt("MNU_PARENT"));
+				adb_act.setMNU_ID(rs.getLong("MNU_ID"));
+				adb_act.setMNU_NPP(rs.getLong("MNU_NPP"));
+				adb_act.setMNU_PARENT(rs.getLong("MNU_PARENT"));
 				adb_act.setMNU_NAME(rs.getString("MNU_NAME"));
-				itemById.put(rs.getInt("MNU_ID"), new TreeItem<>(adb_act));
-				parents.put(rs.getInt("MNU_ID"), rs.getInt("MNU_PARENT"));
+				itemById.put(rs.getLong("MNU_ID"), new TreeItem<>(adb_act));
+				parents.put(rs.getLong("MNU_ID"), rs.getLong("MNU_PARENT"));
 			}
 			pstmt.close();
 			rs.close();
@@ -768,9 +768,9 @@ public class GrpController {
 			e.printStackTrace();
 		}
 
-		for (Map.Entry<Integer, TreeItem<ODB_MNU>> entry : itemById.entrySet()) {
-			Integer key = entry.getKey();
-			Integer parent = parents.get(key);
+		for (Map.Entry<Long, TreeItem<ODB_MNU>> entry : itemById.entrySet()) {
+			Long key = entry.getKey();
+			Long parent = parents.get(key);
 			if (parent.equals(key)) {
 				// in case the root item points to itself, this is it
 				root = entry.getValue();
@@ -793,20 +793,20 @@ public class GrpController {
 
 	
 	void fillTreeAct() {
-		Map<Integer, TreeItem<ODB_ACTION>> itemById = new HashMap<>();
-		Map<Integer, Integer> parents = new HashMap<>();
+		Map<Long, TreeItem<ODB_ACTION>> itemById = new HashMap<>();
+		Map<Long, Long> parents = new HashMap<>();
 		String query = "select * from ODB_ACTION";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				adb_act_act = new ODB_ACTION();
-				adb_act_act.setACT_ID(rs.getInt("ACT_ID"));
-				adb_act_act.setACT_NPP(rs.getInt("ACT_NPP"));
-				adb_act_act.setACT_PARENT(rs.getInt("ACT_PARENT"));
+				adb_act_act.setACT_ID(rs.getLong("ACT_ID"));
+				adb_act_act.setACT_NPP(rs.getLong("ACT_NPP"));
+				adb_act_act.setACT_PARENT(rs.getLong("ACT_PARENT"));
 				adb_act_act.setACT_NAME(rs.getString("ACT_NAME"));
-				itemById.put(rs.getInt("ACT_ID"), new TreeItem<>(adb_act_act));
-				parents.put(rs.getInt("ACT_ID"), rs.getInt("ACT_PARENT"));
+				itemById.put(rs.getLong("ACT_ID"), new TreeItem<>(adb_act_act));
+				parents.put(rs.getLong("ACT_ID"), rs.getLong("ACT_PARENT"));
 			}
 			pstmt.close();
 			rs.close();
@@ -814,9 +814,9 @@ public class GrpController {
 			e.printStackTrace();
 		}
 
-		for (Map.Entry<Integer, TreeItem<ODB_ACTION>> entry : itemById.entrySet()) {
-			Integer key = entry.getKey();
-			Integer parent = parents.get(key);
+		for (Map.Entry<Long, TreeItem<ODB_ACTION>> entry : itemById.entrySet()) {
+			Long key = entry.getKey();
+			Long parent = parents.get(key);
 			if (parent.equals(key)) {
 				// in case the root item points to itself, this is it
 				root_root = entry.getValue();
@@ -840,12 +840,12 @@ public class GrpController {
 	/**
 	 * Пользователи вне группы
 	 */
-	void InitUsrOut(Integer grp_id) {
+	void InitUsrOut(Long grp_id) {
 		try {
 			PreparedStatement prepStmt = conn.prepareStatement("select usr.cusrlogname, usr.cusrname\n"
 					+ "  from usr\n" + " where not exists (select null\n" + "          from ODB_GRP_MEMBER mem\n"
 					+ "         where mem.iusrid = usr.iusrid\n" + "           and mem.grp_id = ?)\n");
-			prepStmt.setInt(1, grp_id);
+			prepStmt.setLong(1, grp_id);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<USR_IN_OUT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -873,12 +873,12 @@ public class GrpController {
 	/**
 	 * Пользователи в группе
 	 */
-	void InitUsrIn(Integer grp_id) {
+	void InitUsrIn(Long grp_id) {
 		try {
 			PreparedStatement prepStmt = conn.prepareStatement("select usr.cusrlogname, usr.cusrname\n"
 					+ "  from usr\n" + " where exists (select null\n" + "          from ODB_GRP_MEMBER mem\n"
 					+ "         where mem.iusrid = usr.iusrid\n" + "           and mem.grp_id = ?)\n");
-			prepStmt.setInt(1, grp_id);
+			prepStmt.setLong(1, grp_id);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<USR_IN_OUT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -914,7 +914,7 @@ public class GrpController {
 			ObservableList<ODB_GROUP_USR> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				ODB_GROUP_USR list = new ODB_GROUP_USR();
-				list.setGRP_ID(rs.getInt("GRP_ID"));
+				list.setGRP_ID(rs.getLong("GRP_ID"));
 				list.setGRP_NAME(rs.getString("GRP_NAME"));
 				list.setNAME(rs.getString("NAME"));
 				dlist.add(list);
@@ -940,7 +940,7 @@ public class GrpController {
 	/**
 	 * Обновить таблицу с типами отчетов
 	 */
-	void InitRepTpIn(Integer grp_id) {
+	void InitRepTpIn(Long grp_id) {
 		try {
 			PreparedStatement prepStmt = conn
 					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_TYPE_NAME\n" + 
@@ -951,12 +951,12 @@ public class GrpController {
 							" WHERE (GROUP_ID = ?)\n" + 
 							" order by report_type_id\n" + 
 							"");
-			prepStmt.setInt(1, grp_id);
+			prepStmt.setLong(1, grp_id);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<AP_REPORT_TYPE> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				AP_REPORT_TYPE list = new AP_REPORT_TYPE();
-				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_TYPE_ID(rs.getLong("REPORT_TYPE_ID"));
 				list.setREPORT_TYPE_NAME(rs.getString("REPORT_TYPE_NAME"));
 				dlist.add(list);
 			}
@@ -986,7 +986,7 @@ public class GrpController {
 			ObservableList<AP_REPORT_TYPE> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				AP_REPORT_TYPE list = new AP_REPORT_TYPE();
-				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_TYPE_ID(rs.getLong("REPORT_TYPE_ID"));
 				list.setREPORT_TYPE_NAME(rs.getString("REPORT_TYPE_NAME"));
 				dlist.add(list);
 			}
@@ -1007,7 +1007,7 @@ public class GrpController {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	void InitRepTpOut(Integer grp_id) {
+	void InitRepTpOut(Long grp_id) {
 		try {
 			PreparedStatement prepStmt = conn
 					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_TYPE_NAME\n" + 
@@ -1022,12 +1022,12 @@ public class GrpController {
 							" WHERE (GROUP_ID = ?)\n" + 
 							" order by report_type_id\n" + 
 							"");
-			prepStmt.setInt(1, grp_id);
+			prepStmt.setLong(1, grp_id);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<AP_REPORT_TYPE> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				AP_REPORT_TYPE list = new AP_REPORT_TYPE();
-				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_TYPE_ID(rs.getLong("REPORT_TYPE_ID"));
 				list.setREPORT_TYPE_NAME(rs.getString("REPORT_TYPE_NAME"));
 				dlist.add(list);
 			}
@@ -1049,7 +1049,7 @@ public class GrpController {
 		}
 	}
 	
-	void InitRepIn(Integer rep_tp_id, Integer grp_id) {
+	void InitRepIn(Long rep_tp_id, Long grp_id) {
 		try {
 			PreparedStatement prepStmt = conn
 					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_ID, REPORT_NAME\n" + 
@@ -1062,14 +1062,14 @@ public class GrpController {
 							"   and (REPORT_TYPE_ID = ?)\n" + 
 							" order by report_id\n" + 
 							"");
-			prepStmt.setInt(1, grp_id);
-			prepStmt.setInt(2, rep_tp_id);
+			prepStmt.setLong(1, grp_id);
+			prepStmt.setLong(2, rep_tp_id);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<AP_REPORT_CAT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				AP_REPORT_CAT list = new AP_REPORT_CAT();
-				list.setREPORT_ID(rs.getInt("REPORT_ID"));
-				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_ID(rs.getLong("REPORT_ID"));
+				list.setREPORT_TYPE_ID(rs.getLong("REPORT_TYPE_ID"));
 				list.setREPORT_NAME(rs.getString("REPORT_NAME"));
 				dlist.add(list);
 			}
@@ -1091,7 +1091,7 @@ public class GrpController {
 		}
 	}
 	
-	void InitRepOut(Integer rep_tp_id,Integer grp_id) {
+	void InitRepOut(Long rep_tp_id,Long grp_id) {
 		try {
 			PreparedStatement prepStmt = conn
 					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_ID, REPORT_NAME\n" + 
@@ -1113,14 +1113,14 @@ public class GrpController {
 							"   and (REPORT_TYPE_ID = ?)\n" + 
 							" order by report_id\n" + 
 							"");
-			prepStmt.setInt(1, grp_id);
-			prepStmt.setInt(2, rep_tp_id);
+			prepStmt.setLong(1, grp_id);
+			prepStmt.setLong(2, rep_tp_id);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<AP_REPORT_CAT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				AP_REPORT_CAT list = new AP_REPORT_CAT();
-				list.setREPORT_ID(rs.getInt("REPORT_ID"));
-				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_ID(rs.getLong("REPORT_ID"));
+				list.setREPORT_TYPE_ID(rs.getLong("REPORT_TYPE_ID"));
 				list.setREPORT_NAME(rs.getString("REPORT_NAME"));
 				dlist.add(list);
 			}
@@ -1149,12 +1149,12 @@ public class GrpController {
 			ObservableList<AP_REPORT_CAT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				AP_REPORT_CAT list = new AP_REPORT_CAT();
-				list.setREPORT_ID(rs.getInt("REPORT_ID"));
-				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
+				list.setREPORT_ID(rs.getLong("REPORT_ID"));
+				list.setREPORT_TYPE_ID(rs.getLong("REPORT_TYPE_ID"));
 				list.setREPORT_NAME(rs.getString("REPORT_NAME"));
 				list.setREPORT_UFS(rs.getString("REPORT_UFS"));
-				list.setCOPIES(rs.getInt("COPIES"));
-				list.setREPORT_VIEWER(rs.getInt("REPORT_VIEWER"));
+				list.setCOPIES(rs.getLong("COPIES"));
+				list.setREPORT_VIEWER(rs.getLong("REPORT_VIEWER"));
 				list.setREPORT_COMMENT(rs.getString("REPORT_COMMENT"));
 				list.setEDIT_PARAM(rs.getString("EDIT_PARAM"));
 				list.setOEM_DATA(rs.getString("OEM_DATA"));
@@ -1180,16 +1180,16 @@ public class GrpController {
 		}
 	}
 	
-	ODB_GROUP_USR InitGrp2(Integer grp_id) {
+	ODB_GROUP_USR InitGrp2(Long grp_id) {
 		ODB_GROUP_USR list = null;
 		try {
 			PreparedStatement prepStmt = conn
 					.prepareStatement("select grp_id, grp_name, NAME from ODB_GROUP_USR where grp_id = ?");
-			prepStmt.setInt(1, grp_id);
+			prepStmt.setLong(1, grp_id);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				list = new ODB_GROUP_USR();
-				list.setGRP_ID(rs.getInt("GRP_ID"));
+				list.setGRP_ID(rs.getLong("GRP_ID"));
 				list.setGRP_NAME(rs.getString("grp_name"));
 				list.setNAME(rs.getString("NAME"));
 			}

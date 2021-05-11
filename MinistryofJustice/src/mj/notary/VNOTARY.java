@@ -1,13 +1,13 @@
 package mj.notary;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class VNOTARY {
 	/** Нет данных */
-	private IntegerProperty NOT_ID;
+	private LongProperty NOT_ID;
 	/** Нет данных */
 	private StringProperty COTDNAME;
 	/** Нет данных */
@@ -20,7 +20,7 @@ public class VNOTARY {
 	private StringProperty NOT_TELEPHONE;
 
 	public VNOTARY() {
-		this.NOT_ID = new SimpleIntegerProperty();
+		this.NOT_ID = new SimpleLongProperty();
 		this.COTDNAME = new SimpleStringProperty();
 		this.NOT_NAME = new SimpleStringProperty();
 		this.NOT_RUK = new SimpleStringProperty();
@@ -28,7 +28,7 @@ public class VNOTARY {
 		this.NOT_TELEPHONE = new SimpleStringProperty();
 	}
 
-	public void setNOT_ID(Integer NOT_ID) {
+	public void setNOT_ID(Long NOT_ID) {
 		this.NOT_ID.set(NOT_ID);
 	}
 
@@ -52,7 +52,7 @@ public class VNOTARY {
 		this.NOT_TELEPHONE.set(NOT_TELEPHONE);
 	}
 
-	public Integer getNOT_ID() {
+	public Long getNOT_ID() {
 		return NOT_ID.get();
 	}
 
@@ -76,7 +76,7 @@ public class VNOTARY {
 		return NOT_TELEPHONE.get();
 	}
 
-	public IntegerProperty NOT_IDProperty() {
+	public LongProperty NOT_IDProperty() {
 		return NOT_ID;
 	}
 

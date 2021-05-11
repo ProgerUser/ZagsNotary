@@ -19,7 +19,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -30,9 +29,9 @@ import com.jyloo.syntheticafx.XTableView;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -268,8 +267,8 @@ public class AddCus {
 					 */
 					ResultSet rs = prpstmt.executeQuery();
 					if (rs.next()) {
-						System.out.println("cnt=" + rs.getInt("cnt"));
-						if (rs.getInt("cnt") > 0) {
+						System.out.println("cnt=" + rs.getLong("cnt"));
+						if (rs.getLong("cnt") > 0) {
 							find = true;
 							LAST_NAME = o.getCCUSLAST_NAME();
 							FIRST_NAME = o.getCCUSFIRST_NAME();
@@ -445,10 +444,10 @@ public class AddCus {
 								 * SimpleDateFormat("dd.MM.yyyy") .format(rs.getDate("BIRTH_DATE")), formatter)
 								 * : null); }
 								 */
-								if (rs.getInt("SEX_CODE") == 1) {
+								if (rs.getLong("SEX_CODE") == 1) {
 									CCUSSEX.getSelectionModel().select("Мужской");
 								}
-								if (rs.getInt("SEX_CODE") == 2) {
+								if (rs.getLong("SEX_CODE") == 2) {
 									CCUSSEX.getSelectionModel().select("Женский");
 								}
 								// ---------------------
@@ -468,7 +467,7 @@ public class AddCus {
 							ResultSet rs = prepStmt.executeQuery();
 							if (rs.next()) {
 								Address.setExpanded(true);
-								// CALFA_2.setText(String.valueOf(rs.getInt("AREA_CODE")));
+								// CALFA_2.setText(String.valueOf(rs.getLong("AREA_CODE")));
 								// CLONGNAMET.setText(rs.getString("AREA_NAME"));
 								AREA.getSelectionModel().select(rs.getString("AREA_NAME"));
 								PUNCT_NAME.getSelectionModel().select(rs.getString("NASPUNCT_NAME"));
@@ -495,7 +494,7 @@ public class AddCus {
 							Docs.setExpanded(true);
 							while (rs.next()) {
 								PreparedStatement insert = conn.prepareStatement(insert_doc_temp);
-								insert.setInt(1, rs.getInt("DOC_TYPE"));
+								insert.setLong(1, rs.getLong("DOC_TYPE"));
 								insert.setString(2, rs.getString("NOMER"));
 								insert.setString(3, rs.getString("SERIA"));
 								insert.setDate(4, rs.getDate("DATE_VID"));
@@ -606,10 +605,10 @@ public class AddCus {
 //											 * SimpleDateFormat("dd.MM.yyyy") .format(rs.getDate("BIRTH_DATE")),
 //											 * formatter) : null); }
 //											 */
-//											if (rs.getInt("SEX_CODE") == 1) {
+//											if (rs.getLong("SEX_CODE") == 1) {
 //												CCUSSEX.getSelectionModel().select("Мужской");
 //											}
-//											if (rs.getInt("SEX_CODE") == 2) {
+//											if (rs.getLong("SEX_CODE") == 2) {
 //												CCUSSEX.getSelectionModel().select("Женский");
 //											}
 //											// ---------------------
@@ -629,7 +628,7 @@ public class AddCus {
 //										ResultSet rs = prepStmt.executeQuery();
 //										if (rs.next()) {
 //											Address.setExpanded(true);
-//											// CALFA_2.setText(String.valueOf(rs.getInt("AREA_CODE")));
+//											// CALFA_2.setText(String.valueOf(rs.getLong("AREA_CODE")));
 //											// CLONGNAMET.setText(rs.getString("AREA_NAME"));
 //											AREA.getSelectionModel().select(rs.getString("AREA_NAME"));
 //											PUNCT_NAME.getSelectionModel().select(rs.getString("NASPUNCT_NAME"));
@@ -656,7 +655,7 @@ public class AddCus {
 //										Docs.setExpanded(true);
 //										while (rs.next()) {
 //											PreparedStatement insert = conn.prepareStatement(insert_doc_temp);
-//											insert.setInt(1, rs.getInt("DOC_TYPE"));
+//											insert.setLong(1, rs.getLong("DOC_TYPE"));
 //											insert.setString(2, rs.getString("NOMER"));
 //											insert.setString(3, rs.getString("SERIA"));
 //											insert.setDate(4, rs.getDate("DATE_VID"));
@@ -772,9 +771,9 @@ public class AddCus {
 			while (rs.next()) {
 				CUS list = new CUS();
 				list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
-				list.setICUSNUM(rs.getInt("ICUSNUM"));
+				list.setICUSNUM(rs.getLong("ICUSNUM"));
 				list.setCCUSIDOPEN(rs.getString("CCUSIDOPEN"));
-				list.setICUSOTD(rs.getInt("ICUSOTD"));
+				list.setICUSOTD(rs.getLong("ICUSOTD"));
 				list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
 				list.setDCUSEDIT((rs.getDate("DCUSEDIT") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSEDIT")), formatter)
@@ -785,7 +784,7 @@ public class AddCus {
 						? LocalDateTime.parse(
 								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DCUSOPEN")), formatterdt)
 						: null);
-				list.setCCUSSEX(rs.getInt("CCUSSEX"));
+				list.setCCUSSEX(rs.getLong("CCUSSEX"));
 				list.setCCUSNAME_SH(rs.getString("CCUSNAME_SH"));
 				list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
 				list.setCCUSCOUNTRY1(rs.getString("CCUSCOUNTRY1"));
@@ -1166,12 +1165,7 @@ public class AddCus {
 					delete.close();
 					CallSave("N");
 				} catch (SQLException e) {
-					Msg.Message(ExceptionUtils.getStackTrace(e));
-					Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-					String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-					String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-					int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-					DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+					DBUtil.LOG_ERROR(e);
 				}
 				newWindow_yn.close();
 			}
@@ -1212,8 +1206,8 @@ public class AddCus {
 			ObservableList<CUS_CITIZEN> infr_list = FXCollections.observableArrayList();
 			while (rs.next()) {
 				CUS_CITIZEN infr = new CUS_CITIZEN();
-				infr.setID(rs.getInt("ID"));
-				infr.setCOUNTRY_CODE(rs.getInt("COUNTRY_CODE"));
+				infr.setID(rs.getLong("ID"));
+				infr.setCOUNTRY_CODE(rs.getLong("COUNTRY_CODE"));
 				infr.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
 				infr.setOSN((rs.getString("OSN").equals("Y")) ? true : false);
 				infr_list.add(infr);
@@ -1243,20 +1237,20 @@ public class AddCus {
 	 * @param osn
 	 * @param oper
 	 */
-	void CRUDCitizen(Integer COUNTRY_I, String CLONGNAME_I, String osn, String oper, String type) {
+	void CRUDCitizen(Long COUNTRY_I, String CLONGNAME_I, String osn, String oper, String type) {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			CallableStatement callStmt = conn.prepareCall(oper);
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			if (type.equals("add")) {
-				callStmt.setInt(2, COUNTRY_I);
+				callStmt.setLong(2, COUNTRY_I);
 				callStmt.setString(3, CLONGNAME_I);
 				callStmt.setString(4, osn);
 			} else if (type.equals("edit")) {
 				CUS_CITIZEN cs = CUS_CITIZEN.getSelectionModel().getSelectedItem();
-				callStmt.setInt(2, COUNTRY_I);
+				callStmt.setLong(2, COUNTRY_I);
 				callStmt.setString(3, CLONGNAME_I);
-				callStmt.setInt(4, cs.getID());
+				callStmt.setLong(4, cs.getID());
 				callStmt.setString(5, osn);
 			}
 			callStmt.execute();
@@ -1324,7 +1318,7 @@ public class AddCus {
 				CUS_CITIZEN cd = CUS_CITIZEN.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("declare " + "pragma autonomous_transaction;begin "
 						+ "delete from CUS_CITIZEN_TEMP where id = ?;commit;" + "end;");
-				delete.setInt(1, cd.getID());
+				delete.setLong(1, cd.getID());
 				delete.executeUpdate();
 				delete.close();
 				InitCitizen();
@@ -1348,7 +1342,7 @@ public class AddCus {
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("declare " + "pragma autonomous_transaction;begin "
 						+ " delete from CUS_DOCUM_TEMP where ID_DOC = ?;commit;" + "end;");
-				delete.setInt(1, cd.getID_DOC());
+				delete.setLong(1, cd.getID_DOC());
 				delete.executeUpdate();
 				delete.close();
 				/**
@@ -1403,7 +1397,7 @@ public class AddCus {
 			while (rs.next()) {
 				COUNTRIES list = new COUNTRIES();
 				list.setNAME(rs.getString("NAME"));
-				list.setCODE(rs.getInt("CODE"));
+				list.setCODE(rs.getLong("CODE"));
 				user_o_list.add(list);
 			}
 
@@ -1643,7 +1637,7 @@ public class AddCus {
 				list.setDOC_NUM(rs.getString("DOC_NUM"));
 				list.setID_DOC_TP(rs.getString("ID_DOC_TP"));
 				list.setPREF(rs.getString("PREF"));
-				list.setID_DOC(rs.getInt("ID_DOC"));
+				list.setID_DOC(rs.getLong("ID_DOC"));
 				docs.add(list);
 			}
 			prepStmt.close();
@@ -1678,7 +1672,7 @@ public class AddCus {
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("declare " + "pragma autonomous_transaction; begin "
 						+ " delete from CUS_DOCUM_TEMP where ID_DOC = ?;commit;" + "end;");
-				delete.setInt(1, cd.getID_DOC());
+				delete.setLong(1, cd.getID_DOC());
 				delete.executeUpdate();
 				delete.close();
 				/**
@@ -1706,7 +1700,7 @@ public class AddCus {
 
 			if (ID_DOC_TP_T.getValue() != null) {
 				VPUD vp = ID_DOC_TP_T.getSelectionModel().getSelectedItem();
-				callStmt.setInt(3, vp.getIPUDID());
+				callStmt.setLong(3, vp.getIPUDID());
 			} else {
 				callStmt.setNull(3, java.sql.Types.INTEGER);
 			}
@@ -1719,7 +1713,7 @@ public class AddCus {
 			callStmt.setString(9, DOC_SUBDIV_T.getText());
 			if (type2.equals("edit")) {
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
-				callStmt.setInt(10, cd.getID_DOC());
+				callStmt.setLong(10, cd.getID_DOC());
 				System.out.println(cd.getID_DOC());
 			}
 			callStmt.execute();
@@ -1847,7 +1841,7 @@ public class AddCus {
 	/**
 	 * Отправить данные в 1с
 	 */
-	void Save1c(Integer dbid, String edit) {
+	void Save1c(Long dbid, String edit) {
 		try {
 			// Если многопоточность
 			BP.setDisable(true);
@@ -1879,7 +1873,7 @@ public class AddCus {
 					String XML = sql.getSql("1C_XML");
 					{
 						PreparedStatement select = conn.prepareStatement(readRecordSQL);
-						select.setInt(1, dbid);
+						select.setLong(1, dbid);
 						ResultSet rs = select.executeQuery();
 						if (rs.next()) {
 
@@ -1907,7 +1901,7 @@ public class AddCus {
 					{
 						String XML_CUS_DOCUM = sql.getSql("1C_XML_CUS_DOCUM");
 						PreparedStatement doc = conn.prepareStatement(XML_CUS_DOCUM);
-						doc.setInt(1, dbid);
+						doc.setLong(1, dbid);
 						ResultSet rs = doc.executeQuery();
 						while (rs.next()) {
 							cnt_doc++;
@@ -1938,8 +1932,8 @@ public class AddCus {
 						// обновим id-шник
 						PreparedStatement doc = conn
 								.prepareStatement("update cus set cus.ID1C = ? where cus.ICUSNUM = ?");
-						doc.setInt(1, Integer.valueOf(save_ret_1c.replace(" ", "")));
-						doc.setInt(2, dbid);
+						doc.setLong(1, Long.valueOf(save_ret_1c.replace(" ", "")));
+						doc.setLong(2, dbid);
 						doc.executeUpdate();
 						doc.close();
 					}
@@ -2015,12 +2009,12 @@ public class AddCus {
 			callStmt.setString(8, CCUSPLACE_BIRTH.getText());
 			callStmt.setString(9, ICUSOTD.getValue());
 			if (CombCountryAddr.getValue() != null) {
-				callStmt.setInt(10, CombCountryAddr.getValue().getCODE());
+				callStmt.setLong(10, CombCountryAddr.getValue().getCODE());
 			} else {
 				callStmt.setNull(10, Types.INTEGER);
 			}
 			if (CombCountry.getValue() != null) {
-				callStmt.setInt(11, CombCountry.getValue().getCODE());
+				callStmt.setLong(11, CombCountry.getValue().getCODE());
 			} else {
 				callStmt.setNull(11, Types.INTEGER);
 			}
@@ -2047,14 +2041,14 @@ public class AddCus {
 			callStmt.setString(22, AB_LAST_NAME.getText());
 			callStmt.setString(23, AB_PLACE_BIRTH.getText());
 			// адрес-район если текст
-			callStmt.setInt(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
+			callStmt.setLong(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
 			// адрес-населенный пункт если текст
-			callStmt.setInt(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
+			callStmt.setLong(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
 
 			// Новые поля
 			NT_CLI_TYPES val = CUS_TYPE.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				callStmt.setInt(26, val.getCODE());
+				callStmt.setLong(26, val.getCODE());
 			} else {
 				callStmt.setNull(26, Types.INTEGER);
 			}
@@ -2068,7 +2062,7 @@ public class AddCus {
 
 			callStmt.execute();
 			String ret = callStmt.getString(1);
-			Integer retid = callStmt.getInt(19);
+			Long retid = callStmt.getLong(19);
 			if (ret.equals("ok")) {
 				conn.commit();
 				setStatus(true);
@@ -2313,7 +2307,7 @@ public class AddCus {
 			 */
 			if (CCUSNATIONALITY.getValue() != null & CUS_TYPE.getSelectionModel().getSelectedItem().getCODE() != 2) {
 				if (rs.next()) {
-					if (rs.getInt(1) == 0) {
+					if (rs.getLong(1) == 0) {
 						AddNationalityIfNotExist();
 					} else {
 						CallSave("N");
@@ -2502,7 +2496,7 @@ public class AddCus {
 				while (rs.next()) {
 					NT_CLI_TYPES list = new NT_CLI_TYPES();
 					list.setNAME(rs.getString("NAME"));
-					list.setCODE(rs.getInt("CODE"));
+					list.setCODE(rs.getLong("CODE"));
 					areas.add(list);
 				}
 				CUS_TYPE.setItems(areas);
@@ -2667,7 +2661,7 @@ public class AddCus {
 			 * Добавление Абхазии по умолчанию в список гражданства
 			 */
 			{
-				CRUDCitizen(1, "Абхазия", "Y", "{ ? = call MJCUS.ADD_CUS_CITIZEN_TEMP(?,?,?)}", "add");
+				CRUDCitizen(1l, "Абхазия", "Y", "{ ? = call MJCUS.ADD_CUS_CITIZEN_TEMP(?,?,?)}", "add");
 			}
 			/**
 			 * Первая буква заглавная
@@ -2754,7 +2748,7 @@ public class AddCus {
 				ObservableList<COUNTRIES> nationals = FXCollections.observableArrayList();
 				while (rs.next()) {
 					COUNTRIES countryes = new COUNTRIES();
-					countryes.setCODE(rs.getInt("CODE"));
+					countryes.setCODE(rs.getLong("CODE"));
 					countryes.setNAME(rs.getString("NAME"));
 					nationals.add(countryes);
 				}
@@ -2783,7 +2777,7 @@ public class AddCus {
 				ObservableList<COUNTRIES> nationals = FXCollections.observableArrayList();
 				while (rs.next()) {
 					COUNTRIES countryes = new COUNTRIES();
-					countryes.setCODE(rs.getInt("CODE"));
+					countryes.setCODE(rs.getLong("CODE"));
 					countryes.setNAME(rs.getString("NAME"));
 					nationals.add(countryes);
 				}
@@ -2889,7 +2883,7 @@ public class AddCus {
 				CUS_CITIZEN cd = CUS_CITIZEN.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("declare " + "pragma autonomous_transaction; begin "
 						+ "delete from CUS_CITIZEN_TEMP where id = ?;commit;" + "end;");
-				delete.setInt(1, cd.getID());
+				delete.setLong(1, cd.getID());
 				delete.executeUpdate();
 				delete.close();
 				InitCitizen();
@@ -2956,7 +2950,7 @@ public class AddCus {
 	}
 
 	private BooleanProperty Status;
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -2973,18 +2967,18 @@ public class AddCus {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public AddCus() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 	/**

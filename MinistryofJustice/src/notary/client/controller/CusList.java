@@ -19,7 +19,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -260,7 +259,7 @@ public class CusList {
 	 * ИД документа
 	 */
 	@FXML
-	private XTableColumn<VCUS, Integer> ICUSNUM;
+	private XTableColumn<VCUS, Long> ICUSNUM;
 
 	@FXML
 	private XTableColumn<VCUS, String> NAS_PUNCT;
@@ -296,7 +295,7 @@ public class CusList {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(ICUSNUM.filterableProperty());
 
@@ -349,19 +348,19 @@ public class CusList {
 			if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите троку!");
 			} else {
-				if (DBUtil.OdbAction(29) == 0) {
+				if (DBUtil.OdbAction(29l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
 
 				PreparedStatement check = conn
 						.prepareStatement(DBUtil.SqlFromProp("/notary/client/controller/SQL.properties", "DocCnt"));
-				check.setInt(1, CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
+				check.setLong(1, CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
 				ResultSet rs = check.executeQuery();
 				String txt = "Удалить запись?";
 				int sc_wdth = 200;
 				if (rs.next()) {
-					if (rs.getInt(1) > 0) {
+					if (rs.getLong(1) > 0) {
 						txt = "Найдены связанные документы, продолжить удаление?";
 						sc_wdth = 350;
 					}
@@ -406,7 +405,7 @@ public class CusList {
 							VCUS cl = CUSLIST.getSelectionModel().getSelectedItem();
 							CallableStatement callStmt = conn.prepareCall("{call MJCUS.DelCus(?,?)}");
 							callStmt.registerOutParameter(1, Types.VARCHAR);
-							callStmt.setInt(2, cl.getICUSNUM());
+							callStmt.setLong(2, cl.getICUSNUM());
 							callStmt.execute();
 							if (callStmt.getString(1) != null) {
 								Msg.Message(callStmt.getString(1));
@@ -416,7 +415,7 @@ public class CusList {
 							 * PreparedStatement delete = conn .prepareStatement("declare " +
 							 * "pragma autonomous_transaction;" + "begin " +
 							 * " delete from CUS where ICUSNUM = ?;" + "commit;" + "end;"); VCUS cl =
-							 * CUSLIST.getSelectionModel().getSelectedItem(); delete.setInt(1,
+							 * CUSLIST.getSelectionModel().getSelectedItem(); delete.setLong(1,
 							 * cl.getICUSNUM()); delete.executeUpdate();
 							 */
 							InitVCus(null, null, null, null, null, "null", null);
@@ -495,8 +494,8 @@ public class CusList {
 	 * 
 	 * @return
 	 */
-	int CompareBeforeClose(Integer docid, Connection conn) {
-		int ret = 0;
+	Long CompareBeforeClose(Long docid, Connection conn) {
+		Long ret = 0l;
 		try {
 			Clob cus = conn.createClob();
 			cus.setString(1, CusXml);
@@ -508,7 +507,7 @@ public class CusList {
 			cuscit.setString(1, CusCitizXml);
 
 			CallableStatement callStmt = conn.prepareCall("{ call MJCUS.CompareXmls(?,?,?,?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.setClob(2, cus);
 			callStmt.setClob(3, cusaddr);
 			callStmt.setClob(4, cuscit);
@@ -517,23 +516,16 @@ public class CusList {
 			callStmt.registerOutParameter(7, Types.INTEGER);
 			callStmt.execute();
 			if (callStmt.getString(6) == null) {
-				ret = callStmt.getInt(7);
-				System.out.println("ret=" + callStmt.getInt(7));
+				ret = callStmt.getLong(7);
+				System.out.println("ret=" + callStmt.getLong(7));
 			} else {
 				Msg.Message(callStmt.getString(6));
 				Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
-
 		return ret;
 	}
 
@@ -558,10 +550,10 @@ public class CusList {
 	/**
 	 * Возврат XML файлов для сравнения
 	 */
-	void XmlsForCompare(Integer docid, Connection conn) {
+	void XmlsForCompare(Long docid, Connection conn) {
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ call MJCUS.RetXmls(?,?,?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
 			callStmt.registerOutParameter(4, Types.CLOB);
@@ -625,11 +617,11 @@ public class CusList {
 	 * 
 	 * @param event
 	 */
-	public void Edit(Integer docid, Stage stage_/* , Connection conn */) {
+	public void Edit(Long docid, Stage stage_/* , Connection conn */) {
 		try {
 			if (isopen == false) {
 				
-				if (DBUtil.OdbAction(28) == 0) {
+				if (DBUtil.OdbAction(28l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -637,7 +629,7 @@ public class CusList {
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from cus where  ICUSNUM = ? for update nowait");
 				VCUS cl = Init2(docid, conn);
-				selforupd.setInt(1, cl.getICUSNUM());
+				selforupd.setLong(1, cl.getICUSNUM());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -794,7 +786,7 @@ public class CusList {
 	 */
 	void Add() {
 		try {
-			if (DBUtil.OdbAction(27) == 0) {
+			if (DBUtil.OdbAction(27l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -829,13 +821,7 @@ public class CusList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -888,13 +874,7 @@ public class CusList {
 			task.setOnSucceeded(e -> BlockMain());
 			exec.execute(task);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -923,7 +903,7 @@ public class CusList {
 	 * @param ID    Клиент
 	 */
 	private void InitVCus(String lname, String fname, String mname, LocalDate dt1, LocalDate dt2, String type,
-			Integer ID) {
+			Long ID) {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
@@ -995,7 +975,7 @@ public class CusList {
 				list.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
 						: null);
-				list.setICUSNUM(rs.getInt("ICUSNUM"));
+				list.setICUSNUM(rs.getLong("ICUSNUM"));
 				list.setCCUSIDOPEN(rs.getString("CCUSIDOPEN"));
 				list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
 				list.setDOC_PERIOD((rs.getDate("DOC_PERIOD") != null) ? LocalDate
@@ -1035,13 +1015,7 @@ public class CusList {
 				});
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1050,7 +1024,7 @@ public class CusList {
 	 * 
 	 * @return {@link VCUS}
 	 */
-	VCUS Init2(Integer cusid, Connection conn) {
+	VCUS Init2(Long cusid, Connection conn) {
 		VCUS list = null;
 		try {
 			Main.logger = Logger.getLogger(getClass());
@@ -1059,7 +1033,7 @@ public class CusList {
 
 			String selectStmt = "select * from vcusnt where vcusnt.ICUSNUM = ?  \r\n";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, cusid);
+			prepStmt.setLong(1, cusid);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<VCUS> cus_list = FXCollections.observableArrayList();
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
@@ -1086,7 +1060,7 @@ public class CusList {
 				list.setCR_DATE((rs.getDate("CR_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
 						: null);
-				list.setICUSNUM(rs.getInt("ICUSNUM"));
+				list.setICUSNUM(rs.getLong("ICUSNUM"));
 				list.setCCUSIDOPEN(rs.getString("CCUSIDOPEN"));
 				list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
 				list.setDOC_PERIOD((rs.getDate("DOC_PERIOD") != null) ? LocalDate
@@ -1109,13 +1083,7 @@ public class CusList {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return list;
 	}
@@ -1139,12 +1107,7 @@ public class CusList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1158,12 +1121,7 @@ public class CusList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1184,12 +1142,7 @@ public class CusList {
 			Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
 					DT2.getValue());
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1205,12 +1158,7 @@ public class CusList {
 			Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
 					DT2.getValue());
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -1411,9 +1359,9 @@ public class CusList {
 				// TableColumnLocalDate(DOC_PERIOD);
 			}
 
-			ICUSNUM.setOnEditCommit(new EventHandler<CellEditEvent<VCUS, Integer>>() {
+			ICUSNUM.setOnEditCommit(new EventHandler<CellEditEvent<VCUS, Long>>() {
 				@Override
-				public void handle(CellEditEvent<VCUS, Integer> t) {
+				public void handle(CellEditEvent<VCUS, Long> t) {
 					((VCUS) t.getTableView().getItems().get(t.getTablePosition().getRow())).setICUSNUM(t.getNewValue());
 				}
 			});

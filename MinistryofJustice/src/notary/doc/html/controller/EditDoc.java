@@ -247,7 +247,7 @@ public class EditDoc {
 							PreparedStatement delete = conn
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from nt_temp_list_param_doc where PRM_ID = ?;" + "commit;" + "end;");
-							delete.setInt(1, val.getValue().getPRM_ID());
+							delete.setLong(1, val.getValue().getPRM_ID());
 							delete.executeUpdate();
 							delete.close();
 							fillTree();
@@ -319,18 +319,18 @@ public class EditDoc {
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			PreparedStatement prp = conn.prepareStatement("select SC_ID," + "SC_FILE_NAME," + " SC_DATE," + "SC_OPER,"
 					+ "SC_TYPE," + "SC_DOC " + "from NT_SCANS where sc_doc = ?");
-			prp.setInt(1, NT_DOC.getID());
+			prp.setLong(1, NT_DOC.getID());
 			ResultSet rs = prp.executeQuery();
 			ObservableList<NT_SCANS> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				NT_SCANS list = new NT_SCANS();
-				list.setSC_ID(rs.getInt("SC_ID"));
+				list.setSC_ID(rs.getLong("SC_ID"));
 				list.setSC_FILE_NAME(rs.getString("SC_FILE_NAME"));
 				list.setSC_DATE((rs.getDate("SC_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("SC_DATE")), formatterwt) : null);
 				list.setSC_OPER(rs.getString("SC_OPER"));
 				list.setSC_TYPE(rs.getString("SC_TYPE"));
-				list.setSC_DOC(rs.getInt("SC_DOC"));
+				list.setSC_DOC(rs.getLong("SC_DOC"));
 
 				dlist.add(list);
 			}
@@ -406,26 +406,26 @@ public class EditDoc {
 				PreparedStatement prp = conn.prepareStatement(
 						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "EditDocListValWithLocPrm"));
 				prp.setString(1, id);
-				prp.setInt(2, val.getID());
+				prp.setLong(2, val.getID());
 				prp.setString(3, id);
-				prp.setInt(4, val.getID());
-				prp.setInt(5, NT_DOC.getID());
+				prp.setLong(4, val.getID());
+				prp.setLong(5, NT_DOC.getID());
 				ResultSet rs = prp.executeQuery();
 				while (rs.next()) {
 					list = new NT_TEMP_LIST_PARAM();
-					list.setPRM_ID(rs.getInt("PRM_ID"));
+					list.setPRM_ID(rs.getLong("PRM_ID"));
 					list.setPRM_NAME(rs.getString("PRM_NAME"));
 					list.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
-					list.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+					list.setPRM_TMP_ID(rs.getLong("PRM_TMP_ID"));
 					list.setPRM_SQL(rs.getString("PRM_SQL"));
-					list.setPRM_TYPE(rs.getInt("PRM_TYPE"));
-					list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					list.setPRM_TYPE(rs.getLong("PRM_TYPE"));
+					list.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
 					list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 					if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
 						list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 					}
 					list.setPDJ_NAME(rs.getString("PDJ_NAME"));
-					list.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					list.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
 					list.setTYPE_NAME(rs.getString("TYPE_NAME"));
 					list.setREQUIRED(rs.getString("REQUIRED"));
 					list.setIS_LOC(rs.getString("IS_LOC"));
@@ -483,7 +483,7 @@ public class EditDoc {
 										if (list.getPRM_FOR_PRM_SQL() != null
 												&& list.getPRM_FOR_PRM_SQL().length() > 10) {
 											PreparedStatement prp = conn.prepareStatement(list.getPRM_FOR_PRM_SQL());
-											prp.setInt(1, Integer.valueOf(controller.getCode_s()));
+											prp.setLong(1, Long.valueOf(controller.getCode_s()));
 											ResultSet rs = prp.executeQuery();
 											while (rs.next()) {
 												if (rs.getString("NAME_") != null & rs.getString("VALUE_") != null) {
@@ -650,7 +650,7 @@ public class EditDoc {
 	private TreeTableView<NT_TEMP_LIST_PARAM> param;
 
 	@FXML
-	private TreeTableColumn<NT_TEMP_LIST_PARAM, Integer> id;
+	private TreeTableColumn<NT_TEMP_LIST_PARAM, Long> id;
 
 	@FXML
 	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> name;
@@ -677,46 +677,46 @@ public class EditDoc {
 				//System.out.println(JsonStr);
 
 				roots = new TreeItem<>("Root");
-				Map<Integer, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
-				Map<Integer, Integer> parents = new HashMap<>();
+				Map<Long, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
+				Map<Long, Long> parents = new HashMap<>();
 
 				PreparedStatement prp = conn.prepareStatement(
 						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
 				Clob clob = conn.createClob();
 				clob.setString(1, JsonStr.trim());
-				prp.setInt(1, val.getID());
+				prp.setLong(1, val.getID());
 				prp.setClob(2, clob);
-				prp.setInt(3, val.getID());
-				prp.setInt(4, NT_DOC.getID());
+				prp.setLong(3, val.getID());
+				prp.setLong(4, NT_DOC.getID());
 				prp.setClob(5, clob);
 				ResultSet rs = prp.executeQuery();
 				while (rs.next()) {
 					prm = new NT_TEMP_LIST_PARAM();
-					prm.setPRM_ID(rs.getInt("PRM_ID"));
+					prm.setPRM_ID(rs.getLong("PRM_ID"));
 					prm.setPRM_NAME(rs.getString("PRM_NAME"));
 					prm.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
-					prm.setPRM_TMP_ID(rs.getInt("PRM_TMP_ID"));
+					prm.setPRM_TMP_ID(rs.getLong("PRM_TMP_ID"));
 					prm.setPRM_SQL(rs.getString("PRM_SQL"));
-					prm.setPRM_TYPE(rs.getInt("PRM_TYPE"));
-					prm.setPRM_PADEJ(rs.getInt("PRM_PADEJ"));
+					prm.setPRM_TYPE(rs.getLong("PRM_TYPE"));
+					prm.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
 					prm.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
 					if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
 						prm.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
 					}
 					prm.setTYPE_NAME(rs.getString("TYPE_NAME"));
 					prm.setREQUIRED(rs.getString("REQUIRED"));
-					prm.setPARENTS(rs.getInt("PARENTS"));
+					prm.setPARENTS(rs.getLong("PARENTS"));
 					prm.setHTML_CODE(rs.getString("HTML_CODE"));
 					prm.setIS_LOC(rs.getString("IS_LOC"));
-					itemById.put(rs.getInt("PRM_ID"), new TreeItem<>(prm));
-					parents.put(rs.getInt("PRM_ID"), rs.getInt("PARENTS"));
+					itemById.put(rs.getLong("PRM_ID"), new TreeItem<>(prm));
+					parents.put(rs.getLong("PRM_ID"), rs.getLong("PARENTS"));
 				}
 				prp.close();
 				rs.close();
 
-				for (Map.Entry<Integer, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
-					Integer key = entry.getKey();
-					Integer parent = parents.get(key);
+				for (Map.Entry<Long, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
+					Long key = entry.getKey();
+					Long parent = parents.get(key);
 					if (parent.equals(key)) {
 						roots = entry.getValue();
 					} else {
@@ -860,18 +860,18 @@ public class EditDoc {
 								{
 									PreparedStatement stsmt = conn.prepareStatement(DBUtil.SqlFromProp(
 											"/notary/doc/html/controller/Sql.properties", "EditNtDocPrmVals"));
-									stsmt.setInt(1, NT_DOC.getID());
-									stsmt.setInt(2, NT_DOC.getID());
+									stsmt.setLong(1, NT_DOC.getID());
+									stsmt.setLong(2, NT_DOC.getID());
 									ResultSet rs = stsmt.executeQuery();
 									while (rs.next()) {
 										if (rs.getString("PRM_NAME") != null) {
-											if (rs.getInt("PRM_TYPE") == 1) {
+											if (rs.getLong("PRM_TYPE") == 1) {
 												// Получение буквенного значения
 												String SelVal = "";
 												{
 													PreparedStatement prp = conn.prepareStatement(
 															rs.getString("PRM_SQL") + " where code = ?");
-													prp.setInt(1, Integer.valueOf(rs.getString("VAL_NT_VALUE")));
+													prp.setLong(1, Long.valueOf(rs.getString("VAL_NT_VALUE")));
 													ResultSet rs_ = prp.executeQuery();
 													if (rs_.next()) {
 														SelVal = rs_.getString("name");
@@ -1058,11 +1058,11 @@ public class EditDoc {
 				{
 					PreparedStatement prp = conn
 							.prepareStatement("select * from NT_TEMP_LIST_PARAM t where PRM_TMP_ID = ?");
-					prp.setInt(1, val.getID());
+					prp.setLong(1, val.getID());
 					ResultSet rs = prp.executeQuery();
 					while (rs.next()) {
 						// Если тип параметра список
-						if (rs.getInt("PRM_TYPE") == 1) {
+						if (rs.getLong("PRM_TYPE") == 1) {
 							// Если параметр присутствует на странице
 							if (json.contains(rs.getString("PRM_NAME"))) {
 								// Выполнить функцию которая вернет значение атрибута "value"
@@ -1105,12 +1105,12 @@ public class EditDoc {
 				{
 					PreparedStatement prp = conn
 							.prepareStatement("select * from NT_TEMP_LIST_PARAM_DOC t where PRM_TMP_ID = ? AND DOC_ID = ?");
-					prp.setInt(1, val.getID());
-					prp.setInt(2, NT_DOC.getID());
+					prp.setLong(1, val.getID());
+					prp.setLong(2, NT_DOC.getID());
 					ResultSet rs = prp.executeQuery();
 					while (rs.next()) {
 						// Если тип параметра список
-						if (rs.getInt("PRM_TYPE") == 1) {
+						if (rs.getLong("PRM_TYPE") == 1) {
 							// Если параметр присутствует на странице
 							if (json.contains(rs.getString("PRM_NAME"))) {
 								// Выполнить функцию которая вернет значение атрибута "value"
@@ -1151,11 +1151,11 @@ public class EditDoc {
 				
 				CallableStatement cls = conn.prepareCall("{call NT_PKG.EDIT_DOC_HTML(?,?,?,?,?,?)}");
 				cls.registerOutParameter(1, Types.VARCHAR);
-				cls.setInt(2, NT_DOC.getID());
+				cls.setLong(2, NT_DOC.getID());
 				Clob clob = conn.createClob();
 				clob.setString(1, KeyValue.trim());
 				cls.setClob(3, clob);
-				cls.setInt(4, val.getID());
+				cls.setLong(4, val.getID());
 				Clob PAGE = conn.createClob();
 				PAGE.setString(1, (String) webView.getEngine().executeScript("document.documentElement.outerHTML"));
 				cls.setClob(5, PAGE);
@@ -1243,7 +1243,7 @@ public class EditDoc {
 			NT_SCANS val = NT_SCANS.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				PreparedStatement prp = conn.prepareStatement("select sc_file ,SC_TYPE,substr(SC_FILE_NAME, 1, instr(SC_FILE_NAME, '.') - 1) fname from nt_scans where sc_id=?");
-				prp.setInt(1, val.getSC_ID());
+				prp.setLong(1, val.getSC_ID());
 				ResultSet rs = prp.executeQuery();
 				String file_format = "";
 				String fname = "";
@@ -1338,7 +1338,7 @@ public class EditDoc {
 					public void handle(ActionEvent event) {
 						try {
 							PreparedStatement prp = conn.prepareStatement("delete from nt_scans where sc_id = ?");
-							prp.setInt(1, val.getSC_ID());
+							prp.setLong(1, val.getSC_ID());
 							prp.executeUpdate();
 							prp.close();
 							//
@@ -1393,7 +1393,7 @@ public class EditDoc {
 					prp.setBlob(1, is, bArray.length);
 					prp.setString(2, name);
 					prp.setString(3, ext);
-					prp.setInt(4, val.getSC_ID());
+					prp.setLong(4, val.getSC_ID());
 					prp.executeUpdate();
 					prp.close();
 					// Сохраним транзакцию
@@ -1428,7 +1428,7 @@ public class EditDoc {
 				// Вставить
 				PreparedStatement prp = conn.prepareStatement(
 						"insert into NT_SCANS " + "(SC_DOC,SC_FILE,SC_FILE_NAME,SC_TYPE) " + "values " + "(?,?,?,?)");
-				prp.setInt(1, NT_DOC.getID());
+				prp.setLong(1, NT_DOC.getID());
 				prp.setBlob(2, is, bArray.length);
 				prp.setString(3, name);
 				prp.setString(4, ext);
@@ -1558,13 +1558,13 @@ public class EditDoc {
 					if (rs.getClob("REP_QUERY") != null) {
 						list.setREP_QUERY(new ConvConst().ClobToString(rs.getClob("REP_QUERY")));
 					}
-					list.setPARENT(rs.getInt("PARENT"));
+					list.setPARENT(rs.getLong("PARENT"));
 					list.setNAMES(rs.getString("NAMES"));
 					list.setNAME(rs.getString("NAME"));
 					if (rs.getClob("HTML_TEMP") != null) {
 						list.setHTML_TEMP(new ConvConst().ClobToString(rs.getClob("HTML_TEMP")));
 					}
-					list.setID(rs.getInt("ID"));
+					list.setID(rs.getLong("ID"));
 					combolist.add(list);
 				}
 				stsmt.close();

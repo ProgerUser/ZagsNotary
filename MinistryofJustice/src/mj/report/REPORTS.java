@@ -1,25 +1,25 @@
 package mj.report;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class REPORTS {
 	/** ид отчета */
-	private IntegerProperty REP_ID;
+	private LongProperty REP_ID;
 	/** название отчета */
 	private StringProperty REP_NAME;
 	/** тип отчета */
 	private StringProperty REP_TYPE;
 
 	public REPORTS() {
-		this.REP_ID = new SimpleIntegerProperty();
+		this.REP_ID = new SimpleLongProperty();
 		this.REP_NAME = new SimpleStringProperty();
 		this.REP_TYPE = new SimpleStringProperty();
 	}
 
-	public void setREP_ID(Integer REP_ID) {
+	public void setREP_ID(Long REP_ID) {
 		this.REP_ID.set(REP_ID);
 	}
 
@@ -31,7 +31,7 @@ public class REPORTS {
 		this.REP_TYPE.set(REP_TYPE);
 	}
 
-	public Integer getREP_ID() {
+	public Long getREP_ID() {
 		return REP_ID.get();
 	}
 
@@ -43,7 +43,7 @@ public class REPORTS {
 		return REP_TYPE.get();
 	}
 
-	public IntegerProperty REP_IDProperty() {
+	public LongProperty REP_IDProperty() {
 		return REP_ID;
 	}
 

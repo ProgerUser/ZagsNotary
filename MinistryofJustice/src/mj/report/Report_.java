@@ -24,14 +24,13 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -76,7 +75,7 @@ public class Report_ {
 	private TableView<REP_PARAMS> PARAMS;
 
 	@FXML
-	private TableColumn<REP_PARAMS, Integer> PRM_ID;
+	private TableColumn<REP_PARAMS, Long> PRM_ID;
 
 	@FXML
 	private TableColumn<REP_PARAMS, String> VALUE;
@@ -99,16 +98,16 @@ public class Report_ {
 		try {
 			// Параметры
 			PreparedStatement prp = conn.prepareStatement("select * from VREP_PARAMS where REP_ID = ?");
-			prp.setInt(1, ComboList.getSelectionModel().getSelectedItem().getREP_ID());
+			prp.setLong(1, ComboList.getSelectionModel().getSelectedItem().getREP_ID());
 			ResultSet rs = prp.executeQuery();
 			ObservableList<REP_PARAMS> rep = FXCollections.observableArrayList();
 			while (rs.next()) {
 				REP_PARAMS list = new REP_PARAMS();
 				list.setPRM_NAME(rs.getString("PRM_NAME"));
 				list.setIS_LIST(rs.getString("IS_LIST"));
-				list.setPRM_ID(rs.getInt("PRM_ID"));
+				list.setPRM_ID(rs.getLong("PRM_ID"));
 				list.setLIST_QUERY(rs.getString("LIST_QUERY"));
-				list.setREP_ID(rs.getInt("REP_ID"));
+				list.setREP_ID(rs.getLong("REP_ID"));
 				list.setPRM_DEF_VALUE(rs.getString("PRM_DEF_VALUE"));
 				rep.add(list);
 			}
@@ -117,13 +116,7 @@ public class Report_ {
 
 			PARAMS.setItems(rep);
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -210,26 +203,19 @@ public class Report_ {
 			try {
 				PreparedStatement prp = conn.prepareStatement(
 						"begin delete from REP_PARAMS_TMP; commit; insert into REP_PARAMS_TMP (REP_ID,PRM_ID,PRM_VALUE) values (?,?,?); end;");
-				prp.setInt(1, PARAMS.getSelectionModel().getSelectedItem().getREP_ID());
-				prp.setInt(2, PARAMS.getSelectionModel().getSelectedItem().getPRM_ID());
+				prp.setLong(1, PARAMS.getSelectionModel().getSelectedItem().getREP_ID());
+				prp.setLong(2, PARAMS.getSelectionModel().getSelectedItem().getPRM_ID());
 				prp.setString(3, PARAMS.getSelectionModel().getSelectedItem().getPRM_DEF_VALUE());
 				prp.executeUpdate();
 				prp.close();
 			} catch (Exception e) {
-				Main.logger = Logger.getLogger(getClass());
-				e.printStackTrace();
-				Msg.Message(ExceptionUtils.getStackTrace(e));
-				Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+				DBUtil.LOG_ERROR(e);
 			}
 
 			// Call DB, get clob via java code
 			PreparedStatement prp = conn
 					.prepareStatement("select rep_id, rep_name, rep_type, rep_class from REPORTS where rep_id = ?");
-			prp.setInt(1, ComboList.getValue().getREP_ID());
+			prp.setLong(1, ComboList.getValue().getREP_ID());
 			ResultSet rs = prp.executeQuery();
 			String clob_to_tring = null;
 			if (rs.next()) {
@@ -271,14 +257,7 @@ public class Report_ {
 			helloMethod.invoke(helloClass.newInstance());
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -407,14 +386,7 @@ public class Report_ {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -426,7 +398,7 @@ public class Report_ {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<REPORTS> cusllists = new TableView<REPORTS>();
-			TableColumn<REPORTS, Integer> REP_ID = new TableColumn<>("Код");
+			TableColumn<REPORTS, Long> REP_ID = new TableColumn<>("Код");
 			REP_ID.setCellValueFactory(new PropertyValueFactory<>("Vals"));
 			TableColumn<REPORTS, String> Names = new TableColumn<>("Наименование");
 			Names.setCellValueFactory(new PropertyValueFactory<>("Names"));
@@ -450,7 +422,7 @@ public class Report_ {
 			ObservableList<REPORTS> cuslist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				REPORTS list = new REPORTS();
-				list.setREP_ID(rs.getInt("REP_ID"));
+				list.setREP_ID(rs.getLong("REP_ID"));
 				list.setREP_NAME(rs.getString("REP_NAME"));
 				list.setREP_TYPE(rs.getString("REP_TYPE"));
 				cuslist.add(list);
@@ -521,14 +493,7 @@ public class Report_ {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -598,7 +563,7 @@ public class Report_ {
 				while (rs.next()) {
 					REPORTS list = new REPORTS();
 					list.setREP_NAME(rs.getString("REP_NAME"));
-					list.setREP_ID(rs.getInt("REP_ID"));
+					list.setREP_ID(rs.getLong("REP_ID"));
 					list.setREP_TYPE(rs.getString("REP_TYPE"));
 					rep.add(list);
 				}
@@ -614,14 +579,7 @@ public class Report_ {
 			NAME.setCellValueFactory(cellData -> cellData.getValue().PRM_NAMEProperty());
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Main.logger = Logger.getLogger(getClass());
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -659,12 +617,7 @@ public class Report_ {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -678,18 +631,13 @@ public class Report_ {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -699,17 +647,17 @@ public class Report_ {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public Report_() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 }

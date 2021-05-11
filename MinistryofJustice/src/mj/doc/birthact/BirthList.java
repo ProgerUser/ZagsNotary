@@ -95,7 +95,7 @@ public class BirthList {
 	@FXML
 	private Button BIRTH_ACT_PRINT;
 	@FXML
-	private XTableColumn<SELECTBIRTH, Integer> BIRTH_ACT_ID;
+	private XTableColumn<SELECTBIRTH, Long> BIRTH_ACT_ID;
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_CH_MNAME;
 	@FXML
@@ -155,7 +155,7 @@ public class BirthList {
 			// preparing variables
 			Variables variables = new Variables();
 			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_BRN_BIRTH_ACT where BR_ACT_ID = ?");
-			prepStmt.setInt(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
+			prepStmt.setLong(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
 				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
@@ -195,7 +195,7 @@ public class BirthList {
 			// preparing variables
 			Variables variables = new Variables();
 			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_BRN_BIRTH_ACT where BR_ACT_ID = ?");
-			prepStmt.setInt(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
+			prepStmt.setLong(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
 				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
@@ -238,7 +238,7 @@ public class BirthList {
 			// preparing variables
 			Variables variables = new Variables();
 			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_BRN_BIRTH_ACT where BR_ACT_ID = ?");
-			prepStmt.setInt(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
+			prepStmt.setLong(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
 				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
@@ -275,7 +275,7 @@ public class BirthList {
 		try {
 			Logger.getLogger(getClass());
 
-			if (DBUtil.OdbAction(82) == 0) {
+			if (DBUtil.OdbAction(82l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -328,7 +328,7 @@ public class BirthList {
 			AcroFields fields = stamper.getAcroFields();
 			// System.out.print(fields.getFields());
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_BRN_BIRTH_ACT where BR_ACT_ID = ?");
-			prp.setInt(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
+			prp.setLong(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				fields.setField("Текст1", rs.getString("F79"));
@@ -428,17 +428,17 @@ public class BirthList {
 
 	boolean isopen = false;
 
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			//Проверка доступа к действию
-			if (DBUtil.OdbAction(83) == 0) {
+			if (DBUtil.OdbAction(83l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
 			if (isopen == false) {
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from brn_birth_act where  BR_ACT_ID = ? for update nowait");
-				selforupd.setInt(1, docid);
+				selforupd.setLong(1, docid);
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -620,7 +620,7 @@ public class BirthList {
 				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
 				list.setLIVE_DEAD(rs.getString("LIVE_DEAD"));
 				list.setFFIO(rs.getString("FFIO"));
-				list.setBRN_AC_ID(rs.getInt("BRN_AC_ID"));
+				list.setBRN_AC_ID(rs.getLong("BRN_AC_ID"));
 				list.setCHILDREN_FIO(rs.getString("CHILDREN_FIO"));
 				list.setMFIO(rs.getString("MFIO"));
 				cus_list.add(list);
@@ -661,13 +661,13 @@ public class BirthList {
 			ObservableList<SELECTBIRTH> cus_list = FXCollections.observableArrayList();
 			while (rs.next()) {
 				SELECTBIRTH list = new SELECTBIRTH();
-				list.setBRN_AC_ID(rs.getInt("BRN_AC_ID"));
-				list.setBR_ACT_F(rs.getInt("BR_ACT_F"));
-				list.setBR_ACT_M(rs.getInt("BR_ACT_M"));
+				list.setBRN_AC_ID(rs.getLong("BRN_AC_ID"));
+				list.setBR_ACT_F(rs.getLong("BR_ACT_F"));
+				list.setBR_ACT_M(rs.getLong("BR_ACT_M"));
 				list.setFFIO(rs.getString("FFIO"));
 				list.setLIVE_DEAD(rs.getString("LIVE_DEAD"));
 				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
-				list.setBR_ACT_CH(rs.getInt("BR_ACT_CH"));
+				list.setBR_ACT_CH(rs.getLong("BR_ACT_CH"));
 				list.setBR_ACT_USER(rs.getString("BR_ACT_USER"));
 				list.setMFIO(rs.getString("MFIO"));
 				list.setCR_TIME(rs.getString("CR_TIME"));
@@ -704,7 +704,7 @@ public class BirthList {
 		}
 	}
 
-	private void AfterAdd(Integer id) {
+	private void AfterAdd(Long id) {
 		try {
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -715,13 +715,13 @@ public class BirthList {
 			ObservableList<SELECTBIRTH> cus_list = FXCollections.observableArrayList();
 			while (rs.next()) {
 				SELECTBIRTH list = new SELECTBIRTH();
-				list.setBRN_AC_ID(rs.getInt("BRN_AC_ID"));
-				list.setBR_ACT_F(rs.getInt("BR_ACT_F"));
-				list.setBR_ACT_M(rs.getInt("BR_ACT_M"));
+				list.setBRN_AC_ID(rs.getLong("BRN_AC_ID"));
+				list.setBR_ACT_F(rs.getLong("BR_ACT_F"));
+				list.setBR_ACT_M(rs.getLong("BR_ACT_M"));
 				list.setFFIO(rs.getString("FFIO"));
 				list.setLIVE_DEAD(rs.getString("LIVE_DEAD"));
 				list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
-				list.setBR_ACT_CH(rs.getInt("BR_ACT_CH"));
+				list.setBR_ACT_CH(rs.getLong("BR_ACT_CH"));
 				list.setBR_ACT_USER(rs.getString("BR_ACT_USER"));
 				list.setMFIO(rs.getString("MFIO"));
 				list.setCR_TIME(rs.getString("CR_TIME"));
@@ -797,7 +797,7 @@ public class BirthList {
 
 	void Delete() {
 		try {
-			if (DBUtil.OdbAction(84) == 0) {
+			if (DBUtil.OdbAction(84l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -843,7 +843,7 @@ public class BirthList {
 							PreparedStatement prst = conn
 									.prepareStatement(" " + "declare " + "pragma autonomous_transaction;" + "begin "
 											+ "delete from brn_birth_act where br_act_id = ?;" + "commit;" + "end;");
-							prst.setInt(1, id.getBRN_AC_ID());
+							prst.setLong(1, id.getBRN_AC_ID());
 							prst.executeUpdate();
 							prst.close();
 							InitBirths();
@@ -961,7 +961,7 @@ public class BirthList {
 						Variables variables = new Variables();
 						PreparedStatement prepStmt = conn
 								.prepareStatement("select * from V_REP_BRN_BIRTH_ACT where BR_ACT_ID = ?");
-						prepStmt.setInt(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
+						prepStmt.setLong(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
 						ResultSet rs = prepStmt.executeQuery();
 						V_REP_BRN_BIRTH_ACT list = null;
 						if (rs.next()) {
@@ -1187,7 +1187,7 @@ public class BirthList {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(BIRTH_ACT_ID.filterableProperty());
 
@@ -1327,13 +1327,13 @@ public class BirthList {
 
 			/*
 			 * BIRTH_ACT_ID.setCellFactory( TextFieldTableCell.<BIRTH_ACT,
-			 * Integer>forTableColumn(new IntegerStringConverter()));
+			 * Long>forTableColumn(new IntegerStringConverter()));
 			 * BIRTH_ACT_DATE.setCellFactory( TextFieldTableCell.<BIRTH_ACT,
 			 * LocalDateTime>forTableColumn(new LocalDateTimeStringConverter()));
 			 */
-			BIRTH_ACT_ID.setOnEditCommit(new EventHandler<CellEditEvent<SELECTBIRTH, Integer>>() {
+			BIRTH_ACT_ID.setOnEditCommit(new EventHandler<CellEditEvent<SELECTBIRTH, Long>>() {
 				@Override
-				public void handle(CellEditEvent<SELECTBIRTH, Integer> t) {
+				public void handle(CellEditEvent<SELECTBIRTH, Long> t) {
 					((SELECTBIRTH) t.getTableView().getItems().get(t.getTablePosition().getRow()))
 							.setBRN_AC_ID(t.getNewValue());
 				}
@@ -1383,20 +1383,20 @@ public class BirthList {
 	 * 
 	 * @return
 	 */
-	int CompareBeforeClose(Integer docid) {
-		int ret = 0;
+	Long CompareBeforeClose(Long docid) {
+		Long ret = 0l;
 		try {
 			Clob lob = conn.createClob();
 			lob.setString(1, RetXml);
 			CallableStatement callStmt = conn.prepareCall("{ call BURN_UTIL.CompareXmls(?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.setClob(2, lob);
 			callStmt.registerOutParameter(3, Types.VARCHAR);
 			callStmt.registerOutParameter(4, Types.INTEGER);
 			callStmt.execute();
 			if (callStmt.getString(3) == null) {
-				ret = callStmt.getInt(4);
-				System.out.println("ret=" + callStmt.getInt(4));
+				ret = callStmt.getLong(4);
+				System.out.println("ret=" + callStmt.getLong(4));
 				callStmt.close();
 			} else {
 				Msg.Message(callStmt.getString(3));
@@ -1414,10 +1414,10 @@ public class BirthList {
 	/**
 	 * Возврат XML файлов для сравнения
 	 */
-	void XmlsForCompare(Integer docid) {
+	void XmlsForCompare(Long docid) {
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ call BURN_UTIL.RetXmls(?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
 			callStmt.execute();

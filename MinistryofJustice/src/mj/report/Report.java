@@ -26,9 +26,9 @@ import com.jyloo.syntheticafx.filter.ComparableFilterModel;
 import com.jyloo.syntheticafx.filter.ComparisonType;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -125,7 +125,7 @@ public class Report {
 					"  from AP_REPORT_CAT, AP_VIEWER\n" + 
 					" where AP_REPORT_CAT.REPORT_VIEWER = AP_VIEWER.ID\n" + 
 					"   and AP_REPORT_CAT.REPORT_ID = ?");
-			prp.setInt(1, ComboList.getSelectionModel().getSelectedItem().getREPORT_ID());
+			prp.setLong(1, ComboList.getSelectionModel().getSelectedItem().getREPORT_ID());
 			ResultSet rs = prp.executeQuery();
 			if (rs.next()) {
 				viewer = rs.getString("CNAME");
@@ -273,7 +273,7 @@ public class Report {
 			bb.getButtons().addAll(Update);
 			
 			XTableView<AP_REPORT_CAT> cusllists = new XTableView<AP_REPORT_CAT>();
-			XTableColumn<AP_REPORT_CAT, Integer> REPORT_ID = new XTableColumn<>("Код");
+			XTableColumn<AP_REPORT_CAT, Long> REPORT_ID = new XTableColumn<>("Код");
 			REPORT_ID.setCellValueFactory(new PropertyValueFactory<>("REPORT_ID"));
 			XTableColumn<AP_REPORT_CAT, String> REPORT_NAME = new XTableColumn<>("Наименование");
 			REPORT_NAME.setCellValueFactory(new PropertyValueFactory<>("REPORT_NAME"));
@@ -299,7 +299,7 @@ public class Report {
 
 			/* SelData */
 			PreparedStatement prepStmt = conn.prepareStatement("select * from v_ap_rep_cat where REPORT_TYPE_ID = ?");
-			prepStmt.setInt(1, getId());
+			prepStmt.setLong(1, getId());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<AP_REPORT_CAT> cuslist = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -308,12 +308,12 @@ public class Report {
 				list.setOEM_DATA(rs.getString("OEM_DATA"));
 				list.setEDIT_PARAM(rs.getString("EDIT_PARAM"));
 				list.setREPORT_COMMENT(rs.getString("REPORT_COMMENT"));
-				list.setREPORT_VIEWER(rs.getInt("REPORT_VIEWER"));
-				list.setCOPIES(rs.getInt("COPIES"));
+				list.setREPORT_VIEWER(rs.getLong("REPORT_VIEWER"));
+				list.setCOPIES(rs.getLong("COPIES"));
 				list.setREPORT_UFS(rs.getString("REPORT_UFS"));
 				list.setREPORT_NAME(rs.getString("REPORT_NAME"));
-				list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
-				list.setREPORT_ID(rs.getInt("REPORT_ID"));
+				list.setREPORT_TYPE_ID(rs.getLong("REPORT_TYPE_ID"));
+				list.setREPORT_ID(rs.getLong("REPORT_ID"));
 
 				cuslist.add(list);
 			}
@@ -431,14 +431,14 @@ public class Report {
 	        PRINTER_ID.getSelectionModel().select(service.getName());
 	        
 	        
-			if (DBUtil.OdbAction(183) == 0) {
+			if (DBUtil.OdbAction(183l) == 0) {
 				Clone.setVisible(false);
 			}
 			
-			if (DBUtil.OdbAction(182) == 0) {
+			if (DBUtil.OdbAction(182l) == 0) {
 				Design.setVisible(false);
 			}
-			if (DBUtil.OdbAction(184) == 0) {
+			if (DBUtil.OdbAction(184l) == 0) {
 				New.setVisible(false);
 			}
 
@@ -465,7 +465,7 @@ public class Report {
 			// отчеты
 			{
 				PreparedStatement stmt = conn.prepareStatement("select * from v_ap_rep_cat where REPORT_TYPE_ID = ?");
-				stmt.setInt(1, getId());
+				stmt.setLong(1, getId());
 				ResultSet rs = stmt.executeQuery();
 				ObservableList<AP_REPORT_CAT> rep = FXCollections.observableArrayList();
 				while (rs.next()) {
@@ -474,12 +474,12 @@ public class Report {
 					list.setOEM_DATA(rs.getString("OEM_DATA"));
 					list.setEDIT_PARAM(rs.getString("EDIT_PARAM"));
 					list.setREPORT_COMMENT(rs.getString("REPORT_COMMENT"));
-					list.setREPORT_VIEWER(rs.getInt("REPORT_VIEWER"));
-					list.setCOPIES(rs.getInt("COPIES"));
+					list.setREPORT_VIEWER(rs.getLong("REPORT_VIEWER"));
+					list.setCOPIES(rs.getLong("COPIES"));
 					list.setREPORT_UFS(rs.getString("REPORT_UFS"));
 					list.setREPORT_NAME(rs.getString("REPORT_NAME"));
-					list.setREPORT_TYPE_ID(rs.getInt("REPORT_TYPE_ID"));
-					list.setREPORT_ID(rs.getInt("REPORT_ID"));
+					list.setREPORT_TYPE_ID(rs.getLong("REPORT_TYPE_ID"));
+					list.setREPORT_ID(rs.getLong("REPORT_ID"));
 					rep.add(list);
 				}
 
@@ -509,7 +509,7 @@ public class Report {
 						" where AP_REPORT_CAT.REPORT_VIEWER = AP_VIEWER.ID\n" + 
 						"   and AP_REPORT_CAT.REPORT_ID = ?\n" + 
 						"");
-					prp.setInt(1, ComboList.getSelectionModel().getSelectedItem().getREPORT_ID());
+					prp.setLong(1, ComboList.getSelectionModel().getSelectedItem().getREPORT_ID());
 					ResultSet rs = prp.executeQuery();
 					if (rs.next()) {
 						viewer = rs.getString("CNAME");
@@ -595,9 +595,9 @@ public class Report {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
-	private IntegerProperty RecId;
+	private LongProperty RecId;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -607,26 +607,26 @@ public class Report {
 		return this.Status.get();
 	}
 
-	public void setRecId(Integer value) {
+	public void setRecId(Long value) {
 		this.RecId.set(value);
 	}
 
-	public Integer getRecId() {
+	public Long getRecId() {
 		return this.RecId.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public Report() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.RecId = new SimpleIntegerProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.RecId = new SimpleLongProperty();
+		this.Id = new SimpleLongProperty();
 	}
 }

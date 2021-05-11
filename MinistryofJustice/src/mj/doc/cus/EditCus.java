@@ -26,9 +26,9 @@ import com.jyloo.syntheticafx.XTableView;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -260,7 +260,7 @@ public class EditCus {
 			SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
 			String readRecordSQL = sql.getSql("AllDocs");
 			PreparedStatement sqlStatement = conn.prepareStatement(readRecordSQL);
-			sqlStatement.setInt(1, getId());
+			sqlStatement.setLong(1, getId());
 			ResultSet rs = sqlStatement.executeQuery();
 			ObservableList<ALL_DOCS> val = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -270,7 +270,7 @@ public class EditCus {
 						: null);
 				list.setDOCNAME(rs.getString("DOCNAME"));
 				list.setTABLE_NAME(rs.getString("TABLE_NAME"));
-				list.setDOC_ID(rs.getInt("DOC_ID"));
+				list.setDOC_ID(rs.getLong("DOC_ID"));
 				list.setTYPE_DOC(rs.getString("TYPE_DOC"));
 				val.add(list);
 			}
@@ -318,7 +318,7 @@ public class EditCus {
 	private TableColumn<ALL_DOCS, String> TYPE_DOC;
 
 	@FXML
-	private TableColumn<ALL_DOCS, Integer> DOC_ID;
+	private TableColumn<ALL_DOCS, Long> DOC_ID;
 
 	@FXML
 	private Tab DocTab;
@@ -689,13 +689,13 @@ public class EditCus {
 		try {
 			String selectStmt = "select ID,COUNTRY_CODE,COUNTRY_NAME, osn from CUS_CITIZEN where icusnum = ?";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, getId());
+			prepStmt.setLong(1, getId());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<CUS_CITIZEN> infr_list = FXCollections.observableArrayList();
 			while (rs.next()) {
 				CUS_CITIZEN infr = new CUS_CITIZEN();
-				infr.setID(rs.getInt("ID"));
-				infr.setCOUNTRY_CODE(rs.getInt("COUNTRY_CODE"));
+				infr.setID(rs.getLong("ID"));
+				infr.setCOUNTRY_CODE(rs.getLong("COUNTRY_CODE"));
 				infr.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
 				infr.setOSN((rs.getString("OSN").equals("Y")) ? true : false);
 				infr_list.add(infr);
@@ -725,17 +725,17 @@ public class EditCus {
 	 * @param osn
 	 * @param oper
 	 */
-	void CRUDCitizen(Integer COUNTRY_I, String CLONGNAME_I, String osn, String oper, String type2) {
+	void CRUDCitizen(Long COUNTRY_I, String CLONGNAME_I, String osn, String oper, String type2) {
 		try {
 			CallableStatement callStmt = conn.prepareCall(oper);
 			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.setInt(2, COUNTRY_I);
+			callStmt.setLong(2, COUNTRY_I);
 			callStmt.setString(3, CLONGNAME_I);
 			if (type2.equals("add")) {
-				callStmt.setInt(4, getId());
+				callStmt.setLong(4, getId());
 			} else if (type2.equals("edit")) {
 				CUS_CITIZEN cs = CUS_CITIZEN.getSelectionModel().getSelectedItem();
-				callStmt.setInt(4, cs.getID());
+				callStmt.setLong(4, cs.getID());
 			}
 			callStmt.setString(5, osn);
 			callStmt.execute();
@@ -794,7 +794,7 @@ public class EditCus {
 			while (rs.next()) {
 				COUNTRIES list = new COUNTRIES();
 				list.setNAME(rs.getString("NAME"));
-				list.setCODE(rs.getInt("CODE"));
+				list.setCODE(rs.getLong("CODE"));
 				user_o_list.add(list);
 			}
 			prepStmt.close();
@@ -1009,7 +1009,7 @@ public class EditCus {
 			SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
 			String doc_list = sql.getSql("doc_list");
 			PreparedStatement prepStmt = conn.prepareStatement(doc_list);
-			prepStmt.setInt(1, getId());
+			prepStmt.setLong(1, getId());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<CUS_DOCUM> all_docs = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -1026,7 +1026,7 @@ public class EditCus {
 				list.setDOC_NUM(rs.getString("DOC_NUM"));
 				list.setID_DOC_TP(rs.getString("ID_DOC_TP"));
 				list.setPREF(rs.getString("PREF"));
-				list.setID_DOC(rs.getInt("ID_DOC"));
+				list.setID_DOC(rs.getLong("ID_DOC"));
 				all_docs.add(list);
 			}
 			prepStmt.close();
@@ -1059,7 +1059,7 @@ public class EditCus {
 			} else {
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("delete from cus_docum where ID_DOC = ?");
-				delete.setInt(1, cd.getID_DOC());
+				delete.setLong(1, cd.getID_DOC());
 				delete.executeUpdate();
 				delete.close();
 				/**
@@ -1084,7 +1084,7 @@ public class EditCus {
 			callStmt.setString(2, (PREF_T.isSelected()) ? "Y" : "N");
 			if (ID_DOC_TP_T.getValue() != null) {
 				VPUD vp = ID_DOC_TP_T.getSelectionModel().getSelectedItem();
-				callStmt.setInt(3, vp.getIPUDID());
+				callStmt.setLong(3, vp.getIPUDID());
 			} else {
 				callStmt.setNull(3, java.sql.Types.INTEGER);
 			}
@@ -1096,10 +1096,10 @@ public class EditCus {
 					(DOC_PERIOD_T.getValue() != null) ? java.sql.Date.valueOf(DOC_PERIOD_T.getValue()) : null);
 			callStmt.setString(9, DOC_SUBDIV_T.getText());
 			if (type2.equals("add")) {
-				callStmt.setInt(10, getId());
+				callStmt.setLong(10, getId());
 			} else if (type2.equals("edit")) {
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
-				callStmt.setInt(10, cd.getID_DOC());
+				callStmt.setLong(10, cd.getID_DOC());
 			}
 			callStmt.execute();
 			String ret = callStmt.getString(1);
@@ -1228,7 +1228,7 @@ public class EditCus {
 	/**
 	 * Отправить данные в 1с
 	 */
-	void Save1c(Integer dbid) {
+	void Save1c(Long dbid) {
 		try {
 			// Если многопоточность
 //			BP.setDisable(true);
@@ -1260,7 +1260,7 @@ public class EditCus {
 			String XML = sql.getSql("1C_XML");
 			{
 				PreparedStatement select = conn.prepareStatement(readRecordSQL);
-				select.setInt(1, dbid);
+				select.setLong(1, dbid);
 				ResultSet rs = select.executeQuery();
 				if (rs.next()) {
 					/*
@@ -1303,7 +1303,7 @@ public class EditCus {
 			{
 				String XML_CUS_DOCUM = sql.getSql("1C_XML_CUS_DOCUM");
 				PreparedStatement doc = conn.prepareStatement(XML_CUS_DOCUM);
-				doc.setInt(1, dbid);
+				doc.setLong(1, dbid);
 				ResultSet rs = doc.executeQuery();
 				while (rs.next()) {
 					cnt_doc++;
@@ -1329,8 +1329,8 @@ public class EditCus {
 					& save_ret_1c.matches(".*\\d.*")) {
 				// обновим id-шник
 				PreparedStatement doc = conn.prepareStatement("update cus set cus.ID1C = ? where cus.ICUSNUM = ?");
-				doc.setInt(1, Integer.valueOf(save_ret_1c.replace(" ", "")));
-				doc.setInt(2, dbid);
+				doc.setLong(1, Long.valueOf(save_ret_1c.replace(" ", "")));
+				doc.setLong(2, dbid);
 				doc.executeUpdate();
 				doc.close();
 			}
@@ -1381,12 +1381,12 @@ public class EditCus {
 			callStmt.setString(8, CCUSPLACE_BIRTH.getText());
 			callStmt.setString(9, ICUSOTD.getValue());
 			if (CombCountry.getValue() != null) {
-				callStmt.setInt(10, CombCountry.getValue().getCODE());
+				callStmt.setLong(10, CombCountry.getValue().getCODE());
 			} else {
 				callStmt.setNull(10, Types.INTEGER);
 			}
 			if (CombCountryAddr.getValue() != null) {
-				callStmt.setInt(11, CombCountryAddr.getValue().getCODE());
+				callStmt.setLong(11, CombCountryAddr.getValue().getCODE());
 			} else {
 				callStmt.setNull(11, Types.INTEGER);
 			}
@@ -1407,15 +1407,15 @@ public class EditCus {
 			callStmt.setString(16, DOM.getText());
 			callStmt.setString(17, KORP.getText());
 			callStmt.setString(18, KV.getText());
-			callStmt.setInt(19, getId());
+			callStmt.setLong(19, getId());
 			callStmt.setString(20, AB_FIRST_NAME.getText());
 			callStmt.setString(21, AB_MIDDLE_NAME.getText());
 			callStmt.setString(22, AB_LAST_NAME.getText());
 			callStmt.setString(23, AB_PLACE_BIRTH.getText());
 			// адрес-район если текст
-			callStmt.setInt(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
+			callStmt.setLong(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
 			// адрес-населенный пункт если текст
-			callStmt.setInt(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
+			callStmt.setLong(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
 			callStmt.execute();
 			String ret = callStmt.getString(1);
 			callStmt.close();
@@ -1457,12 +1457,12 @@ public class EditCus {
 			callStmt.setString(8, CCUSPLACE_BIRTH.getText());
 			callStmt.setString(9, ICUSOTD.getValue());
 			if (CombCountry.getValue() != null) {
-				callStmt.setInt(10, CombCountry.getValue().getCODE());
+				callStmt.setLong(10, CombCountry.getValue().getCODE());
 			} else {
 				callStmt.setNull(10, Types.INTEGER);
 			}
 			if (CombCountryAddr.getValue() != null) {
-				callStmt.setInt(11, CombCountryAddr.getValue().getCODE());
+				callStmt.setLong(11, CombCountryAddr.getValue().getCODE());
 			} else {
 				callStmt.setNull(11, Types.INTEGER);
 			}
@@ -1483,15 +1483,15 @@ public class EditCus {
 			callStmt.setString(16, DOM.getText());
 			callStmt.setString(17, KORP.getText());
 			callStmt.setString(18, KV.getText());
-			callStmt.setInt(19, getId());
+			callStmt.setLong(19, getId());
 			callStmt.setString(20, AB_FIRST_NAME.getText());
 			callStmt.setString(21, AB_MIDDLE_NAME.getText());
 			callStmt.setString(22, AB_LAST_NAME.getText());
 			callStmt.setString(23, AB_PLACE_BIRTH.getText());
 			// адрес-район если текст
-			callStmt.setInt(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
+			callStmt.setLong(24, (AREA_NOT_LIST.isSelected() ? 2 : 1));
 			// адрес-населенный пункт если текст
-			callStmt.setInt(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
+			callStmt.setLong(25, (PUNCT_NAME_NOT_LIST.isSelected() ? 2 : 1));
 			callStmt.execute();
 			callStmt.close();
 		} catch (Exception e) {
@@ -1513,7 +1513,7 @@ public class EditCus {
 			// Проверка существования национальности
 			if (CCUSNATIONALITY.getValue() != null) {
 				if (rs.next()) {
-					if (rs.getInt(1) == 0) {
+					if (rs.getLong(1) == 0) {
 						AddNationalityIfNotExist(false);
 					} else {
 						CallSave();
@@ -1672,7 +1672,7 @@ public class EditCus {
 				Msg.Message("Выберите документ!");
 			} else {
 				String tablename = all_docs.getSelectionModel().getSelectedItem().getTABLE_NAME();
-				Integer doc_id = all_docs.getSelectionModel().getSelectedItem().getDOC_ID();
+				Long doc_id = all_docs.getSelectionModel().getSelectedItem().getDOC_ID();
 
 				if (tablename.equals("BRN_BIRTH_ACT")) {
 					BirthList doc = new BirthList();
@@ -1846,7 +1846,7 @@ public class EditCus {
 			// Проверка существования национальности
 			if (CCUSNATIONALITY.getValue() != null) {
 				if (rs.next()) {
-					if (rs.getInt(1) == 0) {
+					if (rs.getLong(1) == 0) {
 						AddNationalityIfNotExist(true);
 					} else {
 						CallSaveToCompare();
@@ -1921,7 +1921,7 @@ public class EditCus {
 
 			Root rt = new Root();
 			ZAGS_MENU_BUT.getItems().forEach(menuItem -> {
-				if (rt.chk_menu(Integer.valueOf(menuItem.getId()), Connect.userID) == 1) {
+				if (rt.chk_menu(Long.valueOf(menuItem.getId()), Connect.userID) == 1) {
 					menuItem.setVisible(true);
 				} else {
 					menuItem.setVisible(false);
@@ -2171,7 +2171,7 @@ public class EditCus {
 				ObservableList<COUNTRIES> nationals = FXCollections.observableArrayList();
 				while (rs.next()) {
 					COUNTRIES countryes = new COUNTRIES();
-					countryes.setCODE(rs.getInt("CODE"));
+					countryes.setCODE(rs.getLong("CODE"));
 					countryes.setNAME(rs.getString("NAME"));
 					nationals.add(countryes);
 				}
@@ -2202,7 +2202,7 @@ public class EditCus {
 				ObservableList<COUNTRIES> nationals = FXCollections.observableArrayList();
 				while (rs.next()) {
 					COUNTRIES countryes = new COUNTRIES();
-					countryes.setCODE(rs.getInt("CODE"));
+					countryes.setCODE(rs.getLong("CODE"));
 					countryes.setNAME(rs.getString("NAME"));
 					nationals.add(countryes);
 				}
@@ -2439,12 +2439,12 @@ public class EditCus {
 			SqlMap sql = new SqlMap().load("/SQLCUS.xml");
 			String readRecordSQL = sql.getSql("SelCusList");
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-			prepStmt.setInt(1, getId());
+			prepStmt.setLong(1, getId());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<CUS> cus_list = FXCollections.observableArrayList();
 			while (rs.next()) {
 				cus.setCountry(rs.getString("Country"));
-				cus.setICUSNUM(rs.getInt("ICUSNUM"));
+				cus.setICUSNUM(rs.getLong("ICUSNUM"));
 				cus.setCCUSNAME(rs.getString("CCUSNAME"));
 				cus.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
 				cus.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
@@ -2458,7 +2458,7 @@ public class EditCus {
 				cus.setCCUSNAME_SH(rs.getString("CCUSNAME_SH"));
 				cus.setOTD_NAME(rs.getString("OTD_NAME"));
 				cus.setCCUSNATIONALITY(rs.getString("CCUSNATIONALITY2"));
-				cus.setCCUSSEX(rs.getInt("CCUSSEX"));
+				cus.setCCUSSEX(rs.getLong("CCUSSEX"));
 				cus.setCCUSPLACE_BIRTH(rs.getString("CCUSPLACE_BIRTH"));
 				cus.setCCUS_OK_SM(rs.getString("CCUS_OK_SM"));
 				cus.setCITY(rs.getString("CITY2"));
@@ -2494,12 +2494,12 @@ public class EditCus {
 			SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
 			String CUS_ADDR_LIST = sql.getSql("CUS_ADDR_LIST");
 			PreparedStatement prepStmt = conn.prepareStatement(CUS_ADDR_LIST);
-			prepStmt.setInt(1, getId());
+			prepStmt.setLong(1, getId());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<CUS_ADDR> adrlist = FXCollections.observableArrayList();
 			while (rs.next()) {
-				addr.setICUSNUM(rs.getInt("ICUSNUM"));
-				addr.setID_ADDR(rs.getInt("ID_ADDR"));
+				addr.setICUSNUM(rs.getLong("ICUSNUM"));
+				addr.setID_ADDR(rs.getLong("ID_ADDR"));
 				addr.setCOUNTRY(rs.getString("COUNTRY"));
 				addr.setPOST_INDEX(rs.getString("POST_INDEX"));
 				addr.setAREA(rs.getString("AREA"));
@@ -2517,8 +2517,8 @@ public class EditCus {
 				addr.setOFFICE(rs.getString("OFFICE"));
 				addr.setPORCH(rs.getString("PORCH"));
 				addr.setCLONGNAMET(rs.getString("CLONGNAMET"));
-				addr.setAREA_NOT_LIST(rs.getInt("AREA_NOT_LIST"));
-				addr.setPUNCT_NAME_NOT_LIST(rs.getInt("PUNCT_NAME_NOT_LIST"));
+				addr.setAREA_NOT_LIST(rs.getLong("AREA_NOT_LIST"));
+				addr.setPUNCT_NAME_NOT_LIST(rs.getLong("PUNCT_NAME_NOT_LIST"));
 				adrlist.add(addr);
 			}
 			prepStmt.close();
@@ -2564,7 +2564,7 @@ public class EditCus {
 			} else {
 				CUS_CITIZEN cd = CUS_CITIZEN.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("delete from cus_citizen where id = ?");
-				delete.setInt(1, cd.getID());
+				delete.setLong(1, cd.getID());
 				delete.executeUpdate();
 				delete.close();
 				InitCitizen();
@@ -2601,7 +2601,7 @@ public class EditCus {
 			} else {
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("delete from cus_docum where ID_DOC = ?");
-				delete.setInt(1, cd.getID_DOC());
+				delete.setLong(1, cd.getID_DOC());
 				delete.executeUpdate();
 				delete.close();
 				/**
@@ -2628,7 +2628,7 @@ public class EditCus {
 			} else {
 				CUS_CITIZEN cd = CUS_CITIZEN.getSelectionModel().getSelectedItem();
 				PreparedStatement delete = conn.prepareStatement("delete from cus_citizen where id = ?");
-				delete.setInt(1, cd.getID());
+				delete.setLong(1, cd.getID());
 				delete.executeUpdate();
 				delete.close();
 				InitCitizen();
@@ -2666,7 +2666,7 @@ public class EditCus {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -2681,18 +2681,18 @@ public class EditCus {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public EditCus() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 	@FXML
@@ -2889,12 +2889,12 @@ public class EditCus {
 			AddUpdName controller = new AddUpdName();
 			{
 				PreparedStatement prp = conn.prepareStatement("select * from cus where cus.icusnum = ?");
-				prp.setInt(1, getId());
+				prp.setLong(1, getId());
 				ResultSet rs = prp.executeQuery();
 				if (rs.next()) {
 					controller.setField(rs.getString("ccuslast_name"), rs.getString("ccusfirst_name"),
 							rs.getString("ccusmiddle_name"),
-							((rs.getInt("icusnum") != 0) ? String.valueOf(rs.getInt("icusnum")) : ""));
+							((rs.getLong("icusnum") != 0) ? String.valueOf(rs.getLong("icusnum")) : ""));
 				}
 				prp.close();
 				rs.close();
@@ -2936,12 +2936,12 @@ public class EditCus {
 			AddUpdAbhName controller = new AddUpdAbhName();
 			{
 				PreparedStatement prp = conn.prepareStatement("select * from cus where cus.icusnum = ?");
-				prp.setInt(1, getId());
+				prp.setLong(1, getId());
 				ResultSet rs = prp.executeQuery();
 				if (rs.next()) {
 					controller.setField(rs.getString("ccuslast_name"), rs.getString("ccusfirst_name"),
 							rs.getString("ccusmiddle_name"),
-							((rs.getInt("icusnum") != 0) ? String.valueOf(rs.getInt("icusnum")) : ""));
+							((rs.getLong("icusnum") != 0) ? String.valueOf(rs.getLong("icusnum")) : ""));
 				}
 				prp.close();
 				rs.close();
@@ -2983,12 +2983,12 @@ public class EditCus {
 			controller.setConn(conn);
 			{
 				PreparedStatement prp = conn.prepareStatement("select * from cus where cus.icusnum = ?");
-				prp.setInt(1, getId());
+				prp.setLong(1, getId());
 				ResultSet rs = prp.executeQuery();
 				if (rs.next()) {
 					controller.setField(rs.getString("ccuslast_name"), rs.getString("ccusfirst_name"),
 							rs.getString("ccusmiddle_name"),
-							((rs.getInt("icusnum") != 0) ? String.valueOf(rs.getInt("icusnum")) : ""),
+							((rs.getLong("icusnum") != 0) ? String.valueOf(rs.getLong("icusnum")) : ""),
 							CCUSNATIONALITY.getSelectionModel().getSelectedItem());
 				}
 				prp.close();

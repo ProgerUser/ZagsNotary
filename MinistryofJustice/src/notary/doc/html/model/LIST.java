@@ -1,22 +1,22 @@
 package notary.doc.html.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class LIST {
 
-	private IntegerProperty CODE;
+	private LongProperty CODE;
 
 	private StringProperty NAME;
 
 	public LIST() {
-		this.CODE = new SimpleIntegerProperty();
+		this.CODE = new SimpleLongProperty();
 		this.NAME = new SimpleStringProperty();
 	}
 
-	public void setCODE(Integer CODE) {
+	public void setCODE(Long CODE) {
 		this.CODE.set(CODE);
 	}
 
@@ -24,7 +24,7 @@ public class LIST {
 		this.NAME.set(NAME);
 	}
 
-	public Integer getCODE() {
+	public Long getCODE() {
 		return CODE.get();
 	}
 
@@ -32,7 +32,7 @@ public class LIST {
 		return NAME.get();
 	}
 
-	public IntegerProperty CODEProperty() {
+	public LongProperty CODEProperty() {
 		return CODE;
 	}
 

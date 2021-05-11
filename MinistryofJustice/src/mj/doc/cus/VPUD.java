@@ -1,19 +1,19 @@
 package mj.doc.cus;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class VPUD {
-	private IntegerProperty IPUDID;/* Нет данных */
+	private LongProperty IPUDID;/* Нет данных */
 	private StringProperty CPUDDOC;/* Нет данных */
 
 	public VPUD() {
-		this.IPUDID = new SimpleIntegerProperty();
+		this.IPUDID = new SimpleLongProperty();
 		this.CPUDDOC = new SimpleStringProperty();
 	}
 
-	public void setIPUDID(Integer IPUDID) {
+	public void setIPUDID(Long IPUDID) {
 		this.IPUDID.set(IPUDID);
 	}
 
@@ -21,7 +21,7 @@ public class VPUD {
 		this.CPUDDOC.set(CPUDDOC);
 	}
 
-	public Integer getIPUDID() {
+	public Long getIPUDID() {
 		return IPUDID.get();
 	}
 
@@ -29,7 +29,7 @@ public class VPUD {
 		return CPUDDOC.get();
 	}
 
-	public IntegerProperty IPUDIDProperty() {
+	public LongProperty IPUDIDProperty() {
 		return IPUDID;
 	}
 

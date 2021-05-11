@@ -95,7 +95,7 @@ public class ParamList {
 	private TableView<LIST> list;
 
 	@FXML
-	private TableColumn<LIST, Integer> code;
+	private TableColumn<LIST, Long> code;
 
 	@FXML
 	private TableColumn<LIST, String> name;
@@ -118,7 +118,7 @@ public class ParamList {
 			ObservableList<LIST> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				LIST list = new LIST();
-				list.setCODE(rs.getInt(1));
+				list.setCODE(rs.getLong(1));
 				list.setNAME(rs.getString(2));
 				dlist.add(list);
 			}

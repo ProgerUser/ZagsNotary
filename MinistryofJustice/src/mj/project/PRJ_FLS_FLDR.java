@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -51,7 +50,7 @@ public class PRJ_FLS_FLDR {
 	private TableView<PRJ_FL_VER_HIST> Hist;
 
 	@FXML
-	private TableColumn<PRJ_FL_VER_HIST, Integer> VERISION;
+	private TableColumn<PRJ_FL_VER_HIST, Long> VERISION;
 
 	@FXML
 	private TableColumn<PRJ_FL_VER_HIST, LocalDateTime> DT;
@@ -74,7 +73,7 @@ public class PRJ_FLS_FLDR {
 	@FXML
 	void Add(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(148) == 0) {
+			if (DBUtil.OdbAction(148l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -109,21 +108,14 @@ public class PRJ_FLS_FLDR {
 				stage.show();
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void Edit(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(149) == 0) {
+			if (DBUtil.OdbAction(149l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -160,28 +152,21 @@ public class PRJ_FLS_FLDR {
 				stage.show();
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	@FXML
 	void Delete(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(150) == 0) {
+			if (DBUtil.OdbAction(150l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
 			if (PROJECT.getSelectionModel().getSelectedItem() != null) {
 				// delete
 				PreparedStatement prp = conn.prepareStatement("delete from PROJECT where PRJ_ID = ?");
-				prp.setInt(1, PROJECT.getSelectionModel().getSelectedItem().getValue().getPRJ_ID());
+				prp.setLong(1, PROJECT.getSelectionModel().getSelectedItem().getValue().getPRJ_ID());
 				prp.executeUpdate();
 				conn.commit();
 				prp.close();
@@ -191,14 +176,7 @@ public class PRJ_FLS_FLDR {
 				Msg.Message("Выберите строку!");
 			}
 		} catch (Exception e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -207,22 +185,22 @@ public class PRJ_FLS_FLDR {
 	PROJECT prj;
 
 	void FillTree() {
-		Map<Integer, TreeItem<PROJECT>> itemById = new HashMap<>();
-		Map<Integer, Integer> parents = new HashMap<>();
+		Map<Long, TreeItem<PROJECT>> itemById = new HashMap<>();
+		Map<Long, Long> parents = new HashMap<>();
 		String query = "select * from PROJECT";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				prj = new PROJECT();
-				prj.setPRJ_ID(rs.getInt("PRJ_ID"));
-				prj.setPRJ_PARENT(rs.getInt("PRJ_PARENT"));
+				prj.setPRJ_ID(rs.getLong("PRJ_ID"));
+				prj.setPRJ_PARENT(rs.getLong("PRJ_PARENT"));
 				prj.setPRJ_NAME(rs.getString("PRJ_NAME"));
 				prj.setIS_FOLDER(rs.getString("IS_FOLDER"));
-				prj.setVERSION(rs.getInt("VERSION"));
-				prj.setBYTES(rs.getInt("BYTES"));
-				itemById.put(rs.getInt("PRJ_ID"), new TreeItem<>(prj));
-				parents.put(rs.getInt("PRJ_ID"), rs.getInt("PRJ_PARENT"));
+				prj.setVERSION(rs.getLong("VERSION"));
+				prj.setBYTES(rs.getLong("BYTES"));
+				itemById.put(rs.getLong("PRJ_ID"), new TreeItem<>(prj));
+				parents.put(rs.getLong("PRJ_ID"), rs.getLong("PRJ_PARENT"));
 			}
 			pstmt.close();
 			rs.close();
@@ -230,9 +208,9 @@ public class PRJ_FLS_FLDR {
 			e.printStackTrace();
 		}
 
-		for (Map.Entry<Integer, TreeItem<PROJECT>> entry : itemById.entrySet()) {
-			Integer key = entry.getKey();
-			Integer parent = parents.get(key);
+		for (Map.Entry<Long, TreeItem<PROJECT>> entry : itemById.entrySet()) {
+			Long key = entry.getKey();
+			Long parent = parents.get(key);
 			if (parent.equals(key)) {
 				// in case the root item points to itself, this is it
 				root = entry.getValue();
@@ -265,12 +243,7 @@ public class PRJ_FLS_FLDR {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -281,12 +254,7 @@ public class PRJ_FLS_FLDR {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -342,13 +310,7 @@ public class PRJ_FLS_FLDR {
 			DT.setCellValueFactory(cellData -> cellData.getValue().DTProperty());
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -371,18 +333,18 @@ public class PRJ_FLS_FLDR {
 		});
 	}
 
-	void InitHist(Integer ID) {
+	void InitHist(Long ID) {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			PreparedStatement prepStmt = conn
 					.prepareStatement("select * from PRJ_FL_VER_HIST where PRJ_ID = ? order by DT desc");
-			prepStmt.setInt(1, ID);
+			prepStmt.setLong(1, ID);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<PRJ_FL_VER_HIST> usr_list = FXCollections.observableArrayList();
 			while (rs.next()) {
 				PRJ_FL_VER_HIST list = new PRJ_FL_VER_HIST();
-				list.setPRJ_ID(rs.getInt("PRJ_ID"));
-				list.setVERISION(rs.getInt("VERISION"));
+				list.setPRJ_ID(rs.getLong("PRJ_ID"));
+				list.setVERISION(rs.getLong("VERISION"));
 				list.setDT(
 						(rs.getDate("DT") != null)
 								? LocalDateTime.parse(
@@ -403,14 +365,7 @@ public class PRJ_FLS_FLDR {
 				}
 			});
 		} catch (SQLException e) {
-			Main.logger = Logger.getLogger(getClass());
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 

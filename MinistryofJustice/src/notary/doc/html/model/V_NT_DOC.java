@@ -1,8 +1,8 @@
 package notary.doc.html.model;
 
 import java.time.LocalDate;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -11,7 +11,7 @@ public class V_NT_DOC {
 	/** Нет данных */
 	private StringProperty HTML_DOCUMENT;
 	/** Нет данных */
-	private IntegerProperty ID;
+	private LongProperty ID;
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDate> CR_DATE;
 	/** Нет данных */
@@ -19,9 +19,9 @@ public class V_NT_DOC {
 	/** Нет данных */
 	private StringProperty OPER;
 	/** Нет данных */
-	private IntegerProperty NOTARY;
+	private LongProperty NOTARY;
 	/** Нет данных */
-	private IntegerProperty NT_TYPE;
+	private LongProperty NT_TYPE;
 	/** Нет данных */
 	private StringProperty DOC_NUMBER;
 	/** Нет данных */
@@ -31,12 +31,12 @@ public class V_NT_DOC {
 	public V_NT_DOC() {
 		this.TYPE_NODE = new SimpleStringProperty();
 		this.HTML_DOCUMENT = new SimpleStringProperty();
-		this.ID = new SimpleIntegerProperty();
+		this.ID = new SimpleLongProperty();
 		this.CR_DATE = new SimpleObjectProperty<>();
 		this.CR_TIME = new SimpleStringProperty();
 		this.OPER = new SimpleStringProperty();
-		this.NOTARY = new SimpleIntegerProperty();
-		this.NT_TYPE = new SimpleIntegerProperty();
+		this.NOTARY = new SimpleLongProperty();
+		this.NT_TYPE = new SimpleLongProperty();
 		this.DOC_NUMBER = new SimpleStringProperty();
 		this.TYPE_NAME = new SimpleStringProperty();
 	}
@@ -49,7 +49,7 @@ public class V_NT_DOC {
 		this.HTML_DOCUMENT.set(HTML_DOCUMENT);
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
@@ -65,11 +65,11 @@ public class V_NT_DOC {
 		this.OPER.set(OPER);
 	}
 
-	public void setNOTARY(Integer NOTARY) {
+	public void setNOTARY(Long NOTARY) {
 		this.NOTARY.set(NOTARY);
 	}
 
-	public void setNT_TYPE(Integer NT_TYPE) {
+	public void setNT_TYPE(Long NT_TYPE) {
 		this.NT_TYPE.set(NT_TYPE);
 	}
 
@@ -89,7 +89,7 @@ public class V_NT_DOC {
 		return HTML_DOCUMENT.get();
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -105,11 +105,11 @@ public class V_NT_DOC {
 		return OPER.get();
 	}
 
-	public Integer getNOTARY() {
+	public Long getNOTARY() {
 		return NOTARY.get();
 	}
 
-	public Integer getNT_TYPE() {
+	public Long getNT_TYPE() {
 		return NT_TYPE.get();
 	}
 
@@ -129,7 +129,7 @@ public class V_NT_DOC {
 		return HTML_DOCUMENT;
 	}
 
-	public IntegerProperty IDProperty() {
+	public LongProperty IDProperty() {
 		return ID;
 	}
 
@@ -145,11 +145,11 @@ public class V_NT_DOC {
 		return OPER;
 	}
 
-	public IntegerProperty NOTARYProperty() {
+	public LongProperty NOTARYProperty() {
 		return NOTARY;
 	}
 
-	public IntegerProperty NT_TYPEProperty() {
+	public LongProperty NT_TYPEProperty() {
 		return NT_TYPE;
 	}
 

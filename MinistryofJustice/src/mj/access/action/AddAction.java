@@ -11,9 +11,9 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -44,7 +44,7 @@ public class AddAction {
 			CallableStatement callStmt = conn.prepareCall("{ call MJUsers.AddOdbActionItem(?,?,?) }");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			if (!ACT_PARENT.getText().equals("")) {
-				callStmt.setInt(2, Integer.valueOf(ACT_PARENT.getText()));
+				callStmt.setLong(2, Long.valueOf(ACT_PARENT.getText()));
 			} else {
 				callStmt.setNull(2, java.sql.Types.INTEGER);
 			}
@@ -72,7 +72,7 @@ public class AddAction {
 			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
 			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
@@ -85,7 +85,7 @@ public class AddAction {
 				CallableStatement callStmt = conn.prepareCall("{ call MJUsers.AddOdbActionItem(?,?,?) }");
 				callStmt.registerOutParameter(1, Types.VARCHAR);
 				if (!ACT_PARENT.getText().equals("")) {
-					callStmt.setInt(2, Integer.valueOf(ACT_PARENT.getText()));
+					callStmt.setLong(2, Long.valueOf(ACT_PARENT.getText()));
 				} else {
 					callStmt.setNull(2, java.sql.Types.INTEGER);
 				}
@@ -111,7 +111,7 @@ public class AddAction {
 				Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
 				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-				int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+				Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
 				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 			}
 		}
@@ -174,7 +174,7 @@ public class AddAction {
 			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
 			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
@@ -204,7 +204,7 @@ public class AddAction {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -214,24 +214,24 @@ public class AddAction {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
-	Integer parantid;
+	Long parantid;
 
-	public void setParantid(Integer ID) {
+	public void setParantid(Long ID) {
 		this.parantid = ID;
 	}
 
 	public AddAction() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 }

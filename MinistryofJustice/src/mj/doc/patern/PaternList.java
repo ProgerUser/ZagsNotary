@@ -93,7 +93,7 @@ public class PaternList {
     private TitledPane FILTER;
     
 	@FXML
-	private XTableColumn<PATERN_CERT, Integer> PC_ID;
+	private XTableColumn<PATERN_CERT, Long> PC_ID;
 
 	@FXML
 	private XTableColumn<PATERN_CERT, String> FatherFio;
@@ -144,7 +144,7 @@ public class PaternList {
 	@FXML
 	private XTableColumn<PATERN_CERT, String> CR_TIME;
 
-	void Init(Integer ID) {
+	void Init(Long ID) {
 
 	}
 
@@ -158,7 +158,7 @@ public class PaternList {
 			// preparing variables
 			Variables variables = new Variables();
 			PreparedStatement prepStmt = conn.prepareStatement("select * from SPR_PATERN_CERT where PC_ID = ?");
-			prepStmt.setInt(1, PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID());
+			prepStmt.setLong(1, PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID());
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
 				variables.addTextVariable(new TextVariable("#{DOC_NUMBER}", rs.getString("DOC_NUMBER")));
@@ -193,8 +193,7 @@ public class PaternList {
 	 */
 	void Add() {
 		try {
-
-			if (DBUtil.OdbAction(101) == 0) {
+			if (DBUtil.OdbAction(101l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -245,7 +244,7 @@ public class PaternList {
 //			}
 			
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_PATERN_CERT where PC_ID = ?");
-			prp.setInt(1, PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID());
+			prp.setLong(1, PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
 				fields.setField("Текст1", rs.getString("f1"));
@@ -349,7 +348,7 @@ public class PaternList {
 				Msg.Message("Выберите строку!");
 			} else {
 
-				if (DBUtil.OdbAction(102) == 0) {
+				if (DBUtil.OdbAction(102l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -392,7 +391,7 @@ public class PaternList {
 									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
 											+ " delete from PATERN_CERT where PC_ID = ?;" + "commit;" + "end;");
 							PATERN_CERT cl = PATERN_CERT.getSelectionModel().getSelectedItem();
-							delete.setInt(1, cl.getPC_ID());
+							delete.setLong(1, cl.getPC_ID());
 							delete.executeUpdate();
 							delete.close();
 							
@@ -430,11 +429,11 @@ public class PaternList {
 	/**
 	 * Редактировать
 	 */
-	public void Edit(Integer docid, Stage stage_) {
+	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
 
-				if (DBUtil.OdbAction(103) == 0) {
+				if (DBUtil.OdbAction(103l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -442,7 +441,7 @@ public class PaternList {
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from PATERN_CERT where  PC_ID = ? for update nowait");
 				PATERN_CERT cl = Initialize2(docid);
-				selforupd.setInt(1, docid);
+				selforupd.setLong(1, docid);
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
@@ -603,7 +602,7 @@ public class PaternList {
 						Variables variables = new Variables();
 						PreparedStatement prepStmt = conn
 								.prepareStatement("select * from V_REP_PATERN_CERT where PC_ID = ?");
-						prepStmt.setInt(1, PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID());
+						prepStmt.setLong(1, PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID());
 						ResultSet rs = prepStmt.executeQuery();
 						V_REP_PATERN_CERT list = null;
 						if (rs.next()) {
@@ -784,8 +783,8 @@ public class PaternList {
 				list.setCHILDRENBIRTH((rs.getDate("CHILDRENBIRTH") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CHILDRENBIRTH")), formatter) : null);
 				list.setFATHERFIO(rs.getString("FATHERFIO"));
-				list.setPC_ACT_ID(rs.getInt("PC_ACT_ID"));
-				list.setPС_CH(rs.getInt("PС_CH"));
+				list.setPC_ACT_ID(rs.getLong("PC_ACT_ID"));
+				list.setPС_CH(rs.getLong("PС_CH"));
 				list.setPС_SERIA(rs.getString("PС_SERIA"));
 				list.setPС_NUMBER(rs.getString("PС_NUMBER"));
 				list.setTM$PС_DATE((rs.getDate("TM$PС_DATE") != null) ? LocalDateTime.parse(
@@ -800,7 +799,7 @@ public class PaternList {
 				list.setCR_TIME(rs.getString("CR_TIME"));
 				list.setFATHERBIRTHDATE((rs.getDate("FATHERBIRTHDATE") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("FATHERBIRTHDATE")), formatter) : null);
-				list.setPС_F(rs.getInt("PС_F"));
+				list.setPС_F(rs.getLong("PС_F"));
 				list.setPС_CRDATE((rs.getDate("PС_CRDATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_CRDATE")), formatter)
 						: null);
@@ -812,10 +811,10 @@ public class PaternList {
 				list.setPC_ZFNAME(rs.getString("PC_ZFNAME"));
 				list.setCHILDFIO(rs.getString("CHILDFIO"));
 				list.setPС_CRNAME(rs.getString("PС_CRNAME"));
-				list.setPС_M(rs.getInt("PС_M"));
+				list.setPС_M(rs.getLong("PС_M"));
 				list.setPС_AFT_MNAME(rs.getString("PС_AFT_MNAME"));
-				list.setPС_ZAGS(rs.getInt("PС_ZAGS"));
-				list.setPC_ID(rs.getInt("PC_ID"));
+				list.setPС_ZAGS(rs.getLong("PС_ZAGS"));
+				list.setPC_ID(rs.getLong("PC_ID"));
 				list.setPС_TYPE(rs.getString("PС_TYPE"));
 				list.setPС_AFT_FNAME(rs.getString("PС_AFT_FNAME"));
 				list.setPС_USER(rs.getString("PС_USER"));
@@ -1049,7 +1048,7 @@ public class PaternList {
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
 		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Integer> firstColumn = (XTableColumn<VCUS, Integer>)
+		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(PC_ID.filterableProperty());
 
@@ -1155,14 +1154,14 @@ public class PaternList {
 		}
 	}
 
-	PATERN_CERT Initialize2(Integer docid) {
+	PATERN_CERT Initialize2(Long docid) {
 		PATERN_CERT list = null;
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			String selectStmt = "select * from v_patern_cert where PC_ID = ? ";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setInt(1, docid);
+			prepStmt.setLong(1, docid);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<PATERN_CERT> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
@@ -1176,8 +1175,8 @@ public class PaternList {
 				list.setCHILDRENBIRTH((rs.getDate("CHILDRENBIRTH") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CHILDRENBIRTH")), formatter) : null);
 				list.setFATHERFIO(rs.getString("FATHERFIO"));
-				list.setPC_ACT_ID(rs.getInt("PC_ACT_ID"));
-				list.setPС_CH(rs.getInt("PС_CH"));
+				list.setPC_ACT_ID(rs.getLong("PC_ACT_ID"));
+				list.setPС_CH(rs.getLong("PС_CH"));
 				list.setPС_SERIA(rs.getString("PС_SERIA"));
 				list.setPС_NUMBER(rs.getString("PС_NUMBER"));
 				list.setTM$PС_DATE((rs.getDate("TM$PС_DATE") != null) ? LocalDateTime.parse(
@@ -1192,7 +1191,7 @@ public class PaternList {
 				list.setCR_TIME(rs.getString("CR_TIME"));
 				list.setFATHERBIRTHDATE((rs.getDate("FATHERBIRTHDATE") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("FATHERBIRTHDATE")), formatter) : null);
-				list.setPС_F(rs.getInt("PС_F"));
+				list.setPС_F(rs.getLong("PС_F"));
 				list.setPС_CRDATE((rs.getDate("PС_CRDATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("PС_CRDATE")), formatter)
 						: null);
@@ -1204,10 +1203,10 @@ public class PaternList {
 				list.setPC_ZFNAME(rs.getString("PC_ZFNAME"));
 				list.setCHILDFIO(rs.getString("CHILDFIO"));
 				list.setPС_CRNAME(rs.getString("PС_CRNAME"));
-				list.setPС_M(rs.getInt("PС_M"));
+				list.setPС_M(rs.getLong("PС_M"));
 				list.setPС_AFT_MNAME(rs.getString("PС_AFT_MNAME"));
-				list.setPС_ZAGS(rs.getInt("PС_ZAGS"));
-				list.setPC_ID(rs.getInt("PC_ID"));
+				list.setPС_ZAGS(rs.getLong("PС_ZAGS"));
+				list.setPC_ID(rs.getLong("PC_ID"));
 				list.setPС_TYPE(rs.getString("PС_TYPE"));
 				list.setPС_AFT_FNAME(rs.getString("PС_AFT_FNAME"));
 				list.setPС_USER(rs.getString("PС_USER"));
@@ -1248,20 +1247,20 @@ public class PaternList {
 	 * 
 	 * @return
 	 */
-	int CompareBeforeClose(Integer docid) {
-		int ret = 0;
+	Long CompareBeforeClose(Long docid) {
+		Long ret = 0l;
 		try {
 			Clob lob = conn.createClob();
 			lob.setString(1, RetXml);
 			CallableStatement callStmt = conn.prepareCall("{ call PATERN.CompareXmls(?,?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.setClob(2, lob);
 			callStmt.registerOutParameter(3, Types.VARCHAR);
 			callStmt.registerOutParameter(4, Types.INTEGER);
 			callStmt.execute();
 			if (callStmt.getString(3) == null) {
-				ret = callStmt.getInt(4);
-				System.out.println("ret=" + callStmt.getInt(4));
+				ret = callStmt.getLong(4);
+				System.out.println("ret=" + callStmt.getLong(4));
 			} else {
 				Msg.Message(callStmt.getString(3));
 				Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
@@ -1278,10 +1277,10 @@ public class PaternList {
 	/**
 	 * Возврат XML файлов для сравнения
 	 */
-	void XmlsForCompare(Integer docid) {
+	void XmlsForCompare(Long docid) {
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ call PATERN.RetXmls(?,?,?)}");
-			callStmt.setInt(1, docid);
+			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
 			callStmt.execute();

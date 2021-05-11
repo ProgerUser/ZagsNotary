@@ -10,14 +10,13 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -244,7 +243,7 @@ public class EditDeath {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Номер");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -285,7 +284,7 @@ public class EditDeath {
 				CUS cus = new CUS();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				String DCUSBIRTHDAYt = new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY"));
-				cus.setICUSNUM(rs.getInt("ICUSNUM"));
+				cus.setICUSNUM(rs.getLong("ICUSNUM"));
 				cus.setCCUSNAME(rs.getString("CCUSNAME"));
 				cus.setDCUSBIRTHDAY(LocalDate.parse(DCUSBIRTHDAYt, formatter));
 				cuslist.add(cus);
@@ -338,13 +337,7 @@ public class EditDeath {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -443,7 +436,7 @@ public class EditDeath {
 			callStmt.setString(11, DC_LLOC.getText());
 			callStmt.setString(12, DC_NRNAME.getText());
 			if (DC_RCNAME.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setInt(13, DC_RCNAME.getSelectionModel().getSelectedItem().getID());
+				callStmt.setLong(13, DC_RCNAME.getSelectionModel().getSelectedItem().getID());
 			} else {
 				callStmt.setNull(13, java.sql.Types.INTEGER);
 			}
@@ -455,11 +448,11 @@ public class EditDeath {
 			callStmt.setString(19, DC_DPL.getText());
 			callStmt.setDate(20, (DC_DD.getValue() != null) ? java.sql.Date.valueOf(DC_DD.getValue()) : null);
 			if (!DC_CUS.getText().equals("")) {
-				callStmt.setInt(21, Integer.valueOf(DC_CUS.getText()));
+				callStmt.setLong(21, Long.valueOf(DC_CUS.getText()));
 			} else {
 				callStmt.setNull(21, java.sql.Types.INTEGER);
 			}
-			callStmt.setInt(22, getId());
+			callStmt.setLong(22, getId());
 			callStmt.setString(23, DOC_NUMBER.getText());
 			callStmt.execute();
 			String ret = callStmt.getString(1);
@@ -496,7 +489,7 @@ public class EditDeath {
 			callStmt.setString(11, DC_LLOC.getText());
 			callStmt.setString(12, DC_NRNAME.getText());
 			if (DC_RCNAME.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setInt(13, DC_RCNAME.getSelectionModel().getSelectedItem().getID());
+				callStmt.setLong(13, DC_RCNAME.getSelectionModel().getSelectedItem().getID());
 			} else {
 				callStmt.setNull(13, java.sql.Types.INTEGER);
 			}
@@ -508,11 +501,11 @@ public class EditDeath {
 			callStmt.setString(19, DC_DPL.getText());
 			callStmt.setDate(20, (DC_DD.getValue() != null) ? java.sql.Date.valueOf(DC_DD.getValue()) : null);
 			if (!DC_CUS.getText().equals("")) {
-				callStmt.setInt(21, Integer.valueOf(DC_CUS.getText()));
+				callStmt.setLong(21, Long.valueOf(DC_CUS.getText()));
 			} else {
 				callStmt.setNull(21, java.sql.Types.INTEGER);
 			}
-			callStmt.setInt(22, getId());
+			callStmt.setLong(22, getId());
 			callStmt.setString(23, DOC_NUMBER.getText());
 			callStmt.execute();
 			callStmt.close();
@@ -656,13 +649,13 @@ public class EditDeath {
 				while (rs.next()) {
 					VCOURTS list = new VCOURTS();
 					list.setCOTDNAME(rs.getString("COTDNAME"));
-					list.setID(rs.getInt("ID"));
+					list.setID(rs.getLong("ID"));
 					list.setABH_NAME(rs.getString("ABH_NAME"));
 					list.setNAME_ROD(rs.getString("NAME_ROD"));
 					list.setNAME(rs.getString("NAME"));
-					list.setAREA_ID(rs.getInt("AREA_ID"));
-					list.setOTD(rs.getInt("OTD"));
-					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					list.setAREA_ID(rs.getLong("AREA_ID"));
+					list.setOTD(rs.getLong("OTD"));
+					list.setIOTDNUM(rs.getLong("IOTDNUM"));
 					combolist.add(list);
 				}
 
@@ -716,7 +709,7 @@ public class EditDeath {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -726,18 +719,18 @@ public class EditDeath {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public EditDeath() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 }

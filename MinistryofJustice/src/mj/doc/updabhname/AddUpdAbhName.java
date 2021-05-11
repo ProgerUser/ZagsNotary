@@ -13,15 +13,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -192,7 +191,7 @@ public class AddUpdAbhName {
 
 			TableView<ACTFORLIST> cusllists = new TableView<ACTFORLIST>();
 
-			TableColumn<ACTFORLIST, Integer> BR_ACT_ID = new TableColumn<>("Номер");
+			TableColumn<ACTFORLIST, Long> BR_ACT_ID = new TableColumn<>("Номер");
 
 			BR_ACT_ID.setCellValueFactory(new PropertyValueFactory<>("BR_ACT_ID"));
 
@@ -275,7 +274,7 @@ public class AddUpdAbhName {
 				list.setBR_ACT_DATE((rs.getDate("BR_ACT_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("BR_ACT_DATE")), formatterDT)
 						: null);
-				list.setBR_ACT_ID(rs.getInt("BR_ACT_ID"));
+				list.setBR_ACT_ID(rs.getLong("BR_ACT_ID"));
 
 				cuslist.add(list);
 			}
@@ -328,13 +327,7 @@ public class AddUpdAbhName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -348,7 +341,7 @@ public class AddUpdAbhName {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Номер");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -391,7 +384,7 @@ public class AddUpdAbhName {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
-				list.setICUSNUM(rs.getInt("ICUSNUM"));
+				list.setICUSNUM(rs.getLong("ICUSNUM"));
 				list.setDCUSOPEN((rs.getDate("DCUSOPEN") != null)
 						? LocalDateTime.parse(
 								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DCUSOPEN")), formatterdt)
@@ -408,9 +401,9 @@ public class AddUpdAbhName {
 				list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
 				list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
 				list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
-				list.setCCUSSEX(rs.getInt("CCUSSEX"));
+				list.setCCUSSEX(rs.getLong("CCUSSEX"));
 				list.setCCUSPLACE_BIRTH(rs.getString("CCUSPLACE_BIRTH"));
-				list.setICUSOTD(rs.getInt("ICUSOTD"));
+				list.setICUSOTD(rs.getLong("ICUSOTD"));
 				list.setCCUS_OK_SM(rs.getString("CCUS_OK_SM"));
 
 				cuslist.add(list);
@@ -468,13 +461,7 @@ public class AddUpdAbhName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -492,12 +479,12 @@ public class AddUpdAbhName {
 			callStmt.setString(7, NEW_FIRSTNAME.getText());
 			callStmt.setString(8, NEW_MIDDLNAME.getText());
 			if (!BRN_ACT_ID.getText().equals("")) {
-				callStmt.setInt(9, Integer.valueOf(BRN_ACT_ID.getText()));
+				callStmt.setLong(9, Long.valueOf(BRN_ACT_ID.getText()));
 			} else {
 				callStmt.setNull(9, java.sql.Types.INTEGER);
 			}
 			if (!CUSID.getText().equals("")) {
-				callStmt.setInt(10, Integer.valueOf(CUSID.getText()));
+				callStmt.setLong(10, Long.valueOf(CUSID.getText()));
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
@@ -516,7 +503,7 @@ public class AddUpdAbhName {
 			if (callStmt.getString(1) == null) {
 				conn.commit();
 				setStatus(true);
-				setId(callStmt.getInt(2));
+				setId(callStmt.getLong(2));
 				callStmt.close();
 				onclose();
 			} else {
@@ -581,12 +568,7 @@ public class AddUpdAbhName {
 			 * MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			 */
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -615,12 +597,7 @@ public class AddUpdAbhName {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -631,18 +608,13 @@ public class AddUpdAbhName {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -652,7 +624,7 @@ public class AddUpdAbhName {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
@@ -661,14 +633,14 @@ public class AddUpdAbhName {
 		this.conn.setAutoCommit(false);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public AddUpdAbhName() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 
 }

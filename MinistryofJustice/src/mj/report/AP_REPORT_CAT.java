@@ -1,7 +1,7 @@
 package mj.report;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -15,29 +15,29 @@ public class AP_REPORT_CAT {
 	/** Комментарий к отчету */
 	private StringProperty REPORT_COMMENT;
 	/** Нет данных */
-	private IntegerProperty REPORT_VIEWER;
+	private LongProperty REPORT_VIEWER;
 	/** Число копий */
-	private IntegerProperty COPIES;
+	private LongProperty COPIES;
 	/** UFS отчета */
 	private StringProperty REPORT_UFS;
 	/** Наименование отчета */
 	private StringProperty REPORT_NAME;
 	/** Идентификатор типа отчета */
-	private IntegerProperty REPORT_TYPE_ID;
+	private LongProperty REPORT_TYPE_ID;
 	/** Идентификатор отчета */
-	private IntegerProperty REPORT_ID;
+	private LongProperty REPORT_ID;
 
 	public AP_REPORT_CAT() {
 		this.AVAILABLE_SQL = new SimpleStringProperty();
 		this.OEM_DATA = new SimpleStringProperty();
 		this.EDIT_PARAM = new SimpleStringProperty();
 		this.REPORT_COMMENT = new SimpleStringProperty();
-		this.REPORT_VIEWER = new SimpleIntegerProperty();
-		this.COPIES = new SimpleIntegerProperty();
+		this.REPORT_VIEWER = new SimpleLongProperty();
+		this.COPIES = new SimpleLongProperty();
 		this.REPORT_UFS = new SimpleStringProperty();
 		this.REPORT_NAME = new SimpleStringProperty();
-		this.REPORT_TYPE_ID = new SimpleIntegerProperty();
-		this.REPORT_ID = new SimpleIntegerProperty();
+		this.REPORT_TYPE_ID = new SimpleLongProperty();
+		this.REPORT_ID = new SimpleLongProperty();
 	}
 
 	public void setAVAILABLE_SQL(String AVAILABLE_SQL) {
@@ -56,11 +56,11 @@ public class AP_REPORT_CAT {
 		this.REPORT_COMMENT.set(REPORT_COMMENT);
 	}
 
-	public void setREPORT_VIEWER(Integer REPORT_VIEWER) {
+	public void setREPORT_VIEWER(Long REPORT_VIEWER) {
 		this.REPORT_VIEWER.set(REPORT_VIEWER);
 	}
 
-	public void setCOPIES(Integer COPIES) {
+	public void setCOPIES(Long COPIES) {
 		this.COPIES.set(COPIES);
 	}
 
@@ -72,11 +72,11 @@ public class AP_REPORT_CAT {
 		this.REPORT_NAME.set(REPORT_NAME);
 	}
 
-	public void setREPORT_TYPE_ID(Integer REPORT_TYPE_ID) {
+	public void setREPORT_TYPE_ID(Long REPORT_TYPE_ID) {
 		this.REPORT_TYPE_ID.set(REPORT_TYPE_ID);
 	}
 
-	public void setREPORT_ID(Integer REPORT_ID) {
+	public void setREPORT_ID(Long REPORT_ID) {
 		this.REPORT_ID.set(REPORT_ID);
 	}
 
@@ -96,11 +96,11 @@ public class AP_REPORT_CAT {
 		return REPORT_COMMENT.get();
 	}
 
-	public Integer getREPORT_VIEWER() {
+	public Long getREPORT_VIEWER() {
 		return REPORT_VIEWER.get();
 	}
 
-	public Integer getCOPIES() {
+	public Long getCOPIES() {
 		return COPIES.get();
 	}
 
@@ -112,11 +112,11 @@ public class AP_REPORT_CAT {
 		return REPORT_NAME.get();
 	}
 
-	public Integer getREPORT_TYPE_ID() {
+	public Long getREPORT_TYPE_ID() {
 		return REPORT_TYPE_ID.get();
 	}
 
-	public Integer getREPORT_ID() {
+	public Long getREPORT_ID() {
 		return REPORT_ID.get();
 	}
 
@@ -136,11 +136,11 @@ public class AP_REPORT_CAT {
 		return REPORT_COMMENT;
 	}
 
-	public IntegerProperty REPORT_VIEWERProperty() {
+	public LongProperty REPORT_VIEWERProperty() {
 		return REPORT_VIEWER;
 	}
 
-	public IntegerProperty COPIESProperty() {
+	public LongProperty COPIESProperty() {
 		return COPIES;
 	}
 
@@ -152,11 +152,11 @@ public class AP_REPORT_CAT {
 		return REPORT_NAME;
 	}
 
-	public IntegerProperty REPORT_TYPE_IDProperty() {
+	public LongProperty REPORT_TYPE_IDProperty() {
 		return REPORT_TYPE_ID;
 	}
 
-	public IntegerProperty REPORT_IDProperty() {
+	public LongProperty REPORT_IDProperty() {
 		return REPORT_ID;
 	}
 }

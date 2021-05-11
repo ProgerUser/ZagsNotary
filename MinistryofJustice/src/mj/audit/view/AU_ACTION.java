@@ -2,14 +2,14 @@ package mj.audit.view;
 
 import java.time.LocalDateTime;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class AU_ACTION {
-	private IntegerProperty IACTION_ID;
+	private LongProperty IACTION_ID;
 	private SimpleObjectProperty<LocalDateTime> DAUDDATE;
 	private StringProperty CAUDUSER;
 	private StringProperty CTABLE;
@@ -19,14 +19,14 @@ public class AU_ACTION {
 	private StringProperty RROWID;
 	private StringProperty CAUDACTION;
 	private StringProperty CAUDMODULE;
-	private IntegerProperty IAUDSESSION;
+	private LongProperty IAUDSESSION;
 	private StringProperty CAUDIP_ADDRESS;
 	private StringProperty ID_NUM;
 	private StringProperty ID_ANUM;
 
 	/* CONSTRUCTOR */
 	public AU_ACTION() {
-		this.IACTION_ID = new SimpleIntegerProperty();
+		this.IACTION_ID = new SimpleLongProperty();
 		this.DAUDDATE = new SimpleObjectProperty<>();
 		this.CAUDUSER = new SimpleStringProperty();
 		this.CTABLE = new SimpleStringProperty();
@@ -36,7 +36,7 @@ public class AU_ACTION {
 		this.RROWID = new SimpleStringProperty();
 		this.CAUDACTION = new SimpleStringProperty();
 		this.CAUDMODULE = new SimpleStringProperty();
-		this.IAUDSESSION = new SimpleIntegerProperty();
+		this.IAUDSESSION = new SimpleLongProperty();
 		this.CAUDIP_ADDRESS = new SimpleStringProperty();
 		this.ID_NUM = new SimpleStringProperty();
 		this.ID_ANUM = new SimpleStringProperty();
@@ -82,15 +82,15 @@ public class AU_ACTION {
 	}
 
 	/* IAUDSESSION */
-	public Integer getIAUDSESSION() {
+	public Long getIAUDSESSION() {
 		return IAUDSESSION.get();
 	}
 
-	public void setIAUDSESSION(Integer IAUDSESSION) {
+	public void setIAUDSESSION(Long IAUDSESSION) {
 		this.IAUDSESSION.set(IAUDSESSION);
 	}
 
-	public IntegerProperty IAUDSESSIONProperty() {
+	public LongProperty IAUDSESSIONProperty() {
 		return IAUDSESSION;
 	}
 
@@ -186,15 +186,15 @@ public class AU_ACTION {
 	}
 
 	/* IACTION_ID */
-	public Integer getIACTION_ID() {
+	public Long getIACTION_ID() {
 		return IACTION_ID.get();
 	}
 
-	public void setIACTION_ID(Integer IACTION_ID) {
+	public void setIACTION_ID(Long IACTION_ID) {
 		this.IACTION_ID.set(IACTION_ID);
 	}
 
-	public IntegerProperty IACTION_IDProperty() {
+	public LongProperty IACTION_IDProperty() {
 		return IACTION_ID;
 	}
 

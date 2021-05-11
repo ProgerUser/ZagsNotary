@@ -2,8 +2,8 @@ package notary.client.model;
 
 import java.time.LocalDateTime;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -12,7 +12,7 @@ public class ALL_DOCS {
 	/** Нет данных */
 	private SimpleObjectProperty<LocalDateTime> TM$DOC_DATE;
 	/** Нет данных */
-	private IntegerProperty DOC_ID;
+	private LongProperty DOC_ID;
 	/** Нет данных */
 	private StringProperty DOCNAME;
 	/** Нет данных */
@@ -22,7 +22,7 @@ public class ALL_DOCS {
 	public ALL_DOCS() {
 		this.TYPE_DOC = new SimpleStringProperty();
 		this.TM$DOC_DATE = new SimpleObjectProperty<>();
-		this.DOC_ID = new SimpleIntegerProperty();
+		this.DOC_ID = new SimpleLongProperty();
 		this.DOCNAME = new SimpleStringProperty();
 		this.TABLE_NAME = new SimpleStringProperty();
 	}
@@ -43,7 +43,7 @@ public class ALL_DOCS {
 		this.TM$DOC_DATE.set(TM$DOC_DATE);
 	}
 
-	public void setDOC_ID(Integer DOC_ID) {
+	public void setDOC_ID(Long DOC_ID) {
 		this.DOC_ID.set(DOC_ID);
 	}
 
@@ -59,7 +59,7 @@ public class ALL_DOCS {
 		return TM$DOC_DATE.get();
 	}
 
-	public Integer getDOC_ID() {
+	public Long getDOC_ID() {
 		return DOC_ID.get();
 	}
 
@@ -75,7 +75,7 @@ public class ALL_DOCS {
 		return TM$DOC_DATE;
 	}
 
-	public IntegerProperty DOC_IDProperty() {
+	public LongProperty DOC_IDProperty() {
 		return DOC_ID;
 	}
 

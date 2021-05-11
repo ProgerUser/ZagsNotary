@@ -1,7 +1,7 @@
 package mj.doc.updatenat;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,18 +9,18 @@ public class NATIONALITY {
 	/** Название */
 	private StringProperty NAME;
 	/** ID */
-	private IntegerProperty ID;
+	private LongProperty ID;
 
 	public NATIONALITY() {
 		this.NAME = new SimpleStringProperty();
-		this.ID = new SimpleIntegerProperty();
+		this.ID = new SimpleLongProperty();
 	}
 
 	public void setNAME(String NAME) {
 		this.NAME.set(NAME);
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
@@ -28,7 +28,7 @@ public class NATIONALITY {
 		return NAME.get();
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -36,7 +36,7 @@ public class NATIONALITY {
 		return NAME;
 	}
 
-	public IntegerProperty IDProperty() {
+	public LongProperty IDProperty() {
 		return ID;
 	}
 }

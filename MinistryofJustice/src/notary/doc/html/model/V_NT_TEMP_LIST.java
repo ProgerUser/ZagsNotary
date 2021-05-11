@@ -1,7 +1,7 @@
 package notary.doc.html.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,11 +9,11 @@ public class V_NT_TEMP_LIST {
 	/** Нет данных */
 	private StringProperty NAMES;
 	/** Нет данных */
-	private IntegerProperty ID;
+	private LongProperty ID;
 	/** Нет данных */
 	private StringProperty NAME;
 	/** Нет данных */
-	private IntegerProperty PARENT;
+	private LongProperty PARENT;
 	/** Нет данных */
 	private StringProperty HTML_TEMP;
 	/** Нет данных */
@@ -21,9 +21,9 @@ public class V_NT_TEMP_LIST {
 
 	public V_NT_TEMP_LIST() {
 		this.NAMES = new SimpleStringProperty();
-		this.ID = new SimpleIntegerProperty();
+		this.ID = new SimpleLongProperty();
 		this.NAME = new SimpleStringProperty();
-		this.PARENT = new SimpleIntegerProperty();
+		this.PARENT = new SimpleLongProperty();
 		this.HTML_TEMP = new SimpleStringProperty();
 		this.REP_QUERY = new SimpleStringProperty();
 	}
@@ -32,7 +32,7 @@ public class V_NT_TEMP_LIST {
 		this.NAMES.set(NAMES);
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
@@ -40,7 +40,7 @@ public class V_NT_TEMP_LIST {
 		this.NAME.set(NAME);
 	}
 
-	public void setPARENT(Integer PARENT) {
+	public void setPARENT(Long PARENT) {
 		this.PARENT.set(PARENT);
 	}
 
@@ -56,7 +56,7 @@ public class V_NT_TEMP_LIST {
 		return NAMES.get();
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -64,7 +64,7 @@ public class V_NT_TEMP_LIST {
 		return NAME.get();
 	}
 
-	public Integer getPARENT() {
+	public Long getPARENT() {
 		return PARENT.get();
 	}
 
@@ -80,7 +80,7 @@ public class V_NT_TEMP_LIST {
 		return NAMES;
 	}
 
-	public IntegerProperty IDProperty() {
+	public LongProperty IDProperty() {
 		return ID;
 	}
 
@@ -88,7 +88,7 @@ public class V_NT_TEMP_LIST {
 		return NAME;
 	}
 
-	public IntegerProperty PARENTProperty() {
+	public LongProperty PARENTProperty() {
 		return PARENT;
 	}
 

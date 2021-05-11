@@ -1,7 +1,7 @@
 package mj.users;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -11,15 +11,15 @@ public class NOTARY {
 	/** Наименование ЗАГСа */
 	private StringProperty NOT_NAME;
 	/** Город */
-	private IntegerProperty NOT_OTD;
+	private LongProperty NOT_OTD;
 	/** ИД */
-	private IntegerProperty NOT_ID;
+	private LongProperty NOT_ID;
 
 	public NOTARY() {
 		this.NOT_RUK = new SimpleStringProperty();
 		this.NOT_NAME = new SimpleStringProperty();
-		this.NOT_OTD = new SimpleIntegerProperty();
-		this.NOT_ID = new SimpleIntegerProperty();
+		this.NOT_OTD = new SimpleLongProperty();
+		this.NOT_ID = new SimpleLongProperty();
 	}
 
 	public void setNOT_RUK(String NOT_RUK) {
@@ -30,11 +30,11 @@ public class NOTARY {
 		this.NOT_NAME.set(NOT_NAME);
 	}
 
-	public void setNOT_OTD(Integer NOT_OTD) {
+	public void setNOT_OTD(Long NOT_OTD) {
 		this.NOT_OTD.set(NOT_OTD);
 	}
 
-	public void setNOT_ID(Integer NOT_ID) {
+	public void setNOT_ID(Long NOT_ID) {
 		this.NOT_ID.set(NOT_ID);
 	}
 
@@ -46,11 +46,11 @@ public class NOTARY {
 		return NOT_NAME.get();
 	}
 
-	public Integer getNOT_OTD() {
+	public Long getNOT_OTD() {
 		return NOT_OTD.get();
 	}
 
-	public Integer getNOT_ID() {
+	public Long getNOT_ID() {
 		return NOT_ID.get();
 	}
 
@@ -62,11 +62,11 @@ public class NOTARY {
 		return NOT_NAME;
 	}
 
-	public IntegerProperty NOT_OTDProperty() {
+	public LongProperty NOT_OTDProperty() {
 		return NOT_OTD;
 	}
 
-	public IntegerProperty NOT_IDProperty() {
+	public LongProperty NOT_IDProperty() {
 		return NOT_ID;
 	}
 }

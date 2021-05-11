@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,10 +41,10 @@ public class EditOtd {
 		try {
 			CallableStatement call = conn.prepareCall(
 					"begin update otd set IOTDNUM = ? , COTDNAME = ?,AREA_ID=? where IOTDNUM = ?; end;");
-			call.setInt(1, Integer.valueOf(IOTDNUM.getText()));
+			call.setLong(1, Long.valueOf(IOTDNUM.getText()));
 			call.setString(2, COTDNAME.getText());
-			call.setInt(3, Integer.valueOf(IOTDNUM.getText()));
-			call.setInt(4, RAION.getSelectionModel().getSelectedItem().getCODE());
+			call.setLong(3, Long.valueOf(IOTDNUM.getText()));
+			call.setLong(4, RAION.getSelectionModel().getSelectedItem().getCODE());
 			call.executeUpdate();
 //			try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
 //				List<String> lines = capture.execute(call);
@@ -58,9 +58,9 @@ public class EditOtd {
 			call.close();
 //			PreparedStatement oper = conn
 //					.prepareStatement("update otd set IOTDNUM = ? , COTDNAME = ? where IOTDNUM = ?");
-//			oper.setInt(1, Integer.valueOf(IOTDNUM.getText()));
+//			oper.setLong(1, Long.valueOf(IOTDNUM.getText()));
 //			oper.setString(2, COTDNAME.getText());
-//			oper.setInt(3, Integer.valueOf(IOTDNUM.getText()));
+//			oper.setLong(3, Long.valueOf(IOTDNUM.getText()));
 //			oper.executeUpdate();
 //			oper.close();
 			setStatus(true);
@@ -96,7 +96,7 @@ public class EditOtd {
 				while (rs.next()) {
 					RAION list = new RAION();
 					list.setNAME(rs.getString("NAME"));
-					list.setCODE(rs.getInt("CODE"));
+					list.setCODE(rs.getLong("CODE"));
 					combolist.add(list);
 				}
 				stsmt.close();
@@ -139,7 +139,7 @@ public class EditOtd {
 	OTD otd;
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -149,7 +149,7 @@ public class EditOtd {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
@@ -158,13 +158,13 @@ public class EditOtd {
 		this.conn = conn;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public EditOtd() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 }

@@ -1,25 +1,25 @@
 package notary.template.html.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class NT_PADEJ {
 	/** Нет данных */
-	private IntegerProperty PDJ_ID;
+	private LongProperty PDJ_ID;
 	/** Нет данных */
 	private StringProperty PDJ_NAME;
 	/** Нет данных */
 	private StringProperty PDJ_R_NAME;
 
 	public NT_PADEJ() {
-		this.PDJ_ID = new SimpleIntegerProperty();
+		this.PDJ_ID = new SimpleLongProperty();
 		this.PDJ_NAME = new SimpleStringProperty();
 		this.PDJ_R_NAME = new SimpleStringProperty();
 	}
 
-	public void setPDJ_ID(Integer PDJ_ID) {
+	public void setPDJ_ID(Long PDJ_ID) {
 		this.PDJ_ID.set(PDJ_ID);
 	}
 
@@ -31,7 +31,7 @@ public class NT_PADEJ {
 		this.PDJ_R_NAME.set(PDJ_R_NAME);
 	}
 
-	public Integer getPDJ_ID() {
+	public Long getPDJ_ID() {
 		return PDJ_ID.get();
 	}
 
@@ -43,7 +43,7 @@ public class NT_PADEJ {
 		return PDJ_R_NAME.get();
 	}
 
-	public IntegerProperty PDJ_IDProperty() {
+	public LongProperty PDJ_IDProperty() {
 		return PDJ_ID;
 	}
 

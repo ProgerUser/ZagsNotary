@@ -346,18 +346,18 @@ public class Root {
 	 * @param CUSRLOGNAME
 	 * @return
 	 */
-	public int chk_menu(Integer FORM_NAME, String CUSRLOGNAME) {
-		int ret = 0;
+	public Long chk_menu(Long FORM_NAME, String CUSRLOGNAME) {
+		Long ret = 0l;
 		Connection conn = DBUtil.conn;
 		try {
 			//SqlMap sql = new SqlMap().load("/SQL.xml");
 			//String readRecordSQL = sql.getSql("acces_menu");
 			PreparedStatement prepStmt = conn.prepareStatement("SELECT MJUsers.MNU_ACCESS(MNU_ID => ?, USR_LOGIN => ?) CNT FROM DUAL");
-			prepStmt.setInt(1, FORM_NAME);
+			prepStmt.setLong(1, FORM_NAME);
 			prepStmt.setString(2, CUSRLOGNAME);
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
-				ret = rs.getInt("CNT");
+				ret = rs.getLong("CNT");
 			}
 			prepStmt.close();
 			rs.close();
@@ -374,13 +374,13 @@ public class Root {
 	private void initialize() {
 		try {
 			menubar.getMenus().forEach(menu -> {
-				if (chk_menu(Integer.valueOf(menu.getId()), Connect.userID) == 1) {
+				if (chk_menu(Long.valueOf(menu.getId()), Connect.userID) == 1) {
 					menu.setVisible(true);
 				} else {
 					menu.setVisible(false);
 				}
 				menu.getItems().forEach(menuItem -> {
-					if (chk_menu(Integer.valueOf(menuItem.getId()), Connect.userID) == 1) {
+					if (chk_menu(Long.valueOf(menuItem.getId()), Connect.userID) == 1) {
 						menuItem.setVisible(true);
 					} else {
 						menuItem.setVisible(false);

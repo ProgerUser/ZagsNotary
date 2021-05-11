@@ -17,9 +17,9 @@ import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -255,7 +255,7 @@ public class AddPatern {
 
 			TableView<ACTFORLIST> cusllists = new TableView<ACTFORLIST>();
 
-			TableColumn<ACTFORLIST, Integer> BR_ACT_ID = new TableColumn<>("Номер");
+			TableColumn<ACTFORLIST, Long> BR_ACT_ID = new TableColumn<>("Номер");
 
 			BR_ACT_ID.setCellValueFactory(new PropertyValueFactory<>("BR_ACT_ID"));
 
@@ -338,7 +338,7 @@ public class AddPatern {
 				list.setBR_ACT_DATE((rs.getDate("BR_ACT_DATE") != null) ? LocalDateTime.parse(
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("BR_ACT_DATE")), formatterDT)
 						: null);
-				list.setBR_ACT_ID(rs.getInt("BR_ACT_ID"));
+				list.setBR_ACT_ID(rs.getLong("BR_ACT_ID"));
 
 				cuslist.add(list);
 			}
@@ -411,7 +411,7 @@ public class AddPatern {
 			VBox vb = new VBox();
 			ToolBar toolBar = new ToolBar(Update);
 			TableView<CUS> cusllists = new TableView<CUS>();
-			TableColumn<CUS, Integer> ICUSNUM = new TableColumn<>("Номер");
+			TableColumn<CUS, Long> ICUSNUM = new TableColumn<>("Номер");
 			ICUSNUM.setCellValueFactory(new PropertyValueFactory<>("ICUSNUM"));
 			TableColumn<CUS, String> CCUSNAME = new TableColumn<>("ФИО");
 			CCUSNAME.setCellValueFactory(new PropertyValueFactory<>("CCUSNAME"));
@@ -452,7 +452,7 @@ public class AddPatern {
 				CUS cus = new CUS();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 				String DCUSBIRTHDAYt = new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY"));
-				cus.setICUSNUM(rs.getInt("ICUSNUM"));
+				cus.setICUSNUM(rs.getLong("ICUSNUM"));
 				cus.setCCUSNAME(rs.getString("CCUSNAME"));
 				cus.setDCUSBIRTHDAY(LocalDate.parse(DCUSBIRTHDAYt, formatter));
 				cuslist.add(cus);
@@ -566,17 +566,17 @@ public class AddPatern {
 			callStmt.setDate(7, (PС_TRZ.getValue() != null) ? java.sql.Date.valueOf(PС_TRZ.getValue()) : null);
 			callStmt.setString(8, PС_TYPE.getValue());
 			if (!PС_M.getText().equals("")) {
-				callStmt.setInt(9, Integer.valueOf(PС_M.getText()));
+				callStmt.setLong(9, Long.valueOf(PС_M.getText()));
 			} else {
 				callStmt.setNull(9, java.sql.Types.INTEGER);
 			}
 			if (!PС_F.getText().equals("")) {
-				callStmt.setInt(10, Integer.valueOf(PС_F.getText()));
+				callStmt.setLong(10, Long.valueOf(PС_F.getText()));
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
 			if (!PС_CH.getText().equals("")) {
-				callStmt.setInt(11, Integer.valueOf(PС_CH.getText()));
+				callStmt.setLong(11, Long.valueOf(PС_CH.getText()));
 			} else {
 				callStmt.setNull(11, java.sql.Types.INTEGER);
 			}
@@ -584,7 +584,7 @@ public class AddPatern {
 			callStmt.setString(13, PС_AFT_FNAME.getText());
 			callStmt.setString(14, PС_AFT_LNAME.getText());
 			if (!PC_ACT_ID.getText().equals("")) {
-				callStmt.setInt(15, Integer.valueOf(PC_ACT_ID.getText()));
+				callStmt.setLong(15, Long.valueOf(PC_ACT_ID.getText()));
 			} else {
 				callStmt.setNull(15, java.sql.Types.INTEGER);
 			}
@@ -605,7 +605,7 @@ public class AddPatern {
 			if (callStmt.getString(1) == null) {
 				conn.commit();
 				setStatus(true);
-				setId(callStmt.getInt(20));
+				setId(callStmt.getLong(20));
 				callStmt.close();
 				onclose();
 			} else {
@@ -753,7 +753,7 @@ public class AddPatern {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -762,10 +762,10 @@ public class AddPatern {
 	//
 	// если открыт от гражданина
 	//
-	private IntegerProperty CusId;
+	private LongProperty CusId;
 	private StringProperty CusFio;
 
-	public void setCusId(Integer value) {
+	public void setCusId(Long value) {
 		this.CusId.set(value);
 	}
 
@@ -773,7 +773,7 @@ public class AddPatern {
 		this.CusFio.set(value);
 	}
 
-	public Integer getCusId() {
+	public Long getCusId() {
 		return this.CusId.get();
 	}
 
@@ -793,19 +793,19 @@ public class AddPatern {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public AddPatern() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
-		this.CusId = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
+		this.CusId = new SimpleLongProperty();
 		this.CusFio = new SimpleStringProperty();
 	}
 

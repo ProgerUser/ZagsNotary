@@ -5,13 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +22,6 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 import mj.users.OTD;
 
 public class EditNotary {
@@ -76,25 +74,20 @@ public class EditNotary {
 					+ "NOT_ADDRESS = ?, "
 					+ "NOT_TELEPHONE = ? "
 					+ "where NOT_ID = ?");
-			oper.setInt(1, Integer.valueOf(NOT_ID.getText()));
-			oper.setInt(2, NOT_OTD.getValue().getIOTDNUM());
+			oper.setLong(1, Long.valueOf(NOT_ID.getText()));
+			oper.setLong(2, NOT_OTD.getValue().getIOTDNUM());
 			oper.setString(3, NOT_NAME.getText());
 			oper.setString(4, NOT_RUK.getText());
 			oper.setString(5, ADDRESS.getText());
 			oper.setString(6, TELEPHONE.getText());
-			oper.setInt(7, Integer.valueOf(NOT_ID.getText()));
+			oper.setLong(7, Long.valueOf(NOT_ID.getText()));
 			oper.executeUpdate();
 			oper.close();
 
 			setStatus(true);
 			onclose();
 		} catch (SQLException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -126,7 +119,7 @@ public class EditNotary {
 				ObservableList<OTD> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {
 					OTD list = new OTD();
-					list.setIOTDNUM(rs.getInt("IOTDNUM"));
+					list.setIOTDNUM(rs.getLong("IOTDNUM"));
 					list.setCOTDNAME(rs.getString("COTDNAME"));
 					combolist.add(list);
 				}
@@ -149,12 +142,7 @@ public class EditNotary {
 			convertComboDisplayList();
 
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 	}
 
@@ -164,7 +152,7 @@ public class EditNotary {
 
 	private BooleanProperty Status;
 
-	private IntegerProperty Id;
+	private LongProperty Id;
 
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
@@ -174,7 +162,7 @@ public class EditNotary {
 		return this.Status.get();
 	}
 
-	public void setId(Integer value) {
+	public void setId(Long value) {
 		this.Id.set(value);
 	}
 
@@ -183,13 +171,13 @@ public class EditNotary {
 		this.conn = conn;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.Id.get();
 	}
 
 	public EditNotary() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
-		this.Id = new SimpleIntegerProperty();
+		this.Id = new SimpleLongProperty();
 	}
 }

@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import javafx.collections.FXCollections;
@@ -18,7 +17,6 @@ import mj.app.model.SqlMap;
 import mj.app.model.User_in;
 import mj.app.model.User_out;
 import mj.dbutil.DBUtil;
-import mj.msg.Msg;
 import mj.users.USR;
 
 public class MjDAO {
@@ -43,12 +41,7 @@ public class MjDAO {
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return Forms_lst;
 	}
@@ -67,12 +60,7 @@ public class MjDAO {
 			}
 			return user_o_list;
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return null;
 	}
@@ -80,7 +68,7 @@ public class MjDAO {
 	// *******************************
 	// SELECT User_in
 	// *******************************
-	public static ObservableList<User_in> User_in(Integer form_name) {
+	public static ObservableList<User_in> User_in(Long form_name) {
 		ObservableList<User_in> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
@@ -89,18 +77,13 @@ public class MjDAO {
 			String readRecordSQL = sql.getSql("user_in");
 
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-			prepStmt.setInt(1, form_name);
+			prepStmt.setLong(1, form_name);
 			ResultSet rsEmps = prepStmt.executeQuery();
 			Forms_lst = get_usr_in(rsEmps);
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return Forms_lst;
 	}
@@ -108,7 +91,7 @@ public class MjDAO {
 	// *******************************
 	// SELECT User_in2
 	// *******************************
-	public static ObservableList<User_in> User_in2(Integer form_name) {
+	public static ObservableList<User_in> User_in2(Long form_name) {
 		ObservableList<User_in> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
@@ -117,18 +100,13 @@ public class MjDAO {
 			String readRecordSQL = sql.getSql("user_in2");
 
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-			prepStmt.setInt(1, form_name);
+			prepStmt.setLong(1, form_name);
 			ResultSet rsEmps = prepStmt.executeQuery();
 			Forms_lst = get_usr_in(rsEmps);
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return Forms_lst;
 	}
@@ -136,7 +114,7 @@ public class MjDAO {
 	// *******************************
 	// SELECT User_out_menu
 	// *******************************
-	public static ObservableList<User_out> User_out_menu(Integer form_id) {
+	public static ObservableList<User_out> User_out_menu(Long form_id) {
 		ObservableList<User_out> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
@@ -145,18 +123,13 @@ public class MjDAO {
 			String readRecordSQL = sql.getSql("User_out_menu");
 
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-			prepStmt.setInt(1, form_id);
+			prepStmt.setLong(1, form_id);
 			ResultSet rsEmps = prepStmt.executeQuery();
 			Forms_lst = get_usr_out(rsEmps);
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return Forms_lst;
 	}
@@ -164,7 +137,7 @@ public class MjDAO {
 	// *******************************
 	// SELECT User_out2
 	// *******************************
-	public static ObservableList<User_out> User_out2(Integer form_name) {
+	public static ObservableList<User_out> User_out2(Long form_name) {
 		ObservableList<User_out> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
@@ -173,18 +146,13 @@ public class MjDAO {
 			String readRecordSQL = sql.getSql("user_out2");
 
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-			prepStmt.setInt(1, form_name);
+			prepStmt.setLong(1, form_name);
 			ResultSet rsEmps = prepStmt.executeQuery();
 			Forms_lst = get_usr_out(rsEmps);
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return Forms_lst;
 	}
@@ -192,7 +160,7 @@ public class MjDAO {
 	// *******************************
 	// SELECT User_out
 	// *******************************
-	public static ObservableList<User_out> User_out(Integer form_name) {
+	public static ObservableList<User_out> User_out(Long form_name) {
 		ObservableList<User_out> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
@@ -201,18 +169,13 @@ public class MjDAO {
 			String readRecordSQL = sql.getSql("user_out");
 
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-			prepStmt.setInt(1, form_name);
+			prepStmt.setLong(1, form_name);
 			ResultSet rsEmps = prepStmt.executeQuery();
 			Forms_lst = get_usr_out(rsEmps);
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return Forms_lst;
 	}
@@ -220,7 +183,7 @@ public class MjDAO {
 	// *******************************
 	// SELECT User_in_Menu
 	// *******************************
-	public static ObservableList<User_in> User_in_menu(Integer form_name) {
+	public static ObservableList<User_in> User_in_menu(Long form_name) {
 		ObservableList<User_in> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
@@ -229,18 +192,13 @@ public class MjDAO {
 			String readRecordSQL = sql.getSql("User_in_menu");
 
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
-			prepStmt.setInt(1, form_name);
+			prepStmt.setLong(1, form_name);
 			ResultSet rsEmps = prepStmt.executeQuery();
 			Forms_lst = get_usr_in(rsEmps);
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return Forms_lst;
 	}
@@ -261,12 +219,7 @@ public class MjDAO {
 			}
 			return user_in_list;
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return null;
 	}
@@ -287,12 +240,7 @@ public class MjDAO {
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return Forms_lst;
 	}
@@ -306,7 +254,7 @@ public class MjDAO {
 			ObservableList<USR> forms_list = FXCollections.observableArrayList();
 			while (rs.next()) {
 				USR frms = new USR();
-				frms.setIUSRID(rs.getInt("IUSRID"));
+				frms.setIUSRID(rs.getLong("IUSRID"));
 				frms.setCUSRLOGNAME(rs.getString("CUSRLOGNAME"));
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
@@ -328,23 +276,17 @@ public class MjDAO {
 				frms.setMUST_CHANGE_PASSWORD(rs.getString("MUST_CHANGE_PASSWORD"));
 				frms.setCRESTRICT_TERM(rs.getString("CRESTRICT_TERM"));
 
-				frms.setIUSRPWD_LENGTH(rs.getInt("IUSRPWD_LENGTH"));
-				frms.setIUSRBRANCH(rs.getInt("IUSRBRANCH"));
-				frms.setIUSRCHR_QUANTITY(rs.getInt("IUSRCHR_QUANTITY"));
-				frms.setIUSRNUM_QUANTITY(rs.getInt("IUSRNUM_QUANTITY"));
-				frms.setIUSRSPEC_QUANTITY(rs.getInt("IUSRSPEC_QUANTITY"));
+				frms.setIUSRPWD_LENGTH(rs.getLong("IUSRPWD_LENGTH"));
+				frms.setIUSRBRANCH(rs.getLong("IUSRBRANCH"));
+				frms.setIUSRCHR_QUANTITY(rs.getLong("IUSRCHR_QUANTITY"));
+				frms.setIUSRNUM_QUANTITY(rs.getLong("IUSRNUM_QUANTITY"));
+				frms.setIUSRSPEC_QUANTITY(rs.getLong("IUSRSPEC_QUANTITY"));
 
 				forms_list.add(frms);
 			}
 			return forms_list;
 		} catch (Exception e) {
-			e.printStackTrace();
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return null;
 	}
@@ -364,12 +306,7 @@ public class MjDAO {
 			}
 			return user_o_list;
 		} catch (Exception e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DBUtil.LOG_ERROR(e);
 		}
 		return null;
 	}

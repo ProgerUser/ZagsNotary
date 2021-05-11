@@ -1,37 +1,37 @@
 package notary.template.html.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class NT_TEMP_LIST {
 	/** Ссылка на нотариус */
-	private IntegerProperty NOTARY;
+	private LongProperty NOTARY;
 	/** Путь к файлу */
 	private StringProperty DOCX_PATH;
 	/** ИД */
-	private IntegerProperty ID;
+	private LongProperty ID;
 	/** Наименование */
 	private StringProperty NAME;
 	/** Ссылка на id родитель */
-	private IntegerProperty PARENT;
+	private LongProperty PARENT;
 	/** Запрос */
 	private StringProperty REP_QUERY;
 	/** шаблон html */
 	private StringProperty HTML_TEMP;
 
 	public NT_TEMP_LIST() {
-		this.NOTARY = new SimpleIntegerProperty();
+		this.NOTARY = new SimpleLongProperty();
 		this.DOCX_PATH = new SimpleStringProperty();
-		this.ID = new SimpleIntegerProperty();
+		this.ID = new SimpleLongProperty();
 		this.NAME = new SimpleStringProperty();
-		this.PARENT = new SimpleIntegerProperty();
+		this.PARENT = new SimpleLongProperty();
 		this.REP_QUERY = new SimpleStringProperty();
 		this.HTML_TEMP = new SimpleStringProperty();
 	}
 
-	public void setNOTARY(Integer NOTARY) {
+	public void setNOTARY(Long NOTARY) {
 		this.NOTARY.set(NOTARY);
 	}
 
@@ -39,7 +39,7 @@ public class NT_TEMP_LIST {
 		this.DOCX_PATH.set(DOCX_PATH);
 	}
 
-	public void setID(Integer ID) {
+	public void setID(Long ID) {
 		this.ID.set(ID);
 	}
 
@@ -47,7 +47,7 @@ public class NT_TEMP_LIST {
 		this.NAME.set(NAME);
 	}
 
-	public void setPARENT(Integer PARENT) {
+	public void setPARENT(Long PARENT) {
 		this.PARENT.set(PARENT);
 	}
 
@@ -59,7 +59,7 @@ public class NT_TEMP_LIST {
 		this.HTML_TEMP.set(HTML_TEMP);
 	}
 
-	public Integer getNOTARY() {
+	public Long getNOTARY() {
 		return NOTARY.get();
 	}
 
@@ -67,7 +67,7 @@ public class NT_TEMP_LIST {
 		return DOCX_PATH.get();
 	}
 
-	public Integer getID() {
+	public Long getID() {
 		return ID.get();
 	}
 
@@ -75,7 +75,7 @@ public class NT_TEMP_LIST {
 		return NAME.get();
 	}
 
-	public Integer getPARENT() {
+	public Long getPARENT() {
 		return PARENT.get();
 	}
 
@@ -87,7 +87,7 @@ public class NT_TEMP_LIST {
 		return HTML_TEMP.get();
 	}
 
-	public IntegerProperty NOTARYProperty() {
+	public LongProperty NOTARYProperty() {
 		return NOTARY;
 	}
 
@@ -95,7 +95,7 @@ public class NT_TEMP_LIST {
 		return DOCX_PATH;
 	}
 
-	public IntegerProperty IDProperty() {
+	public LongProperty IDProperty() {
 		return ID;
 	}
 
@@ -103,7 +103,7 @@ public class NT_TEMP_LIST {
 		return NAME;
 	}
 
-	public IntegerProperty PARENTProperty() {
+	public LongProperty PARENTProperty() {
 		return PARENT;
 	}
 

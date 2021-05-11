@@ -100,7 +100,7 @@ public class DBUtil {
 	/**
 	 * Запись лога
 	 */
-	public static void LogToDb(Integer linenumber, String classname, String error, String METHODNAME) {
+	public static void LogToDb(Long linenumber, String classname, String error, String METHODNAME) {
 		try {
 			if (linenumber != null & (classname != null && !classname.equals("")) & (error != null && !error.equals(""))
 					& (METHODNAME != null && !METHODNAME.equals(""))) {
@@ -114,7 +114,7 @@ public class DBUtil {
 				PreparedStatement stmt = conn.prepareStatement(" declare\n" + "pragma autonomous_transaction; begin \n"
 						+ " insert into logs (\n" + "linenumber, \n" + "classname, \n" + "error,METHODNAME) \n"
 						+ "values\n" + "(?,?,?,?);\n" + "commit;\n" + "end;");
-				stmt.setInt(1, linenumber);
+				stmt.setLong(1, linenumber);
 				stmt.setString(2, classname);
 				Clob lob = conn.createClob();
 				lob.setString(1, error);
@@ -132,7 +132,7 @@ public class DBUtil {
 	/**
 	 * Запись "залоченной" строки
 	 */
-	public static String Lock_Row(Integer Id, String TableName,Connection conn) {
+	public static String Lock_Row(Long Id, String TableName,Connection conn) {
 		String ret = null;
 		try {
 			if (Id != null & (TableName != null && !TableName.equals(""))) {
@@ -140,7 +140,7 @@ public class DBUtil {
 				/* Ошибка */
 				callStmt.registerOutParameter(4, Types.VARCHAR);
 				/* первичный ключ */
-				callStmt.setInt(3, Id);
+				callStmt.setLong(3, Id);
 				/* Пользователь */ callStmt.setString(2, Connect.userID.toUpperCase());
 				callStmt.setString(1, TableName.toUpperCase());
 				callStmt.execute();
@@ -160,7 +160,7 @@ public class DBUtil {
 			e.printStackTrace();
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
 			Msg.Message(ExceptionUtils.getStackTrace(e));
 			Main.logger.error(ExceptionUtils.getStackTrace(e));
 			LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
@@ -173,14 +173,14 @@ public class DBUtil {
 	/**
 	 * Кто залочил
 	 */
-	public static String Lock_Row_View(Integer Id, String TableName) {
+	public static String Lock_Row_View(Long Id, String TableName) {
 		String ret = null;
 		String error = null;
 		try {
 			if (Id != null & (TableName != null && !TableName.equals(""))) {
 				CallableStatement callStmt = conn.prepareCall("{ call LOCKS.LOCK_ROW_VIEW(?,?,?,?)}");
 				callStmt.setString(1, TableName.toUpperCase());
-				callStmt.setInt(2, Id);
+				callStmt.setLong(2, Id);
 				callStmt.registerOutParameter(3, Types.VARCHAR);
 				callStmt.registerOutParameter(4, Types.VARCHAR);
 				callStmt.execute();
@@ -199,14 +199,14 @@ public class DBUtil {
 	/**
 	 * Удалить инф. о залоченной строке
 	 */
-	public static String Lock_Row_Delete(Integer Id, String TableName,Connection conn) {
+	public static String Lock_Row_Delete(Long Id, String TableName,Connection conn) {
 		String ret = null;
 		try {
 			if (Id != null & (TableName != null && !TableName.equals(""))) {
 				CallableStatement callStmt = conn.prepareCall("{ call LOCKS.LOCK_ROW_DEL(?,?,?,?)}");
 				callStmt.setString(1, TableName.toUpperCase());
 				callStmt.setString(2, Connect.userID.toUpperCase());
-				callStmt.setInt(3, Id);
+				callStmt.setLong(3, Id);
 				callStmt.registerOutParameter(4, Types.VARCHAR);
 				callStmt.execute();
 				ret = callStmt.getString(4);
@@ -259,17 +259,17 @@ public class DBUtil {
 		return resultSet;
 	}
 
-	public static Integer ODB_ACTION(Integer usrid, Integer actid) {
+	public static Long ODB_ACTION(Long usrid, Long actid) {
 		Main.logger = Logger.getLogger(DBUtil.class);
-		Integer ret = 0;
+		Long ret = 0l;
 		Connection conn = DBUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbAccess(?,?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
-			callStmt.setInt(2, usrid);
-			callStmt.setInt(3, actid);
+			callStmt.setLong(2, usrid);
+			callStmt.setLong(3, actid);
 			callStmt.execute();
-			ret = callStmt.getInt(1);
+			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
 			DBUtil.LOG_ERROR(e);
@@ -297,17 +297,17 @@ public class DBUtil {
 		return ret;
 	}
 
-	public static Integer ODB_MNU(Integer usrid, Integer actid) {
+	public static Long ODB_MNU(Long usrid, Long actid) {
 		Main.logger = Logger.getLogger(DBUtil.class);
-		Integer ret = 0;
+		Long ret = 0l;
 		Connection conn = DBUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuAccess(?,?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
-			callStmt.setInt(2, usrid);
-			callStmt.setInt(3, actid);
+			callStmt.setLong(2, usrid);
+			callStmt.setLong(3, actid);
 			callStmt.execute();
-			ret = callStmt.getInt(1);
+			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
 			DBUtil.LOG_ERROR(e);
@@ -315,16 +315,16 @@ public class DBUtil {
 		return ret;
 	}
 
-	public static Integer ODB_MNU_GRP(Integer grpid, Integer actid) {
-		Integer ret = 0;
+	public static Long ODB_MNU_GRP(Long grpid, Long actid) {
+		Long ret = 0l;
 		Connection conn = DBUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuAccessGrp(?,?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
-			callStmt.setInt(2, grpid);
-			callStmt.setInt(3, actid);
+			callStmt.setLong(2, grpid);
+			callStmt.setLong(3, actid);
 			callStmt.execute();
-			ret = callStmt.getInt(1);
+			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
 			DBUtil.LOG_ERROR(e);
@@ -332,16 +332,16 @@ public class DBUtil {
 		return ret;
 	}
 	
-	public static Integer ODB_ACT_GRP(Integer grpid, Integer actid) {
-		Integer ret = 0;
+	public static Long ODB_ACT_GRP(Long grpid, Long actid) {
+		Long ret = 0l;
 		Connection conn = DBUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ODB_ACT_ACCESS_GRP(?,?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
-			callStmt.setInt(2, grpid);
-			callStmt.setInt(3, actid);
+			callStmt.setLong(2, grpid);
+			callStmt.setLong(3, actid);
 			callStmt.execute();
-			ret = callStmt.getInt(1);
+			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
 			DBUtil.LOG_ERROR(e);
@@ -349,16 +349,16 @@ public class DBUtil {
 		return ret;
 	}
 	
-	public static Integer ODB_MNU2(Integer actid) {
+	public static Long ODB_MNU2(Long actid) {
 		Main.logger = Logger.getLogger(DBUtil.class);
-		Integer ret = 0;
+		Long ret = 0l;
 		Connection conn = DBUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuAccess(?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
-			callStmt.setInt(2, actid);
+			callStmt.setLong(2, actid);
 			callStmt.execute();
-			ret = callStmt.getInt(1);
+			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
 			DBUtil.LOG_ERROR(e);
@@ -371,15 +371,15 @@ public class DBUtil {
 	 * @param actid
 	 * @return
 	 */
-	public static Integer OdbAction(Integer actid) {
-		Integer ret = 0;
+	public static Long OdbAction(Long actid) {
+		Long ret = 0l;
 		Connection conn = DBUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ACT_ACCESS(?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
-			callStmt.setInt(2, actid);
+			callStmt.setLong(2, actid);
 			callStmt.execute();
-			ret = callStmt.getInt(1);
+			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
 			DBUtil.LOG_ERROR(e);
@@ -394,9 +394,9 @@ public class DBUtil {
 	 * @param CUSRLOGNAME
 	 * @return
 	 */
-	public static int chk_accesss(String ACT_NAME, String CUSRLOGNAME) {
+	public static Long chk_accesss(String ACT_NAME, String CUSRLOGNAME) {
 		Main.logger = Logger.getLogger(DBUtil.class);
-		int ret = 0;
+		Long ret = 0l;
 		Connection conn = DBUtil.conn;
 		try {
 			SqlMap sql = new SqlMap().load("/SQL.xml");
@@ -406,7 +406,7 @@ public class DBUtil {
 			prepStmt.setString(2, CUSRLOGNAME);
 			ResultSet rs = prepStmt.executeQuery();
 			if (rs.next()) {
-				ret = rs.getInt("CNT");
+				ret = rs.getLong("CNT");
 			}
 			prepStmt.close();
 			rs.close();

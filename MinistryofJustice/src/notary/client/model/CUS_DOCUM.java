@@ -1,8 +1,8 @@
 package notary.client.model;
 
 import java.time.LocalDate;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -16,8 +16,8 @@ public class CUS_DOCUM {
 	private StringProperty DOC_NUM;/* Номер документа */
 	private StringProperty ID_DOC_TP;/* ID типа документа */
 	private StringProperty PREF;/* Признак основного документа-"Y" */
-	private IntegerProperty ICUSNUM;/* Идентификатор контрагента */
-	private IntegerProperty ID_DOC;/* ID документа */
+	private LongProperty ICUSNUM;/* Идентификатор контрагента */
+	private LongProperty ID_DOC;/* ID документа */
 
 	public CUS_DOCUM() {
 		this.DOC_SUBDIV = new SimpleStringProperty();
@@ -28,8 +28,8 @@ public class CUS_DOCUM {
 		this.DOC_NUM = new SimpleStringProperty();
 		this.ID_DOC_TP = new SimpleStringProperty();
 		this.PREF = new SimpleStringProperty();
-		this.ICUSNUM = new SimpleIntegerProperty();
-		this.ID_DOC = new SimpleIntegerProperty();
+		this.ICUSNUM = new SimpleLongProperty();
+		this.ID_DOC = new SimpleLongProperty();
 	}
 
 	public void setDOC_SUBDIV(String DOC_SUBDIV) {
@@ -64,11 +64,11 @@ public class CUS_DOCUM {
 		this.PREF.set(PREF);
 	}
 
-	public void setICUSNUM(Integer ICUSNUM) {
+	public void setICUSNUM(Long ICUSNUM) {
 		this.ICUSNUM.set(ICUSNUM);
 	}
 
-	public void setID_DOC(Integer ID_DOC) {
+	public void setID_DOC(Long ID_DOC) {
 		this.ID_DOC.set(ID_DOC);
 	}
 
@@ -104,11 +104,11 @@ public class CUS_DOCUM {
 		return PREF.get();
 	}
 
-	public Integer getICUSNUM() {
+	public Long getICUSNUM() {
 		return ICUSNUM.get();
 	}
 
-	public Integer getID_DOC() {
+	public Long getID_DOC() {
 		return ID_DOC.get();
 	}
 
@@ -144,11 +144,11 @@ public class CUS_DOCUM {
 		return PREF;
 	}
 
-	public IntegerProperty ICUSNUMProperty() {
+	public LongProperty ICUSNUMProperty() {
 		return ICUSNUM;
 	}
 
-	public IntegerProperty ID_DOCProperty() {
+	public LongProperty ID_DOCProperty() {
 		return ID_DOC;
 	}
 }

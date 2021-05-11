@@ -82,7 +82,7 @@ public class Setup {
 	@FXML
 	void Register(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(143) == 0) {
+			if (DBUtil.OdbAction(143l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -177,7 +177,7 @@ public class Setup {
 	@FXML
 	void TestConnect(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(142) == 0) {
+			if (DBUtil.OdbAction(142l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -213,7 +213,7 @@ public class Setup {
 	@FXML
 	void CheckAuth(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(144) == 0) {
+			if (DBUtil.OdbAction(144l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}

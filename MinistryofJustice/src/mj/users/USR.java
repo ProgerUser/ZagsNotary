@@ -1,15 +1,15 @@
 package mj.users;
 
 import java.time.LocalDate;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class USR {
 	/** ID ЗАГСА */
-	private IntegerProperty ZAGS_ID;
+	private LongProperty ZAGS_ID;
 	/** Начало рабочего времени */
 	private SimpleObjectProperty<LocalDate> WORKDAY_TIME_BEGIN;
 	/** Окончание рабочего времени */
@@ -27,9 +27,9 @@ public class USR {
 	/** Приветственное сообщение */
 	private StringProperty WELCOME_MESSAGE;
 	/** Минимальное количество специальных символов в пароле */
-	private IntegerProperty IUSRSPEC_QUANTITY;
+	private LongProperty IUSRSPEC_QUANTITY;
 	/** Использовать старый пароль после N новых */
-	private IntegerProperty IUSRPWDREUSE;
+	private LongProperty IUSRPWDREUSE;
 	/** Y если пользователь может открывать сессии только с одного терминала */
 	private StringProperty CRESTRICT_TERM;
 	/** Адрес электронной почты */
@@ -41,17 +41,17 @@ public class USR {
 	/** Номер внутреннего телефона */
 	private StringProperty CUSROFFPHONE;
 	/** Срок действия пароля в днях */
-	private IntegerProperty IUSREXP_DAYS;
+	private LongProperty IUSREXP_DAYS;
 	/** Минимальное количество цифровых символов в пароле */
-	private IntegerProperty IUSRNUM_QUANTITY;
+	private LongProperty IUSRNUM_QUANTITY;
 	/** Минимальное количество буквенных символов в пароле */
-	private IntegerProperty IUSRCHR_QUANTITY;
+	private LongProperty IUSRCHR_QUANTITY;
 	/** Минимальная длина пароля */
-	private IntegerProperty IUSRPWD_LENGTH;
+	private LongProperty IUSRPWD_LENGTH;
 	/** Дата увольнения */
 	private SimpleObjectProperty<LocalDate> DUSRFIRE;
 	/** Филиал ( ссылка на iOTDnum ) */
-	private IntegerProperty IUSRBRANCH;
+	private LongProperty IUSRBRANCH;
 	/** Дата поступления на работу */
 	private SimpleObjectProperty<LocalDate> DUSRHIRE;
 	/** Должность */
@@ -61,11 +61,11 @@ public class USR {
 	/** LogName */
 	private StringProperty CUSRLOGNAME;
 	/** Идентификатор пользователя */
-	private IntegerProperty IUSRID;
+	private LongProperty IUSRID;
 	/** Учреждение, NOT, ZAG,ADM */
 	private StringProperty ACCESS_LEVEL;
 	/** ID Нотариуса */
-	private IntegerProperty NOTARY_ID;
+	private LongProperty NOTARY_ID;
 	/** ФИО короткое */
 	private StringProperty FIO_SH;
 	/** ФИО короткое на Абх */
@@ -78,7 +78,7 @@ public class USR {
 		this.FIO_ABH_SH = new SimpleStringProperty();
 		this.FIO_ABH = new SimpleStringProperty();
 
-		this.ZAGS_ID = new SimpleIntegerProperty();
+		this.ZAGS_ID = new SimpleLongProperty();
 		this.WORKDAY_TIME_BEGIN = new SimpleObjectProperty<>();
 		this.WORKDAY_TIME_END = new SimpleObjectProperty<>();
 		this.SHORT_POSITION = new SimpleStringProperty();
@@ -87,26 +87,26 @@ public class USR {
 		this.LOCK_DATE_TIME = new SimpleObjectProperty<>();
 		this.SHORT_NAME = new SimpleStringProperty();
 		this.WELCOME_MESSAGE = new SimpleStringProperty();
-		this.IUSRSPEC_QUANTITY = new SimpleIntegerProperty();
-		this.IUSRPWDREUSE = new SimpleIntegerProperty();
+		this.IUSRSPEC_QUANTITY = new SimpleLongProperty();
+		this.IUSRPWDREUSE = new SimpleLongProperty();
 		this.CRESTRICT_TERM = new SimpleStringProperty();
 		this.CEMAIL = new SimpleStringProperty();
 		this.TWRTEND = new SimpleObjectProperty<>();
 		this.TWRTSTART = new SimpleObjectProperty<>();
 		this.CUSROFFPHONE = new SimpleStringProperty();
-		this.IUSREXP_DAYS = new SimpleIntegerProperty();
-		this.IUSRNUM_QUANTITY = new SimpleIntegerProperty();
-		this.IUSRCHR_QUANTITY = new SimpleIntegerProperty();
-		this.IUSRPWD_LENGTH = new SimpleIntegerProperty();
+		this.IUSREXP_DAYS = new SimpleLongProperty();
+		this.IUSRNUM_QUANTITY = new SimpleLongProperty();
+		this.IUSRCHR_QUANTITY = new SimpleLongProperty();
+		this.IUSRPWD_LENGTH = new SimpleLongProperty();
 		this.DUSRFIRE = new SimpleObjectProperty<>();
-		this.IUSRBRANCH = new SimpleIntegerProperty();
+		this.IUSRBRANCH = new SimpleLongProperty();
 		this.DUSRHIRE = new SimpleObjectProperty<>();
 		this.CUSRPOSITION = new SimpleStringProperty();
 		this.CUSRNAME = new SimpleStringProperty();
 		this.CUSRLOGNAME = new SimpleStringProperty();
-		this.IUSRID = new SimpleIntegerProperty();
+		this.IUSRID = new SimpleLongProperty();
 		this.ACCESS_LEVEL = new SimpleStringProperty();
-		this.NOTARY_ID = new SimpleIntegerProperty();
+		this.NOTARY_ID = new SimpleLongProperty();
 	}
 
 	public void setFIO_SH(String FIO_SH) {
@@ -145,7 +145,7 @@ public class USR {
 		return FIO_ABH;
 	}
 
-	public void setZAGS_ID(Integer ZAGS_ID) {
+	public void setZAGS_ID(Long ZAGS_ID) {
 		this.ZAGS_ID.set(ZAGS_ID);
 	}
 
@@ -181,11 +181,11 @@ public class USR {
 		this.WELCOME_MESSAGE.set(WELCOME_MESSAGE);
 	}
 
-	public void setIUSRSPEC_QUANTITY(Integer IUSRSPEC_QUANTITY) {
+	public void setIUSRSPEC_QUANTITY(Long IUSRSPEC_QUANTITY) {
 		this.IUSRSPEC_QUANTITY.set(IUSRSPEC_QUANTITY);
 	}
 
-	public void setIUSRPWDREUSE(Integer IUSRPWDREUSE) {
+	public void setIUSRPWDREUSE(Long IUSRPWDREUSE) {
 		this.IUSRPWDREUSE.set(IUSRPWDREUSE);
 	}
 
@@ -209,19 +209,19 @@ public class USR {
 		this.CUSROFFPHONE.set(CUSROFFPHONE);
 	}
 
-	public void setIUSREXP_DAYS(Integer IUSREXP_DAYS) {
+	public void setIUSREXP_DAYS(Long IUSREXP_DAYS) {
 		this.IUSREXP_DAYS.set(IUSREXP_DAYS);
 	}
 
-	public void setIUSRNUM_QUANTITY(Integer IUSRNUM_QUANTITY) {
+	public void setIUSRNUM_QUANTITY(Long IUSRNUM_QUANTITY) {
 		this.IUSRNUM_QUANTITY.set(IUSRNUM_QUANTITY);
 	}
 
-	public void setIUSRCHR_QUANTITY(Integer IUSRCHR_QUANTITY) {
+	public void setIUSRCHR_QUANTITY(Long IUSRCHR_QUANTITY) {
 		this.IUSRCHR_QUANTITY.set(IUSRCHR_QUANTITY);
 	}
 
-	public void setIUSRPWD_LENGTH(Integer IUSRPWD_LENGTH) {
+	public void setIUSRPWD_LENGTH(Long IUSRPWD_LENGTH) {
 		this.IUSRPWD_LENGTH.set(IUSRPWD_LENGTH);
 	}
 
@@ -229,7 +229,7 @@ public class USR {
 		this.DUSRFIRE.set(DUSRFIRE);
 	}
 
-	public void setIUSRBRANCH(Integer IUSRBRANCH) {
+	public void setIUSRBRANCH(Long IUSRBRANCH) {
 		this.IUSRBRANCH.set(IUSRBRANCH);
 	}
 
@@ -249,19 +249,19 @@ public class USR {
 		this.CUSRLOGNAME.set(CUSRLOGNAME);
 	}
 
-	public void setIUSRID(Integer IUSRID) {
-		this.IUSRID.set(IUSRID);
+	public void setIUSRID(Long l) {
+		this.IUSRID.set(l);
 	}
 
 	public void setACCESS_LEVEL(String ACCESS_LEVEL) {
 		this.ACCESS_LEVEL.set(ACCESS_LEVEL);
 	}
 
-	public void setNOTARY_ID(Integer NOTARY_ID) {
+	public void setNOTARY_ID(Long NOTARY_ID) {
 		this.NOTARY_ID.set(NOTARY_ID);
 	}
 
-	public Integer getZAGS_ID() {
+	public Long getZAGS_ID() {
 		return ZAGS_ID.get();
 	}
 
@@ -297,11 +297,11 @@ public class USR {
 		return WELCOME_MESSAGE.get();
 	}
 
-	public Integer getIUSRSPEC_QUANTITY() {
+	public Long getIUSRSPEC_QUANTITY() {
 		return IUSRSPEC_QUANTITY.get();
 	}
 
-	public Integer getIUSRPWDREUSE() {
+	public Long getIUSRPWDREUSE() {
 		return IUSRPWDREUSE.get();
 	}
 
@@ -325,19 +325,19 @@ public class USR {
 		return CUSROFFPHONE.get();
 	}
 
-	public Integer getIUSREXP_DAYS() {
+	public Long getIUSREXP_DAYS() {
 		return IUSREXP_DAYS.get();
 	}
 
-	public Integer getIUSRNUM_QUANTITY() {
+	public Long getIUSRNUM_QUANTITY() {
 		return IUSRNUM_QUANTITY.get();
 	}
 
-	public Integer getIUSRCHR_QUANTITY() {
+	public Long getIUSRCHR_QUANTITY() {
 		return IUSRCHR_QUANTITY.get();
 	}
 
-	public Integer getIUSRPWD_LENGTH() {
+	public Long getIUSRPWD_LENGTH() {
 		return IUSRPWD_LENGTH.get();
 	}
 
@@ -345,7 +345,7 @@ public class USR {
 		return DUSRFIRE.get();
 	}
 
-	public Integer getIUSRBRANCH() {
+	public Long getIUSRBRANCH() {
 		return IUSRBRANCH.get();
 	}
 
@@ -365,7 +365,7 @@ public class USR {
 		return CUSRLOGNAME.get();
 	}
 
-	public Integer getIUSRID() {
+	public Long getIUSRID() {
 		return IUSRID.get();
 	}
 
@@ -373,11 +373,11 @@ public class USR {
 		return ACCESS_LEVEL.get();
 	}
 
-	public Integer getNOTARY_ID() {
+	public Long getNOTARY_ID() {
 		return NOTARY_ID.get();
 	}
 
-	public IntegerProperty ZAGS_IDProperty() {
+	public LongProperty ZAGS_IDProperty() {
 		return ZAGS_ID;
 	}
 
@@ -413,11 +413,11 @@ public class USR {
 		return WELCOME_MESSAGE;
 	}
 
-	public IntegerProperty IUSRSPEC_QUANTITYProperty() {
+	public LongProperty IUSRSPEC_QUANTITYProperty() {
 		return IUSRSPEC_QUANTITY;
 	}
 
-	public IntegerProperty IUSRPWDREUSEProperty() {
+	public LongProperty IUSRPWDREUSEProperty() {
 		return IUSRPWDREUSE;
 	}
 
@@ -441,19 +441,19 @@ public class USR {
 		return CUSROFFPHONE;
 	}
 
-	public IntegerProperty IUSREXP_DAYSProperty() {
+	public LongProperty IUSREXP_DAYSProperty() {
 		return IUSREXP_DAYS;
 	}
 
-	public IntegerProperty IUSRNUM_QUANTITYProperty() {
+	public LongProperty IUSRNUM_QUANTITYProperty() {
 		return IUSRNUM_QUANTITY;
 	}
 
-	public IntegerProperty IUSRCHR_QUANTITYProperty() {
+	public LongProperty IUSRCHR_QUANTITYProperty() {
 		return IUSRCHR_QUANTITY;
 	}
 
-	public IntegerProperty IUSRPWD_LENGTHProperty() {
+	public LongProperty IUSRPWD_LENGTHProperty() {
 		return IUSRPWD_LENGTH;
 	}
 
@@ -461,7 +461,7 @@ public class USR {
 		return DUSRFIRE;
 	}
 
-	public IntegerProperty IUSRBRANCHProperty() {
+	public LongProperty IUSRBRANCHProperty() {
 		return IUSRBRANCH;
 	}
 
@@ -481,7 +481,7 @@ public class USR {
 		return CUSRLOGNAME;
 	}
 
-	public IntegerProperty IUSRIDProperty() {
+	public LongProperty IUSRIDProperty() {
 		return IUSRID;
 	}
 
@@ -489,7 +489,7 @@ public class USR {
 		return ACCESS_LEVEL;
 	}
 
-	public IntegerProperty NOTARY_IDProperty() {
+	public LongProperty NOTARY_IDProperty() {
 		return NOTARY_ID;
 	}
 }
