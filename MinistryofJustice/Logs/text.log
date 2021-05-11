@@ -25635,3 +25635,45 @@ ORA-06512: на  line 1
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
 	at java.lang.Thread.run(Thread.java:748)
 
+[11.05.2021 22:40:20] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and upper(CTABLE) = 'CUS' 
+ order by DAUDDATE desc
+[11.05.2021 22:40:23] [JRFillSubreport] ERROR:961 - Fill 1: exception
+net.sf.jasperreports.engine.fill.JRExpressionEvalException: Error evaluating expression for source text: $F{IACTIONID}
+	at net.sf.jasperreports.engine.fill.JREvaluator.handleEvaluationException(JREvaluator.java:294)
+	at net.sf.jasperreports.engine.fill.JREvaluator.evaluate(JREvaluator.java:328)
+	at net.sf.jasperreports.engine.fill.JRCalculator.evaluate(JRCalculator.java:673)
+	at net.sf.jasperreports.engine.fill.JRCalculator.evaluate(JRCalculator.java:641)
+	at net.sf.jasperreports.engine.fill.JRFillElement.evaluateExpression(JRFillElement.java:1173)
+	at net.sf.jasperreports.engine.fill.JRFillTextField.evaluateText(JRFillTextField.java:555)
+	at net.sf.jasperreports.engine.fill.JRFillTextField.evaluate(JRFillTextField.java:540)
+	at net.sf.jasperreports.engine.fill.JRFillElementContainer.evaluate(JRFillElementContainer.java:383)
+	at net.sf.jasperreports.engine.fill.JRFillFrame.evaluate(JRFillFrame.java:172)
+	at net.sf.jasperreports.engine.fill.JRFillElementContainer.evaluate(JRFillElementContainer.java:383)
+	at net.sf.jasperreports.engine.fill.JRFillBand.evaluate(JRFillBand.java:548)
+	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillColumnBand(JRVerticalFiller.java:2600)
+	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillDetail(JRVerticalFiller.java:825)
+	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillReportStart(JRVerticalFiller.java:266)
+	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillReport(JRVerticalFiller.java:110)
+	at net.sf.jasperreports.engine.fill.JRBaseFiller.fill(JRBaseFiller.java:621)
+	at net.sf.jasperreports.engine.fill.BaseReportFiller.fill(BaseReportFiller.java:433)
+	at net.sf.jasperreports.engine.fill.JRFillSubreport.fillSubreport(JRFillSubreport.java:830)
+	at net.sf.jasperreports.engine.fill.JRSubreportRunnable.run(JRSubreportRunnable.java:61)
+	at net.sf.jasperreports.engine.fill.AbstractThreadSubreportRunner.run(AbstractThreadSubreportRunner.java:221)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.lang.ClassCastException: Cannot cast java.lang.Long to java.lang.Integer
+	at java.lang.Class.cast(Class.java:3369)
+	at net.sf.jasperreports.compilers.JavaDirectExpressionValueFilter.filterValue(JavaDirectExpressionValueFilter.java:47)
+	at net.sf.jasperreports.compilers.StandardExpressionEvaluators.filterValue(StandardExpressionEvaluators.java:177)
+	at net.sf.jasperreports.compilers.StandardExpressionEvaluators$FieldEvaluator.evaluate(StandardExpressionEvaluators.java:252)
+	at net.sf.jasperreports.engine.fill.JREvaluator.evaluate(JREvaluator.java:309)
+	... 21 more
+[11.05.2021 22:42:14] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and upper(CTABLE) = 'CUS' 
+ order by DAUDDATE desc

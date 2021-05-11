@@ -2385,7 +2385,7 @@ public class AddCus {
 					CCUSNAME.setDisable(false);
 					CCUSNAME_SH.setDisable(false);
 					
-				} else if (val.getCODE().equals(1) || val.getCODE().equals(3)) {
+				} else if (val.getCODE().equals(1l) || val.getCODE().equals(3l)) {
 					setDisable();
 //					CCUSNAME.setEditable(true);
 //					CCUSNAME_SH.setEditable(true);

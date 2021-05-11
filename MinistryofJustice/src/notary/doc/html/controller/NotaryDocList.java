@@ -42,6 +42,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableRow;
@@ -49,6 +50,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -109,8 +111,12 @@ public class NotaryDocList {
 	@FXML
 	private ComboBox<NT_CUS_LIST_FOR_SEARCH> Vals;
 
+	@FXML
+	private GridPane Grid;
+
 	/**
 	 * Выполнить поиск после выбора
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -132,16 +138,44 @@ public class NotaryDocList {
 			NT_PRM_SEARCH val_prm = ParamList.getSelectionModel().getSelectedItem();
 			NT_CUS_LIST_FOR_SEARCH val_val = Vals.getSelectionModel().getSelectedItem();
 			if (val_prm != null & val_val != null) {
-				
+
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
 
-	
 	/**
-	 * При выборе параметра для дальнейшего поиска по нему 
+	 * Очистить параметр поиска
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void DelPrm(ActionEvent event) {
+		try {
+			ParamList.getSelectionModel().select(null);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	/**
+	 * Очистить значение параметра поиска
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void DelPrmVal(ActionEvent event) {
+		try {
+			Vals.getSelectionModel().select(null);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	/**
+	 * При выборе параметра для дальнейшего поиска по нему
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -149,9 +183,22 @@ public class NotaryDocList {
 		try {
 			NT_PRM_SEARCH val = ParamList.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				//если список "Ссылка на клиента"
-				if(val.getSRCH_ID().equals(1)) {
-					//параметры для поиска
+				// если список "Ссылка на клиента"
+				if (val.getSRCH_ID().equals(1l)) {
+					System.out.print(Vals);
+					
+					Grid.getChildren().remove(Vals);
+					Vals = new ComboBox<NT_CUS_LIST_FOR_SEARCH>();
+					
+					Vals.setPrefWidth(Control.USE_PREF_SIZE);
+					Vals.setPrefHeight(Control.USE_PREF_SIZE);
+					Vals.maxWidth(Double.MAX_VALUE);
+					Vals.maxHeight(Control.USE_PREF_SIZE);
+					
+					Vals.setEditable(true);
+					Grid.add(Vals, 1, 1);
+					
+					// параметры для поиска
 					{
 						PreparedStatement stsmt = conn.prepareStatement("select * from NT_CUS_LIST_FOR_SEARCH");
 						ResultSet rs = stsmt.executeQuery();
@@ -181,13 +228,18 @@ public class NotaryDocList {
 						Vals.setItems(filteredlogin);
 						convert_Vals(Vals);
 					}
+				} // если список "Срок выдачи доверенности"
+				else if (val.getSRCH_ID().equals(2l)) {
+					Grid.getChildren().remove(Vals);
+					ComboBox<String> cmbbx = new ComboBox<String>();
+					Grid.add(cmbbx, 1, 1);
 				}
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-    
+
 	@FXML
 	void Add(ActionEvent event) {
 		try {
@@ -441,34 +493,36 @@ public class NotaryDocList {
 		cmbbx.setConverter(new StringConverter<NT_CUS_LIST_FOR_SEARCH>() {
 			@Override
 			public String toString(NT_CUS_LIST_FOR_SEARCH object) {
-				return object != null ? object.getCCUSNAME() : "";
+				return object != null ? object.getICUSNUM() + ". " + object.getCCUSNAME() : "";
 			}
 
 			@Override
 			public NT_CUS_LIST_FOR_SEARCH fromString(String string) {
-				return cmbbx.getItems().stream().filter(object -> object.getCCUSNAME().equals(string)).findFirst()
-						.orElse(null);
+				return cmbbx.getItems().stream()
+						.filter(object -> (object.getICUSNUM() + ". " + object.getCCUSNAME()).equals(string))
+						.findFirst().orElse(null);
 			}
 
 		});
 	}
-	
+
 	private void convert_ParamList(ComboBox<NT_PRM_SEARCH> cmbbx) {
 		cmbbx.setConverter(new StringConverter<NT_PRM_SEARCH>() {
 			@Override
 			public String toString(NT_PRM_SEARCH object) {
-				return object != null ? object.getSRCH_NAME() : "";
+				return object != null ? object.getSRCH_ID() + ". " + object.getSRCH_NAME() : "";
 			}
 
 			@Override
 			public NT_PRM_SEARCH fromString(String string) {
-				return cmbbx.getItems().stream().filter(object -> object.getSRCH_NAME().equals(string)).findFirst()
-						.orElse(null);
+				return cmbbx.getItems().stream()
+						.filter(object -> (object.getSRCH_ID() + ". " + object.getSRCH_NAME()).equals(string))
+						.findFirst().orElse(null);
 			}
 
 		});
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
@@ -504,8 +558,8 @@ public class NotaryDocList {
 			});
 			new ConvConst().TableColumnDate(CR_DATE);
 			Init();
-			
-			//параметры для поиска
+
+			// параметры для поиска
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from NT_PRM_SEARCH");
 				ResultSet rs = stsmt.executeQuery();
@@ -521,11 +575,11 @@ public class NotaryDocList {
 				ParamList.setItems(combolist);
 
 				FxUtilTest.getComboBoxValue(ParamList);
-				FxUtilTest.autoCompleteComboBoxPlus(ParamList, (typedText, itemToCompare) -> itemToCompare.getSRCH_NAME()
-						.toLowerCase().contains(typedText.toLowerCase()));
+				FxUtilTest.autoCompleteComboBoxPlus(ParamList, (typedText, itemToCompare) -> itemToCompare
+						.getSRCH_NAME().toLowerCase().contains(typedText.toLowerCase()));
 				convert_ParamList(ParamList);
 			}
-			
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -556,7 +610,7 @@ public class NotaryDocList {
 
 	void Init() {
 		try {
-			PreparedStatement prepStmt  = conn.prepareStatement("select * from V_NT_DOC");
+			PreparedStatement prepStmt = conn.prepareStatement("select * from V_NT_DOC");
 
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<V_NT_DOC> dlist = FXCollections.observableArrayList();
@@ -601,10 +655,10 @@ public class NotaryDocList {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	void Init(Long val) {
 		try {
-			PreparedStatement prepStmt  = conn.prepareStatement("select * from V_NT_DOC where id = ?");
+			PreparedStatement prepStmt = conn.prepareStatement("select * from V_NT_DOC where id = ?");
 			prepStmt.setLong(1, val);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<V_NT_DOC> dlist = FXCollections.observableArrayList();
@@ -641,7 +695,6 @@ public class NotaryDocList {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-
 
 	public void dbDisconnect() {
 		try {
