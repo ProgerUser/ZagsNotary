@@ -32,7 +32,6 @@ import com.jyloo.syntheticafx.filter.ComparisonType;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -42,7 +41,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableRow;
@@ -59,12 +57,12 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.app.model.InputFilter1;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
 import mj.widgets.FxUtilTest;
 import notary.doc.html.model.NT_CUS_LIST_FOR_SEARCH;
+import notary.doc.html.model.NT_DOV_YEAR_LIST_FOR_SEARCH;
 import notary.doc.html.model.NT_PRM_SEARCH;
 import notary.doc.html.model.V_NT_DOC;
 import pl.jsolve.templ4docx.core.Docx;
@@ -109,7 +107,7 @@ public class NotaryDocList {
 	private Button Search;
 
 	@FXML
-	private ComboBox<NT_CUS_LIST_FOR_SEARCH> Vals;
+	private ComboBox<Object> Vals;
 
 	@FXML
 	private GridPane Grid;
@@ -123,9 +121,20 @@ public class NotaryDocList {
 	void Search(ActionEvent event) {
 		try {
 			NT_PRM_SEARCH val_prm = ParamList.getSelectionModel().getSelectedItem();
-			NT_CUS_LIST_FOR_SEARCH val_val = Vals.getSelectionModel().getSelectedItem();
-			if (val_prm != null & val_val != null) {
-				Init(val_val.getID());
+			if (val_prm != null) {
+				if (val_prm.getSRCH_ID().equals(1l)) {
+					NT_CUS_LIST_FOR_SEARCH val_val = (NT_CUS_LIST_FOR_SEARCH) Vals.getSelectionModel()
+							.getSelectedItem();
+					if(val_val!=null) {
+						Init(val_val.getID());
+					}
+				} else if (val_prm.getSRCH_ID().equals(2l)) {
+					NT_DOV_YEAR_LIST_FOR_SEARCH val_val = (NT_DOV_YEAR_LIST_FOR_SEARCH) Vals.getSelectionModel()
+							.getSelectedItem();
+					if(val_val!=null) {
+						Init(val_val.getID());
+					}
+				}
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -136,9 +145,12 @@ public class NotaryDocList {
 	void Vals(ActionEvent event) {
 		try {
 			NT_PRM_SEARCH val_prm = ParamList.getSelectionModel().getSelectedItem();
-			NT_CUS_LIST_FOR_SEARCH val_val = Vals.getSelectionModel().getSelectedItem();
-			if (val_prm != null & val_val != null) {
+			if (val_prm != null) {
+				if (val_prm.getSRCH_ID().equals(1l)) {
 
+				} else if (val_prm.getSRCH_ID().equals(2l)) {
+
+				}
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -185,24 +197,23 @@ public class NotaryDocList {
 			if (val != null) {
 				// если список "Ссылка на клиента"
 				if (val.getSRCH_ID().equals(1l)) {
-					System.out.print(Vals);
-					
-					Grid.getChildren().remove(Vals);
-					Vals = new ComboBox<NT_CUS_LIST_FOR_SEARCH>();
-					
-					Vals.setPrefWidth(Control.USE_PREF_SIZE);
-					Vals.setPrefHeight(Control.USE_PREF_SIZE);
-					Vals.maxWidth(Double.MAX_VALUE);
-					Vals.maxHeight(Control.USE_PREF_SIZE);
-					
-					Vals.setEditable(true);
-					Grid.add(Vals, 1, 1);
-					
+
+//					Grid.getChildren().remove(Vals);
+//					Vals = new ComboBox<NT_CUS_LIST_FOR_SEARCH>();
+//					
+//					Vals.setPrefWidth(Control.USE_PREF_SIZE);
+//					Vals.setPrefHeight(Control.USE_PREF_SIZE);
+//					Vals.maxWidth(Double.MAX_VALUE);
+//					Vals.maxHeight(Control.USE_PREF_SIZE);
+//					
+//					Vals.setEditable(true);
+//					Grid.add(Vals, 1, 1);
+
 					// параметры для поиска
 					{
 						PreparedStatement stsmt = conn.prepareStatement("select * from NT_CUS_LIST_FOR_SEARCH");
 						ResultSet rs = stsmt.executeQuery();
-						ObservableList<NT_CUS_LIST_FOR_SEARCH> combolist = FXCollections.observableArrayList();
+						ObservableList<Object> combolist = FXCollections.observableArrayList();
 						while (rs.next()) {
 							NT_CUS_LIST_FOR_SEARCH list = new NT_CUS_LIST_FOR_SEARCH();
 							list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
@@ -221,18 +232,44 @@ public class NotaryDocList {
 						stsmt.close();
 						rs.close();
 						// фильтр
-						FilteredList<NT_CUS_LIST_FOR_SEARCH> filteredlogin = new FilteredList<NT_CUS_LIST_FOR_SEARCH>(
-								combolist);
-						Vals.getEditor().textProperty()
-								.addListener(new InputFilter1<NT_CUS_LIST_FOR_SEARCH>(Vals, filteredlogin, false));
-						Vals.setItems(filteredlogin);
+//						FilteredList<Object> filteredlogin = new FilteredList<Object>(
+//								combolist);
+//						Vals.getEditor().textProperty()
+//								.addListener(new InputFilter<Object>(Vals, filteredlogin, false));
+						Vals.setItems(combolist);
+
+						FxUtilTest.getComboBoxValue(Vals);
+						FxUtilTest.autoCompleteComboBoxPlus(Vals,
+								(typedText, itemToCompare) -> ((NT_CUS_LIST_FOR_SEARCH) itemToCompare).getCCUSNAME()
+										.toLowerCase().contains(typedText.toLowerCase()));
 						convert_Vals(Vals);
 					}
 				} // если список "Срок выдачи доверенности"
 				else if (val.getSRCH_ID().equals(2l)) {
-					Grid.getChildren().remove(Vals);
-					ComboBox<String> cmbbx = new ComboBox<String>();
-					Grid.add(cmbbx, 1, 1);
+
+					PreparedStatement stsmt = conn.prepareStatement("select * from NT_DOV_YEAR_LIST_FOR_SEARCH");
+					ResultSet rs = stsmt.executeQuery();
+					ObservableList<Object> combolist = FXCollections.observableArrayList();
+					while (rs.next()) {
+						NT_DOV_YEAR_LIST_FOR_SEARCH list = new NT_DOV_YEAR_LIST_FOR_SEARCH();
+						list.setNUM(rs.getLong("NUM"));
+						list.setRUNAME(rs.getString("RUNAME"));
+						list.setDOC_ID(rs.getLong("DOC_ID"));
+						list.setID(rs.getLong("ID"));
+						combolist.add(list);
+					}
+					stsmt.close();
+					rs.close();
+					// фильтр
+					Vals.setItems(combolist);
+					FxUtilTest.getComboBoxValue(Vals);
+					FxUtilTest.autoCompleteComboBoxPlus(Vals,
+							(typedText, itemToCompare) -> ((NT_DOV_YEAR_LIST_FOR_SEARCH) itemToCompare).getRUNAME()
+									.toLowerCase().contains(typedText.toLowerCase()));
+					convert_Vals_Srok(Vals);
+//					Grid.getChildren().remove(Vals);
+//					ComboBox<String> cmbbx = new ComboBox<String>();
+//					Grid.add(cmbbx, 1, 1);
 				}
 			}
 		} catch (Exception e) {
@@ -489,20 +526,45 @@ public class NotaryDocList {
 		}
 	}
 
-	private void convert_Vals(ComboBox<NT_CUS_LIST_FOR_SEARCH> cmbbx) {
-		cmbbx.setConverter(new StringConverter<NT_CUS_LIST_FOR_SEARCH>() {
+	private void convert_Vals(ComboBox<Object> cmbbx) {
+		cmbbx.setConverter(new StringConverter<Object>() {
 			@Override
-			public String toString(NT_CUS_LIST_FOR_SEARCH object) {
-				return object != null ? object.getICUSNUM() + ". " + object.getCCUSNAME() : "";
+			public String toString(Object object) {
+				return object != null
+						? ((NT_CUS_LIST_FOR_SEARCH) object).getICUSNUM() + ". "
+								+ ((NT_CUS_LIST_FOR_SEARCH) object).getCCUSNAME()
+						: "";
 			}
 
 			@Override
-			public NT_CUS_LIST_FOR_SEARCH fromString(String string) {
+			public Object fromString(String string) {
 				return cmbbx.getItems().stream()
-						.filter(object -> (object.getICUSNUM() + ". " + object.getCCUSNAME()).equals(string))
+						.filter(object -> (((NT_CUS_LIST_FOR_SEARCH) object).getICUSNUM() + ". "
+								+ ((NT_CUS_LIST_FOR_SEARCH) object).getCCUSNAME()).equals(string))
 						.findFirst().orElse(null);
 			}
+		});
+	}
 
+	private void convert_Vals_Srok(ComboBox<Object> cmbbx) {
+		cmbbx.setConverter(new StringConverter<Object>() {
+			@Override
+			public String toString(Object object) {
+				return object != null
+						? ((NT_DOV_YEAR_LIST_FOR_SEARCH) object).getID() + ". "
+								+ ((NT_DOV_YEAR_LIST_FOR_SEARCH) object).getRUNAME() + " Док. "
+								+ ((NT_DOV_YEAR_LIST_FOR_SEARCH) object).getDOC_ID()
+						: "";
+			}
+
+			@Override
+			public Object fromString(String string) {
+				return cmbbx.getItems().stream()
+						.filter(object -> (((NT_DOV_YEAR_LIST_FOR_SEARCH) object).getID() + ". "
+								+ ((NT_DOV_YEAR_LIST_FOR_SEARCH) object).getRUNAME() + " Док. "
+								+ ((NT_DOV_YEAR_LIST_FOR_SEARCH) object).getDOC_ID()).equals(string))
+						.findFirst().orElse(null);
+			}
 		});
 	}
 
@@ -561,7 +623,7 @@ public class NotaryDocList {
 
 			// параметры для поиска
 			{
-				PreparedStatement stsmt = conn.prepareStatement("select * from NT_PRM_SEARCH");
+				PreparedStatement stsmt = conn.prepareStatement("select * from NT_PRM_SEARCH where SRCH_ID not in (2)");
 				ResultSet rs = stsmt.executeQuery();
 				ObservableList<NT_PRM_SEARCH> combolist = FXCollections.observableArrayList();
 				while (rs.next()) {

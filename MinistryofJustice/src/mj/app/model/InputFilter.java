@@ -8,7 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.ComboBox;
 
-public class InputFilter1<T> implements ChangeListener<String> {
+public class InputFilter<T> implements ChangeListener<String> {
 
 	private ComboBox<T> box;
 	private FilteredList<T> items;
@@ -21,7 +21,7 @@ public class InputFilter1<T> implements ChangeListener<String> {
 	 * @param box   The combo box to whose textProperty this listener is added.
 	 * @param items The {@link FilteredList} containing the items in the list.
 	 */
-	public InputFilter1(ComboBox<T> box, FilteredList<T> items, boolean upperCase, int maxLength, String restriction) {
+	public InputFilter(ComboBox<T> box, FilteredList<T> items, boolean upperCase, int maxLength, String restriction) {
 		this.box = box;
 		this.items = items;
 		this.upperCase = upperCase;
@@ -42,15 +42,15 @@ public class InputFilter1<T> implements ChangeListener<String> {
 		});
 	}
 
-	public InputFilter1(ComboBox<T> box, FilteredList<T> items, boolean upperCase, int maxLength) {
+	public InputFilter(ComboBox<T> box, FilteredList<T> items, boolean upperCase, int maxLength) {
 		this(box, items, upperCase, maxLength, null);
 	}
 
-	public InputFilter1(ComboBox<T> box, FilteredList<T> items, boolean upperCase) {
+	public InputFilter(ComboBox<T> box, FilteredList<T> items, boolean upperCase) {
 		this(box, items, upperCase, -1, null);
 	}
 
-	public InputFilter1(ComboBox<T> box, FilteredList<T> items) {
+	public InputFilter(ComboBox<T> box, FilteredList<T> items) {
 		this(box, items, false);
 	}
 

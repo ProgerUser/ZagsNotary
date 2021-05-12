@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.app.model.InputFilter1;
+import mj.app.model.InputFilter;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.users.Set_Up_Pass;
@@ -279,7 +279,7 @@ public class Enter {
 //			}
 
 			FilteredList<String> filteredlogin = new FilteredList<String>(logins);
-			login.getEditor().textProperty().addListener(new InputFilter1<String>(login, filteredlogin, true));
+			login.getEditor().textProperty().addListener(new InputFilter<String>(login, filteredlogin, true));
 			login.setItems(logins);
 //			FxUtilTest.getComboBoxValue(login);
 //			FxUtilTest.autoCompleteComboBoxPlus(login, (typedText, itemToCompare) -> itemToCompare
