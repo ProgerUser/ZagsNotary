@@ -12,6 +12,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -116,6 +119,13 @@ public class Msg {
 		}
 	}
 
+	public static Alert setDefaultButton(Alert alert, ButtonType defBtn) {
+		DialogPane pane = alert.getDialogPane();
+		for (ButtonType t : alert.getButtonTypes())
+			((Button) pane.lookupButton(t)).setDefaultButton(t == defBtn);
+		return alert;
+	}
+	
 	public static void Message(String mess) {
 		if (mess != null && !mess.equals("")) {
 

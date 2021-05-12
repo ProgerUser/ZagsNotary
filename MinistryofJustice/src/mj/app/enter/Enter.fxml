@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox styleClass="FirstPane" stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.enter.Enter">
+<VBox styleClass="FirstPane" stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.enter.Enter">
    <children>
       <GridPane>
         <columnConstraints>

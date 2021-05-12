@@ -4,13 +4,16 @@ import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,7 +28,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -42,7 +48,9 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
+import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.widgets.DbmsOutputCapture;
 import notary.template.html.model.NT_TEMPLATE;
 import notary.template.html.model.NT_TEMP_LIST;
 
@@ -388,7 +396,7 @@ public class NtTemplate {
 				loader.setLocation(getClass().getResource("/notary/template/html/view/IUNtTemplate.fxml"));
 
 				IUTemplate controller = new IUTemplate();
-				controller.setID(tmp.getValue().getNT_ID());
+				controller.setID(tmp.getValue().getNT_ID(),tmp.getValue());
 				controller.setNAME(tmp.getValue().getNT_NAME());
 				controller.settype("U");
 				loader.setController(controller);
@@ -585,7 +593,51 @@ public class NtTemplate {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-
+	
+	/**
+	 * Клонировать шаблон
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void CloneTempList(ActionEvent event) {
+		try {
+			NT_TEMP_LIST val = NT_TEMP_LIST.getSelectionModel().getSelectedItem();
+			if (val != null) {
+				//
+				final Alert alert = new Alert(AlertType.CONFIRMATION, "Клонировать?", ButtonType.YES, ButtonType.NO);
+				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+					// User selected the non-default yes button
+					CallableStatement cls = conn.prepareCall("{call NT_PKG.CLONE_TEMP_LIST(?,?)}");
+					cls.registerOutParameter(1, Types.VARCHAR);
+					cls.setLong(2, val.getID());
+					// DbmsOutput
+					try (DbmsOutputCapture capture = new DbmsOutputCapture(conn)) {
+						List<String> lines = capture.execute(cls);
+						System.out.println(lines);
+					} catch (Exception e) {
+						DBUtil.LOG_ERROR(e);
+					}
+					// --------------
+					if (cls.getString(1) == null) {
+						conn.commit();
+						Init(val.getPARENT());
+					} else {
+						conn.rollback();
+						Msg.Message(cls.getString(1));
+					}
+					cls.close();
+				} else {
+					return;
+				}
+			} else {
+				Msg.Message("Выберите шаблон!");
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+    
 	@FXML
 	private void initialize() {
 		try {
