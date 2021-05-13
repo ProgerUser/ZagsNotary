@@ -77,6 +77,9 @@ public class IUTemplateList {
 	@FXML
 	private ComboBox<NOTARY> NOTARY;
 
+    @FXML
+    private TextField PARENT_ID;
+    
 	@FXML
 	void Cencel(ActionEvent event) {
 		onclose();
@@ -124,7 +127,7 @@ public class IUTemplateList {
 					onclose();
 				} else if (gettype().equals("U")) {
 					PreparedStatement prp = conn
-							.prepareStatement("update NT_TEMP_LIST set NAME = ?,REP_QUERY=?,DOCX_PATH=?,NOTARY=? where ID = ?");
+							.prepareStatement("update NT_TEMP_LIST set NAME = ?,REP_QUERY=?,DOCX_PATH=?,NOTARY=?,PARENT=? where ID = ?");
 					prp.setString(1, NAME.getText());
 					Clob clob = conn.createClob();
 					clob.setString(1, REP_QUERY.getText());
@@ -135,7 +138,8 @@ public class IUTemplateList {
 					} else {
 						prp.setNull(4, Types.INTEGER);
 					}
-					prp.setLong(5, val_list.getID());
+					prp.setLong(5, Long.valueOf(PARENT_ID.getText()));
+					prp.setLong(6, val_list.getID());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
@@ -223,6 +227,7 @@ public class IUTemplateList {
 				REP_QUERY.setText(val_list.getREP_QUERY());
 				OK.setText("Сохранить");
 				DOCX_PATH.setText(val_list.getDOCX_PATH());
+				PARENT_ID.setText(String.valueOf(val_list.getPARENT()));
 				if (val_list.getNOTARY() != null) {
 					for (NOTARY ld : NOTARY.getItems()) {
 						if (val_list.getNOTARY().equals(ld.getNOT_ID())) {

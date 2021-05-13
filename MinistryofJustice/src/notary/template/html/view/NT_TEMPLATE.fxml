@@ -184,6 +184,22 @@
                                           </Tooltip>
                                        </tooltip>
                                     </Button>
+                                    <Separator orientation="VERTICAL" />
+                                    <Button layoutX="197.0" layoutY="10.0" mnemonicParsing="false" onAction="#CloneTempList">
+                                       <graphic>
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="COPY" size="15" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                       <tooltip>
+                                          <Tooltip text="Клонировать">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Tooltip>
+                                       </tooltip>
+                                    </Button>
                                  </items>
                                  <VBox.margin>
                                     <Insets left="-10.0" right="-10.0" top="-10.0" />

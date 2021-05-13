@@ -22,7 +22,7 @@
 <?import javafx.scene.text.Text?>
 
 <StackPane stylesheets="/borderpane.css"
-	xmlns="http://javafx.com/javafx/8.0.261"
+	xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<BorderPane fx:id="ROOT">

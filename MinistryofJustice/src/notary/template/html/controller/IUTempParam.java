@@ -155,6 +155,7 @@ public class IUTempParam {
 							delete.executeUpdate();
 							delete.close();
 							conn.commit();
+							fillTree();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
