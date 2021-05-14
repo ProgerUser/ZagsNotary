@@ -33,6 +33,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -78,6 +79,7 @@ import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
+import mj.app.model.InputFilter;
 import mj.app.model.OTD;
 import mj.app.model.SqlMap;
 import mj.dbutil.DBUtil;
@@ -2494,15 +2496,15 @@ public class EditCus {
 					nationals.add(rs.getString(1));
 				}
 
-//				FilteredList<String> filterednationals = new FilteredList<String>(nationals);
-//				CCUSNATIONALITY.getEditor().textProperty()
-//						.addListener(new InputFilter<String>(CCUSNATIONALITY, filterednationals, false));
+				FilteredList<String> filterednationals = new FilteredList<String>(nationals);
+				CCUSNATIONALITY.getEditor().textProperty()
+						.addListener(new InputFilter<String>(CCUSNATIONALITY, filterednationals, false));
 
-				CCUSNATIONALITY.setItems(nationals);
+				CCUSNATIONALITY.setItems(filterednationals);
 
-				FxUtilTest.getComboBoxValue(CCUSNATIONALITY);
-				FxUtilTest.autoCompleteComboBoxPlus(CCUSNATIONALITY,
-						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
+//				FxUtilTest.getComboBoxValue(CCUSNATIONALITY);
+//				FxUtilTest.autoCompleteComboBoxPlus(CCUSNATIONALITY,
+//						(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
 
 				sqlStatement.close();
 				rs.close();
