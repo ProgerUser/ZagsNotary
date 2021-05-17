@@ -26615,3 +26615,8 @@ Caused by: Error : 12899, Position : 57, Sql = insert into NT_TEMPLATE (NT_PAREN
 	... 151 more
 >>>>>>> refs/remotes/origin/master
 
+[14.05.2021 21:51:27] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and upper(CTABLE) = 'USR' 
+ order by DAUDDATE desc
