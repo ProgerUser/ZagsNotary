@@ -22,11 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -45,6 +48,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.ToolBar;
@@ -53,9 +57,11 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.FontSmoothingType;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -81,6 +87,25 @@ public class AddDoc {
 		this.status = new SimpleBooleanProperty();
 	}
 
+	@SuppressWarnings("deprecation")
+	public void hideImageNodesMatching(Node node, Pattern imageNamePattern, int depth) {
+		if (node instanceof ImageView) {
+			ImageView imageView = (ImageView) node;
+			String url = imageView.getImage().impl_getUrl();
+			if (url != null && url.contains("Color")) {
+				Node button = imageView.getParent().getParent().getParent();
+				button.setVisible(false);
+				button.setManaged(false);
+				System.out.println(url);
+			}
+		}
+		if (node instanceof Parent) {
+			for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
+				hideImageNodesMatching(child, imageNamePattern, depth + 1);
+			}
+		}
+	}
+	
     @FXML
     private Button EditLocalParam;
 
@@ -377,7 +402,11 @@ public class AddDoc {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+	int ellen = 0;
+	public static Node componentsPane;
 
+	@FXML
+	private SplitPane MainSplitPane;
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	void TYPE_NAME(ActionEvent event) {
@@ -387,15 +416,67 @@ public class AddDoc {
 				if (node instanceof ToolBar) {
 					boolean check = true;
 					ToolBar bar = (ToolBar) node;
-					ObservableList<Node> list = bar.getItems();
-					for (Node item : list) {
-						if (item.getId() != null && item.getId().equals("MJAddParam")) {
-							check = false;
-							break;
-						}
-					}
+//					ObservableList<Node> list = bar.getItems();
+//					for (Node item : list) {
+//						if (item.getId() != null && item.getId().equals("MJAddParam")) {
+//							check = false;
+//							break;
+//						}
+//					}
+					hideImageNodesMatching(node, Pattern.compile(".*(Color).*"), 0);
 					if (check) {
+						// show
+						{
+							FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
+							icon.setFontSmoothingType(FontSmoothingType.LCD);
+							icon.setSize("18");
+							Button myButton = new Button("Показать параметры", icon);
+							myButton.setId("ViewParams");
 
+							bar.getItems().add(myButton);
+							myButton.setOnAction(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent arg0) {
+									ellen = 0;
+									MainSplitPane.getItems().forEach(item -> {
+										ellen++;
+//										System.out.println(item.getId());
+									});
+
+									if (componentsPane != null & ellen == 1) {
+										MainSplitPane.getItems().add(1, componentsPane);
+										MainSplitPane.setDividerPosition(0, 0.8);
+									}
+									MainSplitPane.getItems().toArray();
+								}
+							});
+						}
+						// hide
+						{
+							FontAwesomeIconView icon = new FontAwesomeIconView(
+									FontAwesomeIcon.EYE_SLASH);
+							icon.setFontSmoothingType(FontSmoothingType.LCD);
+							icon.setSize("18");
+							Button myButton = new Button("Скрыть параметры", icon);
+							myButton.setId("HideParams");
+
+							bar.getItems().add(myButton);
+							myButton.setOnAction(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent arg0) {
+									ellen = 0;
+									MainSplitPane.getItems().forEach(item -> {
+										ellen++;
+//										System.out.println(item.getId());
+									});
+
+									if (ellen == 2) {
+										componentsPane = MainSplitPane.getItems().get(1);
+										MainSplitPane.getItems().remove(componentsPane);
+									}
+								}
+							});
+						}
 					}
 				}
 
@@ -481,6 +562,7 @@ public class AddDoc {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
+				webView.setPrefHeight(5000);
 				final WebEngine webEngine = webView.getEngine();
 				final JsToJava jstojava = new JsToJava();
 				// Запишем в файл

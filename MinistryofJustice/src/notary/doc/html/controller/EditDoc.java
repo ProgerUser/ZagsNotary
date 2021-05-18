@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
@@ -38,6 +39,8 @@ import org.controlsfx.control.table.TableFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -63,6 +66,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -73,10 +77,12 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.FontSmoothingType;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -120,7 +126,7 @@ public class EditDoc {
 
 	@FXML
 	private ComboBox<V_NT_TEMP_LIST> TYPE_NAME;
-	
+
 	@FXML
 	private Button DelSelType;
 
@@ -155,15 +161,14 @@ public class EditDoc {
 	@FXML
 	private Tab scans;
 
-    @FXML
-    private MenuButton LocalParams;
-    
-    @FXML
-    private Button EditLocalParam;
+	@FXML
+	private MenuButton LocalParams;
 
-    @FXML
-    private Button DeleteLocalParam;
-    
+	@FXML
+	private Button EditLocalParam;
+
+	@FXML
+	private Button DeleteLocalParam;
 
 	@FXML
 	void EditLocalParam(ActionEvent event) {
@@ -244,9 +249,9 @@ public class EditDoc {
 				yes.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						try {
-							PreparedStatement delete = conn
-									.prepareStatement("declare " + "pragma autonomous_transaction;" + "begin "
-											+ " delete from nt_temp_list_param_doc where PRM_ID = ?;" + "commit;" + "end;");
+							PreparedStatement delete = conn.prepareStatement("declare "
+									+ "pragma autonomous_transaction;" + "begin "
+									+ " delete from nt_temp_list_param_doc where PRM_ID = ?;" + "commit;" + "end;");
 							delete.setLong(1, val.getValue().getPRM_ID());
 							delete.executeUpdate();
 							delete.close();
@@ -274,7 +279,7 @@ public class EditDoc {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-    
+
 	@FXML
 	void PlusDocParamCliRef() {
 		try {
@@ -374,8 +379,8 @@ public class EditDoc {
 				// clear margins
 				PageLayout layout = pdfPrinter.// .createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
 												// MarginType.EQUAL);
-						createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50 /* lMargin */, 25 /* rMargin */,
-								25 /* tMargin */, 25 /* bMargin */);
+						createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 0 /* lMargin */, 0 /* rMargin */,
+								0 /* tMargin */, 0 /* bMargin */);
 				job = PrinterJob.createPrinterJob(pdfPrinter);
 				job.getJobSettings().setPageLayout(layout);
 				job.getJobSettings().setJobName("Sample Printing Job");
@@ -623,11 +628,11 @@ public class EditDoc {
 				for (Node candidate : (HtmlEditor.lookupAll("ComboBox"))) {
 					// fonts are selected by the second menu in the htmlEditor.
 					if (candidate instanceof ComboBox && i == 1) {
-						//System.out.println("`````");
+						// System.out.println("`````");
 						// limit the font selections to our predefined list.
 						ComboBox menuButton = (ComboBox) candidate;
 						menuButton.setMinWidth(200);
-						//System.out.println(menuButton.getSelectionModel().getSelectedItem());
+						// System.out.println(menuButton.getSelectionModel().getSelectedItem());
 						List<String> removalList = FXCollections.observableArrayList();
 						final List<String> fontSelections = menuButton.getItems();
 						for (String item : fontSelections) {
@@ -674,7 +679,7 @@ public class EditDoc {
 					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
 				}
 
-				//System.out.println(JsonStr);
+				// System.out.println(JsonStr);
 
 				roots = new TreeItem<>("Root");
 				Map<Long, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
@@ -745,7 +750,7 @@ public class EditDoc {
 			}
 		}
 	}
-	
+
 	public NT_TEMP_LIST_PARAM prm;
 
 	@FXML
@@ -766,21 +771,42 @@ public class EditDoc {
 		}
 	}
 
+	int ellen = 0;
+
+	@SuppressWarnings("deprecation")
+	public void hideImageNodesMatching(Node node, Pattern imageNamePattern, int depth) {
+		if (node instanceof ImageView) {
+			ImageView imageView = (ImageView) node;
+			String url = imageView.getImage().impl_getUrl();
+			if (url != null && url.contains("Color")) {
+				Node button = imageView.getParent().getParent().getParent();
+				button.setVisible(false);
+				button.setManaged(false);
+				System.out.println(url);
+			}
+		}
+		if (node instanceof Parent) {
+			for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
+				hideImageNodesMatching(child, imageNamePattern, depth + 1);
+			}
+		}
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	void Init() {
 		try {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
-				
+				webView.setPrefHeight(5000);
 //				Stage stage = (Stage) TYPE_NAME.getScene().getWindow();
 //				
 //				webView.prefHeightProperty().bind(stage.heightProperty());
 //				webView.prefWidthProperty().bind(stage.widthProperty());
-				
+
 //				StackPane stackPane = new StackPane();
 //				stackPane.getChildren().add(webview);
-		        
+
 				final WebEngine webEngine = webView.getEngine();
 				final JsToJava jstojava = new JsToJava();
 				// Запишем в файл
@@ -805,30 +831,93 @@ public class EditDoc {
 							// Оформление
 							{
 								Node node = HtmlEditor.lookup(".top-toolbar");
+								Node NodeNottom = HtmlEditor.lookup(".bottom-toolbar");
 								if (node instanceof ToolBar) {
 									boolean check = true;
 									ToolBar bar = (ToolBar) node;
-									ObservableList<Node> list = bar.getItems();
-									for (Node item : list) {
-										if (item.getId() != null && item.getId().equals("MJAddParam")) {
-											check = false;
-											break;
-										}
-									}
+									ToolBar BarBottom = (ToolBar) NodeNottom;
+//									ObservableList<Node> list = bar.getItems();
+//									for (Node item : list) {
+//										if (item.getId() != null && 
+//												(item.getId().equals("ViewParams") |
+//														item.getId().equals("HideParams") )) {
+//											check = false;
+//											break;
+//										}
+//									}
+
+									///////
+									hideImageNodesMatching(node, Pattern.compile(".*(Color).*"), 0);
+									///////
 									if (check) {
-//										FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.LIST_ALT);
-//										icon.setFontSmoothingType(FontSmoothingType.LCD);
-//										icon.setSize("18");
-//										Button myButton = new Button("Добавить параметр", icon);
-//										myButton.setId("MJAddParam");
-//
-//										bar.getItems().add(myButton);
-//										myButton.setOnAction(new EventHandler<ActionEvent>() {
-//											@Override
-//											public void handle(ActionEvent arg0) {
-//												AddParam();
-//											}
-//										});
+										//table
+										{
+											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.TABLE);
+											icon.setFontSmoothingType(FontSmoothingType.LCD);
+											icon.setSize("18");
+											Button myButton = new Button("Таблица", icon);
+											myButton.setId("TableAdd");
+
+											BarBottom.getItems().add(myButton);
+											myButton.setOnAction(new EventHandler<ActionEvent>() {
+												@Override
+												public void handle(ActionEvent arg0) {
+													
+												}
+											});
+										}
+										// show
+										{
+											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
+											icon.setFontSmoothingType(FontSmoothingType.LCD);
+											icon.setSize("18");
+											Button myButton = new Button("Показать параметры", icon);
+											myButton.setId("ViewParams");
+
+											bar.getItems().add(myButton);
+											myButton.setOnAction(new EventHandler<ActionEvent>() {
+												@Override
+												public void handle(ActionEvent arg0) {
+													ellen = 0;
+													MainSplitPane.getItems().forEach(item -> {
+														ellen++;
+//														System.out.println(item.getId());
+													});
+
+													if (componentsPane != null & ellen == 1) {
+														MainSplitPane.getItems().add(1, componentsPane);
+														MainSplitPane.setDividerPosition(0, 0.8);
+													}
+													MainSplitPane.getItems().toArray();
+												}
+											});
+										}
+										// hide
+										{
+											FontAwesomeIconView icon = new FontAwesomeIconView(
+													FontAwesomeIcon.EYE_SLASH);
+											icon.setFontSmoothingType(FontSmoothingType.LCD);
+											icon.setSize("18");
+											Button myButton = new Button("Скрыть параметры", icon);
+											myButton.setId("HideParams");
+
+											bar.getItems().add(myButton);
+											myButton.setOnAction(new EventHandler<ActionEvent>() {
+												@Override
+												public void handle(ActionEvent arg0) {
+													ellen = 0;
+													MainSplitPane.getItems().forEach(item -> {
+														ellen++;
+//														System.out.println(item.getId());
+													});
+
+													if (ellen == 2) {
+														componentsPane = MainSplitPane.getItems().get(1);
+														MainSplitPane.getItems().remove(componentsPane);
+													}
+												}
+											});
+										}
 									}
 								}
 								// modify font selections.
@@ -836,11 +925,11 @@ public class EditDoc {
 								for (Node candidate : (HtmlEditor.lookupAll("ComboBox"))) {
 									// fonts are selected by the second menu in the htmlEditor.
 									if (candidate instanceof ComboBox && i == 1) {
-										//System.out.println("`````");
+										// System.out.println("`````");
 										// limit the font selections to our predefined list.
 										ComboBox menuButton = (ComboBox) candidate;
 										menuButton.setMinWidth(200);
-										//System.out.println(menuButton.getSelectionModel().getSelectedItem());
+										// System.out.println(menuButton.getSelectionModel().getSelectedItem());
 										List<String> removalList = FXCollections.observableArrayList();
 										final List<String> fontSelections = menuButton.getItems();
 										for (String item : fontSelections) {
@@ -1098,13 +1187,13 @@ public class EditDoc {
 					}
 					prp.close();
 					rs.close();
-					//System.out.print(KeyValue.trim());
+					// System.out.print(KeyValue.trim());
 				}
-				//Локальные параметры
+				// Локальные параметры
 				String KeyValueLoc = "";
 				{
-					PreparedStatement prp = conn
-							.prepareStatement("select * from NT_TEMP_LIST_PARAM_DOC t where PRM_TMP_ID = ? AND DOC_ID = ?");
+					PreparedStatement prp = conn.prepareStatement(
+							"select * from NT_TEMP_LIST_PARAM_DOC t where PRM_TMP_ID = ? AND DOC_ID = ?");
 					prp.setLong(1, val.getID());
 					prp.setLong(2, NT_DOC.getID());
 					ResultSet rs = prp.executeQuery();
@@ -1146,9 +1235,9 @@ public class EditDoc {
 					}
 					prp.close();
 					rs.close();
-					System.out.print("~~~~~~loc_prm~~~~~\r\n"+KeyValueLoc.trim());
+					System.out.print("~~~~~~loc_prm~~~~~\r\n" + KeyValueLoc.trim());
 				}
-				
+
 				CallableStatement cls = conn.prepareCall("{call NT_PKG.EDIT_DOC_HTML(?,?,?,?,?,?)}");
 				cls.registerOutParameter(1, Types.VARCHAR);
 				cls.setLong(2, NT_DOC.getID());
@@ -1242,7 +1331,8 @@ public class EditDoc {
 		try {
 			NT_SCANS val = NT_SCANS.getSelectionModel().getSelectedItem();
 			if (val != null) {
-				PreparedStatement prp = conn.prepareStatement("select sc_file ,SC_TYPE,substr(SC_FILE_NAME, 1, instr(SC_FILE_NAME, '.') - 1) fname from nt_scans where sc_id=?");
+				PreparedStatement prp = conn.prepareStatement(
+						"select sc_file ,SC_TYPE,substr(SC_FILE_NAME, 1, instr(SC_FILE_NAME, '.') - 1) fname from nt_scans where sc_id=?");
 				prp.setLong(1, val.getSC_ID());
 				ResultSet rs = prp.executeQuery();
 				String file_format = "";
@@ -1259,20 +1349,20 @@ public class EditDoc {
 				int blobLength = (int) blob.length();
 				byte[] blobAsBytes = blob.getBytes(1, blobLength);
 
-				//InputStream targetStream = new ByteArrayInputStream(blobAsBytes);
+				// InputStream targetStream = new ByteArrayInputStream(blobAsBytes);
 
-				File tempFile = File.createTempFile(fname, "."+file_format,
+				File tempFile = File.createTempFile(fname, "." + file_format,
 						new File(System.getenv("MJ_PATH") + "OutReports"));
-			    OutputStream outStream = new FileOutputStream(tempFile);
-			    outStream.write(blobAsBytes);
-			    
+				OutputStream outStream = new FileOutputStream(tempFile);
+				outStream.write(blobAsBytes);
+
 				tempFile.deleteOnExit();
 				if (Desktop.isDesktopSupported()) {
 					Desktop.getDesktop().open(tempFile);
 				}
 				outStream.close();
 				blob.free();
-				
+
 //				// build a component controller
 //				SwingController controller = new SwingController();
 //				SwingViewBuilder factory = new SwingViewBuilder(controller);
@@ -1291,7 +1381,7 @@ public class EditDoc {
 //				// show the component
 //				applicationFrame.pack();
 //				applicationFrame.setVisible(true);
-				
+
 			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -1413,7 +1503,7 @@ public class EditDoc {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Выбрать файл");
 			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("PDF документ", "*.pdf"),
-					new ExtensionFilter("JPEG документ", "*.jpeg"),new ExtensionFilter("JPG документ", "*.jpg"));
+					new ExtensionFilter("JPEG документ", "*.jpeg"), new ExtensionFilter("JPG документ", "*.jpg"));
 			File file = fileChooser.showOpenDialog(null);
 			if (file != null) {
 				String name = file.getName();
@@ -1452,7 +1542,7 @@ public class EditDoc {
 			TYPE_NAME.setDisable(true);
 			EditLocalParam.setVisible(false);
 			DeleteLocalParam.setVisible(false);
-			
+
 			param.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
 				TreeItem<NT_TEMP_LIST_PARAM> val = param.getSelectionModel().getSelectedItem();
 				if (val != null) {
@@ -1465,7 +1555,7 @@ public class EditDoc {
 					}
 				}
 			});
-			
+
 			LocalParams.setVisible(true);
 			fillTree();
 			// Двойной щелчок по строке для открытия документа
@@ -1592,8 +1682,14 @@ public class EditDoc {
 				Init();
 			});
 			InitScans();
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+
+	public static Node componentsPane;
+
+	@FXML
+	private SplitPane MainSplitPane;
 }
