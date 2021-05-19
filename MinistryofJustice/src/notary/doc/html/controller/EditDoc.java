@@ -836,15 +836,15 @@ public class EditDoc {
 									boolean check = true;
 									ToolBar bar = (ToolBar) node;
 									ToolBar BarBottom = (ToolBar) NodeNottom;
-//									ObservableList<Node> list = bar.getItems();
-//									for (Node item : list) {
-//										if (item.getId() != null && 
-//												(item.getId().equals("ViewParams") |
-//														item.getId().equals("HideParams") )) {
-//											check = false;
-//											break;
-//										}
-//									}
+									ObservableList<Node> list = bar.getItems();
+									for (Node item : list) {
+										if (item.getId() != null && 
+												(item.getId().equals("ViewParams") |
+														item.getId().equals("HideParams") )) {
+											check = false;
+											break;
+										}
+									}
 
 									///////
 									hideImageNodesMatching(node, Pattern.compile(".*(Color).*"), 0);
@@ -855,7 +855,7 @@ public class EditDoc {
 											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.TABLE);
 											icon.setFontSmoothingType(FontSmoothingType.LCD);
 											icon.setSize("18");
-											Button myButton = new Button("Таблица", icon);
+											Button myButton = new Button("", icon);
 											myButton.setId("TableAdd");
 
 											BarBottom.getItems().add(myButton);
@@ -871,7 +871,7 @@ public class EditDoc {
 											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
 											icon.setFontSmoothingType(FontSmoothingType.LCD);
 											icon.setSize("18");
-											Button myButton = new Button("Показать параметры", icon);
+											Button myButton = new Button("", icon);
 											myButton.setId("ViewParams");
 
 											bar.getItems().add(myButton);
@@ -898,7 +898,7 @@ public class EditDoc {
 													FontAwesomeIcon.EYE_SLASH);
 											icon.setFontSmoothingType(FontSmoothingType.LCD);
 											icon.setSize("18");
-											Button myButton = new Button("Скрыть параметры", icon);
+											Button myButton = new Button("", icon);
 											myButton.setId("HideParams");
 
 											bar.getItems().add(myButton);

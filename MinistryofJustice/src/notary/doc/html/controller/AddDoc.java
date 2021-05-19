@@ -105,15 +105,15 @@ public class AddDoc {
 			}
 		}
 	}
-	
-    @FXML
-    private Button EditLocalParam;
 
-    @FXML
-    private Button DeleteLocalParam;
-    
-    @FXML
-    private MenuButton LocalParams;
+	@FXML
+	private Button EditLocalParam;
+
+	@FXML
+	private Button DeleteLocalParam;
+
+	@FXML
+	private MenuButton LocalParams;
 	@FXML
 	private TreeTableView<NT_TEMP_LIST_PARAM> param;
 
@@ -132,16 +132,16 @@ public class AddDoc {
 
 	public NT_TEMP_LIST_PARAM prm;
 
-    @FXML
-    void EditLocalParam(ActionEvent event) {
+	@FXML
+	void EditLocalParam(ActionEvent event) {
 
-    }
+	}
 
-    @FXML
-    void DeleteLocalParam(ActionEvent event) {
+	@FXML
+	void DeleteLocalParam(ActionEvent event) {
 
-    }
-    
+	}
+
 	@SuppressWarnings("unchecked")
 	void fillTree() {
 		try {
@@ -223,7 +223,7 @@ public class AddDoc {
 			}
 		}
 	}
-	
+
 	public void setStatus(Boolean status) {
 		this.status.set(status);
 	}
@@ -402,35 +402,97 @@ public class AddDoc {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
+
 	int ellen = 0;
 	public static Node componentsPane;
 
 	@FXML
 	private SplitPane MainSplitPane;
+
+	/**
+	 * 
+	 */
+	private void InsertTable() {
+		try {
+//			Stage stage = new Stage();
+//			Stage stage_ = (Stage) EditLocalParam.getScene().getWindow();
+//
+//			FXMLLoader loader = new FXMLLoader();
+//			loader.setLocation(getClass().getResource("/notary/doc/html/view/TableManage.fxml"));
+//
+//			TableManage controller = new TableManage();
+//			loader.setController(controller);
+//
+//			Parent root = loader.load();
+//			stage.setScene(new Scene(root));
+//			stage.getIcons().add(new Image("/icon.png"));
+//			stage.setTitle("Вставить таблицу");
+//			stage.initOwner(stage_);
+//			stage.setResizable(true);
+//			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+//				@Override
+//				public void handle(WindowEvent paramT) {
+//					if (controller.getTbl() != null) {
+//						String InsTbl = DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "TBL");
+//						InsTbl = InsTbl.replace("$cell$", controller.getTbl().getColumnCnt()).replace("$row$",
+//								controller.getTbl().getRowCnt());
+//						WebView webView = (WebView) HtmlEditor.lookup("WebView");
+//						webView.getEngine().executeScript(InsTbl);
+//					}
+//				}
+//			});
+//			stage.show();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	void TYPE_NAME(ActionEvent event) {
 		try {
 			{
 				Node node = HtmlEditor.lookup(".top-toolbar");
+				Node NodeNottom = HtmlEditor.lookup(".bottom-toolbar");
 				if (node instanceof ToolBar) {
 					boolean check = true;
 					ToolBar bar = (ToolBar) node;
-//					ObservableList<Node> list = bar.getItems();
-//					for (Node item : list) {
-//						if (item.getId() != null && item.getId().equals("MJAddParam")) {
-//							check = false;
-//							break;
-//						}
-//					}
+					ToolBar BarBottom = (ToolBar) NodeNottom;
+					ObservableList<Node> list = bar.getItems();
+					for (Node item : list) {
+						if (item.getId() != null
+								&& (item.getId().equals("ViewParams") | item.getId().equals("HideParams"))) {
+							check = false;
+							break;
+						}
+					}
+
+					///////
 					hideImageNodesMatching(node, Pattern.compile(".*(Color).*"), 0);
+					///////
 					if (check) {
+						// table
+						{
+							FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.TABLE);
+							icon.setFontSmoothingType(FontSmoothingType.LCD);
+							icon.setSize("18");
+							Button myButton = new Button("", icon);
+							myButton.setId("TableAdd");
+
+							BarBottom.getItems().add(myButton);
+							myButton.setOnAction(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent arg0) {
+									InsertTable();
+								}
+							});
+						}
 						// show
 						{
 							FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
 							icon.setFontSmoothingType(FontSmoothingType.LCD);
 							icon.setSize("18");
-							Button myButton = new Button("Показать параметры", icon);
+							Button myButton = new Button("", icon);
 							myButton.setId("ViewParams");
 
 							bar.getItems().add(myButton);
@@ -453,11 +515,10 @@ public class AddDoc {
 						}
 						// hide
 						{
-							FontAwesomeIconView icon = new FontAwesomeIconView(
-									FontAwesomeIcon.EYE_SLASH);
+							FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE_SLASH);
 							icon.setFontSmoothingType(FontSmoothingType.LCD);
 							icon.setSize("18");
-							Button myButton = new Button("Скрыть параметры", icon);
+							Button myButton = new Button("", icon);
 							myButton.setId("HideParams");
 
 							bar.getItems().add(myButton);
@@ -588,7 +649,7 @@ public class AddDoc {
 								// текущие поля на странице
 								String json = (String) webView.getEngine().executeScript("writeJSONfile()");
 								V_NT_TEMP_LIST vals = TYPE_NAME.getSelectionModel().getSelectedItem();
-								if (vals.getREP_QUERY().length() > 10 ) {
+								if (vals.getREP_QUERY().length() > 10) {
 									PreparedStatement prp = conn.prepareStatement(vals.getREP_QUERY());
 									ResultSet rs = prp.executeQuery();
 									while (rs.next()) {
@@ -807,8 +868,9 @@ public class AddDoc {
 
 	@FXML
 	void PlusDocParamCliRef() {
-		
+
 	}
+
 	// limits the fonts a user can select from in the html editor.
 	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman");
 
@@ -818,7 +880,7 @@ public class AddDoc {
 		try {
 			EditLocalParam.setVisible(false);
 			DeleteLocalParam.setVisible(false);
-			
+
 			LocalParams.setVisible(false);
 //			Platform.runLater(new Runnable() {
 //				@Override
@@ -827,7 +889,7 @@ public class AddDoc {
 //				}
 //			});
 
-            // Двойной щелчок по строке для открытия документа
+			// Двойной щелчок по строке для открытия документа
 			param.setRowFactory(tv -> {
 				TreeTableRow<NT_TEMP_LIST_PARAM> row = new TreeTableRow<>();
 				row.setOnMouseClicked(event -> {
@@ -894,8 +956,8 @@ public class AddDoc {
 			PrintToolbar.setDisable(true);
 			Tabs.getTabs().remove(scans);
 
-			//HtmlEditor.getStyleClass().add("mylistview");
-			//HtmlEditor.getStylesheets().add("/ScrPane.css");
+			// HtmlEditor.getStyleClass().add("mylistview");
+			// HtmlEditor.getStylesheets().add("/ScrPane.css");
 			dbConnect();
 			DBUtil.RunProcess(conn);
 			{
