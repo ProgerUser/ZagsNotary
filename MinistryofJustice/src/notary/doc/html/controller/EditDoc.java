@@ -32,12 +32,19 @@ import java.util.regex.Pattern;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import javax.swing.JPopupMenu;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.inet.jortho.FileUserDictionary;
+import com.inet.jortho.SpellChecker;
+import com.inet.jortho.SpellCheckerOptions;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -103,6 +110,8 @@ import notary.doc.html.model.NT_SCANS;
 import notary.doc.html.model.V_NT_DOC;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
+import test.JorthoExample;
+import test.SpellCheckExampleUi;
 
 public class EditDoc {
 
@@ -782,7 +791,7 @@ public class EditDoc {
 				Node button = imageView.getParent().getParent().getParent();
 				button.setVisible(false);
 				button.setManaged(false);
-				System.out.println(url);
+				//System.out.println(url);
 			}
 		}
 		if (node instanceof Parent) {
@@ -790,6 +799,18 @@ public class EditDoc {
 				hideImageNodesMatching(child, imageNamePattern, depth + 1);
 			}
 		}
+	}
+
+	public static String br2nl(String html) {
+		if (html == null)
+			return html;
+		Document document = Jsoup.parse(html);
+		document.outputSettings(new Document.OutputSettings().prettyPrint(false));// makes html() preserve linebreaks
+																					// and spacing
+		document.select("br").append("\\n");
+		// document.select("p").prepend("\\n\\n");
+		String s = document.html().replaceAll("\\\\n", "\n").replace("&nbsp;", "");
+		return Jsoup.clean(s, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -838,9 +859,8 @@ public class EditDoc {
 									ToolBar BarBottom = (ToolBar) NodeNottom;
 									ObservableList<Node> list = bar.getItems();
 									for (Node item : list) {
-										if (item.getId() != null && 
-												(item.getId().equals("ViewParams") |
-														item.getId().equals("HideParams") )) {
+										if (item.getId() != null && (item.getId().equals("ViewParams")
+												| item.getId().equals("HideParams"))) {
 											check = false;
 											break;
 										}
@@ -850,7 +870,56 @@ public class EditDoc {
 									hideImageNodesMatching(node, Pattern.compile(".*(Color).*"), 0);
 									///////
 									if (check) {
-										//table
+										// spell checker
+										{
+											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.FONT);
+											icon.setFontSmoothingType(FontSmoothingType.LCD);
+											icon.setSize("18");
+											Button myButton = new Button("", icon);
+											myButton.setId("TableAdd");
+
+											BarBottom.getItems().add(myButton);
+											myButton.setOnAction(new EventHandler<ActionEvent>() {
+												@Override
+												public void handle(ActionEvent arg0) {
+													///
+//													HTMLEditor editor = HtmlEditor;
+													//
+													WebView webView = (WebView) HtmlEditor.lookup("WebView");
+//													webView.getEngine()
+//															.executeScript(DBUtil.SqlFromProp(
+//																	"/notary/doc/html/controller/Sql.properties",
+//																	"HTMLInputToSpan"));
+													///
+													String html = (String) webView.getEngine()
+															.executeScript("document.documentElement.outerHTML");
+													String text = br2nl(html);
+													///
+													SpellCheckExampleUi ui = new SpellCheckExampleUi();
+													ui.getTextComponent().setText(text);
+
+													SpellChecker.setUserDictionaryProvider(new FileUserDictionary());
+
+													SpellChecker.registerDictionaries(
+															JorthoExample.class.getResource("/dictionary_ru.ortho"),
+															"ru");
+													SpellChecker.register(ui.getTextComponent());
+
+													SpellCheckerOptions sco = new SpellCheckerOptions();
+													sco.setCaseSensitive(true);
+													sco.setSuggestionsLimitMenu(15);
+
+													JPopupMenu popup = SpellChecker.createCheckerPopup(sco);
+													ui.getTextComponent().setComponentPopupMenu(popup);
+
+													ui.showUI();
+													//
+													// HtmlEditor = editor;
+													// Init();
+												}
+											});
+										}
+										// table
 										{
 											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.TABLE);
 											icon.setFontSmoothingType(FontSmoothingType.LCD);
@@ -862,7 +931,7 @@ public class EditDoc {
 											myButton.setOnAction(new EventHandler<ActionEvent>() {
 												@Override
 												public void handle(ActionEvent arg0) {
-													
+
 												}
 											});
 										}
