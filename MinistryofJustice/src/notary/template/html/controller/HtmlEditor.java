@@ -19,6 +19,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
@@ -80,7 +81,7 @@ public class HtmlEditor {
 		try {
 			WebView webView = (WebView) VisHtml.lookup("WebView");
 			String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
-			CodeHtml.replaceText(0, 0, html);
+			CodeHtml.replaceText(0, CodeHtml.getLength(), html);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -172,6 +173,8 @@ public class HtmlEditor {
 	private SplitPane Split;
 
 	private CodeArea CodeHtml;
+    @FXML
+    private Tab HtmlTag;
 
 	@FXML
 	private void initialize() {
@@ -180,7 +183,9 @@ public class HtmlEditor {
 //			InputStream is = getClass().getResourceAsStream("/notary/doc/old/controller/Test.html");
 //			String text = IOUtils.toString(is, StandardCharsets.UTF_8.name());
 
-			Split.getItems().add(new StackPane(new VirtualizedScrollPane<>(CodeHtml)));
+			//Split.getItems().add(new StackPane(new VirtualizedScrollPane<>(CodeHtml)));
+			
+			HtmlTag.setContent(new StackPane(new VirtualizedScrollPane<>(CodeHtml)));
 
 			CodeHtml.setParagraphGraphicFactory(LineNumberFactory.get(CodeHtml));
 			CodeHtml.textProperty().addListener((obs, oldText, newText) -> {
@@ -192,6 +197,7 @@ public class HtmlEditor {
 				public void run() {
 					WebView webView = (WebView) VisHtml.lookup("WebView");
 					webView.getEngine().loadContent(val_list.getHTML_TEMP());
+					webView.setPrefHeight(5000);
 				}
 			});
 

@@ -10,3 +10,6 @@ mvn install:install-file -Dfile=C:\xTableView.jar -DgroupId=xTableView -Dartifac
 mvn install:install-file -Dfile=C:\syntheticaFX.jar -DgroupId=syntheticaFX -DartifactId=syntheticaFX -Dversion=1.0 -Dpackaging=jar
 mvn install:install-file -Dfile=C:\syntheticaFXStandard.jar -DgroupId=syntheticaFXStandard -DartifactId=syntheticaFXStandard -Dversion=1.0 -Dpackaging=jar
 
+
+
+mvn install:install-file -Dfile=C:\jortho.jar -DgroupId=jortho -DartifactId=jortho -Dversion=1.0 -Dpackaging=jar

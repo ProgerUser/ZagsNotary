@@ -96,7 +96,7 @@ public class AddDoc {
 				Node button = imageView.getParent().getParent().getParent();
 				button.setVisible(false);
 				button.setManaged(false);
-				System.out.println(url);
+				//System.out.println(url);
 			}
 		}
 		if (node instanceof Parent) {
@@ -156,7 +156,7 @@ public class AddDoc {
 					JsonStr = JsonStr + entry.getKey() + "|~|~|" + entry.getValue() + "\r\n";
 				}
 
-				System.out.println(JsonStr);
+				//System.out.println(JsonStr);
 
 				roots = new TreeItem<>("Root");
 				Map<Long, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();

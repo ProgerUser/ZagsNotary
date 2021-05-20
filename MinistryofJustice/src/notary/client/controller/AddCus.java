@@ -2366,7 +2366,7 @@ public class AddCus {
 			NT_CLI_TYPES val = CUS_TYPE.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				setUnDisable();
-				if (val.getCODE().equals(2)) {
+				if (val.getCODE().equals(2l)) {
 
 					CCUSLAST_NAME.setText("");
 					CCUSFIRST_NAME.setText("");
