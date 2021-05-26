@@ -1,23 +1,14 @@
 package mj.app.main;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
 import com.jyloo.syntheticafx.DesktopPane;
-import com.jyloo.syntheticafx.Dialog;
-import com.jyloo.syntheticafx.Frame;
-import com.jyloo.syntheticafx.InternalFrame;
 import com.jyloo.syntheticafx.RootPane;
 import com.jyloo.syntheticafx.SyntheticaFX;
 
@@ -29,8 +20,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -44,7 +33,6 @@ import mj.audit.trigger.AuList;
 import mj.audit.view.Audit;
 import mj.courts.CourtList;
 import mj.dbutil.DBUtil;
-import mj.dbutil.ScheduledTask;
 import mj.doc.adoptoin.AdoptList;
 import mj.doc.birthact.BirthList;
 import mj.doc.cus.CusList;
@@ -58,14 +46,11 @@ import mj.doc.updname.UpdNameList;
 import mj.init.Settings;
 import mj.init.Setup;
 import mj.log.LogList;
-import mj.msg.Msg;
 import mj.notary.NotaryList;
 import mj.otd.OtdList;
 import mj.project.PRJ_FLS_FLDR;
-import mj.report.FRREPRunner;
 import mj.report.Report;
 import mj.users.UsrC;
-import mj.widgets.DbTracer;
 import mj.zags.ZagsList;
 import notary.doc.html.controller.NotaryDocList;
 import notary.template.html.controller.NtTemplate;
@@ -642,11 +627,13 @@ public class Main extends Application {
 		}
 	}
 
+
 	public static void OTD() {
 		try {
 			if (OtdWin) {
 				OtdWin = false;
 				Stage stage = new Stage();
+
 				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/otd/OtdList.fxml"));
 
 				OtdList controller = new OtdList();
@@ -659,6 +646,7 @@ public class Main extends Application {
 //				System.setProperty("prism.lcdtext", "false");
 //				jMetro.setScene(scene);
 				stage.setScene(scene);
+
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("Список отделении");
 				stage.initOwner(primaryStage);
@@ -1071,6 +1059,12 @@ public class Main extends Application {
 				UsrC controller = loader.getController();
 				Scene scene = new Scene(new RootPane(stage, root, true, true));
 				// stage.setScene(new Scene(root));
+
+//				Style startingStyle = Style.LIGHT;
+//				JMetro jMetro = new JMetro(startingStyle);
+//				System.setProperty("prism.lcdtext", "false");
+//				jMetro.setScene(scene);
+
 				stage.setScene(scene);
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override

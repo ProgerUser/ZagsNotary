@@ -292,7 +292,14 @@ public class NotaryDocList {
 				loader.setController(controller);
 
 				Parent root = loader.load();
-				stage.setScene(new Scene(root));
+				
+				Scene scene = new Scene(root);
+//				Style startingStyle = Style.LIGHT;
+//				JMetro jMetro = new JMetro(startingStyle);
+//				System.setProperty("prism.lcdtext", "false");
+//				jMetro.setScene(scene);
+				
+				stage.setScene(scene);
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("Добавить новую запись");
 				stage.initOwner(stage_);
@@ -333,7 +340,15 @@ public class NotaryDocList {
 					loader.setController(controller);
 
 					Parent root = loader.load();
-					stage.setScene(new Scene(root));
+					
+					Scene scene = new Scene(root);
+					
+//					Style startingStyle = Style.LIGHT;
+//					JMetro jMetro = new JMetro(startingStyle);
+//					System.setProperty("prism.lcdtext", "false");
+//					jMetro.setScene(scene);
+					
+					stage.setScene(scene);
 					stage.getIcons().add(new Image("/icon.png"));
 					stage.setTitle("Редактировать: " + val.getDOC_NUMBER());
 					stage.initOwner(stage_);

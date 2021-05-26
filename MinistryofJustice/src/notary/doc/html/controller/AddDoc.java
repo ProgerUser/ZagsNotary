@@ -321,7 +321,14 @@ public class AddDoc {
 					loader.setController(controller);
 
 					Parent root = loader.load();
-					stage.setScene(new Scene(root));
+					
+					Scene scene = new Scene(root);
+//					Style startingStyle = Style.LIGHT;
+//					JMetro jMetro = new JMetro(startingStyle);
+//					System.setProperty("prism.lcdtext", "false");
+//					jMetro.setScene(scene);
+					
+					stage.setScene(scene);
 					stage.getIcons().add(new Image("/icon.png"));
 					stage.setTitle("Список");
 					stage.initOwner(stage_);

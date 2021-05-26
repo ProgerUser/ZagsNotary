@@ -649,6 +649,7 @@ public class CusList {
 						Parent root = loader.load();
 						
 						Scene scene = new Scene(root);
+						
 //						Style startingStyle = Style.LIGHT;
 //						JMetro jMetro = new JMetro(startingStyle);
 //						System.setProperty("prism.lcdtext", "false");

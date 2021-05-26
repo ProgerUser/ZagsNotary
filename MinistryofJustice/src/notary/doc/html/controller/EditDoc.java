@@ -99,6 +99,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
+import jfxtras.styles.jmetro.JMetro;
+import jfxtras.styles.jmetro.Style;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
@@ -196,7 +198,14 @@ public class EditDoc {
 				loader.setController(controller);
 
 				Parent root = loader.load();
-				stage.setScene(new Scene(root));
+				
+				Scene scene = new Scene(root);
+				Style startingStyle = Style.LIGHT;
+				JMetro jMetro = new JMetro(startingStyle);
+				System.setProperty("prism.lcdtext", "false");
+				jMetro.setScene(scene);
+				
+				stage.setScene(scene);
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("Редактировать параметр");
 				stage.initOwner(stage_);
@@ -463,7 +472,14 @@ public class EditDoc {
 					loader.setController(controller);
 
 					Parent root = loader.load();
-					stage.setScene(new Scene(root));
+					
+					Scene scene = new Scene(root);
+//					Style startingStyle = Style.LIGHT;
+//					JMetro jMetro = new JMetro(startingStyle);
+//					System.setProperty("prism.lcdtext", "false");
+//					jMetro.setScene(scene);
+					
+					stage.setScene(scene);
 					stage.getIcons().add(new Image("/icon.png"));
 					stage.setTitle("Список");
 					stage.initOwner(stage_);
@@ -563,7 +579,14 @@ public class EditDoc {
 				loader.setController(controller);
 
 				Parent root = loader.load();
-				stage.setScene(new Scene(root));
+				
+				Scene scene = new Scene(root);
+				Style startingStyle = Style.LIGHT;
+				JMetro jMetro = new JMetro(startingStyle);
+				System.setProperty("prism.lcdtext", "false");
+				jMetro.setScene(scene);
+				
+				stage.setScene(scene);
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("");
 				stage.initOwner(stage_);
