@@ -66,6 +66,7 @@ import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -90,6 +91,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.FontSmoothingType;
+import javafx.scene.transform.Scale;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -198,13 +200,13 @@ public class EditDoc {
 				loader.setController(controller);
 
 				Parent root = loader.load();
-				
+
 				Scene scene = new Scene(root);
 				Style startingStyle = Style.LIGHT;
 				JMetro jMetro = new JMetro(startingStyle);
 				System.setProperty("prism.lcdtext", "false");
 				jMetro.setScene(scene);
-				
+
 				stage.setScene(scene);
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("Редактировать параметр");
@@ -374,6 +376,7 @@ public class EditDoc {
 		}
 	}
 
+
 	@FXML
 	void Print(ActionEvent event) {
 		try {
@@ -392,23 +395,34 @@ public class EditDoc {
 				}
 			}
 
-			PrinterJob job = null;
-			try {
-				// clear margins
-				PageLayout layout = pdfPrinter.// .createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
-												// MarginType.EQUAL);
-						createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 0 /* lMargin */, 0 /* rMargin */,
-								0 /* tMargin */, 0 /* bMargin */);
-				job = PrinterJob.createPrinterJob(pdfPrinter);
-				job.getJobSettings().setPageLayout(layout);
-				job.getJobSettings().setJobName("Sample Printing Job");
-				webView.getEngine().print(job);
-				job.endJob();
-			} finally {
-				if (job != null) {
-					job.endJob();
+//			PrinterJob job = null;
+//			try {
+//				// clear margins
+//				PageLayout layout = pdfPrinter.// .createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
+//												// MarginType.EQUAL);
+//						createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 0 /* lMargin */, 0 /* rMargin */,
+//								0 /* tMargin */, 0 /* bMargin */);
+//				job = PrinterJob.createPrinterJob(pdfPrinter);
+//				job.getJobSettings().setPageLayout(layout);
+//				job.getJobSettings().setJobName("Sample Printing Job");
+//				webView.getEngine().print(job);
+//				job.endJob();
+//			} finally {
+//				if (job != null) {
+//					job.endJob();
+//				}
+//			}
+
+			{
+				PrinterJob job2 = PrinterJob.createPrinterJob();
+				if (job2 != null && job2.showPrintDialog(null) ){
+					boolean success = job2.printPage(webView);
+					if (success) {
+						job2.endJob();
+					}
 				}
 			}
+
 			// Заново заполнить страницу
 			Init();
 		} catch (Exception e) {
@@ -472,13 +486,13 @@ public class EditDoc {
 					loader.setController(controller);
 
 					Parent root = loader.load();
-					
+
 					Scene scene = new Scene(root);
 //					Style startingStyle = Style.LIGHT;
 //					JMetro jMetro = new JMetro(startingStyle);
 //					System.setProperty("prism.lcdtext", "false");
 //					jMetro.setScene(scene);
-					
+
 					stage.setScene(scene);
 					stage.getIcons().add(new Image("/icon.png"));
 					stage.setTitle("Список");
@@ -579,13 +593,13 @@ public class EditDoc {
 				loader.setController(controller);
 
 				Parent root = loader.load();
-				
+
 				Scene scene = new Scene(root);
 				Style startingStyle = Style.LIGHT;
 				JMetro jMetro = new JMetro(startingStyle);
 				System.setProperty("prism.lcdtext", "false");
 				jMetro.setScene(scene);
-				
+
 				stage.setScene(scene);
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("");
@@ -814,7 +828,7 @@ public class EditDoc {
 				Node button = imageView.getParent().getParent().getParent();
 				button.setVisible(false);
 				button.setManaged(false);
-				//System.out.println(url);
+				// System.out.println(url);
 			}
 		}
 		if (node instanceof Parent) {
