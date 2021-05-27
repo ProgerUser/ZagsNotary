@@ -8,15 +8,15 @@ import java.util.List;
  */
 public class RuleBean {
 	/**
-	 * РїРѕР»
+	 * пол
 	 */
 	private String gender;
 	/**
-	 * РїСЂР°РІРёР»Р° РёР·РјРµРЅРµРЅРёСЏ
+	 * правила изменения
 	 */
 	private List<String> mods;
 	/**
-	 * РїСЂР°РІРёР»Р° РЅР°С…РѕР¶РґРµРЅРёСЏ
+	 * правила нахождения
 	 */
 	private List<String> test;
 

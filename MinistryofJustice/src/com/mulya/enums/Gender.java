@@ -1,7 +1,7 @@
 package com.mulya.enums;
 
 /**
- * РџРѕР»
+ * Пол
  */
 public enum Gender {
 	MALE("male"),

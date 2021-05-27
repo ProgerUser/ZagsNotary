@@ -6,15 +6,15 @@ package com.mulya.beans;
  */
 public class RootBean {
 	/**
-	 * Р¤Р°РјРёР»РёСЏ
+	 * Фамилия
 	 */
 	private NameBean lastname;
 	/**
-	 * РРјСЏ
+	 * Имя
 	 */
 	private NameBean firstname;
 	/**
-	 * РћС‚С‡РµСЃС‚РІРѕ
+	 * Отчество
 	 */
 	private NameBean middlename;
 

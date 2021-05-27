@@ -3,16 +3,15 @@ package com.mulya.beans;
 import java.util.List;
 
 /**
- * User: mulya
- * Date: 25/09/2014
+ * User: mulya Date: 25/09/2014
  */
 public class NameBean {
 	/**
-	 * РСЃРєР»СЋС‡РµРЅРёСЏ
+	 * Исключения
 	 */
 	private List<RuleBean> exceptions;
 	/**
-	 * РџСЂР°РІРёР»Р°
+	 * Правила
 	 */
 	private List<RuleBean> suffixes;
 

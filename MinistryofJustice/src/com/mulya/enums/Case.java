@@ -1,7 +1,7 @@
 package com.mulya.enums;
 
 /**
- * РџР°РґРµР¶
+ * Падеж
  */
 public enum Case {
 

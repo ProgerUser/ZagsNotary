@@ -11,6 +11,10 @@ import org.apache.log4j.xml.DOMConfigurator;
 import com.jyloo.syntheticafx.DesktopPane;
 import com.jyloo.syntheticafx.RootPane;
 import com.jyloo.syntheticafx.SyntheticaFX;
+import com.mulya.PetrovichDeclinationMaker;
+import com.mulya.enums.Case;
+import com.mulya.enums.Gender;
+import com.mulya.enums.NamePart;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -178,7 +182,11 @@ public class Main extends Application {
 				System.exit(0);
 			});
 			/* Максимально растянуть окно */
-			// primaryStage.setMaximized(true);
+			// primaryStage.setMaximized(true);PetrovichDeclinationMaker maker =
+			// PetrovichDeclinationMaker.getInstance();
+			System.out.println(Petrovich.Lname("MALE", "Пачулия"));
+			System.out.println(Petrovich.Fname("MALE", "Саид"));
+			System.out.println(Petrovich.Mname("MALE", "Викторович"));
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -626,7 +634,6 @@ public class Main extends Application {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-
 
 	public static void OTD() {
 		try {

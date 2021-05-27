@@ -1,7 +1,7 @@
 package com.mulya.enums;
 
 /**
- * Р§Р°СЃС‚СЊ РёРјРµРЅРё
+ * Часть имени
  */
 public enum NamePart {
 
