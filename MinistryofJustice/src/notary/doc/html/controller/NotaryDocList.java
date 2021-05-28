@@ -688,7 +688,6 @@ public class NotaryDocList {
 	void Init() {
 		try {
 			PreparedStatement prepStmt = conn.prepareStatement("select * from V_NT_DOC");
-
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<V_NT_DOC> dlist = FXCollections.observableArrayList();
 			while (rs.next()) {
