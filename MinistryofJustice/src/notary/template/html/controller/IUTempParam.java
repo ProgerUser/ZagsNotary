@@ -208,7 +208,7 @@ public class IUTempParam {
 				Parent root = loader.load();
 				stage.setScene(new Scene(root));
 				stage.getIcons().add(new Image("/icon.png"));
-				stage.setTitle("Редактировать");
+				stage.setTitle("Редактировать: "+tmp.getPRM_R_NAME());
 				stage.initOwner(stage_);
 				stage.setResizable(true);
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {

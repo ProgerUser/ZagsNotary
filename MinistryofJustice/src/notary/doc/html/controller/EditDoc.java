@@ -923,6 +923,40 @@ public class EditDoc {
 		return Jsoup.clean(s, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));
 	}
 
+	/**
+	 * Спрятать параметры
+	 */
+	void HideParam() {
+		ellen = 0;
+		MainSplitPane.getItems().forEach(item -> {
+			ellen++;
+//			System.out.println(item.getId());
+		});
+
+		if (ellen == 2) {
+			componentsPane = MainSplitPane.getItems().get(1);
+			MainSplitPane.getItems().remove(componentsPane);
+		}	
+	}
+	
+	/**
+	 * Показать параметры
+	 */
+	void ShowParam() {
+		ellen = 0;
+		MainSplitPane.getItems().forEach(item -> {
+			ellen++;
+//			System.out.println(item.getId());
+		});
+
+		if (componentsPane != null & ellen == 1) {
+			MainSplitPane.getItems().add(1, componentsPane);
+			MainSplitPane.setDividerPosition(0, 0.8);
+		}
+		MainSplitPane.getItems().toArray();	
+	}
+	
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	void Init() {
 		try {
@@ -1061,17 +1095,19 @@ public class EditDoc {
 											myButton.setOnAction(new EventHandler<ActionEvent>() {
 												@Override
 												public void handle(ActionEvent arg0) {
-													ellen = 0;
-													MainSplitPane.getItems().forEach(item -> {
-														ellen++;
-//														System.out.println(item.getId());
-													});
 
-													if (componentsPane != null & ellen == 1) {
-														MainSplitPane.getItems().add(1, componentsPane);
-														MainSplitPane.setDividerPosition(0, 0.8);
-													}
-													MainSplitPane.getItems().toArray();
+													ShowParam();
+//													ellen = 0;
+//													MainSplitPane.getItems().forEach(item -> {
+//														ellen++;
+////														System.out.println(item.getId());
+//													});
+//
+//													if (componentsPane != null & ellen == 1) {
+//														MainSplitPane.getItems().add(1, componentsPane);
+//														MainSplitPane.setDividerPosition(0, 0.8);
+//													}
+//													MainSplitPane.getItems().toArray();
 												}
 											});
 										}
@@ -1089,16 +1125,17 @@ public class EditDoc {
 											myButton.setOnAction(new EventHandler<ActionEvent>() {
 												@Override
 												public void handle(ActionEvent arg0) {
-													ellen = 0;
-													MainSplitPane.getItems().forEach(item -> {
-														ellen++;
-//														System.out.println(item.getId());
-													});
-
-													if (ellen == 2) {
-														componentsPane = MainSplitPane.getItems().get(1);
-														MainSplitPane.getItems().remove(componentsPane);
-													}
+//													ellen = 0;
+//													MainSplitPane.getItems().forEach(item -> {
+//														ellen++;
+////														System.out.println(item.getId());
+//													});
+//
+//													if (ellen == 2) {
+//														componentsPane = MainSplitPane.getItems().get(1);
+//														MainSplitPane.getItems().remove(componentsPane);
+//													}
+													HideParam();
 												}
 											});
 										}
