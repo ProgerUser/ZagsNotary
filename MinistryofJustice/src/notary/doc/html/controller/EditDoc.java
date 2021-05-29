@@ -26,15 +26,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
 import javax.swing.JPopupMenu;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
@@ -102,8 +97,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
-import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.Style;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
@@ -203,10 +196,10 @@ public class EditDoc {
 				Parent root = loader.load();
 
 				Scene scene = new Scene(root);
-				Style startingStyle = Style.LIGHT;
-				JMetro jMetro = new JMetro(startingStyle);
-				System.setProperty("prism.lcdtext", "false");
-				jMetro.setScene(scene);
+//				Style startingStyle = Style.LIGHT;
+//				JMetro jMetro = new JMetro(startingStyle);
+//				System.setProperty("prism.lcdtext", "false");
+//				jMetro.setScene(scene);
 
 				stage.setScene(scene);
 				stage.getIcons().add(new Image("/icon.png"));
@@ -403,7 +396,7 @@ public class EditDoc {
 		return builder.toString();
 	}
 
-	void Print(ComboBox<String> PRINTER_ID) {
+	void Print() {
 		try {
 			Save(true);
 			// при печати сохраним содержимое страницы
@@ -412,34 +405,38 @@ public class EditDoc {
 			webView.getEngine()
 					.executeScript(DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "HTMLInputToSpan"));
 
-			Printer pdfPrinter = null;
-			Iterator<Printer> iter = Printer.getAllPrinters().iterator();
-			while (iter.hasNext()) {
-				Printer printer = iter.next();
-				if (printer.getName().equals(PRINTER_ID.getValue())) {
-					pdfPrinter = printer;
-				}
-			}
+//			Printer pdfPrinter = null;
+//			Iterator<Printer> iter = Printer.getAllPrinters().iterator();
+//			while (iter.hasNext()) {
+//				Printer printer = iter.next();
+//				if (printer.getName().equals(PRINTER_ID.getValue())) {
+//					pdfPrinter = printer;
+//				}
+//			}
 
 			Stage stage = (Stage) HtmlEditor.getScene().getWindow();
 
 			PrinterJob job = null;
 			try {
-				// clear margins
-				PageLayout layout = pdfPrinter.// .createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
-												// MarginType.EQUAL);
-						createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50 /* lMargin */, 25 /* rMargin */,
-								25 /* tMargin */, 25 /* bMargin */);
-
-				job = PrinterJob.createPrinterJob(pdfPrinter);
-				job.getJobSettings().setPageLayout(layout);
-				job.getJobSettings().setJobName(NT_DOC.getID() + ". " + transliterate(NT_DOC.getTYPE_NODE()));
-
+				job = PrinterJob.createPrinterJob();
 				// Show the print setup dialog
-				boolean proceed = job.showPageSetupDialog(stage);
+				boolean proceed = job.showPrintDialog(stage);
 
 				if (proceed) {
-					webView.getEngine().print(job);
+
+					Printer pdfPrinter = job.getPrinter();
+					PageLayout layout = pdfPrinter.createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
+							50 /* lMargin */, 25 /* rMargin */, 25 /* tMargin */, 25 /* bMargin */);
+					job = PrinterJob.createPrinterJob(pdfPrinter);
+					job.getJobSettings().setPageLayout(layout);
+					job.getJobSettings().setJobName(NT_DOC.getID() + ". " + transliterate(NT_DOC.getTYPE_NODE()));
+
+					// Show the print setup dialog
+					boolean proceed2 = job.showPageSetupDialog(stage);
+
+					if (proceed2) {
+						webView.getEngine().print(job);
+					}
 				}
 
 				job.endJob();
@@ -671,10 +668,10 @@ public class EditDoc {
 				Parent root = loader.load();
 
 				Scene scene = new Scene(root);
-				Style startingStyle = Style.LIGHT;
-				JMetro jMetro = new JMetro(startingStyle);
-				System.setProperty("prism.lcdtext", "false");
-				jMetro.setScene(scene);
+//				Style startingStyle = Style.LIGHT;
+//				JMetro jMetro = new JMetro(startingStyle);
+//				System.setProperty("prism.lcdtext", "false");
+//				jMetro.setScene(scene);
 
 				stage.setScene(scene);
 				stage.getIcons().add(new Image("/icon.png"));
@@ -1106,28 +1103,28 @@ public class EditDoc {
 											});
 										}
 
-										// printers
-										{
-											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PRINT);
-											icon.setFontSmoothingType(FontSmoothingType.LCD);
-											icon.setSize("18");
-											Separator sep = new Separator();
-											ComboBox<String> printer = new ComboBox<String>();
-											printer.setId("ListPrinters");
-											PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null,
-													null);
-
-											PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-											for (PrintService printers : printServices) {
-												printer.getItems().add(printers.getName());
-											}
-											printer.getSelectionModel().select(service.getName());
-
-											printer.setTooltip(new Tooltip("Список принтеров"));
-
-											bar.getItems().add(sep);
-											bar.getItems().add(printer);
-										}
+//										// printers
+//										{
+//											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PRINT);
+//											icon.setFontSmoothingType(FontSmoothingType.LCD);
+//											icon.setSize("18");
+//											Separator sep = new Separator();
+//											ComboBox<String> printer = new ComboBox<String>();
+//											printer.setId("ListPrinters");
+//											PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null,
+//													null);
+//
+//											PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+//											for (PrintService printers : printServices) {
+//												printer.getItems().add(printers.getName());
+//											}
+//											printer.getSelectionModel().select(service.getName());
+//
+//											printer.setTooltip(new Tooltip("Список принтеров"));
+//
+//											bar.getItems().add(sep);
+//											bar.getItems().add(printer);
+//										}
 
 										// print
 										{
@@ -1145,15 +1142,15 @@ public class EditDoc {
 											myButton.setOnAction(new EventHandler<ActionEvent>() {
 												@Override
 												public void handle(ActionEvent arg0) {
-													ComboBox<String> printer = null;
-													for (Node item : list) {
-														if (item.getId() != null
-																&& item.getId().equals("ListPrinters")) {
-															printer = (ComboBox<String>) item;
-															break;
-														}
-													}
-													Print(printer);
+//													ComboBox<String> printer = null;
+//													for (Node item : list) {
+//														if (item.getId() != null
+//																&& item.getId().equals("ListPrinters")) {
+//															printer = (ComboBox<String>) item;
+//															break;
+//														}
+//													}
+													Print();
 												}
 											});
 										}

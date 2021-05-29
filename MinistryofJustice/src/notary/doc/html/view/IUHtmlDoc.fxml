@@ -37,31 +37,6 @@
                <content>
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
                      <children>
-                        <ToolBar fx:id="PrintToolbar">
-                           <items>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Принтер" />
-                              <ComboBox fx:id="PRINTER_ID" prefWidth="350.0" />
-                              <Separator orientation="VERTICAL" />
-                              <Button fx:id="PrintBtn" mnemonicParsing="false" onAction="#Print">
-                                 <graphic>
-                                    <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PRINT" size="17" />
-                                 </graphic>
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                                 <tooltip>
-                                    <Tooltip text="Печать">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Tooltip>
-                                 </tooltip>
-                              </Button>
-                           </items>
-                           <VBox.margin>
-                              <Insets left="-5.0" right="-5.0" top="-5.0" />
-                           </VBox.margin>
-                        </ToolBar>
                         <SplitPane fx:id="MainSplitPane" dividerPositions="0.8" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                            <items>
                               <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
