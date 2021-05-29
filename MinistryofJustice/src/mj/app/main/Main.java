@@ -184,9 +184,9 @@ public class Main extends Application {
 			/* Максимально растянуть окно */
 			// primaryStage.setMaximized(true);PetrovichDeclinationMaker maker =
 			// PetrovichDeclinationMaker.getInstance();
-			System.out.println(Petrovich.Lname("MALE", "Пачулия"));
-			System.out.println(Petrovich.Fname("MALE", "Саид"));
-			System.out.println(Petrovich.Mname("MALE", "Викторович"));
+//			System.out.println(Petrovich.Lname("MALE", "Пачулия"));
+//			System.out.println(Petrovich.Fname("MALE", "Саид"));
+//			System.out.println(Petrovich.Mname("MALE", "Викторович"));
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -66,7 +67,6 @@ import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -74,12 +74,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.Separator;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableRow;
@@ -91,7 +93,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.FontSmoothingType;
-import javafx.scene.transform.Scale;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -376,16 +377,41 @@ public class EditDoc {
 		}
 	}
 
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-	@FXML
-	void Print(ActionEvent event) {
+	public static String transliterate(String message) {
+		char[] abcCyr = { ' ', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р',
+				'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я', 'А', 'Б', 'В', 'Г', 'Д', 'Е',
+				'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ',
+				'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+				'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+				'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+		String[] abcLat = { " ", "a", "b", "v", "g", "d", "e", "e", "zh", "z", "i", "y", "k", "l", "m", "n", "o", "p",
+				"r", "s", "t", "u", "f", "h", "ts", "ch", "sh", "sch", "", "i", "", "e", "ju", "ja", "A", "B", "V", "G",
+				"D", "E", "E", "Zh", "Z", "I", "Y", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "F", "H", "Ts",
+				"Ch", "Sh", "Sch", "", "I", "", "E", "Ju", "Ja", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
+				"l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F",
+				"G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < message.length(); i++) {
+			for (int x = 0; x < abcCyr.length; x++) {
+				if (message.charAt(i) == abcCyr[x]) {
+					builder.append(abcLat[x]);
+				}
+			}
+		}
+		return builder.toString();
+	}
+
+	void Print(ComboBox<String> PRINTER_ID) {
 		try {
-			// при печати сохраним содержимое страницы
 			Save(true);
+			// при печати сохраним содержимое страницы
 			// Замена input = span
 			WebView webView = (WebView) HtmlEditor.lookup("WebView");
 			webView.getEngine()
 					.executeScript(DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "HTMLInputToSpan"));
+
 			Printer pdfPrinter = null;
 			Iterator<Printer> iter = Printer.getAllPrinters().iterator();
 			while (iter.hasNext()) {
@@ -395,36 +421,86 @@ public class EditDoc {
 				}
 			}
 
-//			PrinterJob job = null;
-//			try {
-//				// clear margins
-//				PageLayout layout = pdfPrinter.// .createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
-//												// MarginType.EQUAL);
-//						createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 0 /* lMargin */, 0 /* rMargin */,
-//								0 /* tMargin */, 0 /* bMargin */);
-//				job = PrinterJob.createPrinterJob(pdfPrinter);
-//				job.getJobSettings().setPageLayout(layout);
-//				job.getJobSettings().setJobName("Sample Printing Job");
-//				webView.getEngine().print(job);
-//				job.endJob();
-//			} finally {
-//				if (job != null) {
-//					job.endJob();
-//				}
-//			}
+			Stage stage = (Stage) HtmlEditor.getScene().getWindow();
 
-			{
-				PrinterJob job2 = PrinterJob.createPrinterJob();
-				if (job2 != null && job2.showPrintDialog(null) ){
-					boolean success = job2.printPage(webView);
-					if (success) {
-						job2.endJob();
-					}
+			PrinterJob job = null;
+			try {
+				// clear margins
+				PageLayout layout = pdfPrinter.// .createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
+												// MarginType.EQUAL);
+						createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50 /* lMargin */, 25 /* rMargin */,
+								25 /* tMargin */, 25 /* bMargin */);
+
+				job = PrinterJob.createPrinterJob(pdfPrinter);
+				job.getJobSettings().setPageLayout(layout);
+				job.getJobSettings().setJobName(NT_DOC.getID() + ". " + transliterate(NT_DOC.getTYPE_NODE()));
+
+				// Show the print setup dialog
+				boolean proceed = job.showPageSetupDialog(stage);
+
+				if (proceed) {
+					webView.getEngine().print(job);
+				}
+
+				job.endJob();
+			} finally {
+				if (job != null) {
+					job.endJob();
 				}
 			}
 
+//			{
+//				PrinterJob job2 = PrinterJob.createPrinterJob();
+//				if (job2 != null && job2.showPrintDialog(null) ){
+//					boolean success = job2.printPage(webView);
+//					if (success) {
+//						job2.endJob();
+//					}
+//				}
+//			}
+			RefrNtObj();
 			// Заново заполнить страницу
 			Init();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	@FXML
+	void Print(ActionEvent event) {
+		try {
+			// Print(PRINTER_ID);
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	void RefrNtObj() {
+		try {
+			PreparedStatement prepStmt = conn.prepareStatement("select * from V_NT_DOC where id = ?");
+			prepStmt.setLong(1, NT_DOC.getID());
+			ResultSet rs = prepStmt.executeQuery();
+			V_NT_DOC list = null;
+			while (rs.next()) {
+				list = new V_NT_DOC();
+				if (rs.getClob("HTML_DOCUMENT") != null) {
+					list.setHTML_DOCUMENT(new ConvConst().ClobToString(rs.getClob("HTML_DOCUMENT")));
+				}
+				list.setCR_TIME(rs.getString("CR_TIME"));
+				list.setID(rs.getLong("ID"));
+				list.setOPER(rs.getString("OPER"));
+				list.setNOTARY(rs.getLong("NOTARY"));
+				list.setNT_TYPE(rs.getLong("NT_TYPE"));
+				list.setCR_DATE((rs.getDate("CR_DATE") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
+						: null);
+				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+				list.setTYPE_NAME(rs.getString("TYPE_NAME"));
+				list.setTYPE_NODE(rs.getString("TYPE_NODE"));
+			}
+			prepStmt.close();
+			rs.close();
+			NT_DOC = list;
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -558,8 +634,8 @@ public class EditDoc {
 		}
 	}
 
-	@FXML
-	private ComboBox<String> PRINTER_ID;
+//	@FXML
+//	private ComboBox<String> PRINTER_ID;
 
 	@SuppressWarnings({ "unchecked" })
 	void AddParam() {
@@ -914,6 +990,7 @@ public class EditDoc {
 											icon.setSize("18");
 											Button myButton = new Button("", icon);
 											myButton.setId("TableAdd");
+											myButton.setTooltip(new Tooltip("Проверка правописания"));
 
 											BarBottom.getItems().add(myButton);
 											myButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -923,10 +1000,11 @@ public class EditDoc {
 //													HTMLEditor editor = HtmlEditor;
 													//
 													WebView webView = (WebView) HtmlEditor.lookup("WebView");
-//													webView.getEngine()
-//															.executeScript(DBUtil.SqlFromProp(
-//																	"/notary/doc/html/controller/Sql.properties",
-//																	"HTMLInputToSpan"));
+													webView.getEngine()
+															.executeScript(DBUtil.SqlFromProp(
+																	"/notary/doc/html/controller/Sql.properties",
+																	"HTMLInputToSpan"));
+
 													///
 													String html = (String) webView.getEngine()
 															.executeScript("document.documentElement.outerHTML");
@@ -951,8 +1029,8 @@ public class EditDoc {
 
 													ui.showUI();
 													//
-													// HtmlEditor = editor;
-													// Init();
+													RefrNtObj();
+													Init();
 												}
 											});
 										}
@@ -963,6 +1041,7 @@ public class EditDoc {
 											icon.setSize("18");
 											Button myButton = new Button("", icon);
 											myButton.setId("TableAdd");
+											myButton.setTooltip(new Tooltip("Таблица"));
 
 											BarBottom.getItems().add(myButton);
 											myButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -979,6 +1058,7 @@ public class EditDoc {
 											icon.setSize("18");
 											Button myButton = new Button("", icon);
 											myButton.setId("ViewParams");
+											myButton.setTooltip(new Tooltip("Показать параметры"));
 
 											bar.getItems().add(myButton);
 											myButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -1006,6 +1086,7 @@ public class EditDoc {
 											icon.setSize("18");
 											Button myButton = new Button("", icon);
 											myButton.setId("HideParams");
+											myButton.setTooltip(new Tooltip("Спрятать параметры"));
 
 											bar.getItems().add(myButton);
 											myButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -1024,6 +1105,59 @@ public class EditDoc {
 												}
 											});
 										}
+
+										// printers
+										{
+											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PRINT);
+											icon.setFontSmoothingType(FontSmoothingType.LCD);
+											icon.setSize("18");
+											Separator sep = new Separator();
+											ComboBox<String> printer = new ComboBox<String>();
+											printer.setId("ListPrinters");
+											PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null,
+													null);
+
+											PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+											for (PrintService printers : printServices) {
+												printer.getItems().add(printers.getName());
+											}
+											printer.getSelectionModel().select(service.getName());
+
+											printer.setTooltip(new Tooltip("Список принтеров"));
+
+											bar.getItems().add(sep);
+											bar.getItems().add(printer);
+										}
+
+										// print
+										{
+											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PRINT);
+											icon.setFontSmoothingType(FontSmoothingType.LCD);
+											icon.setSize("18");
+											Separator sep = new Separator();
+											Button myButton = new Button("", icon);
+											myButton.setId("Print");
+											myButton.setTooltip(new Tooltip("Печать"));
+
+											bar.getItems().add(sep);
+
+											bar.getItems().add(myButton);
+											myButton.setOnAction(new EventHandler<ActionEvent>() {
+												@Override
+												public void handle(ActionEvent arg0) {
+													ComboBox<String> printer = null;
+													for (Node item : list) {
+														if (item.getId() != null
+																&& item.getId().equals("ListPrinters")) {
+															printer = (ComboBox<String>) item;
+															break;
+														}
+													}
+													Print(printer);
+												}
+											});
+										}
+
 									}
 								}
 								// modify font selections.
@@ -1371,7 +1505,6 @@ public class EditDoc {
 					if (!OnPrint) {
 						onclose();
 					}
-					onclose();
 				} else {
 					conn.rollback();
 					setStatus(false);
@@ -1735,13 +1868,13 @@ public class EditDoc {
 			SC_OPER.setCellValueFactory(cellData -> cellData.getValue().SC_OPERProperty());
 			SC_DATE.setCellValueFactory(cellData -> ((NT_SCANS) cellData.getValue()).SC_DATEProperty());
 
-			PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-
-			PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-			for (PrintService printer : printServices) {
-				PRINTER_ID.getItems().add(printer.getName());
-			}
-			PRINTER_ID.getSelectionModel().select(service.getName());
+//			PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+//
+//			PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+//			for (PrintService printer : printServices) {
+//				PRINTER_ID.getItems().add(printer.getName());
+//			}
+//			PRINTER_ID.getSelectionModel().select(service.getName());
 
 //			HtmlEditor.getStyleClass().add("mylistview");
 //			HtmlEditor.getStylesheets().add("/ScrPane.css");

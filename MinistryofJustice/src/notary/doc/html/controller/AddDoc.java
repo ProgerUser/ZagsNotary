@@ -238,11 +238,11 @@ public class AddDoc {
 	@FXML
 	private ComboBox<V_NT_TEMP_LIST> TYPE_NAME;
 
-	@FXML
-	private Button PrintBtn;
+//	@FXML
+//	private Button PrintBtn;
 
-	@FXML
-	private ToolBar PrintToolbar;
+//	@FXML
+//	private ToolBar PrintToolbar;
 
 	@FXML
 	void CENCEL(ActionEvent event) {
@@ -960,7 +960,7 @@ public class AddDoc {
 				}
 			});
 
-			PrintToolbar.setDisable(true);
+			//PrintToolbar.setDisable(true);
 			Tabs.getTabs().remove(scans);
 
 			// HtmlEditor.getStyleClass().add("mylistview");
