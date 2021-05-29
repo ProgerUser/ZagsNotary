@@ -1,7 +1,6 @@
 package com.mulya;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import com.fasterxml.jackson.jr.ob.JSON;
 import com.mulya.beans.NameBean;
@@ -28,7 +27,7 @@ public class PetrovichDeclinationMaker {
 
 	private PetrovichDeclinationMaker(String pathToRulesFile) throws IOException {
 
-		InputStream is = getClass().getResourceAsStream(DEFAULT_PATH_TO_RULES_FILE);
+//		InputStream is = getClass().getResourceAsStream(DEFAULT_PATH_TO_RULES_FILE);
 		// rootRulesBean = JSON.std.beanFrom(RootBean.class, new
 		// String(Files.readAllBytes(Paths.get(pathToRulesFile))));
 		// rootRulesBean = JSON.std.beanFrom(RootBean.class, IOUtils.toString(is,
