@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import javafx.application.Platform;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleLongProperty;
@@ -92,7 +93,7 @@ public class IUTempParam {
 				public void handle(WindowEvent paramT) {
 					controller.dbDisconnect();
 					NT_TEMP_LIST_PARAM.setRoot(null);
-					fillTree();
+					fillTree(-1);
 				}
 			});
 			stage.showAndWait();
@@ -155,7 +156,7 @@ public class IUTempParam {
 							delete.executeUpdate();
 							delete.close();
 							conn.commit();
-							fillTree();
+							fillTree(-1);
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
@@ -193,6 +194,7 @@ public class IUTempParam {
 	void Edit() {
 		try {
 			NT_TEMP_LIST_PARAM tmp = NT_TEMP_LIST_PARAM.getSelectionModel().getSelectedItem().getValue();
+			int getind = NT_TEMP_LIST_PARAM.getSelectionModel().getSelectedIndex();
 			if (tmp != null) {
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) NT_TEMP_LIST_PARAM.getScene().getWindow();
@@ -208,14 +210,14 @@ public class IUTempParam {
 				Parent root = loader.load();
 				stage.setScene(new Scene(root));
 				stage.getIcons().add(new Image("/icon.png"));
-				stage.setTitle("Редактировать: "+tmp.getPRM_R_NAME());
+				stage.setTitle("Редактировать: " + tmp.getPRM_R_NAME());
 				stage.initOwner(stage_);
 				stage.setResizable(true);
 				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent paramT) {
 						controller.dbDisconnect();
-						fillTree();
+						fillTree(getind);
 					}
 				});
 				stage.showAndWait();
@@ -244,7 +246,7 @@ public class IUTempParam {
 	TreeItem root = new TreeItem<>("Root");
 
 	@SuppressWarnings("unchecked")
-	void fillTree() {
+	void fillTree(int val) {
 		root = new TreeItem<>("Root");
 		Map<Long, TreeItem<NT_TEMP_LIST_PARAM>> itemById = new HashMap<>();
 		Map<Long, Long> parents = new HashMap<>();
@@ -282,34 +284,48 @@ public class IUTempParam {
 			for (Map.Entry<Long, TreeItem<NT_TEMP_LIST_PARAM>> entry : itemById.entrySet()) {
 				Long key = entry.getKey();
 				Long parent = parents.get(key);
-				//System.out.println("parent=" + parent + ";" + "key=" + key);
+				// System.out.println("parent=" + parent + ";" + "key=" + key);
 				if (parent.equals(key)) {
-					//System.out.println("(parent.equals(key))=" + entry.getValue().getValue().getPRM_ID());
+					// System.out.println("(parent.equals(key))=" +
+					// entry.getValue().getValue().getPRM_ID());
 					// in case the root item points to itself, this is it
 					root = entry.getValue();
 				} else {
 					TreeItem<NT_TEMP_LIST_PARAM> parentItem = itemById.get(parent);
 					if (parentItem == null) {
-						//System.out.println("(parentItem == null)=" + entry.getValue().getValue().getPRM_ID());
+						// System.out.println("(parentItem == null)=" +
+						// entry.getValue().getValue().getPRM_ID());
 						// in case the root item has no parent in the resultset, this is it
 						root.getChildren().add(entry.getValue());
 					} else {
-						//System.out.println("else=" + entry.getValue().getValue().getPRM_ID());
+						// System.out.println("else=" + entry.getValue().getValue().getPRM_ID());
 						// add to parent treeitem
 						parentItem.getChildren().add(entry.getValue());
 						// root.getChildren().add(parentItem);
 					}
 				}
 			}
-			
+
 			NT_TEMP_LIST_PARAM.setRoot(root);
 			NT_TEMP_LIST_PARAM.setShowRoot(false);
 			expandTreeView(root);
+
+			if (val >= 0) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						NT_TEMP_LIST_PARAM.requestFocus();
+						NT_TEMP_LIST_PARAM.getSelectionModel().select(val);
+						NT_TEMP_LIST_PARAM.getFocusModel().focus(val);
+					}
+				});
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void expandTreeView(TreeItem<NT_TEMP_LIST_PARAM> item) {
 		if (item != null && !item.isLeaf()) {
 			item.setExpanded(true);
@@ -318,7 +334,7 @@ public class IUTempParam {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
@@ -365,7 +381,7 @@ public class IUTempParam {
 //			Platform.runLater(() -> {
 //				
 //			});
-			fillTree();
+			fillTree(-1);
 			// Двойной щелчок по строке для открытия документа
 			NT_TEMP_LIST_PARAM.setRowFactory(tv -> {
 				TreeTableRow<NT_TEMP_LIST_PARAM> row = new TreeTableRow<>();

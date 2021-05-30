@@ -1,16 +1,23 @@
 package notary.doc.html.controller;
 
+import java.io.File;
+import java.net.URL;
+
 import org.apache.log4j.Logger;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
 import mj.msg.Msg;
-import mj.util.ConvConst;
+import netscape.javascript.JSObject;
 import notary.doc.html.model.TableModel;
 
 public class TableManage {
@@ -19,8 +26,11 @@ public class TableManage {
 		Main.logger = Logger.getLogger(getClass());
 	}
 
+	@FXML
+	private WebView webView;
+
 	void onclose() {
-		Stage stage = (Stage) columns.getScene().getWindow();
+		Stage stage = (Stage) webView.getScene().getWindow();
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
@@ -31,13 +41,7 @@ public class TableManage {
 	}
 
 	@FXML
-	private TextField columns;
-
-	@FXML
-	private TextField rows;
-
-	@FXML
-	void cencel(ActionEvent event) {
+	void CENCEL(ActionEvent event) {
 		try {
 			onclose();
 		} catch (Exception e) {
@@ -45,47 +49,54 @@ public class TableManage {
 		}
 	}
 
-	Integer column;
-	Integer row;
+	private String HTML = null;
 
 	@FXML
-	void ok(ActionEvent event) {
+	void OK(ActionEvent event) {
 		try {
-			if (!columns.getText().equals("")) {
-				column = Integer.valueOf(columns.getText());
-				if (column > 0) {
-					///////////////////
-					if (!rows.getText().equals("")) {
-						row = Integer.valueOf(rows.getText());
-						if (row > 0) {
-							tbl = new TableModel();
-							tbl.setColumnCnt(columns.getText());
-							tbl.setRowCnt(rows.getText());
-							onclose();
-						} else {
-							Msg.Message("Кол-во строк должно быть больше 0");
-						}
-					} else {
-						Msg.Message("Введите кол-во строк");
-					}
-					///////////
-				} else {
-					Msg.Message("Кол-во столбцов должно быть больше 0");
-				}
-			} else {
-				Msg.Message("Введите кол-во столбцов");
-			}
+			String mes = (String) webView.getEngine().executeScript(
+					"function getTextArea() {\n" + "var myContent = tinymce.get(\"txtarea\").getContent();\n"
+							+ "return myContent;\n" + "\n" + "}\n" + "getTextArea();");
+			HTML = mes;
+			//System.out.println(mes);
+			onclose();
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	public String getHTML() {
+		return HTML;
+	}
+
+	public class JsToJava {
+		public void run(String id) {
+
+		}
+
+		public void Text(String Mes) {
+			Msg.Message(Mes);
 		}
 	}
 
 	@FXML
 	private void initialize() {
 		try {
-
-			new ConvConst().OnlyNumber(columns);
-			new ConvConst().OnlyNumber(rows);
+			final WebEngine webEngine = webView.getEngine();
+			final JsToJava jstojava = new JsToJava();
+			URL url = new File(System.getenv("MJ_PATH") + "HTML/TBLED/generic-tables.html").toURI().toURL();
+			webEngine.load(url.toExternalForm());
+			webView.setContextMenuEnabled(false);
+			webEngine.setJavaScriptEnabled(true);
+			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+				@Override
+				public void changed(ObservableValue<? extends State> observableValue, State oldState, State newState) {
+					if (newState == State.SUCCEEDED) {
+						JSObject window = (JSObject) webEngine.executeScript("window");
+						window.setMember("invoke", jstojava);
+					}
+				}
+			});
 
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);

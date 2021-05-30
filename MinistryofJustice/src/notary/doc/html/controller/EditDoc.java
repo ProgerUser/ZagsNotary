@@ -429,7 +429,9 @@ public class EditDoc {
 							50 /* lMargin */, 25 /* rMargin */, 25 /* tMargin */, 25 /* bMargin */);
 					job = PrinterJob.createPrinterJob(pdfPrinter);
 					job.getJobSettings().setPageLayout(layout);
-					job.getJobSettings().setJobName(NT_DOC.getID() + ". " + transliterate(NT_DOC.getTYPE_NODE()));
+
+					job.getJobSettings().setJobName(NT_DOC.getID() + ". "
+							+ ((NT_DOC.getTYPE_NODE() != null) ? transliterate(NT_DOC.getTYPE_NODE()) : ""));
 
 					// Show the print setup dialog
 					boolean proceed2 = job.showPageSetupDialog(stage);
@@ -936,9 +938,9 @@ public class EditDoc {
 		if (ellen == 2) {
 			componentsPane = MainSplitPane.getItems().get(1);
 			MainSplitPane.getItems().remove(componentsPane);
-		}	
+		}
 	}
-	
+
 	/**
 	 * Показать параметры
 	 */
@@ -953,10 +955,90 @@ public class EditDoc {
 			MainSplitPane.getItems().add(1, componentsPane);
 			MainSplitPane.setDividerPosition(0, 0.8);
 		}
-		MainSplitPane.getItems().toArray();	
+		MainSplitPane.getItems().toArray();
 	}
-	
-	
+
+	private void tblManage() {
+		try {
+			Stage stage = new Stage();
+			Stage stage_ = (Stage) DelSelType.getScene().getWindow();
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/notary/doc/html/view/TableManage.fxml"));
+
+			TableManage controller = new TableManage();
+			loader.setController(controller);
+
+			Parent root = loader.load();
+
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Редактор таблиц");
+			stage.initOwner(stage_);
+			stage.setResizable(true);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+					if (controller.getHTML() != null) {
+			
+						String content = controller.getHTML();
+					    //content = content.replace("'", "\\'");
+					    //content = content.replace("class=\"source-tableeditor\"", "");
+					    content = content.replace(System.getProperty("line.separator"), "\\n");
+					    content = content.replace("\n", "\\n");
+					    content = content.replace("\r", "\\n");
+					    
+					    String js = 
+								 "function pasteHtmlAtCaret(html) {\n"
+								 + "    var sel, range;\n"
+								 + "    if (window.getSelection) {\n"
+								 + "        // IE9 and non-IE\n"
+								 + "        sel = window.getSelection();\n"
+								 + "        if (sel.getRangeAt && sel.rangeCount) {\n"
+								 + "            range = sel.getRangeAt(0);\n"
+								 + "            range.deleteContents();\n"
+								 + "\n"
+								 + "            // Range.createContextualFragment() would be useful here but is\n"
+								 + "            // non-standard and not supported in all browsers (IE9, for one)\n"
+								 + "            var el = document.createElement(\"div\");\n"
+								 + "            el.innerHTML = html;\n"
+								 + "            var frag = document.createDocumentFragment(), node, lastNode;\n"
+								 + "            while ( (node = el.firstChild) ) {\n"
+								 + "                lastNode = frag.appendChild(node);\n"
+								 + "            }\n"
+								 + "            range.insertNode(frag);\n"
+								 + "            \n"
+								 + "            // Preserve the selection\n"
+								 + "            if (lastNode) {\n"
+								 + "                range = range.cloneRange();\n"
+								 + "                range.setStartAfter(lastNode);\n"
+								 + "                range.collapse(true);\n"
+								 + "                sel.removeAllRanges();\n"
+								 + "                sel.addRange(range);\n"
+								 + "            }\n"
+								 + "        }\n"
+								 + "    } else if (document.selection && document.selection.type != \"Control\") {\n"
+								 + "        // IE < 9\n"
+								 + "        document.selection.createRange().pasteHTML(html);\n"
+								 + "    }\n"
+								 + "}\n"
+								 + "pasteHtmlAtCaret('"+content+"');";
+					    
+					    System.out.println(js);
+					    
+						WebView webView = (WebView) HtmlEditor.lookup("WebView");
+						webView.getEngine().executeScript(js);
+					}
+				}
+			});
+			stage.show();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	void Init() {
 		try {
@@ -1078,7 +1160,7 @@ public class EditDoc {
 											myButton.setOnAction(new EventHandler<ActionEvent>() {
 												@Override
 												public void handle(ActionEvent arg0) {
-
+													tblManage();
 												}
 											});
 										}
