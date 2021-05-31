@@ -16,10 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,6 +41,7 @@ import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -77,6 +78,10 @@ public class NtTemplate {
 
 	TreeItem<NT_TEMPLATE> root = null;
 
+	int seltemp;
+	
+	int SelTbl;
+	
 	@FXML
 	void AddTemp(ActionEvent event) {
 		try {
@@ -104,6 +109,29 @@ public class NtTemplate {
 					public void handle(WindowEvent paramT) {
 						controller.dbDisconnect();
 						fillTreeNtTemp();
+						
+						NT_TEMPLATE.getSelectionModel().select(seltemp);
+						
+						
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMPLATE.requestFocus();
+								NT_TEMPLATE.getSelectionModel().select(seltemp);
+								NT_TEMPLATE.scrollTo(seltemp);
+							}
+						});
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMP_LIST.requestFocus();
+								NT_TEMP_LIST.getSelectionModel().select(SelTbl);
+								NT_TEMP_LIST.scrollTo(SelTbl);
+							}
+						});
+						
 					}
 				});
 				stage.showAndWait();
@@ -139,6 +167,24 @@ public class NtTemplate {
 					public void handle(WindowEvent paramT) {
 						controller.dbDisconnect();
 						fillTreeNtTemp();
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMPLATE.requestFocus();
+								NT_TEMPLATE.getSelectionModel().select(seltemp);
+								NT_TEMPLATE.scrollTo(seltemp);
+							}
+						});
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMP_LIST.requestFocus();
+								NT_TEMP_LIST.getSelectionModel().select(SelTbl);
+								NT_TEMP_LIST.scrollTo(SelTbl);
+							}
+						});
 					}
 				});
 				stage.showAndWait();
@@ -234,6 +280,24 @@ public class NtTemplate {
 					public void handle(WindowEvent paramT) {
 						controller.dbDisconnect();
 						fillTreeNtTemp();
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMPLATE.requestFocus();
+								NT_TEMPLATE.getSelectionModel().select(seltemp);
+								NT_TEMPLATE.scrollTo(seltemp);
+							}
+						});
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMP_LIST.requestFocus();
+								NT_TEMP_LIST.getSelectionModel().select(SelTbl);
+								NT_TEMP_LIST.scrollTo(SelTbl);
+							}
+						});
 					}
 				});
 				stage.showAndWait();
@@ -396,7 +460,7 @@ public class NtTemplate {
 				loader.setLocation(getClass().getResource("/notary/template/html/view/IUNtTemplate.fxml"));
 
 				IUTemplate controller = new IUTemplate();
-				controller.setID(tmp.getValue().getNT_ID(),tmp.getValue());
+				controller.setID(tmp.getValue().getNT_ID(), tmp.getValue());
 				controller.setNAME(tmp.getValue().getNT_NAME());
 				controller.settype("U");
 				loader.setController(controller);
@@ -412,6 +476,24 @@ public class NtTemplate {
 					public void handle(WindowEvent paramT) {
 						controller.dbDisconnect();
 						fillTreeNtTemp();
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMPLATE.requestFocus();
+								NT_TEMPLATE.getSelectionModel().select(seltemp);
+								NT_TEMPLATE.scrollTo(seltemp);
+							}
+						});
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMP_LIST.requestFocus();
+								NT_TEMP_LIST.getSelectionModel().select(SelTbl);
+								NT_TEMP_LIST.scrollTo(SelTbl);
+							}
+						});
 					}
 				});
 				stage.showAndWait();
@@ -448,6 +530,24 @@ public class NtTemplate {
 						controller.dbDisconnect();
 						fillTreeNtTemp();
 						Init(tmp.getPARENT());
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMPLATE.requestFocus();
+								NT_TEMPLATE.getSelectionModel().select(seltemp);
+								NT_TEMPLATE.scrollTo(seltemp);
+							}
+						});
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMP_LIST.requestFocus();
+								NT_TEMP_LIST.getSelectionModel().select(SelTbl);
+								NT_TEMP_LIST.scrollTo(SelTbl);
+							}
+						});
 					}
 				});
 				stage.show();
@@ -491,6 +591,24 @@ public class NtTemplate {
 					@Override
 					public void handle(WindowEvent paramT) {
 						Init(tmp.getPARENT());
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMPLATE.requestFocus();
+								NT_TEMPLATE.getSelectionModel().select(seltemp);
+								NT_TEMPLATE.scrollTo(seltemp);
+							}
+						});
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMP_LIST.requestFocus();
+								NT_TEMP_LIST.getSelectionModel().select(SelTbl);
+								NT_TEMP_LIST.scrollTo(SelTbl);
+							}
+						});
 					}
 				});
 				stage.show();
@@ -546,8 +664,8 @@ public class NtTemplate {
 				} else {
 					// add to parent tree item
 					parentItem.getChildren().add(entry.getValue());
+					parentItem.setExpanded(true);
 				}
-				// parentItem.setExpanded(true);
 			}
 		}
 		root.setExpanded(true);
@@ -593,7 +711,7 @@ public class NtTemplate {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	/**
 	 * Клонировать шаблон
 	 * 
@@ -633,11 +751,12 @@ public class NtTemplate {
 			} else {
 				Msg.Message("Выберите шаблон!");
 			}
+			NT_TEMPLATE.getSelectionModel().select(seltemp);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-    
+
 	@FXML
 	private void initialize() {
 		try {
@@ -675,11 +794,34 @@ public class NtTemplate {
 				TableRow<NT_TEMP_LIST> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
-						EditTempList();
+						//EditTempList();
+						Html(null);
 					}
 				});
 				return row;
 			});
+
+			NT_TEMPLATE.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent mouseEvent) {
+					if (mouseEvent.getClickCount() == 2) {
+						EditTemp(null);
+					}
+				}
+			});
+
+			NT_TEMPLATE.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+				if (newSelection != null) {
+					seltemp = NT_TEMPLATE.getSelectionModel().getSelectedIndex();
+				}
+			});
+			
+			NT_TEMP_LIST.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+				if (newSelection != null) {
+					SelTbl = NT_TEMP_LIST.getSelectionModel().getSelectedIndex();
+				}
+			});
+
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}

@@ -68,6 +68,9 @@ public class IUTempParam {
 	@FXML
 	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> REQUIRED;
 
+	int SelTbl;
+	int FSelTbl;
+	
 	@FXML
 	void Add(ActionEvent event) {
 		try {
@@ -94,6 +97,16 @@ public class IUTempParam {
 					controller.dbDisconnect();
 					NT_TEMP_LIST_PARAM.setRoot(null);
 					fillTree(-1);
+					
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							NT_TEMP_LIST_PARAM.requestFocus();
+							NT_TEMP_LIST_PARAM.getSelectionModel().select(SelTbl);
+							//NT_TEMP_LIST_PARAM.getFocusModel().focus(FSelTbl);
+							NT_TEMP_LIST_PARAM.scrollTo(SelTbl);
+						}
+					});
 				}
 			});
 			stage.showAndWait();
@@ -218,6 +231,16 @@ public class IUTempParam {
 					public void handle(WindowEvent paramT) {
 						controller.dbDisconnect();
 						fillTree(getind);
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								NT_TEMP_LIST_PARAM.requestFocus();
+								NT_TEMP_LIST_PARAM.getSelectionModel().select(SelTbl);
+								//NT_TEMP_LIST_PARAM.getFocusModel().focus(FSelTbl);
+								NT_TEMP_LIST_PARAM.scrollTo(SelTbl);
+							}
+						});
 					}
 				});
 				stage.showAndWait();
@@ -391,6 +414,13 @@ public class IUTempParam {
 					}
 				});
 				return row;
+			});
+			
+			NT_TEMP_LIST_PARAM.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+				if (newSelection != null) {
+					SelTbl = NT_TEMP_LIST_PARAM.getSelectionModel().getSelectedIndex();
+					FSelTbl = NT_TEMP_LIST_PARAM.getSelectionModel().getFocusedIndex();
+				}
 			});
 
 		} catch (Exception e) {
