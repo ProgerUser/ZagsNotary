@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class KeyBoard {
 
@@ -614,7 +614,7 @@ public class KeyBoard {
 		try {
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

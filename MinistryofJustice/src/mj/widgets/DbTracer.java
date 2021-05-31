@@ -13,7 +13,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class DbTracer {
 
@@ -47,7 +47,7 @@ public class DbTracer {
 			}
 			s.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -60,7 +60,7 @@ public class DbTracer {
 				Connect.dbmsOutput = false;
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -76,7 +76,7 @@ public class DbTracer {
 			}
 			
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

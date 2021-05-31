@@ -50,10 +50,10 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 import mj.widgets.KeyBoard;
 
 public class AddUpdName {
@@ -139,7 +139,7 @@ public class AddUpdName {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -322,7 +322,7 @@ public class AddUpdName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -456,7 +456,7 @@ public class AddUpdName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -514,7 +514,7 @@ public class AddUpdName {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -564,10 +564,10 @@ public class AddUpdName {
 			 */
 			if (conn == null) {
 				dbConnect();
-				DBUtil.RunProcess(conn);
+				DbUtil.Run_Process(conn);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -584,7 +584,7 @@ public class AddUpdName {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -595,7 +595,7 @@ public class AddUpdName {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

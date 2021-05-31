@@ -68,10 +68,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.doc.updname.V_REP_UPDATE_NAME;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -132,7 +132,7 @@ public class UpdAbhNameList {
 
 	void Add() {
 		try {
-			if (DBUtil.OdbAction(113l) == 0) {
+			if (DbUtil.Odb_Action(113l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -163,7 +163,7 @@ public class UpdAbhNameList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -173,7 +173,7 @@ public class UpdAbhNameList {
 				Msg.Message("Выберите строку!");
 			} else {
 
-				if (DBUtil.OdbAction(115l) == 0) {
+				if (DbUtil.Odb_Action(115l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -224,9 +224,9 @@ public class UpdAbhNameList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -240,7 +240,7 @@ public class UpdAbhNameList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -295,7 +295,7 @@ public class UpdAbhNameList {
 			rs.close();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -311,7 +311,7 @@ public class UpdAbhNameList {
 	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
-				if (DBUtil.OdbAction(114l) == 0) {
+				if (DbUtil.Odb_Action(114l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -324,7 +324,7 @@ public class UpdAbhNameList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "UPDATE_ABH_NAME",conn);
+						String lock = DbUtil.Lock_Row(docid, "UPDATE_ABH_NAME",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -360,7 +360,7 @@ public class UpdAbhNameList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -411,7 +411,7 @@ public class UpdAbhNameList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -430,13 +430,13 @@ public class UpdAbhNameList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
-										String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (Exception e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						});
@@ -445,10 +445,10 @@ public class UpdAbhNameList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "UPDATE_ABH_NAME"));
-						DBUtil.LOG_ERROR(e);
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "UPDATE_ABH_NAME"));
+						DbUtil.Log_Error(e);
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 			} else {
@@ -456,7 +456,7 @@ public class UpdAbhNameList {
 			}
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -594,7 +594,7 @@ public class UpdAbhNameList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -662,7 +662,7 @@ public class UpdAbhNameList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -762,7 +762,7 @@ public class UpdAbhNameList {
 					System.getenv("MJ_PATH") + "/OutReports/UPDATE_ABH_NAME.pdf");
 			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/UPDATE_ABH_NAME.pdf"));
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -807,7 +807,7 @@ public class UpdAbhNameList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -817,7 +817,7 @@ public class UpdAbhNameList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -930,7 +930,7 @@ public class UpdAbhNameList {
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			Refresh();
 			/**
 			 * Столбцы таблицы
@@ -973,7 +973,7 @@ public class UpdAbhNameList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1017,7 +1017,7 @@ public class UpdAbhNameList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 		return ret;
@@ -1052,7 +1052,7 @@ public class UpdAbhNameList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

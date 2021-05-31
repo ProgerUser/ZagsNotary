@@ -22,8 +22,8 @@ import javafx.scene.control.TreeTableView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import notary.doc.html.model.V_NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
@@ -72,7 +72,7 @@ public class AddParam {
 			setStatus(false);
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -94,7 +94,7 @@ public class AddParam {
 				onclose();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class AddParam {
 		Map<Long, Long> parents = new HashMap<>();
 		try {
 			PreparedStatement prp = conn.prepareStatement(
-					DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
+					DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
 			Clob clob = conn.createClob();
 			clob.setString(1, json);
 			prp.setLong(1, vals.getID());
@@ -195,7 +195,7 @@ public class AddParam {
 			});
 			fillTree();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

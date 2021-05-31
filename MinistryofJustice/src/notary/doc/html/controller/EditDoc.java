@@ -98,9 +98,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import mj.widgets.DbmsOutputCapture;
 import mj.widgets.FxUtilTest;
 import netscape.javascript.JSObject;
@@ -213,14 +213,14 @@ public class EditDoc {
 						try {
 							fillTree();
 						} catch (Exception e) {
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 					}
 				});
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -274,9 +274,9 @@ public class EditDoc {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -290,7 +290,7 @@ public class EditDoc {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -322,14 +322,14 @@ public class EditDoc {
 						try {
 							fillTree();
 						} catch (Exception e) {
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 					}
 				});
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -366,7 +366,7 @@ public class EditDoc {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -403,7 +403,7 @@ public class EditDoc {
 			// Замена input = span
 			WebView webView = (WebView) HtmlEditor.lookup("WebView");
 			webView.getEngine()
-					.executeScript(DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "HTMLInputToSpan"));
+					.executeScript(DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "HTMLInputToSpan"));
 
 //			Printer pdfPrinter = null;
 //			Iterator<Printer> iter = Printer.getAllPrinters().iterator();
@@ -461,7 +461,7 @@ public class EditDoc {
 			// Заново заполнить страницу
 			Init();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -470,7 +470,7 @@ public class EditDoc {
 		try {
 			// Print(PRINTER_ID);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -501,7 +501,7 @@ public class EditDoc {
 			rs.close();
 			NT_DOC = list;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -516,7 +516,7 @@ public class EditDoc {
 			if (val != null) {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
 				PreparedStatement prp = conn.prepareStatement(
-						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "EditDocListValWithLocPrm"));
+						DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "EditDocListValWithLocPrm"));
 				prp.setString(1, id);
 				prp.setLong(2, val.getID());
 				prp.setString(3, id);
@@ -620,7 +620,7 @@ public class EditDoc {
 										}
 									}
 								} catch (Exception e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						}
@@ -629,7 +629,7 @@ public class EditDoc {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -700,7 +700,7 @@ public class EditDoc {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -768,7 +768,7 @@ public class EditDoc {
 			}
 			Reload();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -807,7 +807,7 @@ public class EditDoc {
 				Map<Long, Long> parents = new HashMap<>();
 
 				PreparedStatement prp = conn.prepareStatement(
-						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
+						DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
 				Clob clob = conn.createClob();
 				clob.setString(1, JsonStr.trim());
 				prp.setLong(1, val.getID());
@@ -859,7 +859,7 @@ public class EditDoc {
 			}
 			expandTreeView(roots);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -888,7 +888,7 @@ public class EditDoc {
 				fillTree();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1035,7 +1035,7 @@ public class EditDoc {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1114,7 +1114,7 @@ public class EditDoc {
 													//
 													WebView webView = (WebView) HtmlEditor.lookup("WebView");
 													webView.getEngine()
-															.executeScript(DBUtil.SqlFromProp(
+															.executeScript(DbUtil.Sql_From_Prop(
 																	"/notary/doc/html/controller/Sql.properties",
 																	"HTMLInputToSpan"));
 
@@ -1303,7 +1303,7 @@ public class EditDoc {
 							try {
 								// Сами параметры
 								{
-									PreparedStatement stsmt = conn.prepareStatement(DBUtil.SqlFromProp(
+									PreparedStatement stsmt = conn.prepareStatement(DbUtil.Sql_From_Prop(
 											"/notary/doc/html/controller/Sql.properties", "EditNtDocPrmVals"));
 									stsmt.setLong(1, NT_DOC.getID());
 									stsmt.setLong(2, NT_DOC.getID());
@@ -1369,14 +1369,14 @@ public class EditDoc {
 									fillTree();
 								});
 							} catch (Exception e) {
-								DBUtil.LOG_ERROR(e);
+								DbUtil.Log_Error(e);
 							}
 						}
 					}
 				});
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1385,7 +1385,7 @@ public class EditDoc {
 		try {
 			TYPE_NAME.getSelectionModel().select(null);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1426,7 +1426,7 @@ public class EditDoc {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1479,14 +1479,14 @@ public class EditDoc {
 									rs.close();
 								}
 							} catch (Exception e) {
-								DBUtil.LOG_ERROR(e);
+								DbUtil.Log_Error(e);
 							}
 						}
 					}
 				});
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1612,7 +1612,7 @@ public class EditDoc {
 					List<String> lines = capture.execute(cls);
 					System.out.println(lines);
 				} catch (Exception e) {
-					DBUtil.LOG_ERROR(e);
+					DbUtil.Log_Error(e);
 				}
 				// --------------
 				if (cls.getString(1) == null) {
@@ -1631,7 +1631,7 @@ public class EditDoc {
 				Msg.Message("ПУСТО!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1640,7 +1640,7 @@ public class EditDoc {
 		try {
 			Save(false);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1650,7 +1650,7 @@ public class EditDoc {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1739,7 +1739,7 @@ public class EditDoc {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1793,9 +1793,9 @@ public class EditDoc {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -1809,7 +1809,7 @@ public class EditDoc {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1848,7 +1848,7 @@ public class EditDoc {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1885,7 +1885,7 @@ public class EditDoc {
 				InitScans();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2039,7 +2039,7 @@ public class EditDoc {
 			InitScans();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

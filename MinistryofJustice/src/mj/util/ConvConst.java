@@ -25,7 +25,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class ConvConst {
 
@@ -104,7 +104,7 @@ public class ConvConst {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -150,7 +150,7 @@ public class ConvConst {
 				return cell;
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -180,7 +180,7 @@ public class ConvConst {
 				return cell;
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -232,7 +232,7 @@ public class ConvConst {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -249,7 +249,7 @@ public class ConvConst {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -282,7 +282,7 @@ public class ConvConst {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -302,7 +302,7 @@ public class ConvConst {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -316,7 +316,7 @@ public class ConvConst {
 			};
 			TxtFld.textProperty().addListener(changeListener);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -337,7 +337,7 @@ public class ConvConst {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	/**
@@ -352,7 +352,7 @@ public class ConvConst {
 				return change;
 			}));
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

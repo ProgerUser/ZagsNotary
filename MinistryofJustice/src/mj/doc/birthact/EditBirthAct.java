@@ -53,13 +53,13 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.SqlMap;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.doc.mercer.MC_MERCER;
 import mj.doc.patern.PATERN_CERT;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 
 public class EditBirthAct {
 
@@ -79,7 +79,7 @@ public class EditBirthAct {
 				IFMAL_F_LAST_NAME.setText("");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
     
@@ -442,7 +442,7 @@ public class EditBirthAct {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -620,7 +620,7 @@ public class EditBirthAct {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -791,7 +791,7 @@ public class EditBirthAct {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -976,7 +976,7 @@ public class EditBirthAct {
 			}
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1114,7 +1114,7 @@ public class EditBirthAct {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1230,7 +1230,7 @@ public class EditBirthAct {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -1478,7 +1478,7 @@ public class EditBirthAct {
 			new ConvConst().FormatDatePiker(DCOURT);
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

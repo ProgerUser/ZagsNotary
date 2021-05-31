@@ -52,8 +52,8 @@ import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class AuList {
 
@@ -85,7 +85,7 @@ public class AuList {
 	@FXML
 	void CreateTrigger(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(154l) == 0) {
+			if (DbUtil.Odb_Action(154l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -118,7 +118,7 @@ public class AuList {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -215,7 +215,7 @@ public class AuList {
 									Msg.Message(ExceptionUtils.getStackTrace(e1));
 									Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 								}
-								DBUtil.LOG_ERROR(e);
+								DbUtil.Log_Error(e);
 							}
 						}
 						((Node) (event.getSource())).getScene().getWindow().hide();
@@ -242,7 +242,7 @@ public class AuList {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -251,13 +251,13 @@ public class AuList {
 	 */
 	void Add() {
 		try {
-			if (DBUtil.OdbAction(152l) == 0) {
+			if (DbUtil.Odb_Action(152l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
 			TableList("add");
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -266,7 +266,7 @@ public class AuList {
 	 */
 	void Delete() {
 		try {
-			if (DBUtil.OdbAction(153l) == 0) {
+			if (DbUtil.Odb_Action(153l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -324,7 +324,7 @@ public class AuList {
 								Msg.Message(ExceptionUtils.getStackTrace(e1));
 								Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -338,7 +338,7 @@ public class AuList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -355,7 +355,7 @@ public class AuList {
 		try {
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -483,7 +483,7 @@ public class AuList {
 					});
 
 				} catch (Exception e) {
-					DBUtil.LOG_ERROR(e);
+					DbUtil.Log_Error(e);
 				}
 			}
 		});
@@ -578,7 +578,7 @@ public class AuList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -592,7 +592,7 @@ public class AuList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -655,7 +655,7 @@ public class AuList {
 			Main.logger = Logger.getLogger(getClass());
 
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			Refresh();
 
 			/**
@@ -669,7 +669,7 @@ public class AuList {
 			}
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

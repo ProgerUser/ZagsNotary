@@ -29,8 +29,8 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.users.OTD;
+import mj.utils.DbUtil;
 import mj.widgets.KeyBoard;
 
 public class AddCourt {
@@ -65,7 +65,7 @@ public class AddCourt {
 			setStatus(true);
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -108,7 +108,7 @@ public class AddCourt {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -134,7 +134,7 @@ public class AddCourt {
 			}
 			convertComboDisplayList();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	/**
@@ -167,7 +167,7 @@ public class AddCourt {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -177,7 +177,7 @@ public class AddCourt {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

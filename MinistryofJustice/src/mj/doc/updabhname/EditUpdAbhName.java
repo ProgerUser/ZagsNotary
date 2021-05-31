@@ -46,10 +46,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 import mj.widgets.KeyBoard;
 
 public class EditUpdAbhName {
@@ -135,7 +135,7 @@ public class EditUpdAbhName {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -318,7 +318,7 @@ public class EditUpdAbhName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -426,7 +426,7 @@ public class EditUpdAbhName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -481,7 +481,7 @@ public class EditUpdAbhName {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -521,7 +521,7 @@ public class EditUpdAbhName {
 			callStmt.execute();
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -597,7 +597,7 @@ public class EditUpdAbhName {
 			NEW_MIDDLNAME_AB.setText(updname.getNEW_MIDDLNAME_AB());
 			
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -610,7 +610,7 @@ public class EditUpdAbhName {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

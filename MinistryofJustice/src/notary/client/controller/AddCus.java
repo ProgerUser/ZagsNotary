@@ -85,11 +85,11 @@ import mj.app.model.Connect;
 import mj.app.model.InputFilter;
 import mj.app.model.OTD;
 import mj.app.model.SqlMap;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.Auth1c;
 import mj.init.HttpsTrustManager;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import mj.widgets.FxUtilTest;
 import mj.widgets.KeyBoard;
 import notary.client.model.COUNTRIES;
@@ -141,7 +141,7 @@ public class AddCus {
 				AREA_T.setText("");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -160,7 +160,7 @@ public class AddCus {
 				PUNCT_NAME_T.setText("");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -191,7 +191,7 @@ public class AddCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -280,7 +280,7 @@ public class AddCus {
 					prpstmt.close();
 					rs.close();
 				} catch (SQLException e) {
-					DBUtil.LOG_ERROR(e);
+					DbUtil.Log_Error(e);
 				}
 			});
 
@@ -334,7 +334,7 @@ public class AddCus {
 				setUnDisable();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -516,7 +516,7 @@ public class AddCus {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -816,7 +816,7 @@ public class AddCus {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return exists;
 	}
@@ -1167,7 +1167,7 @@ public class AddCus {
 					delete.close();
 					CallSave("N");
 				} catch (SQLException e) {
-					DBUtil.LOG_ERROR(e);
+					DbUtil.Log_Error(e);
 				}
 				newWindow_yn.close();
 			}
@@ -1193,7 +1193,7 @@ public class AddCus {
 		try {
 			CitizenList("address");
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1227,7 +1227,7 @@ public class AddCus {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1266,7 +1266,7 @@ public class AddCus {
 			}
 			InitCitizen();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1280,7 +1280,7 @@ public class AddCus {
 		try {
 			CitizenList("add");
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1302,7 +1302,7 @@ public class AddCus {
 				CitizenList("edit");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1326,7 +1326,7 @@ public class AddCus {
 				InitCitizen();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1353,7 +1353,7 @@ public class AddCus {
 				InitCusDocum();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1522,7 +1522,7 @@ public class AddCus {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1536,7 +1536,7 @@ public class AddCus {
 		try {
 			CitizenList("add");
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1558,7 +1558,7 @@ public class AddCus {
 				CitizenList("edit");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1572,7 +1572,7 @@ public class AddCus {
 		try {
 			CitizenList("brn");
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1611,7 +1611,7 @@ public class AddCus {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1655,7 +1655,7 @@ public class AddCus {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1683,7 +1683,7 @@ public class AddCus {
 				InitCusDocum();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1732,7 +1732,7 @@ public class AddCus {
 				Msg.ErrorView(stage_, "CUS_DOCUM_TEMP", conn);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1769,7 +1769,7 @@ public class AddCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1818,7 +1818,7 @@ public class AddCus {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1958,7 +1958,7 @@ public class AddCus {
 			});
 			exec.execute(task);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1973,7 +1973,7 @@ public class AddCus {
 				Msg.Message("Выберите пол!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1988,7 +1988,7 @@ public class AddCus {
 				Msg.Message("Выберите пол!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2093,7 +2093,7 @@ public class AddCus {
 			}
 			callStmt.close();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2196,7 +2196,7 @@ public class AddCus {
 						: CCUSLAST_NAME.getScene().getWindow())/* , ConnToDublOpenEdit */);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2280,7 +2280,7 @@ public class AddCus {
 			rs.close();
 			CombCountry.requestFocus();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2324,7 +2324,7 @@ public class AddCus {
 			sqlStatement.close();
 
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2338,7 +2338,7 @@ public class AddCus {
 		try {
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2347,7 +2347,7 @@ public class AddCus {
 		try {
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2356,7 +2356,7 @@ public class AddCus {
 		try {
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2406,7 +2406,7 @@ public class AddCus {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2487,7 +2487,7 @@ public class AddCus {
 			AB_DOUTH.setToggleGroup(toggleGroup);
 
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 
 			// тип клиента
 			{
@@ -2541,7 +2541,7 @@ public class AddCus {
 							});
 							stage.show();
 						} catch (Exception e) {
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 					}
 				});
@@ -2868,7 +2868,7 @@ public class AddCus {
 			new ConvConst().FormatDatePiker(DCUSBIRTHDAY);
 			new ConvConst().FormatDatePiker(DOC_PERIOD_T);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2893,7 +2893,7 @@ public class AddCus {
 				InitCitizen();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2936,7 +2936,7 @@ public class AddCus {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -2949,7 +2949,7 @@ public class AddCus {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

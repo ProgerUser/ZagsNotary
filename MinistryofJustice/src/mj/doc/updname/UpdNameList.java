@@ -86,9 +86,9 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.app.model.SqlMap;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -165,7 +165,7 @@ public class UpdNameList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 		return ret;
@@ -198,14 +198,14 @@ public class UpdNameList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	void Add() {
 		try {
 
-			if (DBUtil.OdbAction(107l) == 0) {
+			if (DbUtil.Odb_Action(107l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -236,7 +236,7 @@ public class UpdNameList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -247,7 +247,7 @@ public class UpdNameList {
 			} else {
 				Main.logger = Logger.getLogger(getClass());
 
-				if (DBUtil.OdbAction(109l) == 0) {
+				if (DbUtil.Odb_Action(109l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -298,9 +298,9 @@ public class UpdNameList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -314,7 +314,7 @@ public class UpdNameList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -365,7 +365,7 @@ public class UpdNameList {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -382,7 +382,7 @@ public class UpdNameList {
 		try {
 			if (isopen == false) {
 
-				if (DBUtil.OdbAction(108l) == 0) {
+				if (DbUtil.Odb_Action(108l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -396,7 +396,7 @@ public class UpdNameList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "UPDATE_NAME",conn);
+						String lock = DbUtil.Lock_Row(docid, "UPDATE_NAME",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -432,7 +432,7 @@ public class UpdNameList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_NAME",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_NAME",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -483,7 +483,7 @@ public class UpdNameList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_NAME",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_NAME",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -502,13 +502,13 @@ public class UpdNameList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
-										String lock = DBUtil.Lock_Row_Delete(docid, "UPDATE_NAME",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_NAME",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						});
@@ -517,10 +517,10 @@ public class UpdNameList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "UPDATE_NAME"));
-						DBUtil.LOG_ERROR(e);
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "UPDATE_NAME"));
+						DbUtil.Log_Error(e);
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 
@@ -528,7 +528,7 @@ public class UpdNameList {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -556,7 +556,7 @@ public class UpdNameList {
 				Docx4J.save(wordMLPackage, new File(output_DOCX), Docx4J.FLAG_NONE);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -695,7 +695,7 @@ public class UpdNameList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -818,7 +818,7 @@ public class UpdNameList {
 			ret = sw.toString();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -880,7 +880,7 @@ public class UpdNameList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -939,7 +939,7 @@ public class UpdNameList {
 					System.getenv("MJ_PATH") + "/OutReports/UPDATE_NAME.pdf");
 			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/UPDATE_NAME.pdf"));
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -960,7 +960,7 @@ public class UpdNameList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -970,7 +970,7 @@ public class UpdNameList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1153,7 +1153,7 @@ public class UpdNameList {
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			Refresh();
 			/**
 			 * Столбцы таблицы
@@ -1198,7 +1198,7 @@ public class UpdNameList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

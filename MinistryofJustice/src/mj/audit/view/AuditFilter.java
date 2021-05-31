@@ -33,9 +33,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import mj.widgets.FxUtilTest;
 
 public class AuditFilter {
@@ -164,7 +164,7 @@ public class AuditFilter {
 				// datefinal.setText(tDAUDDATE);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -199,7 +199,7 @@ public class AuditFilter {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -219,7 +219,7 @@ public class AuditFilter {
 				tCAUDOPERATION = "";
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -236,7 +236,7 @@ public class AuditFilter {
 				tIACTION_ID = "";
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -255,7 +255,7 @@ public class AuditFilter {
 				tCTABLE = "";
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -272,7 +272,7 @@ public class AuditFilter {
 				tRROWID = "";
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -289,7 +289,7 @@ public class AuditFilter {
 				tID_ANUM = "";
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -306,7 +306,7 @@ public class AuditFilter {
 				tID_NUM = "";
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -323,7 +323,7 @@ public class AuditFilter {
 				tCAUDUSER = "";
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -340,7 +340,7 @@ public class AuditFilter {
 				t—AUDIP_ADDRESS = "";
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -439,7 +439,7 @@ public class AuditFilter {
 
 			CAUDOPERATION.getItems().addAll("I", "U", "D");
 			{
-				PreparedStatement sqlStatement = DBUtil.conn.prepareStatement("select * from AU_TABLE ");
+				PreparedStatement sqlStatement = DbUtil.conn.prepareStatement("select * from AU_TABLE ");
 				ResultSet rs = sqlStatement.executeQuery();
 				ObservableList<AU_TABLE> areas = FXCollections.observableArrayList();
 				AU_TABLE list = null;
@@ -537,7 +537,7 @@ public class AuditFilter {
 			new ConvConst().FormatDatePiker(DAUDDATE);
 			new ConvConst().FormatDatePiker(DAUDDATE1);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

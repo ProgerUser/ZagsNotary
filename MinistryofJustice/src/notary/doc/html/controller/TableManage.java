@@ -15,8 +15,8 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 import netscape.javascript.JSObject;
 import notary.doc.html.model.TableModel;
 
@@ -45,7 +45,7 @@ public class TableManage {
 		try {
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -61,7 +61,7 @@ public class TableManage {
 			//System.out.println(mes);
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -99,7 +99,7 @@ public class TableManage {
 			});
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

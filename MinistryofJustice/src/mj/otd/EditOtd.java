@@ -22,8 +22,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.users.OTD;
+import mj.utils.DbUtil;
 
 public class EditOtd {
 
@@ -66,7 +66,7 @@ public class EditOtd {
 			setStatus(true);
 			onclose();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -115,7 +115,7 @@ public class EditOtd {
 			}
 			
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

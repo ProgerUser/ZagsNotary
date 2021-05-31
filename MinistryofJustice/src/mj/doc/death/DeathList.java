@@ -68,9 +68,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -182,7 +182,7 @@ public class DeathList {
 	 */
 	void Add() {
 		try {
-			if (DBUtil.OdbAction(104l) == 0) {
+			if (DbUtil.Odb_Action(104l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -213,7 +213,7 @@ public class DeathList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -225,7 +225,7 @@ public class DeathList {
 			if (DEATH_CERT.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите строку!");
 			} else {
-				if (DBUtil.OdbAction(106l) == 0) {
+				if (DbUtil.Odb_Action(106l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -277,9 +277,9 @@ public class DeathList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -293,7 +293,7 @@ public class DeathList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -361,7 +361,7 @@ public class DeathList {
 			rs.close();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -372,7 +372,7 @@ public class DeathList {
 	public void Edit(Long docid, Stage stage_) {
 		try {
 			if (isopen == false) {
-				if (DBUtil.OdbAction(105l) == 0) {
+				if (DbUtil.Odb_Action(105l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -386,7 +386,7 @@ public class DeathList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "DEATH_CERT",conn);
+						String lock = DbUtil.Lock_Row(docid, "DEATH_CERT",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -422,7 +422,7 @@ public class DeathList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -473,7 +473,7 @@ public class DeathList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -493,13 +493,13 @@ public class DeathList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						});
@@ -508,17 +508,17 @@ public class DeathList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "DEATH_CERT"));
-						DBUtil.LOG_ERROR(e);
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "DEATH_CERT"));
+						DbUtil.Log_Error(e);
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -653,7 +653,7 @@ public class DeathList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -733,7 +733,7 @@ public class DeathList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -784,7 +784,7 @@ public class DeathList {
 			}
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -959,7 +959,7 @@ public class DeathList {
 					System.getenv("MJ_PATH") + "/OutReports/DEATH_CERT.pdf");
 			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/DEATH_CERT.pdf"));
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -981,7 +981,7 @@ public class DeathList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -994,7 +994,7 @@ public class DeathList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1108,7 +1108,7 @@ public class DeathList {
 			DC_DD.setColumnFilter(new DateColumnFilter<>());
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			Refresh();
 			/**
 			 * Столбцы таблицы
@@ -1152,7 +1152,7 @@ public class DeathList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1196,7 +1196,7 @@ public class DeathList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 		return ret;
@@ -1231,7 +1231,7 @@ public class DeathList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

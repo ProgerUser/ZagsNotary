@@ -19,8 +19,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class Trigger {
 
@@ -43,7 +43,7 @@ public class Trigger {
 				Msg.Message(ExceptionUtils.getStackTrace(e1));
 				Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 			}
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -73,10 +73,10 @@ public class Trigger {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			INIT();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class Trigger {
 			rs.close();
 			TriggerText.setText(sql);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class Trigger {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -132,7 +132,7 @@ public class Trigger {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

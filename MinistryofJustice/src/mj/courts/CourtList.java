@@ -31,8 +31,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class CourtList {
 
@@ -61,7 +61,7 @@ public class CourtList {
 	@FXML
 	void Add(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(202l) == 0) {
+		if (DbUtil.Odb_Action(202l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -93,14 +93,14 @@ public class CourtList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void Edit(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(123l) == 0) {
+		if (DbUtil.Odb_Action(123l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -114,7 +114,7 @@ public class CourtList {
 	@FXML
 	void Delete(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(204l) == 0) {
+		if (DbUtil.Odb_Action(204l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -169,9 +169,9 @@ public class CourtList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e);
+								DbUtil.Log_Error(e);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -185,7 +185,7 @@ public class CourtList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -228,7 +228,7 @@ public class CourtList {
 										conn.rollback();
 									isopen = false;
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 
 							}
@@ -239,9 +239,9 @@ public class CourtList {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Клиент редактируется другим пользователем!");
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 
@@ -249,7 +249,7 @@ public class CourtList {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -280,7 +280,7 @@ public class CourtList {
 			COURTS.setRowFactory(tv -> {
 				TableRow<VCOURTS> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
-					if (DBUtil.OdbAction(203l) == 0) {
+					if (DbUtil.Odb_Action(203l) == 0) {
 						Msg.Message("Нет доступа!");
 						return;
 					}
@@ -293,7 +293,7 @@ public class CourtList {
 			});
 			Init();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -318,7 +318,7 @@ public class CourtList {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -355,7 +355,7 @@ public class CourtList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -371,7 +371,7 @@ public class CourtList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -381,7 +381,7 @@ public class CourtList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

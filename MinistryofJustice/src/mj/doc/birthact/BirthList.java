@@ -70,9 +70,9 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -130,7 +130,7 @@ public class BirthList {
 			/*******/
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -182,7 +182,7 @@ public class BirthList {
 				Desktop.getDesktop().open(tempFile);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -225,7 +225,7 @@ public class BirthList {
 				Desktop.getDesktop().open(tempFile);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -268,14 +268,14 @@ public class BirthList {
 				Desktop.getDesktop().open(tempFile);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	public void Add(Stage stage_) {
 		try {
 			Logger.getLogger(getClass());
 
-			if (DBUtil.OdbAction(82l) == 0) {
+			if (DbUtil.Odb_Action(82l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -315,7 +315,7 @@ public class BirthList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -397,7 +397,7 @@ public class BirthList {
 					System.getenv("MJ_PATH") + "/OutReports/BRN_BIRTH_ACT.pdf");
 			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/BRN_BIRTH_ACT.pdf"));
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
     }
     
@@ -431,7 +431,7 @@ public class BirthList {
 	public void Edit(Long docid, Stage stage_) {
 		try {
 			//Проверка доступа к действию
-			if (DBUtil.OdbAction(83l) == 0) {
+			if (DbUtil.Odb_Action(83l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -444,7 +444,7 @@ public class BirthList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "brn_birth_act",conn);
+						String lock = DbUtil.Lock_Row(docid, "brn_birth_act",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -481,7 +481,7 @@ public class BirthList {
 										}
 										conn.commit();
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -532,7 +532,7 @@ public class BirthList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -550,13 +550,13 @@ public class BirthList {
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
-										String lock = DBUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						});
@@ -565,16 +565,16 @@ public class BirthList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "brn_birth_act"));
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "brn_birth_act"));
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -644,7 +644,7 @@ public class BirthList {
 			});
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -700,7 +700,7 @@ public class BirthList {
 			});
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -746,7 +746,7 @@ public class BirthList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -755,7 +755,7 @@ public class BirthList {
 		try {
 			InitBirths();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -778,7 +778,7 @@ public class BirthList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -791,13 +791,13 @@ public class BirthList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	void Delete() {
 		try {
-			if (DBUtil.OdbAction(84l) == 0) {
+			if (DbUtil.Odb_Action(84l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -851,9 +851,9 @@ public class BirthList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -870,7 +870,7 @@ public class BirthList {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -899,7 +899,7 @@ public class BirthList {
 		try {
 			InitBirths2();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -913,7 +913,7 @@ public class BirthList {
 		try {
 			InitBirths2();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -937,7 +937,7 @@ public class BirthList {
 			exec.execute(task);
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1160,7 +1160,7 @@ public class BirthList {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1269,7 +1269,7 @@ public class BirthList {
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			VB.getChildren().remove(FILTER);
 			
 			ROOT.setBottom(createOptionPane(BIRTH_ACT));
@@ -1359,7 +1359,7 @@ public class BirthList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1404,7 +1404,7 @@ public class BirthList {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -1439,7 +1439,7 @@ public class BirthList {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

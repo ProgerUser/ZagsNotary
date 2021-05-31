@@ -37,8 +37,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class PRJ_FLS_FLDR {
 
@@ -73,7 +73,7 @@ public class PRJ_FLS_FLDR {
 	@FXML
 	void Add(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(148l) == 0) {
+			if (DbUtil.Odb_Action(148l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -108,14 +108,14 @@ public class PRJ_FLS_FLDR {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void Edit(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(149l) == 0) {
+			if (DbUtil.Odb_Action(149l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -152,14 +152,14 @@ public class PRJ_FLS_FLDR {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void Delete(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(150l) == 0) {
+			if (DbUtil.Odb_Action(150l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -176,7 +176,7 @@ public class PRJ_FLS_FLDR {
 				Msg.Message("Выберите строку!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -243,7 +243,7 @@ public class PRJ_FLS_FLDR {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -254,7 +254,7 @@ public class PRJ_FLS_FLDR {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -288,7 +288,7 @@ public class PRJ_FLS_FLDR {
 			});
 
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			FillTree();
 
 			PROJECT.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
@@ -310,7 +310,7 @@ public class PRJ_FLS_FLDR {
 			DT.setCellValueFactory(cellData -> cellData.getValue().DTProperty());
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -365,7 +365,7 @@ public class PRJ_FLS_FLDR {
 				}
 			});
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

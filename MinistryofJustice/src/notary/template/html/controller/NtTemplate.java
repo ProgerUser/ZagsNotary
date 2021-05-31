@@ -48,9 +48,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import mj.widgets.DbmsOutputCapture;
 import notary.template.html.model.NT_TEMPLATE;
 import notary.template.html.model.NT_TEMP_LIST;
@@ -137,7 +137,7 @@ public class NtTemplate {
 				stage.showAndWait();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -190,7 +190,7 @@ public class NtTemplate {
 				stage.showAndWait();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -249,7 +249,7 @@ public class NtTemplate {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -303,7 +303,7 @@ public class NtTemplate {
 				stage.showAndWait();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -356,9 +356,9 @@ public class NtTemplate {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -372,7 +372,7 @@ public class NtTemplate {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -428,9 +428,9 @@ public class NtTemplate {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -444,7 +444,7 @@ public class NtTemplate {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -499,7 +499,7 @@ public class NtTemplate {
 				stage.showAndWait();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -553,7 +553,7 @@ public class NtTemplate {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -562,7 +562,7 @@ public class NtTemplate {
 		try {
 			EditTempList();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -618,7 +618,7 @@ public class NtTemplate {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -627,7 +627,7 @@ public class NtTemplate {
 		try {
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -688,7 +688,7 @@ public class NtTemplate {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -698,7 +698,7 @@ public class NtTemplate {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -712,7 +712,7 @@ public class NtTemplate {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -738,7 +738,7 @@ public class NtTemplate {
 						List<String> lines = capture.execute(cls);
 						System.out.println(lines);
 					} catch (Exception e) {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 					// --------------
 					if (cls.getString(1) == null) {
@@ -757,7 +757,7 @@ public class NtTemplate {
 			}
 			NT_TEMPLATE.getSelectionModel().select(seltemp);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -765,7 +765,7 @@ public class NtTemplate {
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			NT_TEMPLATE.setCellFactory(tv -> {
 				TreeCell<NT_TEMPLATE> cell = new TreeCell<NT_TEMPLATE>() {
 					@Override
@@ -827,7 +827,7 @@ public class NtTemplate {
 			});
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

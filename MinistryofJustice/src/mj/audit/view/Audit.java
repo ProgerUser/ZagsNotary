@@ -36,8 +36,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.V_AU_DATA;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class Audit {
 
@@ -109,7 +109,7 @@ public class Audit {
 			/* SelData */
 			String selectStmt = "select * from VAU_ACTION " + filter + " order by DAUDDATE desc";
 			Main.logger.info(selectStmt);
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<AU_ACTION> au_action = FXCollections.observableArrayList();
@@ -138,7 +138,7 @@ public class Audit {
 			AU_ACTION.setItems(au_action);
 			// autoResizeColumns(AU_ACTION);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -152,7 +152,7 @@ public class Audit {
 				return t;
 			});
 
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			/* AU_ACTION */
 			DAUDDATE.setCellValueFactory(cellData -> cellData.getValue().DAUDDATEProperty());
 			/* Format Date */
@@ -209,7 +209,7 @@ public class Audit {
 						pst.close();
 						res.close();
 					} catch (Exception e) {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 			});
@@ -257,12 +257,12 @@ public class Audit {
 							}
 						});
 					} catch (Exception e) {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -297,7 +297,7 @@ public class Audit {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -329,7 +329,7 @@ public class Audit {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

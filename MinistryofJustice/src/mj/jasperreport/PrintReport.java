@@ -14,8 +14,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -44,7 +44,7 @@ public class PrintReport extends JFrame {
 			List<AUAct> listItems = new ArrayList<AUAct>();
 			/* Create Items */
 			AUAct list = null;
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			Statement sqlStatement = conn.createStatement();
 			String readRecordSQL = "select acc,\r\n" + "       debet,\r\n" + "       credit,\r\n" + "       case\r\n"
 					+ "         when debet < credit then\r\n" + "          credit - debet\r\n" + "         else\r\n"

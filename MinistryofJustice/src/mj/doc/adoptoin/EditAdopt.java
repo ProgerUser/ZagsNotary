@@ -52,11 +52,11 @@ import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
 import mj.courts.VCOURTS;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import mj.widgets.KeyBoard;
 
 public class EditAdopt {
@@ -161,7 +161,7 @@ public class EditAdopt {
 				GR_COURT.setValue(null);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -192,7 +192,7 @@ public class EditAdopt {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -417,7 +417,7 @@ public class EditAdopt {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -550,7 +550,7 @@ public class EditAdopt {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -691,7 +691,7 @@ public class EditAdopt {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -792,7 +792,7 @@ public class EditAdopt {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -879,7 +879,7 @@ public class EditAdopt {
 			callStmt.execute();
 			callStmt.close();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1087,7 +1087,7 @@ public class EditAdopt {
 			new ConvConst().FormatDatePiker(NEW_BRTH);
 			
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

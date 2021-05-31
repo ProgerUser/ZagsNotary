@@ -31,9 +31,9 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.app.model.InputFilter;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.users.Set_Up_Pass;
+import mj.utils.DbUtil;
 
 public class Enter {
 
@@ -100,7 +100,7 @@ public class Enter {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -111,9 +111,9 @@ public class Enter {
 		// Выполнить проверку соединения с базой
 		try {
 			// __________________Проверки____________
-			DBUtil.dbConnect();
-			DBUtil.RunProcess(conn);
-			conn = DBUtil.conn;
+			DbUtil.Db_Connect();
+			DbUtil.Run_Process(conn);
+			conn = DbUtil.conn;
 			if (conn != null) {
 				String sql = "SELECT count(*) cnt FROM usr where usr.DUSRFIRE is null and CUSRLOGNAME = ?";
 				sqlStatement = conn.prepareStatement(sql);
@@ -148,13 +148,13 @@ public class Enter {
 				sqlStatement.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		} finally {
 			if (sqlStatement != null) {
 				try {
 					sqlStatement.close();
 				} catch (SQLException e) {
-					DBUtil.LOG_ERROR(e);
+					DbUtil.Log_Error(e);
 				}
 			}
 			if (conn != null) {
@@ -174,7 +174,7 @@ public class Enter {
 				Msg.Message("Введите данные!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -203,7 +203,7 @@ public class Enter {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection(url);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return conn;
 	}
@@ -235,7 +235,7 @@ public class Enter {
 				sqllite_conn.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -292,7 +292,7 @@ public class Enter {
 			}
 			sqllite_conn.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

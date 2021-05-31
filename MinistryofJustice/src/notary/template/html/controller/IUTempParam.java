@@ -34,8 +34,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
 public class IUTempParam {
@@ -111,7 +111,7 @@ public class IUTempParam {
 			});
 			stage.showAndWait();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -120,7 +120,7 @@ public class IUTempParam {
 		try {
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -174,9 +174,9 @@ public class IUTempParam {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -190,7 +190,7 @@ public class IUTempParam {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -200,7 +200,7 @@ public class IUTempParam {
 			conn.commit();
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -246,7 +246,7 @@ public class IUTempParam {
 				stage.showAndWait();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -255,7 +255,7 @@ public class IUTempParam {
 		try {
 			Edit();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -363,7 +363,7 @@ public class IUTempParam {
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 //			PRM_ID.setCellValueFactory(cellData -> cellData.getValue().getValue().PRM_IDProperty().asObject());
 //			PRM_NAME.setCellValueFactory(cellData -> cellData.getValue().getValue().PRM_NAMEProperty());
 //			PRM_TYPE.setCellValueFactory(cellData -> cellData.getValue().getValue().TYPE_NAMEProperty());
@@ -424,7 +424,7 @@ public class IUTempParam {
 			});
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -440,7 +440,7 @@ public class IUTempParam {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -455,7 +455,7 @@ public class IUTempParam {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

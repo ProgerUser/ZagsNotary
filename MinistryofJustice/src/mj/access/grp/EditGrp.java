@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class EditGrp {
 
@@ -63,7 +63,7 @@ public class EditGrp {
 			conn.commit();
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -85,7 +85,7 @@ public class EditGrp {
 			GRP_NAME.setText(grp.getGRP_NAME());
 			NAME.setText(grp.getNAME());
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

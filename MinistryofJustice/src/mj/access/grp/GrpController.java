@@ -42,8 +42,8 @@ import mj.access.action.ODB_ACTION;
 import mj.access.menu.ODB_MNU;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class GrpController {
 
@@ -93,7 +93,7 @@ public class GrpController {
 	@FXML
 	void AddAct(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(162l) == 0) {
+			if (DbUtil.Odb_Action(162l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -128,16 +128,16 @@ public class GrpController {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				DBUtil.LOG_ERROR(e);
+				DbUtil.Log_Error(e);
 			}
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void DeleteAct(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(163l) == 0) {
+			if (DbUtil.Odb_Action(163l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -173,9 +173,9 @@ public class GrpController {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				DBUtil.LOG_ERROR(e);
+				DbUtil.Log_Error(e);
 			}
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -191,7 +191,7 @@ public class GrpController {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -201,14 +201,14 @@ public class GrpController {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	@FXML
 	void AddMnu(ActionEvent event) {
 		try {
 			
-			if (DBUtil.OdbAction(156l) == 0) {
+			if (DbUtil.Odb_Action(156l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -243,16 +243,16 @@ public class GrpController {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				DBUtil.LOG_ERROR(e1);
+				DbUtil.Log_Error(e1);
 			}
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void DeleteMnu(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(157l) == 0) {
+			if (DbUtil.Odb_Action(157l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -287,9 +287,9 @@ public class GrpController {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				DBUtil.LOG_ERROR(e1);
+				DbUtil.Log_Error(e1);
 			}
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -320,7 +320,7 @@ public class GrpController {
 				InitUsrOut(grp_act.getGRP_ID());
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -345,7 +345,7 @@ public class GrpController {
 				InitUsrOut(grp_act.getGRP_ID());
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -378,7 +378,7 @@ public class GrpController {
 			});
 			stage.showAndWait();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -416,7 +416,7 @@ public class GrpController {
 				stage.showAndWait();
 			} 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -471,9 +471,9 @@ public class GrpController {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -490,18 +490,21 @@ public class GrpController {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
 	@FXML
 	private TextField ActionID;
 	
+	int SelAct;
+	int SelMnu;
+	
 	@FXML
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			fillTreeMnu();
 			fillTreeAct();
 			
@@ -509,12 +512,14 @@ public class GrpController {
 				TreeItem<ODB_MNU> act = MNU.getSelectionModel().getSelectedItem();
 				if (act != null) {
 					ActionID.setText(String.valueOf(act.getValue().getMNU_ID()));
+					SelMnu = MNU.getSelectionModel().getSelectedIndex();
 				}
 			});
 			Actions.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
 				TreeItem<ODB_ACTION> act = Actions.getSelectionModel().getSelectedItem();
 				if (act != null) {
 					ActionID_ACT.setText(String.valueOf(act.getValue().getACT_ID()));
+					SelAct = Actions.getSelectionModel().getSelectedIndex();
 				}
 			});
 			
@@ -531,7 +536,7 @@ public class GrpController {
 							if (grp.getSelectionModel().getSelectedItem() != null) {
 								ODB_GROUP_USR grp_ = grp.getSelectionModel().getSelectedItem();
 								Long act = item.getACT_ID();
-								if (DBUtil.ODB_ACT_GRP(grp_.getGRP_ID(), act) == 1) {
+								if (DbUtil.Odb_Act_Grp(grp_.getGRP_ID(), act) == 1) {
 									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 								} else {
 									setStyle("");
@@ -557,7 +562,7 @@ public class GrpController {
 							if (grp.getSelectionModel().getSelectedItem() != null) {
 								ODB_GROUP_USR grp_ = grp.getSelectionModel().getSelectedItem();
 								Long act = item.getMNU_ID();
-								if (DBUtil.ODB_MNU_GRP(grp_.getGRP_ID(), act) == 1) {
+								if (DbUtil.Odb_Mnu_Grp(grp_.getGRP_ID(), act) == 1) {
 									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 								} else {
 									setStyle("");
@@ -623,7 +628,7 @@ public class GrpController {
 			REPORT_NAME_IN.setCellValueFactory(cellData -> cellData.getValue().REPORT_NAMEProperty());
 			InitRep();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -657,7 +662,7 @@ public class GrpController {
 				InitRepOut(rep_tp.getREPORT_TYPE_ID(), grp_act.getGRP_ID());
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
     }
 	
@@ -684,7 +689,7 @@ public class GrpController {
 				InitRepTpOut( grp_act.getGRP_ID());
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
     }
     
@@ -712,7 +717,7 @@ public class GrpController {
 				InitRepTpOut( grp_act.getGRP_ID());
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
     }
 	
@@ -742,7 +747,7 @@ public class GrpController {
 				InitRepOut(rep_tp.getREPORT_TYPE_ID(), grp_act.getGRP_ID());
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
     }
     
@@ -866,7 +871,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -899,7 +904,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -933,7 +938,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -974,7 +979,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -1004,7 +1009,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	void InitRepTpOut(Long grp_id) {
@@ -1045,7 +1050,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -1087,32 +1092,15 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
 	void InitRepOut(Long rep_tp_id,Long grp_id) {
 		try {
+			String sql = DbUtil.getResource("/mj/access/grp/InitRepOut");
 			PreparedStatement prepStmt = conn
-					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_ID, REPORT_NAME\n" + 
-							"  FROM (select AP_Group_Report_Role.*,\n" + 
-							"               AP_Report_Cat.report_id,\n" + 
-							"               AP_Report_Cat.report_name\n" + 
-							"          from AP_Group_Report_Role, AP_Report_Cat\n" + 
-							"         where AP_Report_Cat.report_type_id =\n" + 
-							"               AP_Group_Report_Role.report_type_id\n" + 
-							"           and not exists (select null\n" + 
-							"                  from AP_Group_Report_Cat_Role\n" + 
-							"                 where AP_Group_Report_Cat_Role.group_id =\n" + 
-							"                       AP_Group_Report_Role.group_id\n" + 
-							"                   and AP_Group_Report_Cat_Role.report_type_id =\n" + 
-							"                       AP_Report_Cat.report_type_id\n" + 
-							"                   and AP_Group_Report_Cat_Role.report_id =\n" + 
-							"                       AP_Report_Cat.report_id))\n" + 
-							" WHERE (GROUP_ID = ?)\n" + 
-							"   and (REPORT_TYPE_ID = ?)\n" + 
-							" order by report_id\n" + 
-							"");
+					.prepareStatement(sql);
 			prepStmt.setLong(1, grp_id);
 			prepStmt.setLong(2, rep_tp_id);
 			ResultSet rs = prepStmt.executeQuery();
@@ -1138,7 +1126,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	void RepIn() {
@@ -1176,7 +1164,7 @@ public class GrpController {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -1196,7 +1184,7 @@ public class GrpController {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}

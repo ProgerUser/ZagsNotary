@@ -62,7 +62,6 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.doc.mercer.MC_MERCER;
@@ -73,6 +72,7 @@ import mj.init.Validator;
 import mj.init.Validity;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 
 public class AddBirthAct {
 
@@ -92,7 +92,7 @@ public class AddBirthAct {
 				IFMAL_F_LAST_NAME.setText("");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
     
@@ -499,7 +499,7 @@ public class AddBirthAct {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -665,7 +665,7 @@ public class AddBirthAct {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -792,7 +792,7 @@ public class AddBirthAct {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1011,7 +1011,7 @@ public class AddBirthAct {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1096,7 +1096,7 @@ public class AddBirthAct {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1137,7 +1137,7 @@ public class AddBirthAct {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1240,7 +1240,7 @@ public class AddBirthAct {
 			});
 
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			{
 				OnlyDigits(ChildCnt);
 				OnlyDigits(NDOC_A);
@@ -1279,7 +1279,7 @@ public class AddBirthAct {
 			new ConvConst().FormatDatePiker(DATEDOCB_A);
 			new ConvConst().FormatDatePiker(DCOURT);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

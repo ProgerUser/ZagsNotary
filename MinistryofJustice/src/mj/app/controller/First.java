@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class First {
 
@@ -35,7 +35,7 @@ public class First {
 			}
 			//логин и ФИО
 			String usrlogin = "";
-			PreparedStatement prp = DBUtil.conn
+			PreparedStatement prp = DbUtil.conn
 					.prepareStatement("select CUSRNAME||' - '||CUSRLOGNAME login from usr t where upper(cusrlogname) = ?");
 			prp.setString(1, Connect.userID.toUpperCase());
 			ResultSet rs = prp.executeQuery();
@@ -56,7 +56,7 @@ public class First {
 			imageView.setPreserveRatio(true);
 			imageView.setPickOnBounds(true);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

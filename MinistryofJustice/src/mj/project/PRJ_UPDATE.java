@@ -29,8 +29,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class PRJ_UPDATE {
 
@@ -68,7 +68,7 @@ public class PRJ_UPDATE {
 				FolderName.setDisable(true);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -130,7 +130,7 @@ public class PRJ_UPDATE {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -144,7 +144,7 @@ public class PRJ_UPDATE {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			IUBtn.setText("Сохранить");
 
 			IsFolder.setDisable(true);
@@ -168,7 +168,7 @@ public class PRJ_UPDATE {
 			}
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -191,7 +191,7 @@ public class PRJ_UPDATE {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -205,7 +205,7 @@ public class PRJ_UPDATE {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

@@ -69,9 +69,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -137,7 +137,7 @@ public class UpdNatList {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 
-			if (DBUtil.OdbAction(110l) == 0) {
+			if (DbUtil.Odb_Action(110l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -168,7 +168,7 @@ public class UpdNatList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -178,7 +178,7 @@ public class UpdNatList {
 				Msg.Message("Выберите строку!");
 			} else {
 
-				if (DBUtil.OdbAction(112l) == 0) {
+				if (DbUtil.Odb_Action(112l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -230,9 +230,9 @@ public class UpdNatList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e);
+								DbUtil.Log_Error(e);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -246,7 +246,7 @@ public class UpdNatList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -264,7 +264,7 @@ public class UpdNatList {
 		try {
 			if (isopen == false) {
 
-				if (DBUtil.OdbAction(111l) == 0) {
+				if (DbUtil.Odb_Action(111l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -280,7 +280,7 @@ public class UpdNatList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "UPD_NAT",conn);
+						String lock = DbUtil.Lock_Row(docid, "UPD_NAT",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -316,7 +316,7 @@ public class UpdNatList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -368,7 +368,7 @@ public class UpdNatList {
 												newWindow_yn.close();
 
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -387,13 +387,13 @@ public class UpdNatList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
-										String lock = DBUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						});
@@ -402,17 +402,17 @@ public class UpdNatList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "UPD_NAT"));
-						DBUtil.LOG_ERROR(e);
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "UPD_NAT"));
+						DbUtil.Log_Error(e);
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -582,7 +582,7 @@ public class UpdNatList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -646,7 +646,7 @@ public class UpdNatList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -683,7 +683,7 @@ public class UpdNatList {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -816,7 +816,7 @@ public class UpdNatList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -826,7 +826,7 @@ public class UpdNatList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -906,7 +906,7 @@ public class UpdNatList {
 				Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/UPD_NAT.pdf"));
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -969,7 +969,7 @@ public class UpdNatList {
 			FIO.setColumnFilter(new PatternColumnFilter<>());
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			Refresh();
 			/**
 			 * Столбцы таблицы
@@ -1005,7 +1005,7 @@ public class UpdNatList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1049,7 +1049,7 @@ public class UpdNatList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -1083,7 +1083,7 @@ public class UpdNatList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

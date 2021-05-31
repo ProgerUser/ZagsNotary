@@ -8,7 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class AlertController {
 
@@ -42,7 +42,7 @@ public class AlertController {
 			MES.setText(TA);
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

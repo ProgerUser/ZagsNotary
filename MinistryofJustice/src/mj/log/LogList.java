@@ -40,8 +40,8 @@ import javafx.util.converter.LocalDateTimeStringConverter;
 import javafx.util.converter.LongStringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 
 public class LogList {
 
@@ -157,7 +157,7 @@ public class LogList {
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			ROOT.setBottom(createOptionPane(LOGS));
 
 			METHODNAME.setCellValueFactory(cellData -> cellData.getValue().METHODNAMEProperty());
@@ -259,7 +259,7 @@ public class LogList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -308,7 +308,7 @@ public class LogList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -324,7 +324,7 @@ public class LogList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -334,7 +334,7 @@ public class LogList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

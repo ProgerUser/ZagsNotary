@@ -24,8 +24,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.users.OTD;
+import mj.utils.DbUtil;
 import mj.widgets.KeyBoard;
 
 public class EditCourt {
@@ -72,7 +72,7 @@ public class EditCourt {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -91,7 +91,7 @@ public class EditCourt {
 			setStatus(true);
 			onclose();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -162,7 +162,7 @@ public class EditCourt {
 			}
 			convertComboDisplayList();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

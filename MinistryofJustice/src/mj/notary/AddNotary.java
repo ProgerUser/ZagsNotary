@@ -25,8 +25,8 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.users.OTD;
+import mj.utils.DbUtil;
 
 public class AddNotary {
 
@@ -93,7 +93,7 @@ public class AddNotary {
 				e1.printStackTrace();
 				Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 			}
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class AddNotary {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			/* Отделение */
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from otd");
@@ -133,7 +133,7 @@ public class AddNotary {
 			}
 			convertComboDisplayList();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -150,7 +150,7 @@ public class AddNotary {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -161,7 +161,7 @@ public class AddNotary {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

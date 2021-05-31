@@ -21,8 +21,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class Set_Up_Pass {
 
@@ -76,7 +76,7 @@ public class Set_Up_Pass {
 	@FXML
 	private void initialize() {
 		dbConnect();
-		DBUtil.RunProcess(conn);
+		DbUtil.Run_Process(conn);
 		CUSRLOGNAME.setText(getUsr());
 	}
 
@@ -104,7 +104,7 @@ public class Set_Up_Pass {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class Set_Up_Pass {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -141,7 +141,7 @@ public class Set_Up_Pass {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

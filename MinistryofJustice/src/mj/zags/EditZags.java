@@ -23,8 +23,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.users.OTD;
+import mj.utils.DbUtil;
 import mj.widgets.KeyBoard;
 
 public class EditZags {
@@ -86,7 +86,7 @@ public class EditZags {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
     
@@ -142,7 +142,7 @@ public class EditZags {
 			setStatus(true);
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -198,7 +198,7 @@ public class EditZags {
 			}
 			convertComboDisplayList();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

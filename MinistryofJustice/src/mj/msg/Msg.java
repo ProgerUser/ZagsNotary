@@ -26,7 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class Msg {
 
@@ -71,7 +71,7 @@ public class Msg {
 			delete.close();
 			Msg.MessageBox(error, stage_);
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -115,7 +115,7 @@ public class Msg {
 				stage.showAndWait();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

@@ -22,7 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 import notary.doc.html.model.LIST;
 
 public class ParamList {
@@ -77,7 +77,7 @@ public class ParamList {
 			this.conn = conn;
 			this.conn.setAutoCommit(false);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -107,7 +107,7 @@ public class ParamList {
 			setStatus(false);
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -134,7 +134,7 @@ public class ParamList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -144,7 +144,7 @@ public class ParamList {
 			String where = " where name like '" + search.getText() + "'";
 			init(where);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -158,7 +158,7 @@ public class ParamList {
 				onclose();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -184,7 +184,7 @@ public class ParamList {
 			name.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
 			init("");
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

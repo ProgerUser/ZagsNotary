@@ -1,5 +1,6 @@
-package mj.dbutil;
+package mj.utils;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Clob;
@@ -13,6 +14,7 @@ import java.sql.Types;
 import java.util.Properties;
 import java.util.Timer;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
@@ -21,9 +23,15 @@ import mj.app.model.Connect;
 import mj.app.model.SqlMap;
 import mj.msg.Msg;
 
-public class DBUtil {
+/**
+ * Класс для работы с БД <br>
+ * Доступ...
+ * @author Said
+ *
+ */
+public class DbUtil {
 
-	public DBUtil() {
+	public DbUtil() {
 		Main.logger = Logger.getLogger(getClass());
 	}
 
@@ -34,7 +42,7 @@ public class DBUtil {
 	public static Connection conn = null;
 
 	// Connect to DB
-	public static void dbConnect() {
+	public static void Db_Connect() {
 		try {
 			// Setting Oracle JDBC Driver
 			Class.forName(JDBC_DRIVER);
@@ -45,37 +53,37 @@ public class DBUtil {
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
 			conn.setAutoCommit(false);
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 		}catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	// Close Connection
-	public static void dbDisconnect() {
+	public static void Db_Disconnect() {
 		try {
-			Main.logger = Logger.getLogger(DBUtil.class);
+			Main.logger = Logger.getLogger(DbUtil.class);
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
-	public static String SqlFromProp(String path, String prpname) {
+	public static String Sql_From_Prop(String path, String prpname) {
 		String ret = null;
 		try {
-			InputStream is = DBUtil.class.getResourceAsStream(path);
+			InputStream is = DbUtil.class.getResourceAsStream(path);
 			Properties props = new Properties();
 			props.load(is);
 			ret = props.getProperty(prpname);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
-	public static boolean CheckConnect() {
+	public static boolean Check_Connect() {
 		boolean ret = true;
 		try {
 			Class.forName(JDBC_DRIVER);
@@ -87,20 +95,20 @@ public class DBUtil {
 		}
 		return ret;
 	}	
-	public static void RunProcess(Connection conn) {
+	public static void Run_Process(Connection conn) {
 		try {
 			Timer time = new Timer(); // Instantiate Timer Object
 			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
 			st.setConn(conn);
 			time.schedule(st, 0, 300000); // Create task repeating every 5 min
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	/**
 	 * Запись лога
 	 */
-	public static void LogToDb(Long linenumber, String classname, String error, String METHODNAME) {
+	public static void Log_To_Db(Long linenumber, String classname, String error, String METHODNAME) {
 		try {
 			if (linenumber != null & (classname != null && !classname.equals("")) & (error != null && !error.equals(""))
 					& (METHODNAME != null && !METHODNAME.equals(""))) {
@@ -125,7 +133,7 @@ public class DBUtil {
 				conn.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -148,23 +156,25 @@ public class DBUtil {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
 
 	
-	public static void LOG_ERROR(Exception e) {
-		//Если есть соединение или пока нет
-		if(conn != null || CheckConnect()) {
+	public static void Log_Error(Exception e) {
+		// Если есть соединение или пока нет
+		if (conn != null || Check_Connect()) {
 			e.printStackTrace();
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
 			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
 			Msg.Message(ExceptionUtils.getStackTrace(e));
 			Main.logger.error(ExceptionUtils.getStackTrace(e));
-			LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
-		}else {
+			if (!Connect.userID.toLowerCase().equals("xxi")) {
+				Log_To_Db(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			}
+		} else {
 			Msg.Message(ExceptionUtils.getStackTrace(e));
 			Main.logger.error(ExceptionUtils.getStackTrace(e));
 		}
@@ -191,7 +201,7 @@ public class DBUtil {
 					Msg.Message(error);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -214,21 +224,21 @@ public class DBUtil {
 				// System.out.println("~~~~~~~~~~");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
 
 	// DB Execute Query Operation
-	public static ResultSet dbExecuteQuery(String queryStmt) {
+	public static ResultSet Db_Execute_Query(String queryStmt) {
 		// Declare statement, resultSet and CachedResultSet as null
 		Statement stmt = null;
 		ResultSet resultSet = null;
 		try {
-			Main.logger = Logger.getLogger(DBUtil.class);
+			Main.logger = Logger.getLogger(DbUtil.class);
 			// Connect to DB (Establish Oracle Connection)
 			if (conn == null && !conn.isClosed()) {
-				dbConnect();
+				Db_Connect();
 			}
 			stmt = conn.createStatement();
 			resultSet = stmt.executeQuery(queryStmt);
@@ -251,7 +261,7 @@ public class DBUtil {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					DBUtil.LOG_ERROR(e);
+					DbUtil.Log_Error(e);
 				}
 			}
 		}
@@ -259,10 +269,10 @@ public class DBUtil {
 		return resultSet;
 	}
 
-	public static Long ODB_ACTION(Long usrid, Long actid) {
-		Main.logger = Logger.getLogger(DBUtil.class);
+	public static Long Odb_Aaction(Long usrid, Long actid) {
+		Main.logger = Logger.getLogger(DbUtil.class);
 		Long ret = 0l;
-		Connection conn = DBUtil.conn;
+		Connection conn = DbUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbAccess(?,?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
@@ -272,7 +282,7 @@ public class DBUtil {
 			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -281,9 +291,9 @@ public class DBUtil {
 	 * Учреждение, Загс, Нотариус, Оба...
 	 * @return
 	 */
-	public static String ACC_LEV() {
+	public static String Access_Level() {
 		String ret = null;
-		Connection conn = DBUtil.conn;
+		Connection conn = DbUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ACC_LEV(?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -292,15 +302,15 @@ public class DBUtil {
 			ret = callStmt.getString(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
 
-	public static Long ODB_MNU(Long usrid, Long actid) {
-		Main.logger = Logger.getLogger(DBUtil.class);
+	public static Long Odb_Mnu(Long usrid, Long actid) {
+		Main.logger = Logger.getLogger(DbUtil.class);
 		Long ret = 0l;
-		Connection conn = DBUtil.conn;
+		Connection conn = DbUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuAccess(?,?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
@@ -310,14 +320,14 @@ public class DBUtil {
 			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
 
-	public static Long ODB_MNU_GRP(Long grpid, Long actid) {
+	public static Long Odb_Mnu_Grp(Long grpid, Long actid) {
 		Long ret = 0l;
-		Connection conn = DBUtil.conn;
+		Connection conn = DbUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuAccessGrp(?,?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
@@ -327,14 +337,14 @@ public class DBUtil {
 			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
 	
-	public static Long ODB_ACT_GRP(Long grpid, Long actid) {
+	public static Long Odb_Act_Grp(Long grpid, Long actid) {
 		Long ret = 0l;
-		Connection conn = DBUtil.conn;
+		Connection conn = DbUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ODB_ACT_ACCESS_GRP(?,?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
@@ -344,15 +354,15 @@ public class DBUtil {
 			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
 	
-	public static Long ODB_MNU2(Long actid) {
-		Main.logger = Logger.getLogger(DBUtil.class);
+	public static Long Odb_Mnu2(Long actid) {
+		Main.logger = Logger.getLogger(DbUtil.class);
 		Long ret = 0l;
-		Connection conn = DBUtil.conn;
+		Connection conn = DbUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbMnuAccess(?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
@@ -361,7 +371,7 @@ public class DBUtil {
 			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -371,9 +381,9 @@ public class DBUtil {
 	 * @param actid
 	 * @return
 	 */
-	public static Long OdbAction(Long actid) {
+	public static Long Odb_Action(Long actid) {
 		Long ret = 0l;
-		Connection conn = DBUtil.conn;
+		Connection conn = DbUtil.conn;
 		try {
 			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ACT_ACCESS(?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
@@ -382,7 +392,7 @@ public class DBUtil {
 			ret = callStmt.getLong(1);
 			callStmt.close();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -394,10 +404,10 @@ public class DBUtil {
 	 * @param CUSRLOGNAME
 	 * @return
 	 */
-	public static Long chk_accesss(String ACT_NAME, String CUSRLOGNAME) {
-		Main.logger = Logger.getLogger(DBUtil.class);
+	public static Long Chk_Accesss(String ACT_NAME, String CUSRLOGNAME) {
+		Main.logger = Logger.getLogger(DbUtil.class);
 		Long ret = 0l;
-		Connection conn = DBUtil.conn;
+		Connection conn = DbUtil.conn;
 		try {
 			SqlMap sql = new SqlMap().load("/SQL.xml");
 			String readRecordSQL = sql.getSql("acces_act");
@@ -411,7 +421,7 @@ public class DBUtil {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -424,10 +434,10 @@ public class DBUtil {
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
-				DBUtil.LOG_ERROR(e);
+				DbUtil.Log_Error(e);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -438,19 +448,19 @@ public class DBUtil {
 		try {
 			conn.commit();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	// DB Execute Update (For Update/Insert/Delete) Operation
-	public static void dbExecuteUpdate(String sqlStmt) {
+	public static void Db_Execute_Update(String sqlStmt) {
 		// Declare statement as null
 		Statement stmt = null;
-		Main.logger = Logger.getLogger(DBUtil.class);
+		Main.logger = Logger.getLogger(DbUtil.class);
 		try {
 			// Connect to DB (Establish Oracle Connection)
 			if (conn == null && !conn.isClosed()) {
-				dbConnect();
+				Db_Connect();
 			}
 			// Create Statement
 			stmt = conn.createStatement();
@@ -459,16 +469,28 @@ public class DBUtil {
 			conn.commit();
 			stmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		} finally {
 			if (stmt != null) {
 				// Close statement
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					DBUtil.LOG_ERROR(e);
+					DbUtil.Log_Error(e);
 				}
 			}
 		}
 	}
+	
+	public static String getResource(final String path) {
+		final InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+		try {
+			return IOUtils.toString(stream, "UTF-8");
+		} catch (final IOException e) {
+			throw new IllegalStateException(e);
+		} finally {
+			IOUtils.closeQuietly(stream);
+		}
+	}
+
 }

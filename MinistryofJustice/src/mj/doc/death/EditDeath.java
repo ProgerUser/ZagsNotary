@@ -47,11 +47,11 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.courts.VCOURTS;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 
 public class EditDeath {
 
@@ -337,7 +337,7 @@ public class EditDeath {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -468,7 +468,7 @@ public class EditDeath {
 				Msg.ErrorView(stage_, "EditDeath", conn);
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -510,7 +510,7 @@ public class EditDeath {
 			callStmt.execute();
 			callStmt.close();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -678,7 +678,7 @@ public class EditDeath {
 			new ConvConst().FormatDatePiker(DC_DD);
 			new ConvConst().FormatDatePiker(DC_FD);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

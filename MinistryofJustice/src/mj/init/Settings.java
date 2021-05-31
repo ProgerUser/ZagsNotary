@@ -27,8 +27,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class Settings {
 	
@@ -55,7 +55,7 @@ public class Settings {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(146l) == 0) {
+			if (DbUtil.Odb_Action(146l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -70,7 +70,7 @@ public class Settings {
 			SQLIETE.commit();
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -91,7 +91,7 @@ public class Settings {
 				Refresh();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -120,7 +120,7 @@ public class Settings {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -154,7 +154,7 @@ public class Settings {
 
 			Refresh();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -174,7 +174,7 @@ public class Settings {
 			SQLIETE = DriverManager.getConnection(url);
 			SQLIETE.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -190,7 +190,7 @@ public class Settings {
 			}
 
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

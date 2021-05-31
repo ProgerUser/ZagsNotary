@@ -51,10 +51,10 @@ import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 import mj.widgets.FxUtilTest;
 
 public class AddUpdNat {
@@ -145,7 +145,7 @@ public class AddUpdNat {
 					}
 
 				} catch (SQLException e) {
-					DBUtil.LOG_ERROR(e);
+					DbUtil.Log_Error(e);
 				}
 			}
 		});
@@ -330,7 +330,7 @@ public class AddUpdNat {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -460,7 +460,7 @@ public class AddUpdNat {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -518,7 +518,7 @@ public class AddUpdNat {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -585,7 +585,7 @@ public class AddUpdNat {
 
 			if (conn == null) {
 				dbConnect();
-				DBUtil.RunProcess(conn);
+				DbUtil.Run_Process(conn);
 			}
 			{
 				Statement sqlStatement = conn.createStatement();
@@ -628,7 +628,7 @@ public class AddUpdNat {
 				convertCombo(OLD_NAT);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -645,7 +645,7 @@ public class AddUpdNat {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -656,7 +656,7 @@ public class AddUpdNat {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

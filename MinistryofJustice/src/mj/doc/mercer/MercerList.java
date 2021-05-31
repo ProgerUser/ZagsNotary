@@ -68,9 +68,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -157,7 +157,7 @@ public class MercerList {
 				Desktop.getDesktop().open(tempFile);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -199,14 +199,14 @@ public class MercerList {
 				Desktop.getDesktop().open(tempFile);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
 	void Add() {
 		try {
 
-			if (DBUtil.OdbAction(95l) == 0) {
+			if (DbUtil.Odb_Action(95l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -237,14 +237,14 @@ public class MercerList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	void Delete() {
 		try {
 
-			if (DBUtil.OdbAction(97l) == 0) {
+			if (DbUtil.Odb_Action(97l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -300,9 +300,9 @@ public class MercerList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -316,7 +316,7 @@ public class MercerList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -375,7 +375,7 @@ public class MercerList {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -384,7 +384,7 @@ public class MercerList {
 		try {
 			if (isopen == false) {
 
-				if (DBUtil.OdbAction(96l) == 0) {
+				if (DbUtil.Odb_Action(96l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -398,7 +398,7 @@ public class MercerList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "MC_MERCER",conn);
+						String lock = DbUtil.Lock_Row(docid, "MC_MERCER",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -432,7 +432,7 @@ public class MercerList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -483,7 +483,7 @@ public class MercerList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -502,13 +502,13 @@ public class MercerList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						});
@@ -517,10 +517,10 @@ public class MercerList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "MC_MERCER"));
-						DBUtil.LOG_ERROR(e);
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "MC_MERCER"));
+						DbUtil.Log_Error(e);
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 
@@ -528,7 +528,7 @@ public class MercerList {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -698,7 +698,7 @@ public class MercerList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -770,7 +770,7 @@ public class MercerList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -917,7 +917,7 @@ public class MercerList {
 					System.getenv("MJ_PATH") + "/OutReports/MC_MERCER.pdf");
 			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/MC_MERCER.pdf"));
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -938,7 +938,7 @@ public class MercerList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -948,7 +948,7 @@ public class MercerList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1095,7 +1095,7 @@ public class MercerList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1139,7 +1139,7 @@ public class MercerList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 		return ret;
@@ -1174,7 +1174,7 @@ public class MercerList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

@@ -46,10 +46,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 import mj.widgets.KeyBoard;
 
 public class EditUpdName {
@@ -134,7 +134,7 @@ public class EditUpdName {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -318,7 +318,7 @@ public class EditUpdName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -426,7 +426,7 @@ public class EditUpdName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -485,7 +485,7 @@ public class EditUpdName {
 			}
 			//System.out.println(callStmt.getString(1));
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -529,7 +529,7 @@ public class EditUpdName {
 			callStmt.execute();
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -603,7 +603,7 @@ public class EditUpdName {
 			SVID_NUMBER.setText(updname.getSVID_NUMBER());
 			DOC_NUMBER.setText(updname.getDOC_NUMBER());
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -616,7 +616,7 @@ public class EditUpdName {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

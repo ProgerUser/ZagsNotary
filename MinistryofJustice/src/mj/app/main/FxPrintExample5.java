@@ -64,8 +64,9 @@ public class FxPrintExample5 extends Application {
 		stage.setTitle("A Printing Dialog Example");
 		// Display the Stage
 		stage.show();
+				
 	}
-
+	
 	private void printSetup(Node node, Stage owner) {
 		// Create the PrinterJob
 		PrinterJob job = PrinterJob.createPrinterJob();

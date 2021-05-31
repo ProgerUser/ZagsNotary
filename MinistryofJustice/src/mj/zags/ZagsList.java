@@ -31,8 +31,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class ZagsList {
 
@@ -58,7 +58,7 @@ public class ZagsList {
 	@FXML
 	void Add(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(126l) == 0) {
+		if (DbUtil.Odb_Action(126l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -91,14 +91,14 @@ public class ZagsList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void Edit(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(127l) == 0) {
+		if (DbUtil.Odb_Action(127l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -112,7 +112,7 @@ public class ZagsList {
 	@FXML
 	void Delete(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(128l) == 0) {
+		if (DbUtil.Odb_Action(128l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -174,7 +174,7 @@ public class ZagsList {
 								Main.logger.error(
 										ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -188,7 +188,7 @@ public class ZagsList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -232,7 +232,7 @@ public class ZagsList {
 										conn.rollback();
 									isopen = false;
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 
 							}
@@ -243,9 +243,9 @@ public class ZagsList {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Клиент редактируется другим пользователем!");
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 
@@ -253,7 +253,7 @@ public class ZagsList {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -261,7 +261,7 @@ public class ZagsList {
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			ZAGS_NAME.setCellValueFactory(cellData -> cellData.getValue().ZAGS_NAMEProperty());
 			ZAGS_OTD.setCellValueFactory(cellData -> cellData.getValue().COTDNAMEProperty());
 			ZAGS_RUK.setCellValueFactory(cellData -> cellData.getValue().ZAGS_RUKProperty());
@@ -271,7 +271,7 @@ public class ZagsList {
 			ZAGS.setRowFactory(tv -> {
 				TableRow<VZAGS> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
-					if (DBUtil.OdbAction(127l) == 0) {
+					if (DbUtil.Odb_Action(127l) == 0) {
 						Msg.Message("Нет доступа!");
 						return;
 					}
@@ -284,7 +284,7 @@ public class ZagsList {
 			});
 			Init();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -314,7 +314,7 @@ public class ZagsList {
 			rs.close();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -354,7 +354,7 @@ public class ZagsList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -370,7 +370,7 @@ public class ZagsList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -381,7 +381,7 @@ public class ZagsList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

@@ -55,9 +55,9 @@ import javafx.util.StringConverter;
 import mj.access.grp.ODB_GROUP_USR;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import mj.widgets.KeyBoard;
 
 /**
@@ -218,7 +218,7 @@ public class UsrC {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -234,7 +234,7 @@ public class UsrC {
 	void Add() {
 		try {
 
-			if (DBUtil.OdbAction(3l) == 0) {
+			if (DbUtil.Odb_Action(3l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -264,7 +264,7 @@ public class UsrC {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -276,7 +276,7 @@ public class UsrC {
 				Msg.Message("Выберите пользователя!");
 			} else {
 
-				if (DBUtil.OdbAction(61l) == 0) {
+				if (DbUtil.Odb_Action(61l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -309,7 +309,7 @@ public class UsrC {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -336,7 +336,7 @@ public class UsrC {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -349,7 +349,7 @@ public class UsrC {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -357,7 +357,7 @@ public class UsrC {
 	void UpdateUser(ActionEvent event) {
 		try {
 
-			if (DBUtil.OdbAction(6l) == 0) {
+			if (DbUtil.Odb_Action(6l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -436,7 +436,7 @@ public class UsrC {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -518,7 +518,7 @@ public class UsrC {
 			});
 			// autoResizeColumns(USRLST);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -579,7 +579,7 @@ public class UsrC {
 		all_w.setToggleGroup(group);
 
 		dbConnect();
-		DBUtil.RunProcess(conn);
+		DbUtil.Run_Process(conn);
 		ZagsCombo();
 		NotaryCombo();
 		convertComboDisplayList();
@@ -654,7 +654,7 @@ public class UsrC {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -697,7 +697,7 @@ public class UsrC {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -811,7 +811,7 @@ public class UsrC {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -876,7 +876,7 @@ public class UsrC {
 			if (USRLST.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите пользователя!");
 			} else {
-				if (DBUtil.OdbAction(4l) == 0) {
+				if (DbUtil.Odb_Action(4l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -932,9 +932,9 @@ public class UsrC {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -948,7 +948,7 @@ public class UsrC {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

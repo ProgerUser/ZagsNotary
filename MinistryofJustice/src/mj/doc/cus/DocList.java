@@ -26,7 +26,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.SqlMap;
-import mj.dbutil.DBUtil;
 import mj.doc.adoptoin.AdoptList;
 import mj.doc.birthact.BirthList;
 import mj.doc.death.DeathList;
@@ -37,6 +36,7 @@ import mj.doc.updabhname.UpdAbhNameList;
 import mj.doc.updatenat.UpdNatList;
 import mj.doc.updname.UpdNameList;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 /**
  * Список всех 9 документов и переход к ним, <br>
@@ -66,7 +66,7 @@ public class DocList {
 		try {
 			OpenDoc();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -298,7 +298,7 @@ public class DocList {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -307,7 +307,7 @@ public class DocList {
 		try {
 			OpenDoc();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -318,7 +318,7 @@ public class DocList {
 		try {
 			SqlMap sql = new SqlMap().load("/SQLCUS.xml");
 			String readRecordSQL = sql.getSql("DocsList");
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
 			prepStmt.setLong(1, getId());
 			ResultSet rs = prepStmt.executeQuery();
@@ -346,7 +346,7 @@ public class DocList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -370,7 +370,7 @@ public class DocList {
 			DocCnt.setCellValueFactory(cellData -> cellData.getValue().DOCCNTProperty().asObject());
 			refresh();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

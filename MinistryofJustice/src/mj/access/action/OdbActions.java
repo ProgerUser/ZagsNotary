@@ -15,6 +15,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -44,9 +45,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.users.USR;
+import mj.utils.DbUtil;
 
 public class OdbActions {
 
@@ -100,7 +101,7 @@ public class OdbActions {
 			}
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -128,7 +129,7 @@ public class OdbActions {
 	@FXML
 	void EdtAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(165l) == 0) {
+			if (DbUtil.Odb_Action(165l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -157,11 +158,20 @@ public class OdbActions {
 						fillTree();
 					}
 					controller.dbDisconnect();
+					
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							Actions.requestFocus();
+							Actions.getSelectionModel().select(SelTbl);
+							Actions.scrollTo(SelTbl);
+						}
+					});
 				}
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -173,7 +183,7 @@ public class OdbActions {
 	@FXML
 	void DeleteAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(166l) == 0) {
+			if (DbUtil.Odb_Action(166l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -226,7 +236,7 @@ public class OdbActions {
 							Msg.Message(ExceptionUtils.getStackTrace(e1));
 							Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 						}
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 					newWindow_yn.close();
 				}
@@ -240,7 +250,7 @@ public class OdbActions {
 			newWindow_yn.show();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -252,7 +262,7 @@ public class OdbActions {
 	@FXML
 	void AddChildAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(164l) == 0) {
+			if (DbUtil.Odb_Action(164l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -280,18 +290,28 @@ public class OdbActions {
 						fillTree();
 					}
 					controller.dbDisconnect();
+					
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							Actions.requestFocus();
+							Actions.getSelectionModel().select(SelTbl);
+							Actions.scrollTo(SelTbl);
+						}
+					});
+					
 				}
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void Add(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(162l) == 0) {
+			if (DbUtil.Odb_Action(162l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -327,16 +347,16 @@ public class OdbActions {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				DBUtil.LOG_ERROR(e1);
+				DbUtil.Log_Error(e1);
 			}
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void Delete(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(163l) == 0) {
+			if (DbUtil.Odb_Action(163l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -372,9 +392,9 @@ public class OdbActions {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				DBUtil.LOG_ERROR(e1);
+				DbUtil.Log_Error(e1);
 			}
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -406,7 +426,7 @@ public class OdbActions {
 
 								Long act = item.getACT_ID();
 								// Integer act = Long.valueOf(item.substring(0, item.indexOf(":")));
-								if (DBUtil.ODB_ACTION(usr.getIUSRID(), act) == 1) {
+								if (DbUtil.Odb_Aaction(usr.getIUSRID(), act) == 1) {
 									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 								} else {
 									setStyle("");
@@ -419,7 +439,7 @@ public class OdbActions {
 			});
 
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			InitUsrs();
 
 			fillTree();
@@ -435,6 +455,7 @@ public class OdbActions {
 				TreeItem<ODB_ACTION> act = Actions.getSelectionModel().getSelectedItem();
 				if (act != null) {
 					ActionID.setText(String.valueOf(act.getValue().getACT_ID()));
+					SelTbl = Actions.getSelectionModel().getSelectedIndex();
 				}
 			});
 
@@ -447,10 +468,10 @@ public class OdbActions {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
-
+	int SelTbl;
 	void InitUsrs() {
 		try {
 			Main.logger = Logger.getLogger(getClass());
@@ -468,7 +489,7 @@ public class OdbActions {
 			rs.close();
 			Users.setItems(usr_list);
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -578,7 +599,7 @@ public class OdbActions {
 	void printChildren(TreeItem<String> root, Long usrid) {
 		for (TreeItem<String> child : root.getChildren()) {
 			Long act = Long.valueOf(child.getValue().substring(0, child.getValue().indexOf(":")));
-			if (DBUtil.ODB_ACTION(usrid, act) == 1) {
+			if (DbUtil.Odb_Aaction(usrid, act) == 1) {
 				child.setValue(
 						child.getValue() + String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2713", 16))));
 			} else {
@@ -605,7 +626,7 @@ public class OdbActions {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -615,7 +636,7 @@ public class OdbActions {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -642,7 +663,7 @@ public class OdbActions {
 				// getTreeItem().getChildren().add(newEmployee);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -682,7 +703,7 @@ public class OdbActions {
 				if (Users.getSelectionModel().getSelectedItem() != null) {
 					USR usr = Users.getSelectionModel().getSelectedItem();
 					Long act = Long.valueOf(item.substring(0, item.indexOf(":")));
-					if (DBUtil.ODB_ACTION(usr.getIUSRID(), act) == 1) {
+					if (DbUtil.Odb_Aaction(usr.getIUSRID(), act) == 1) {
 						setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 					} else {
 						setStyle("");
@@ -731,7 +752,7 @@ public class OdbActions {
 				pstmt.close();
 				rs.close();
 			} catch (SQLException e) {
-				DBUtil.LOG_ERROR(e);
+				DbUtil.Log_Error(e);
 			}
 			return ret;
 		}

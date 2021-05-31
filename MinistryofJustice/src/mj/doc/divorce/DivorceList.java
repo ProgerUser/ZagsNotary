@@ -69,9 +69,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -265,7 +265,7 @@ public class DivorceList {
 				Desktop.getDesktop().open(tempFile);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
     
@@ -276,13 +276,13 @@ public class DivorceList {
 					System.getenv("MJ_PATH") + "/OutReports/DIVORCE_CERT.pdf");
 			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/DIVORCE_CERT.pdf"));
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
     }
     
 	void Add() {
 		try {
-			if (DBUtil.OdbAction(98l) == 0) {
+			if (DbUtil.Odb_Action(98l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -313,14 +313,14 @@ public class DivorceList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	void Delete() {
 		try {
 
-			if (DBUtil.OdbAction(100l) == 0) {
+			if (DbUtil.Odb_Action(100l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -379,7 +379,7 @@ public class DivorceList {
 								Msg.Message(ExceptionUtils.getStackTrace(e1));
 								Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -393,7 +393,7 @@ public class DivorceList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -405,7 +405,7 @@ public class DivorceList {
 
 				Main.logger = Logger.getLogger(getClass());
 
-				if (DBUtil.OdbAction(99l) == 0) {
+				if (DbUtil.Odb_Action(99l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -419,7 +419,7 @@ public class DivorceList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "DIVORCE_CERT",conn);
+						String lock = DbUtil.Lock_Row(docid, "DIVORCE_CERT",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -455,7 +455,7 @@ public class DivorceList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -506,7 +506,7 @@ public class DivorceList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -525,13 +525,13 @@ public class DivorceList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						});
@@ -540,17 +540,17 @@ public class DivorceList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "DIVORCE_CERT"));
-						DBUtil.LOG_ERROR(e);
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "DIVORCE_CERT"));
+						DbUtil.Log_Error(e);
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -730,7 +730,7 @@ public class DivorceList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -817,7 +817,7 @@ public class DivorceList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -889,7 +889,7 @@ public class DivorceList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -962,7 +962,7 @@ public class DivorceList {
 			rs.close();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -973,7 +973,7 @@ public class DivorceList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1073,7 +1073,7 @@ public class DivorceList {
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			Refresh();
 
 			// Столбцы таблицы
@@ -1108,7 +1108,7 @@ public class DivorceList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1152,7 +1152,7 @@ public class DivorceList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 		return ret;
@@ -1187,7 +1187,7 @@ public class DivorceList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

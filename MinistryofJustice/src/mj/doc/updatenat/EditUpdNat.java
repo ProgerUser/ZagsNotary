@@ -45,10 +45,10 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 import mj.widgets.FxUtilTest;
 
 public class EditUpdNat {
@@ -256,7 +256,7 @@ public class EditUpdNat {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -386,7 +386,7 @@ public class EditUpdNat {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -443,7 +443,7 @@ public class EditUpdNat {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -485,7 +485,7 @@ public class EditUpdNat {
 			callStmt.execute();
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -590,7 +590,7 @@ public class EditUpdNat {
 			SVID_NUMBER.setText(upd.getSVID_NUMBER());
 			DOC_NUMBER.setText(upd.getDOC_NUMBER());
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

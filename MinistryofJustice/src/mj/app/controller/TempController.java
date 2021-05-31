@@ -3,7 +3,7 @@ package mj.app.controller;
 import org.apache.log4j.Logger;
 import javafx.fxml.FXML;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class TempController {
 
@@ -16,7 +16,7 @@ public class TempController {
 		try {
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

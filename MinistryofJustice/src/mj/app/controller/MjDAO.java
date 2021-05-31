@@ -16,8 +16,8 @@ import mj.app.model.OK_SM;
 import mj.app.model.SqlMap;
 import mj.app.model.User_in;
 import mj.app.model.User_out;
-import mj.dbutil.DBUtil;
 import mj.users.USR;
+import mj.utils.DbUtil;
 
 public class MjDAO {
 
@@ -34,14 +34,14 @@ public class MjDAO {
 			Main.logger = Logger.getLogger(MjDAO.class);
 			String selectStmt = "select * from COUNTRIES t order by CODE asc";
 
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rsEmps = prepStmt.executeQuery();
 			Forms_lst = OK_SM(rsEmps);
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return Forms_lst;
 	}
@@ -60,7 +60,7 @@ public class MjDAO {
 			}
 			return user_o_list;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class MjDAO {
 		ObservableList<User_in> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			SqlMap sql = new SqlMap().load("/SQL.xml");
 			String readRecordSQL = sql.getSql("user_in");
 
@@ -83,7 +83,7 @@ public class MjDAO {
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return Forms_lst;
 	}
@@ -95,7 +95,7 @@ public class MjDAO {
 		ObservableList<User_in> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			SqlMap sql = new SqlMap().load("/SQL.xml");
 			String readRecordSQL = sql.getSql("user_in2");
 
@@ -106,7 +106,7 @@ public class MjDAO {
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return Forms_lst;
 	}
@@ -118,7 +118,7 @@ public class MjDAO {
 		ObservableList<User_out> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			SqlMap sql = new SqlMap().load("/SQL.xml");
 			String readRecordSQL = sql.getSql("User_out_menu");
 
@@ -129,7 +129,7 @@ public class MjDAO {
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return Forms_lst;
 	}
@@ -141,7 +141,7 @@ public class MjDAO {
 		ObservableList<User_out> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			SqlMap sql = new SqlMap().load("/SQL.xml");
 			String readRecordSQL = sql.getSql("user_out2");
 
@@ -152,7 +152,7 @@ public class MjDAO {
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return Forms_lst;
 	}
@@ -164,7 +164,7 @@ public class MjDAO {
 		ObservableList<User_out> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			SqlMap sql = new SqlMap().load("/SQL.xml");
 			String readRecordSQL = sql.getSql("user_out");
 
@@ -175,7 +175,7 @@ public class MjDAO {
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return Forms_lst;
 	}
@@ -187,7 +187,7 @@ public class MjDAO {
 		ObservableList<User_in> Forms_lst = null;
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			SqlMap sql = new SqlMap().load("/SQL.xml");
 			String readRecordSQL = sql.getSql("User_in_menu");
 
@@ -198,7 +198,7 @@ public class MjDAO {
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return Forms_lst;
 	}
@@ -219,7 +219,7 @@ public class MjDAO {
 			}
 			return user_in_list;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return null;
 	}
@@ -232,7 +232,7 @@ public class MjDAO {
 		try {
 			Main.logger = Logger.getLogger(MjDAO.class);
 			String selectStmt = "select * from usr ORDER BY CUSRLOGNAME";
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rsEmps = prepStmt.executeQuery();
@@ -240,7 +240,7 @@ public class MjDAO {
 			rsEmps.close();
 			prepStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return Forms_lst;
 	}
@@ -286,7 +286,7 @@ public class MjDAO {
 			}
 			return forms_list;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return null;
 	}
@@ -306,7 +306,7 @@ public class MjDAO {
 			}
 			return user_o_list;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return null;
 	}

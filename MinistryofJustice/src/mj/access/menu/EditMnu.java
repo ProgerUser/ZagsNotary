@@ -22,8 +22,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class EditMnu {
 
@@ -74,7 +74,7 @@ public class EditMnu {
 					callStmt.close();
 				}
 			} catch (Exception e) {
-				DBUtil.LOG_ERROR(e);
+				DbUtil.Log_Error(e);
 			}
 		}
 	}
@@ -113,7 +113,7 @@ public class EditMnu {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -127,13 +127,13 @@ public class EditMnu {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			MNU_PARENT.setText(String.valueOf(parantid));
 			MNU_NAME.setText(txt);
 			// FirstWUpp(ACT_NAME);
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -156,7 +156,7 @@ public class EditMnu {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -171,7 +171,7 @@ public class EditMnu {
 			}
 
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

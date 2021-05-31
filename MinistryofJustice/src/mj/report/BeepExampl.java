@@ -16,7 +16,7 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 /** Simple example of Windows native library declaration and usage. */
 public class BeepExampl {
@@ -248,7 +248,7 @@ public class BeepExampl {
 			Connect.userPassword = "";
 		}
 		
-		DBUtil.dbConnect();
+		DbUtil.Db_Connect();
 		
 //		String sid = "";
 //		{

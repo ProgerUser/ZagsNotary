@@ -16,8 +16,8 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class DMR {
 	public class MjDynamRepExc extends Exception {
@@ -102,7 +102,7 @@ public class DMR {
 			Method method = javaDemoClass.getMethod("run", paramString);
 			method.invoke(null, "");
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

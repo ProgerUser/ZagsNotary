@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 
 import mj.app.main.Main;
 import mj.app.model.SqlMap;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -40,7 +40,7 @@ public class PrintReport extends JFrame {
 
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			SqlMap sql = new SqlMap().load("/SqlBurn.xml");
 			String readRecordSQL = sql.getSql("ForReport");
 			PreparedStatement prepStmt = conn.prepareStatement(readRecordSQL);
@@ -79,7 +79,7 @@ public class PrintReport extends JFrame {
 			this.setSize(700, 500);
 			this.setVisible(true);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

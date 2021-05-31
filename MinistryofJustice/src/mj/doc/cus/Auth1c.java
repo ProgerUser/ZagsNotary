@@ -29,7 +29,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class Auth1c {
 
@@ -78,7 +78,7 @@ public class Auth1c {
 				throw new RuntimeException("Cannot find computer SN");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return sn.trim();
 	}
@@ -128,7 +128,7 @@ public class Auth1c {
 				throw new RuntimeException("Cannot find CPU NAME");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return cpu.trim();
 	}
@@ -173,7 +173,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -196,7 +196,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -219,7 +219,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -242,7 +242,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -265,7 +265,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -288,7 +288,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -311,7 +311,7 @@ public class Auth1c {
 			rs.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -368,7 +368,7 @@ public class Auth1c {
 			String theString = IOUtils.toString(inputStream, "UTF-8");
 			ret = theString;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -416,7 +416,7 @@ public class Auth1c {
 			String theString = IOUtils.toString(inputStream, "UTF-8");
 			ret = theString;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 			//Main.logger.error(e);
 		}
 		return ret;
@@ -436,7 +436,7 @@ public class Auth1c {
 			stmt.close();
 			dbDisconnect();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -471,7 +471,7 @@ public class Auth1c {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -507,7 +507,7 @@ public class Auth1c {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -526,7 +526,7 @@ public class Auth1c {
 			String url = "jdbc:sqlite:" + System.getenv("MJ_PATH") + "SqlLite\\log.db";
 			conn = DriverManager.getConnection(url);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -539,7 +539,7 @@ public class Auth1c {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -592,7 +592,7 @@ public class Auth1c {
 
 			ret = theString;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -648,7 +648,7 @@ public class Auth1c {
 
 			ret = theString;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -703,7 +703,7 @@ public class Auth1c {
 			encrypt_str = end2 + encrypt_str + start2;
 			ret = encrypt_str;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -739,7 +739,7 @@ public class Auth1c {
 			HDD_SERIAL = getSerialNumber();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return HDD_SERIAL;
 	}
@@ -774,7 +774,7 @@ public class Auth1c {
 			CPU_NAME = getCpuNumber();
 			System.out.println("CPU_NAME:" + CPU_NAME);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return CPU_NAME;
 	}

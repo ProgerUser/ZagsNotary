@@ -70,9 +70,9 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import mj.widgets.DbmsOutputCapture;
 import mj.widgets.FxUtilTest;
 import netscape.javascript.JSObject;
@@ -163,7 +163,7 @@ public class AddDoc {
 				Map<Long, Long> parents = new HashMap<>();
 
 				PreparedStatement prp = conn.prepareStatement(
-						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc1"));
+						DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "AddParamForDoc1"));
 				Clob clob = conn.createClob();
 				clob.setString(1, JsonStr.trim());
 				prp.setLong(1, val.getID());
@@ -259,7 +259,7 @@ public class AddDoc {
 		try {
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -379,7 +379,7 @@ public class AddDoc {
 										}
 									}
 								} catch (Exception e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						}
@@ -388,7 +388,7 @@ public class AddDoc {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -406,7 +406,7 @@ public class AddDoc {
 				fillTree();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -450,7 +450,7 @@ public class AddDoc {
 //			});
 //			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -572,7 +572,7 @@ public class AddDoc {
 			}
 			Reload();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -581,7 +581,7 @@ public class AddDoc {
 		try {
 			TYPE_NAME.getSelectionModel().select(null);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -621,7 +621,7 @@ public class AddDoc {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -674,14 +674,14 @@ public class AddDoc {
 								// Fill
 								fillTree();
 							} catch (Exception e) {
-								DBUtil.LOG_ERROR(e);
+								DbUtil.Log_Error(e);
 							}
 						}
 					}
 				});
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -755,7 +755,7 @@ public class AddDoc {
 					List<String> lines = capture.execute(cls);
 					System.out.println(lines);
 				} catch (Exception e) {
-					DBUtil.LOG_ERROR(e);
+					DbUtil.Log_Error(e);
 				}
 				// --------------
 				if (cls.getString(1) == null) {
@@ -773,7 +773,7 @@ public class AddDoc {
 				Msg.Message("осярн!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -807,7 +807,7 @@ public class AddDoc {
 			prp.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -817,7 +817,7 @@ public class AddDoc {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -833,7 +833,7 @@ public class AddDoc {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -966,7 +966,7 @@ public class AddDoc {
 			// HtmlEditor.getStyleClass().add("mylistview");
 			// HtmlEditor.getStylesheets().add("/ScrPane.css");
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from V_NT_TEMP_LIST");
 				ResultSet rs = stsmt.executeQuery();
@@ -1002,7 +1002,7 @@ public class AddDoc {
 			}
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

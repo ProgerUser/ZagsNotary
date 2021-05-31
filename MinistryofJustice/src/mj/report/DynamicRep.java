@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.swing.JFrame;
 import mj.app.model.SqlMap;
 import mj.audit.view.AUDIT_REPORT;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -27,7 +27,7 @@ public class DynamicRep extends JFrame {
 
 	public void showReport(Long ID) {
 		try {
-			Connection conn = DBUtil.conn;
+			Connection conn = DbUtil.conn;
 			{
 				PreparedStatement prp = conn
 						.prepareStatement("with REP_IDS as\r\n" + 

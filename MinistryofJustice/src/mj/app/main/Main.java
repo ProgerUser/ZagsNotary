@@ -36,7 +36,6 @@ import mj.app.model.Connect;
 import mj.audit.trigger.AuList;
 import mj.audit.view.Audit;
 import mj.courts.CourtList;
-import mj.dbutil.DBUtil;
 import mj.doc.adoptoin.AdoptList;
 import mj.doc.birthact.BirthList;
 import mj.doc.cus.CusList;
@@ -55,6 +54,7 @@ import mj.otd.OtdList;
 import mj.project.PRJ_FLS_FLDR;
 import mj.report.Report;
 import mj.users.UsrC;
+import mj.utils.DbUtil;
 import mj.zags.ZagsList;
 import notary.doc.html.controller.NotaryDocList;
 import notary.template.html.controller.NtTemplate;
@@ -163,7 +163,7 @@ public class Main extends Application {
 			Connect.connectionURL = "localhost:1522/orcl";
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
-			DBUtil.dbConnect();
+			DbUtil.Db_Connect();
 			initRootLayout();
 			RT();
 //			new NotaryDocList().HtmlEditor(primaryStage);
@@ -174,9 +174,9 @@ public class Main extends Application {
 				try {
 					killProcess();
 				} catch (Exception e1) {
-					DBUtil.LOG_ERROR(e1);
+					DbUtil.Log_Error(e1);
 				}
-				DBUtil.dbDisconnect();
+				DbUtil.Db_Disconnect();
 				SQLIETEDisconnect();
 				Platform.exit();
 				System.exit(0);
@@ -188,7 +188,7 @@ public class Main extends Application {
 //			System.out.println(Petrovich.Fname("MALE", "Саид"));
 //			System.out.println(Petrovich.Mname("MALE", "Викторович"));
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class Main extends Application {
 			primaryStage.setScene(scene); // Set the scene in primary stage.
 			primaryStage.show(); // Display the primary stage
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -227,7 +227,7 @@ public class Main extends Application {
 			BorderPane employeeOperationsView = (BorderPane) loader.load();
 			rootLayout.setCenter(employeeOperationsView);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -246,7 +246,7 @@ public class Main extends Application {
 			String url = "jdbc:sqlite:" + System.getenv("MJ_PATH") + "SqlLite\\log.db";
 			SQLIETE = DriverManager.getConnection(url);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -260,7 +260,7 @@ public class Main extends Application {
 				SQLIETE.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -272,7 +272,7 @@ public class Main extends Application {
 		try {
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -298,7 +298,7 @@ public class Main extends Application {
 			});
 			enterdtage = stage;
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -328,7 +328,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -361,7 +361,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -393,7 +393,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -427,7 +427,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -458,7 +458,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -489,7 +489,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -523,7 +523,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -556,7 +556,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -592,7 +592,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -631,7 +631,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -669,7 +669,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -702,7 +702,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -732,7 +732,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -762,7 +762,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -792,7 +792,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -825,7 +825,7 @@ public class Main extends Application {
 			}
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -856,7 +856,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -886,7 +886,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -917,7 +917,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -948,7 +948,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -976,7 +976,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1014,7 +1014,7 @@ public class Main extends Application {
 
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1045,7 +1045,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1088,7 +1088,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1120,7 +1120,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1152,7 +1152,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1184,7 +1184,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1216,7 +1216,7 @@ public class Main extends Application {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

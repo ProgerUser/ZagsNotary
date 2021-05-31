@@ -60,8 +60,8 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class Report_ {
 
@@ -116,7 +116,7 @@ public class Report_ {
 
 			PARAMS.setItems(rep);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -150,7 +150,7 @@ public class Report_ {
 			FRREPRunner runner = new FRREPRunner();
 
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			String port = "1521";
 			String sid = "";
 			String host = "";
@@ -209,7 +209,7 @@ public class Report_ {
 				prp.executeUpdate();
 				prp.close();
 			} catch (Exception e) {
-				DBUtil.LOG_ERROR(e);
+				DbUtil.Log_Error(e);
 			}
 
 			// Call DB, get clob via java code
@@ -257,7 +257,7 @@ public class Report_ {
 			helloMethod.invoke(helloClass.newInstance());
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -386,7 +386,7 @@ public class Report_ {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -493,7 +493,7 @@ public class Report_ {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -501,7 +501,7 @@ public class Report_ {
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			VALUE.setOnEditCommit(new EventHandler<CellEditEvent<REP_PARAMS, String>>() {
 				@Override
 				public void handle(CellEditEvent<REP_PARAMS, String> t) {
@@ -579,7 +579,7 @@ public class Report_ {
 			NAME.setCellValueFactory(cellData -> cellData.getValue().PRM_NAMEProperty());
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -617,7 +617,7 @@ public class Report_ {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -631,7 +631,7 @@ public class Report_ {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

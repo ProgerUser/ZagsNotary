@@ -57,9 +57,9 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import mj.widgets.FxUtilTest;
 import notary.doc.html.model.NT_CUS_LIST_FOR_SEARCH;
 import notary.doc.html.model.NT_DOV_YEAR_LIST_FOR_SEARCH;
@@ -137,7 +137,7 @@ public class NotaryDocList {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -153,7 +153,7 @@ public class NotaryDocList {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -167,7 +167,7 @@ public class NotaryDocList {
 		try {
 			ParamList.getSelectionModel().select(null);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -181,7 +181,7 @@ public class NotaryDocList {
 		try {
 			Vals.getSelectionModel().select(null);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -273,7 +273,7 @@ public class NotaryDocList {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -319,7 +319,7 @@ public class NotaryDocList {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -365,7 +365,7 @@ public class NotaryDocList {
 									conn.rollback();
 								}
 							} catch (Exception e) {
-								DBUtil.LOG_ERROR(e);
+								DbUtil.Log_Error(e);
 							}
 						}
 					});
@@ -373,7 +373,7 @@ public class NotaryDocList {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -435,9 +435,9 @@ public class NotaryDocList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -451,7 +451,7 @@ public class NotaryDocList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -461,7 +461,7 @@ public class NotaryDocList {
 			// HtmlEditor((Stage) NT_DOC.getScene().getWindow());
 			Edit();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -503,8 +503,8 @@ public class NotaryDocList {
 				docx.setVariablePattern(new VariablePattern("#{", "}"));
 				// preparing variables
 				Variables variables = new Variables();
-				PreparedStatement prepStmt = DBUtil.conn.prepareStatement(
-						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrintNtDocPrmVals"));
+				PreparedStatement prepStmt = DbUtil.conn.prepareStatement(
+						DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "PrintNtDocPrmVals"));
 				prepStmt.setLong(1, val.getID());
 				ResultSet rs = prepStmt.executeQuery();
 				while (rs.next()) {
@@ -528,7 +528,7 @@ public class NotaryDocList {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -537,7 +537,7 @@ public class NotaryDocList {
 		try {
 			Init();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -605,7 +605,7 @@ public class NotaryDocList {
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			ROOT.setBottom(createOptionPane(NT_DOC));
 			ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
 			DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
@@ -658,7 +658,7 @@ public class NotaryDocList {
 			}
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -674,7 +674,7 @@ public class NotaryDocList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -728,7 +728,7 @@ public class NotaryDocList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -768,7 +768,7 @@ public class NotaryDocList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -778,7 +778,7 @@ public class NotaryDocList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

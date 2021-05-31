@@ -29,8 +29,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.users.NOTARY;
+import mj.utils.DbUtil;
 import notary.template.html.model.NT_TEMPLATE;
 import notary.template.html.model.NT_TEMP_LIST;
 
@@ -147,7 +147,7 @@ public class IUTemplateList {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -161,7 +161,7 @@ public class IUTemplateList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -176,7 +176,7 @@ public class IUTemplateList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -195,7 +195,7 @@ public class IUTemplateList {
 						file.getAbsolutePath().indexOf(System.getenv("MJ_PATH")) + System.getenv("MJ_PATH").length()));
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -203,7 +203,7 @@ public class IUTemplateList {
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			// Нотариус
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from notary");
@@ -238,7 +238,7 @@ public class IUTemplateList {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

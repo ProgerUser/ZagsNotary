@@ -25,7 +25,7 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class AddOtd {
 
@@ -52,7 +52,7 @@ public class AddOtd {
 			setStatus(true);
 			onclose();
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -75,7 +75,7 @@ public class AddOtd {
 		try {
 
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			// Районы
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from RAION");
@@ -97,7 +97,7 @@ public class AddOtd {
 
 			
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -128,7 +128,7 @@ public class AddOtd {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -138,7 +138,7 @@ public class AddOtd {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

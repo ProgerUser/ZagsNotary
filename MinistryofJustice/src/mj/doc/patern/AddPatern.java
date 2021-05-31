@@ -52,11 +52,11 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 
 public class AddPatern {
 
@@ -391,7 +391,7 @@ public class AddPatern {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -505,7 +505,7 @@ public class AddPatern {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -616,7 +616,7 @@ public class AddPatern {
 				callStmt.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -698,7 +698,7 @@ public class AddPatern {
 
 			if (conn == null) {
 				dbConnect();
-				DBUtil.RunProcess(conn);
+				DbUtil.Run_Process(conn);
 			}
 			/**
 			 * Тип основания для уст. отцовства
@@ -712,7 +712,7 @@ public class AddPatern {
 			new ConvConst().FormatDatePiker(PС_TRZ);
 			
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -734,7 +734,7 @@ public class AddPatern {
 					props);
 			conn.setAutoCommit(false);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -747,7 +747,7 @@ public class AddPatern {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

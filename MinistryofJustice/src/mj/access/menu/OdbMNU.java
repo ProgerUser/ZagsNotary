@@ -14,6 +14,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,9 +42,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.users.USR;
+import mj.utils.DbUtil;
 
 public class OdbMNU {
 
@@ -82,7 +83,7 @@ public class OdbMNU {
 	@FXML
 	void Add(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(156l) == 0) {
+			if (DbUtil.Odb_Action(156l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -119,16 +120,16 @@ public class OdbMNU {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				DBUtil.LOG_ERROR(e1);
+				DbUtil.Log_Error(e1);
 			}
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void Delete(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(157l) == 0) {
+			if (DbUtil.Odb_Action(157l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -163,9 +164,9 @@ public class OdbMNU {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				DBUtil.LOG_ERROR(e1);
+				DbUtil.Log_Error(e1);
 			}
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -177,7 +178,7 @@ public class OdbMNU {
 	@FXML
 	void DeleteAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(160l) == 0) {
+			if (DbUtil.Odb_Action(160l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -226,9 +227,9 @@ public class OdbMNU {
 						try {
 							conn.rollback();
 						} catch (SQLException e1) {
-							DBUtil.LOG_ERROR(e1);
+							DbUtil.Log_Error(e1);
 						}
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 					newWindow_yn.close();
 				}
@@ -242,7 +243,7 @@ public class OdbMNU {
 			newWindow_yn.show();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -254,7 +255,7 @@ public class OdbMNU {
 	@FXML
 	void EdtAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(159l) == 0) {
+			if (DbUtil.Odb_Action(159l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -283,11 +284,21 @@ public class OdbMNU {
 						fillTree();
 					}
 					controller.dbDisconnect();
+					
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							MNU.requestFocus();
+							MNU.getSelectionModel().select(SelTbl);
+							MNU.scrollTo(SelTbl);
+						}
+					});
+					
 				}
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -299,7 +310,7 @@ public class OdbMNU {
 	@FXML
 	void AddChildAction(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(158l) == 0) {
+			if (DbUtil.Odb_Action(158l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -329,11 +340,20 @@ public class OdbMNU {
 						fillTree();
 					}
 					controller.dbDisconnect();
+					
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							MNU.requestFocus();
+							MNU.getSelectionModel().select(SelTbl);
+							MNU.scrollTo(SelTbl);
+						}
+					});
 				}
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -365,7 +385,7 @@ public class OdbMNU {
 								Long act = item.getMNU_ID();
 								// Integer act = Long.valueOf(item.substring(0, item.indexOf(":")));
 
-								if (DBUtil.ODB_MNU(usr.getIUSRID(), act) == 1) {
+								if (DbUtil.Odb_Mnu(usr.getIUSRID(), act) == 1) {
 									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 								} else {
 									setStyle("");
@@ -379,7 +399,7 @@ public class OdbMNU {
 			});
 
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			InitUsrs();
 
 			fillTree();
@@ -395,6 +415,7 @@ public class OdbMNU {
 				TreeItem<ODB_MNU> act = MNU.getSelectionModel().getSelectedItem();
 				if (act != null) {
 					ActionID.setText(String.valueOf(act.getValue().getMNU_ID()));
+					SelTbl = MNU.getSelectionModel().getSelectedIndex();
 				}
 			});
 
@@ -407,10 +428,12 @@ public class OdbMNU {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
+	int SelTbl;
+	
 	void InitUsrs() {
 		try {
 			Main.logger = Logger.getLogger(getClass());
@@ -428,7 +451,7 @@ public class OdbMNU {
 			rs.close();
 			Users.setItems(usr_list);
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -536,7 +559,7 @@ public class OdbMNU {
 	void printChildren(TreeItem<String> root, Long usrid) {
 		for (TreeItem<String> child : root.getChildren()) {
 			Long act = Long.valueOf(child.getValue().substring(0, child.getValue().indexOf(":")));
-			if (DBUtil.ODB_MNU(usrid, act) == 1) {
+			if (DbUtil.Odb_Mnu(usrid, act) == 1) {
 				child.setValue(
 						child.getValue() + String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2713", 16))));
 			} else {
@@ -564,7 +587,7 @@ public class OdbMNU {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -575,7 +598,7 @@ public class OdbMNU {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -602,7 +625,7 @@ public class OdbMNU {
 				// getTreeItem().getChildren().add(newEmployee);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -642,7 +665,7 @@ public class OdbMNU {
 				if (Users.getSelectionModel().getSelectedItem() != null) {
 					USR usr = Users.getSelectionModel().getSelectedItem();
 					Long act = Long.valueOf(item.substring(0, item.indexOf(":")));
-					if (DBUtil.ODB_MNU(usr.getIUSRID(), act) == 1) {
+					if (DbUtil.Odb_Mnu(usr.getIUSRID(), act) == 1) {
 						setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 					} else {
 						setStyle("");
@@ -691,7 +714,7 @@ public class OdbMNU {
 				pstmt.close();
 				rs.close();
 			} catch (SQLException e) {
-				DBUtil.LOG_ERROR(e);
+				DbUtil.Log_Error(e);
 			}
 			return ret;
 		}

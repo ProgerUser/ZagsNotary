@@ -58,11 +58,11 @@ import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
 import mj.app.model.Connect;
 import mj.courts.VCOURTS;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import mj.widgets.KeyBoard;
 
 public class AddAdopt {
@@ -170,7 +170,7 @@ public class AddAdopt {
 				GR_COURT.setValue(null);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
     
@@ -395,7 +395,7 @@ public class AddAdopt {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -534,7 +534,7 @@ public class AddAdopt {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -664,7 +664,7 @@ public class AddAdopt {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -762,7 +762,7 @@ public class AddAdopt {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -798,7 +798,7 @@ public class AddAdopt {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -899,7 +899,7 @@ public class AddAdopt {
 
 			if (conn == null) {
 				dbConnect();
-				DBUtil.RunProcess(conn);
+				DbUtil.Run_Process(conn);
 			}
 			
 			// Суды
@@ -931,7 +931,7 @@ public class AddAdopt {
 			new ConvConst().FormatDatePiker(ZAP_DATE);
 			new ConvConst().FormatDatePiker(NEW_BRTH);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -947,7 +947,7 @@ public class AddAdopt {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -957,7 +957,7 @@ public class AddAdopt {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

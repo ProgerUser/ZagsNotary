@@ -45,9 +45,9 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import mj.widgets.FxUtilTest;
 import notary.template.html.model.ALL_TABLE;
 import notary.template.html.model.NT_PADEJ;
@@ -175,7 +175,7 @@ public class IUTempParamIU {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -190,7 +190,7 @@ public class IUTempParamIU {
 				System.out.println(alltbl.getTABLE_NAME());
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -278,7 +278,7 @@ public class IUTempParamIU {
 			// Msg.Message(PRM_TBL_REF2.getSelectionModel().getSelectedItem().getTABLE_NAME());
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -292,7 +292,7 @@ public class IUTempParamIU {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -307,7 +307,7 @@ public class IUTempParamIU {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -316,7 +316,7 @@ public class IUTempParamIU {
 		try {
 			PRM_PADEJ.setValue(null);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -394,7 +394,7 @@ public class IUTempParamIU {
 						getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
 			}
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			// Таблицы
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from ALL_TABLE order by TABLE_NAME asc");
@@ -464,7 +464,7 @@ public class IUTempParamIU {
 				// Параметры
 				{
 					PreparedStatement stsmt = conn.prepareStatement(
-							DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrmForAddParents"));
+							DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "PrmForAddParents"));
 					stsmt.setLong(1, cl.getPRM_TMP_ID());
 					ResultSet rs = stsmt.executeQuery();
 					ObservableList<NT_TEMP_LIST_PARAM> combolist = FXCollections.observableArrayList();
@@ -582,7 +582,7 @@ public class IUTempParamIU {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

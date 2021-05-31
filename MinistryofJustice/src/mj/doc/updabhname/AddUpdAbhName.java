@@ -50,10 +50,10 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 import mj.widgets.KeyBoard;
 
 public class AddUpdAbhName {
@@ -139,7 +139,7 @@ public class AddUpdAbhName {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -327,7 +327,7 @@ public class AddUpdAbhName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -461,7 +461,7 @@ public class AddUpdAbhName {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -514,7 +514,7 @@ public class AddUpdAbhName {
 				callStmt.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -553,7 +553,7 @@ public class AddUpdAbhName {
 
 			if (conn == null) {
 				dbConnect();
-				DBUtil.RunProcess(conn);
+				DbUtil.Run_Process(conn);
 			}
 			/*
 			 * Pane1.heightProperty().addListener( (observable, oldValue, newValue) ->
@@ -568,7 +568,7 @@ public class AddUpdAbhName {
 			 * MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			 */
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -597,7 +597,7 @@ public class AddUpdAbhName {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -608,7 +608,7 @@ public class AddUpdAbhName {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

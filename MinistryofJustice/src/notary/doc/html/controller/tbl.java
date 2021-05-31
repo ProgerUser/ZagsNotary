@@ -8,9 +8,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import notary.doc.html.model.TableModel;
 
 public class tbl {
@@ -41,7 +41,7 @@ public class tbl {
 		try {
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -76,7 +76,7 @@ public class tbl {
 				Msg.Message("Âגוהטעו ךמכ-גמ סעמכבצמג");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -88,7 +88,7 @@ public class tbl {
 			new ConvConst().OnlyNumber(rows);
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

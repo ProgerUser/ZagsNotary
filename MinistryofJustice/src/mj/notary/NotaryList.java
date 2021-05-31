@@ -28,8 +28,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class NotaryList {
 
@@ -61,7 +61,7 @@ public class NotaryList {
 	@FXML
 	void Add(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(126l) == 0) {
+		if (DbUtil.Odb_Action(126l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -95,14 +95,14 @@ public class NotaryList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void Edit(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(127l) == 0) {
+		if (DbUtil.Odb_Action(127l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -116,7 +116,7 @@ public class NotaryList {
 	@FXML
 	void Delete(ActionEvent event) {
 		// проверка доступа
-		if (DBUtil.OdbAction(128l) == 0) {
+		if (DbUtil.Odb_Action(128l) == 0) {
 			Msg.Message("Нет доступа!");
 			return;
 		}
@@ -174,9 +174,9 @@ public class NotaryList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -190,7 +190,7 @@ public class NotaryList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -234,7 +234,7 @@ public class NotaryList {
 										conn.rollback();
 									isopen = false;
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 
 							}
@@ -245,16 +245,16 @@ public class NotaryList {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Клиент редактируется другим пользователем!");
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -262,7 +262,7 @@ public class NotaryList {
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			NOT_NAME.setCellValueFactory(cellData -> cellData.getValue().NOT_NAMEProperty());
 			NOT_OTD.setCellValueFactory(cellData -> cellData.getValue().COTDNAMEProperty());
 			NOT_RUK.setCellValueFactory(cellData -> cellData.getValue().NOT_RUKProperty());
@@ -274,7 +274,7 @@ public class NotaryList {
 			NOTARY.setRowFactory(tv -> {
 				TableRow<VNOTARY> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
-					if (DBUtil.OdbAction(127l) == 0) {
+					if (DbUtil.Odb_Action(127l) == 0) {
 						Msg.Message("Нет доступа!");
 						return;
 					}
@@ -287,7 +287,7 @@ public class NotaryList {
 			});
 			Init();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -312,7 +312,7 @@ public class NotaryList {
 			rs.close();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -347,7 +347,7 @@ public class NotaryList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -363,7 +363,7 @@ public class NotaryList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -373,7 +373,7 @@ public class NotaryList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

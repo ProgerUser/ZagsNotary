@@ -44,7 +44,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.doc.birthact.AddBirthAct;
 import mj.doc.birthact.FindBirth;
 import mj.doc.death.DEATH_CERT;
@@ -52,6 +51,7 @@ import mj.doc.divorce.DIVORCE_CERT;
 import mj.doc.mercer.MC_MERCER;
 import mj.doc.patern.PATERN_CERT;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class UtilCus {
 
@@ -68,7 +68,7 @@ public class UtilCus {
 		try {
 
 			// проверка доступа
-			if (DBUtil.OdbAction(27l) == 0) {
+			if (DbUtil.Odb_Action(27l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -102,7 +102,7 @@ public class UtilCus {
 							sttmt.close();
 							rs.close();
 						} catch (SQLException e) {
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 					}
 					controller.dbDisconnect();
@@ -110,7 +110,7 @@ public class UtilCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -147,7 +147,7 @@ public class UtilCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -180,7 +180,7 @@ public class UtilCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -375,7 +375,7 @@ public class UtilCus {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -583,7 +583,7 @@ public class UtilCus {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -751,7 +751,7 @@ public class UtilCus {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -937,7 +937,7 @@ public class UtilCus {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -972,7 +972,7 @@ public class UtilCus {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

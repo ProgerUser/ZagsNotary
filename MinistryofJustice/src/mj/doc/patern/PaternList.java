@@ -68,9 +68,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -184,7 +184,7 @@ public class PaternList {
 				Desktop.getDesktop().open(tempFile);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -193,7 +193,7 @@ public class PaternList {
 	 */
 	void Add() {
 		try {
-			if (DBUtil.OdbAction(101l) == 0) {
+			if (DbUtil.Odb_Action(101l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -224,7 +224,7 @@ public class PaternList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -335,7 +335,7 @@ public class PaternList {
 					System.getenv("MJ_PATH") + "/OutReports/PATERN_CERT.pdf");
 			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/PATERN_CERT.pdf"));
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
     }
     
@@ -348,7 +348,7 @@ public class PaternList {
 				Msg.Message("Выберите строку!");
 			} else {
 
-				if (DBUtil.OdbAction(102l) == 0) {
+				if (DbUtil.Odb_Action(102l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -400,9 +400,9 @@ public class PaternList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -416,7 +416,7 @@ public class PaternList {
 				newWindow_yn.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -433,7 +433,7 @@ public class PaternList {
 		try {
 			if (isopen == false) {
 
-				if (DBUtil.OdbAction(103l) == 0) {
+				if (DbUtil.Odb_Action(103l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -447,7 +447,7 @@ public class PaternList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "PATERN_CERT",conn);
+						String lock = DbUtil.Lock_Row(docid, "PATERN_CERT",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -483,7 +483,7 @@ public class PaternList {
 											Refresh();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -534,7 +534,7 @@ public class PaternList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -553,13 +553,13 @@ public class PaternList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						});
@@ -568,17 +568,17 @@ public class PaternList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "PATERN_CERT"));
-						DBUtil.LOG_ERROR(e);
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "PATERN_CERT"));
+						DbUtil.Log_Error(e);
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -749,7 +749,7 @@ public class PaternList {
 				exec.execute(task);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -840,7 +840,7 @@ public class PaternList {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -962,7 +962,7 @@ public class PaternList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -975,7 +975,7 @@ public class PaternList {
 				conn.close();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1100,7 +1100,7 @@ public class PaternList {
 			MotherBirthDate.setColumnFilter(new DateColumnFilter<>());
 
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			Refresh();
 			/**
 			 * Столбцы таблицы
@@ -1150,7 +1150,7 @@ public class PaternList {
 			new ConvConst().FormatDatePiker(DT1);
 			new ConvConst().FormatDatePiker(DT2);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1222,7 +1222,7 @@ public class PaternList {
 			rs.close();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -1267,7 +1267,7 @@ public class PaternList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -1301,7 +1301,7 @@ public class PaternList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

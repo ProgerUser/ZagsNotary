@@ -23,8 +23,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class AddAction {
 	
@@ -73,7 +73,7 @@ public class AddAction {
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
 			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DbUtil.Log_To_Db(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
 
@@ -112,7 +112,7 @@ public class AddAction {
 				String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 				String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
 				Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
-				DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+				DbUtil.Log_To_Db(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 			}
 		}
 	}
@@ -127,13 +127,13 @@ public class AddAction {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			ACT_PARENT.setText(String.valueOf(parantid));
 
 			// FirstWUpp(ACT_NAME);
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -156,7 +156,7 @@ public class AddAction {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -175,7 +175,7 @@ public class AddAction {
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
 			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DbUtil.Log_To_Db(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
 

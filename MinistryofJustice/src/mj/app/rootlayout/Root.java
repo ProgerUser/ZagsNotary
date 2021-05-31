@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 /**
  * Класс инициализации пунктов меню
@@ -45,7 +45,7 @@ public class Root {
 		try {
 			Main.Nt_Temp();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class Root {
 		try {
 			Main.grp_acces();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -68,7 +68,7 @@ public class Root {
 		try {
 			Main.settings();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	@FXML
@@ -76,7 +76,7 @@ public class Root {
 		try {
 			Main.Nt_Doc();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -91,7 +91,7 @@ public class Root {
 		try {
 			Main.doc1c();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	@FXML
@@ -99,7 +99,7 @@ public class Root {
 		try {
 			Main.NtClients();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class Root {
 		try {
 			Main.prglog();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class Root {
 		try {
 			Main.reports();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -137,7 +137,7 @@ public class Root {
 		try {
 			Main.prj();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -152,7 +152,7 @@ public class Root {
 		try {
 			Main.OTD();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -161,7 +161,7 @@ public class Root {
 		try {
 			Main.COURTS();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -175,7 +175,7 @@ public class Root {
 		try {
 			Main.ZAGS();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -184,7 +184,7 @@ public class Root {
 		try {
 			Main.NOTARY();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -198,7 +198,7 @@ public class Root {
 		try {
 			Main.Access3();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 	}
@@ -213,7 +213,7 @@ public class Root {
 		try {
 			Main.Admin_Menu();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 	}
@@ -223,7 +223,7 @@ public class Root {
 		try {
 			Main.UPD_NAT();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 	}
@@ -238,7 +238,7 @@ public class Root {
 		try {
 			Main.UPDATE_NAME();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 	}
@@ -248,7 +248,7 @@ public class Root {
 		try {
 			Main.au_setup();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 	}
@@ -263,7 +263,7 @@ public class Root {
 		try {
 			Main.ADOPTOIN();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 	}
@@ -278,7 +278,7 @@ public class Root {
 		try {
 			Main.UPDATE_ABH_NAME();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 	}
@@ -293,7 +293,7 @@ public class Root {
 		try {
 			Main.CUSLIST();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -307,7 +307,7 @@ public class Root {
 		try {
 			Main.BIRTH_ACT();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -321,7 +321,7 @@ public class Root {
 		try {
 			Main.AUVIEW();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -335,7 +335,7 @@ public class Root {
 		try {
 			Main.Users();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -348,7 +348,7 @@ public class Root {
 	 */
 	public Long chk_menu(Long FORM_NAME, String CUSRLOGNAME) {
 		Long ret = 0l;
-		Connection conn = DBUtil.conn;
+		Connection conn = DbUtil.conn;
 		try {
 			//SqlMap sql = new SqlMap().load("/SQL.xml");
 			//String readRecordSQL = sql.getSql("acces_menu");
@@ -362,7 +362,7 @@ public class Root {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return ret;
 	}
@@ -388,7 +388,7 @@ public class Root {
 				});
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -402,7 +402,7 @@ public class Root {
 		try {
 			Main.MC_MERCER();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -416,7 +416,7 @@ public class Root {
 		try {
 			Main.DIVORCE_CERT();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -430,7 +430,7 @@ public class Root {
 		try {
 			Main.PATERN_CERT();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -444,7 +444,7 @@ public class Root {
 		try {
 			Main.DEATH_CERT();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

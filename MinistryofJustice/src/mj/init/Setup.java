@@ -30,9 +30,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.doc.cus.Auth1c;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class Setup {
 
@@ -82,7 +82,7 @@ public class Setup {
 	@FXML
 	void Register(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(143l) == 0) {
+			if (DbUtil.Odb_Action(143l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -123,7 +123,7 @@ public class Setup {
 				Msg.Message("Заполните поля!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -148,7 +148,7 @@ public class Setup {
 			SQLIETEDisconnect();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -170,14 +170,14 @@ public class Setup {
 			}
 			SQLIETEDisconnect();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
 	@FXML
 	void TestConnect(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(142l) == 0) {
+			if (DbUtil.Odb_Action(142l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -201,7 +201,7 @@ public class Setup {
 				Msg.Message("Заполните поля!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class Setup {
 	@FXML
 	void CheckAuth(ActionEvent event) {
 		try {
-			if (DBUtil.OdbAction(144l) == 0) {
+			if (DbUtil.Odb_Action(144l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -246,7 +246,7 @@ public class Setup {
 				ID.requestFocus();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -273,7 +273,7 @@ public class Setup {
 			String url = "jdbc:sqlite:" + System.getenv("MJ_PATH") + "SqlLite\\log.db";
 			SQLIETE = DriverManager.getConnection(url);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -287,7 +287,7 @@ public class Setup {
 				SQLIETE.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -353,7 +353,7 @@ public class Setup {
 			// update property sqlitedb
 			setStatus(true);
 		} catch (MessagingException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -389,7 +389,7 @@ public class Setup {
 
 			SQLIETEDisconnect();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -406,7 +406,7 @@ public class Setup {
 			Init();
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

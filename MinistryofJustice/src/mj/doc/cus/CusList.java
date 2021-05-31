@@ -65,9 +65,9 @@ import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.app.model.SqlMap;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 
 /**
  * Контроллер формы "Граждане", позволяет добавлять, редактировать граждан <br>
@@ -341,7 +341,7 @@ public class CusList {
 			if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
 				Msg.Message("Выберите троку!");
 			} else {
-				if (DBUtil.OdbAction(29l) == 0) {
+				if (DbUtil.Odb_Action(29l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -418,9 +418,9 @@ public class CusList {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
-								DBUtil.LOG_ERROR(e1);
+								DbUtil.Log_Error(e1);
 							}
-							DBUtil.LOG_ERROR(e);
+							DbUtil.Log_Error(e);
 						}
 						newWindow_yn.close();
 					}
@@ -438,7 +438,7 @@ public class CusList {
 			 * DialogFactory.showError(CUSLIST.getScene().getWindow(),
 			 * ExceptionUtils.getStackTrace(e), null, "Ошибка");
 			 */
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -519,7 +519,7 @@ public class CusList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 
 		return ret;
@@ -594,7 +594,7 @@ public class CusList {
 			}
 			callStmt.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -614,7 +614,7 @@ public class CusList {
 	public void Edit(Long docid, Stage stage_/* , Connection conn */) {
 		try {
 			if (isopen == false) {
-				if (DBUtil.OdbAction(28l) == 0) {
+				if (DbUtil.Odb_Action(28l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
@@ -628,7 +628,7 @@ public class CusList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DBUtil.Lock_Row(docid, "CUS",conn);
+						String lock = DbUtil.Lock_Row(docid, "CUS",conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -674,7 +674,7 @@ public class CusList {
 										}
 										conn.commit();
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "CUS",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "CUS",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -726,7 +726,7 @@ public class CusList {
 												newWindow_yn.close();
 												isopen = false;
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DBUtil.Lock_Row_Delete(docid, "CUS",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "CUS",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -744,13 +744,13 @@ public class CusList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DBUtil.Lock_Row_Delete(docid, "CUS",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "CUS",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 									}
 								} catch (SQLException e) {
-									DBUtil.LOG_ERROR(e);
+									DbUtil.Log_Error(e);
 								}
 							}
 						});
@@ -759,16 +759,16 @@ public class CusList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DBUtil.Lock_Row_View(docid, "CUS"));
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "CUS"));
 					} else {
-						DBUtil.LOG_ERROR(e);
+						DbUtil.Log_Error(e);
 					}
 				}
 			} else {
 				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -779,7 +779,7 @@ public class CusList {
 	 */
 	void Add() {
 		try {
-			if (DBUtil.OdbAction(27l) == 0) {
+			if (DbUtil.Odb_Action(27l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -814,7 +814,7 @@ public class CusList {
 			});
 			stage.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -867,7 +867,7 @@ public class CusList {
 			task.setOnSucceeded(e -> BlockMain());
 			exec.execute(task);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1004,7 +1004,7 @@ public class CusList {
 				});
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1068,7 +1068,7 @@ public class CusList {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 		return list;
 	}
@@ -1092,7 +1092,7 @@ public class CusList {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1106,7 +1106,7 @@ public class CusList {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1127,7 +1127,7 @@ public class CusList {
 			Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
 					DT2.getValue());
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1143,7 +1143,7 @@ public class CusList {
 			Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
 					DT2.getValue());
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1280,7 +1280,7 @@ public class CusList {
 			 * Создать сессию
 			 */
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			/**
 			 * Инициализация столбцов таблицы
 			 */
@@ -1405,7 +1405,7 @@ public class CusList {
 			InitVCus(null, null, null, null, null, "null", null);
 			
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -1444,7 +1444,7 @@ public class CusList {
 				stage.show();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

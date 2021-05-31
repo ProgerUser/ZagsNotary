@@ -23,8 +23,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class EditAction {
 
@@ -88,7 +88,7 @@ public class EditAction {
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
 			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DbUtil.Log_To_Db(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
 
@@ -104,7 +104,7 @@ public class EditAction {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			ACT_PARENT.setText(String.valueOf(parantid));
 			ACT_NAME.setText(txt);
 			// FirstWUpp(ACT_NAME);
@@ -115,7 +115,7 @@ public class EditAction {
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
 			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DbUtil.Log_To_Db(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
 
@@ -143,7 +143,7 @@ public class EditAction {
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
 			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DbUtil.Log_To_Db(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
 
@@ -163,7 +163,7 @@ public class EditAction {
 			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
 			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
 			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DBUtil.LogToDb(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			DbUtil.Log_To_Db(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
 		}
 	}
 

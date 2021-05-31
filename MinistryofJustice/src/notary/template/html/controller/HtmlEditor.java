@@ -66,9 +66,9 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
 import mj.util.ConvConst;
+import mj.utils.DbUtil;
 import netscape.javascript.JSObject;
 import notary.template.html.model.NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
@@ -100,7 +100,7 @@ public class HtmlEditor {
 			this.conn = conn;
 			this.conn.setAutoCommit(false);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -155,7 +155,7 @@ public class HtmlEditor {
 				fillTree();
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -186,7 +186,7 @@ public class HtmlEditor {
 				}
 			});
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -213,11 +213,11 @@ public class HtmlEditor {
 				webEngine.load(url.toExternalForm());
 				// VisHtml.setHtmlText(CodeHtml.getText());
 			} catch (Exception e) {
-				DBUtil.LOG_ERROR(e);
+				DbUtil.Log_Error(e);
 			}
 			System.out.println("HTML_CODE");
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -248,10 +248,10 @@ public class HtmlEditor {
 				URL url = new File(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html").toURI().toURL();
 				webEngine.load(url.toExternalForm());
 			} catch (Exception e) {
-				DBUtil.LOG_ERROR(e);
+				DbUtil.Log_Error(e);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -260,7 +260,7 @@ public class HtmlEditor {
 		try {
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -277,7 +277,7 @@ public class HtmlEditor {
 			String res = doc.body().html();
 			CodeHtml.replaceText(0, CodeHtml.getLength(), res);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -287,7 +287,7 @@ public class HtmlEditor {
 		try {
 			fillTree();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 	
@@ -306,7 +306,7 @@ public class HtmlEditor {
 			conn.commit();
 			onclose();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -386,7 +386,7 @@ public class HtmlEditor {
 				Map<Long, Long> parents = new HashMap<>();
 
 				PreparedStatement prp = conn.prepareStatement(
-						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
+						DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
 				Clob clob = conn.createClob();
 				clob.setString(1, JsonStr.trim());
 				prp.setLong(1, val_list.getID());
@@ -438,7 +438,7 @@ public class HtmlEditor {
 			}
 			expandTreeView(roots);
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -586,7 +586,7 @@ public class HtmlEditor {
 			});
 
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -613,7 +613,7 @@ public class HtmlEditor {
 			prepStmt.close();
 			rs.close();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -801,7 +801,7 @@ public class HtmlEditor {
 			});
 			
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 

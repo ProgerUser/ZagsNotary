@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 import notary.template.html.model.NT_TEMPLATE;
 
 public class IUTemplate {
@@ -113,7 +113,7 @@ public class IUTemplate {
 				}
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class IUTemplate {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -142,7 +142,7 @@ public class IUTemplate {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -150,14 +150,14 @@ public class IUTemplate {
 	private void initialize() {
 		try {
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			if (gettype().equals("U")) {
 				NT_NAME.setText(getNAME());
 				NT_PARENT_ID.setText(String.valueOf(values.getNT_PARENT()));
 				OK.setText("Сохранить");
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 }

@@ -19,7 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
+import mj.utils.DbUtil;
 
 public class InternalFrameDemo extends Application {
 	public static void main(String[] args) {
@@ -55,7 +55,7 @@ public class InternalFrameDemo extends Application {
 		Connect.connectionURL = "localhost:1521/XE";
 		Connect.userID = "xxi";
 		Connect.userPassword = "123";
-		DBUtil.dbConnect();
+		DbUtil.Db_Connect();
 		BorderPane content = (BorderPane) loader.load();
 		content.setCenter(desktopPane);
 		return content;

@@ -57,8 +57,8 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
-import mj.dbutil.DBUtil;
 import mj.msg.Msg;
+import mj.utils.DbUtil;
 
 public class Report {
 
@@ -142,7 +142,7 @@ public class Report {
 				GENERATE_TYPE.setDisable(true);
 			}}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -210,7 +210,7 @@ public class Report {
 			
 			FRREPRunner runner = new FRREPRunner();
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			String port = Connect.connectionURL.substring(Connect.connectionURL.indexOf(":")+1,
 					Connect.connectionURL.indexOf("/"));
 			//System.out.println(port);
@@ -249,7 +249,7 @@ public class Report {
 			
 			runner.run();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -383,7 +383,7 @@ public class Report {
 			newWindow.getIcons().add(new Image("/icon.png"));
 			newWindow.show();
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -408,7 +408,7 @@ public class Report {
 			
 			
 			dbConnect();
-			DBUtil.RunProcess(conn);
+			DbUtil.Run_Process(conn);
 			// установить svg как иконку для кнопки
 //			{
 //				InputStream svgFile = getClass().getResourceAsStream("/table2.svg");
@@ -431,14 +431,14 @@ public class Report {
 	        PRINTER_ID.getSelectionModel().select(service.getName());
 	        
 	        
-			if (DBUtil.OdbAction(183l) == 0) {
+			if (DbUtil.Odb_Action(183l) == 0) {
 				Clone.setVisible(false);
 			}
 			
-			if (DBUtil.OdbAction(182l) == 0) {
+			if (DbUtil.Odb_Action(182l) == 0) {
 				Design.setVisible(false);
 			}
-			if (DBUtil.OdbAction(184l) == 0) {
+			if (DbUtil.Odb_Action(184l) == 0) {
 				New.setVisible(false);
 			}
 
@@ -538,7 +538,7 @@ public class Report {
 				DIR_USER_OUT.setSelected(true);
 			}
 		} catch (Exception e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -576,7 +576,7 @@ public class Report {
 					props);
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
@@ -589,7 +589,7 @@ public class Report {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			DBUtil.LOG_ERROR(e);
+			DbUtil.Log_Error(e);
 		}
 	}
 
