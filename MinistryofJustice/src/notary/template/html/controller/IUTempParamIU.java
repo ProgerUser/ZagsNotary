@@ -46,6 +46,7 @@ import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.dbutil.DBUtil;
+import mj.msg.Msg;
 import mj.util.ConvConst;
 import mj.widgets.FxUtilTest;
 import notary.template.html.model.ALL_TABLE;
@@ -198,6 +199,12 @@ public class IUTempParamIU {
 		try {
 			if (!PRM_NAME.getText().equals("")) {
 				if (gettype().equals("I")) {
+
+					if (PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID() == null) {
+						Msg.Message("Тип параметра!");
+						return;
+					}
+					
 					PreparedStatement prp = conn.prepareStatement(
 							"insert into NT_TEMP_LIST_PARAM " + "(PRM_NAME," + "PRM_TMP_ID," + "PRM_SQL," + "PRM_TYPE,"
 									+ "PRM_TBL_REF," + "PRM_FOR_PRM_SQL," + "PRM_PADEJ," + "REQUIRED,"
@@ -267,8 +274,8 @@ public class IUTempParamIU {
 					onclose();
 				}
 			}
-			
-			//Msg.Message(PRM_TBL_REF2.getSelectionModel().getSelectedItem().getTABLE_NAME());
+
+			// Msg.Message(PRM_TBL_REF2.getSelectionModel().getSelectedItem().getTABLE_NAME());
 
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
@@ -415,46 +422,7 @@ public class IUTempParamIU {
 				convert_TablrList(PRM_TBL_REF);
 
 			}
-			// Параметры
-			{
-				PreparedStatement stsmt = conn.prepareStatement(
-						DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "PrmForAddParents"));
-				stsmt.setLong(1, cl.getPRM_TMP_ID());
-				ResultSet rs = stsmt.executeQuery();
-				ObservableList<NT_TEMP_LIST_PARAM> combolist = FXCollections.observableArrayList();
-				while (rs.next()) {
-					NT_TEMP_LIST_PARAM list = new NT_TEMP_LIST_PARAM();
-					list.setPRM_ID(rs.getLong("PRM_ID"));
-					list.setPRM_NAME(rs.getString("PRM_NAME"));
-					list.setPRM_TMP_ID(rs.getLong("PRM_TMP_ID"));
-					list.setPRM_SQL(rs.getString("PRM_SQL"));
-					list.setPRM_TYPE(rs.getLong("PRM_TYPE"));
-					list.setPRM_TBL_REF(rs.getString("PRM_TBL_REF"));
-					if (rs.getClob("PRM_FOR_PRM_SQL") != null) {
-						list.setPRM_FOR_PRM_SQL(new ConvConst().ClobToString(rs.getClob("PRM_FOR_PRM_SQL")));
-					}
-					list.setPRM_PADEJ(rs.getLong("PRM_PADEJ"));
-					list.setREQUIRED(rs.getString("REQUIRED"));
-					list.setPRM_R_NAME(rs.getString("PRM_R_NAME"));
-					list.setHTML_CODE(rs.getString("HTML_CODE"));
-					list.setPARENTS(rs.getLong("PARENTS"));
-					combolist.add(list);
-				}
-				stsmt.close();
-				rs.close();
 
-//				FilteredList<NT_TEMP_LIST_PARAM> filterednationals = new FilteredList<NT_TEMP_LIST_PARAM>(combolist);
-//				PARENTS.getEditor().textProperty()
-//						.addListener(new InputFilter<NT_TEMP_LIST_PARAM>(PARENTS, filterednationals, false));
-
-				PARENTS.setItems(combolist);
-
-				FxUtilTest.getComboBoxValue(PRM_TBL_REF);
-				FxUtilTest.autoCompleteComboBoxPlus(PRM_TBL_REF, (typedText, itemToCompare) -> itemToCompare
-						.getTABLE_NAME().toLowerCase().contains(typedText.toLowerCase()));
-
-				convert_PARENTS(PARENTS);
-			}
 			// Тип параметра
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from NT_PRM_TYPE order by TYPE_ID asc");
@@ -492,6 +460,7 @@ public class IUTempParamIU {
 
 			// Если редактирование
 			if (gettype().equals("U")) {
+
 				// Параметры
 				{
 					PreparedStatement stsmt = conn.prepareStatement(
@@ -533,6 +502,7 @@ public class IUTempParamIU {
 
 					convert_PARENTS(PARENTS);
 				}
+
 				if (cl.getPRM_FOR_PRM_SQL() != null) {
 					PRM_FOR_PRM_SQL.replaceText(0, 0, cl.getPRM_FOR_PRM_SQL());
 				}

@@ -1,5 +1,12 @@
 package notary.template.html.controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +25,7 @@ import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
+import org.jsoup.Jsoup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,12 +45,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -57,7 +67,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
 import mj.dbutil.DBUtil;
+import mj.msg.Msg;
 import mj.util.ConvConst;
+import netscape.javascript.JSObject;
 import notary.template.html.model.NT_TEMP_LIST;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
@@ -96,42 +108,114 @@ public class HtmlEditor {
 	@FXML
 	private HTMLEditor VisHtml;
 
-    @FXML
-    private VBox root;
+	@FXML
+	private VBox root;
 
-    @FXML
-    private ToolBar toptbr;
+	@FXML
+	private ToolBar toptbr;
 
-    
-    
-    @FXML
-    void PlusDocParamCliRef(ActionEvent event) {
+	@FXML
+	private MenuButton LocalParams;
 
-    }
-    
+	@FXML
+	private Button EditLocalParam;
+	
+	@FXML
+	private Button Beautifier;
+	
 
-    @FXML
-    void EditLocalParam(ActionEvent event) {
+	@FXML
+	private Button DeleteLocalParam;
 
-    }
-    
-    @FXML
-    void DeleteLocalParam(ActionEvent event) {
+	@FXML
+	void PlusDocParamCliRef(ActionEvent event) {
 
-    }
-    
-    @FXML
-    void AddParamLocal(ActionEvent event) {
+	}
 
-    }
-    
+	@FXML
+	void EditLocalParam(ActionEvent event) {
+
+	}
+
+	@FXML
+	void DeleteLocalParam(ActionEvent event) {
+
+	}
+
+	@FXML
+	void AddParamLocal(ActionEvent event) {
+		try {
+			TreeItem<NT_TEMP_LIST_PARAM> tbl = param.getSelectionModel().getSelectedItem();
+			if (tbl != null) {
+				WebView webView = (WebView) VisHtml.lookup("WebView");
+				webView.getEngine().executeScript(tbl.getValue().getHTML_CODE());
+				String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
+				// Запишем в файл
+				Reload2(html);
+				fillTree();
+			}
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
+	void Reload2(String html) {
+		try {
+			WebView webView = (WebView) VisHtml.lookup("WebView");
+			final WebEngine webEngine = webView.getEngine();
+			final JsToJava jstojava = new JsToJava();
+			// Запишем в файл
+			{
+				Writer out = new BufferedWriter(
+						new OutputStreamWriter(new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"),
+								StandardCharsets.UTF_8));
+				out.write(html);
+				out.close();
+			}
+			URL url = new File(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html").toURI().toURL();
+			webEngine.load(url.toExternalForm());
+			webView.setContextMenuEnabled(false);
+			webEngine.setJavaScriptEnabled(true);
+			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+				@Override
+				public void changed(ObservableValue<? extends State> observableValue, State oldState, State newState) {
+					if (newState == State.SUCCEEDED) {
+						JSObject window = (JSObject) webEngine.executeScript("window");
+						window.setMember("invoke", jstojava);
+					}
+				}
+			});
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	// @FXML
 	// private CodeArea CodeHtml;
 
 	@FXML
 	void HtmlToView(ActionEvent event) {
 		try {
-			VisHtml.setHtmlText(CodeHtml.getText());
+			WebView webView = (WebView) VisHtml.lookup("WebView");
+			// String html = (String)
+			// webView.getEngine().executeScript("document.documentElement.outerHTML");
+			// if (!html.equals(CodeHtml.getText())) {
+			final WebEngine webEngine = webView.getEngine();
+			// Запишем в файл
+			try {
+				Writer out = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"),
+						StandardCharsets.UTF_8));
+				out.write(CodeHtml.getText());
+				out.close();
+
+				URL url = new File(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html").toURI().toURL();
+				webEngine.load(url.toExternalForm());
+				// VisHtml.setHtmlText(CodeHtml.getText());
+			} catch (Exception e) {
+				DBUtil.LOG_ERROR(e);
+			}
+			System.out.println("HTML_CODE");
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -140,9 +224,32 @@ public class HtmlEditor {
 	@FXML
 	void ViewHtmlTag(ActionEvent event) {
 		try {
-			WebView webView = (WebView) VisHtml.lookup("WebView");
-			String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
-			CodeHtml.replaceText(0, CodeHtml.getLength(), html);
+			System.out.println("HtmlEditor");
+			{
+				WebView webView = (WebView) VisHtml.lookup("WebView");
+				String html = (String) webView.getEngine()
+						.executeScript("document.documentElement.outerHTML");
+				// if (!CodeHtml.getText().equals(html)) {
+				CodeHtml.replaceText(0, CodeHtml.getLength(),
+						html.replace("<html dir=\"ltr\"><head>", "<!DOCTYPE html>\r\n<html>\r\n<head>"));
+				// }
+			}
+			//
+			try {
+				WebView webView = (WebView) VisHtml.lookup("WebView");
+				final WebEngine webEngine = webView.getEngine();
+				// Запишем в файл
+				Writer out = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"),
+						StandardCharsets.UTF_8));
+				out.write(CodeHtml.getText());
+				out.close();
+
+				URL url = new File(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html").toURI().toURL();
+				webEngine.load(url.toExternalForm());
+			} catch (Exception e) {
+				DBUtil.LOG_ERROR(e);
+			}
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
@@ -165,18 +272,25 @@ public class HtmlEditor {
 	@FXML
 	void Beautifier(ActionEvent event) {
 		try {
-
-//			String html = CodeHtml.getText();
-//			org.jsoup.nodes.Document doc = Jsoup.parseBodyFragment(html);
-//
-//			String res = doc.body().html();
-//
-//			CodeHtml.replaceText(0, CodeHtml.getLength(), res);
+			String html = CodeHtml.getText();
+			org.jsoup.nodes.Document doc = Jsoup.parse(html);
+			String res = doc.body().html();
+			CodeHtml.replaceText(0, CodeHtml.getLength(), res);
 		} catch (Exception e) {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
 
+	
+	@FXML
+	void RefreshLocalParam(ActionEvent event) {
+		try {
+			fillTree();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+	
 	@FXML
 	void OK(ActionEvent event) {
 		try {
@@ -247,16 +361,18 @@ public class HtmlEditor {
 
 	@SuppressWarnings("rawtypes")
 	TreeItem roots = new TreeItem<>("Root");
-	
+
 	public NT_TEMP_LIST_PARAM prm;
-	
+
 	@SuppressWarnings("unchecked")
 	void fillTree() {
 		try {
 			if (val_list != null) {
 				WebView webView = (WebView) VisHtml.lookup("WebView");
+				final WebEngine webEngine = webView.getEngine();
+				webEngine.setJavaScriptEnabled(true);
 				// Получить поля из страницы
-				String json = (String) webView.getEngine().executeScript("writeJSONfile()");
+				String json = (String) webEngine.executeScript("writeJSONfile()");
 				Map<String, String> result = new ObjectMapper().readValue(json, HashMap.class);
 				String JsonStr = "";
 				for (Map.Entry<String, String> entry : result.entrySet()) {
@@ -325,7 +441,7 @@ public class HtmlEditor {
 			DBUtil.LOG_ERROR(e);
 		}
 	}
-	
+
 	private void expandTreeView(TreeItem<NT_TEMP_LIST_PARAM> item) {
 		if (item != null && !item.isLeaf()) {
 			item.setExpanded(true);
@@ -334,7 +450,7 @@ public class HtmlEditor {
 			}
 		}
 	}
-	
+
 	@FXML
 	private TreeTableView<NT_TEMP_LIST_PARAM> param;
 
@@ -346,7 +462,7 @@ public class HtmlEditor {
 
 	@FXML
 	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> req;
-	
+
 //	@FXML
 //	private SplitPane Split;
 
@@ -354,18 +470,42 @@ public class HtmlEditor {
 	@FXML
 	private Tab HtmlTag;
 
+	public class JsToJava {
+		public void run(String id) {
+			// ListVal(id);
+		}
+
+		public void Text(String Mes) {
+			Msg.Message(Mes);
+		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 	void init() {
 		try {
 			WebView webView = (WebView) VisHtml.lookup("WebView");
-			webView.getEngine().loadContent(val_list.getHTML_TEMP());
-			webView.setPrefHeight(5000);
 
 			final WebEngine webEngine = webView.getEngine();
+			// Запишем в файл
+			{
+				Writer out = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"), StandardCharsets.UTF_8));
+				out.write(val_list.getHTML_TEMP());
+				out.close();
+			}
+			URL url = new File(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html").toURI().toURL();
+			webEngine.load(url.toExternalForm());
+			webEngine.setJavaScriptEnabled(true);
+			webView.setContextMenuEnabled(false);
+
+			final JsToJava jstojava = new JsToJava();
 			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
-				@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
+
 				@Override
 				public void changed(ObservableValue<? extends State> observableValue, State oldState, State newState) {
 					if (newState == State.SUCCEEDED) {
+						JSObject window = (JSObject) webEngine.executeScript("window");
+						window.setMember("invoke", jstojava);
 						// Оформление
 						{
 							Node node = VisHtml.lookup(".top-toolbar");
@@ -430,11 +570,17 @@ public class HtmlEditor {
 								i++;
 							}
 						}
-						//--------------
+						// --------------
 						Platform.runLater(() -> {
 							fillTree();
+							WebView webView = (WebView) VisHtml.lookup("WebView");
+							String html = (String) webView.getEngine()
+									.executeScript("document.documentElement.outerHTML");
+							if (!CodeHtml.getText().equals(html)) {
+								CodeHtml.replaceText(0, CodeHtml.getLength(), html);
+							}
 						});
-						//--------------
+						// --------------
 					}
 				}
 			});
@@ -444,11 +590,44 @@ public class HtmlEditor {
 		}
 	}
 
+	void Init(Long id) {
+		try {
+			String selectStmt = "select * from nt_temp_list where ID = ? order by ID asc";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			prepStmt.setLong(1, id);
+			ResultSet rs = prepStmt.executeQuery();
+			while (rs.next()) {
+				val_list = new NT_TEMP_LIST();
+				val_list.setID(rs.getLong("ID"));
+				val_list.setNAME(rs.getString("NAME"));
+				val_list.setPARENT(rs.getLong("PARENT"));
+				if (rs.getClob("REP_QUERY") != null) {
+					val_list.setREP_QUERY(new ConvConst().ClobToString(rs.getClob("REP_QUERY")));
+				}
+				if (rs.getClob("HTML_TEMP") != null) {
+					val_list.setHTML_TEMP(new ConvConst().ClobToString(rs.getClob("HTML_TEMP")));
+				}
+				val_list.setDOCX_PATH(rs.getString("DOCX_PATH"));
+				val_list.setNOTARY(rs.getLong("NOTARY"));
+			}
+			prepStmt.close();
+			rs.close();
+		} catch (Exception e) {
+			DBUtil.LOG_ERROR(e);
+		}
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
 	private void initialize() {
 		try {
-			root.getChildren().remove(toptbr);
+			//root.getChildren().remove(toptbr);
+
+			LocalParams.setVisible(false);
+			EditLocalParam.setVisible(false);
+			DeleteLocalParam.setVisible(false);
+			//Beautifier.setVisible(false);
+			
 			CodeHtml = new CodeArea();
 //			InputStream is = getClass().getResourceAsStream("/notary/doc/old/controller/Test.html");
 //			String text = IOUtils.toString(is, StandardCharsets.UTF_8.name());
@@ -461,13 +640,31 @@ public class HtmlEditor {
 
 			CodeHtml.textProperty().addListener((obs, oldText, newText) -> {
 				CodeHtml.setStyleSpans(0, computeHighlighting(newText));
-
 				{
-					WebView webView = (WebView) VisHtml.lookup("WebView");
-					String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
-					if (!html.equals(CodeHtml.getText())) {
-						VisHtml.setHtmlText(CodeHtml.getText());
-					}
+					// OK(null);
+					// Init(val_list.getID());
+					//
+//					WebView webView = (WebView) VisHtml.lookup("WebView");
+//					// String html = (String)
+//					// webView.getEngine().executeScript("document.documentElement.outerHTML");
+//					// if (!html.equals(CodeHtml.getText())) {
+//					final WebEngine webEngine = webView.getEngine();
+//					// Запишем в файл
+//					try {
+//						Writer out = new BufferedWriter(new OutputStreamWriter(
+//								new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"),
+//								StandardCharsets.UTF_8));
+//						out.write(CodeHtml.getText());
+//						out.close();
+//
+//						URL url = new File(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html").toURI().toURL();
+//						webEngine.load(url.toExternalForm());
+//						// VisHtml.setHtmlText(CodeHtml.getText());
+//					} catch (Exception e) {
+//						DBUtil.LOG_ERROR(e);
+//					}
+//					System.out.println("HTML_CODE");
+					// }
 				}
 //				System.out.println("`````");
 
@@ -480,7 +677,7 @@ public class HtmlEditor {
 //			});
 
 			if (val_list.getHTML_TEMP() != null) {
-				CodeHtml.replaceText(0, 0, val_list.getHTML_TEMP());
+				// CodeHtml.replaceText(0, 0, val_list.getHTML_TEMP());
 			}
 
 //			Split.getStyleClass().add("mylistview");
@@ -495,15 +692,51 @@ public class HtmlEditor {
 				@Override
 				public void handle(KeyEvent event) {
 					if (isValidEvent(event)) {
-//						System.out.println("`````");
-						{
-							WebView webView = (WebView) VisHtml.lookup("WebView");
-							String html = (String) webView.getEngine()
-									.executeScript("document.documentElement.outerHTML");
-							if (!CodeHtml.getText().equals(html)) {
-								CodeHtml.replaceText(0, CodeHtml.getLength(), html);
-							}
-						}
+						fillTree();
+//						System.out.println("HtmlEditor");
+//						{
+//							WebView webView = (WebView) VisHtml.lookup("WebView");
+//							String html = (String) webView.getEngine()
+//									.executeScript("document.documentElement.outerHTML");
+//							// if (!CodeHtml.getText().equals(html)) {
+//							CodeHtml.replaceText(0, CodeHtml.getLength(),
+//									html.replace("<html dir=\"ltr\"><head>", "<!DOCTYPE html>\r\n<html>\r\n<head>"));
+//							// }
+//						}
+//						//
+//						try {
+//							WebView webView = (WebView) VisHtml.lookup("WebView");
+//							final WebEngine webEngine = webView.getEngine();
+//							// Запишем в файл
+//							Writer out = new BufferedWriter(new OutputStreamWriter(
+//									new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"),
+//									StandardCharsets.UTF_8));
+//							out.write(CodeHtml.getText());
+//							out.close();
+//
+//							URL url = new File(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html").toURI().toURL();
+//							webEngine.load(url.toExternalForm());
+//						} catch (Exception e) {
+//							DBUtil.LOG_ERROR(e);
+//						}
+//						try {
+//							PreparedStatement prp = conn
+//									.prepareStatement("update NT_TEMP_LIST set HTML_TEMP = ? where ID = ?");
+//							Clob clob = conn.createClob();
+//							clob.setString(1, CodeHtml.getText().replace("<html dir=\"ltr\"><head>",
+//									"<!DOCTYPE html>\r\n<html>\r\n<head>"));
+//							prp.setClob(1, clob);
+//							prp.setLong(2, val_list.getID());
+//							prp.executeUpdate();
+//							prp.close();
+//							clob.free();
+//							conn.commit();
+//						} catch (Exception e) {
+//							DBUtil.LOG_ERROR(e);
+//						}
+//						//
+//						Init(val_list.getID());
+//						init();
 					}
 				}
 
@@ -533,8 +766,10 @@ public class HtmlEditor {
 				}
 			});
 
-			init();
-			
+			Platform.runLater(() -> {
+				init();
+			});
+
 			id.setCellValueFactory(cellData -> {
 				if (cellData.getValue().getValue() instanceof NT_TEMP_LIST_PARAM) {
 					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getPRM_ID());
@@ -552,6 +787,17 @@ public class HtmlEditor {
 					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getPRM_R_NAME());
 				}
 				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+
+			// Двойной щелчок по строке для открытия документа
+			param.setRowFactory(tv -> {
+				TreeTableRow<NT_TEMP_LIST_PARAM> row = new TreeTableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						AddParamLocal(null);
+					}
+				});
+				return row;
 			});
 			
 		} catch (Exception e) {
