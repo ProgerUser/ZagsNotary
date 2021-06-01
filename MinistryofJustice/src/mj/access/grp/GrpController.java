@@ -1098,9 +1098,26 @@ public class GrpController {
 	
 	void InitRepOut(Long rep_tp_id,Long grp_id) {
 		try {
-			String sql = DbUtil.getResource("/mj/access/grp/InitRepOut");
+//			String sql = DbUtil.getResource("/mj/access/grp/InitRepOut");
 			PreparedStatement prepStmt = conn
-					.prepareStatement(sql);
+					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_ID, REPORT_NAME\n"
+							+ "  FROM (select AP_Group_Report_Role.*,\n"
+							+ "               AP_Report_Cat.report_id,\n"
+							+ "               AP_Report_Cat.report_name\n"
+							+ "          from AP_Group_Report_Role, AP_Report_Cat\n"
+							+ "         where AP_Report_Cat.report_type_id =\n"
+							+ "               AP_Group_Report_Role.report_type_id\n"
+							+ "           and not exists (select null\n"
+							+ "                  from AP_Group_Report_Cat_Role\n"
+							+ "                 where AP_Group_Report_Cat_Role.group_id =\n"
+							+ "                       AP_Group_Report_Role.group_id\n"
+							+ "                   and AP_Group_Report_Cat_Role.report_type_id =\n"
+							+ "                       AP_Report_Cat.report_type_id\n"
+							+ "                   and AP_Group_Report_Cat_Role.report_id =\n"
+							+ "                       AP_Report_Cat.report_id))\n"
+							+ " WHERE (GROUP_ID = ?)\n"
+							+ "   and (REPORT_TYPE_ID = ?)\n"
+							+ " order by report_id");
 			prepStmt.setLong(1, grp_id);
 			prepStmt.setLong(2, rep_tp_id);
 			ResultSet rs = prepStmt.executeQuery();
