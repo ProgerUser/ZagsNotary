@@ -16,10 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,10 +38,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -63,18 +64,29 @@ public class NtTemplate {
 
 	NT_TEMPLATE nt_template;
 
-	@FXML
-	private TreeView<NT_TEMPLATE> NT_TEMPLATE;
+//	@FXML
+//	private TreeView<NT_TEMPLATE> NT_TEMPLATE;
 	@FXML
 	private TableView<NT_TEMP_LIST> NT_TEMP_LIST;
 	@FXML
 	private TableColumn<NT_TEMP_LIST, Long> ID;
 	@FXML
 	private TableColumn<NT_TEMP_LIST, String> NAME;
-	@FXML
-	private TextField TextToSearch;
+//	@FXML
+//	private TextField TextToSearch;
 	@FXML
 	private TableColumn<NT_TEMP_LIST, Long> NOTARY;
+	
+	//TableView
+    @FXML
+    private TreeTableView<NT_TEMPLATE> NT_TEMPLATE;
+
+    @FXML
+    private TreeTableColumn<NT_TEMPLATE, Long> NT_ID;
+
+    @FXML
+    private TreeTableColumn<NT_TEMPLATE, String> NT_NAME;
+	//----------------------
 
 	TreeItem<NT_TEMPLATE> root = null;
 
@@ -761,34 +773,50 @@ public class NtTemplate {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
 		try {
 			dbConnect();
 			DbUtil.Run_Process(conn);
-			NT_TEMPLATE.setCellFactory(tv -> {
-				TreeCell<NT_TEMPLATE> cell = new TreeCell<NT_TEMPLATE>() {
-					@Override
-					public void updateItem(NT_TEMPLATE item, boolean empty) {
-						super.updateItem(item, empty);
-						if (empty) {
-							setText("");
-							setGraphic(null);
-						} else {
-							setText(item.getNT_NAME());
-						}
-					}
-				};
-				return cell;
+			
+			NT_ID.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof NT_TEMPLATE) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getNT_ID());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
 			});
+			NT_NAME.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof NT_TEMPLATE) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getNT_NAME());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			
+//			NT_TEMPLATE.setCellFactory(tv -> {
+//				TreeCell<NT_TEMPLATE> cell = new TreeCell<NT_TEMPLATE>() {
+//					@Override
+//					public void updateItem(NT_TEMPLATE item, boolean empty) {
+//						super.updateItem(item, empty);
+//						if (empty) {
+//							setText("");
+//							setGraphic(null);
+//						} else {
+//							setText(item.getNT_NAME());
+//						}
+//					}
+//				};
+//				return cell;
+//			});
 
 			NT_TEMPLATE.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
 				TreeItem<NT_TEMPLATE> tmp = NT_TEMPLATE.getSelectionModel().getSelectedItem();
 				if (tmp != null) {
-					TextToSearch.setText(String.valueOf(tmp.getValue().getNT_ID()));
+					//TextToSearch.setText(String.valueOf(tmp.getValue().getNT_ID()));
 					Init(tmp.getValue().getNT_ID());
 				}
 			});
+			
 			NOTARY.setCellValueFactory(cellData -> cellData.getValue().NOTARYProperty().asObject());
 			ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
 			NAME.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());

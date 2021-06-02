@@ -7,16 +7,15 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.291" xmlns:fx="http://javafx.com/fxml/1">
+<VBox stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
@@ -73,14 +72,16 @@
                                        </tooltip>
                                     </Button>
                                     <Separator orientation="VERTICAL" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
-                                    <TextField fx:id="TextToSearch" onAction="#TextToSearch" />
                                 </items>
                                  <VBox.margin>
                                     <Insets left="-10.0" right="-10.0" top="-10.0" />
                                  </VBox.margin>
                               </ToolBar>
-                              <TreeView fx:id="NT_TEMPLATE" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                              <TreeTableView fx:id="NT_TEMPLATE" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                                 <columns>
+                                    <TreeTableColumn fx:id="NT_ID" prefWidth="75.0" text="ID" />
+                                    <TreeTableColumn fx:id="NT_NAME" prefWidth="392.0" text="Наименование" />
+                                 </columns></TreeTableView>
                            </children>
                         </VBox>
                      </content>
@@ -205,7 +206,7 @@
                                     <Insets left="-10.0" right="-10.0" top="-10.0" />
                                  </VBox.margin>
                               </ToolBar>
-                              <TableView fx:id="NT_TEMP_LIST" maxHeight="1.7976931348623157E308" prefHeight="550.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="NT_TEMP_LIST" maxHeight="1.7976931348623157E308" prefHeight="550.0" prefWidth="456.0" VBox.vgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="ID" maxWidth="1000.0" prefWidth="55.0" text="ИД" />
                                   <TableColumn fx:id="NAME" prefWidth="250.0" text="Наименование" />
