@@ -30585,3 +30585,8 @@ Caused by: Error : 2292, Position : 0, Sql = delete from NT_TEMP_LIST where ID =
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Thread.java:748)
 
+[01.06.2021 21:57:56] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and DAUDDATE between to_date('01.01.2000','dd.mm.yyyy') and to_date('24.06.2021','dd.mm.yyyy')
+ order by DAUDDATE desc
