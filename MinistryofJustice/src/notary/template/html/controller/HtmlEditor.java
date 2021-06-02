@@ -485,6 +485,8 @@ public class HtmlEditor {
 		try {
 			WebView webView = (WebView) VisHtml.lookup("WebView");
 
+			webView.setPrefHeight(5000);
+			
 			final WebEngine webEngine = webView.getEngine();
 			// Запишем в файл
 			{
@@ -806,7 +808,7 @@ public class HtmlEditor {
 	}
 
 	// limits the fonts a user can select from in the html editor.
-	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman");
+	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman","Arial");
 
 	@SuppressWarnings("deprecation")
 	public void hideImageNodesMatching(Node node, Pattern imageNamePattern, int depth) {

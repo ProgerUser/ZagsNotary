@@ -9,13 +9,14 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="700.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="700.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.291" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="floating" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
@@ -38,6 +39,7 @@
                               <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наименование" GridPane.halignment="RIGHT">
@@ -46,49 +48,50 @@
                                  </GridPane.margin>
                               </Text>
                               <TextField fx:id="PRM_NAME" GridPane.columnIndex="1" />
+                              <TextField fx:id="PRM_R_NAME" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <CheckBox fx:id="REQUIRED" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Тип параметра" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
                               <ComboBox fx:id="PRM_TYPE" maxWidth="1.7976931348623157E308" onAction="#PRM_TYPE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <ComboBox fx:id="PRM_TBL_REF" editable="true" maxWidth="1.7976931348623157E308" onAction="#PRM_TBL_REF" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <ComboBox fx:id="PARENTS" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ссылка на таблицу" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Падеж" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Падеж" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
-                              <ComboBox fx:id="PRM_PADEJ" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <ComboBox fx:id="PRM_PADEJ" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <TextField fx:id="HtmlWidth" maxWidth="100.0" text="20" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Обязательный" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
-                              <CheckBox fx:id="REQUIRED" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Наим. рус." GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
-                              <TextField fx:id="PRM_R_NAME" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ссылка на парам." GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ссылка на парам." GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
-                              <ComboBox fx:id="PRM_TBL_REF" editable="true" maxWidth="1.7976931348623157E308" onAction="#PRM_TBL_REF" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <ComboBox fx:id="PARENTS" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ссылка на поле" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ссылка на поле" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </Text>
-                              <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <Button mnemonicParsing="false" onAction="#DelPadej" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                              <ComboBox maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <Button mnemonicParsing="false" onAction="#DelPadej" GridPane.columnIndex="2" GridPane.rowIndex="6">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
@@ -96,6 +99,11 @@
                                     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
                                  </graphic>
                               </Button>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Длина в HTML" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets right="5.0" />
+                                 </GridPane.margin>
+                              </Text>
                            </children>
                         </GridPane>
                      </children>
@@ -129,6 +137,16 @@
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
+                     <children>
+                        <ToolBar VBox.vgrow="ALWAYS">
+                          <items>
+                            <Button mnemonicParsing="false" onAction="#CreateJS" text="Сформировать" />
+                          </items>
+                           <VBox.margin>
+                              <Insets left="-5.0" right="-5.0" top="-5.0" />
+                           </VBox.margin>
+                        </ToolBar>
+                     </children>
                   </VBox>
                </content>
             </Tab>
