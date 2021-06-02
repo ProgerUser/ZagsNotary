@@ -169,22 +169,6 @@
                                        </tooltip>
                                     </Button>
                                     <Separator orientation="VERTICAL" />
-                                    <Button layoutX="113.0" layoutY="10.0" mnemonicParsing="false" onAction="#OpenWord">
-                                       <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_WORD_ALT" size="15" />
-                                       </graphic>
-                                       <font>
-                                          <Font size="10.0" />
-                                       </font>
-                                       <tooltip>
-                                          <Tooltip text="Редактировать файл">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Tooltip>
-                                       </tooltip>
-                                    </Button>
-                                    <Separator orientation="VERTICAL" />
                                     <Button layoutX="197.0" layoutY="10.0" mnemonicParsing="false" onAction="#CloneTempList">
                                        <graphic>
                                           <FontAwesomeIconView fontSmoothingType="LCD" glyphName="COPY" size="15" />
@@ -194,6 +178,22 @@
                                        </font>
                                        <tooltip>
                                           <Tooltip text="Клонировать">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Tooltip>
+                                       </tooltip>
+                                    </Button>
+                                    <Separator orientation="VERTICAL" visible="false" />
+                                    <Button layoutX="113.0" layoutY="10.0" mnemonicParsing="false" onAction="#OpenWord" visible="false">
+                                       <graphic>
+                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_WORD_ALT" size="15" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                       <tooltip>
+                                          <Tooltip text="Редактировать файл">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>

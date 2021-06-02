@@ -56,19 +56,29 @@ import notary.template.html.model.NT_TEMP_LIST_PARAM;
 
 public class IUTempParamIU {
 
-	private static final String[] KEYWORDS = new String[] { "abstract", "assert", "boolean", "break", "byte", "case",
-			"catch", "char", "class", "const", "continue", "default", "do", "double", "else", "enum", "extends",
-			"final", "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int", "interface",
-			"long", "native", "new", "package", "private", "protected", "public", "return", "short", "static",
-			"strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient", "try", "void",
-			"volatile", "while" };
+	private static final String[] KEYWORDS = new String[] { "TO_CHAR", "TO_NUMBER", "PIVOT", "UNPIVOT", "ACCESS", "ADD",
+			"ALL", "ALTER", "AND", "ANY", "AS", "ASC", "AUDIT", "BETWEEN", "BY", "CHAR", "CHECK", "CLUSTER", "COLUMN",
+			"COLUMN_VALUE", "COMMENT", "COMPRESS", "CONNECT", "CREATE", "CURRENT", "DATE", "DECIMAL", "DEFAULT",
+			"DELETE", "DESC", "DISTINCT", "DROP", "ELSE", "EXCLUSIVE", "EXISTS", "FILE", "FLOAT", "FOR", "FROM",
+			"GRANT", "GROUP", "HAVING", "IDENTIFIED", "IMMEDIATE", "IN", "INCREMENT", "INDEX", "INITIAL", "INSERT",
+			"INTEGER", "INTERSECT", "INTO", "IS", "LEVEL", "LIKE", "LOCK", "LONG", "MAXEXTENTS", "MINUS", "MLSLABEL",
+			"MODE", "MODIFY", "NESTED_TABLE_ID", "NOAUDIT", "NOCOMPRESS", "NOT", "NOWAIT", "NULL", "NUMBER", "OF",
+			"OFFLINE", "ON", "ONLINE", "OPTION", "OR", "ORDER", "PCTFREE", "PRIOR", "PUBLIC", "RAW", "RENAME",
+			"RESOURCE", "REVOKE", "ROW", "ROWID", "ROWNUM", "ROWS", "SELECT", "SESSION", "SET", "SHARE", "SIZE",
+			"SMALLINT", "START", "SUCCESSFUL", "SYNONYM", "SYSDATE", "TABLE", "THEN", "TO", "TRIGGER", "UID", "UNION",
+			"UNIQUE", "UPDATE", "USER", "VALIDATE", "VALUES", "VARCHAR", "VARCHAR2", "VIEW", "WHENEVER", "WHERE",
+			"WITH", "TRIM", "CASE", "await", "break", "case", "catch", "class", "const", "continue", "debugger",
+			"default", "delete", "do", "else", "enum", "export", "extends", "false", "finally", "for", "function", "if",
+			"implements", "import", "in", "instanceof", "interface", "let", "new", "null", "package", "private",
+			"protected", "public", "return", "super", "switch", "static", "this", "throw", "try", "True", "typeof",
+			"var", "void", "while", "with", "yield" };
 
 	private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
 	private static final String PAREN_PATTERN = "\\(|\\)";
 	private static final String BRACE_PATTERN = "\\{|\\}";
 	private static final String BRACKET_PATTERN = "\\[|\\]";
 	private static final String SEMICOLON_PATTERN = "\\;";
-	private static final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
+	private static final String STRING_PATTERN = "'([^'\\\\]|\\\\.)*'";
 	private static final String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/";
 
 	private static final Pattern PATTERN = Pattern.compile(
@@ -87,6 +97,9 @@ public class IUTempParamIU {
 
 	private LongProperty ID;
 	private StringProperty type;
+
+	@FXML
+	private TextField HtmlWidth;
 
 	@FXML
 	private Button OK;
@@ -153,6 +166,49 @@ public class IUTempParamIU {
 	}
 
 	@FXML
+	void CreateJS(ActionEvent event) {
+		try {
+			String JS = DbUtil.Sql_From_Prop("/notary/template/html/controller/JS.properties", "TempJSInput");
+			String IsOnClick = "$IsOnClick$";
+			String IsReadOnly = "$IsReadOnly$";
+			String FieldName = "$FieldName$";
+			String FieldNameRu = "$FieldNameRu$";
+			String With = "$With$";
+
+			String IsOnClickJS = "input.setAttribute('onclick', 'GetValue()');";
+			String IsReadOnlyJS = "input.setAttribute('readonly', 'readonly');";
+
+			JS = JS.replace(With, HtmlWidth.getText());
+			JS = JS.replace(FieldName, PRM_NAME.getText());
+
+			if (PRM_TYPE.getSelectionModel().getSelectedItem() != null
+					&& PRM_TYPE.getSelectionModel().getSelectedItem().getTYPE_ID().equals(1l)) {
+				JS = JS.replace(IsOnClick, IsOnClickJS);
+				JS = JS.replace(IsReadOnly, IsReadOnlyJS);
+			} else if (PRM_TYPE.getSelectionModel().getSelectedItem() != null) {
+				JS = JS.replace(IsOnClick, "");
+			}
+
+			if (PARENTS.getSelectionModel().getSelectedItem() != null) {
+				JS = JS.replace(IsReadOnly, IsReadOnlyJS);
+			} else {
+				JS = JS.replace(IsReadOnly, "");
+			}
+
+			if (REQUIRED.isSelected()) {
+				JS = JS.replace(FieldNameRu, PRM_R_NAME.getText() + "!");
+			} else {
+				JS = JS.replace(FieldNameRu, PRM_R_NAME.getText());
+			}
+
+			HTML_CODE.replaceText(0, HTML_CODE.getText().length(), JS);
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	@FXML
 	void PRM_TYPE(ActionEvent event) {
 		try {
 			NT_PRM_TYPE type = PRM_TYPE.getSelectionModel().getSelectedItem();
@@ -204,7 +260,7 @@ public class IUTempParamIU {
 						Msg.Message("Тип параметра!");
 						return;
 					}
-					
+
 					PreparedStatement prp = conn.prepareStatement(
 							"insert into NT_TEMP_LIST_PARAM " + "(PRM_NAME," + "PRM_TMP_ID," + "PRM_SQL," + "PRM_TYPE,"
 									+ "PRM_TBL_REF," + "PRM_FOR_PRM_SQL," + "PRM_PADEJ," + "REQUIRED,"
@@ -324,7 +380,7 @@ public class IUTempParamIU {
 	@FXML
 	private void initialize() {
 		try {
-
+			System.out.print(STRING_PATTERN);
 			HTML_CODE = new CodeArea();
 			PRM_FOR_PRM_SQL = new CodeArea();
 			PRM_SQL = new CodeArea();
@@ -356,6 +412,7 @@ public class IUTempParamIU {
 				HTML_CODE.setMaxWidth(Double.MAX_VALUE);
 
 				executor = Executors.newSingleThreadExecutor();
+
 				Subscription cleanupWhenDone = HTML_CODE.multiPlainChanges().successionEnds(Duration.ofMillis(500))
 						.supplyTask(this::computeHighlightingAsync).awaitLatest(HTML_CODE.multiPlainChanges())
 						.filterMap(t -> {
@@ -366,6 +423,7 @@ public class IUTempParamIU {
 								return Optional.empty();
 							}
 						}).subscribe(this::applyHighlighting);
+
 				Subscription cleanupWhenDone1 = PRM_FOR_PRM_SQL.multiPlainChanges()
 						.successionEnds(Duration.ofMillis(500)).supplyTask(this::computeHighlightingAsync1)
 						.awaitLatest(PRM_FOR_PRM_SQL.multiPlainChanges()).filterMap(t -> {
@@ -376,8 +434,9 @@ public class IUTempParamIU {
 								return Optional.empty();
 							}
 						}).subscribe(this::applyHighlighting1);
+
 				Subscription cleanupWhenDone2 = PRM_SQL.multiPlainChanges().successionEnds(Duration.ofMillis(500))
-						.supplyTask(this::computeHighlightingAsync2).awaitLatest(HTML_CODE.multiPlainChanges())
+						.supplyTask(this::computeHighlightingAsync2).awaitLatest(PRM_SQL.multiPlainChanges())
 						.filterMap(t -> {
 							if (t.isSuccess()) {
 								return Optional.of(t.get());
@@ -386,6 +445,7 @@ public class IUTempParamIU {
 								return Optional.empty();
 							}
 						}).subscribe(this::applyHighlighting2);
+
 				HTML_CODE.getStylesheets().add(
 						getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
 				PRM_FOR_PRM_SQL.getStylesheets().add(
