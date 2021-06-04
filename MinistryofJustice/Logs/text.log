@@ -30832,3 +30832,49 @@ ORA-04088: ошибка во время выполнения триггера 'XXI.T_NT_TEMP_LIST_PARAM_SQL_CHE
 	... 221 more
 
 >>>>>>> refs/remotes/origin/master
+[03.06.2021 13:53:12] [Main] ERROR:179 - java.sql.SQLRecoverableException: Ошибка ввода/вывода: The Network Adapter could not establish the connection
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:774)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:208)
+	at mj.utils.DbUtil.Db_Connect(DbUtil.java:52)
+	at mj.app.main.Main.start(Main.java:166)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: oracle.net.ns.NetException: The Network Adapter could not establish the connection
+	at oracle.net.nt.ConnStrategy.execute(ConnStrategy.java:523)
+	at oracle.net.resolver.AddrResolution.resolveAndExecute(AddrResolution.java:521)
+	at oracle.net.ns.NSProtocol.establishConnection(NSProtocol.java:660)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:286)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1438)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:518)
+	... 16 more
+Caused by: java.io.IOException: Connection refused: connect, socket connect lapse 2025 ms. /0:0:0:0:0:0:0:1 1522 0 1 true
+	at oracle.net.nt.TcpNTAdapter.connect(TcpNTAdapter.java:209)
+	at oracle.net.nt.ConnOption.connect(ConnOption.java:161)
+	at oracle.net.nt.ConnStrategy.execute(ConnStrategy.java:470)
+	... 21 more
+Caused by: java.net.ConnectException: Connection refused: connect
+	at sun.nio.ch.Net.connect0(Native Method)
+	at sun.nio.ch.Net.connect(Net.java:465)
+	at sun.nio.ch.Net.connect(Net.java:457)
+	at sun.nio.ch.SocketChannelImpl.connect(SocketChannelImpl.java:646)
+	at java.nio.channels.SocketChannel.open(SocketChannel.java:189)
+	at oracle.net.nt.TimeoutSocketChannel.<init>(TimeoutSocketChannel.java:81)
+	at oracle.net.nt.TcpNTAdapter.connect(TcpNTAdapter.java:169)
+	... 23 more
+
+[03.06.2021 14:45:08] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and DAUDDATE between to_date('01.01.2000','dd.mm.yyyy') and to_date('03.06.2021','dd.mm.yyyy')
+ order by DAUDDATE desc
