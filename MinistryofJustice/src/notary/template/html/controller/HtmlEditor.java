@@ -41,12 +41,15 @@ import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Separator;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
@@ -54,6 +57,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -119,10 +123,9 @@ public class HtmlEditor {
 
 	@FXML
 	private Button EditLocalParam;
-	
+
 	@FXML
 	private Button Beautifier;
-	
 
 	@FXML
 	private Button DeleteLocalParam;
@@ -166,9 +169,8 @@ public class HtmlEditor {
 			final JsToJava jstojava = new JsToJava();
 			// Запишем в файл
 			{
-				Writer out = new BufferedWriter(
-						new OutputStreamWriter(new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"),
-								StandardCharsets.UTF_8));
+				Writer out = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"), StandardCharsets.UTF_8));
 				out.write(html);
 				out.close();
 			}
@@ -204,8 +206,7 @@ public class HtmlEditor {
 			// Запишем в файл
 			try {
 				Writer out = new BufferedWriter(new OutputStreamWriter(
-						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"),
-						StandardCharsets.UTF_8));
+						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"), StandardCharsets.UTF_8));
 				out.write(CodeHtml.getText());
 				out.close();
 
@@ -227,8 +228,7 @@ public class HtmlEditor {
 			System.out.println("HtmlEditor");
 			{
 				WebView webView = (WebView) VisHtml.lookup("WebView");
-				String html = (String) webView.getEngine()
-						.executeScript("document.documentElement.outerHTML");
+				String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
 				// if (!CodeHtml.getText().equals(html)) {
 				CodeHtml.replaceText(0, CodeHtml.getLength(),
 						html.replace("<html dir=\"ltr\"><head>", "<!DOCTYPE html>\r\n<html>\r\n<head>"));
@@ -240,8 +240,7 @@ public class HtmlEditor {
 				final WebEngine webEngine = webView.getEngine();
 				// Запишем в файл
 				Writer out = new BufferedWriter(new OutputStreamWriter(
-						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"),
-						StandardCharsets.UTF_8));
+						new FileOutputStream(System.getenv("MJ_PATH") + "HTML/TMP_HTML.html"), StandardCharsets.UTF_8));
 				out.write(CodeHtml.getText());
 				out.close();
 
@@ -281,7 +280,6 @@ public class HtmlEditor {
 		}
 	}
 
-	
 	@FXML
 	void RefreshLocalParam(ActionEvent event) {
 		try {
@@ -290,7 +288,7 @@ public class HtmlEditor {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void OK(ActionEvent event) {
 		try {
@@ -363,6 +361,41 @@ public class HtmlEditor {
 	TreeItem roots = new TreeItem<>("Root");
 
 	public NT_TEMP_LIST_PARAM prm;
+
+	@FXML
+	void Param(ActionEvent event) {
+		try {
+			NT_TEMP_LIST tmp = val_list;
+			if (val_list != null) {
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) root.getScene().getWindow();
+
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempParam.fxml"));
+
+				IUTempParam controller = new IUTempParam();
+				controller.setID(tmp.getID());
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Параметры " + tmp.getNAME());
+				stage.initOwner(stage_);
+				stage.setResizable(true);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						fillTree();
+					}
+				});
+				stage.showAndWait();
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	void fillTree() {
@@ -463,6 +496,9 @@ public class HtmlEditor {
 	@FXML
 	private TreeTableColumn<NT_TEMP_LIST_PARAM, String> req;
 
+	@FXML
+	private SplitPane MainSplitPane;
+	
 //	@FXML
 //	private SplitPane Split;
 
@@ -479,14 +515,49 @@ public class HtmlEditor {
 			Msg.Message(Mes);
 		}
 	}
+	
+	public static Node componentsPane;
+	int ellen = 0;
+	/**
+	 * Показать параметры
+	 */
+	void ShowParam() {
+		ellen = 0;
+		MainSplitPane.getItems().forEach(item -> {
+			ellen++;
+//			System.out.println(item.getId());
+		});
 
+		if (componentsPane != null & ellen == 1) {
+			MainSplitPane.getItems().add(1, componentsPane);
+			MainSplitPane.setDividerPosition(0, 0.8);
+		}
+		MainSplitPane.getItems().toArray();
+	}
+
+	/**
+	 * Спрятать параметры
+	 */
+	void HideParam() {
+		ellen = 0;
+		MainSplitPane.getItems().forEach(item -> {
+			ellen++;
+//			System.out.println(item.getId());
+		});
+
+		if (ellen == 2) {
+			componentsPane = MainSplitPane.getItems().get(1);
+			MainSplitPane.getItems().remove(componentsPane);
+		}
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 	void init() {
 		try {
 			WebView webView = (WebView) VisHtml.lookup("WebView");
 
 			webView.setPrefHeight(5000);
-			
+
 			final WebEngine webEngine = webView.getEngine();
 			// Запишем в файл
 			{
@@ -528,6 +599,41 @@ public class HtmlEditor {
 								hideImageNodesMatching(node, Pattern.compile(".*(Color).*"), 0);
 								///////
 								if (check) {
+									// show
+									{
+										FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
+										icon.setFontSmoothingType(FontSmoothingType.LCD);
+										icon.setSize("18");
+										Button myButton = new Button("", icon);
+										myButton.setId("ViewParams");
+										myButton.setTooltip(new Tooltip("Показать параметры"));
+
+										bar.getItems().add(myButton);
+										myButton.setOnAction(new EventHandler<ActionEvent>() {
+											@Override
+											public void handle(ActionEvent arg0) {
+												ShowParam();
+											}
+										});
+									}
+									// hide
+									{
+										FontAwesomeIconView icon = new FontAwesomeIconView(
+												FontAwesomeIcon.EYE_SLASH);
+										icon.setFontSmoothingType(FontSmoothingType.LCD);
+										icon.setSize("18");
+										Button myButton = new Button("", icon);
+										myButton.setId("HideParams");
+										myButton.setTooltip(new Tooltip("Спрятать параметры"));
+
+										bar.getItems().add(myButton);
+										myButton.setOnAction(new EventHandler<ActionEvent>() {
+											@Override
+											public void handle(ActionEvent arg0) {
+												HideParam();
+											}
+										});
+									}
 									// table
 									{
 										FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.TABLE);
@@ -623,13 +729,13 @@ public class HtmlEditor {
 	@FXML
 	private void initialize() {
 		try {
-			//root.getChildren().remove(toptbr);
+			// root.getChildren().remove(toptbr);
 
 			LocalParams.setVisible(false);
 			EditLocalParam.setVisible(false);
 			DeleteLocalParam.setVisible(false);
-			//Beautifier.setVisible(false);
-			
+			// Beautifier.setVisible(false);
+
 			CodeHtml = new CodeArea();
 //			InputStream is = getClass().getResourceAsStream("/notary/doc/old/controller/Test.html");
 //			String text = IOUtils.toString(is, StandardCharsets.UTF_8.name());
@@ -801,14 +907,14 @@ public class HtmlEditor {
 				});
 				return row;
 			});
-			
+
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
 
 	// limits the fonts a user can select from in the html editor.
-	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman","Arial");
+	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman", "Arial");
 
 	@SuppressWarnings("deprecation")
 	public void hideImageNodesMatching(Node node, Pattern imageNamePattern, int depth) {

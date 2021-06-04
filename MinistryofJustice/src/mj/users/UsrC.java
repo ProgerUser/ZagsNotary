@@ -73,15 +73,15 @@ public class UsrC {
 		Main.logger = Logger.getLogger(getClass());
 	}
 
-    @FXML
-    private TableView<ODB_GROUP_USR> USR_GRP;
-    
-    @FXML
-    private TableColumn<ODB_GROUP_USR, Long> GRP_ID;
+	@FXML
+	private TableView<ODB_GROUP_USR> USR_GRP;
 
-    @FXML
-    private TableColumn<ODB_GROUP_USR, String> GRP_NAME;
-    
+	@FXML
+	private TableColumn<ODB_GROUP_USR, Long> GRP_ID;
+
+	@FXML
+	private TableColumn<ODB_GROUP_USR, String> GRP_NAME;
+
 	@FXML
 	private TextField FIO_SH;
 
@@ -90,7 +90,7 @@ public class UsrC {
 
 	@FXML
 	private TextField FIO_ABH_SH;
-	    
+
 	@FXML
 	private RadioButton zags_w;
 
@@ -172,15 +172,16 @@ public class UsrC {
 		}
 	}
 
+	@FXML
+	void AddGrp(ActionEvent event) {
 
-    @FXML
-    void AddGrp(ActionEvent event) {
+	}
 
-    }
-    @FXML
-    void DeleteGrp(ActionEvent event) {
+	@FXML
+	void DeleteGrp(ActionEvent event) {
 
-    }
+	}
+
 	@FXML
 	void ClearNotary(ActionEvent event) {
 		try {
@@ -221,7 +222,7 @@ public class UsrC {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void ClearOtd(ActionEvent event) {
 		try {
@@ -417,11 +418,11 @@ public class UsrC {
 					callStmt.setString(15, "ADM");
 				else
 					callStmt.setString(15, null);
-				
+
 				callStmt.setString(16, FIO_SH.getText());
 				callStmt.setString(17, FIO_ABH_SH.getText());
 				callStmt.setString(18, FIO_ABH.getText());
-				
+
 				callStmt.execute();
 				String ret = callStmt.getString(1);
 				callStmt.close();
@@ -572,7 +573,7 @@ public class UsrC {
 	private void initialize() {
 		SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
 		ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
-		
+
 		ToggleGroup group = new ToggleGroup();
 		zags_w.setToggleGroup(group);
 		notary_w.setToggleGroup(group);
@@ -593,10 +594,10 @@ public class UsrC {
 				TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
 		LOGNAME.setColumnFilter(new PatternColumnFilter<>());
 		CUSRNAMEC.setColumnFilter(new PatternColumnFilter<>());
-		
+
 		GRP_ID.setCellValueFactory(cellData -> cellData.getValue().GRP_IDProperty().asObject());
 		GRP_NAME.setCellValueFactory(cellData -> cellData.getValue().GRP_NAMEProperty());
-		
+
 		/* Listener */
 		USRLST.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
@@ -628,10 +629,10 @@ public class UsrC {
 					if (userfire(item.toString())) {
 //						setStyle(
 //								"-fx-background-color: rgb(162, 189, 48);-fx-border-color:black;-fx-border-width :  0.5 0.5 0.5 0.5 ");
-						//setStyle("-fx-text-fill: rgb(162, 189, 48);");
+						// setStyle("-fx-text-fill: rgb(162, 189, 48);");
 					} else {
 //						setStyle("-fx-background-color: #D24141;");
-						setStyle("-fx-text-fill: #D24141;");
+						setStyle("-fx-text-fill: #D24141;-fx-font-weight: bold;");
 					}
 				}
 			}
@@ -664,15 +665,11 @@ public class UsrC {
 	 */
 	void InitGrp() {
 		try {
-			PreparedStatement prepStmt = conn
-					.prepareStatement("SELECT GRP_ID, GRP_NAME, NAME\r\n"
-							+ "  FROM ODB_GROUP_USR J\r\n"
-							+ " WHERE EXISTS (SELECT NULL\r\n"
-							+ "          FROM ODB_GRP_MEMBER G\r\n"
-							+ "         WHERE G.IUSRID =\r\n"
-							+ "               (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = ?)\r\n"
-							+ "           AND J.GRP_ID = G.GRP_ID)\r\n"
-							+ "");
+			PreparedStatement prepStmt = conn.prepareStatement("SELECT GRP_ID, GRP_NAME, NAME\r\n"
+					+ "  FROM ODB_GROUP_USR J\r\n" + " WHERE EXISTS (SELECT NULL\r\n"
+					+ "          FROM ODB_GRP_MEMBER G\r\n" + "         WHERE G.IUSRID =\r\n"
+					+ "               (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = ?)\r\n"
+					+ "           AND J.GRP_ID = G.GRP_ID)\r\n" + "");
 			prepStmt.setString(1, USRLST.getSelectionModel().getSelectedItem().getCUSRLOGNAME());
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<ODB_GROUP_USR> dlist = FXCollections.observableArrayList();
@@ -700,7 +697,7 @@ public class UsrC {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	public void InitFields() {
 		try {
 			USR usr = USRLST.getSelectionModel().getSelectedItem();
@@ -790,11 +787,11 @@ public class UsrC {
 				IUSRCHR_QUANTITY.setText(String.valueOf(usr.getIUSRCHR_QUANTITY().toString()));
 				IUSRNUM_QUANTITY.setText(String.valueOf(usr.getIUSRNUM_QUANTITY()));
 				IUSRSPEC_QUANTITY.setText(String.valueOf(usr.getIUSRSPEC_QUANTITY()));
-				
+
 				FIO_SH.setText(usr.getFIO_SH());
 				FIO_ABH.setText(usr.getFIO_ABH());
 				FIO_ABH_SH.setText(usr.getFIO_ABH_SH());
-				
+
 				MUST_CHANGE_PASSWORD.setSelected((usr.getMUST_CHANGE_PASSWORD().equals("Y")) ? true : false);
 
 				if (usr.getACCESS_LEVEL() != null) {

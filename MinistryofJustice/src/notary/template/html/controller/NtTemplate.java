@@ -28,6 +28,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -39,6 +40,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
@@ -76,17 +78,17 @@ public class NtTemplate {
 //	private TextField TextToSearch;
 	@FXML
 	private TableColumn<NT_TEMP_LIST, Long> NOTARY;
-	
-	//TableView
-    @FXML
-    private TreeTableView<NT_TEMPLATE> NT_TEMPLATE;
 
-    @FXML
-    private TreeTableColumn<NT_TEMPLATE, Long> NT_ID;
+	// TableView
+	@FXML
+	private TreeTableView<NT_TEMPLATE> NT_TEMPLATE;
 
-    @FXML
-    private TreeTableColumn<NT_TEMPLATE, String> NT_NAME;
-	//----------------------
+	@FXML
+	private TreeTableColumn<NT_TEMPLATE, Long> NT_ID;
+
+	@FXML
+	private TreeTableColumn<NT_TEMPLATE, String> NT_NAME;
+	// ----------------------
 
 	TreeItem<NT_TEMPLATE> root = null;
 
@@ -773,13 +775,36 @@ public class NtTemplate {
 		}
 	}
 
+	boolean isExsists(Long ids) {
+		boolean ret = true;
+		try {
+			PreparedStatement prepStmt = conn.prepareStatement("select count(*) cnt\n"
+					+ "  from NT_TEMPLATE j\n"
+					+ " where exists (select null from NT_TEMP_LIST l where l.parent = j.nt_id)\n"
+					+ "   and j.nt_id = ?\n"
+					+ "");
+			prepStmt.setLong(1, ids);
+			ResultSet rs = prepStmt.executeQuery();
+			if (rs.next()) {
+				if (rs.getInt("cnt") > 0) {
+					ret = false;
+				}
+			}
+			prepStmt.close();
+			rs.close();
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+		return ret;
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
 		try {
 			dbConnect();
 			DbUtil.Run_Process(conn);
-			
+
 			NT_ID.setCellValueFactory(cellData -> {
 				if (cellData.getValue().getValue() instanceof NT_TEMPLATE) {
 					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getNT_ID());
@@ -792,7 +817,7 @@ public class NtTemplate {
 				}
 				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
 			});
-			
+
 //			NT_TEMPLATE.setCellFactory(tv -> {
 //				TreeCell<NT_TEMPLATE> cell = new TreeCell<NT_TEMPLATE>() {
 //					@Override
@@ -809,14 +834,37 @@ public class NtTemplate {
 //				return cell;
 //			});
 
+			NT_ID.setCellFactory(col -> {
+				TreeTableCell<NT_TEMPLATE, Long> cell = new TreeTableCell<NT_TEMPLATE, Long>() {
+					@Override
+					public void updateItem(Long item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setText(null);
+						} else {
+							setText(item.toString());
+							// ---
+							//System.out.println(item);
+							if (isExsists(item) == false) {
+								setStyle("-fx-text-fill: #D24141;-fx-font-weight: bold;");
+							} else {
+
+							}
+						}
+					}
+				};
+				cell.setAlignment(Pos.CENTER);
+				return cell;
+			});
+
 			NT_TEMPLATE.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
 				TreeItem<NT_TEMPLATE> tmp = NT_TEMPLATE.getSelectionModel().getSelectedItem();
 				if (tmp != null) {
-					//TextToSearch.setText(String.valueOf(tmp.getValue().getNT_ID()));
+					// TextToSearch.setText(String.valueOf(tmp.getValue().getNT_ID()));
 					Init(tmp.getValue().getNT_ID());
 				}
 			});
-			
+
 			NOTARY.setCellValueFactory(cellData -> cellData.getValue().NOTARYProperty().asObject());
 			ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
 			NAME.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
