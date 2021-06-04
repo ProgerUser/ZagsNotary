@@ -51,6 +51,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.Separator;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
@@ -498,7 +499,7 @@ public class HtmlEditor {
 
 	@FXML
 	private SplitPane MainSplitPane;
-	
+
 //	@FXML
 //	private SplitPane Split;
 
@@ -515,9 +516,10 @@ public class HtmlEditor {
 			Msg.Message(Mes);
 		}
 	}
-	
+
 	public static Node componentsPane;
 	int ellen = 0;
+
 	/**
 	 * Показать параметры
 	 */
@@ -550,7 +552,7 @@ public class HtmlEditor {
 			MainSplitPane.getItems().remove(componentsPane);
 		}
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 	void init() {
 		try {
@@ -604,33 +606,19 @@ public class HtmlEditor {
 										FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
 										icon.setFontSmoothingType(FontSmoothingType.LCD);
 										icon.setSize("18");
-										Button myButton = new Button("", icon);
+										ToggleButton myButton = new ToggleButton("", icon);
 										myButton.setId("ViewParams");
-										myButton.setTooltip(new Tooltip("Показать параметры"));
+										myButton.setTooltip(new Tooltip("Показать/спрятать"));
 
 										bar.getItems().add(myButton);
 										myButton.setOnAction(new EventHandler<ActionEvent>() {
 											@Override
 											public void handle(ActionEvent arg0) {
-												ShowParam();
-											}
-										});
-									}
-									// hide
-									{
-										FontAwesomeIconView icon = new FontAwesomeIconView(
-												FontAwesomeIcon.EYE_SLASH);
-										icon.setFontSmoothingType(FontSmoothingType.LCD);
-										icon.setSize("18");
-										Button myButton = new Button("", icon);
-										myButton.setId("HideParams");
-										myButton.setTooltip(new Tooltip("Спрятать параметры"));
-
-										bar.getItems().add(myButton);
-										myButton.setOnAction(new EventHandler<ActionEvent>() {
-											@Override
-											public void handle(ActionEvent arg0) {
-												HideParam();
+												if (myButton.isSelected()) {
+													HideParam();
+												} else {
+													ShowParam();
+												}
 											}
 										});
 									}

@@ -75,6 +75,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
@@ -1169,55 +1170,19 @@ public class EditDoc {
 											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
 											icon.setFontSmoothingType(FontSmoothingType.LCD);
 											icon.setSize("18");
-											Button myButton = new Button("", icon);
+											ToggleButton myButton = new ToggleButton("", icon);
 											myButton.setId("ViewParams");
-											myButton.setTooltip(new Tooltip("Показать параметры"));
+											myButton.setTooltip(new Tooltip("Показать/спрятать параметры"));
 
 											bar.getItems().add(myButton);
 											myButton.setOnAction(new EventHandler<ActionEvent>() {
 												@Override
 												public void handle(ActionEvent arg0) {
-
-													ShowParam();
-//													ellen = 0;
-//													MainSplitPane.getItems().forEach(item -> {
-//														ellen++;
-////														System.out.println(item.getId());
-//													});
-//
-//													if (componentsPane != null & ellen == 1) {
-//														MainSplitPane.getItems().add(1, componentsPane);
-//														MainSplitPane.setDividerPosition(0, 0.8);
-//													}
-//													MainSplitPane.getItems().toArray();
-												}
-											});
-										}
-										// hide
-										{
-											FontAwesomeIconView icon = new FontAwesomeIconView(
-													FontAwesomeIcon.EYE_SLASH);
-											icon.setFontSmoothingType(FontSmoothingType.LCD);
-											icon.setSize("18");
-											Button myButton = new Button("", icon);
-											myButton.setId("HideParams");
-											myButton.setTooltip(new Tooltip("Спрятать параметры"));
-
-											bar.getItems().add(myButton);
-											myButton.setOnAction(new EventHandler<ActionEvent>() {
-												@Override
-												public void handle(ActionEvent arg0) {
-//													ellen = 0;
-//													MainSplitPane.getItems().forEach(item -> {
-//														ellen++;
-////														System.out.println(item.getId());
-//													});
-//
-//													if (ellen == 2) {
-//														componentsPane = MainSplitPane.getItems().get(1);
-//														MainSplitPane.getItems().remove(componentsPane);
-//													}
-													HideParam();
+													if (myButton.isSelected()) {
+														HideParam();
+													} else {
+														ShowParam();
+													}
 												}
 											});
 										}
