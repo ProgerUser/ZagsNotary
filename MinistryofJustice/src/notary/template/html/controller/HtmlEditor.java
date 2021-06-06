@@ -146,6 +146,7 @@ public class HtmlEditor {
 
 	}
 
+	@SuppressWarnings("unused")
 	@FXML
 	void AddParamLocal(ActionEvent event) {
 		try {
@@ -155,7 +156,7 @@ public class HtmlEditor {
 				webView.getEngine().executeScript(tbl.getValue().getHTML_CODE());
 				String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
 				// Запишем в файл
-				Reload2(html);
+				//Reload2(html);
 				fillTree();
 			}
 		} catch (Exception e) {
@@ -603,7 +604,7 @@ public class HtmlEditor {
 								if (check) {
 									// show
 									{
-										FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
+										FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE_SLASH);
 										icon.setFontSmoothingType(FontSmoothingType.LCD);
 										icon.setSize("18");
 										ToggleButton myButton = new ToggleButton("", icon);
