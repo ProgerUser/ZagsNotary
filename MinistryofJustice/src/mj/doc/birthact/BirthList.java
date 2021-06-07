@@ -1278,7 +1278,7 @@ public class BirthList {
 			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
 
 			BIRTH_ACT_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 
 			BIRTH_ACT_LD.setColumnFilter(new PatternColumnFilter<>());
 			CR_DATE.setColumnFilter(new DateColumnFilter<>());

@@ -150,7 +150,7 @@ public class Settings {
 			USR_NAME.setColumnFilter(new PatternColumnFilter<>());
 			
 			ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 
 			Refresh();
 		} catch (Exception e) {

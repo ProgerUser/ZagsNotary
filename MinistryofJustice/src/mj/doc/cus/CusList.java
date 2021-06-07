@@ -1190,7 +1190,7 @@ public class CusList {
 
 			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
 			ICUSNUM.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 
 			CCUSLAST_NAMET.setColumnFilter(new PatternColumnFilter<>());
 			CCUSFIRST_NAMET.setColumnFilter(new PatternColumnFilter<>());

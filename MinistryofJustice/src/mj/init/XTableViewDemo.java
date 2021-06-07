@@ -106,7 +106,7 @@ public class XTableViewDemo extends Application {
 		});
 		SimpleFilterModel<Person, Long> model = new SimpleFilterModel<>(
 				(c, matchValue) -> c != null ? c < matchValue : false);
-		period.setColumnFilter(new SimpleColumnFilter(model, TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+		period.setColumnFilter(new SimpleColumnFilter(model, TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 
 		XTableColumn<Person, Boolean> bool = new XTableColumn<>("LastName > 5");
 		table.getColumns().addAll(bool);

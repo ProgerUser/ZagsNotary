@@ -960,7 +960,7 @@ public class UpdNatList {
 			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
 
 			ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			OLD_NAT.setColumnFilter(new PatternColumnFilter<>());
 			NEW_NAT.setColumnFilter(new PatternColumnFilter<>());
 			OPER.setColumnFilter(new PatternColumnFilter<>());

@@ -172,9 +172,9 @@ public class LogList {
 			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
 
 			ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			LINENUMBER.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			CLASSNAME.setColumnFilter(new PatternColumnFilter<>());
 			OPER.setColumnFilter(new PatternColumnFilter<>());
 			ERROR.setColumnFilter(new PatternColumnFilter<>());

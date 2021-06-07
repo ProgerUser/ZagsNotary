@@ -1098,7 +1098,7 @@ public class DeathList {
 			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
 
 			DC_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			OPER.setColumnFilter(new PatternColumnFilter<>());
 			CR_DATE.setColumnFilter(new DateColumnFilter<>());
 			CR_TIME.setColumnFilter(new PatternColumnFilter<>());

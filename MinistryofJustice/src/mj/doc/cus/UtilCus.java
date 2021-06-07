@@ -224,7 +224,7 @@ public class UtilCus {
 
 			
 			MERCER_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			
 			
 			XTableColumn<MC_MERCER, String> HE = new XTableColumn<>("ŒÌ");
@@ -415,7 +415,7 @@ public class UtilCus {
 			PC_ID.setCellValueFactory(new PropertyValueFactory<>("PC_ID"));
 			
 			PC_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			
 			XTableColumn<PATERN_CERT, String> Father = new XTableColumn<>("ŒÚÂˆ");
 			XTableColumn<PATERN_CERT, String> FatherFio = new XTableColumn<>("‘»Œ");
@@ -619,7 +619,7 @@ public class UtilCus {
 			
 			XTableColumn<DEATH_CERT, Long> DC_ID = new XTableColumn<>("ÕÓÏÂ");
 			DC_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			
 			DC_ID.setCellValueFactory(new PropertyValueFactory<>("DC_ID"));
 			XTableColumn<DEATH_CERT, String> DieFio = new XTableColumn<>("‘»Œ");
@@ -784,7 +784,7 @@ public class UtilCus {
 			DIVC_ID.setCellValueFactory(new PropertyValueFactory<>("DIVC_ID"));
 			
 			DIVC_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			
 			XTableColumn<DIVORCE_CERT, String> SheFio = new XTableColumn<>("≈Â ‘»Œ");
 			SheFio.setCellValueFactory(new PropertyValueFactory<>("SheFio"));

@@ -1046,7 +1046,7 @@ public class MercerList {
 			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
 			
 			MERCER_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			
 			OPER.setColumnFilter(new PatternColumnFilter<>());
 			CR_DATE.setColumnFilter(new DateColumnFilter<>());

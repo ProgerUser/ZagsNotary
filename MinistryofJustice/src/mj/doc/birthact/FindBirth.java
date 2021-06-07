@@ -767,7 +767,7 @@ public class FindBirth {
 			
 			BIRTH_ACT_LD.setColumnFilter(new PatternColumnFilter<>());
 			BIRTH_ACT_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			BIRTH_ACT_ZAGS.setColumnFilter(new PatternColumnFilter<>());
 			MFIO.setColumnFilter(new PatternColumnFilter<>());
 			FFIO.setColumnFilter(new PatternColumnFilter<>());

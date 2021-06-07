@@ -591,7 +591,7 @@ public class UsrC {
 		CUSRNAMEC.setCellValueFactory(cellData -> cellData.getValue().CUSRNAMEProperty());
 
 		USRID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-				TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+				TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 		LOGNAME.setColumnFilter(new PatternColumnFilter<>());
 		CUSRNAMEC.setColumnFilter(new PatternColumnFilter<>());
 

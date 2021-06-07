@@ -1092,7 +1092,7 @@ public class AdoptList {
 			OPER.setColumnFilter(new PatternColumnFilter<>());
 			ZAGS_NAME.setColumnFilter(new PatternColumnFilter<>());
 			ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
 			DbUtil.Run_Process(conn);

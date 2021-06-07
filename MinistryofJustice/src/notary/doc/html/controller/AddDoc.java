@@ -51,7 +51,9 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableRow;
@@ -392,6 +394,7 @@ public class AddDoc {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@FXML
 	void AddParamLocal() {
 		try {
@@ -402,7 +405,7 @@ public class AddDoc {
 				webView.getEngine().executeScript(tbl.getValue().getHTML_CODE());
 				String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
 				// Запишем в файл
-				Reload2(html);
+				//Reload2(html);
 				fillTree();
 			}
 		} catch (Exception e) {
@@ -454,6 +457,39 @@ public class AddDoc {
 		}
 	}
 
+	/**
+	 * Показать параметры
+	 */
+	void ShowParam() {
+		ellen = 0;
+		MainSplitPane.getItems().forEach(item -> {
+			ellen++;
+//			System.out.println(item.getId());
+		});
+
+		if (componentsPane != null & ellen == 1) {
+			MainSplitPane.getItems().add(1, componentsPane);
+			MainSplitPane.setDividerPosition(0, 0.8);
+		}
+		MainSplitPane.getItems().toArray();
+	}
+
+	/**
+	 * Спрятать параметры
+	 */
+	void HideParam() {
+		ellen = 0;
+		MainSplitPane.getItems().forEach(item -> {
+			ellen++;
+//			System.out.println(item.getId());
+		});
+
+		if (ellen == 2) {
+			componentsPane = MainSplitPane.getItems().get(1);
+			MainSplitPane.getItems().remove(componentsPane);
+		}
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	void TYPE_NAME(ActionEvent event) {
@@ -496,51 +532,21 @@ public class AddDoc {
 						}
 						// show
 						{
-							FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
-							icon.setFontSmoothingType(FontSmoothingType.LCD);
-							icon.setSize("18");
-							Button myButton = new Button("", icon);
-							myButton.setId("ViewParams");
-
-							bar.getItems().add(myButton);
-							myButton.setOnAction(new EventHandler<ActionEvent>() {
-								@Override
-								public void handle(ActionEvent arg0) {
-									ellen = 0;
-									MainSplitPane.getItems().forEach(item -> {
-										ellen++;
-//										System.out.println(item.getId());
-									});
-
-									if (componentsPane != null & ellen == 1) {
-										MainSplitPane.getItems().add(1, componentsPane);
-										MainSplitPane.setDividerPosition(0, 0.8);
-									}
-									MainSplitPane.getItems().toArray();
-								}
-							});
-						}
-						// hide
-						{
 							FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE_SLASH);
 							icon.setFontSmoothingType(FontSmoothingType.LCD);
 							icon.setSize("18");
-							Button myButton = new Button("", icon);
-							myButton.setId("HideParams");
+							ToggleButton myButton = new ToggleButton("", icon);
+							myButton.setId("ViewParams");
+							myButton.setTooltip(new Tooltip("Показать/спрятать"));
 
 							bar.getItems().add(myButton);
 							myButton.setOnAction(new EventHandler<ActionEvent>() {
 								@Override
 								public void handle(ActionEvent arg0) {
-									ellen = 0;
-									MainSplitPane.getItems().forEach(item -> {
-										ellen++;
-//										System.out.println(item.getId());
-									});
-
-									if (ellen == 2) {
-										componentsPane = MainSplitPane.getItems().get(1);
-										MainSplitPane.getItems().remove(componentsPane);
+									if (myButton.isSelected()) {
+										HideParam();
+									} else {
+										ShowParam();
 									}
 								}
 							});
@@ -879,7 +885,7 @@ public class AddDoc {
 	}
 
 	// limits the fonts a user can select from in the html editor.
-	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman");
+	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman", "Arial");
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML

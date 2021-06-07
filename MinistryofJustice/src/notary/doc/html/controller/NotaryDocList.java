@@ -617,7 +617,7 @@ public class NotaryDocList {
 			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
 			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
 			ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.INTEGER_TEXTFORMATTER_FACTORY));
+					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			CR_DATE.setColumnFilter(new DateColumnFilter<>());
 			CR_TIME.setColumnFilter(new PatternColumnFilter<>());

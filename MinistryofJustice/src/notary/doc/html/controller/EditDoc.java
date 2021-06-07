@@ -875,6 +875,7 @@ public class EditDoc {
 
 	public NT_TEMP_LIST_PARAM prm;
 
+	@SuppressWarnings("unused")
 	@FXML
 	void AddParamLocal() {
 		try {
@@ -885,7 +886,7 @@ public class EditDoc {
 				webView.getEngine().executeScript(tbl.getValue().getHTML_CODE());
 				String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
 				// Запишем в файл
-				Reload2(html);
+				//Reload2(html);
 				fillTree();
 			}
 		} catch (Exception e) {
@@ -1167,7 +1168,7 @@ public class EditDoc {
 										}
 										// show
 										{
-											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE);
+											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE_SLASH);
 											icon.setFontSmoothingType(FontSmoothingType.LCD);
 											icon.setSize("18");
 											ToggleButton myButton = new ToggleButton("", icon);
@@ -1644,7 +1645,7 @@ public class EditDoc {
 	}
 
 	// limits the fonts a user can select from in the html editor.
-	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman");
+	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman","Arial");
 
 	@FXML
 	void PrintScan(ActionEvent event) {
