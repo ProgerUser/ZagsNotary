@@ -144,7 +144,7 @@ public class PRJ_UPDATE {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			IUBtn.setText("Сохранить");
 
 			IsFolder.setDisable(true);
@@ -185,7 +185,7 @@ public class PRJ_UPDATE {
 			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "ADD_FRJ_FILE");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);

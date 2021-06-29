@@ -2487,7 +2487,7 @@ public class AddCus {
 			AB_DOUTH.setToggleGroup(toggleGroup);
 
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 
 			// тип клиента
 			{
@@ -2930,7 +2930,7 @@ public class AddCus {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "AddCus");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);

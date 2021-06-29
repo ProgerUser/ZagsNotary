@@ -127,7 +127,7 @@ public class AddAction {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			ACT_PARENT.setText(String.valueOf(parantid));
 
 			// FirstWUpp(ACT_NAME);
@@ -150,7 +150,7 @@ public class AddAction {
 			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "AddActionChild");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);

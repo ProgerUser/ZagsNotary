@@ -210,7 +210,7 @@ public class Report {
 			
 			FRREPRunner runner = new FRREPRunner();
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			String port = Connect.connectionURL.substring(Connect.connectionURL.indexOf(":")+1,
 					Connect.connectionURL.indexOf("/"));
 			//System.out.println(port);
@@ -408,7 +408,7 @@ public class Report {
 			
 			
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			// установить svg как иконку для кнопки
 //			{
 //				InputStream svgFile = getClass().getResourceAsStream("/table2.svg");
@@ -570,7 +570,7 @@ public class Report {
 			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "Report");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);

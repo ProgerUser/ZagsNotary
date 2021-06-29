@@ -833,7 +833,7 @@ public class AddDoc {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "AddNotaryDoc");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
@@ -972,7 +972,7 @@ public class AddDoc {
 			// HtmlEditor.getStyleClass().add("mylistview");
 			// HtmlEditor.getStylesheets().add("/ScrPane.css");
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from V_NT_TEMP_LIST");
 				ResultSet rs = stsmt.executeQuery();

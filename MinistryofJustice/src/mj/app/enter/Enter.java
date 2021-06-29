@@ -112,7 +112,7 @@ public class Enter {
 		try {
 			// __________________Проверки____________
 			DbUtil.Db_Connect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			conn = DbUtil.conn;
 			if (conn != null) {
 				String sql = "SELECT count(*) cnt FROM usr where usr.DUSRFIRE is null and CUSRLOGNAME = ?";

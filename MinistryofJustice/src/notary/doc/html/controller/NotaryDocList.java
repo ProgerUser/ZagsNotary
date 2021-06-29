@@ -605,7 +605,7 @@ public class NotaryDocList {
 	private void initialize() {
 		try {
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			ROOT.setBottom(createOptionPane(NT_DOC));
 			ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
 			DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
@@ -668,7 +668,7 @@ public class NotaryDocList {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "IUTempParam");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);

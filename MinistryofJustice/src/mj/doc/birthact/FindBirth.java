@@ -450,7 +450,7 @@ public class FindBirth {
 	void dbConnect() {
 		try {
 			Properties props = new Properties();
-			props.put("v$session.program", "BirthList");
+			props.put("v$session.program",getClass().getName());
 
 			Class.forName("oracle.jdbc.OracleDriver");
 			conn = DriverManager.getConnection(
@@ -739,7 +739,7 @@ public class FindBirth {
 	private void initialize() {
 		try {
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			DateAutoComma(DT1);
 			DateAutoComma(DT2);
 

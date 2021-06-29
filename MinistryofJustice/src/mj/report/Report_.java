@@ -150,7 +150,7 @@ public class Report_ {
 			FRREPRunner runner = new FRREPRunner();
 
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			String port = "1521";
 			String sid = "";
 			String host = "";
@@ -501,7 +501,7 @@ public class Report_ {
 	private void initialize() {
 		try {
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			VALUE.setOnEditCommit(new EventHandler<CellEditEvent<REP_PARAMS, String>>() {
 				@Override
 				public void handle(CellEditEvent<REP_PARAMS, String> t) {
@@ -611,7 +611,7 @@ public class Report_ {
 			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "Report");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);

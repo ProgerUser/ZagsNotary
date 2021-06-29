@@ -331,7 +331,7 @@ public class UsrC {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "USR");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
@@ -580,7 +580,7 @@ public class UsrC {
 		all_w.setToggleGroup(group);
 
 		dbConnect();
-		DbUtil.Run_Process(conn);
+		DbUtil.Run_Process(conn,getClass().getName());
 		ZagsCombo();
 		NotaryCombo();
 		convertComboDisplayList();

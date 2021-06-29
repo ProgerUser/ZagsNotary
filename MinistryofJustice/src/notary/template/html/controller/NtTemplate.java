@@ -696,7 +696,7 @@ public class NtTemplate {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "NtTemplate");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
@@ -803,7 +803,7 @@ public class NtTemplate {
 	private void initialize() {
 		try {
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 
 			NT_ID.setCellValueFactory(cellData -> {
 				if (cellData.getValue().getValue() instanceof NT_TEMPLATE) {

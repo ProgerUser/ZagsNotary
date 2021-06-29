@@ -121,7 +121,7 @@ public class IUTemplate {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "AddTemplate");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
@@ -150,7 +150,7 @@ public class IUTemplate {
 	private void initialize() {
 		try {
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			if (gettype().equals("U")) {
 				NT_NAME.setText(getNAME());
 				NT_PARENT_ID.setText(String.valueOf(values.getNT_PARENT()));

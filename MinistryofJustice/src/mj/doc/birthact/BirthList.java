@@ -770,7 +770,7 @@ public class BirthList {
 	void dbConnect() {
 		try {
 			Properties props = new Properties();
-			props.put("v$session.program", "BirthList");
+			props.put("v$session.program",getClass().getName());
 
 			Class.forName("oracle.jdbc.OracleDriver");
 			conn = DriverManager.getConnection(
@@ -1269,7 +1269,7 @@ public class BirthList {
 	private void initialize() {
 		try {
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			VB.getChildren().remove(FILTER);
 			
 			ROOT.setBottom(createOptionPane(BIRTH_ACT));

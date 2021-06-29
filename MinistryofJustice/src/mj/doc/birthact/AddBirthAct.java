@@ -1090,7 +1090,7 @@ public class AddBirthAct {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "AddBirth");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
@@ -1240,7 +1240,7 @@ public class AddBirthAct {
 			});
 
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			{
 				OnlyDigits(ChildCnt);
 				OnlyDigits(NDOC_A);

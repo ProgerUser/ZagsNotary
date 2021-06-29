@@ -26,6 +26,7 @@ import mj.msg.Msg;
 /**
  * Класс для работы с БД <br>
  * Доступ...
+ * 
  * @author Said
  *
  */
@@ -48,13 +49,13 @@ public class DbUtil {
 			Class.forName(JDBC_DRIVER);
 			// Establish the Oracle Connection using Connection String
 			Properties props = new Properties();
-			props.put("v$session.program", "MJRoot Connections");
+			props.put("v$session.program", DbUtil.class.getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
 			conn.setAutoCommit(false);
-			DbUtil.Run_Process(conn);
-		}catch (Exception e) {
+			DbUtil.Run_Process(conn, DbUtil.class.getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
@@ -83,6 +84,7 @@ public class DbUtil {
 		}
 		return ret;
 	}
+
 	public static boolean Check_Connect() {
 		boolean ret = true;
 		try {
@@ -94,17 +96,19 @@ public class DbUtil {
 			ret = false;
 		}
 		return ret;
-	}	
-	public static void Run_Process(Connection conn) {
+	}
+
+	public static void Run_Process(Connection conn, String ClassName) {
 		try {
 			Timer time = new Timer(); // Instantiate Timer Object
 			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-			st.setConn(conn);
+			st.setConn(conn, ClassName);
 			time.schedule(st, 0, 200000); // Create task repeating every 5 min
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	/**
 	 * Запись лога
 	 */
@@ -114,7 +118,7 @@ public class DbUtil {
 					& (METHODNAME != null && !METHODNAME.equals(""))) {
 				Class.forName(JDBC_DRIVER);
 				Properties props = new Properties();
-				props.put("v$session.program", "LogToDb");
+				props.put("v$session.program", DbUtil.class.getName());
 				Connection conn = DriverManager.getConnection(
 						"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 						props);
@@ -140,7 +144,7 @@ public class DbUtil {
 	/**
 	 * Запись "залоченной" строки
 	 */
-	public static String Lock_Row(Long Id, String TableName,Connection conn) {
+	public static String Lock_Row(Long Id, String TableName, Connection conn) {
 		String ret = null;
 		try {
 			if (Id != null & (TableName != null && !TableName.equals(""))) {
@@ -161,7 +165,6 @@ public class DbUtil {
 		return ret;
 	}
 
-	
 	public static void Log_Error(Exception e) {
 		// Если есть соединение или пока нет
 		if (conn != null || Check_Connect()) {
@@ -179,7 +182,7 @@ public class DbUtil {
 			Main.logger.error(ExceptionUtils.getStackTrace(e));
 		}
 	}
-	
+
 	/**
 	 * Кто залочил
 	 */
@@ -209,7 +212,7 @@ public class DbUtil {
 	/**
 	 * Удалить инф. о залоченной строке
 	 */
-	public static String Lock_Row_Delete(Long Id, String TableName,Connection conn) {
+	public static String Lock_Row_Delete(Long Id, String TableName, Connection conn) {
 		String ret = null;
 		try {
 			if (Id != null & (TableName != null && !TableName.equals(""))) {
@@ -289,6 +292,7 @@ public class DbUtil {
 
 	/**
 	 * Учреждение, Загс, Нотариус, Оба...
+	 * 
 	 * @return
 	 */
 	public static String Access_Level() {
@@ -341,7 +345,7 @@ public class DbUtil {
 		}
 		return ret;
 	}
-	
+
 	public static Long Odb_Act_Grp(Long grpid, Long actid) {
 		Long ret = 0l;
 		Connection conn = DbUtil.conn;
@@ -358,7 +362,7 @@ public class DbUtil {
 		}
 		return ret;
 	}
-	
+
 	public static Long Odb_Mnu2(Long actid) {
 		Main.logger = Logger.getLogger(DbUtil.class);
 		Long ret = 0l;
@@ -378,6 +382,7 @@ public class DbUtil {
 
 	/**
 	 * Проверка доступа к действию
+	 * 
 	 * @param actid
 	 * @return
 	 */
@@ -481,7 +486,7 @@ public class DbUtil {
 			}
 		}
 	}
-	
+
 	public static String getResource(final String path) {
 		final InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
 		try {

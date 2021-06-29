@@ -127,7 +127,7 @@ public class EditMnu {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			MNU_PARENT.setText(String.valueOf(parantid));
 			MNU_NAME.setText(txt);
 			// FirstWUpp(ACT_NAME);
@@ -150,7 +150,7 @@ public class EditMnu {
 			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "EditActionChild");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);

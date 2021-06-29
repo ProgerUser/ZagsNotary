@@ -698,7 +698,7 @@ public class AddPatern {
 
 			if (conn == null) {
 				dbConnect();
-				DbUtil.Run_Process(conn);
+				DbUtil.Run_Process(conn,getClass().getName());
 			}
 			/**
 			 * Тип основания для уст. отцовства
@@ -728,7 +728,7 @@ public class AddPatern {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "AddPatern");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);

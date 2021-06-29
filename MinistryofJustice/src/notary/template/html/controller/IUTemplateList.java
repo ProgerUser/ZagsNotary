@@ -174,7 +174,7 @@ public class IUTemplateList {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "AddTemplateList");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
@@ -333,7 +333,7 @@ public class IUTemplateList {
 					.add(getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
 
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 			// Нотариус
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from notary");

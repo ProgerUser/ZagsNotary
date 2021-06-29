@@ -363,7 +363,7 @@ public class IUTempParam {
 	private void initialize() {
 		try {
 			dbConnect();
-			DbUtil.Run_Process(conn);
+			DbUtil.Run_Process(conn,getClass().getName());
 //			PRM_ID.setCellValueFactory(cellData -> cellData.getValue().getValue().PRM_IDProperty().asObject());
 //			PRM_NAME.setCellValueFactory(cellData -> cellData.getValue().getValue().PRM_NAMEProperty());
 //			PRM_TYPE.setCellValueFactory(cellData -> cellData.getValue().getValue().TYPE_NAMEProperty());
@@ -434,7 +434,7 @@ public class IUTempParam {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program", "IUTempParam");
+			props.put("v$session.program",getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
