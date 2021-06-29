@@ -102,8 +102,7 @@ public class HtmlEditor {
 	public void setConn(Connection conn, NT_TEMP_LIST val_list) {
 		try {
 			this.val_list = val_list;
-			this.conn = conn;
-			this.conn.setAutoCommit(false);
+			this.conn = conn;this.conn.setAutoCommit(false);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

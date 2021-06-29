@@ -785,8 +785,7 @@ public class AddPatern {
 	// ---------------------------------------
 	//
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;
-		this.conn.setAutoCommit(false);
+		this.conn = conn;this.conn.setAutoCommit(false);
 	}
 
 	public boolean getStatus() {

@@ -830,8 +830,7 @@ public class EditPatern {
 	private PATERN_CERT pat_cert;
 
 	public void setConn(Connection conn, PATERN_CERT ptc) throws SQLException {
-		this.conn = conn;
-		this.conn.setAutoCommit(false);
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.pat_cert = ptc;
 	}
 

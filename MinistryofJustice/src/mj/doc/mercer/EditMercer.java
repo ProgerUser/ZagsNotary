@@ -871,8 +871,7 @@ public class EditMercer {
 	MC_MERCER mercer;
 
 	public void setConn(Connection conn, MC_MERCER mc) throws SQLException {
-		this.conn = conn;
-		this.conn.setAutoCommit(false);
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.mercer = mc;
 	}
 }

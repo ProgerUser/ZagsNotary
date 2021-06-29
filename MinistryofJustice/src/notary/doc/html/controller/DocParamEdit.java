@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 
 import org.apache.log4j.Logger;
@@ -43,8 +44,9 @@ public class DocParamEdit {
 
 	private Connection conn;
 
-	public void setConn(Connection conn, V_NT_TEMP_LIST val, V_NT_DOC DOC,NT_TEMP_LIST_PARAM PRM) {
+	public void setConn(Connection conn, V_NT_TEMP_LIST val, V_NT_DOC DOC,NT_TEMP_LIST_PARAM PRM) throws SQLException {
 		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.NT_DOC = val;
 		this.DOC = DOC;
 		this.PRM = PRM;

@@ -110,7 +110,7 @@ public class Edit_Cus_Doc {
 	boolean istemp = false;
 
 	public void setConn(Connection conn, boolean istemp, CUS_DOCUM docs) throws SQLException {
-		this.conn = conn;
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.cus_docs = docs;
 		this.istemp = istemp;
 		this.conn.setAutoCommit(false);

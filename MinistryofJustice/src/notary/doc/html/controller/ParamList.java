@@ -74,8 +74,7 @@ public class ParamList {
 
 	public void setConn(Connection conn) {
 		try {
-			this.conn = conn;
-			this.conn.setAutoCommit(false);
+			this.conn = conn;this.conn.setAutoCommit(false);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

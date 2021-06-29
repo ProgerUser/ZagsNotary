@@ -166,9 +166,10 @@ public class EditNotary {
 		this.Id.set(value);
 	}
 
-	public void setConn(Connection conn, VNOTARY value) {
+	public void setConn(Connection conn, VNOTARY value) throws SQLException {
 		this.notary = value;
 		this.conn = conn;
+		this.conn.setAutoCommit(false);
 	}
 
 	public Long getId() {

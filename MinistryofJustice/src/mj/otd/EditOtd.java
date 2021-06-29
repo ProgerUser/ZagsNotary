@@ -153,9 +153,10 @@ public class EditOtd {
 		this.Id.set(value);
 	}
 
-	public void setConn(Connection conn, OTD value) {
+	public void setConn(Connection conn, OTD value) throws SQLException {
 		this.otd = value;
 		this.conn = conn;
+		this.conn.setAutoCommit(false);
 	}
 
 	public Long getId() {

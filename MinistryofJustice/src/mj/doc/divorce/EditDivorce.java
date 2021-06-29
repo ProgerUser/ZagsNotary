@@ -988,8 +988,7 @@ public class EditDivorce {
 	}
 
 	public void setConn(Connection conn, DIVORCE_CERT dvc) throws SQLException {
-		this.conn = conn;
-		this.conn.setAutoCommit(false);
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.div_cer = dvc;
 	}
 

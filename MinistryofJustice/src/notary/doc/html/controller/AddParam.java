@@ -4,6 +4,7 @@ import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,8 +59,9 @@ public class AddParam {
 	Connection conn;
 	String json;
 
-	public void setConn(Connection conn, String json, V_NT_TEMP_LIST vals) {
+	public void setConn(Connection conn, String json, V_NT_TEMP_LIST vals) throws SQLException {
 		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.vals = vals;
 		this.json = json;
 	}

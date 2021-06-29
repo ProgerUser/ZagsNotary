@@ -3,6 +3,8 @@ package mj.zags;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.apache.log4j.Logger;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
@@ -222,9 +224,10 @@ public class EditZags {
 		this.Id.set(value);
 	}
 
-	public void setConn(Connection conn, VZAGS value) {
+	public void setConn(Connection conn, VZAGS value) throws SQLException {
 		this.zags = value;
 		this.conn = conn;
+		this.conn.setAutoCommit(false);
 	}
 
 	public Long getId() {

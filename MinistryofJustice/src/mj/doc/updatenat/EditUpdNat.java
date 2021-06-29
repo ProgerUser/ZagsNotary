@@ -599,8 +599,7 @@ public class EditUpdNat {
 	UPD_NAT upd;
 
 	public void setConn(Connection conn, UPD_NAT updnm) throws SQLException {
-		this.conn = conn;
-		this.conn.setAutoCommit(false);
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.upd = updnm;
 	}
 

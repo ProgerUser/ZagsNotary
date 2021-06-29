@@ -1622,8 +1622,9 @@ public class EditDoc {
 
 	private Connection conn;
 
-	public void setConn(Connection conn, V_NT_DOC val) {
+	public void setConn(Connection conn, V_NT_DOC val) throws SQLException {
 		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.NT_DOC = val;
 	}
 

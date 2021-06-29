@@ -185,9 +185,10 @@ public class EditCourt {
 		this.Id.set(value);
 	}
 
-	public void setConn(Connection conn, VCOURTS value) {
+	public void setConn(Connection conn, VCOURTS value) throws SQLException {
 		this.courts = value;
 		this.conn = conn;
+		this.conn.setAutoCommit(false);
 	}
 
 	public Long getId() {

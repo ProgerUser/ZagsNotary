@@ -649,8 +649,7 @@ public class EditUpdName {
 	}
 
 	public void setConn(Connection conn, UPDATE_NAME updnm) throws SQLException {
-		this.conn = conn;
-		this.conn.setAutoCommit(false);
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.updname = updnm;
 	}
 

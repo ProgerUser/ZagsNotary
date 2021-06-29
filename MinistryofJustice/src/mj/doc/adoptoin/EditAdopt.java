@@ -1120,8 +1120,7 @@ public class EditAdopt {
 	}
 
 	public void setConn(Connection conn, ADOPTOIN updnm) throws SQLException {
-		this.conn = conn;
-		this.conn.setAutoCommit(false);
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.adopt = updnm;
 	}
 

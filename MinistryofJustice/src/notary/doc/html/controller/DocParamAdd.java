@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 
@@ -47,8 +48,9 @@ public class DocParamAdd {
 	@FXML
 	private ComboBox<NT_CLI_TYPES> CUS_TYPE;
 
-	public void setConn(Connection conn, V_NT_TEMP_LIST val, V_NT_DOC DOC) {
+	public void setConn(Connection conn, V_NT_TEMP_LIST val, V_NT_DOC DOC) throws SQLException {
 		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.NT_DOC = val;
 		this.DOC = DOC;
 	}

@@ -38,8 +38,7 @@ public class EditGrp {
 
 
 	public void setConn(Connection conn, ODB_GROUP_USR grp) throws SQLException {
-		this.conn = conn;
-		this.conn.setAutoCommit(false);
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.grp = grp;
 	}
     @FXML

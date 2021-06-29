@@ -607,7 +607,7 @@ public class CusList {
 	String formname = "norm";
 
 	public void setConn(Connection conn, String formname) throws SQLException {
-		this.conn = conn;
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.formname = formname;
 		this.conn.setAutoCommit(false);
 	}

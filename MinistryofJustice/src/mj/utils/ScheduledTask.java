@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
@@ -50,8 +51,9 @@ public class ScheduledTask extends TimerTask {
 		}
 	}
 
-	void setConn(Connection conn, String ClassName) {
+	void setConn(Connection conn, String ClassName) throws SQLException {
 		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.ClassName = ClassName;
 	}
 }

@@ -106,7 +106,7 @@ public class Add_Cus_Doc {
 	boolean istemp = false;
 
 	public void setConn(Connection conn, boolean istemp) throws SQLException {
-		this.conn = conn;
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.istemp = istemp;
 		this.conn.setAutoCommit(false);
 	}

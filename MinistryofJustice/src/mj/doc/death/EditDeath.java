@@ -702,8 +702,7 @@ public class EditDeath {
 	private DEATH_CERT death;
 
 	public void setConn(Connection conn, DEATH_CERT dc) throws SQLException {
-		this.conn = conn;
-		this.conn.setAutoCommit(false);
+		this.conn = conn;this.conn.setAutoCommit(false);
 		this.death = dc;
 	}
 
