@@ -44,6 +44,7 @@ public class ScheduledTask extends TimerTask {
 						"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 						props);
 				conn.setAutoCommit(false);
+				this.conn = conn;
 			} catch (Exception e) {
 
 			}
