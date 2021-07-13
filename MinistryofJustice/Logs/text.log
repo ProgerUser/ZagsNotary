@@ -30878,3 +30878,42 @@ Caused by: java.net.ConnectException: Connection refused: connect
 
  and DAUDDATE between to_date('01.01.2000','dd.mm.yyyy') and to_date('03.06.2021','dd.mm.yyyy')
  order by DAUDDATE desc
+[06.07.2021 16:33:49] [Main] ERROR:182 - java.sql.SQLRecoverableException: Ошибка ввода/вывода: Удаленный хост принудительно разорвал существующее подключение, connect lapse 23 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:794)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:208)
+	at mj.utils.DbUtil.Db_Connect(DbUtil.java:53)
+	at mj.app.main.Main.start(Main.java:166)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 23 ms., Authentication lapse 0 ms.
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:790)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение, connect lapse 23 ms.
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:138)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:317)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1438)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:518)
+	... 16 more
+Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующее подключение
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:197)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:378)
+	at oracle.net.nt.TimeoutSocketChannel.read(TimeoutSocketChannel.java:144)
+	at oracle.net.ns.NIOHeader.readHeaderBuffer(NIOHeader.java:82)
+	at oracle.net.ns.NIOPacket.readNIOPacket(NIOPacket.java:252)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:118)
+	... 19 more
+
