@@ -30942,3 +30942,4 @@ Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующ
 	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:118)
 	... 19 more
 
+[27.07.2021 12:55:07] [AddUser] INFO :143 - Пользователь TextField[id=CUSRLOGNAME, styleClass=text-input text-field] Создан~JavaFX Application Thread
