@@ -30942,6 +30942,9 @@ Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующ
 	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:118)
 	... 19 more
 
+<<<<<<< HEAD
+[27.07.2021 12:55:07] [AddUser] INFO :143 - Пользователь TextField[id=CUSRLOGNAME, styleClass=text-input text-field] Создан~JavaFX Application Thread
+=======
 [27.07.2021 22:07:23] [ConvConst] INFO :111 - select * from VAU_ACTION 
  where 1=1 
 
@@ -31129,6 +31132,7 @@ Caused by: Error : 54, Position : 0, Sql = select * from UPDATE_NAME where  ID =
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Thread.java:748)
 
+<<<<<<< HEAD
 [30.08.2021 22:43:45] [Report] ERROR:176 - java.io.IOException: Cannot run program "C:\Program": CreateProcess error=2, Не удается найти указанный файл
 	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
 	at java.lang.Runtime.exec(Runtime.java:621)
@@ -31333,3 +31337,6 @@ Caused by: java.io.IOException: CreateProcess error=2, Не удается найти указанны
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Thread.java:748)
 
+=======
+>>>>>>> refs/remotes/origin/master
+>>>>>>> refs/remotes/origin/master
