@@ -31340,3 +31340,8 @@ Caused by: java.io.IOException: CreateProcess error=2, Не удается найти указанны
 =======
 >>>>>>> refs/remotes/origin/master
 >>>>>>> refs/remotes/origin/master
+[18.09.2021 21:13:07] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and upper(CTABLE) = 'NT_CLIENTS' 
+ order by DAUDDATE desc
