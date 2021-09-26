@@ -8,21 +8,18 @@
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.effect.Reflection?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.tableview2.FilteredTableColumn?>
 <?import org.controlsfx.control.tableview2.FilteredTableView?>
 
-<BorderPane fx:id="BP" onKeyPressed="#F5" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-	<padding>
-		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-	</padding>
-	<top>
-		<ToolBar style="-fx-border-color: silver;" BorderPane.alignment="CENTER">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#F5" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+
+		<ToolBar style="-fx-border-color: silver;">
 			<items>
 				<Button mnemonicParsing="false" onAction="#Add" text="">
 					<graphic>
-						<FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="PLUS_CIRCLE" size="15" />
+						<FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="FILE_ALT" size="16" />
 					</graphic>
 					<tooltip>
 						<Tooltip text="Добавить" />
@@ -34,7 +31,7 @@
             <Separator orientation="VERTICAL" />
 				<Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#Edit" text="">
 					<graphic>
-						<FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="EDIT" size="15" />
+						<FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="EDIT" size="16" />
 					</graphic>
 					<tooltip>
 						<Tooltip text="Редактировать" />
@@ -46,7 +43,7 @@
             <Separator layoutX="46.0" layoutY="10.0" orientation="VERTICAL" />
 				<Button layoutX="83.0" layoutY="10.0" mnemonicParsing="false" onAction="#Delete" text="">
 					<graphic>
-						<FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
+						<FontAwesomeIconView fill="BLACK" fontSmoothingType="LCD" glyphName="TRASH_ALT" size="16" />
 					</graphic>
 					<tooltip>
 						<Tooltip text="Удалить" />
@@ -63,10 +60,11 @@
                </input>
             </Glow>
          </effect>
+      <VBox.margin>
+         <Insets left="-5.0" right="-5.0" top="-5.0" />
+      </VBox.margin>
 		</ToolBar>
-	</top>
-	<center>
-		<FilteredTableView fx:id="OTD" onMouseClicked="#Tbl2Click" BorderPane.alignment="CENTER">
+		<FilteredTableView fx:id="OTD" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#Tbl2Click" VBox.vgrow="ALWAYS">
 			<columns>
 				<FilteredTableColumn fx:id="IOTDNUM" prefWidth="65.0" text="Номер" />
 				<FilteredTableColumn fx:id="COTDNAME" prefWidth="181.0" text="Название" />
@@ -76,6 +74,8 @@
 				<FilteredTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
 			</columnResizePolicy>
 		</FilteredTableView>
-	</center>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
 	
-</BorderPane>
+</VBox>

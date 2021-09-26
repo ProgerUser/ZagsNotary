@@ -55,8 +55,11 @@ public class TableManage {
 	void OK(ActionEvent event) {
 		try {
 			String mes = (String) webView.getEngine().executeScript(
-					"function getTextArea() {\n" + "var myContent = tinymce.get(\"txtarea\").getContent();\n"
-							+ "return myContent;\n" + "\n" + "}\n" + "getTextArea();");
+					"function getTextArea() {\n" + 
+							"var myContent = tinymce.get(\"txtarea\").getContent();\n"+ 
+							"return myContent;\n" + 
+							"}\n" + 
+					"getTextArea();");
 			HTML = mes;
 			//System.out.println(mes);
 			onclose();

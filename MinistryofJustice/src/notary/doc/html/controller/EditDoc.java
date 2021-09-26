@@ -1026,10 +1026,8 @@ public class EditDoc {
 								 + "        document.selection.createRange().pasteHTML(html);\n"
 								 + "    }\n"
 								 + "}\n"
-								 + "pasteHtmlAtCaret('"+content+"');";
-					    
+								 + "pasteHtmlAtCaret('"+content+"');";					    
 					    System.out.println(js);
-					    
 						WebView webView = (WebView) HtmlEditor.lookup("WebView");
 						webView.getEngine().executeScript(js);
 					}

@@ -77,7 +77,7 @@ public class OtdList {
 			Edit(OTD.getSelectionModel().getSelectedItem().getIOTDNUM(), (Stage) OTD.getScene().getWindow());
 		}
 	}
-    
+
 	@FXML
 	void Add(ActionEvent event) {
 		try {
@@ -89,10 +89,10 @@ public class OtdList {
 //			BP.setBottom(new FormRenderer(login));
 //			
 //			BP.setRight(SCB);
-			
+
 			Notifications.create().darkStyle().title("Title").graphic(new Rectangle(600, 400, Color.AQUA))
 					.hideAfter(Duration.seconds(10)).show();
-	        
+
 			// проверка доступа
 			if (DbUtil.Odb_Action(122l) == 0) {
 				Msg.Message("Нет доступа!");
@@ -328,7 +328,7 @@ public class OtdList {
 //			addIfNotPresent(OTD.getStyleClass(), JMetroStyleClass.TABLE_GRID_LINES);
 //			addIfNotPresent(OTD.getStyleClass(), JMetroStyleClass.ALTERNATING_ROW_COLORS);
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			DbUtil.Run_Process(conn, getClass().getName());
 //			Platform.runLater(() -> {
 //			});
 
@@ -351,7 +351,7 @@ public class OtdList {
 					return Long.parseLong(string);
 				}
 			}));
-			
+
 			RAION.setCellFactory(TextField2TableCell.forTableColumn());
 
 			OTD.rowHeaderVisibleProperty().set(true);
@@ -451,7 +451,7 @@ public class OtdList {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
+			props.put("v$session.program", getClass().getName());
 			conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
 					props);
