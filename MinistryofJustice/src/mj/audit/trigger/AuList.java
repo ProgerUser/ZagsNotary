@@ -30,6 +30,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -37,14 +39,12 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -71,7 +71,7 @@ public class AuList {
 	private ProgressIndicator PB;
 
 	@FXML
-	private BorderPane ROOT;
+	private VBox ROOT;
 
 	@FXML
 	private TableColumn<AU_TABLE, String> TABLENAME;
@@ -137,7 +137,13 @@ public class AuList {
 			AnchorPane secondaryLayout = new AnchorPane();
 
 			VBox vb = new VBox();
-			ToolBar toolBar = new ToolBar(Update);
+			
+			ButtonBar buttonBar = new ButtonBar();
+		      //Adding the buttons to the button bar
+		    ButtonBar.setButtonData(Update, ButtonData.APPLY);
+		    buttonBar.getButtons().addAll(Update);
+			
+						
 			TableView<ALL_TABLE> ALL_TABLE = new TableView<ALL_TABLE>();
 			TableColumn<ALL_TABLE, String> TABLE_NAME = new TableColumn<>("Название таблицы");
 			TABLE_NAME.setCellValueFactory(new PropertyValueFactory<>("TABLE_NAME"));
@@ -147,12 +153,13 @@ public class AuList {
 			ALL_TABLE.getColumns().add(TABLECOMMENT);
 
 			vb.getChildren().add(ALL_TABLE);
-			vb.getChildren().add(toolBar);
+			vb.getChildren().add(buttonBar);
 
 			ALL_TABLE.getStyleClass().add("mylistview");
 			ALL_TABLE.getStylesheets().add("/ScrPane.css");
 
-			vb.setPadding(new Insets(10, 10, 10, 10));
+			vb.setPadding(new Insets(5, 5, 5, 5));
+			vb.setSpacing(5);
 			/**/
 			TABLE_NAME.setCellValueFactory(cellData -> cellData.getValue().TABLE_NAMEProperty());
 			TABLECOMMENT.setCellValueFactory(cellData -> cellData.getValue().TABLECOMMENTProperty());
@@ -199,9 +206,13 @@ public class AuList {
 
 						if (type.equals("add")) {
 							try {
-								PreparedStatement delete = conn.prepareStatement("declare "
-										+ "pragma autonomous_transaction;" + "begin "
-										+ " insert into  AU_TABLES(CNAME,CMODE) values (?,?);" + "commit;" + "end;");
+								PreparedStatement delete = conn.prepareStatement(
+										"declare "+ 
+								        "pragma autonomous_transaction;" + 
+										"begin "+ 
+										" insert into  AU_TABLES(CNAME,CMODE) values (?,?);" + 
+										"commit;" + 
+										"end;");
 								delete.setString(1, all_tbl.getTABLE_NAME());
 								delete.setString(2, "Y");
 								delete.executeUpdate();
