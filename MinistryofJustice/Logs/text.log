@@ -31345,3 +31345,18 @@ Caused by: java.io.IOException: CreateProcess error=2, Не удается найти указанны
 
  and upper(CTABLE) = 'NT_CLIENTS' 
  order by DAUDDATE desc
+[27.09.2021 09:18:29] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and DAUDDATE between to_date('01.01.2021','dd.mm.yyyy') and to_date('27.09.2021','dd.mm.yyyy')
+ order by DAUDDATE desc
+[27.09.2021 09:21:32] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and DAUDDATE between to_date('01.01.2021','dd.mm.yyyy') and to_date('01.01.2021','dd.mm.yyyy')
+ order by DAUDDATE desc
+[27.09.2021 09:21:42] [ConvConst] INFO :111 - select * from VAU_ACTION 
+ where 1=1 
+
+ and DAUDDATE between to_date('01.01.2021','dd.mm.yyyy') and to_date('27.09.2021','dd.mm.yyyy')
+ order by DAUDDATE desc
