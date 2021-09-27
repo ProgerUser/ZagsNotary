@@ -14,6 +14,11 @@ import org.controlsfx.control.tableview2.FilteredTableView;
 import org.controlsfx.control.tableview2.cell.TextField2TableCell;
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
+import com.dlsc.formsfx.model.structure.Field;
+import com.dlsc.formsfx.model.structure.Form;
+import com.dlsc.formsfx.model.structure.Group;
+import com.dlsc.formsfx.view.renderer.FormRenderer;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +36,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
@@ -131,16 +137,31 @@ public class OtdList {
 
 	@FXML
 	void Edit(ActionEvent event) {
-		// проверка доступа
-		if (DbUtil.Odb_Action(123l) == 0) {
-			Msg.Message("Нет доступа!");
-			return;
-		}
-		if (OTD.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите строку!");
-		} else {
-			Edit(OTD.getSelectionModel().getSelectedItem().getIOTDNUM(), (Stage) OTD.getScene().getWindow());
-		}
+		
+		Form loginForm = Form.of(
+				Group.of(
+					Field.ofStringType("").label("Username"),
+					Field.ofStringType("").label("Password").required("This field can’t be empty")
+					)
+				).title("Login");
+		
+		Pane root = new Pane();
+		root.getChildren().add(new FormRenderer(loginForm));
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.show();
+		
+//		// проверка доступа
+//		if (DbUtil.Odb_Action(123l) == 0) {
+//			Msg.Message("Нет доступа!");
+//			return;
+//		}
+//		if (OTD.getSelectionModel().getSelectedItem() == null) {
+//			Msg.Message("Выберите строку!");
+//		} else {
+//			Edit(OTD.getSelectionModel().getSelectedItem().getIOTDNUM(), (Stage) OTD.getScene().getWindow());
+//		}
+
 	}
 
 	@FXML

@@ -164,8 +164,9 @@ public class Main extends Application {
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DbUtil.Db_Connect();
-			initRootLayout();
-			RT();
+//			initRootLayout();
+//			RT();
+			OTD();
 //			new NotaryDocList().HtmlEditor(primaryStage);
 //
 //	END 		
