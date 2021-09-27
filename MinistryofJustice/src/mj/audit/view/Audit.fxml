@@ -21,9 +21,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.291" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+      <VBox fx:id="SplitPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
          <StackPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </StackPane.margin>
@@ -68,7 +68,7 @@
             </ToolBar>
             <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" VBox.vgrow="ALWAYS">
                <children>
-										<TableView fx:id="AU_ACTION" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="mylistview" stylesheets="/ScrPane.css">
+										<TableView fx:id="AU_ACTION" editable="true" maxHeight="1.7976931348623157E308" maxWidth="160.0" styleClass="mylistview" stylesheets="/ScrPane.css" HBox.hgrow="ALWAYS">
 											<columns>
 												<TableColumn fx:id="DAUDDATE" minWidth="-1.0" prefWidth="117.0" text="Дата изменения" />
 												<TableColumn fx:id="CAUDOPERATION" prefWidth="37.0" text="Д" />
@@ -81,7 +81,7 @@
 												</ContextMenu>
 											</contextMenu>
 										</TableView>
-										<TableView fx:id="V_AU_DATA" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="mylistview" stylesheets="/ScrPane.css">
+										<TableView fx:id="V_AU_DATA" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="600.0" styleClass="mylistview" stylesheets="/ScrPane.css" HBox.hgrow="ALWAYS">
 											<columns>
 												<TableColumn fx:id="CFIELD" prefWidth="113.0" text="Поле" />
 												<TableColumn fx:id="COLDDATA" prefWidth="165.0" text="Старые данные" />
