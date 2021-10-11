@@ -1,5 +1,7 @@
 package mj.access.action;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -144,16 +146,21 @@ public class AddAction {
 
 	/**
 	 * Открыть сессию
+	 * @throws UnknownHostException 
 	 */
-	private void dbConnect() {
+	private void dbConnect() throws UnknownHostException {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			Class.forName("oracle.jdbc.OracleDriver");
+			
 			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
+			props.setProperty("password", Connect.userPassword);
+			props.setProperty("user", Connect.userID);
+			props.put("v$session.osuser", System.getProperty("user.name").toString());
+			props.put("v$session.machine", InetAddress.getLocalHost().getCanonicalHostName());
+			props.put("v$session.program", getClass().getName());
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@" + Connect.connectionURL, props);
+			
 			conn.setAutoCommit(false);
 		} catch (SQLException | ClassNotFoundException e) {
 			DbUtil.Log_Error(e);
