@@ -12,4 +12,4 @@ mvn install:install-file -Dfile=C:\syntheticaFXStandard.jar -DgroupId=synthetica
 
 
 
-mvn install:install-file -Dfile=C:\jortho.jar -DgroupId=jortho -DartifactId=jortho -Dversion=1.0 -Dpackaging=jar
+mvn install:install-file -Dfile=D:\orai18n.jar -DgroupId=orai18n -DartifactId=orai18n -Dversion=1.0 -Dpackaging=jar
