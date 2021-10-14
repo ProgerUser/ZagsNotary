@@ -69,6 +69,16 @@ public class Enter {
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
+
+	@FXML
+	void Cancel(ActionEvent event) {
+		try {
+			onclose();
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+	
 	void Set_Up_Pass() {
 		try {
 			Main.logger = Logger.getLogger(getClass());
@@ -110,10 +120,11 @@ public class Enter {
 	void Check_Enter() {
 		// Выполнить проверку соединения с базой
 		try {
+			
 			// __________________Проверки____________
 			DbUtil.Db_Connect();
 			conn = DbUtil.conn;
-			DbUtil.Run_Process(conn,getClass().getName());
+			DbUtil.Run_Process(conn, getClass().getName());
 			if (conn != null) {
 				String sql = "SELECT count(*) cnt FROM usr where usr.DUSRFIRE is null and CUSRLOGNAME = ?";
 				sqlStatement = conn.prepareStatement(sql);
@@ -280,11 +291,14 @@ public class Enter {
 
 			FilteredList<String> filteredlogin = new FilteredList<String>(logins);
 			login.getEditor().textProperty().addListener(new InputFilter<String>(login, filteredlogin, true));
-			login.setItems(logins);
+			login.setItems(filteredlogin);
 //			FxUtilTest.getComboBoxValue(login);
 //			FxUtilTest.autoCompleteComboBoxPlus(login, (typedText, itemToCompare) -> itemToCompare
 //					.toLowerCase().contains(typedText.toLowerCase()));
-			
+			// Filtered Combo
+//			FxUtilTest.getComboBoxValue(login);
+//			FxUtilTest.autoCompleteComboBoxPlus(login,
+//					(typedText, itemToCompare) -> itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
 
 			final SplashScreen splash = SplashScreen.getSplashScreen();
 			if (splash != null) {

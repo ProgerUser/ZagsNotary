@@ -13,46 +13,79 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox styleClass="FirstPane" stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.enter.Enter">
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.enter.Enter">
    <children>
       <GridPane>
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.0" minWidth="10.0" prefWidth="58.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="263.0" minWidth="10.0" prefWidth="214.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Логин">
                <font>
-                  <Font name="Arial Bold" size="14.0" />
+                  <Font size="14.0" />
                </font>
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
             </Label>
             <Label text="Пароль" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font size="14.0" />
                </font>
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
             </Label>
-            <ComboBox fx:id="login" editable="true" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" />
-            <PasswordField fx:id="pass" maxWidth="200.0" onKeyPressed="#enter_" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="База" GridPane.rowIndex="2">
+            <ComboBox fx:id="login" editable="true" maxWidth="1.7976931348623157E308" style="-fx-font-size: 14px;" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin></ComboBox>
+            <PasswordField fx:id="pass" onKeyPressed="#enter_" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font size="14.0" />
+               </font></PasswordField>
+            <Label text="База данных" GridPane.rowIndex="2">
+               <font>
+                  <Font size="14.0" />
                </font>
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
             </Label>
-            <TextField fx:id="DBIP" editable="false" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="DBIP" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
          </children>
       </GridPane>
-      <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0">
+      <ButtonBar>
          <buttons>
-          <Button fx:id="enter_id" mnemonicParsing="false" onAction="#enter" text="Войти" />
+          <Button fx:id="enter_id" mnemonicParsing="false" onAction="#enter" text="Login">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="250.0" layoutY="10.0" mnemonicParsing="false" onAction="#Cancel" text="Cancel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </buttons>
       </ButtonBar>
    </children>
    <padding>
-      <Insets left="10.0" right="10.0" top="10.0" />
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
 </VBox>

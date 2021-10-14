@@ -164,9 +164,9 @@ public class Main extends Application {
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DbUtil.Db_Connect();
-//			initRootLayout();
-//			RT();
-			OTD();
+			initRootLayout();
+			RT();
+			//OTD();
 //			new NotaryDocList().HtmlEditor(primaryStage);
 //
 //	END 		
@@ -286,7 +286,7 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("/mj/app/enter/Enter.fxml"));
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Login");
+			stage.setTitle("Ã»Õﬁ—“ –¿");
 			stage.initOwner(primaryStage);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.setResizable(false);

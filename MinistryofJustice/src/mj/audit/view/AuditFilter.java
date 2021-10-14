@@ -421,13 +421,14 @@ public class AuditFilter {
 		CTABLE.setConverter(new StringConverter<AU_TABLE>() {
 			@Override
 			public String toString(AU_TABLE object) {
-				return object != null ? object.getTABLENAME() : "";
+				return object != null ? object.getCNAME() + "=" + object.getTABLENAME() : "";
 			}
 
 			@Override
 			public AU_TABLE fromString(final String string) {
-				return CTABLE.getItems().stream().filter(product -> product.getTABLENAME().equals(string)).findFirst()
-						.orElse(null);
+				return CTABLE.getItems().stream()
+						.filter(product -> (product.getCNAME() + "=" + product.getTABLENAME()).equals(string))
+						.findFirst().orElse(null);
 			}
 		});
 	}
@@ -460,8 +461,8 @@ public class AuditFilter {
 				CTABLE.setItems(areas);
 				
 				FxUtilTest.getComboBoxValue(CTABLE);
-				FxUtilTest.autoCompleteComboBoxPlus(CTABLE, (typedText, itemToCompare) -> itemToCompare.getTABLENAME()
-						.toLowerCase().contains(typedText.toLowerCase()));
+				FxUtilTest.autoCompleteComboBoxPlus(CTABLE, (typedText, itemToCompare) -> (itemToCompare.CNAMEProperty()
+						+ "=" + itemToCompare.getTABLENAME()).toLowerCase().contains(typedText.toLowerCase()));
 				
 				convertComboDisplayList();
 				// CTABLE.getSelectionModel().select(0);
