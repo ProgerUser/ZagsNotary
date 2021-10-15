@@ -154,7 +154,7 @@ public class Main extends Application {
 			Main.primaryStage = primaryStage;
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
-//
+
 //			Enter();
 
 //
