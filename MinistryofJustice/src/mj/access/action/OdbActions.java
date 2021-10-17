@@ -97,7 +97,7 @@ public class OdbActions {
 				// Get the selected item
 				// TreeItem<ODB_ACTION> selectedItem =
 				// Actions.getSelectionModel().getSelectedItem();
-				fillTree();
+				findNode(root, Integer.valueOf(ID_FIND.getText()));
 			}
 
 		} catch (Exception e) {
@@ -105,6 +105,33 @@ public class OdbActions {
 		}
 	}
 
+	private void findNode(TreeItem<ODB_ACTION> treeNode, int id) {
+	       if (treeNode.getChildren().isEmpty()) {
+	           // Do nothing node is empty.
+	       } else {
+	           // Loop through each child node.
+	           for (TreeItem<ODB_ACTION> node : treeNode.getChildren()) {
+	               if (node.getValue().getACT_ID() == id) {
+	                   node.setExpanded(true);
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								Actions.requestFocus();
+								Actions.getSelectionModel().select(node);
+								Actions.scrollTo(Actions.getSelectionModel().getSelectedIndex());
+							}
+						});
+						
+	               } else {
+	                   node.setExpanded(true);
+	               }
+	               // If the current node has children then check them.
+	               if (!treeNode.getChildren().isEmpty()) {
+	                   findNode(node, id);
+	               }
+	           }
+	       }
+	   }
 	/**
 	 * Только число
 	 * 

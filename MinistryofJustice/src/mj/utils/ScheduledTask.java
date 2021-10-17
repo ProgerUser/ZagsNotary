@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 import java.util.TimerTask;
-
 import mj.app.model.Connect;
 
 public class ScheduledTask extends TimerTask {
@@ -31,7 +30,6 @@ public class ScheduledTask extends TimerTask {
 				rs.close();
 				prp.close();
 			} catch (Exception e) {
-				// e.printStackTrace();
 				System.out.println("ERROR<" + sessionid + ">");
 				this.cancel();
 			}
@@ -45,8 +43,9 @@ public class ScheduledTask extends TimerTask {
 						props);
 				conn.setAutoCommit(false);
 				this.conn = conn;
+				System.out.println("ERROR_NEW_SESS");
 			} catch (Exception e) {
-
+				
 			}
 			// this.cancel();
 		}

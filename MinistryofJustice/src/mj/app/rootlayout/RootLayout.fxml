@@ -43,6 +43,11 @@
 						<MenuItem fx:id="85" mnemonicParsing="false" onAction="#reports" text="Печать" />
 					</items>
 				</Menu>
+				<Menu fx:id="203" mnemonicParsing="false" text="Управление проектами">
+					<items>
+						<MenuItem fx:id="204" mnemonicParsing="false" onAction="#PmEmp" text="Сотрудники" />
+					</items>
+				</Menu>
 				<Menu fx:id="16" mnemonicParsing="false" text="Администратор">
 					<items>
 						<MenuItem fx:id="17" mnemonicParsing="false" onAction="#usradmin" text="Пользователи" />

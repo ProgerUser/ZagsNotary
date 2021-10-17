@@ -27,6 +27,20 @@ public class Root {
 
 	@FXML
 	private MenuBar menubar;
+	
+	
+	/**
+	 * Управление проектами
+	 */
+	@FXML
+	void PmEmp(ActionEvent event) {
+		try {
+			Main.Nt_Temp();
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+	//--------------------------------------
 
 	/**
 	 * Выход

@@ -37,5 +37,10 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/Загрузки/flexganttfx-8.12.0-bin/lib/flexganttfx-core-8.12.0.jar"/>
+	<classpathentry kind="lib" path="D:/Загрузки/flexganttfx-8.12.0-bin/lib/flexganttfx-extras-8.12.0.jar"/>
+	<classpathentry kind="lib" path="D:/Загрузки/flexganttfx-8.12.0-bin/lib/flexganttfx-model-8.12.0.jar"/>
+	<classpathentry kind="lib" path="D:/Загрузки/flexganttfx-8.12.0-bin/lib/flexganttfx-view-8.12.0.jar"/>
+	<classpathentry kind="lib" path="D:/Загрузки/flexganttfx-8.12.0-bin/ext/license4j-1.4.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
