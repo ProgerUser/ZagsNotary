@@ -35,7 +35,7 @@ public class Root {
 	@FXML
 	void PmEmp(ActionEvent event) {
 		try {
-			Main.Nt_Temp();
+			Main.PmEmp();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

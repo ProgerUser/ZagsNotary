@@ -51,6 +51,7 @@ import mj.init.Setup;
 import mj.log.LogList;
 import mj.notary.NotaryList;
 import mj.otd.OtdList;
+import mj.prjmngm.emps.RootPmEmpController;
 import mj.project.PRJ_FLS_FLDR;
 import mj.report.Report;
 import mj.users.UsrC;
@@ -91,6 +92,7 @@ public class Main extends Application {
 	public static boolean AdoptWin = true;
 	public static boolean AuSetupWin = true;
 	public static boolean OtdWin = true;
+	public static boolean PmEmpWin = true;
 	public static boolean CourtsWin = true;
 	public static boolean ZagsWin = true;
 	public static boolean NotaryWin = true;
@@ -667,6 +669,34 @@ public class Main extends Application {
 					}
 				});
 
+				stage.show();
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+	
+	public static void PmEmp() {
+		try {
+			if (PmEmpWin) {
+				PmEmpWin = false;
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/prjmngm/emps/RootPmEmpView.fxml"));
+				RootPmEmpController controller = new RootPmEmpController();
+				loader.setController(controller);
+				Parent root = loader.load();
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Сотрудники");
+				stage.initOwner(primaryStage);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						PmEmpWin = true;
+					}
+				});
 				stage.show();
 			}
 		} catch (Exception e) {

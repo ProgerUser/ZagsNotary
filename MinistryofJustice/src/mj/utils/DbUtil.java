@@ -103,7 +103,7 @@ public class DbUtil {
 			Timer time = new Timer(); // Instantiate Timer Object
 			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
 			st.setConn(conn, ClassName);
-			time.schedule(st, 0, 200000); // Create task repeating every 5 min
+			time.schedule(st, 0, 60000); // Create task repeating every 1 min
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
