@@ -10,6 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -27,9 +30,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
@@ -78,11 +83,39 @@ public class RootPmEmpController {
 	private void Add(ActionEvent event) {
 		try {
 
-			if (DbUtil.Odb_Action(0l) == 0) {
+			// права
+			if (DbUtil.Odb_Action(Long.valueOf(245)) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
 
+			Stage stage = new Stage();
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/mj/prjmngm/emps/IUPmEmp.fxml"));
+
+			AddPmEmpController controller = new AddPmEmpController();
+			controller.SetConn(conn);
+			loader.setController(controller);
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Добавить: ");
+			stage.initOwner((Stage) PM_EMP.getScene().getWindow());
+			stage.setResizable(true);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+					try {
+						LoadTable();
+					} catch (Exception e) {
+						DbUtil.Log_Error(e);
+					}
+				}
+			});
+			stage.show();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -96,7 +129,11 @@ public class RootPmEmpController {
 	@FXML
 	private void Delete(ActionEvent event) {
 		try {
-
+			// права
+			if (DbUtil.Odb_Action(Long.valueOf(244)) == 0) {
+				Msg.Message("Нет доступа!");
+				return;
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -111,7 +148,7 @@ public class RootPmEmpController {
 	private void Edit(ActionEvent event) {
 		try {
 			// права
-			if (DbUtil.Odb_Action(0l) == 0) {
+			if (DbUtil.Odb_Action(Long.valueOf(243)) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -120,7 +157,7 @@ public class RootPmEmpController {
 			if (sel != null) {
 				// удержать
 				PreparedStatement selforupd = conn
-						.prepareStatement("select * from PM_EMP where EMP_ID = ? for update nowait");
+						.prepareStatement("SELECT * FROM PM_EMP WHERE EMP_ID = ? FOR UPDATE NOWAIT");
 				selforupd.setLong(1, sel.getEMP_ID());
 				try {
 					selforupd.executeQuery();
@@ -132,7 +169,9 @@ public class RootPmEmpController {
 						conn.rollback();
 						return;
 					}
-					// <FXML>
+					// xml
+					XmlsForCompare(sel.getEMP_ID());
+					// <FXML>---------------------------------------
 					Stage stage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/mj/prjmngm/emps/IUPmEmp.fxml"));
@@ -144,11 +183,14 @@ public class RootPmEmpController {
 					stage.getIcons().add(new Image("/icon.png"));
 					stage.setTitle("Редактирование: " + sel.getEMP_ID());
 					stage.initOwner((Stage) PM_EMP.getScene().getWindow());
-					stage.setResizable(false);
+					stage.setResizable(true);
+					stage.initModality(Modality.WINDOW_MODAL);
 					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 						@Override
 						public void handle(WindowEvent paramT) {
 							try {
+								// сохрнаить для сравнения
+								controller.SaveCompare();
 								if (controller.getStatus()) {
 									conn.commit();
 									// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
@@ -156,6 +198,7 @@ public class RootPmEmpController {
 									if (lock != null) {// if error add row
 										Msg.Message(lock);
 									}
+									LoadTable();
 								} // Если нажали "X" или "Cancel" и до этого что-то меняли
 								else if (!controller.getStatus() & CompareBeforeClose(sel.getEMP_ID()) == 1) {
 									final Alert alert = new Alert(AlertType.CONFIRMATION,
@@ -168,8 +211,8 @@ public class RootPmEmpController {
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
-									} else if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait()
-											.orElse(ButtonType.NO) == ButtonType.NO) {
+										LoadTable();
+									} else {
 										paramT.consume();
 									}
 								} // Если нажали "X" или "Cancel" и до этого ничего не меняли
@@ -186,7 +229,8 @@ public class RootPmEmpController {
 							}
 						}
 					});
-					// </FXML>
+					stage.show();
+					// </FXML>---------------------------------------
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(sel.getEMP_ID(), "PM_EMP"));
@@ -211,7 +255,7 @@ public class RootPmEmpController {
 		try {
 			Clob lob = conn.createClob();
 			lob.setString(1, RetXml);
-			CallableStatement callStmt = conn.prepareCall("{ call Mercer.CompareXmls(?,?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall("{ call PM_EMP_PKG.CompareXmls(?,?,?,?)}");
 			callStmt.setLong(1, docid);
 			callStmt.setClob(2, lob);
 			callStmt.registerOutParameter(3, Types.VARCHAR);
@@ -239,7 +283,7 @@ public class RootPmEmpController {
 	 */
 	void XmlsForCompare(Long docid) {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ call Mercer.RetXmls(?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall("{ call PM_EMP_PKG.RetXmls(?,?,?)}");
 			callStmt.setLong(1, docid);
 			callStmt.registerOutParameter(2, Types.VARCHAR);
 			callStmt.registerOutParameter(3, Types.CLOB);
@@ -298,6 +342,20 @@ public class RootPmEmpController {
 			dbConnect();
 			// load table
 			LoadTable();
+			/**
+			 * Двойной щелчок по строке
+			 */
+			PM_EMP.setRowFactory(tv -> {
+				TableRow<VPM_EMP> row = new TableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						if (PM_EMP.getSelectionModel().getSelectedItem() != null) {
+							Edit(null);
+						}
+					}
+				});
+				return row;
+			});
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -317,12 +375,22 @@ public class RootPmEmpController {
 				VPM_EMP list = new VPM_EMP();
 				list.setEMP_EMAIL(rs.getString("EMP_EMAIL"));
 				list.setEMP_ID(rs.getLong("EMP_ID"));
+				list.setEMP_WORKSTART((rs.getDate("EMP_WORKSTART") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("EMP_WORKSTART")),
+								DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+						: null);
 				list.setEMP_TEL(rs.getString("EMP_TEL"));
 				list.setEMP_LOGIN(rs.getString("EMP_LOGIN"));
+				list.setEMP_LOGIN_L(rs.getLong("EMP_LOGIN_L"));
 				list.setEMP_POSITION(rs.getString("EMP_POSITION"));
 				list.setEMP_FIRSTNAME(rs.getString("EMP_FIRSTNAME"));
 				list.setEMP_LASTNAME(rs.getString("EMP_LASTNAME"));
 				list.setEMP_MIDDLENAME(rs.getString("EMP_MIDDLENAME"));
+				list.setEMP_WORKEND((rs.getDate("EMP_WORKEND") != null)
+						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("EMP_WORKEND")),
+								DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+						: null);
+
 				obslist.add(list);
 			}
 			// add data

@@ -159,7 +159,8 @@ public class Main extends Application {
 			Main.primaryStage.setTitle("Министерство юстиции");
 
 			
-			boolean is_upd = new mj.update.root.Main().start();
+//			boolean is_upd = new mj.update.root.Main().start();
+			
 //			if(is_upd == false) {
 //				Enter();	
 //			}

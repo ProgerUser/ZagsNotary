@@ -1,7 +1,9 @@
 package mj.prjmngm.emps;
 
+import java.time.LocalDate;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -22,6 +24,12 @@ public class VPM_EMP {
 	private StringProperty EMP_TEL;
 	/** Логин в программе */
 	private StringProperty EMP_LOGIN;
+	/** Нет данных */
+	private LongProperty EMP_LOGIN_L;
+	/** Дата приема на работу */
+	private SimpleObjectProperty<LocalDate> EMP_WORKSTART;
+	/** Дата увольнения */
+	private SimpleObjectProperty<LocalDate> EMP_WORKEND;
 
 	public VPM_EMP() {
 		this.EMP_ID = new SimpleLongProperty();
@@ -32,6 +40,9 @@ public class VPM_EMP {
 		this.EMP_EMAIL = new SimpleStringProperty();
 		this.EMP_TEL = new SimpleStringProperty();
 		this.EMP_LOGIN = new SimpleStringProperty();
+		this.EMP_LOGIN_L = new SimpleLongProperty();
+		this.EMP_WORKSTART = new SimpleObjectProperty<>();
+		this.EMP_WORKEND = new SimpleObjectProperty<>();
 	}
 
 	public void setEMP_ID(Long EMP_ID) {
@@ -66,6 +77,18 @@ public class VPM_EMP {
 		this.EMP_LOGIN.set(EMP_LOGIN);
 	}
 
+	public void setEMP_LOGIN_L(Long EMP_LOGIN_L) {
+		this.EMP_LOGIN_L.set(EMP_LOGIN_L);
+	}
+
+	public void setEMP_WORKSTART(LocalDate EMP_WORKSTART) {
+		this.EMP_WORKSTART.set(EMP_WORKSTART);
+	}
+
+	public void setEMP_WORKEND(LocalDate EMP_WORKEND) {
+		this.EMP_WORKEND.set(EMP_WORKEND);
+	}
+
 	public Long getEMP_ID() {
 		return EMP_ID.get();
 	}
@@ -98,6 +121,18 @@ public class VPM_EMP {
 		return EMP_LOGIN.get();
 	}
 
+	public Long getEMP_LOGIN_L() {
+		return EMP_LOGIN_L.get();
+	}
+
+	public LocalDate getEMP_WORKSTART() {
+		return EMP_WORKSTART.get();
+	}
+
+	public LocalDate getEMP_WORKEND() {
+		return EMP_WORKEND.get();
+	}
+
 	public LongProperty EMP_IDProperty() {
 		return EMP_ID;
 	}
@@ -128,5 +163,17 @@ public class VPM_EMP {
 
 	public StringProperty EMP_LOGINProperty() {
 		return EMP_LOGIN;
+	}
+
+	public LongProperty EMP_LOGIN_LProperty() {
+		return EMP_LOGIN_L;
+	}
+
+	public SimpleObjectProperty<LocalDate> EMP_WORKSTARTProperty() {
+		return EMP_WORKSTART;
+	}
+
+	public SimpleObjectProperty<LocalDate> EMP_WORKENDProperty() {
+		return EMP_WORKEND;
 	}
 }

@@ -204,7 +204,6 @@ public class Main {
 				mj.app.main.Main.primaryStage.show();
 			}
 			// <//update_form>--------------------------------------
-			SQLIETEDisconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
 			Msg.Message(ExceptionUtils.getStackTrace(e));

@@ -157,7 +157,7 @@ public class AddAction {
 			props.setProperty("password", Connect.userPassword);
 			props.setProperty("user", Connect.userID);
 			props.put("v$session.osuser", System.getProperty("user.name").toString());
-			props.put("v$session.machine", InetAddress.getLocalHost().getCanonicalHostName());
+			props.put("v$session.machine", InetAddress.getLocalHost().getHostAddress());
 			props.put("v$session.program", getClass().getName());
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@" + Connect.connectionURL, props);
 			
@@ -166,6 +166,7 @@ public class AddAction {
 			DbUtil.Log_Error(e);
 		}
 	}
+	//InetAddress.getLocalHost().getCanonicalHostName()
 
 	/**
 	 * Закрыть
