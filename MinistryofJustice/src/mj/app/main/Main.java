@@ -143,6 +143,7 @@ public class Main extends Application {
 		// FileUtils.cleanDirectory(new File(System.getenv("MJ_PATH") + "OutReports"));
 	}
 
+	
 	/**
 	 * Вход в Приложение
 	 */
@@ -157,17 +158,22 @@ public class Main extends Application {
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
 
-//			Enter();
+			
+			boolean is_upd = new mj.update.root.Main().start();
+//			if(is_upd == false) {
+//				Enter();	
+//			}
+			
 
 //
 //	Fast enter
 //			
-			Connect.connectionURL = "localhost:1522/orcl";
-			Connect.userID = "xxi";
-			Connect.userPassword = "mj_pass_123";
-			DbUtil.Db_Connect();
-			initRootLayout();
-			RT();
+//			Connect.connectionURL = "localhost:1522/orcl";
+//			Connect.userID = "xxi";
+//			Connect.userPassword = "";
+//			DbUtil.Db_Connect();
+//			initRootLayout();
+//			RT();
 			//OTD();
 //			new NotaryDocList().HtmlEditor(primaryStage);
 //

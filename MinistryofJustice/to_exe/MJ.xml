@@ -6,14 +6,16 @@
   <obj>head/guihead.o</obj>
   <obj>head/head.o</obj>
   <lib>w32api/libmingw32.a</lib>
+  <lib>w32api/libmingwex.a</lib>
   <lib>w32api/libgcc.a</lib>
   <lib>w32api/libmsvcrt.a</lib>
+  <lib>w32api/libmoldname.a</lib>
   <lib>w32api/libkernel32.a</lib>
   <lib>w32api/libuser32.a</lib>
   <lib>w32api/libadvapi32.a</lib>
   <lib>w32api/libshell32.a</lib>
-  <jar>C:\MJ_\MJ.jar</jar>
-  <outfile>C:\MJ_\MJ.exe</outfile>
+  <jar>C:\MJ\MJ.jar</jar>
+  <outfile>C:\MJ\MJ.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -22,8 +24,8 @@
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
-  <manifest>C:\MJ_\MJ.manifest</manifest>
-  <icon>C:\MJ_\icon.ico</icon>
+  <manifest>C:\MJ\MJ.manifest</manifest>
+  <icon>C:\MJ\icon.ico</icon>
   <singleInstance>
     <mutexName>MJ</mutexName>
     <windowTitle>Приложение уже открыто</windowTitle>
@@ -38,7 +40,7 @@
     <runtimeBits>64/32</runtimeBits>
   </jre>
   <splash>
-    <file>C:\MJ_\SPLASH\splash.bmp</file>
+    <file>C:\MJ\SPLASH\splash.bmp</file>
     <waitForWindow>true</waitForWindow>
     <timeout>60</timeout>
     <timeoutErr>true</timeoutErr>

@@ -7,6 +7,8 @@
 #define MyAppExeName "MJ_UPDATES.exe"
 
 #define OutReports "OutReports"
+#define HTML "HTML"
+#define NT_REP "NT_REP"
 #define bin "bin"
 #define Reports "Reports"
 #define SqlLite "SqlLite"
@@ -28,7 +30,7 @@ DisableDirPage=no
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=C:\MJ_
+OutputDir=C:\MJ
 OutputBaseFilename=MjSetup
 Compression=lzma
 SolidCompression=yes
@@ -45,29 +47,31 @@ Name: desktopicon_stun; Description: {cm:CreateDesktopIcon}; GroupDescription: {
 ;Flags: checked
 
 [Files]
-Source: C:\MJ_\{#MyAppExeName}; DestDir: {app}; Flags: ignoreversion
+Source: C:\MJ\{#MyAppExeName}; DestDir: {app}; Flags: ignoreversion
 Source: OutReports\*; DestDir: {app}\{#OutReports}; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: HTML\*; DestDir: {app}\{#HTML}; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: NT_REP\*; DestDir: {app}\{#NT_REP}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: Reports\*; DestDir: {app}\{#Reports}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: stunnel\*; DestDir: {app}\{#stunnel}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: SqlLite\*; DestDir: {app}\{#SqlLite}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: Logs\*; DestDir: {app}\{#Logs}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: bin\*; DestDir: {app}\{#bin}; Flags: ignoreversion recursesubdirs createallsubdirs
 ;Source: ufs\*; DestDir: {app}\{#ufs}; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: C:\MJ_\SqlLite\log.db; DestDir: {app}\{#SqlLite}; Flags: ignoreversion
-Source: C:\MJ_\MJ.exe; DestDir: {app}; Flags: ignoreversion
+Source: C:\MJ\SqlLite\log.db; DestDir: {app}\{#SqlLite}; Flags: ignoreversion
+Source: C:\MJ\MJ.exe; DestDir: {app}; Flags: ignoreversion
 
 ;fastreport
-Source: C:\MJ_\bin\frrepQueryStorage.dll; DestDir: {app}\{#bin}; Flags: ignoreversion
-Source: C:\MJ_\bin\frrepFindReport.dll; DestDir: {app}\{#bin}; Flags: ignoreversion
-Source: C:\MJ_\bin\frrepCheckSyntax.dll; DestDir: {app}\{#bin}; Flags: ignoreversion
-Source: C:\MJ_\bin\FRREP.dll; DestDir: {app}\{#bin}; Flags: ignoreversion
-Source: C:\MJ_\bin\frdbmandll.dll; DestDir: {app}\{#bin}; Flags: ignoreversion
-Source: C:\MJ_\bin\FRREPRunner.exe; DestDir: {app}\{#bin}; Flags: ignoreversion
+Source: C:\MJ\bin\frrepQueryStorage.dll; DestDir: {app}\{#bin}; Flags: ignoreversion
+Source: C:\MJ\bin\frrepFindReport.dll; DestDir: {app}\{#bin}; Flags: ignoreversion
+Source: C:\MJ\bin\frrepCheckSyntax.dll; DestDir: {app}\{#bin}; Flags: ignoreversion
+Source: C:\MJ\bin\FRREP.dll; DestDir: {app}\{#bin}; Flags: ignoreversion
+Source: C:\MJ\bin\frdbmandll.dll; DestDir: {app}\{#bin}; Flags: ignoreversion
+Source: C:\MJ\bin\FRREPRunner.exe; DestDir: {app}\{#bin}; Flags: ignoreversion
 
-Source: C:\MJ_\UFS\AUDIT.fr3; DestDir: {app}\{#ufs}; Flags: ignoreversion
-Source: C:\MJ_\UFS\RE_ACCESS.fr3; DestDir: {app}\{#ufs}; Flags: ignoreversion
-Source: C:\MJ_\UFS\UPD_NAT.fr3; DestDir: {app}\{#ufs}; Flags: ignoreversion
-Source: C:\MJ_\UFS\USERS_LIST.fr3; DestDir: {app}\{#ufs}; Flags: ignoreversion
+Source: C:\MJ\UFS\AUDIT.fr3; DestDir: {app}\{#ufs}; Flags: ignoreversion
+Source: C:\MJ\UFS\RE_ACCESS.fr3; DestDir: {app}\{#ufs}; Flags: ignoreversion
+Source: C:\MJ\UFS\UPD_NAT.fr3; DestDir: {app}\{#ufs}; Flags: ignoreversion
+Source: C:\MJ\UFS\USERS_LIST.fr3; DestDir: {app}\{#ufs}; Flags: ignoreversion
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -79,7 +83,7 @@ Name: {autodesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: deskto
 
 
 [Registry]
-Root: HKCU; Subkey: "Environment"; ValueType:string; ValueName: "MJ_PATH"; \
+Root: HKCU; Subkey: "Environment"; ValueType:string; ValueName: "MJPATH"; \
     ValueData: "{app}\"; Flags: preservestringtype
 
 [Registry]
@@ -101,7 +105,7 @@ function SetEnvironmentVariable(lpName: string; lpValue: string): BOOL;
 
 procedure SetEnvPath;
 begin
-  if not SetEnvironmentVariable('MJ_PATH', '{app}\') then
+  if not SetEnvironmentVariable('MJPATH', '{app}\') then
     MsgBox(SysErrorMessage(DLLGetLastError), mbError, MB_OK);
 end;
 
