@@ -122,7 +122,7 @@ public class UpdateController {
 
 						{
 							SQLIETEConnect();
-							PreparedStatement stmt = SQLIETE.prepareStatement("delete from PROJECT");
+							PreparedStatement stmt = SQLIETE.prepareStatement("delete from PROJECT where PRJ_NAME = 'MJ_UPDATES.exe' ");
 							stmt.executeUpdate();
 							stmt.close();
 							SQLIETE.commit();

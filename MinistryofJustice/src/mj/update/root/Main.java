@@ -193,10 +193,8 @@ public class Main {
 										+ Thread.currentThread().getName());
 							}
 						} else {
-							DBUtil.dbDisconnect();
-							Main.this.SQLIETEDisconnect();
-							Platform.exit();
-							System.exit(0);
+							mj.app.main.Main main = new mj.app.main.Main();
+							main.Enter();
 						}
 					}
 				});
