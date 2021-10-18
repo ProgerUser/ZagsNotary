@@ -11,7 +11,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -162,8 +161,8 @@ public class Main {
 				mj.app.main.Main main = new mj.app.main.Main();
 				main.Enter();	
 //				this.OpenMJ();
-//				DBUtil.dbDisconnect();
-//				SQLIETEDisconnect();
+				DBUtil.dbDisconnect();
+				SQLIETEDisconnect();
 //				Platform.exit();
 //				System.exit(0);
 			}else
@@ -186,7 +185,9 @@ public class Main {
 							try {
 //								Main.this.OpenMJ();
 								mj.app.main.Main main = new mj.app.main.Main();
-								main.Enter();	
+								main.Enter();
+								DBUtil.dbDisconnect();
+								SQLIETEDisconnect();
 							} catch (Exception e) {
 								Msg.Message(ExceptionUtils.getStackTrace(e));
 								Main.logger.error(String.valueOf(ExceptionUtils.getStackTrace(e)) + "~"
@@ -195,6 +196,8 @@ public class Main {
 						} else {
 							mj.app.main.Main main = new mj.app.main.Main();
 							main.Enter();
+							DBUtil.dbDisconnect();
+							SQLIETEDisconnect();
 						}
 					}
 				});
