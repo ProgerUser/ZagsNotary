@@ -1,4 +1,6 @@
 
+https://rolfje.wordpress.com/2015/01/02/importexport-an-oracle-schema-using-jdbc/
+
 expdp \"sys/oracle@orcl as sysdba\" full=Y directory=data_pump_dir dumpfile=dmp.dmp logfile=dmp.log;
 
 
