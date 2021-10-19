@@ -2,10 +2,8 @@ package mj.access.menu;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -21,7 +19,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.msg.Msg;
 import mj.utils.DbUtil;
 
@@ -110,7 +107,7 @@ public class AddMnu {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 			MNU_PARENT.setText(String.valueOf(parantid));
 
 			// FirstWUpp(MNU_NAME);
@@ -130,15 +127,8 @@ public class AddMnu {
 	 */
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}

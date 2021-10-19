@@ -1,7 +1,6 @@
 package mj.project;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,11 +9,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
+import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,15 +28,14 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.msg.Msg;
 import mj.utils.DbUtil;
 
@@ -48,27 +47,34 @@ public class PRJ_FLS_FLDR {
 
 	@FXML
 	private TableView<PRJ_FL_VER_HIST> Hist;
-
 	@FXML
 	private TableColumn<PRJ_FL_VER_HIST, Long> VERISION;
-
 	@FXML
 	private TableColumn<PRJ_FL_VER_HIST, LocalDateTime> DT;
-
+//	@FXML
+//	private TreeView<PROJECT> PROJECT;
+//	@FXML
+//	private TextField PRJ_ID;
 	@FXML
-	private TreeView<PROJECT> PROJECT;
-
+	private TextField NameFind;
 	@FXML
-	private TextField PRJ_ID;
-
-	@FXML
-	private TextField IsFolder;
-
-	@FXML
-	private TextField FILE_LG;
-
+	private TextField ID_FIND;
+	
 	@FXML
 	private ContextMenu ContMenu;
+	//-----------------------------------
+	@FXML
+    private TreeTableView<PROJECT> PROJECT;
+    @FXML
+    private TreeTableColumn<PROJECT, String> PRJ_NAME;
+    @FXML
+    private TreeTableColumn<PROJECT, String> IS_FOLDER;
+    @FXML
+    private TreeTableColumn<PROJECT, Long> VERSION;
+    @FXML
+    private TreeTableColumn<PROJECT, Long> BYTES;
+    @FXML
+    private TreeTableColumn<PROJECT, Long> PRJ_IDS;
 
 	@FXML
 	void Add(ActionEvent event) {
@@ -80,7 +86,7 @@ public class PRJ_FLS_FLDR {
 			if (PROJECT.getSelectionModel().getSelectedItem().getValue().getPRJ_ID() != null
 					&& !PROJECT.getSelectionModel().getSelectedItem().getValue().getIS_FOLDER().equals("N")) {
 				Stage stage = new Stage();
-				Stage stage_ = (Stage) FILE_LG.getScene().getWindow();
+				Stage stage_ = (Stage) Hist.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/mj/project/IUPrj.fxml"));
@@ -101,6 +107,14 @@ public class PRJ_FLS_FLDR {
 					public void handle(WindowEvent paramT) {
 						if (controller.getStatus()) {
 							FillTree();
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									PROJECT.requestFocus();
+									PROJECT.getSelectionModel().select(SelTbl);
+									PROJECT.scrollTo(SelTbl);
+								}
+							});
 						}
 						controller.dbDisconnect();
 					}
@@ -122,7 +136,7 @@ public class PRJ_FLS_FLDR {
 			if (PROJECT.getSelectionModel().getSelectedItem().getValue().getPRJ_ID() != null
 					&& !PROJECT.getSelectionModel().getSelectedItem().getValue().getIS_FOLDER().equals("F")) {
 				Stage stage = new Stage();
-				Stage stage_ = (Stage) FILE_LG.getScene().getWindow();
+				Stage stage_ = (Stage) Hist.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/mj/project/IUPrj.fxml"));
@@ -145,6 +159,14 @@ public class PRJ_FLS_FLDR {
 					public void handle(WindowEvent paramT) {
 						if (controller.getStatus()) {
 							FillTree();
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									PROJECT.requestFocus();
+									PROJECT.getSelectionModel().select(SelTbl);
+									PROJECT.scrollTo(SelTbl);
+								}
+							});
 						}
 						controller.dbDisconnect();
 					}
@@ -223,26 +245,88 @@ public class PRJ_FLS_FLDR {
 					// add to parent tree item
 					parentItem.getChildren().add(entry.getValue());
 				}
-				parentItem.setExpanded(true);
+				parentItem.setExpanded(false);
 			}
 		}
 		root.setExpanded(true);
 		PROJECT.setRoot(root);
 	}
+	
+	@FXML
+	void FIND(ActionEvent event) {
+		try {
+			if (!ID_FIND.getText().equals("")) {
+				findNode(root, Integer.valueOf(ID_FIND.getText()));
+			}
+			if (!NameFind.getText().equals("")) {
+				findNodeName(root, NameFind.getText());
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
 
+	private void findNode(TreeItem<PROJECT> treeNode, int id) {
+	       if (treeNode.getChildren().isEmpty()) {
+	           // Do nothing node is empty.
+	       } else {
+	           // Loop through each child node.
+	           for (TreeItem<PROJECT> node : treeNode.getChildren()) {
+	               if (node.getValue().getPRJ_ID() == id) {
+	                   node.setExpanded(true);
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								PROJECT.requestFocus();
+								PROJECT.getSelectionModel().select(node);
+								PROJECT.scrollTo(PROJECT.getSelectionModel().getSelectedIndex());
+							}
+						});
+						
+	               } else {
+	                   node.setExpanded(true);
+	               }
+	               // If the current node has children then check them.
+	               if (!treeNode.getChildren().isEmpty()) {
+	                   findNode(node, id);
+	               }
+	           }
+	       }
+	   }
+	private void findNodeName(TreeItem<PROJECT> treeNode, String id) {
+	       if (treeNode.getChildren().isEmpty()) {
+	           // Do nothing node is empty.
+	       } else {
+	           // Loop through each child node.
+	           for (TreeItem<PROJECT> node : treeNode.getChildren()) {
+	               if (node.getValue().getPRJ_NAME().toLowerCase().contains(id.toLowerCase())) {
+	                   node.setExpanded(true);
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								PROJECT.requestFocus();
+								PROJECT.getSelectionModel().select(node);
+								PROJECT.scrollTo(PROJECT.getSelectionModel().getSelectedIndex());
+							}
+						});
+						
+	               } else {
+	                   node.setExpanded(true);
+	               }
+	               // If the current node has children then check them.
+	               if (!treeNode.getChildren().isEmpty()) {
+	            	   findNodeName(node, id);
+	               }
+	           }
+	       }
+	   }
+	
 	private Connection conn;
 
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
@@ -258,6 +342,8 @@ public class PRJ_FLS_FLDR {
 		}
 	}
 
+	int SelTbl;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
 	private void initialize() {
 		try {
@@ -265,43 +351,44 @@ public class PRJ_FLS_FLDR {
 
 			CellDateFormatDT(DT);
 
-			PROJECT.setCellFactory(tv -> {
-
-				TreeCell<PROJECT> cell = new TreeCell<PROJECT>() {
-
-					@Override
-					public void updateItem(PROJECT item, boolean empty) {
-						super.updateItem(item, empty);
-						if (empty) {
-							setText("");
-							setGraphic(null);
-						} else {
-							setText(item.getPRJ_NAME());
-							if (PROJECT.getSelectionModel().getSelectedItem() != null) {
-
-							}
-						}
-					}
-
-				};
-				return cell;
-			});
+//			PROJECT.setCellFactory(tv -> {
+//
+//				TreeCell<PROJECT> cell = new TreeCell<PROJECT>() {
+//
+//					@Override
+//					public void updateItem(PROJECT item, boolean empty) {
+//						super.updateItem(item, empty);
+//						if (empty) {
+//							setText("");
+//							setGraphic(null);
+//						} else {
+//							setText(item.getPRJ_NAME());
+//							if (PROJECT.getSelectionModel().getSelectedItem() != null) {
+//
+//							}
+//						}
+//					}
+//
+//				};
+//				return cell;
+//			});
 
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 			FillTree();
 
 			PROJECT.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
 				TreeItem<PROJECT> prj = PROJECT.getSelectionModel().getSelectedItem();
 				if (prj != null) {
-					PRJ_ID.setText(String.valueOf(prj.getValue().getPRJ_ID()));
-					IsFolder.setText(prj.getValue().getIS_FOLDER());
+					SelTbl = PROJECT.getSelectionModel().getSelectedIndex();
+					//PRJ_ID.setText(String.valueOf(prj.getValue().getPRJ_ID()));
+					//IsFolder.setText(prj.getValue().getIS_FOLDER());
 
 					InitHist(prj.getValue().getPRJ_ID());
 					if (prj.getValue().getIS_FOLDER().equals("N")) {
-						FILE_LG.setText(String.format("%,d байт", prj.getValue().getBYTES()));
+						//FILE_LG.setText(String.format("%,d байт", prj.getValue().getBYTES()));
 					} else {
-						FILE_LG.setText("");
+						//FILE_LG.setText("");
 					}
 				}
 			});
@@ -309,6 +396,37 @@ public class PRJ_FLS_FLDR {
 			VERISION.setCellValueFactory(cellData -> cellData.getValue().VERISIONProperty().asObject());
 			DT.setCellValueFactory(cellData -> cellData.getValue().DTProperty());
 
+			//---------------------
+			PRJ_IDS.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof PROJECT) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getPRJ_ID());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			PRJ_NAME.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof PROJECT) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getPRJ_NAME());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			IS_FOLDER.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof PROJECT) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getIS_FOLDER());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			VERSION.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof PROJECT) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getVERSION());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			BYTES.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof PROJECT) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getBYTES());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

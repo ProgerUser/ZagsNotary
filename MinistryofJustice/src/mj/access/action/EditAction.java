@@ -2,10 +2,8 @@ package mj.access.action;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Properties;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -22,7 +20,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.msg.Msg;
 import mj.utils.DbUtil;
 
@@ -104,7 +101,7 @@ public class EditAction {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 			ACT_PARENT.setText(String.valueOf(parantid));
 			ACT_NAME.setText(txt);
 			// FirstWUpp(ACT_NAME);
@@ -129,21 +126,9 @@ public class EditAction {
 	 */
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
-			Msg.Message(ExceptionUtils.getStackTrace(e));
-			Main.logger.error(ExceptionUtils.getStackTrace(e) + "~" + Thread.currentThread().getName());
-			String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-			String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-			Long lineNumber = (long) Thread.currentThread().getStackTrace()[2].getLineNumber();
-			DbUtil.Log_To_Db(lineNumber, fullClassName, ExceptionUtils.getStackTrace(e), methodName);
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
 		}
 	}
 

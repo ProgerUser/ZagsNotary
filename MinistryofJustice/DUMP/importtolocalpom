@@ -12,4 +12,4 @@ mvn install:install-file -Dfile=C:\syntheticaFXStandard.jar -DgroupId=synthetica
 
 
 
-mvn install:install-file -Dfile=D:\orai18n.jar -DgroupId=orai18n -DartifactId=orai18n -Dversion=1.0 -Dpackaging=jar
+mvn install:install-file -Dfile=C:\MJ\instantclient_21_3\ojdbc8.jar -DgroupId=ojdbc8_ -DartifactId=ojdbc8_ -Dversion=8.0 -Dpackaging=jar

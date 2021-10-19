@@ -553,7 +553,7 @@ public class HtmlEditor {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	void init() {
 		try {
 			WebView webView = (WebView) VisHtml.lookup("WebView");

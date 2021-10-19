@@ -11,7 +11,7 @@ import java.util.Properties;
 import java.util.TimerTask;
 import mj.app.model.Connect;
 
-public class ScheduledTask extends TimerTask {
+public class ScheduledTask_ extends TimerTask {
 	Connection conn = null;
 	String ClassName = null;
 

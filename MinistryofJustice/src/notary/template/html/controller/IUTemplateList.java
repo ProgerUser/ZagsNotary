@@ -3,7 +3,6 @@ package notary.template.html.controller;
 import java.io.File;
 import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +11,6 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
@@ -44,7 +42,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.users.NOTARY;
 import mj.utils.DbUtil;
 import notary.template.html.model.NT_TEMPLATE;
@@ -172,14 +169,8 @@ public class IUTemplateList {
 
 	private void dbConnect() {
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
@@ -333,7 +324,7 @@ public class IUTemplateList {
 					.add(getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
 
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 			// Нотариус
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from notary");

@@ -2,20 +2,19 @@ package mj.access.action;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -24,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -35,7 +35,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.TreeTableCell;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -44,7 +46,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.msg.Msg;
 import mj.users.USR;
 import mj.utils.DbUtil;
@@ -53,9 +54,15 @@ public class OdbActions {
 
 	@FXML
 	private TextField ActionID;
-
 	@FXML
-	private TreeView<ODB_ACTION> Actions;
+    private TreeTableView<ODB_ACTION> Actions;
+    @FXML
+    private TreeTableColumn<ODB_ACTION, Long> ACT_ID;
+    @FXML
+    private TreeTableColumn<ODB_ACTION, String> ACT_NAME;
+    
+//	@FXML
+//	private TreeView<ODB_ACTION> Actions;
 
 	TreeItem<ODB_ACTION> root = null;
 
@@ -63,22 +70,16 @@ public class OdbActions {
 	
 	@FXML
 	private TableView<USR> Users;
-
 	@FXML
 	private TableColumn<USR, String> Login;
-
 	@FXML
 	private TableColumn<USR, String> Fio;
-
 	@FXML
 	private ContextMenu ContMenu;
-
 	@FXML
 	private MenuItem Add;
-
 	@FXML
 	private MenuItem Delete;
-
 	@FXML
 	private TextField ID_FIND;
 
@@ -425,6 +426,7 @@ public class OdbActions {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
 	private void initialize() {
 		try {
@@ -435,23 +437,61 @@ public class OdbActions {
 			Login.setCellValueFactory(cellData -> cellData.getValue().CUSRLOGNAMEProperty());
 			Fio.setCellValueFactory(cellData -> cellData.getValue().CUSRNAMEProperty());
 
+			ACT_ID.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof ODB_ACTION) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getACT_ID());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			ACT_NAME.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof ODB_ACTION) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getACT_NAME());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
 			// Actions.setCellFactory((TreeView<String> p) -> new TextFieldTreeCellImpl());
 
-			Actions.setCellFactory(tv -> {
-				TreeCell<ODB_ACTION> cell = new TreeCell<ODB_ACTION>() {
+//			Actions.setCellFactory(tv -> {
+//				TreeCell<ODB_ACTION> cell = new TreeCell<ODB_ACTION>() {
+//					@Override
+//					public void updateItem(ODB_ACTION item, boolean empty) {
+//						super.updateItem(item, empty);
+//						if (empty) {
+//							setText("");
+//							setGraphic(null);
+//						} else {
+//							setText(item.getACT_NAME());
+//							if (Users.getSelectionModel().getSelectedItem() != null) {
+//
+//								USR usr = Users.getSelectionModel().getSelectedItem();
+//
+//								Long act = item.getACT_ID();
+//								// Integer act = Long.valueOf(item.substring(0, item.indexOf(":")));
+//								if (DbUtil.Odb_Aaction(usr.getIUSRID(), act) == 1) {
+//									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
+//								} else {
+//									setStyle("");
+//								}
+//							}
+//						}
+//					}
+//				};
+//				return cell;
+//			});
+
+			ACT_ID.setCellFactory(col -> {
+				TreeTableCell<ODB_ACTION, Long> cell = new TreeTableCell<ODB_ACTION, Long>() {
 					@Override
-					public void updateItem(ODB_ACTION item, boolean empty) {
+					public void updateItem(Long item, boolean empty) {
 						super.updateItem(item, empty);
 						if (empty) {
-							setText("");
-							setGraphic(null);
+							setText(null);
 						} else {
-							setText(item.getACT_NAME());
+							setText(item.toString());
 							if (Users.getSelectionModel().getSelectedItem() != null) {
 
 								USR usr = Users.getSelectionModel().getSelectedItem();
-
-								Long act = item.getACT_ID();
+								Long act = item;
 								// Integer act = Long.valueOf(item.substring(0, item.indexOf(":")));
 								if (DbUtil.Odb_Aaction(usr.getIUSRID(), act) == 1) {
 									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
@@ -462,11 +502,11 @@ public class OdbActions {
 						}
 					}
 				};
+				cell.setAlignment(Pos.CENTER);
 				return cell;
 			});
-
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 			InitUsrs();
 
 			fillTree();
@@ -587,10 +627,10 @@ public class OdbActions {
 					// add to parent tree item
 					parentItem.getChildren().add(entry.getValue());
 				}
-				parentItem.setExpanded(true);
+				parentItem.setExpanded(false);
 			}
 		}
-		// root.setExpanded(true);
+		root.setExpanded(true);
 		Actions.setRoot(root);
 	}
 
@@ -645,14 +685,8 @@ public class OdbActions {
 
 	private void dbConnect() {
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}

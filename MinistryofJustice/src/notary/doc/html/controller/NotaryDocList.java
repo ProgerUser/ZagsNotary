@@ -7,14 +7,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
@@ -56,7 +54,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.msg.Msg;
 import mj.util.ConvConst;
 import mj.utils.DbUtil;
@@ -605,7 +602,7 @@ public class NotaryDocList {
 	private void initialize() {
 		try {
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 			ROOT.setBottom(createOptionPane(NT_DOC));
 			ID.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
 			DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
@@ -666,14 +663,8 @@ public class NotaryDocList {
 
 	private void dbConnect() {
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}

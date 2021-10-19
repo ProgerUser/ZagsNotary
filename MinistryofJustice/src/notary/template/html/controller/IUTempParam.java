@@ -1,13 +1,11 @@
 package notary.template.html.controller;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -33,7 +31,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.util.ConvConst;
 import mj.utils.DbUtil;
 import notary.template.html.model.NT_TEMP_LIST_PARAM;
@@ -363,7 +360,7 @@ public class IUTempParam {
 	private void initialize() {
 		try {
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 //			PRM_ID.setCellValueFactory(cellData -> cellData.getValue().getValue().PRM_IDProperty().asObject());
 //			PRM_NAME.setCellValueFactory(cellData -> cellData.getValue().getValue().PRM_NAMEProperty());
 //			PRM_TYPE.setCellValueFactory(cellData -> cellData.getValue().getValue().TYPE_NAMEProperty());
@@ -432,14 +429,8 @@ public class IUTempParam {
 
 	private void dbConnect() {
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}

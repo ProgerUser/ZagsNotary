@@ -2,13 +2,11 @@ package mj.report;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-import java.util.Properties;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
@@ -210,7 +208,7 @@ public class Report {
 			
 			FRREPRunner runner = new FRREPRunner();
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 			String port = Connect.connectionURL.substring(Connect.connectionURL.indexOf(":")+1,
 					Connect.connectionURL.indexOf("/"));
 			//System.out.println(port);
@@ -408,7 +406,7 @@ public class Report {
 			
 			
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 			// установить svg как иконку для кнопки
 //			{
 //				InputStream svgFile = getClass().getResourceAsStream("/table2.svg");
@@ -567,15 +565,8 @@ public class Report {
 	 */
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}

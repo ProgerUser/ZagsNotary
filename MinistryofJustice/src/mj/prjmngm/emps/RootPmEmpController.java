@@ -1,11 +1,9 @@
 package mj.prjmngm.emps;
 
 import java.io.Reader;
-import java.net.InetAddress;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +11,6 @@ import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
@@ -38,7 +35,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.msg.Msg;
 import mj.utils.DbUtil;
 
@@ -453,16 +449,7 @@ public class RootPmEmpController {
 	 */
 	private void dbConnect() {
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.setProperty("password", Connect.userPassword);
-			props.setProperty("user", Connect.userID);
-			props.put("v$session.osuser", System.getProperty("user.name").toString());
-			props.put("v$session.machine", InetAddress.getLocalHost().getHostAddress());
-			props.put("v$session.program", getClass().getName());
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@" + Connect.connectionURL, props);
-			conn.setAutoCommit(false);
-			DbUtil.Run_Process(conn, getClass().getName());
+			conn = DbUtil.GetConnect(getClass().getName());
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

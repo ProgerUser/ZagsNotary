@@ -2,7 +2,6 @@ package mj.doc.adoptoin;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
@@ -56,7 +54,6 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import mj.app.main.Main;
 import mj.app.model.ACTFORLIST;
-import mj.app.model.Connect;
 import mj.courts.VCOURTS;
 import mj.doc.cus.CUS;
 import mj.doc.cus.UtilCus;
@@ -899,7 +896,7 @@ public class AddAdopt {
 
 			if (conn == null) {
 				dbConnect();
-				DbUtil.Run_Process(conn,getClass().getName());
+				//DbUtil.Run_Process(conn,getClass().getName());
 			}
 			
 			// Суды
@@ -939,14 +936,8 @@ public class AddAdopt {
 
 	private void dbConnect() {
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}

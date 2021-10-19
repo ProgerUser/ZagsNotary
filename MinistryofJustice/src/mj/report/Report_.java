@@ -11,13 +11,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
-import java.util.Properties;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
@@ -150,7 +148,7 @@ public class Report_ {
 			FRREPRunner runner = new FRREPRunner();
 
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 			String port = "1521";
 			String sid = "";
 			String host = "";
@@ -501,7 +499,7 @@ public class Report_ {
 	private void initialize() {
 		try {
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			//DbUtil.Run_Process(conn,getClass().getName());
 			VALUE.setOnEditCommit(new EventHandler<CellEditEvent<REP_PARAMS, String>>() {
 				@Override
 				public void handle(CellEditEvent<REP_PARAMS, String> t) {
@@ -608,19 +606,11 @@ public class Report_ {
 	 */
 	private void dbConnect() {
 		try {
-			Main.logger = Logger.getLogger(getClass());
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
-
 	/**
 	 * Закрыть
 	 */

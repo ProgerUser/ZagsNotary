@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Properties;
-import java.util.Timer;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -22,6 +21,7 @@ import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.app.model.SqlMap;
 import mj.msg.Msg;
+import oracle.jdbc.pool.OracleDataSource;
 
 /**
  * Класс для работы с БД <br>
@@ -42,24 +42,78 @@ public class DbUtil {
 	// Connection
 	public static Connection conn = null;
 
+//	// Connect to DB
+//	public static void Db_Connect() {
+//		try {
+////			System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "oracle/NETWORK/ADMIN");
+////			OracleDataSource ods = new OracleDataSource();
+////			ods.setTNSEntryName("orcl");
+////			ods.setDriverType("thin");
+////			ods.setUser("scott");
+////			ods.setPassword("tiger");
+////			ods.setLoginTimeout(2);
+////			Properties cp = new Properties();
+////			cp.setProperty("SetBigStringTryClob", "true");
+////			ods.setConnectionProperties(cp);
+//
+//			// Setting Oracle JDBC Driver
+//			Class.forName(JDBC_DRIVER);
+//			// Establish the Oracle Connection using Connection String
+//			Properties props = new Properties();
+//			props.put("v$session.program", DbUtil.class.getName());
+//			conn = DriverManager.getConnection(
+//					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
+//					props);
+//			conn.setAutoCommit(false);
+//			DbUtil.Run_Process(conn, DbUtil.class.getName());
+//		} catch (Exception e) {
+//			DbUtil.Log_Error(e);
+//		}
+//	}
 	// Connect to DB
 	public static void Db_Connect() {
 		try {
-			// Setting Oracle JDBC Driver
-			Class.forName(JDBC_DRIVER);
-			// Establish the Oracle Connection using Connection String
-			Properties props = new Properties();
-			props.put("v$session.program", DbUtil.class.getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
+			System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
+			OracleDataSource ods = new OracleDataSource();
+			ods.setTNSEntryName("mj_orcl");
+			ods.setDriverType("thin");
+			ods.setUser(Connect.userID);
+			ods.setPassword(Connect.userPassword);
+			ods.setLoginTimeout(2);
+			Properties cp = new Properties();
+			cp.setProperty("SetBigStringTryClob", "true");
+			cp.put("v$session.program", DbUtil.class.getName());
+			ods.setConnectionProperties(cp);
+			conn = ods.getConnection();
+			
 			conn.setAutoCommit(false);
-			DbUtil.Run_Process(conn, DbUtil.class.getName());
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
 
+	public static Connection GetConnect(String ClassName) {
+		Connection conn = null;
+		try {
+			System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
+			OracleDataSource ods = new OracleDataSource();
+			ods.setTNSEntryName("mj_orcl");
+			ods.setDriverType("thin");
+			ods.setUser(Connect.userID);
+			ods.setPassword(Connect.userPassword);
+			ods.setLoginTimeout(2);
+			Properties cp = new Properties();
+			cp.setProperty("SetBigStringTryClob", "true");
+			cp.put("v$session.program", ClassName);
+			ods.setConnectionProperties(cp);
+			conn = ods.getConnection();
+			conn.setAutoCommit(false);
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+		return conn;
+	}
+	
 	// Close Connection
 	public static void Db_Disconnect() {
 		try {
@@ -99,14 +153,14 @@ public class DbUtil {
 	}
 
 	public static void Run_Process(Connection conn, String ClassName) {
-		try {
-			Timer time = new Timer(); // Instantiate Timer Object
-			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-			st.setConn(conn, ClassName);
-			time.schedule(st, 0, 60000); // Create task repeating every 1 min = 60 000
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
+//		try {
+//			Timer time = new Timer(); // Instantiate Timer Object
+//			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
+//			st.setConn(conn, ClassName);
+//			time.schedule(st, 0, 60000); // Create task repeating every 1 min = 60 000
+//		} catch (Exception e) {
+//			DbUtil.Log_Error(e);
+//		}
 	}
 
 	/**

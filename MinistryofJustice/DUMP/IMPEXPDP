@@ -1,4 +1,7 @@
 
+expdp \"sys/oracle@orcl as sysdba\" full=Y directory=data_pump_dir dumpfile=dmp.dmp logfile=dmp.log;
+
+
 expdp.exe system/123@XE schemas=saidp directory=TEST_DIR dumpfile=dmp.dmp logfile=dmp.log;
 impdp sys/oracle@mj_orcl full=Y directory=DATA_PUMP_DIR dumpfile=dmp.dmp logfile=dmp.log;
 

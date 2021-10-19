@@ -7,10 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Properties;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -28,7 +27,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.app.main.Main;
-import mj.app.model.Connect;
 import mj.msg.Msg;
 import mj.utils.DbUtil;
 
@@ -48,6 +46,9 @@ public class PRJ_ADD {
 
 	@FXML
 	private Button SelectFile;
+	
+	@FXML
+	private Button IUBtn;
 
 	@FXML
 	void IsFolder(ActionEvent event) {
@@ -58,11 +59,13 @@ public class PRJ_ADD {
 				FilePath.setDisable(true);
 				// --------
 				FolderName.setDisable(false);
+				IUBtn.setDisable(false);
 			} else if (!IsFolder.isSelected()) {
 				SelectFile.setDisable(false);
 				FilePath.setDisable(false);
 				// --------
 				FolderName.setDisable(true);
+				IUBtn.setDisable(true);
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -90,10 +93,10 @@ public class PRJ_ADD {
 				Path path = Paths.get(FilePath.getText());
 				bArray = java.nio.file.Files.readAllBytes(path);
 				InputStream is = new ByteArrayInputStream(bArray);
-				//long bytes = Files.size(path);
-				
+				// long bytes = Files.size(path);
+
 				File f = new File(FilePath.getText());
-				long file_size= f.length();
+				long file_size = f.length();
 				// параметры
 				callStmt.setString(2, FolderName.getText());
 				callStmt.setString(3, path.getFileName().toString());
@@ -140,7 +143,7 @@ public class PRJ_ADD {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			dbConnect();
-			DbUtil.Run_Process(conn,getClass().getName());
+			DbUtil.Run_Process(conn, getClass().getName());
 			PRJ_PARENT.setText(String.valueOf(getId()));
 
 		} catch (Exception e) {
@@ -158,14 +161,8 @@ public class PRJ_ADD {
 	 */
 	private void dbConnect() {
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			Properties props = new Properties();
-			props.put("v$session.program",getClass().getName());
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-					props);
-			conn.setAutoCommit(false);
-		} catch (SQLException | ClassNotFoundException e) {
+			conn = DbUtil.GetConnect(getClass().getName());
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
@@ -185,15 +182,63 @@ public class PRJ_ADD {
 
 	@FXML
 	void SelectFile(ActionEvent event) {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Выбрать файл");
-		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("ALL Others", "*.*"),
-				new ExtensionFilter("Exe file", "*.exe"), new ExtensionFilter("Jar file", "*.jar"),
-				new ExtensionFilter("DLL file", "*.dll"), new ExtensionFilter("SQLITE file", "*.db"),
-				new ExtensionFilter("WORD file", "*.doc*"));
-		File file = fileChooser.showOpenDialog(null);
-		if (file != null) {
-			FilePath.setText(file.getAbsolutePath());
+		try {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Выбрать файл");
+			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("ALL Others", "*.*"),
+					new ExtensionFilter("Exe file", "*.exe"), new ExtensionFilter("Jar file", "*.jar"),
+					new ExtensionFilter("DLL file", "*.dll"), new ExtensionFilter("SQLITE file", "*.db"),
+					new ExtensionFilter("WORD file", "*.doc*"));
+			List<File> file = fileChooser.showOpenMultipleDialog(null);
+			if (file != null) {
+				for (File fls : file) {
+					// вызвать хранимую процедуру
+					CallableStatement callStmt = conn.prepareCall("{ call UPDATE_PRJ.AddFileOrFolder(?,?,?,?,?,?,?) }");
+					callStmt.registerOutParameter(1, Types.VARCHAR);
+					if (!IsFolder.isSelected()) {
+						// получить файл
+						byte[] bArray = null;
+						Path path = Paths.get(fls.getAbsolutePath());
+						bArray = java.nio.file.Files.readAllBytes(path);
+						InputStream is = new ByteArrayInputStream(bArray);
+						// long bytes = Files.size(path);
+
+						File f = new File(fls.getAbsolutePath());
+						long file_size = f.length();
+						// параметры
+						callStmt.setString(2, FolderName.getText());
+						callStmt.setString(3, path.getFileName().toString());
+						callStmt.setString(4, "N");
+						callStmt.setBlob(5, is, bArray.length);
+						callStmt.setLong(6, getId());
+						callStmt.setLong(7, file_size);
+
+					} else {
+						callStmt.setString(2, FolderName.getText());
+						callStmt.setString(3, null);
+						callStmt.setString(4, "Y");
+						callStmt.setNull(5, Types.BLOB);
+						callStmt.setLong(6, getId());
+						callStmt.setNull(7, Types.INTEGER);
+					}
+
+					callStmt.execute();
+
+					if (callStmt.getString(1) == null) {
+						conn.commit();
+						setStatus(true);
+						callStmt.close();
+					} else {
+						conn.rollback();
+						setStatus(false);
+						Msg.Message(callStmt.getString(1));
+						callStmt.close();
+					}
+				}
+				onclose();
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
 		}
 	}
 

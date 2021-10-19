@@ -223,6 +223,8 @@ public class EditPmEmpController {
 			EMP_POSITION.setText(pm_emp.getEMP_POSITION());
 			EMP_EMAIL.setText(pm_emp.getEMP_EMAIL());
 			EMP_TEL.setText(pm_emp.getEMP_TEL());
+			EMP_WORKSTART.setValue(pm_emp.getEMP_WORKSTART());
+			EMP_WORKEND.setValue(pm_emp.getEMP_WORKEND());
 			// -------------------
 			{
 				PreparedStatement sqlStatement = DbUtil.conn

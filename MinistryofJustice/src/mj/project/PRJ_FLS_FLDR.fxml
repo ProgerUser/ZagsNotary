@@ -1,61 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <SplitPane dividerPositions="0.5">
-         <items>
-            <BorderPane maxWidth="250.0">
-               <center>
-                  <TableView fx:id="Hist" maxWidth="268.0" styleClass="mylistview" stylesheets="/ScrPane.css" BorderPane.alignment="CENTER">
-                    <columns>
-                      <TableColumn fx:id="VERISION" prefWidth="103.0" text="Версия" />
-                      <TableColumn fx:id="DT" prefWidth="137.0" text="Дата обновления" />
-                    </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
-               </center>
-            </BorderPane>
-            <BorderPane>
-               <center>
-                  <TreeView fx:id="PROJECT" editable="true" prefWidth="450.0" styleClass="mylistview" stylesheets="/ScrPane.css" BorderPane.alignment="CENTER">
-                  
-                     <contextMenu>
-                        <ContextMenu fx:id="ContMenu">
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <children>
+            <SplitPane dividerPositions="0.3825966850828729" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+               <items>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="250.0" spacing="5.0">
+                     <children>
+                        <TableView fx:id="Hist" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="mylistview" stylesheets="/ScrPane.css" VBox.vgrow="ALWAYS">
+                          <columns>
+                            <TableColumn fx:id="VERISION" prefWidth="77.0" text="Версия" />
+                            <TableColumn fx:id="DT" prefWidth="161.0" text="Дата обновления" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="600.0" spacing="5.0">
+                     <children>
+                        <ToolBar>
                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#Add" text="Добавить" />
-                              <MenuItem mnemonicParsing="false" onAction="#Edit" text="Редактировать" />
-                              <MenuItem mnemonicParsing="false" onAction="#Delete" text="Удалить" />
+                              <Text layoutX="10.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
+                              <TextField fx:id="ID_FIND" prefWidth="100.0" />
+                              <Text layoutX="10.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+                              <TextField fx:id="NameFind" layoutX="26.0" layoutY="10.0" prefWidth="120.0" />
+                              <Button mnemonicParsing="false" onAction="#FIND" text="Поиск" />
                           </items>
-                        </ContextMenu>
-                     </contextMenu>
-                      
-                  </TreeView>
-               </center>
-               <top>
-                  <ToolBar BorderPane.alignment="CENTER">
-                    <items>
-                        <Text layoutX="10.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
-                        <TextField fx:id="PRJ_ID" editable="false" prefHeight="25.0" prefWidth="98.0" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Размер файла" />
-                        <TextField fx:id="FILE_LG" editable="false" layoutX="91.0" layoutY="10.0" prefHeight="25.0" prefWidth="114.0" />
-                        <Text layoutX="10.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка?" />
-                        <TextField fx:id="IsFolder" editable="false" prefWidth="30.0" />
-                    </items>
-                  </ToolBar>
-               </top>
-            </BorderPane>
-         </items>
-      </SplitPane>
+                           <VBox.margin>
+                              <Insets left="-5.0" right="-5.0" top="-5.0" />
+                           </VBox.margin>
+                        </ToolBar>
+                        <TreeTableView fx:id="PROJECT" styleClass="mylistview" stylesheets="/ScrPane.css" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                          <columns>
+                            <TreeTableColumn fx:id="PRJ_IDS" prefWidth="150.0" text="PRJ_ID" />
+                            <TreeTableColumn fx:id="PRJ_NAME" prefWidth="200.0" text="PRJ_NAME" />
+                              <TreeTableColumn fx:id="IS_FOLDER" prefWidth="75.0" text="IS_FOLDER" />
+                              <TreeTableColumn fx:id="VERSION" prefWidth="75.0" text="VERSION" />
+                              <TreeTableColumn fx:id="BYTES" prefWidth="100.0" text="BYTES" />
+                          </columns>
+                           <contextMenu>
+                              <ContextMenu fx:id="ContMenu">
+                                <items>
+                                    <MenuItem mnemonicParsing="false" onAction="#Add" text="Добавить" />
+                                    <MenuItem mnemonicParsing="false" onAction="#Edit" text="Редактировать" />
+                                    <MenuItem mnemonicParsing="false" onAction="#Delete" text="Удалить" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
+                        </TreeTableView>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </items>
+            </SplitPane>
+         </children>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
    </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
 </StackPane>
