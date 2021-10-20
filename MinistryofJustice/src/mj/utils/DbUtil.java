@@ -2,6 +2,7 @@ package mj.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -15,6 +16,9 @@ import java.util.Properties;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import mj.app.main.Main;
 import mj.app.model.Connect;
@@ -69,9 +73,38 @@ public class DbUtil {
 //			DbUtil.Log_Error(e);
 //		}
 //	}
+	
+	// Connect to DB
+		@SuppressWarnings("resource")
+		public static void Db_Connect1() {
+			try {
+				
+				Properties props = new Properties();
+				props.setProperty("dataSourceClassName", "oracle.jdbc.pool.OracleDataSource");
+				props.setProperty("dataSource.user", Connect.userID);
+				props.setProperty("dataSource.password", Connect.userPassword);
+				//props.setProperty("keepaliveTime", "30000");
+				props.setProperty("dataSource.url", "jdbc:oracle:thin:@" + Connect.connectionURL);
+				//props.put("data-source-properties.v$session.program", DbUtil.class.getName());
+				props.put("dataSource.logWriter", new PrintWriter("D:/log.txt"));
+
+				HikariConfig config = new HikariConfig(props);
+				HikariDataSource ds = new HikariDataSource(config);
+				
+				conn = ds.getConnection();
+				
+				conn.setAutoCommit(false);
+			} catch (Exception e) {
+				DbUtil.Log_Error(e);
+			}
+		}
+	
 	// Connect to DB
 	public static void Db_Connect() {
 		try {
+			//System.out.println(OracleConnection.CONNECTION_PROPERTY_THIN_NET_CONNECT_TIMEOUT);
+			
+		
 			System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
 			OracleDataSource ods = new OracleDataSource();
 			ods.setTNSEntryName("mj_orcl");
@@ -79,10 +112,17 @@ public class DbUtil {
 			ods.setUser(Connect.userID);
 			ods.setPassword(Connect.userPassword);
 			ods.setLoginTimeout(2);
-			Properties cp = new Properties();
-			cp.setProperty("SetBigStringTryClob", "true");
-			cp.put("v$session.program", DbUtil.class.getName());
+
+		    Properties cp = new Properties();
+		    cp.setProperty("SetBigStringTryClob", "true");
+		    cp.put("Oracle.net.CONNECT_TIMEOUT", 0);
+		    cp.put("Oracle.net.READ_TIMEOUT", 0);
+		    cp.put("Oracle.jdbc.ReadTimeout", 0);
+		    cp.put("Oracle.net.tcpKeepAlive", "true");
+		    cp.put("v$session.program", DbUtil.class.getName());
+			
 			ods.setConnectionProperties(cp);
+			
 			conn = ods.getConnection();
 			
 			conn.setAutoCommit(false);
@@ -101,9 +141,17 @@ public class DbUtil {
 			ods.setUser(Connect.userID);
 			ods.setPassword(Connect.userPassword);
 			ods.setLoginTimeout(2);
-			Properties cp = new Properties();
-			cp.setProperty("SetBigStringTryClob", "true");
+			
+			
+		    Properties cp = new Properties();
+		    cp.setProperty("SetBigStringTryClob", "true");
+		    cp.put("Oracle.net.CONNECT_TIMEOUT", 0);
+		    cp.put("Oracle.net.READ_TIMEOUT", 0);
+		    cp.put("Oracle.jdbc.ReadTimeout", 0);
+		    cp.put("Oracle.net.tcpKeepAlive", "true");
 			cp.put("v$session.program", ClassName);
+			
+			
 			ods.setConnectionProperties(cp);
 			conn = ods.getConnection();
 			conn.setAutoCommit(false);

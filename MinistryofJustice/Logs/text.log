@@ -32127,4 +32127,172 @@ Caused by: oracle.net.ns.NetException: could not resolve the connect identifier 
 	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:518)
 	... 18 more
 
+] - $End$[20.10.2021 22:57:20] $Sep$ [mj.doc.cus.CusList.Log_Error()] $Sep$ [ERROR] $Sep$ [258] $Sep$ [java.sql.SQLRecoverableException: Ошибка ввода/вывода: The Network Adapter could not establish the connection
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:774)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at oracle.jdbc.pool.OracleDataSource.getPhysicalConnection(OracleDataSource.java:384)
+	at oracle.jdbc.pool.OracleDataSource.getConnection(OracleDataSource.java:273)
+	at oracle.jdbc.pool.OracleDataSource.getConnection(OracleDataSource.java:198)
+	at oracle.jdbc.pool.OracleDataSource.getConnection(OracleDataSource.java:176)
+	at mj.utils.DbUtil.GetConnect(DbUtil.java:110)
+	at mj.doc.cus.CusList.dbConnect(CusList.java:1083)
+	at mj.doc.cus.CusList.<init>(CusList.java:86)
+	at mj.app.main.Main.CUSLIST(Main.java:1030)
+	at mj.app.rootlayout.Root.CUSLIST(Root.java:308)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.Trampoline.invoke(MethodUtil.java:71)
+	at sun.reflect.GeneratedMethodAccessor1.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.reflect.misc.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1769)
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1657)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.control.MenuItem.fire(MenuItem.java:462)
+	at com.sun.javafx.scene.control.skin.ContextMenuContent$MenuItemContainer.doSelect(ContextMenuContent.java:1405)
+	at com.sun.javafx.scene.control.skin.ContextMenuContent$MenuItemContainer.lambda$createChildren$6(ContextMenuContent.java:1358)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3757)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:394)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:432)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:410)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:431)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: oracle.net.ns.NetException: The Network Adapter could not establish the connection
+	at oracle.net.nt.ConnStrategy.execute(ConnStrategy.java:523)
+	at oracle.net.resolver.AddrResolution.resolveAndExecute(AddrResolution.java:521)
+	at oracle.net.ns.NSProtocol.establishConnection(NSProtocol.java:660)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:286)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1438)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:518)
+	... 65 more
+Caused by: java.io.IOException: Socket read timed out, socket connect lapse 2001 ms. localhost/0:0:0:0:0:0:0:1 1522 2000 2 true
+	at oracle.net.nt.TcpNTAdapter.connect(TcpNTAdapter.java:209)
+	at oracle.net.nt.ConnOption.connect(ConnOption.java:161)
+	at oracle.net.nt.ConnStrategy.execute(ConnStrategy.java:470)
+	... 70 more
+Caused by: java.io.InterruptedIOException: Socket read timed out
+	at oracle.net.nt.TimeoutSocketChannel.handleInterrupt(TimeoutSocketChannel.java:307)
+	at oracle.net.nt.TimeoutSocketChannel.<init>(TimeoutSocketChannel.java:84)
+	at oracle.net.nt.TcpNTAdapter.connect(TcpNTAdapter.java:169)
+	... 72 more
+
+] - $End$[20.10.2021 23:47:20] $Sep$ [mj.app.main.Main.Log_Error()] $Sep$ [ERROR] $Sep$ [304] $Sep$ [java.io.FileNotFoundException: C:\MJ\Logs (Отказано в доступе)
+	at java.io.FileOutputStream.open0(Native Method)
+	at java.io.FileOutputStream.open(FileOutputStream.java:270)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:213)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:101)
+	at java.io.PrintWriter.<init>(PrintWriter.java:184)
+	at mj.utils.DbUtil.Db_Connect(DbUtil.java:87)
+	at mj.app.main.Main.start(Main.java:175)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+] - $End$[20.10.2021 23:48:48] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [80] $Sep$ [HikariPool-1 - Starting...
+] - $End$[20.10.2021 23:48:48] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property keepaliveTime does not exist on target class oracle.jdbc.pool.OracleDataSource
+] - $End$[20.10.2021 23:49:03] $Sep$ [mj.app.main.Main.Log_Error()] $Sep$ [ERROR] $Sep$ [304] $Sep$ [java.lang.RuntimeException: Property keepaliveTime does not exist on target class oracle.jdbc.pool.OracleDataSource
+	at com.zaxxer.hikari.util.PropertyElf.setProperty(PropertyElf.java:135)
+	at com.zaxxer.hikari.util.PropertyElf.lambda$setTargetFromProperties$0(PropertyElf.java:59)
+	at java.util.Hashtable.forEach(Hashtable.java:879)
+	at com.zaxxer.hikari.util.PropertyElf.setTargetFromProperties(PropertyElf.java:54)
+	at com.zaxxer.hikari.pool.PoolBase.initializeDataSource(PoolBase.java:328)
+	at com.zaxxer.hikari.pool.PoolBase.<init>(PoolBase.java:114)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:108)
+	at com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81)
+	at mj.utils.DbUtil.Db_Connect(DbUtil.java:92)
+	at mj.app.main.Main.start(Main.java:175)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+] - $End$[20.10.2021 23:50:05] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [80] $Sep$ [HikariPool-1 - Starting...
+] - $End$[20.10.2021 23:50:05] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property keepaliveTime does not exist on target class oracle.jdbc.pool.OracleDataSource
+] - $End$[20.10.2021 23:51:00] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [80] $Sep$ [HikariPool-1 - Starting...
+] - $End$[20.10.2021 23:51:02] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [82] $Sep$ [HikariPool-1 - Start completed.
+] - $End$[20.10.2021 23:52:15] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [80] $Sep$ [HikariPool-1 - Starting...
+] - $End$[20.10.2021 23:52:16] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [82] $Sep$ [HikariPool-1 - Start completed.
+] - $End$[20.10.2021 23:52:55] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property v$session.program does not exist on target class com.zaxxer.hikari.HikariConfig
+] - $End$[20.10.2021 23:53:37] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [80] $Sep$ [HikariPool-1 - Starting...
+] - $End$[20.10.2021 23:53:37] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property v$session.program does not exist on target class oracle.jdbc.pool.OracleDataSource
+] - $End$[20.10.2021 23:55:46] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property data-source-properties.v$session.program does not exist on target class com.zaxxer.hikari.HikariConfig
+] - $End$[20.10.2021 23:55:52] $Sep$ [mj.app.main.Main.Log_Error()] $Sep$ [ERROR] $Sep$ [304] $Sep$ [java.lang.RuntimeException: Property data-source-properties.v$session.program does not exist on target class com.zaxxer.hikari.HikariConfig
+	at com.zaxxer.hikari.util.PropertyElf.setProperty(PropertyElf.java:135)
+	at com.zaxxer.hikari.util.PropertyElf.lambda$setTargetFromProperties$0(PropertyElf.java:59)
+	at java.util.Hashtable.forEach(Hashtable.java:879)
+	at com.zaxxer.hikari.util.PropertyElf.setTargetFromProperties(PropertyElf.java:54)
+	at com.zaxxer.hikari.HikariConfig.<init>(HikariConfig.java:140)
+	at mj.utils.DbUtil.Db_Connect(DbUtil.java:91)
+	at mj.app.main.Main.start(Main.java:175)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
+	at java.lang.Thread.run(Thread.java:748)
+
+] - $End$[20.10.2021 23:56:55] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property connection-properties.v$session.program does not exist on target class com.zaxxer.hikari.HikariConfig
+] - $End$[20.10.2021 23:57:05] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property v$session.program does not exist on target class com.zaxxer.hikari.HikariConfig
+] - $End$[20.10.2021 23:57:52] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property v$session.program does not exist on target class com.zaxxer.hikari.HikariConfig
+] - $End$[20.10.2021 23:57:52] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property v$session.program does not exist on target class com.zaxxer.hikari.HikariConfig
+] - $End$[20.10.2021 23:58:02] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property datasource.hikari.data-source-properties:v$session.program does not exist on target class com.zaxxer.hikari.HikariConfig
+] - $End$[20.10.2021 23:58:14] $Sep$ [com.zaxxer.hikari.util.PropertyElf.setProperty()] $Sep$ [ERROR] $Sep$ [134] $Sep$ [Property data-source-properties.v$session.program does not exist on target class com.zaxxer.hikari.HikariConfig
+] - $End$[20.10.2021 23:58:25] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [80] $Sep$ [HikariPool-1 - Starting...
+] - $End$[20.10.2021 23:58:26] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [82] $Sep$ [HikariPool-1 - Start completed.
+] - $End$[20.10.2021 23:58:54] $Sep$ [com.zaxxer.hikari.pool.PoolBase.isConnectionAlive()] $Sep$ [WARN] $Sep$ [184] $Sep$ [HikariPool-1 - Failed to validate connection oracle.jdbc.driver.T4CConnection@78c1bda5 (Ошибка ввода/вывода: Invalid Operation, NOT Connected). Possibly consider using a shorter maxLifetime value.
+] - $End$[20.10.2021 23:59:17] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [80] $Sep$ [HikariPool-1 - Starting...
+] - $End$[20.10.2021 23:59:18] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [82] $Sep$ [HikariPool-1 - Start completed.
+] - $End$[21.10.2021 00:00:09] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [80] $Sep$ [HikariPool-1 - Starting...
+] - $End$[21.10.2021 00:00:11] $Sep$ [com.zaxxer.hikari.HikariDataSource.<init>()] $Sep$ [INFO] $Sep$ [82] $Sep$ [HikariPool-1 - Start completed.
 ] - $End$
