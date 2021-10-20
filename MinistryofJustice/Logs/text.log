@@ -32098,4 +32098,33 @@ Caused by: java.lang.IllegalArgumentException: Can not set javafx.scene.control.
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2527)
 	... 57 more
 
+] - $End$[20.10.2021 09:40:08] $Sep$ [mj.app.main.Main.Log_Error()] $Sep$ [ERROR] $Sep$ [230] $Sep$ [java.sql.SQLRecoverableException: Ошибка ввода/вывода: could not resolve the connect identifier  "mj_orcl"
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:774)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+	at oracle.jdbc.pool.OracleDataSource.getPhysicalConnection(OracleDataSource.java:384)
+	at oracle.jdbc.pool.OracleDataSource.getConnection(OracleDataSource.java:273)
+	at oracle.jdbc.pool.OracleDataSource.getConnection(OracleDataSource.java:198)
+	at oracle.jdbc.pool.OracleDataSource.getConnection(OracleDataSource.java:176)
+	at mj.utils.DbUtil.Db_Connect(DbUtil.java:87)
+	at mj.app.main.Main.start(Main.java:175)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: oracle.net.ns.NetException: could not resolve the connect identifier  "mj_orcl"
+	at oracle.net.resolver.NameResolver.resolveName(NameResolver.java:179)
+	at oracle.net.resolver.AddrResolution.resolveAndExecute(AddrResolution.java:489)
+	at oracle.net.ns.NSProtocol.establishConnection(NSProtocol.java:660)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:286)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1438)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:518)
+	... 18 more
+
 ] - $End$

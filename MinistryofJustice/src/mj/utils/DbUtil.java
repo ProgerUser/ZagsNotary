@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,7 +36,7 @@ public class DbUtil {
 	}
 
 	// Declare JDBC Driver
-	private static final String JDBC_DRIVER = "oracle.jdbc.OracleDriver";
+	//private static final String JDBC_DRIVER = "oracle.jdbc.OracleDriver";
 
 	// Connection
 	public static Connection conn = null;
@@ -142,9 +141,22 @@ public class DbUtil {
 	public static boolean Check_Connect() {
 		boolean ret = true;
 		try {
-			Class.forName(JDBC_DRIVER);
-			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL);
+//			Class.forName(JDBC_DRIVER);
+			Connection conn ;
+//					DriverManager.getConnection(
+//					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL);
+			System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
+			OracleDataSource ods = new OracleDataSource();
+			ods.setTNSEntryName("mj_orcl");
+			ods.setDriverType("thin");
+			ods.setUser(Connect.userID);
+			ods.setPassword(Connect.userPassword);
+			ods.setLoginTimeout(2);
+			Properties cp = new Properties();
+			cp.setProperty("SetBigStringTryClob", "true");
+			cp.put("v$session.program", DbUtil.class.getName());
+			ods.setConnectionProperties(cp);
+			conn = ods.getConnection();
 			conn.close();
 		} catch (Exception e) {
 			ret = false;
@@ -170,12 +182,26 @@ public class DbUtil {
 		try {
 			if (linenumber != null & (classname != null && !classname.equals("")) & (error != null && !error.equals(""))
 					& (METHODNAME != null && !METHODNAME.equals(""))) {
-				Class.forName(JDBC_DRIVER);
-				Properties props = new Properties();
-				props.put("v$session.program", DbUtil.class.getName());
-				Connection conn = DriverManager.getConnection(
-						"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
-						props);
+//				Class.forName(JDBC_DRIVER);
+				
+//				Properties props = new Properties();
+//				props.put("v$session.program", DbUtil.class.getName());
+				Connection conn;
+				System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
+				OracleDataSource ods = new OracleDataSource();
+				ods.setTNSEntryName("mj_orcl");
+				ods.setDriverType("thin");
+				ods.setUser(Connect.userID);
+				ods.setPassword(Connect.userPassword);
+				ods.setLoginTimeout(2);
+				Properties cp = new Properties();
+				cp.setProperty("SetBigStringTryClob", "true");
+				cp.put("v$session.program", DbUtil.class.getName());
+				ods.setConnectionProperties(cp);
+				conn = ods.getConnection();
+//						DriverManager.getConnection(
+//						"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL,
+//						props);
 				conn.setAutoCommit(false);
 				PreparedStatement stmt = conn.prepareStatement(" declare\n" + "pragma autonomous_transaction; begin \n"
 						+ " insert into logs (\n" + "linenumber, \n" + "classname, \n" + "error,METHODNAME) \n"
