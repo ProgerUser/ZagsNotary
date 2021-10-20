@@ -437,8 +437,18 @@ public class DbUtil {
 			callStmt.execute();
 			ret = callStmt.getLong(1);
 			callStmt.close();
-		} catch (SQLException e) {
-			DbUtil.Log_Error(e);
+		} catch (Exception e) {
+			try {
+				CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ODB_ACT_ACCESS_GRP(?,?)}");
+				callStmt.registerOutParameter(1, Types.INTEGER);
+				callStmt.setLong(2, grpid);
+				callStmt.setLong(3, actid);
+				callStmt.execute();
+				ret = callStmt.getLong(1);
+				callStmt.close();
+			} catch (Exception e1) {
+				DbUtil.Log_Error(e);
+			}
 		}
 		return ret;
 	}
@@ -476,8 +486,18 @@ public class DbUtil {
 			callStmt.execute();
 			ret = callStmt.getLong(1);
 			callStmt.close();
-		} catch (SQLException e) {
-			DbUtil.Log_Error(e);
+		} catch (Exception e) {
+			try {
+			Db_Connect();
+			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ACT_ACCESS(?)}");
+			callStmt.registerOutParameter(1, Types.INTEGER);
+			callStmt.setLong(2, actid);
+			callStmt.execute();
+			ret = callStmt.getLong(1);
+			callStmt.close();
+			} catch (Exception e1) {
+				DbUtil.Log_Error(e1);
+			}
 		}
 		return ret;
 	}
