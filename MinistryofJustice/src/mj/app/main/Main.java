@@ -683,6 +683,18 @@ public class Main extends Application {
 		}
 	}
 	
+	public void Close() {
+		try {
+			killProcess();
+		} catch (Exception e1) {
+			DbUtil.Log_Error(e1);
+		}
+		DbUtil.Db_Disconnect();
+		SQLIETEDisconnect();
+		Platform.exit();
+		System.exit(0);
+	}
+	
 	public static void PmEmp() {
 		try {
 			if (PmEmpWin) {

@@ -58,6 +58,7 @@ public class GrpController {
 	@FXML private TableColumn<USR_IN_OUT, String> in_login;
 	@FXML private TableColumn<USR_IN_OUT, String> in_fio;
 	@FXML private TableColumn<ODB_GROUP_USR, String> name;
+	@FXML private TableColumn<ODB_GROUP_USR, String> comment;
 	@FXML private TableColumn<ODB_GROUP_USR, Long> id;
 	@FXML private TableView<USR_IN_OUT> usrout;
 	@FXML private TableView<USR_IN_OUT> usrin;
@@ -567,6 +568,7 @@ public class GrpController {
 
 			// _____________________________
 
+			comment.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
 			name.setCellValueFactory(cellData -> cellData.getValue().GRP_NAMEProperty());
 			in_fio.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
 			out_login.setCellValueFactory(cellData -> cellData.getValue().LOGINProperty());

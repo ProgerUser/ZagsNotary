@@ -7,9 +7,14 @@ import org.apache.log4j.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.Alert.AlertType;
 import mj.app.main.Main;
 import mj.app.model.Connect;
+import mj.msg.Msg;
 import mj.utils.DbUtil;
 
 /**
@@ -28,6 +33,20 @@ public class Root {
 	@FXML
 	private MenuBar menubar;
 	
+	@FXML
+	void Close(ActionEvent event) {
+		try {
+			final Alert alert = new Alert(AlertType.CONFIRMATION,
+					"Закрыть программу?", ButtonType.YES, ButtonType.NO);
+			if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait()
+					.orElse(ButtonType.NO) == ButtonType.YES) {
+				Main main = new Main();
+				main.Close();
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
 	
 	/**
 	 * Управление проектами
@@ -388,6 +407,11 @@ public class Root {
 	private void initialize() {
 		try {
 			menubar.getMenus().forEach(menu -> {
+
+				Node node = (Node) menu.getParentPopup().getUserData();
+				System.out.println("");
+				
+				
 				if (chk_menu(Long.valueOf(menu.getId()), Connect.userID) == 1) {
 					menu.setVisible(true);
 				} else {

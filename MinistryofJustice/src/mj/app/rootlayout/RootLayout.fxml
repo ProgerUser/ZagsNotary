@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.rootlayout.Root">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/8.0.301" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.rootlayout.Root">
 	<top>
 		<MenuBar fx:id="menubar" BorderPane.alignment="CENTER">
 			<menus>
@@ -25,8 +26,8 @@
 				<Menu fx:id="125" mnemonicParsing="false" text="Нотариус">
 					<items>
 						<MenuItem fx:id="163" mnemonicParsing="false" onAction="#Nt_Temp" text="Шаблоны" />
-                  <MenuItem mnemonicParsing="false" fx:id="184" onAction="#NtClients" text="Клиенты" />
-                  <MenuItem mnemonicParsing="false" fx:id="183" onAction="#Nt_Doc" text="Документы" />
+                  <MenuItem fx:id="184" mnemonicParsing="false" onAction="#NtClients" text="Клиенты" />
+                  <MenuItem fx:id="183" mnemonicParsing="false" onAction="#Nt_Doc" text="Документы" />
 					</items>
 				</Menu>
 				<Menu fx:id="14" mnemonicParsing="false" text="Справочники">
@@ -76,6 +77,11 @@
 						<MenuItem fx:id="84" mnemonicParsing="false" onAction="#settings" text="Общие настройки" />
 					</items>
 				</Menu>
+            <Menu mnemonicParsing="false">
+               <graphic>
+                  <FontAwesomeIconView fx:id="0" glyphName="EXTERNAL_LINK_SQUARE" onDragDetected="#Close" size="20" />
+               </graphic>
+            </Menu>
 			</menus>
 		</MenuBar>
 	</top>

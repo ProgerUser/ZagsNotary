@@ -63,7 +63,6 @@ import mj.widgets.KeyBoard;
  * @author Said
  *
  */
-
 public class UsrC {
 
 	public UsrC() {
@@ -72,91 +71,62 @@ public class UsrC {
 
 	@FXML
 	private TableView<ODB_GROUP_USR> USR_GRP;
-
 	@FXML
 	private TableColumn<ODB_GROUP_USR, Long> GRP_ID;
-
 	@FXML
 	private TableColumn<ODB_GROUP_USR, String> GRP_NAME;
-
 	@FXML
 	private TextField FIO_SH;
-
 	@FXML
 	private TextField FIO_ABH;
-
 	@FXML
 	private TextField FIO_ABH_SH;
-
 	@FXML
 	private RadioButton zags_w;
-
 	@FXML
 	private RadioButton notary_w;
-
 	@FXML
 	private RadioButton all_w;
-
 	@FXML
 	private Text LOG;
-
 	@FXML
 	private CheckBox ViewFire;
-
 	@FXML
 	private TextField IUSRNUM_QUANTITY;
-
 	@FXML
 	private Button refreshusrs;
-
 	@FXML
 	private TextField CUSRNAME;
-
 	@FXML
 	private DatePicker DUSRHIRE;
-
 	@FXML
 	private DatePicker DUSRFIRE;
-
 	@FXML
 	private Button CHUSERS;
-
 	@FXML
 	private TextField IUSRCHR_QUANTITY;
-
 	@FXML
 	private TextField IUSRSPEC_QUANTITY;
-
 	@FXML
 	private XTableView<USR> USRLST;
-
 	@FXML
 	private XTableColumn<USR, String> LOGNAME;
-
 	@FXML
 	private XTableColumn<USR, String> CUSRNAMEC;
-
 	@FXML
 	private ComboBox<NOTARY> NOTARY;
-
 	@FXML
 	private ComboBox<ZAGS> ZAGS;
-
 	@FXML
 	private XTableColumn<USR, Long> USRID;
-
 	@FXML
 	private TextField CUSRPOSITION;
-
 	@FXML
 	private TextField IUSRPWD_LENGTH;
-
 	@FXML
 	private ComboBox<OTD> IUSRBRANCH;
-
 	@FXML
 	private CheckBox MUST_CHANGE_PASSWORD;
-
 	@FXML
 	private Button ADD_USR;
 
@@ -171,12 +141,65 @@ public class UsrC {
 
 	@FXML
 	void AddGrp(ActionEvent event) {
+		try {
+			if (USRLST.getSelectionModel().getSelectedItem() != null) {
+				Stage stage = new Stage();
+				Stage stage_ = (Stage) IUSRPWD_LENGTH.getScene().getWindow();
 
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/mj/users/AddGrp.fxml"));
+
+				AddGrp controller = new AddGrp();
+				controller.SetUsr(USRLST.getSelectionModel().getSelectedItem().getCUSRLOGNAME());
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Выбор группы");
+				stage.initOwner(stage_);
+				stage.setResizable(true);
+				stage.initModality(Modality.WINDOW_MODAL);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						InitGrp();
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			Msg.Message(ExceptionUtils.getStackTrace(e));
+		}
 	}
 
 	@FXML
 	void DeleteGrp(ActionEvent event) {
-
+		try {
+			if (USR_GRP.getSelectionModel().getSelectedItem() != null
+					& USRLST.getSelectionModel().getSelectedItem() != null) {
+				ODB_GROUP_USR grp_act = USR_GRP.getSelectionModel().getSelectedItem();
+				USR usr = USRLST.getSelectionModel().getSelectedItem();
+				PreparedStatement prp = conn
+						.prepareStatement(
+								"declare\n" + 
+				                "  usr_id number;\n" + 
+								"  pragma autonomous_transaction;\n"
+								+ "begin\n" + 
+								"  select usr.iusrid into usr_id from usr where usr.cusrlogname = ?;\n"
+								+ "  delete from  ODB_GRP_MEMBER where GRP_ID = ? and IUSRID = usr_id;\n"
+								+ "  commit;\n" + 
+								"end;\n");
+				prp.setString(1, usr.getCUSRLOGNAME());
+				prp.setLong(2, grp_act.getGRP_ID());
+				prp.executeUpdate();
+				prp.close();
+				// Обновить
+				InitGrp();
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
 	}
 
 	@FXML
@@ -571,7 +594,7 @@ public class UsrC {
 		all_w.setToggleGroup(group);
 
 		dbConnect();
-		//DbUtil.Run_Process(conn,getClass().getName());
+		// DbUtil.Run_Process(conn,getClass().getName());
 		ZagsCombo();
 		NotaryCombo();
 		convertComboDisplayList();

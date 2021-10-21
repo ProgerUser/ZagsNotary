@@ -21,7 +21,6 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -30,85 +29,98 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.users.UsrC">
+<StackPane stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.301" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.users.UsrC">
 	<children>
-		<SplitPane orientation="VERTICAL">
-			<items>
-				<BorderPane>
-					<top>
-						<ToolBar BorderPane.alignment="CENTER">
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <children>
+						<ToolBar>
 							<items>
 								<Button fx:id="ADD_USR" mnemonicParsing="false" onAction="#AddUser">
-                           <graphic>
-                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="USER" size="18" />
-                           </graphic>
+                     <graphic>
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="USER" size="18" />
+                     </graphic>
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Добавить пользователя">
                            <font>
-                              <Font size="10.0" />
+                              <Font size="14.0" />
                            </font>
-                           <tooltip>
-                              <Tooltip text="Добавить пользователя">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Tooltip>
-                           </tooltip></Button>
+                        </Tooltip>
+                     </tooltip>
+                  </Button>
 								<Button fx:id="CHUSERS" mnemonicParsing="false" onAction="#UpdateUser">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="SAVE" size="18" />
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Сохранить">
                            <font>
-                              <Font size="10.0" />
+                              <Font size="14.0" />
                            </font>
-                           <graphic>
-                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="SAVE" size="18" />
-                           </graphic>
-                           <tooltip>
-                              <Tooltip text="Сохранить">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Tooltip>
-                           </tooltip></Button>
+                        </Tooltip>
+                     </tooltip>
+                  </Button>
 								<Button mnemonicParsing="false" onAction="#Set_UP_Pass">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="18" />
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Изменить пароль">
                            <font>
-                              <Font size="10.0" />
+                              <Font size="14.0" />
                            </font>
-                           <graphic>
-                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="18" />
-                           </graphic>
-                           <tooltip>
-                              <Tooltip text="Изменить пароль">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Tooltip>
-                           </tooltip></Button>
+                        </Tooltip>
+                     </tooltip>
+                  </Button>
 								<Button mnemonicParsing="false">
-                           <graphic>
-                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="CLONE" size="18" />
-                           </graphic></Button>
-                        <Button mnemonicParsing="false" onAction="#OpenKey">
-                           <graphic>
-                              <FontAwesomeIconView fontSmoothingType="LCD" glyphName="KEYBOARD_ALT" size="18" />
-                           </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                           <tooltip>
-                              <Tooltip text="Открыть клавиатуру" />
-                           </tooltip>
-                        </Button>
-            								<CheckBox fx:id="ViewFire" mnemonicParsing="false" onAction="#ViewFire" text="Показывать уволенных" />
+                     <graphic>
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="CLONE" size="18" />
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#OpenKey">
+                     <graphic>
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="KEYBOARD_ALT" size="18" />
+                     </graphic>
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Открыть клавиатуру" />
+                     </tooltip>
+                  </Button>
+      								<CheckBox fx:id="ViewFire" mnemonicParsing="false" onAction="#ViewFire" text="Показывать уволенных" />
 								<Text fx:id="LOG" strokeType="OUTSIDE" strokeWidth="0.0">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font></Text>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Text>
 							</items>
+               <VBox.margin>
+                  <Insets left="-5.0" right="-5.0" top="-5.0" />
+               </VBox.margin>
 						</ToolBar>
-					</top>
-					<center>
-						<SplitPane dividerPositions="0.40824742268041236" BorderPane.alignment="CENTER">
+						<SplitPane dividerPositions="0.40824742268041236" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
 							<items>
-								<BorderPane>
-									<center>
-										<XTableView fx:id="USRLST" editable="true" styleClass="mylistview" stylesheets="/ScrPane.css" BorderPane.alignment="CENTER">
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <children>
+										<XTableView fx:id="USRLST" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="mylistview" stylesheets="/ScrPane.css" VBox.vgrow="ALWAYS">
 											<columns>
 												<XTableColumn fx:id="USRID" prefWidth="48.0" text="ID" />
 												<XTableColumn fx:id="LOGNAME" minWidth="-1.0" prefWidth="123.0" text="Logname" />
@@ -124,17 +136,20 @@
 												</ContextMenu>
 											</contextMenu>
 										</XTableView>
-									</center>
-								</BorderPane>
-								<BorderPane>
-									<center>
-										<TabPane styleClass="floating" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                     </children>
+                  </VBox>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <children>
+										<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="floating" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
 											<tabs>
 												<Tab text="Параметры">
 													<content>
 														<ScrollPane prefHeight="500.0" prefWidth="550.0" styleClass="mylistview" stylesheets="/ScrPane.css">
 															<content>
-																<VBox>
+																<VBox spacing="5.0">
 																	<children>
 																		<TitledPane animated="false" collapsible="false" text="Основные данные">
 																			<content>
@@ -149,9 +164,9 @@
 																							</columnConstraints>
 																							<rowConstraints>
 																								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																								<RowConstraints maxHeight="55.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
@@ -175,16 +190,16 @@
 																									<tooltip>
 																										<Tooltip text="Удалить" />
 																									</tooltip>
-                                                                           <font>
-                                                                              <Font size="10.0" />
-                                                                           </font>
+                                                                     <font>
+                                                                        <Font size="10.0" />
+                                                                     </font>
 																								</Button>
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ф.И.О. сокр." GridPane.rowIndex="1" />
-                                                                        <TextField fx:id="FIO_SH" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ф.И.О. на Абх." GridPane.rowIndex="2" />
-                                                                        <TextField fx:id="FIO_ABH" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ф.И.О. сокр. на Абх." GridPane.rowIndex="3" />
-                                                                        <TextField fx:id="FIO_ABH_SH" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ф.И.О. сокр." GridPane.rowIndex="1" />
+                                                                  <TextField fx:id="FIO_SH" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ф.И.О. на Абх." GridPane.rowIndex="2" />
+                                                                  <TextField fx:id="FIO_ABH" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ф.И.О. сокр. на Абх." GridPane.rowIndex="3" />
+                                                                  <TextField fx:id="FIO_ABH_SH" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																							</children>
 																							<VBox.margin>
 																								<Insets />
@@ -220,9 +235,9 @@
 																									<tooltip>
 																										<Tooltip text="Удалить" />
 																									</tooltip>
-                                                                           <font>
-                                                                              <Font size="10.0" />
-                                                                           </font>
+                                                                     <font>
+                                                                        <Font size="10.0" />
+                                                                     </font>
 																								</Button>
 																								<Button mnemonicParsing="false" onAction="#ClearNotary" GridPane.columnIndex="3" GridPane.rowIndex="2">
 																									<graphic>
@@ -231,9 +246,9 @@
 																									<tooltip>
 																										<Tooltip text="Удалить" />
 																									</tooltip>
-                                                                           <font>
-                                                                              <Font size="10.0" />
-                                                                           </font>
+                                                                     <font>
+                                                                        <Font size="10.0" />
+                                                                     </font>
 																								</Button>
 																								<ComboBox fx:id="NOTARY" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 																								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Нотариус" GridPane.rowIndex="2" />
@@ -295,52 +310,56 @@
 																			</content>
 																		</TitledPane>
 																	</children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
 																</VBox>
 															</content>
 														</ScrollPane>
 													</content>
 												</Tab>
-                                    <Tab text="Группы доступа">
-                                       <content>
-                                          <VBox>
-                                             <children>
-                                                <ToolBar style="-fx-border-color: silver;">
-                                                  <items>
-                                                    <Button mnemonicParsing="false" onAction="#AddGrp">
-                                                         <graphic>
-                                                            <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="15" />
-                                                         </graphic>
-                                                      </Button>
-                                                      <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteGrp">
-                                                         <graphic>
-                                                            <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
-                                                         </graphic>
-                                                      </Button>
-                                                  </items>
-                                                </ToolBar>
-                                                <TableView fx:id="USR_GRP" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                                                  <columns>
-                                                    <TableColumn fx:id="GRP_ID" prefWidth="108.0" text="ID" />
-                                                    <TableColumn fx:id="GRP_NAME" prefWidth="478.0" text="Название" />
-                                                  </columns>
-                                                </TableView>
-                                             </children>
-                                          </VBox>
-                                       </content>
-                                    </Tab>
-                                    <Tab text="Печать" />
+                              <Tab text="Группы доступа">
+                                 <content>
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <ToolBar>
+                                            <items>
+                                              <Button mnemonicParsing="false" onAction="#AddGrp">
+                                                   <graphic>
+                                                      <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PLUS" size="15" />
+                                                   </graphic>
+                                                </Button>
+                                                <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteGrp">
+                                                   <graphic>
+                                                      <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="15" />
+                                                   </graphic>
+                                                </Button>
+                                            </items>
+                                             <VBox.margin>
+                                                <Insets left="-5.0" right="-5.0" top="-5.0" />
+                                             </VBox.margin>
+                                          </ToolBar>
+                                          <TableView fx:id="USR_GRP" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                            <columns>
+                                              <TableColumn fx:id="GRP_ID" prefWidth="108.0" text="ID" />
+                                              <TableColumn fx:id="GRP_NAME" prefWidth="478.0" text="Название" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
+                                 </content>
+                              </Tab>
+                              <Tab text="Печать" />
 											</tabs>
 										</TabPane>
-									</center>
-								</BorderPane>
+                     </children>
+                  </VBox>
 							</items>
 						</SplitPane>
-					</center>
-				</BorderPane>
-			</items>
-			<StackPane.margin>
-				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-			</StackPane.margin>
-		</SplitPane>
+         </children>
+      </VBox>
 	</children>
 </StackPane>
