@@ -22,7 +22,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -49,6 +52,7 @@ import mj.doc.updname.UpdNameList;
 import mj.init.Settings;
 import mj.init.Setup;
 import mj.log.LogList;
+import mj.msg.Msg;
 import mj.notary.NotaryList;
 import mj.otd.OtdList;
 import mj.prjmngm.emps.RootPmEmpController;
@@ -143,7 +147,6 @@ public class Main extends Application {
 		// FileUtils.cleanDirectory(new File(System.getenv("MJ_PATH") + "OutReports"));
 	}
 
-	
 	/**
 	 * Вход в Приложение
 	 */
@@ -158,13 +161,11 @@ public class Main extends Application {
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
 
-			
 //			boolean is_upd = new mj.update.root.Main().start();
-			
+
 //			if(is_upd == false) {
 //				Enter();	
 //			}
-			
 
 //
 //	Fast enter
@@ -175,24 +176,24 @@ public class Main extends Application {
 			DbUtil.Db_Connect();
 			initRootLayout();
 			RT();
-			//OTD();
+			// OTD();
 //			new NotaryDocList().HtmlEditor(primaryStage);
 //
 //	END 		
 //			
 			primaryStage.setOnCloseRequest(e -> {
-				try {
-					killProcess();
-				} catch (Exception e1) {
-					DbUtil.Log_Error(e1);
+				final Alert alert = new Alert(AlertType.CONFIRMATION, "Закрыть программу?", ButtonType.YES,
+						ButtonType.NO);
+				((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icon.png"));
+				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+					Close();
+				}else {
+					e.consume();
 				}
-				DbUtil.Db_Disconnect();
-				SQLIETEDisconnect();
-				Platform.exit();
-				System.exit(0);
 			});
 			/* Максимально растянуть окно */
-			// primaryStage.setMaximized(true);PetrovichDeclinationMaker maker =
+			//primaryStage.setMaximized(true);
+			//PetrovichDeclinationMaker maker =
 			// PetrovichDeclinationMaker.getInstance();
 //			System.out.println(Petrovich.Lname("MALE", "Пачулия"));
 //			System.out.println(Petrovich.Fname("MALE", "Саид"));
@@ -682,7 +683,7 @@ public class Main extends Application {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	public void Close() {
 		try {
 			killProcess();
@@ -694,7 +695,7 @@ public class Main extends Application {
 		Platform.exit();
 		System.exit(0);
 	}
-	
+
 	public static void PmEmp() {
 		try {
 			if (PmEmpWin) {

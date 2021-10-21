@@ -3,15 +3,16 @@ package mj.app.rootlayout;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import org.apache.log4j.Logger;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.Alert.AlertType;
 import mj.app.main.Main;
 import mj.app.model.Connect;
 import mj.msg.Msg;
@@ -24,22 +25,19 @@ import mj.utils.DbUtil;
  *
  */
 public class Root {
-	
+
 	public Root() {
 		Main.logger = Logger.getLogger(getClass());
 	}
-	
 
 	@FXML
 	private MenuBar menubar;
-	
+
 	@FXML
 	void Close(ActionEvent event) {
 		try {
-			final Alert alert = new Alert(AlertType.CONFIRMATION,
-					"Закрыть программу?", ButtonType.YES, ButtonType.NO);
-			if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait()
-					.orElse(ButtonType.NO) == ButtonType.YES) {
+			final Alert alert = new Alert(AlertType.CONFIRMATION, "Закрыть программу?", ButtonType.YES, ButtonType.NO);
+			if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
 				Main main = new Main();
 				main.Close();
 			}
@@ -47,7 +45,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	/**
 	 * Управление проектами
 	 */
@@ -59,7 +57,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	//--------------------------------------
+	// --------------------------------------
 
 	/**
 	 * Выход
@@ -71,8 +69,7 @@ public class Root {
 		Platform.exit();
 		System.exit(0);
 	}
-	
-	
+
 	@FXML
 	void Nt_Temp(ActionEvent event) {
 		try {
@@ -81,7 +78,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void grp_acces(ActionEvent event) {
 		try {
@@ -90,7 +87,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	/**
 	 * Лог программы
 	 * 
@@ -104,6 +101,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	@FXML
 	void Nt_Doc(ActionEvent event) {
 		try {
@@ -112,8 +110,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
-	
+
 	/**
 	 * Лог программы
 	 * 
@@ -127,6 +124,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	@FXML
 	void NtClients(ActionEvent event) {
 		try {
@@ -135,7 +133,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	/**
 	 * Лог программы
 	 * 
@@ -149,7 +147,6 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
 
 	@FXML
 	void reports(ActionEvent event) {
@@ -159,7 +156,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	/**
 	 * Проект
 	 * 
@@ -173,8 +170,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
-	
+
 	/**
 	 * Отделения
 	 * 
@@ -197,7 +193,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	/**
 	 * загс
 	 * 
@@ -211,7 +207,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void NOTARY(ActionEvent event) {
 		try {
@@ -383,9 +379,10 @@ public class Root {
 		Long ret = 0l;
 		Connection conn = DbUtil.conn;
 		try {
-			//SqlMap sql = new SqlMap().load("/SQL.xml");
-			//String readRecordSQL = sql.getSql("acces_menu");
-			PreparedStatement prepStmt = conn.prepareStatement("SELECT MJUsers.MNU_ACCESS(MNU_ID => ?, USR_LOGIN => ?) CNT FROM DUAL");
+			// SqlMap sql = new SqlMap().load("/SQL.xml");
+			// String readRecordSQL = sql.getSql("acces_menu");
+			PreparedStatement prepStmt = conn
+					.prepareStatement("SELECT MJUsers.MNU_ACCESS(MNU_ID => ?, USR_LOGIN => ?) CNT FROM DUAL");
 			prepStmt.setLong(1, FORM_NAME);
 			prepStmt.setString(2, CUSRLOGNAME);
 			ResultSet rs = prepStmt.executeQuery();
@@ -407,23 +404,20 @@ public class Root {
 	private void initialize() {
 		try {
 			menubar.getMenus().forEach(menu -> {
-
-				Node node = (Node) menu.getParentPopup().getUserData();
-				System.out.println(node.get);
-				
-				
-				if (chk_menu(Long.valueOf(menu.getId()), Connect.userID) == 1) {
-					menu.setVisible(true);
-				} else {
-					menu.setVisible(false);
-				}
-				menu.getItems().forEach(menuItem -> {
-					if (chk_menu(Long.valueOf(menuItem.getId()), Connect.userID) == 1) {
-						menuItem.setVisible(true);
+				if (!menu.getId().equals("exit")) {
+					if (chk_menu(Long.valueOf(menu.getId()), Connect.userID) == 1) {
+						menu.setVisible(true);
 					} else {
-						menuItem.setVisible(false);
+						menu.setVisible(false);
 					}
-				});
+					menu.getItems().forEach(menuItem -> {
+						if (chk_menu(Long.valueOf(menuItem.getId()), Connect.userID) == 1) {
+							menuItem.setVisible(true);
+						} else {
+							menuItem.setVisible(false);
+						}
+					});
+				}
 			});
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
