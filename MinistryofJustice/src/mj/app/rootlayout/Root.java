@@ -409,7 +409,7 @@ public class Root {
 			menubar.getMenus().forEach(menu -> {
 
 				Node node = (Node) menu.getParentPopup().getUserData();
-				System.out.println("");
+				System.out.println(node.get);
 				
 				
 				if (chk_menu(Long.valueOf(menu.getId()), Connect.userID) == 1) {
