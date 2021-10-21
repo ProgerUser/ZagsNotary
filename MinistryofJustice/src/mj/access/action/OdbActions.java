@@ -493,7 +493,7 @@ public class OdbActions {
 								USR usr = Users.getSelectionModel().getSelectedItem();
 								Long act = item;
 								// Integer act = Long.valueOf(item.substring(0, item.indexOf(":")));
-								if (DbUtil.Odb_Aaction(usr.getIUSRID(), act) == 1) {
+								if (DbUtil.OdbActionByLogin(usr.getIUSRID(), act) == 1) {
 									setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 								} else {
 									setStyle("");
@@ -666,7 +666,7 @@ public class OdbActions {
 	void printChildren(TreeItem<String> root, Long usrid) {
 		for (TreeItem<String> child : root.getChildren()) {
 			Long act = Long.valueOf(child.getValue().substring(0, child.getValue().indexOf(":")));
-			if (DbUtil.Odb_Aaction(usrid, act) == 1) {
+			if (DbUtil.OdbActionByLogin(usrid, act) == 1) {
 				child.setValue(
 						child.getValue() + String.valueOf(Character.toChars((int) Long.parseUnsignedLong("2713", 16))));
 			} else {
@@ -764,7 +764,7 @@ public class OdbActions {
 				if (Users.getSelectionModel().getSelectedItem() != null) {
 					USR usr = Users.getSelectionModel().getSelectedItem();
 					Long act = Long.valueOf(item.substring(0, item.indexOf(":")));
-					if (DbUtil.Odb_Aaction(usr.getIUSRID(), act) == 1) {
+					if (DbUtil.OdbActionByLogin(usr.getIUSRID(), act) == 1) {
 						setStyle("-fx-text-fill: green;-fx-font-weight: bold");
 					} else {
 						setStyle("");

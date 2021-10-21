@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Properties;
+import java.util.Timer;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -40,7 +41,7 @@ public class DbUtil {
 	}
 
 	// Declare JDBC Driver
-	//private static final String JDBC_DRIVER = "oracle.jdbc.OracleDriver";
+	// private static final String JDBC_DRIVER = "oracle.jdbc.OracleDriver";
 
 	// Connection
 	public static Connection conn = null;
@@ -73,38 +74,38 @@ public class DbUtil {
 //			DbUtil.Log_Error(e);
 //		}
 //	}
-	
-	// Connect to DB
-		@SuppressWarnings("resource")
-		public static void Db_Connect1() {
-			try {
-				
-				Properties props = new Properties();
-				props.setProperty("dataSourceClassName", "oracle.jdbc.pool.OracleDataSource");
-				props.setProperty("dataSource.user", Connect.userID);
-				props.setProperty("dataSource.password", Connect.userPassword);
-				//props.setProperty("keepaliveTime", "30000");
-				props.setProperty("dataSource.url", "jdbc:oracle:thin:@" + Connect.connectionURL);
-				//props.put("data-source-properties.v$session.program", DbUtil.class.getName());
-				props.put("dataSource.logWriter", new PrintWriter("D:/log.txt"));
 
-				HikariConfig config = new HikariConfig(props);
-				HikariDataSource ds = new HikariDataSource(config);
-				
-				conn = ds.getConnection();
-				
-				conn.setAutoCommit(false);
-			} catch (Exception e) {
-				DbUtil.Log_Error(e);
-			}
+	// Connect to DB
+	@SuppressWarnings("resource")
+	public static void Db_Connect1() {
+		try {
+
+			Properties props = new Properties();
+			props.setProperty("dataSourceClassName", "oracle.jdbc.pool.OracleDataSource");
+			props.setProperty("dataSource.user", Connect.userID);
+			props.setProperty("dataSource.password", Connect.userPassword);
+			// props.setProperty("keepaliveTime", "30000");
+			props.setProperty("dataSource.url", "jdbc:oracle:thin:@" + Connect.connectionURL);
+			// props.put("data-source-properties.v$session.program",
+			// DbUtil.class.getName());
+			props.put("dataSource.logWriter", new PrintWriter("D:/log.txt"));
+
+			HikariConfig config = new HikariConfig(props);
+			HikariDataSource ds = new HikariDataSource(config);
+
+			conn = ds.getConnection();
+
+			conn.setAutoCommit(false);
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
 		}
-	
+	}
+
 	// Connect to DB
 	public static void Db_Connect() {
 		try {
-			//System.out.println(OracleConnection.CONNECTION_PROPERTY_THIN_NET_CONNECT_TIMEOUT);
-			
-		
+			// System.out.println(OracleConnection.CONNECTION_PROPERTY_THIN_NET_CONNECT_TIMEOUT);
+
 			System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
 			OracleDataSource ods = new OracleDataSource();
 			ods.setTNSEntryName("mj_orcl");
@@ -113,19 +114,21 @@ public class DbUtil {
 			ods.setPassword(Connect.userPassword);
 			ods.setLoginTimeout(2);
 
-		    Properties cp = new Properties();
-		    cp.setProperty("SetBigStringTryClob", "true");
-		    cp.put("Oracle.net.CONNECT_TIMEOUT", 0);
-		    cp.put("Oracle.net.READ_TIMEOUT", 0);
-		    cp.put("Oracle.jdbc.ReadTimeout", 0);
-		    cp.put("Oracle.net.tcpKeepAlive", "true");
-		    cp.put("v$session.program", DbUtil.class.getName());
-			
+			Properties cp = new Properties();
+			cp.setProperty("SetBigStringTryClob", "true");
+			cp.put("Oracle.net.CONNECT_TIMEOUT", 0);
+			cp.put("Oracle.net.READ_TIMEOUT", 0);
+			cp.put("Oracle.jdbc.ReadTimeout", 0);
+			cp.put("Oracle.net.tcpKeepAlive", "true");
+			cp.put("v$session.program", DbUtil.class.getName());
+
 			ods.setConnectionProperties(cp);
-			
+
 			conn = ods.getConnection();
-			
+
 			conn.setAutoCommit(false);
+			
+			Run_Proc(conn, DbUtil.class.getName());
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -141,26 +144,26 @@ public class DbUtil {
 			ods.setUser(Connect.userID);
 			ods.setPassword(Connect.userPassword);
 			ods.setLoginTimeout(2);
-			
-			
-		    Properties cp = new Properties();
-		    cp.setProperty("SetBigStringTryClob", "true");
-		    cp.put("Oracle.net.CONNECT_TIMEOUT", 0);
-		    cp.put("Oracle.net.READ_TIMEOUT", 0);
-		    cp.put("Oracle.jdbc.ReadTimeout", 0);
-		    cp.put("Oracle.net.tcpKeepAlive", "true");
+
+			Properties cp = new Properties();
+			cp.setProperty("SetBigStringTryClob", "true");
+			cp.put("Oracle.net.CONNECT_TIMEOUT", 0);
+			cp.put("Oracle.net.READ_TIMEOUT", 0);
+			cp.put("Oracle.jdbc.ReadTimeout", 0);
+			cp.put("Oracle.net.tcpKeepAlive", "true");
 			cp.put("v$session.program", ClassName);
-			
-			
+
 			ods.setConnectionProperties(cp);
 			conn = ods.getConnection();
 			conn.setAutoCommit(false);
+			
+			Run_Proc(conn, ClassName);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 		return conn;
 	}
-	
+
 	// Close Connection
 	public static void Db_Disconnect() {
 		try {
@@ -190,7 +193,7 @@ public class DbUtil {
 		boolean ret = true;
 		try {
 //			Class.forName(JDBC_DRIVER);
-			Connection conn ;
+			Connection conn;
 //					DriverManager.getConnection(
 //					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL);
 			System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
@@ -212,15 +215,15 @@ public class DbUtil {
 		return ret;
 	}
 
-	public static void Run_Process(Connection conn, String ClassName) {
-//		try {
-//			Timer time = new Timer(); // Instantiate Timer Object
-//			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-//			st.setConn(conn, ClassName);
-//			time.schedule(st, 0, 60000); // Create task repeating every 1 min = 60 000
-//		} catch (Exception e) {
-//			DbUtil.Log_Error(e);
-//		}
+	public static void Run_Proc(Connection conn, String ClassName) {
+		try {
+			Timer time = new Timer(); // Instantiate Timer Object
+			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
+			st.setConn(conn, ClassName);
+			time.schedule(st, 0, 30000); // Create task repeating every 1 min = 60 000
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
 	}
 
 	/**
@@ -231,7 +234,7 @@ public class DbUtil {
 			if (linenumber != null & (classname != null && !classname.equals("")) & (error != null && !error.equals(""))
 					& (METHODNAME != null && !METHODNAME.equals(""))) {
 //				Class.forName(JDBC_DRIVER);
-				
+
 //				Properties props = new Properties();
 //				props.put("v$session.program", DbUtil.class.getName());
 				Connection conn;
@@ -400,19 +403,33 @@ public class DbUtil {
 		return resultSet;
 	}
 
-	public static Long Odb_Aaction(Long usrid, Long actid) {
-		Main.logger = Logger.getLogger(DbUtil.class);
+	public static Long OdbActionByLogin(Long usrid, Long actid) {
 		Long ret = 0l;
-		Connection conn = DbUtil.conn;
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.OdbAccess(?,?)}");
-			callStmt.registerOutParameter(1, Types.INTEGER);
-			callStmt.setLong(2, usrid);
-			callStmt.setLong(3, actid);
-			callStmt.execute();
-			ret = callStmt.getLong(1);
-			callStmt.close();
-		} catch (SQLException e) {
+			try {
+				CallableStatement callStmt = DbUtil.conn.prepareCall("{ ? = call MJUsers.OdbAccess(?,?)}");
+				callStmt.registerOutParameter(1, Types.INTEGER);
+				callStmt.setLong(2, usrid);
+				callStmt.setLong(3, actid);
+				callStmt.execute();
+				ret = callStmt.getLong(1);
+				callStmt.close();
+			} catch (Exception e) {
+				try {
+					Db_Disconnect();
+					Db_Connect();
+					CallableStatement callStmt = DbUtil.conn.prepareCall("{ ? = call MJUsers.OdbAccess(?,?)}");
+					callStmt.registerOutParameter(1, Types.INTEGER);
+					callStmt.setLong(2, usrid);
+					callStmt.setLong(3, actid);
+					callStmt.execute();
+					ret = callStmt.getLong(1);
+					callStmt.close();
+				} catch (Exception e1) {
+					DbUtil.Log_Error(e1);
+				}
+			}
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 		return ret;
@@ -526,9 +543,8 @@ public class DbUtil {
 	 */
 	public static Long Odb_Action(Long actid) {
 		Long ret = 0l;
-		Connection conn = DbUtil.conn;
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ACT_ACCESS(?)}");
+			CallableStatement callStmt = DbUtil.conn.prepareCall("{ ? = call MJUsers.ACT_ACCESS(?)}");
 			callStmt.registerOutParameter(1, Types.INTEGER);
 			callStmt.setLong(2, actid);
 			callStmt.execute();
@@ -536,13 +552,14 @@ public class DbUtil {
 			callStmt.close();
 		} catch (Exception e) {
 			try {
-			Db_Connect();
-			CallableStatement callStmt = conn.prepareCall("{ ? = call MJUsers.ACT_ACCESS(?)}");
-			callStmt.registerOutParameter(1, Types.INTEGER);
-			callStmt.setLong(2, actid);
-			callStmt.execute();
-			ret = callStmt.getLong(1);
-			callStmt.close();
+				Db_Disconnect();
+				Db_Connect();
+				CallableStatement callStmt = DbUtil.conn.prepareCall("{ ? = call MJUsers.ACT_ACCESS(?)}");
+				callStmt.registerOutParameter(1, Types.INTEGER);
+				callStmt.setLong(2, actid);
+				callStmt.execute();
+				ret = callStmt.getLong(1);
+				callStmt.close();
 			} catch (Exception e1) {
 				DbUtil.Log_Error(e1);
 			}
