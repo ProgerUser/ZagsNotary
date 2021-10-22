@@ -13,7 +13,7 @@ public class ScheduledTask extends TimerTask {
 	String ClassName = null;
 
 	public void run() {
-		String sessionid = null;
+		// String sessionid = null;
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
 		if (conn != null) {
@@ -21,14 +21,15 @@ public class ScheduledTask extends TimerTask {
 				PreparedStatement prp = conn.prepareStatement("select sys_context('USERENV', 'SESSIONID') from dual");
 				ResultSet rs = prp.executeQuery();
 				if (rs.next()) {
-					sessionid = rs.getString(1);
-					System.out.println("<" + rs.getString(1) + ">" + "<SelectFromDual><" + dtf.format(now) + ">"
-							+ "<class><" + ClassName + ">");
+					// sessionid = rs.getString(1);
+					System.out.println("<SessionId=\"" + rs.getString(1) + "\">" + "<Time=\"" + dtf.format(now) + "\">"
+							+ "<Class=\"" + ClassName + "\">");
 				}
 				rs.close();
 				prp.close();
 			} catch (Exception e) {
-				System.out.println("ERROR<" + sessionid + ">");
+				System.out.println("<Error=\"" + e.getMessage() + "\">" + "<Time=\"" + dtf.format(now) + "\">"
+						+ "<Class=\"" + ClassName + "\">"+ "<ClassId=\"" + ClassName + "\">");
 				this.cancel();
 			}
 		} else {
