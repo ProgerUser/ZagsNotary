@@ -32,7 +32,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -42,6 +44,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -178,24 +181,34 @@ public class UsrC {
 		try {
 			if (USR_GRP.getSelectionModel().getSelectedItem() != null
 					& USRLST.getSelectionModel().getSelectedItem() != null) {
-				ODB_GROUP_USR grp_act = USR_GRP.getSelectionModel().getSelectedItem();
-				USR usr = USRLST.getSelectionModel().getSelectedItem();
-				PreparedStatement prp = conn
-						.prepareStatement(
-								"declare\n" + 
-				                "  usr_id number;\n" + 
-								"  pragma autonomous_transaction;\n"
-								+ "begin\n" + 
-								"  select usr.iusrid into usr_id from usr where usr.cusrlogname = ?;\n"
-								+ "  delete from  ODB_GRP_MEMBER where GRP_ID = ? and IUSRID = usr_id;\n"
-								+ "  commit;\n" + 
-								"end;\n");
-				prp.setString(1, usr.getCUSRLOGNAME());
-				prp.setLong(2, grp_act.getGRP_ID());
-				prp.executeUpdate();
-				prp.close();
-				// Обновить
-				InitGrp();
+				
+				final Alert alert = new Alert(AlertType.CONFIRMATION, "Удалить группу "
+						+ USR_GRP.getSelectionModel().getSelectedItem().getGRP_NAME() + " ?",
+						ButtonType.YES, ButtonType.NO);
+				((Stage) alert.getDialogPane().getScene().getWindow()).getIcons()
+						.add(new Image("/icon.png"));
+				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait()
+						.orElse(ButtonType.NO) == ButtonType.YES) {
+					ODB_GROUP_USR grp_act = USR_GRP.getSelectionModel().getSelectedItem();
+					USR usr = USRLST.getSelectionModel().getSelectedItem();
+					PreparedStatement prp = conn
+							.prepareStatement(
+									"declare\n" + 
+					                "  usr_id number;\n" + 
+									"  pragma autonomous_transaction;\n"
+									+ "begin\n" + 
+									"  select usr.iusrid into usr_id from usr where usr.cusrlogname = ?;\n"
+									+ "  delete from  ODB_GRP_MEMBER where GRP_ID = ? and IUSRID = usr_id;\n"
+									+ "  commit;\n" + 
+									"end;\n");
+					prp.setString(1, usr.getCUSRLOGNAME());
+					prp.setLong(2, grp_act.getGRP_ID());
+					prp.executeUpdate();
+					prp.close();
+					// Обновить
+					InitGrp();
+				}
+				
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);

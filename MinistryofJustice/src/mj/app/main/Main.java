@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
+import com.github.plushaze.traynotification.notification.Notification;
+import com.github.plushaze.traynotification.notification.Notifications;
+import com.github.plushaze.traynotification.notification.TrayNotification;
 import com.jyloo.syntheticafx.DesktopPane;
 import com.jyloo.syntheticafx.RootPane;
 import com.jyloo.syntheticafx.SyntheticaFX;
@@ -97,6 +100,7 @@ public class Main extends Application {
 	public static boolean AuSetupWin = true;
 	public static boolean OtdWin = true;
 	public static boolean PmEmpWin = true;
+	public static boolean PmInBoxDocsWin = true;
 	public static boolean CourtsWin = true;
 	public static boolean ZagsWin = true;
 	public static boolean NotaryWin = true;
@@ -160,6 +164,7 @@ public class Main extends Application {
 			Main.primaryStage = primaryStage;
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
+			
 
 //			boolean is_upd = new mj.update.root.Main().start();
 
@@ -696,6 +701,34 @@ public class Main extends Application {
 		System.exit(0);
 	}
 
+	public static void PmInBoxDocs() {
+		try {
+			if (PmInBoxDocsWin) {
+				PmInBoxDocsWin = false;
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/prjmngm/emps/RootPmEmpView.fxml"));
+				RootPmEmpController controller = new RootPmEmpController();
+				loader.setController(controller);
+				Parent root = loader.load();
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Входящие документы");
+				stage.initOwner(primaryStage);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						PmInBoxDocsWin = true;
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+	
 	public static void PmEmp() {
 		try {
 			if (PmEmpWin) {

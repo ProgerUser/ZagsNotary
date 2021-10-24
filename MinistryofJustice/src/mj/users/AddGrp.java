@@ -8,13 +8,18 @@ import org.controlsfx.control.table.TableFilter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mj.access.grp.ODB_GROUP_USR;
+import mj.msg.Msg;
 import mj.utils.DbUtil;
 
 public class AddGrp {
@@ -121,22 +126,24 @@ public class AddGrp {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
 						if (ODB_GROUP_USR.getSelectionModel().getSelectedItem() != null) {
 							try {
-								PreparedStatement prp = DbUtil.conn
-										.prepareStatement(
-												"declare\n" + 
-												"  pragma autonomous_transaction;\n" + 
-												"  usr_id number;\n" + 
-												"begin\n" + 
-												"  select usr.iusrid into usr_id from usr where usr.cusrlogname = ?;\n" + 
-												"  insert into ODB_GRP_MEMBER (GRP_ID, IUSRID) values (?, usr_id);\n" + 
-												"  commit;\n" + 
-												"end;\n" + 
-												"");
-								prp.setString(1, UserLogin);
-								prp.setLong(2, ODB_GROUP_USR.getSelectionModel().getSelectedItem().getGRP_ID());
-								prp.executeUpdate();
-								prp.close();
-								onclose();
+								final Alert alert = new Alert(AlertType.CONFIRMATION, "Добавить группу "
+										+ ODB_GROUP_USR.getSelectionModel().getSelectedItem().getGRP_NAME() + " ?",
+										ButtonType.YES, ButtonType.NO);
+								((Stage) alert.getDialogPane().getScene().getWindow()).getIcons()
+										.add(new Image("/icon.png"));
+								if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait()
+										.orElse(ButtonType.NO) == ButtonType.YES) {
+									PreparedStatement prp = DbUtil.conn.prepareStatement("declare\n"
+											+ "  pragma autonomous_transaction;\n" + "  usr_id number;\n" + "begin\n"
+											+ "  select usr.iusrid into usr_id from usr where usr.cusrlogname = ?;\n"
+											+ "  insert into ODB_GRP_MEMBER (GRP_ID, IUSRID) values (?, usr_id);\n"
+											+ "  commit;\n" + "end;\n" + "");
+									prp.setString(1, UserLogin);
+									prp.setLong(2, ODB_GROUP_USR.getSelectionModel().getSelectedItem().getGRP_ID());
+									prp.executeUpdate();
+									prp.close();
+									onclose();
+								}
 							} catch (Exception e) {
 								DbUtil.Log_Error(e);
 							}
@@ -145,8 +152,7 @@ public class AddGrp {
 				});
 				return row;
 			});
-			
-			
+
 			InitGrp();
 
 		} catch (Exception e) {

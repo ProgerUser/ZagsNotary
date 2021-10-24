@@ -12,6 +12,7 @@ public class ScheduledTask extends TimerTask {
 	Connection conn = null;
 	String ClassName = null;
 
+	@SuppressWarnings("unused")
 	public void run() {
 		// String sessionid = null;
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
@@ -22,14 +23,14 @@ public class ScheduledTask extends TimerTask {
 				ResultSet rs = prp.executeQuery();
 				if (rs.next()) {
 					// sessionid = rs.getString(1);
-					System.out.println("<SessionId=\"" + rs.getString(1) + "\">" + "<Time=\"" + dtf.format(now) + "\">"
-							+ "<Class=\"" + ClassName + "\">");
+//					System.out.println("<SessionId=\"" + rs.getString(1) + "\">" + "<Time=\"" + dtf.format(now) + "\">"
+//							+ "<Class=\"" + ClassName + "\">");
 				}
 				rs.close();
 				prp.close();
 			} catch (Exception e) {
-				System.out.println("<Error=\"" + e.getMessage() + "\">" + "<Time=\"" + dtf.format(now) + "\">"
-						+ "<Class=\"" + ClassName + "\">"+ "<ClassId=\"" + ClassName + "\">");
+//				System.out.println("<Error=\"" + e.getMessage() + "\">" + "<Time=\"" + dtf.format(now) + "\">"
+//						+ "<Class=\"" + ClassName + "\">"+ "<ClassId=\"" + ClassName + "\">");
 				this.cancel();
 			}
 		} else {

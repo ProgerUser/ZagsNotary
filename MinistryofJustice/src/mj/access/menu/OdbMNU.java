@@ -507,7 +507,7 @@ public class OdbMNU {
 			if (parent.equals(key)) {
 				// in case the root item points to itself, this is it
 				root = entry.getValue();
-				root.setExpanded(true);
+				root.setExpanded(false);
 			} else {
 				TreeItem<ODB_MNU> parentItem = itemById.get(parent);
 				if (parentItem == null) {
@@ -517,10 +517,10 @@ public class OdbMNU {
 					// add to parent tree item
 					parentItem.getChildren().add(entry.getValue());
 				}
-				parentItem.setExpanded(true);
+				parentItem.setExpanded(false);
 			}
 		}
-		// root.setExpanded(true);
+		root.setExpanded(true);
 		MNU.setRoot(root);
 	}
 

@@ -1,4 +1,4 @@
-package mj.prjmngm.emps;
+package mj.prjmngm.inboxdocs;
 
 import java.io.Reader;
 import java.sql.CallableStatement;
@@ -39,11 +39,11 @@ import mj.msg.Msg;
 import mj.util.ConvConst;
 import mj.utils.DbUtil;
 
-public class RootPmEmpController {
+public class RootPmDoc {
 	/**
 	 * Конструктор
 	 */
-	public RootPmEmpController() {
+	public RootPmDoc() {
 		Main.logger = Logger.getLogger(getClass());
 	}
 
@@ -95,7 +95,7 @@ public class RootPmEmpController {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/mj/prjmngm/emps/IUPmEmp.fxml"));
 
-			AddPmEmpController controller = new AddPmEmpController();
+			AddPmDocC controller = new AddPmDocC();
 			controller.SetConn(conn);
 			loader.setController(controller);
 
@@ -176,7 +176,7 @@ public class RootPmEmpController {
 					Stage stage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/mj/prjmngm/emps/IUPmEmp.fxml"));
-					EditPmEmpController controller = new EditPmEmpController();
+					EditPmDocC controller = new EditPmDocC();
 					controller.SetClass(sel, conn);
 					loader.setController(controller);
 					Parent root = loader.load();

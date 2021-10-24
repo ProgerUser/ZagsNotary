@@ -45,7 +45,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-
+	
 	/**
 	 * Управление проектами
 	 */
@@ -53,6 +53,15 @@ public class Root {
 	void PmEmp(ActionEvent event) {
 		try {
 			Main.PmEmp();
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+	//--
+	@FXML
+	void InBoxDocs(ActionEvent event) {
+		try {
+			Main.PmInBoxDocs();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

@@ -1,4 +1,4 @@
-package mj.prjmngm.emps;
+package mj.prjmngm.inboxdocs;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -34,11 +34,11 @@ import mj.utils.DbUtil;
 import mj.widgets.FxUtilTest;
 import mj.widgets.MaskField;
 
-public class EditPmEmpController {
+public class EditPmDocC {
 	/**
 	 * Конструктор
 	 */
-	public EditPmEmpController() {
+	public EditPmDocC() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 	}

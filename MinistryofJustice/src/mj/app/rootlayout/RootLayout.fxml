@@ -48,6 +48,7 @@
 				<Menu fx:id="203" mnemonicParsing="false" text="Управление проектами">
 					<items>
 						<MenuItem fx:id="204" mnemonicParsing="false" onAction="#PmEmp" text="Сотрудники" />
+						<MenuItem fx:id="223" mnemonicParsing="false" onAction="#InBoxDocs" text="Входящие документы" />
 					</items>
 				</Menu>
 				<Menu fx:id="16" mnemonicParsing="false" text="Администратор">
