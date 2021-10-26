@@ -38,10 +38,10 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Загрузки/flexganttfx-8.12.0-bin/lib/flexganttfx-extras-8.12.0.jar"/>
-	<classpathentry kind="lib" path="D:/Загрузки/flexganttfx-8.12.0-bin/lib/flexganttfx-model-8.12.0.jar"/>
-	<classpathentry kind="lib" path="D:/Загрузки/flexganttfx-8.12.0-bin/lib/flexganttfx-view-8.12.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Said.000/Documents/lic.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Said.000/Documents/core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/saidp/git/ZagsNotary/MinistryofJustice/lib/core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/saidp/git/ZagsNotary/MinistryofJustice/lib/flexganttfx-extras-8.12.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/saidp/git/ZagsNotary/MinistryofJustice/lib/flexganttfx-model-8.12.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/saidp/git/ZagsNotary/MinistryofJustice/lib/flexganttfx-view-8.12.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/saidp/git/ZagsNotary/MinistryofJustice/lib/lic.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -27,7 +27,7 @@ import java.time.temporal.ChronoUnit;
 public class TutorialAircraftFlight extends Application {
 
 	/*
-	 * Plain data object storing dummy flight information.
+	 * Обычный объект данных, хранящий фиктивную информацию о полете.
 	 */
 	class FlightData {
 
@@ -43,9 +43,9 @@ public class TutorialAircraftFlight extends Application {
 	}
 
 	/*
-	 * The activity representing the flight. This object will be rendered as a bar
-	 * in the graphics view of the Gantt chart. The flight is mutable, so the user
-	 * will be able to interact with it.
+	 * Деятельность, представляющая полет. Этот объект будет отображаться как полоса
+     * в графическом представлении диаграммы Ганта. Полет изменчив, поэтому пользователь
+     * сможет с ним взаимодействовать.
 	 */
 	class Flight extends MutableActivityBase<FlightData> {
 		public Flight(FlightData data) {
@@ -57,9 +57,9 @@ public class TutorialAircraftFlight extends Application {
 	}
 
 	/*
-	 * Each row represents an aircraft in this example. The activities shown on the
-	 * row are of type Flight.
-	 */
+	* Каждая строка представляет собой самолет в этом примере. Мероприятия, показанные на
+	* строка относится к типу Flight.
+	*/
 	class Aircraft extends Row<Aircraft, Aircraft, Flight> {
 		public Aircraft(String name) {
 			super(name);
@@ -69,15 +69,17 @@ public class TutorialAircraftFlight extends Application {
 	public void start(Stage stage) {
 
 		// Create the Gantt chart
-		GanttChart<Aircraft> gantt = new GanttChart<Aircraft>(new Aircraft("ROOT"));
+		GanttChart<Aircraft> gantt = new GanttChart<Aircraft>(new Aircraft("Самолеты"));
 
+	
 		Layer layer = new Layer("Flights");
 		gantt.getLayers().add(layer);
 
 		Aircraft b747 = new Aircraft("B747");
-		b747.addActivity(layer, new Flight(new FlightData("flight1", 1)));
-		b747.addActivity(layer, new Flight(new FlightData("flight2", 2)));
-		b747.addActivity(layer, new Flight(new FlightData("flight3", 3)));
+		b747.addActivity(layer, new Flight(new FlightData("полет1", 1)));
+		b747.addActivity(layer, new Flight(new FlightData("полет2", 2)));
+		b747.addActivity(layer, new Flight(new FlightData("полет3", 3)));
+		b747.addActivity(layer, new Flight(new FlightData("полет4", 10)));
 
 		Aircraft a380 = new Aircraft("A380");
 		a380.addActivity(layer, new Flight(new FlightData("flight1", 1)));
@@ -87,7 +89,7 @@ public class TutorialAircraftFlight extends Application {
 		gantt.getRoot().getChildren().setAll(b747, a380);
 
 		Timeline timeline = gantt.getTimeline();
-		timeline.showTemporalUnit(ChronoUnit.HOURS, 10);
+		timeline.showTemporalUnit(ChronoUnit.DAYS, 10);
 
 		GraphicsBase<Aircraft> graphics = gantt.getGraphics();
 		graphics.setActivityRenderer(Flight.class, GanttLayout.class,
