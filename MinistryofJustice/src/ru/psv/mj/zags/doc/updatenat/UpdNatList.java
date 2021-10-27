@@ -143,7 +143,7 @@ public class UpdNatList {
 			Stage stage_ = (Stage) ROOT.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/updatenat/IUUpdNat.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/updatenat/IUUpdNat.fxml"));
 
 			AddUpdNat controller = new AddUpdNat();
 			loader.setController(controller);
@@ -287,7 +287,7 @@ public class UpdNatList {
 						XmlsForCompare(docid);
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/doc/updatenat/IUUpdNat.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/updatenat/IUUpdNat.fxml"));
 
 						EditUpdNat controller = new EditUpdNat();
 						controller.setId(cl.getID());
@@ -868,7 +868,7 @@ public class UpdNatList {
 			} else {
 //				VUPD_NAT cl = UPD_NAT.getSelectionModel().getSelectedItem();
 //				Stage stage = new Stage();
-//				FXMLLoader loader = new FXMLLoader(getClass().getResource("/mj/report/Report.fxml"));
+//				FXMLLoader loader = new FXMLLoader(getClass().getResource("/ru/psv/mj/report/Report.fxml"));
 //
 //				Report controller = new Report();
 //				controller.setId(3);

@@ -169,7 +169,7 @@ public class EditCus {
 			Stage stage_ = (Stage) AB_LAST_NAME.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/widgets/KeyBoard.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/widgets/KeyBoard.fxml"));
 
 			KeyBoard controller = new KeyBoard();
 			loader.setController(controller);
@@ -259,7 +259,7 @@ public class EditCus {
 	void FillAllDocs() {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+			SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 			String readRecordSQL = sql.getSql("AllDocs");
 			PreparedStatement sqlStatement = conn.prepareStatement(readRecordSQL);
 			sqlStatement.setLong(1, getId());
@@ -1008,7 +1008,7 @@ public class EditCus {
 	 */
 	void InitCusDocum() {
 		try {
-			SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+			SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 			String doc_list = sql.getSql("doc_list");
 			PreparedStatement prepStmt = conn.prepareStatement(doc_list);
 			prepStmt.setLong(1, getId());
@@ -1137,7 +1137,7 @@ public class EditCus {
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) CombCountryAddr.getScene().getWindow();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus_Doc.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus_Doc.fxml"));
 
 			Add_Cus_Doc controller = new Add_Cus_Doc();
 			loader.setController(controller);
@@ -1183,7 +1183,7 @@ public class EditCus {
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) CombCountryAddr.getScene().getWindow();
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus_Doc.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus_Doc.fxml"));
 
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 
@@ -1257,7 +1257,7 @@ public class EditCus {
 			String xml_last_auth = exdb.XML(AuthReturn);
 			exdb.SAVE_AUTH_1C_DATE(xml_last_auth);
 
-			SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+			SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 			String readRecordSQL = sql.getSql("FOR_1c");
 			String XML = sql.getSql("1C_XML");
 			{
@@ -1955,7 +1955,7 @@ public class EditCus {
 							Stage stage = new Stage();
 							Stage stage_ = (Stage) CombCountryAddr.getScene().getWindow();
 							FXMLLoader loader = new FXMLLoader();
-							loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus_Doc.fxml"));
+							loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus_Doc.fxml"));
 
 							CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 
@@ -2493,7 +2493,7 @@ public class EditCus {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 
-			SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+			SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 			String CUS_ADDR_LIST = sql.getSql("CUS_ADDR_LIST");
 			PreparedStatement prepStmt = conn.prepareStatement(CUS_ADDR_LIST);
 			prepStmt.setLong(1, getId());
@@ -2702,7 +2702,7 @@ public class EditCus {
 			Stage stage_ = (Stage) all_docs.getScene().getWindow();
 			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/birthact/IUBirthAct.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/birthact/IUBirthAct.fxml"));
 			AddBirthAct controller = new AddBirthAct();
 
 			controller.setCusFio(ForAddFioAndId.getCCUSNAME());
@@ -2737,7 +2737,7 @@ public class EditCus {
 			Stage stage_ = (Stage) all_docs.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/patern/IUPatern.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/patern/IUPatern.fxml"));
 
 			AddPatern controller = new AddPatern();
 			controller.setConn(conn);
@@ -2774,7 +2774,7 @@ public class EditCus {
 			Stage stage_ = (Stage) all_docs.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/mercer/IUMercer.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/mercer/IUMercer.fxml"));
 
 			AddMercer controller = new AddMercer();
 			loader.setController(controller);
@@ -2811,7 +2811,7 @@ public class EditCus {
 			Stage stage_ = (Stage) all_docs.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/divorce/IUDivorce.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/divorce/IUDivorce.fxml"));
 
 			AddDivorce controller = new AddDivorce();
 			loader.setController(controller);
@@ -2848,7 +2848,7 @@ public class EditCus {
 			Stage stage_ = (Stage) all_docs.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/death/IUDeath.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/death/IUDeath.fxml"));
 
 			AddDeath controller = new AddDeath();
 			loader.setController(controller);
@@ -2885,7 +2885,7 @@ public class EditCus {
 			Stage stage_ = (Stage) all_docs.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/updname/IUUpdName.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/updname/IUUpdName.fxml"));
 
 			AddUpdName controller = new AddUpdName();
 			{
@@ -2932,7 +2932,7 @@ public class EditCus {
 			Stage stage_ = (Stage) all_docs.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/updabhname/IUUpdAbhName.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/updabhname/IUUpdAbhName.fxml"));
 
 			AddUpdAbhName controller = new AddUpdAbhName();
 			{
@@ -2978,7 +2978,7 @@ public class EditCus {
 			Stage stage_ = (Stage) all_docs.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/updatenat/IUUpdNat.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/updatenat/IUUpdNat.fxml"));
 
 			AddUpdNat controller = new AddUpdNat();
 			controller.setConn(conn);
@@ -3025,7 +3025,7 @@ public class EditCus {
 			Stage stage_ = (Stage) all_docs.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/adoptoin/IUAdopt.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/adoptoin/IUAdopt.fxml"));
 
 			AddAdopt controller = new AddAdopt();
 			controller.setConn(conn);

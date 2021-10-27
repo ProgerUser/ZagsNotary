@@ -283,7 +283,7 @@ public class NotaryDocList {
 				Stage stage_ = (Stage) NT_DOC.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/doc/html/view/IUHtmlDoc.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/doc/html/view/IUHtmlDoc.fxml"));
 
 				AddDoc controller = new AddDoc();
 				loader.setController(controller);
@@ -330,7 +330,7 @@ public class NotaryDocList {
 					Stage stage_ = (Stage) NT_DOC.getScene().getWindow();
 
 					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/notary/doc/html/view/IUHtmlDoc.fxml"));
+					loader.setLocation(getClass().getResource("/ru/psv/mj/notary/doc/html/view/IUHtmlDoc.fxml"));
 
 					EditDoc controller = new EditDoc();
 					controller.setConn(conn, val);
@@ -501,7 +501,7 @@ public class NotaryDocList {
 				// preparing variables
 				Variables variables = new Variables();
 				PreparedStatement prepStmt = DbUtil.conn.prepareStatement(
-						DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "PrintNtDocPrmVals"));
+						DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "PrintNtDocPrmVals"));
 				prepStmt.setLong(1, val.getID());
 				ResultSet rs = prepStmt.executeQuery();
 				while (rs.next()) {

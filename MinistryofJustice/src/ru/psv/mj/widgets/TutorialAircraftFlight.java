@@ -66,6 +66,7 @@ public class TutorialAircraftFlight extends Application {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void start(Stage stage) {
 
 		// Create the Gantt chart

@@ -313,7 +313,7 @@ public class AdoptList {
 			Stage stage_ = (Stage) ADOPTOIN.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/adoptoin/IUAdopt.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/adoptoin/IUAdopt.fxml"));
 
 			AddAdopt controller = new AddAdopt();
 			loader.setController(controller);
@@ -529,7 +529,7 @@ public class AdoptList {
 						XmlsForCompare(docid);
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/doc/adoptoin/IUAdopt.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/adoptoin/IUAdopt.fxml"));
 
 						EditAdopt controller = new EditAdopt();
 						controller.setId(cl.getID());

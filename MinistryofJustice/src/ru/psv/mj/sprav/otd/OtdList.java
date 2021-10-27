@@ -106,7 +106,7 @@ public class OtdList {
 			Stage stage_ = (Stage) OTD.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/otd/IUOtd.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/otd/IUOtd.fxml"));
 
 			AddOtd controller = new AddOtd();
 			loader.setController(controller);
@@ -255,7 +255,7 @@ public class OtdList {
 					{
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/otd/IUOtd.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/otd/IUOtd.fxml"));
 
 						EditOtd controller = new EditOtd();
 						controller.setId(otd.getIOTDNUM());
@@ -314,7 +314,7 @@ public class OtdList {
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) BP.getScene().getWindow();
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/mj/widgets/DbTracer.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/widgets/DbTracer.fxml"));
 
 				DbTracer controller = new DbTracer();
 				loader.setController(controller);

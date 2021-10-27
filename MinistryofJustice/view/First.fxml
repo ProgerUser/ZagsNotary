@@ -5,7 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane styleClass="FirstPane" stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.301" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.app.controller.First">
+<BorderPane styleClass="FirstPane" stylesheets="/borderpane.css" xmlns="http://javafx.com/javafx/8.0.301" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.psv.mj.app.controller.First">
 	<center>
 		<ImageView fx:id="imageView" BorderPane.alignment="CENTER">
 			<viewport>

@@ -75,7 +75,7 @@ public class IUTempParam {
 			Stage stage_ = (Stage) NT_TEMP_LIST_PARAM.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempParamIU.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/notary/template/html/view/IUTempParamIU.fxml"));
 
 			IUTempParamIU controller = new IUTempParamIU();
 			controller.setID(getID());
@@ -210,7 +210,7 @@ public class IUTempParam {
 				Stage stage_ = (Stage) NT_TEMP_LIST_PARAM.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempParamIU.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/template/html/view/IUTempParamIU.fxml"));
 
 				IUTempParamIU controller = new IUTempParamIU();
 				controller.setcl(tmp);

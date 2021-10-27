@@ -71,7 +71,7 @@ public class NotaryList {
 			Stage stage_ = (Stage) NOTARY.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/notary/IUNotary.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/notary/IUNotary.fxml"));
 
 			AddNotary controller = new AddNotary();
 			loader.setController(controller);
@@ -208,7 +208,7 @@ public class NotaryList {
 					{
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/NOTARY/IUNOTARY.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/notary/IUNOTARY.fxml"));
 
 						EditNotary controller = new EditNotary();
 						controller.setId(VNOTARY.getNOT_ID());

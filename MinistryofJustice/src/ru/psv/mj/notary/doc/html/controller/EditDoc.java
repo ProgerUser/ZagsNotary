@@ -188,7 +188,7 @@ public class EditDoc {
 				Stage stage_ = (Stage) Tabs.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/doc/html/view/DocParamAdd.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/doc/html/view/DocParamAdd.fxml"));
 
 				DocParamEdit controller = new DocParamEdit();
 				controller.setConn(conn, val_tp, NT_DOC, val.getValue());
@@ -304,7 +304,7 @@ public class EditDoc {
 				Stage stage_ = (Stage) Tabs.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/doc/html/view/DocParamAdd.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/doc/html/view/DocParamAdd.fxml"));
 
 				DocParamAdd controller = new DocParamAdd();
 				controller.setConn(conn, val, NT_DOC);
@@ -404,7 +404,7 @@ public class EditDoc {
 			// Замена input = span
 			WebView webView = (WebView) HtmlEditor.lookup("WebView");
 			webView.getEngine()
-					.executeScript(DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "HTMLInputToSpan"));
+					.executeScript(DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "HTMLInputToSpan"));
 
 //			Printer pdfPrinter = null;
 //			Iterator<Printer> iter = Printer.getAllPrinters().iterator();
@@ -517,7 +517,7 @@ public class EditDoc {
 			if (val != null) {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
 				PreparedStatement prp = conn.prepareStatement(
-						DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "EditDocListValWithLocPrm"));
+						DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "EditDocListValWithLocPrm"));
 				prp.setString(1, id);
 				prp.setLong(2, val.getID());
 				prp.setString(3, id);
@@ -554,7 +554,7 @@ public class EditDoc {
 					Stage stage_ = (Stage) webView.getScene().getWindow();
 
 					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/notary/doc/html/view/ParamList.fxml"));
+					loader.setLocation(getClass().getResource("/ru/psv/mj/notary/doc/html/view/ParamList.fxml"));
 
 					ParamList controller = new ParamList();
 					controller.setQuery(list.getPRM_SQL());
@@ -662,7 +662,7 @@ public class EditDoc {
 				Stage stage_ = (Stage) HtmlEditor.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/doc/html/view/AddParam.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/doc/html/view/AddParam.fxml"));
 
 				AddParam controller = new AddParam();
 				controller.setConn(conn, JsonStr.trim(), val);
@@ -808,7 +808,7 @@ public class EditDoc {
 				Map<Long, Long> parents = new HashMap<>();
 
 				PreparedStatement prp = conn.prepareStatement(
-						DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
+						DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
 				Clob clob = conn.createClob();
 				clob.setString(1, JsonStr.trim());
 				prp.setLong(1, val.getID());
@@ -966,7 +966,7 @@ public class EditDoc {
 			Stage stage_ = (Stage) DelSelType.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/notary/doc/html/view/TableManage.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/notary/doc/html/view/TableManage.fxml"));
 
 			TableManage controller = new TableManage();
 			loader.setController(controller);

@@ -215,7 +215,7 @@ public class Main extends Application {
 		try {
 			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("/mj/app/rootlayout/RootLayout.fxml"));
+			loader.setLocation(Main.class.getResource("/ru/psv/mj/app/rootlayout/RootLayout.fxml"));
 			rootLayout = (BorderPane) loader.load();
 			// desktopPane = new DesktopPane();
 			// rootLayout.setCenter(desktopPane);
@@ -298,7 +298,7 @@ public class Main extends Application {
 	public void Enter() {
 		try {
 			Stage stage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getResource("/mj/app/enter/Enter.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/ru/psv/mj/app/enter/Enter.fxml"));
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
 			stage.setTitle("Ã»Õﬁ—“ –¿");
@@ -326,7 +326,7 @@ public class Main extends Application {
 			if (ActWin) {
 				ActWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/access/action/ODB_ACTION.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/access/action/ODB_ACTION.fxml"));
 				Parent root = loader.load();
 				stage.setScene(new Scene(root));
 				stage.getIcons().add(new Image("/icon.png"));
@@ -356,7 +356,7 @@ public class Main extends Application {
 			if (Doc1cWin) {
 				Doc1cWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/init/Setup.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/init/Setup.fxml"));
 
 				Setup controller = new Setup();
 				loader.setController(controller);
@@ -387,7 +387,7 @@ public class Main extends Application {
 				NtTempWin = false;
 				Stage stage = new Stage();
 				FXMLLoader loader = new FXMLLoader(
-						Main.class.getResource("/notary/template/html/view/NT_TEMPLATE.fxml"));
+						Main.class.getResource("/ru/psv/mj/notary/template/html/view/NT_TEMPLATE.fxml"));
 
 				NtTemplate controller = new NtTemplate();
 				loader.setController(controller);
@@ -421,7 +421,7 @@ public class Main extends Application {
 			if (GrpAccessWin) {
 				GrpAccessWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/access/grp/GrpMember.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/access/grp/GrpMember.fxml"));
 
 				GrpController controller = new GrpController();
 				loader.setController(controller);
@@ -452,7 +452,7 @@ public class Main extends Application {
 			if (NtCliWin) {
 				NtCliWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/client/view/CusList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/notary/client/view/CusList.fxml"));
 
 				ru.psv.mj.notary.client.controller.CusList controller = new ru.psv.mj.notary.client.controller.CusList();
 				loader.setController(controller);
@@ -483,7 +483,7 @@ public class Main extends Application {
 			if (NtDocWin) {
 				NtDocWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/notary/doc/html/view/Notary.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/notary/doc/html/view/Notary.fxml"));
 
 				NotaryDocList controller = new NotaryDocList();
 				loader.setController(controller);
@@ -517,7 +517,7 @@ public class Main extends Application {
 			if (SettingsWin) {
 				SettingsWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/init/Settings.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/init/Settings.fxml"));
 
 				Settings controller = new Settings();
 				loader.setController(controller);
@@ -551,7 +551,7 @@ public class Main extends Application {
 			if (LogWin) {
 				LogWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/log/LogList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/log/LogList.fxml"));
 
 				LogList controller = new LogList();
 				loader.setController(controller);
@@ -584,7 +584,7 @@ public class Main extends Application {
 			if (ReportsWin) {
 				ReportsWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/report/Report.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/report/Report.fxml"));
 
 				Report controller = new Report();
 				controller.setId(1l);
@@ -620,7 +620,7 @@ public class Main extends Application {
 			if (CourtsWin) {
 				CourtsWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/courts/CourtList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/sprav/courts/CourtList.fxml"));
 
 				CourtList controller = new CourtList();
 				loader.setController(controller);
@@ -657,7 +657,7 @@ public class Main extends Application {
 				OtdWin = false;
 				Stage stage = new Stage();
 
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/otd/OtdList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/sprav/otd/OtdList.fxml"));
 
 				OtdList controller = new OtdList();
 				loader.setController(controller);
@@ -706,7 +706,7 @@ public class Main extends Application {
 			if (PmInBoxDocsWin) {
 				PmInBoxDocsWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/prjmngm/emps/RootPmEmpView.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/prjmngm/emps/RootPmEmpView.fxml"));
 				RootPmEmpController controller = new RootPmEmpController();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -734,7 +734,7 @@ public class Main extends Application {
 			if (PmEmpWin) {
 				PmEmpWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/prjmngm/emps/RootPmEmpView.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/prjmngm/emps/RootPmEmpView.fxml"));
 				RootPmEmpController controller = new RootPmEmpController();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -765,7 +765,7 @@ public class Main extends Application {
 			if (ZagsWin) {
 				ZagsWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/zags/ZagsList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/sprav/zags/ZagsList.fxml"));
 
 				ZagsList controller = new ZagsList();
 				loader.setController(controller);
@@ -795,7 +795,7 @@ public class Main extends Application {
 			if (NotaryWin) {
 				NotaryWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/notary/NotaryList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/sprav/notary/NotaryList.fxml"));
 
 				NotaryList controller = new NotaryList();
 				loader.setController(controller);
@@ -825,7 +825,7 @@ public class Main extends Application {
 			if (PrjWin) {
 				PrjWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/project/PRJ_FLS_FLDR.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/admin/project/PRJ_FLS_FLDR.fxml"));
 
 				PRJ_FLS_FLDR controller = new PRJ_FLS_FLDR();
 				loader.setController(controller);
@@ -858,7 +858,7 @@ public class Main extends Application {
 			if (MenuWin) {
 				MenuWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/access/menu/ODB_MNU.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/access/menu/ODB_MNU.fxml"));
 				Parent root = loader.load();
 				stage.setScene(new Scene(root));
 				stage.getIcons().add(new Image("/icon.png"));
@@ -889,7 +889,7 @@ public class Main extends Application {
 				AuditWin = false;
 				Stage stage = new Stage();
 
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/audit/view/Audit.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/audit/view/Audit.fxml"));
 
 				Audit controller = new Audit();
 				loader.setController(controller);
@@ -921,7 +921,7 @@ public class Main extends Application {
 			if (UpdateNameWin) {
 				UpdateNameWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/doc/updname/UpdNameList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/updname/UpdNameList.fxml"));
 				UpdNameList controller = new UpdNameList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -952,7 +952,7 @@ public class Main extends Application {
 			if (AuSetupWin) {
 				AuSetupWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/audit/trigger/AuList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/audit/trigger/AuList.fxml"));
 				Parent root = loader.load();
 				stage.setScene(new Scene(root));
 				stage.getIcons().add(new Image("/icon.png"));
@@ -982,7 +982,7 @@ public class Main extends Application {
 			if (AdoptWin) {
 				AdoptWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/doc/adoptoin/AdoptList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/adoptoin/AdoptList.fxml"));
 				AdoptList controller = new AdoptList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1013,7 +1013,7 @@ public class Main extends Application {
 			if (UpdateAbhNameWin) {
 				UpdateAbhNameWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/doc/updabhname/UpdAbhNameList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/updabhname/UpdAbhNameList.fxml"));
 				UpdAbhNameList controller = new UpdAbhNameList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1041,7 +1041,7 @@ public class Main extends Application {
 			if (UpdNatWin) {
 				UpdNatWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/doc/updatenat/UpdNatList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/updatenat/UpdNatList.fxml"));
 				UpdNatList controller = new UpdNatList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1072,7 +1072,7 @@ public class Main extends Application {
 			if (CusWin) {
 				CusWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/doc/cus/CusList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/cus/CusList.fxml"));
 				CusList controller = new CusList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1110,7 +1110,7 @@ public class Main extends Application {
 			if (BActWin) {
 				BActWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/doc/birthact/BirthList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/birthact/BirthList.fxml"));
 				BirthList controller = new BirthList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1142,7 +1142,7 @@ public class Main extends Application {
 
 				UsrWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/users/Usr.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/admin/users/Usr.fxml"));
 				Parent root = loader.load();
 				stage.getIcons().add(new Image("/icon.png"));
 				stage.setTitle("œÓÎ¸ÁÓ‚‡ÚÂÎË");
@@ -1186,7 +1186,7 @@ public class Main extends Application {
 			if (MercerWin) {
 				MercerWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/doc/mercer/MercerList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/mercer/MercerList.fxml"));
 				MercerList controller = new MercerList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1218,7 +1218,7 @@ public class Main extends Application {
 			if (DivorcerWin) {
 				DivorcerWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/doc/divorce/DivorceList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/divorce/DivorceList.fxml"));
 				DivorceList controller = new DivorceList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1250,7 +1250,7 @@ public class Main extends Application {
 			if (PaternWin) {
 				PaternWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/doc/patern/PaternList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/patern/PaternList.fxml"));
 				PaternList controller = new PaternList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1282,7 +1282,7 @@ public class Main extends Application {
 			if (DeathWin) {
 				DeathWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/mj/doc/death/DeathList.fxml"));
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/death/DeathList.fxml"));
 				DeathList controller = new DeathList();
 				loader.setController(controller);
 				Parent root = loader.load();

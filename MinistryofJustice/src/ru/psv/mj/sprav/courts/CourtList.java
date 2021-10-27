@@ -68,7 +68,7 @@ public class CourtList {
 			Stage stage_ = (Stage) COURTS.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/courts/IUCourt.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/courts/IUCourt.fxml"));
 
 			AddCourt controller = new AddCourt();
 			loader.setController(controller);
@@ -201,7 +201,7 @@ public class CourtList {
 					{
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/courts/IUCourt.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/courts/IUCourt.fxml"));
 
 						EditCourt controller = new EditCourt();
 						controller.setId(courts.getID());

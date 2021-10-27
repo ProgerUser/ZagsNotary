@@ -151,7 +151,7 @@ public class DbUtil {
 			cp.put("Oracle.net.READ_TIMEOUT", 0);
 			cp.put("Oracle.jdbc.ReadTimeout", 0);
 			cp.put("Oracle.net.tcpKeepAlive", "true");
-			cp.put("v$session.program", ClassName);
+			cp.put("v$session.program", ClassName.substring(0, 30));
 
 			ods.setConnectionProperties(cp);
 			conn = ods.getConnection();

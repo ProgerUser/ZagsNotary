@@ -351,7 +351,7 @@ public class CusList {
 				}
 
 				PreparedStatement check = conn
-						.prepareStatement(DbUtil.Sql_From_Prop("/notary/client/controller/SQL.properties", "DocCnt"));
+						.prepareStatement(DbUtil.Sql_From_Prop("/ru/psv/mj/notary/client/controller/SQL.properties", "DocCnt"));
 				check.setLong(1, CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
 				ResultSet rs = check.executeQuery();
 				String txt = "Удалить запись?";
@@ -643,7 +643,7 @@ public class CusList {
 						// -------------------
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/notary/client/view/IUCus.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/notary/client/view/IUCus.fxml"));
 
 						EditCus controller = new EditCus();
 						controller.setId(cl.getICUSNUM());
@@ -791,7 +791,7 @@ public class CusList {
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) CUSLIST.getScene().getWindow();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/notary/client/view/IUCus.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/notary/client/view/IUCus.fxml"));
 
 			AddCus controller = new AddCus();
 			loader.setController(controller);

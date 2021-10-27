@@ -273,7 +273,7 @@ public class Audit {
 			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
 
-			loader.setLocation(getClass().getResource("/mj/audit/view/AuditFilter.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/audit/view/AuditFilter.fxml"));
 
 			AuditFilter controller = new AuditFilter();
 

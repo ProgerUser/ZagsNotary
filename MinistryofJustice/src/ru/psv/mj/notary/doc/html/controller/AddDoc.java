@@ -162,7 +162,7 @@ public class AddDoc {
 				Map<Long, Long> parents = new HashMap<>();
 
 				PreparedStatement prp = conn.prepareStatement(
-						DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "AddParamForDoc1"));
+						DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "AddParamForDoc1"));
 				Clob clob = conn.createClob();
 				clob.setString(1, JsonStr.trim());
 				prp.setLong(1, val.getID());
@@ -312,7 +312,7 @@ public class AddDoc {
 					Stage stage_ = (Stage) webView.getScene().getWindow();
 
 					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/notary/doc/html/view/ParamList.fxml"));
+					loader.setLocation(getClass().getResource("/ru/psv/mj/notary/doc/html/view/ParamList.fxml"));
 
 					ParamList controller = new ParamList();
 					controller.setQuery(list.getPRM_SQL());
@@ -425,7 +425,7 @@ public class AddDoc {
 //			Stage stage_ = (Stage) EditLocalParam.getScene().getWindow();
 //
 //			FXMLLoader loader = new FXMLLoader();
-//			loader.setLocation(getClass().getResource("/notary/doc/html/view/TableManage.fxml"));
+//			loader.setLocation(getClass().getResource("/ru/psv/mj/notary/doc/html/view/TableManage.fxml"));
 //
 //			TableManage controller = new TableManage();
 //			loader.setController(controller);
@@ -440,7 +440,7 @@ public class AddDoc {
 //				@Override
 //				public void handle(WindowEvent paramT) {
 //					if (controller.getTbl() != null) {
-//						String InsTbl = DBUtil.SqlFromProp("/notary/doc/html/controller/Sql.properties", "TBL");
+//						String InsTbl = DBUtil.SqlFromProp("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "TBL");
 //						InsTbl = InsTbl.replace("$cell$", controller.getTbl().getColumnCnt()).replace("$row$",
 //								controller.getTbl().getRowCnt());
 //						WebView webView = (WebView) HtmlEditor.lookup("WebView");

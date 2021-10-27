@@ -85,7 +85,7 @@ public class Enter {
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) login.getScene().getWindow();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/users/Set_Up_Pass.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/admin/users/Set_Up_Pass.fxml"));
 
 			Set_Up_Pass controller = new Set_Up_Pass();
 			controller.setFnk("{ ? = call MJUsers.Set_Up_Password2(?,?,?,?)}");

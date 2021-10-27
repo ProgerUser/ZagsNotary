@@ -176,7 +176,7 @@ public class IUTempParamIU {
 	@FXML
 	void CreateJS(ActionEvent event) {
 		try {
-			String JS = DbUtil.Sql_From_Prop("/notary/template/html/controller/JS.properties", "TempJSInput");
+			String JS = DbUtil.Sql_From_Prop("/ru/psv/mj/notary/template/html/controller/JS.properties", "TempJSInput");
 			String IsOnClick = "$IsOnClick$";
 			String IsReadOnly = "$IsReadOnly$";
 			String FieldName = "$FieldName$";
@@ -449,11 +449,11 @@ public class IUTempParamIU {
 						}).subscribe(this::applyHighlighting2);
 
 				HTML_CODE.getStylesheets().add(
-						getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
+						getClass().getResource("/ru/psv/mj/notary/template/html/controller/java-keywords.css").toExternalForm());
 				PRM_FOR_PRM_SQL.getStylesheets().add(
-						getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
+						getClass().getResource("/ru/psv/mj/notary/template/html/controller/java-keywords.css").toExternalForm());
 				PRM_SQL.getStylesheets().add(
-						getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
+						getClass().getResource("/ru/psv/mj/notary/template/html/controller/java-keywords.css").toExternalForm());
 			}
 			dbConnect();
 			//DbUtil.Run_Process(conn,getClass().getName());
@@ -526,7 +526,7 @@ public class IUTempParamIU {
 				// Параметры
 				{
 					PreparedStatement stsmt = conn.prepareStatement(
-							DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "PrmForAddParents"));
+							DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "PrmForAddParents"));
 					stsmt.setLong(1, cl.getPRM_TMP_ID());
 					ResultSet rs = stsmt.executeQuery();
 					ObservableList<NT_TEMP_LIST_PARAM> combolist = FXCollections.observableArrayList();

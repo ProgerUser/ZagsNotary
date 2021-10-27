@@ -150,7 +150,7 @@ public class AddCus {
 			Stage stage_ = (Stage) AB_LAST_NAME.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/widgets/KeyBoard.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/widgets/KeyBoard.fxml"));
 
 			KeyBoard controller = new KeyBoard();
 			loader.setController(controller);
@@ -406,7 +406,7 @@ public class AddCus {
 
 						// osn data
 						{
-							SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+							SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 							String readRecordSQL = sql.getSql("osn_data1c");
 							// xml как clob
 							Clob xml_clob = conn.createClob();
@@ -438,7 +438,7 @@ public class AddCus {
 						}
 						// address
 						{
-							SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+							SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 							String readRecordSQL = sql.getSql("address1c");
 							// xml как clob
 							Clob xml_clob = conn.createClob();
@@ -463,7 +463,7 @@ public class AddCus {
 						}
 						// documents
 						{
-							SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+							SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 							String readRecordSQL = sql.getSql("docs1c");
 							String insert_doc_temp = sql.getSql("insert_doc_temp");
 							// xml как clob
@@ -564,7 +564,7 @@ public class AddCus {
 //						try {
 //							// osn data
 //							{
-//								SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+//								SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 //								String readRecordSQL = sql.getSql("osn_data1c");
 //								// xml как clob
 //								Clob xml_clob = conn.createClob();
@@ -596,7 +596,7 @@ public class AddCus {
 //							}
 //							// address
 //							{
-//								SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+//								SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 //								String readRecordSQL = sql.getSql("address1c");
 //								// xml как clob
 //								Clob xml_clob = conn.createClob();
@@ -621,7 +621,7 @@ public class AddCus {
 //							}
 //							// documents
 //							{
-//								SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+//								SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 //								String readRecordSQL = sql.getSql("docs1c");
 //								String insert_doc_temp = sql.getSql("insert_doc_temp");
 //								// xml как clob
@@ -1588,7 +1588,7 @@ public class AddCus {
 	 */
 	void InitCusDocum() {
 		try {
-			SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+			SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 			String doc_list_temp = sql.getSql("doc_list_temp");
 			PreparedStatement prepStmt = conn.prepareStatement(doc_list_temp);
 			ResultSet rs = prepStmt.executeQuery();
@@ -1715,7 +1715,7 @@ public class AddCus {
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) CombCountryAddr.getScene().getWindow();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus_Doc.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus_Doc.fxml"));
 
 			Add_Cus_Doc controller = new Add_Cus_Doc();
 			loader.setController(controller);
@@ -1760,7 +1760,7 @@ public class AddCus {
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) CombCountryAddr.getScene().getWindow();
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus_Doc.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus_Doc.fxml"));
 
 				CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 
@@ -1838,7 +1838,7 @@ public class AddCus {
 					String xml_last_auth = exdb.XML(AuthReturn);
 					exdb.SAVE_AUTH_1C_DATE(xml_last_auth);
 
-					SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+					SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 					String readRecordSQL = sql.getSql("FOR_1c");
 					String XML = sql.getSql("1C_XML");
 					{
@@ -2344,7 +2344,7 @@ public class AddCus {
 							Stage stage = new Stage();
 							Stage stage_ = (Stage) CombCountryAddr.getScene().getWindow();
 							FXMLLoader loader = new FXMLLoader();
-							loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus_Doc.fxml"));
+							loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus_Doc.fxml"));
 
 							CUS_DOCUM cd = CUS_DOCUM.getSelectionModel().getSelectedItem();
 							Edit_Cus_Doc controller = new Edit_Cus_Doc();

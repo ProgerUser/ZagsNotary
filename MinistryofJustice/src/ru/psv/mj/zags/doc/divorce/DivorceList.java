@@ -288,7 +288,7 @@ public class DivorceList {
 			Stage stage_ = (Stage) DIVORCE_CERT.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/divorce/IUDivorce.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/divorce/IUDivorce.fxml"));
 
 			AddDivorce controller = new AddDivorce();
 			loader.setController(controller);
@@ -426,7 +426,7 @@ public class DivorceList {
 						XmlsForCompare(docid);
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/doc/divorce/IUDivorce.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/divorce/IUDivorce.fxml"));
 
 						EditDivorce controller = new EditDivorce();
 						controller.setId(cl.getDIVC_ID());

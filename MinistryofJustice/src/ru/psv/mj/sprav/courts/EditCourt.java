@@ -52,7 +52,7 @@ public class EditCourt {
 			Stage stage_ = (Stage) ID.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/widgets/KeyBoard.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/widgets/KeyBoard.fxml"));
 
 			KeyBoard controller = new KeyBoard();
 			loader.setController(controller);

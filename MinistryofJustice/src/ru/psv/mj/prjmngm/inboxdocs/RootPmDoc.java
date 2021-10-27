@@ -93,7 +93,7 @@ public class RootPmDoc {
 			Stage stage = new Stage();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/prjmngm/emps/IUPmEmp.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/emps/IUPmEmp.fxml"));
 
 			AddPmDocC controller = new AddPmDocC();
 			controller.SetConn(conn);
@@ -175,7 +175,7 @@ public class RootPmDoc {
 					// <FXML>---------------------------------------
 					Stage stage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/mj/prjmngm/emps/IUPmEmp.fxml"));
+					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/emps/IUPmEmp.fxml"));
 					EditPmDocC controller = new EditPmDocC();
 					controller.SetClass(sel, conn);
 					loader.setController(controller);

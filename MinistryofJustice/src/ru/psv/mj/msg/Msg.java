@@ -95,7 +95,7 @@ public class Msg {
 
 				Stage stage = new Stage();
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Msg.class.getResource("/mj/msg/Alert.fxml"));
+				loader.setLocation(Msg.class.getResource("/ru/psv/mj/msg/Alert.fxml"));
 				AlertController controller = new AlertController();
 				controller.setText(mess);
 				loader.setController(controller);

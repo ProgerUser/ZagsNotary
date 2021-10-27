@@ -150,7 +150,7 @@ public class UsrC {
 				Stage stage_ = (Stage) IUSRPWD_LENGTH.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/mj/users/AddGrp.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/admin/users/AddGrp.fxml"));
 
 				AddGrp controller = new AddGrp();
 				controller.SetUsr(USRLST.getSelectionModel().getSelectedItem().getCUSRLOGNAME());
@@ -232,7 +232,7 @@ public class UsrC {
 			Stage stage_ = (Stage) IUSRPWD_LENGTH.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/widgets/KeyBoard.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/widgets/KeyBoard.fxml"));
 
 			KeyBoard controller = new KeyBoard();
 			loader.setController(controller);
@@ -276,7 +276,7 @@ public class UsrC {
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) USRLST.getScene().getWindow();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/users/AddUser.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/admin/users/AddUser.fxml"));
 
 			AddUser controller = new AddUser();
 			loader.setController(controller);
@@ -318,7 +318,7 @@ public class UsrC {
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) USRLST.getScene().getWindow();
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/mj/users/Set_Up_Pass.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/admin/users/Set_Up_Pass.fxml"));
 
 				Set_Up_Pass controller = new Set_Up_Pass();
 				controller.setUsr(USRLST.getSelectionModel().getSelectedItem().getCUSRLOGNAME());

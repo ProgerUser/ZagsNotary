@@ -212,7 +212,7 @@ public class MercerList {
 			Stage stage_ = (Stage) MC_MERCER.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/mercer/IUMercer.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/mercer/IUMercer.fxml"));
 
 			AddMercer controller = new AddMercer();
 			loader.setController(controller);
@@ -405,7 +405,7 @@ public class MercerList {
 						XmlsForCompare(docid);
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/doc/mercer/IUMercer.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/mercer/IUMercer.fxml"));
 
 						EditMercer controller = new EditMercer();
 						controller.setId(cl.getMERCER_ID());

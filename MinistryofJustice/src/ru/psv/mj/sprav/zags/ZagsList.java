@@ -66,7 +66,7 @@ public class ZagsList {
 			Stage stage_ = (Stage) ZAGS.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/zags/IUZags.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/IUZags.fxml"));
 
 			AddZags controller = new AddZags();
 			loader.setController(controller);
@@ -205,7 +205,7 @@ public class ZagsList {
 					{
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/zags/IUZags.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/IUZags.fxml"));
 
 						EditZags controller = new EditZags();
 						controller.setId(VZAGS.getZAGS_ID());

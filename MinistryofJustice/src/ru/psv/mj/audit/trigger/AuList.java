@@ -91,7 +91,7 @@ public class AuList {
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) ROOT.getScene().getWindow();
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/mj/audit/trigger/IUAu.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/audit/trigger/IUAu.fxml"));
 
 				Trigger controller = new Trigger();
 				loader.setController(controller);

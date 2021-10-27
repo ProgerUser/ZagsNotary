@@ -199,7 +199,7 @@ public class PaternList {
 			Stage stage_ = (Stage) PATERN_CERT.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/patern/IUPatern.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/patern/IUPatern.fxml"));
 
 			AddPatern controller = new AddPatern();
 			loader.setController(controller);
@@ -454,7 +454,7 @@ public class PaternList {
 						XmlsForCompare(docid);
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/doc/patern/IUPatern.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/patern/IUPatern.fxml"));
 
 						EditPatern controller = new EditPatern();
 						controller.setId(cl.getPC_ID());

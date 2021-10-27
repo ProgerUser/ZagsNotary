@@ -321,7 +321,7 @@ public class IUTemplateList {
 					}).subscribe(this::applyHighlighting1);
 
 			REP_QUERY.getStylesheets()
-					.add(getClass().getResource("/notary/template/html/controller/java-keywords.css").toExternalForm());
+					.add(getClass().getResource("/ru/psv/mj/notary/template/html/controller/java-keywords.css").toExternalForm());
 
 			dbConnect();
 			//DbUtil.Run_Process(conn,getClass().getName());

@@ -344,7 +344,7 @@ public class CusList {
 				}
 				Main.logger = Logger.getLogger(getClass());
 
-				SqlMap sql = new SqlMap().load("/mj/doc/cus/SQL.xml");
+				SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
 				String readRecordSQL = sql.getSql("DocCnt");
 				PreparedStatement check = conn.prepareStatement(readRecordSQL);
 				check.setLong(1, CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
@@ -636,7 +636,7 @@ public class CusList {
 						// -------------------
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus.fxml"));
 
 						EditCus controller = new EditCus();
 						controller.setId(cl.getICUSNUM());
@@ -784,7 +784,7 @@ public class CusList {
 			Stage stage = new Stage();
 			Stage stage_ = (Stage) CUSLIST.getScene().getWindow();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus.fxml"));
 
 			AddCus controller = new AddCus();
 			loader.setController(controller);
@@ -1412,7 +1412,7 @@ public class CusList {
 				Stage stage = new Stage();
 				Stage stage_ = (Stage) CUSLIST.getScene().getWindow();
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/mj/doc/cus/DocsList.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/DocsList.fxml"));
 
 				DocList controller = new DocList();
 				controller.setId(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());

@@ -89,7 +89,7 @@ public class PRJ_FLS_FLDR {
 				Stage stage_ = (Stage) Hist.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/mj/project/IUPrj.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/admin/project/IUPrj.fxml"));
 
 				PRJ_ADD controller = new PRJ_ADD();
 				loader.setController(controller);
@@ -139,7 +139,7 @@ public class PRJ_FLS_FLDR {
 				Stage stage_ = (Stage) Hist.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/mj/project/IUPrj.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/admin/project/IUPrj.fxml"));
 
 				PRJ_UPDATE controller = new PRJ_UPDATE();
 				loader.setController(controller);

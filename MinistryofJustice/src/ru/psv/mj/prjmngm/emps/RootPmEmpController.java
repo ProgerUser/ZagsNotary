@@ -93,7 +93,7 @@ public class RootPmEmpController {
 			Stage stage = new Stage();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/prjmngm/emps/IUPmEmp.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/emps/IUPmEmp.fxml"));
 
 			AddPmEmpController controller = new AddPmEmpController();
 			controller.SetConn(conn);
@@ -175,7 +175,7 @@ public class RootPmEmpController {
 					// <FXML>---------------------------------------
 					Stage stage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/mj/prjmngm/emps/IUPmEmp.fxml"));
+					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/emps/IUPmEmp.fxml"));
 					EditPmEmpController controller = new EditPmEmpController();
 					controller.SetClass(sel, conn);
 					loader.setController(controller);

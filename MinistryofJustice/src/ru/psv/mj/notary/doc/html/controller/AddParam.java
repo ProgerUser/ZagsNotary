@@ -115,7 +115,7 @@ public class AddParam {
 		Map<Long, Long> parents = new HashMap<>();
 		try {
 			PreparedStatement prp = conn.prepareStatement(
-					DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
+					DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
 			Clob clob = conn.createClob();
 			clob.setString(1, json);
 			prp.setLong(1, vals.getID());

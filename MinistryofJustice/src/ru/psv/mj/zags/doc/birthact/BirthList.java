@@ -283,7 +283,7 @@ public class BirthList {
 
 			FXMLLoader loader = new FXMLLoader();
 
-			loader.setLocation(getClass().getResource("/mj/doc/birthact/IUBirthAct.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/birthact/IUBirthAct.fxml"));
 
 			AddBirthAct controller = new AddBirthAct();
 
@@ -454,7 +454,7 @@ public class BirthList {
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
 
-						loader.setLocation(getClass().getResource("/mj/doc/birthact/IUBirthAct.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/birthact/IUBirthAct.fxml"));
 
 						EditBirthAct controller = new EditBirthAct();
 						controller.setId(docid);
@@ -479,7 +479,7 @@ public class BirthList {
 											AfterAdd(controller.getId());
 										}
 										conn.commit();
-										// УДАЛ�?ТЬ ЗАП�?СЬ О "ЛОЧКЕ"=
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 										String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
@@ -530,7 +530,7 @@ public class BirthList {
 													e.printStackTrace();
 												}
 												newWindow_yn.close();
-												// УДАЛ�?ТЬ ЗАП�?СЬ О "ЛОЧКЕ"=
+												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 												String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
@@ -548,7 +548,7 @@ public class BirthList {
 									} // Если нажали "X" или "Cancel" и до этого ничего не меняли
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										isopen = false;
-										// УДАЛ�?ТЬ ЗАП�?СЬ О "ЛОЧКЕ"
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
 										String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
@@ -1186,7 +1186,7 @@ public class BirthList {
 		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
 		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("�?спользуйте операцию \"�?\" для многоколоночного фильтра");
+		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
 		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
 		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
@@ -1254,7 +1254,7 @@ public class BirthList {
     private VBox VB;
     
 	/**
-	 * �?нициализация
+	 * Инициализация
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML

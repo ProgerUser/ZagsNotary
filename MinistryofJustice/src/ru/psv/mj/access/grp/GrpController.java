@@ -346,7 +346,7 @@ public class GrpController {
 		try {
 			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/access/grp/IUGrp.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/access/grp/IUGrp.fxml"));
 			AddGrp controller = new AddGrp();
 			loader.setController(controller);
 			Parent root = loader.load();
@@ -382,7 +382,7 @@ public class GrpController {
 				Stage stage = new Stage();
 				FXMLLoader loader = new FXMLLoader();
 				
-				loader.setLocation(getClass().getResource("/mj/access/grp/IUGrp.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/access/grp/IUGrp.fxml"));
 				EditGrp controller = new EditGrp();
 				controller.setConn(conn, group);
 				
@@ -1091,7 +1091,7 @@ public class GrpController {
 	
 	void InitRepOut(Long rep_tp_id,Long grp_id) {
 		try {
-//			String sql = DbUtil.getResource("/mj/access/grp/InitRepOut");
+//			String sql = DbUtil.getResource("/ru/psv/mj/access/grp/InitRepOut");
 			PreparedStatement prepStmt = conn
 					.prepareStatement("SELECT GROUP_ID, REPORT_TYPE_ID, REPORT_ID, REPORT_NAME\n"
 							+ "  FROM (select AP_Group_Report_Role.*,\n"

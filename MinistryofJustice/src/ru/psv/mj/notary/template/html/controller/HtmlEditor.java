@@ -372,7 +372,7 @@ public class HtmlEditor {
 				Stage stage_ = (Stage) root.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempParam.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/template/html/view/IUTempParam.fxml"));
 
 				IUTempParam controller = new IUTempParam();
 				controller.setID(tmp.getID());
@@ -420,7 +420,7 @@ public class HtmlEditor {
 				Map<Long, Long> parents = new HashMap<>();
 
 				PreparedStatement prp = conn.prepareStatement(
-						DbUtil.Sql_From_Prop("/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
+						DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "AddParamForDoc"));
 				Clob clob = conn.createClob();
 				clob.setString(1, JsonStr.trim());
 				prp.setLong(1, val_list.getID());
@@ -725,7 +725,7 @@ public class HtmlEditor {
 			// Beautifier.setVisible(false);
 
 			CodeHtml = new CodeArea();
-//			InputStream is = getClass().getResourceAsStream("/notary/doc/old/controller/Test.html");
+//			InputStream is = getClass().getResourceAsStream("/ru/psv/mj/notary/doc/old/controller/Test.html");
 //			String text = IOUtils.toString(is, StandardCharsets.UTF_8.name());
 
 			// Split.getItems().add(new StackPane(new VirtualizedScrollPane<>(CodeHtml)));
@@ -780,7 +780,7 @@ public class HtmlEditor {
 //			Split.getStylesheets().add("/ScrPane.css");
 
 			CodeHtml.getStylesheets().add(
-					getClass().getResource("/notary/template/html/controller/xml-highlighting.css").toExternalForm());
+					getClass().getResource("/ru/psv/mj/notary/template/html/controller/xml-highlighting.css").toExternalForm());
 
 			// String IMAGE_URL = "http://...";
 

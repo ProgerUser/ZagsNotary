@@ -188,7 +188,7 @@ public class DeathList {
 			Stage stage_ = (Stage) DEATH_CERT.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/death/IUDeath.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/death/IUDeath.fxml"));
 
 			AddDeath controller = new AddDeath();
 			loader.setController(controller);
@@ -393,7 +393,7 @@ public class DeathList {
 						XmlsForCompare(docid);
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/doc/death/IUDeath.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/death/IUDeath.fxml"));
 
 						EditDeath controller = new EditDeath();
 						controller.setId(cl.getDC_ID());

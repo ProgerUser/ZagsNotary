@@ -75,7 +75,7 @@ public class UtilCus {
 
 			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/cus/IUCus.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus.fxml"));
 
 			AddCus controller = new AddCus();
 			loader.setController(controller);
@@ -124,7 +124,7 @@ public class UtilCus {
 		try {
 			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/cus/FIND_CUS.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/FIND_CUS.fxml"));
 
 			FIND_CUS controller = new FIND_CUS();
 			loader.setController(controller);
@@ -158,7 +158,7 @@ public class UtilCus {
 		try {
 			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/birthact/FindBirth.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/birthact/FindBirth.fxml"));
 
 			FindBirth controller = new FindBirth();
 			loader.setController(controller);
@@ -950,7 +950,7 @@ public class UtilCus {
 		try {
 			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/birthact/IUBirthAct.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/birthact/IUBirthAct.fxml"));
 
 			AddBirthAct controller = new AddBirthAct();
 			loader.setController(controller);

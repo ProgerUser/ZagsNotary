@@ -138,7 +138,7 @@ public class UpdAbhNameList {
 			Stage stage_ = (Stage) UPDATE_NAME.getScene().getWindow();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/mj/doc/updabhname/IUUpdAbhName.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/updabhname/IUUpdAbhName.fxml"));
 
 			AddUpdAbhName controller = new AddUpdAbhName();
 			loader.setController(controller);
@@ -331,7 +331,7 @@ public class UpdAbhNameList {
 						XmlsForCompare(docid);
 						Stage stage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/mj/doc/updabhname/IUUpdAbhName.fxml"));
+						loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/updabhname/IUUpdAbhName.fxml"));
 
 						EditUpdAbhName controller = new EditUpdAbhName();
 						controller.setId(cl.getID());

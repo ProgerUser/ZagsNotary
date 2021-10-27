@@ -104,7 +104,7 @@ public class NtTemplate {
 				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/html/view/IUNtTemplate.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/template/html/view/IUNtTemplate.fxml"));
 
 				IUTemplate controller = new IUTemplate();
 				controller.setNT_PARENT(tmp.getValue().getNT_ID());
@@ -161,7 +161,7 @@ public class NtTemplate {
 				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempParam.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/template/html/view/IUTempParam.fxml"));
 
 				IUTempParam controller = new IUTempParam();
 				controller.setID(tmp.getID());
@@ -273,7 +273,7 @@ public class NtTemplate {
 				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempList.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/template/html/view/IUTempList.fxml"));
 
 				IUTemplateList controller = new IUTemplateList();
 				controller.setVal(tmp.getValue());
@@ -468,7 +468,7 @@ public class NtTemplate {
 				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/html/view/IUNtTemplate.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/template/html/view/IUNtTemplate.fxml"));
 
 				IUTemplate controller = new IUTemplate();
 				controller.setID(tmp.getValue().getNT_ID(), tmp.getValue());
@@ -522,7 +522,7 @@ public class NtTemplate {
 				Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/notary/template/html/view/IUTempList.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/notary/template/html/view/IUTempList.fxml"));
 
 				IUTemplateList controller = new IUTemplateList();
 				controller.setVal(tmp);
@@ -588,7 +588,7 @@ public class NtTemplate {
 					Stage stage_ = (Stage) NT_TEMPLATE.getScene().getWindow();
 
 					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/notary/template/html/view/HtmlEditor.fxml"));
+					loader.setLocation(getClass().getResource("/ru/psv/mj/notary/template/html/view/HtmlEditor.fxml"));
 
 					HtmlEditor controller = new HtmlEditor();
 					controller.setConn(conn, tmp);
