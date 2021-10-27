@@ -127,7 +127,7 @@ public class DbUtil {
 			conn = ods.getConnection();
 
 			conn.setAutoCommit(false);
-			
+
 			Run_Proc(conn, DbUtil.class.getName());
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -151,12 +151,19 @@ public class DbUtil {
 			cp.put("Oracle.net.READ_TIMEOUT", 0);
 			cp.put("Oracle.jdbc.ReadTimeout", 0);
 			cp.put("Oracle.net.tcpKeepAlive", "true");
-			cp.put("v$session.program", ClassName.substring(0, 30));
+
+			if (ClassName != null) {
+				if (ClassName.length() < 30) {
+					cp.put("v$session.program", ClassName);
+				} else if (ClassName.length() > 30) {
+					cp.put("v$session.program", ClassName.substring(0, 29));
+				}
+			}
 
 			ods.setConnectionProperties(cp);
 			conn = ods.getConnection();
 			conn.setAutoCommit(false);
-			
+
 			Run_Proc(conn, ClassName);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
