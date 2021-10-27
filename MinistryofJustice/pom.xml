@@ -18,6 +18,13 @@
 			</resource>
 
 			<resource>
+				<directory>docxrep</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+
+			<resource>
 				<directory>view</directory>
 				<excludes>
 					<exclude>**/*.java</exclude>
@@ -471,6 +478,36 @@
 			<groupId>org.kordamp.ikonli</groupId>
 			<artifactId>ikonli-materialdesign-pack</artifactId>
 			<version>2.6.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>flexganttfx-extras</groupId>
+			<artifactId>flexganttfx-extras</artifactId>
+			<version>8.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>flexganttfx-model</groupId>
+			<artifactId>flexganttfx-model</artifactId>
+			<version>8.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>flexganttfx-view</groupId>
+			<artifactId>flexganttfx-view</artifactId>
+			<version>8.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>flexganttfx-core</groupId>
+			<artifactId>flexganttfx-core</artifactId>
+			<version>8.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>flexganttfx-lic</groupId>
+			<artifactId>flexganttfx-lic</artifactId>
+			<version>8.12</version>
 		</dependency>
 
 

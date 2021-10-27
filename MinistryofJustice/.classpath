@@ -26,7 +26,11 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="resources"/>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
@@ -38,10 +42,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/saidp/git/ZagsNotary/MinistryofJustice/lib/core.jar"/>
-	<classpathentry kind="lib" path="C:/Users/saidp/git/ZagsNotary/MinistryofJustice/lib/flexganttfx-extras-8.12.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/saidp/git/ZagsNotary/MinistryofJustice/lib/flexganttfx-model-8.12.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/saidp/git/ZagsNotary/MinistryofJustice/lib/flexganttfx-view-8.12.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/saidp/git/ZagsNotary/MinistryofJustice/lib/lic.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
