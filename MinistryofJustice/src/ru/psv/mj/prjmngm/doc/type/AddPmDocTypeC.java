@@ -29,9 +29,9 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -41,7 +41,7 @@ import ru.psv.mj.utils.DbUtil;
 
 public class AddPmDocTypeC {
 
-	public static File FileWord;
+	public File FileWord;
 	@FXML
 	private TextField DOC_TP_NAME;
 	@FXML

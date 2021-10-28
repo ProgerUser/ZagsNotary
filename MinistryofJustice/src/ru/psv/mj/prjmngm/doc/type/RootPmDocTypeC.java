@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -81,6 +82,9 @@ public class RootPmDocTypeC {
 				@Override
 				public void handle(WindowEvent paramT) {
 					try {
+						//delete file
+						FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
+						//------------
 						controller.dbDisconnect();
 						LoadTable();
 					} catch (Exception e) {
@@ -148,7 +152,7 @@ public class RootPmDocTypeC {
 					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/doc/type/IUPmDocType.fxml"));
 					
 					EditPmDocTypeC controller = new EditPmDocTypeC();
-					//controller.SetClass(sel, conn);
+					controller.SetClass(sel, conn);
 					
 					loader.setController(controller);
 					Parent root = loader.load();
@@ -162,8 +166,6 @@ public class RootPmDocTypeC {
 						@Override
 						public void handle(WindowEvent paramT) {
 							try {
-								// сохрнаить для сравнения
-								controller.SaveCompare();
 								if (controller.getStatus()) {
 									conn.commit();
 									// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
@@ -171,7 +173,14 @@ public class RootPmDocTypeC {
 									if (lock != null) {// if error add row
 										Msg.Message(lock);
 									}
+									//delete file
+									FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
+									//------------
 									LoadTable();
+								}else {
+									//delete file
+									FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
+									//------------
 								}
 							} catch (Exception e) {
 								DbUtil.Log_Error(e);
