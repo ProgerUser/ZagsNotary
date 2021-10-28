@@ -66,6 +66,14 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
+	@FXML
+	void PmDocType(ActionEvent event) {
+		try {
+			Main.PmDocType();
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
 	// --------------------------------------
 
 	/**

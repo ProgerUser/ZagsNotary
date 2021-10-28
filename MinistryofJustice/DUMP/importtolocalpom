@@ -15,11 +15,8 @@ mvn install:install-file -Dfile=C:\syntheticaFXStandard.jar -DgroupId=synthetica
 mvn install:install-file -Dfile=C:\MJ\instantclient_21_3\ojdbc8.jar -DgroupId=ojdbc8_ -DartifactId=ojdbc8_ -Dversion=8.0 -Dpackaging=jar
 
 
-mvn install:install-file -Dfile=C:\Users\Said.000\git\ZagsNotary\MinistryofJustice\lib\flexganttfx-extras-8.12.0.jar -DgroupId=flexganttfx-extras -DartifactId=flexganttfx-extras -Dversion=8.12 -Dpackaging=jar
-mvn install:install-file -Dfile=C:\Users\Said.000\git\ZagsNotary\MinistryofJustice\lib\flexganttfx-model-8.12.0.jar -DgroupId=flexganttfx-model -DartifactId=flexganttfx-model -Dversion=8.12 -Dpackaging=jar
-mvn install:install-file -Dfile=C:\Users\Said.000\git\ZagsNotary\MinistryofJustice\lib\flexganttfx-view-8.12.0.jar -DgroupId=flexganttfx-view -DartifactId=flexganttfx-view -Dversion=8.12 -Dpackaging=jar
-
-
-mvn install:install-file -Dfile=C:\Users\Said.000\git\ZagsNotary\MinistryofJustice\lib\lic.jar -DgroupId=flexganttfx-lic -DartifactId=flexganttfx-lic -Dversion=8.12 -Dpackaging=jar
-
-mvn install:install-file -Dfile=C:\Users\Said.000\git\ZagsNotary\MinistryofJustice\lib\core.jar -DgroupId=flexganttfx-core -DartifactId=flexganttfx-core -Dversion=8.12 -Dpackaging=jar
+mvn install:install-file -Dfile=C:\Users\saidp\git\ZagsNotary\MinistryofJustice\lib\flexganttfx-extras-8.12.0.jar -DgroupId=flexganttfx-extras -DartifactId=flexganttfx-extras -Dversion=8.12 -Dpackaging=jar
+mvn install:install-file -Dfile=C:\Users\saidp\git\ZagsNotary\MinistryofJustice\lib\flexganttfx-model-8.12.0.jar -DgroupId=flexganttfx-model -DartifactId=flexganttfx-model -Dversion=8.12 -Dpackaging=jar
+mvn install:install-file -Dfile=C:\Users\saidp\git\ZagsNotary\MinistryofJustice\lib\flexganttfx-view-8.12.0.jar -DgroupId=flexganttfx-view -DartifactId=flexganttfx-view -Dversion=8.12 -Dpackaging=jar
+mvn install:install-file -Dfile=C:\Users\saidp\git\ZagsNotary\MinistryofJustice\lib\lic.jar -DgroupId=flexganttfx-lic -DartifactId=flexganttfx-lic -Dversion=8.12 -Dpackaging=jar
+mvn install:install-file -Dfile=C:\Users\saidp\git\ZagsNotary\MinistryofJustice\lib\core.jar -DgroupId=flexganttfx-core -DartifactId=flexganttfx-core -Dversion=8.12 -Dpackaging=jar

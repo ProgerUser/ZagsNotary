@@ -79,55 +79,38 @@ public class AdoptList {
 
 	@FXML
 	private XTableColumn<ADOPTOIN, String> ZAGS_NAME;
-
 	@FXML
 	private DatePicker DT1;
-
 	@FXML
 	private DatePicker DT2;
-
 	@FXML
 	private BorderPane ROOT;
-
 	@FXML
 	private XTableColumn<ADOPTOIN, String> NEW_FIRSTNAME;
-
 	@FXML
 	private XTableColumn<ADOPTOIN, String> DOC_NUMBER;
-	
 	@FXML
 	private XTableColumn<ADOPTOIN, String> OLD_LASTNAME;
-
 	@FXML
 	private XTableColumn<ADOPTOIN, String> OPER;
-
 	@FXML
 	private XTableColumn<ADOPTOIN, String> NEW_MIDDLNAME;
-
 	@FXML
 	private ProgressIndicator PB;
-
 	@FXML
 	private XTableColumn<ADOPTOIN, String> NEW_LASTNAME;
-
 	@FXML
 	private XTableView<ADOPTOIN> ADOPTOIN;
-
 	@FXML
 	private XTableColumn<ADOPTOIN, Long> ID;
-
 	@FXML
 	private XTableColumn<ADOPTOIN, String> OLD_FIRSTNAME;
-
 	// @FXML
 	// private XTableColumn<ADOPTOIN, LocalDateTime> DOC_DATE;
-
 	@FXML
 	private XTableColumn<ADOPTOIN, String> OLD_MIDDLNAME;
-
 	@FXML
 	private VBox VB;
-
 	@FXML
 	private TitledPane FILTER;
 	

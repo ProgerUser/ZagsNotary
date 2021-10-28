@@ -42,6 +42,7 @@ import ru.psv.mj.log.LogList;
 import ru.psv.mj.msg.Msg;
 import ru.psv.mj.notary.doc.html.controller.NotaryDocList;
 import ru.psv.mj.notary.template.html.controller.NtTemplate;
+import ru.psv.mj.prjmngm.doc.type.RootPmDocTypeC;
 import ru.psv.mj.prjmngm.emps.RootPmEmpController;
 import ru.psv.mj.report.Report;
 import ru.psv.mj.sprav.courts.CourtList;
@@ -101,6 +102,7 @@ public class Main extends Application {
 	public static boolean OtdWin = true;
 	public static boolean PmEmpWin = true;
 	public static boolean PmInBoxDocsWin = true;
+	public static boolean PmDocTypeWin = true;
 	public static boolean CourtsWin = true;
 	public static boolean ZagsWin = true;
 	public static boolean NotaryWin = true;
@@ -164,9 +166,8 @@ public class Main extends Application {
 			Main.primaryStage = primaryStage;
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
-			
 
-			//boolean is_upd = new ru.psv.mj.update.root.Main().start();
+			// boolean is_upd = new ru.psv.mj.update.root.Main().start();
 
 //			if(is_upd == false) {
 //				Enter();	
@@ -179,8 +180,9 @@ public class Main extends Application {
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DbUtil.Db_Connect();
-			initRootLayout();
-			RT();
+//			initRootLayout();
+//			RT();
+			PmDocType();
 			// OTD();
 //			new NotaryDocList().HtmlEditor(primaryStage);
 //
@@ -192,13 +194,13 @@ public class Main extends Application {
 				((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icon.png"));
 				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
 					Close();
-				}else {
+				} else {
 					e.consume();
 				}
 			});
 			/* Максимально растянуть окно */
-			//primaryStage.setMaximized(true);
-			//PetrovichDeclinationMaker maker =
+			// primaryStage.setMaximized(true);
+			// PetrovichDeclinationMaker maker =
 			// PetrovichDeclinationMaker.getInstance();
 //			System.out.println(Petrovich.Lname("MALE", "Пачулия"));
 //			System.out.println(Petrovich.Fname("MALE", "Саид"));
@@ -452,7 +454,8 @@ public class Main extends Application {
 			if (NtCliWin) {
 				NtCliWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/notary/client/view/CusList.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/notary/client/view/CusList.fxml"));
 
 				ru.psv.mj.notary.client.controller.CusList controller = new ru.psv.mj.notary.client.controller.CusList();
 				loader.setController(controller);
@@ -483,7 +486,8 @@ public class Main extends Application {
 			if (NtDocWin) {
 				NtDocWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/notary/doc/html/view/Notary.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/notary/doc/html/view/Notary.fxml"));
 
 				NotaryDocList controller = new NotaryDocList();
 				loader.setController(controller);
@@ -706,7 +710,8 @@ public class Main extends Application {
 			if (PmInBoxDocsWin) {
 				PmInBoxDocsWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/prjmngm/emps/RootPmEmpView.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/prjmngm/emps/RootPmEmpView.fxml"));
 				RootPmEmpController controller = new RootPmEmpController();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -728,13 +733,45 @@ public class Main extends Application {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
+	public static void PmDocType() {
+		try {
+			if (PmDocTypeWin) {
+				PmDocTypeWin = false;
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/prjmngm/doc/type/RootPmDocTypeView.fxml"));
+
+				RootPmDocTypeC controller = new RootPmDocTypeC();
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Типы документов");
+				stage.initOwner(primaryStage);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						PmDocTypeWin = true;
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
 	public static void PmEmp() {
 		try {
 			if (PmEmpWin) {
 				PmEmpWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/prjmngm/emps/RootPmEmpView.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/prjmngm/emps/RootPmEmpView.fxml"));
 				RootPmEmpController controller = new RootPmEmpController();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -825,7 +862,8 @@ public class Main extends Application {
 			if (PrjWin) {
 				PrjWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/admin/project/PRJ_FLS_FLDR.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/admin/project/PRJ_FLS_FLDR.fxml"));
 
 				PRJ_FLS_FLDR controller = new PRJ_FLS_FLDR();
 				loader.setController(controller);
@@ -921,7 +959,8 @@ public class Main extends Application {
 			if (UpdateNameWin) {
 				UpdateNameWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/updname/UpdNameList.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/zags/doc/updname/UpdNameList.fxml"));
 				UpdNameList controller = new UpdNameList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -982,7 +1021,8 @@ public class Main extends Application {
 			if (AdoptWin) {
 				AdoptWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/adoptoin/AdoptList.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/zags/doc/adoptoin/AdoptList.fxml"));
 				AdoptList controller = new AdoptList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1013,7 +1053,8 @@ public class Main extends Application {
 			if (UpdateAbhNameWin) {
 				UpdateAbhNameWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/updabhname/UpdAbhNameList.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/zags/doc/updabhname/UpdAbhNameList.fxml"));
 				UpdAbhNameList controller = new UpdAbhNameList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1041,7 +1082,8 @@ public class Main extends Application {
 			if (UpdNatWin) {
 				UpdNatWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/updatenat/UpdNatList.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/zags/doc/updatenat/UpdNatList.fxml"));
 				UpdNatList controller = new UpdNatList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1110,7 +1152,8 @@ public class Main extends Application {
 			if (BActWin) {
 				BActWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/birthact/BirthList.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/zags/doc/birthact/BirthList.fxml"));
 				BirthList controller = new BirthList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1186,7 +1229,8 @@ public class Main extends Application {
 			if (MercerWin) {
 				MercerWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/mercer/MercerList.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/zags/doc/mercer/MercerList.fxml"));
 				MercerList controller = new MercerList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1218,7 +1262,8 @@ public class Main extends Application {
 			if (DivorcerWin) {
 				DivorcerWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/divorce/DivorceList.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/zags/doc/divorce/DivorceList.fxml"));
 				DivorceList controller = new DivorceList();
 				loader.setController(controller);
 				Parent root = loader.load();
@@ -1250,7 +1295,8 @@ public class Main extends Application {
 			if (PaternWin) {
 				PaternWin = false;
 				Stage stage = new Stage();
-				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/zags/doc/patern/PaternList.fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/zags/doc/patern/PaternList.fxml"));
 				PaternList controller = new PaternList();
 				loader.setController(controller);
 				Parent root = loader.load();

@@ -47,7 +47,12 @@
 				</Menu>
 				<Menu fx:id="203" mnemonicParsing="false" text="Управление проектами">
 					<items>
-						<MenuItem fx:id="204" mnemonicParsing="false" onAction="#PmEmp" text="Сотрудники" />
+					    <Menu fx:id="243" mnemonicParsing="false" text="Справочники">
+							<items>
+								<MenuItem fx:id="244" mnemonicParsing="false" onAction="#PmDocType" text="Типы документов" />
+								<MenuItem fx:id="204" mnemonicParsing="false" onAction="#PmEmp" text="Сотрудники" />
+							</items>
+						</Menu>
 						<MenuItem fx:id="223" mnemonicParsing="false" onAction="#InBoxDocs" text="Входящие документы" />
 					</items>
 				</Menu>
@@ -63,19 +68,13 @@
 						</Menu>
 						<Menu fx:id="104" mnemonicParsing="false" text="Аудит">
 							<items>
-
 								<MenuItem fx:id="21" mnemonicParsing="false" onAction="#au_setup" text="Найстройка аудита" />
-
 								<MenuItem fx:id="20" mnemonicParsing="false" onAction="#auview" text="Просмотр аудита" />
 							</items>
 						</Menu>
-
 						<MenuItem fx:id="43" mnemonicParsing="false" onAction="#prglog" text="Лог программы" />
-
 						<MenuItem fx:id="63" mnemonicParsing="false" onAction="#doc1c" text="База паспортов" />
-
 						<MenuItem fx:id="83" mnemonicParsing="false" onAction="#prj" text="Файлы проекта" />
-
 						<MenuItem fx:id="84" mnemonicParsing="false" onAction="#settings" text="Общие настройки" />
 					</items>
 				</Menu>

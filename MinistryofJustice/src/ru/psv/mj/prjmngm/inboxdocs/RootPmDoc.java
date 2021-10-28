@@ -49,30 +49,20 @@ public class RootPmDoc {
 
 	// <TableView>
 	@FXML
-	private TableView<VPM_EMP> PM_EMP;
+	private TableView<?> PM_DOCS;
 	// </TableView>
 
 	// <TableColumn>
 	@FXML
-	private TableColumn<VPM_EMP, Long> EMP_ID;
+	private TableColumn<?, Long> DOC_ID;
 	@FXML
-	private TableColumn<VPM_EMP, String> EMP_LASTNAME;
+	private TableColumn<?, String> DOC_TYPE;
 	@FXML
-	private TableColumn<VPM_EMP, String> EMP_FIRSTNAME;
+	private TableColumn<?, String> DOC_COMMENT;
 	@FXML
-	private TableColumn<VPM_EMP, String> EMP_MIDDLENAME;
+	private TableColumn<?, LocalDate> EMP_WORKSTART;
 	@FXML
-	private TableColumn<VPM_EMP, String> EMP_POSITION;
-	@FXML
-	private TableColumn<VPM_EMP, String> EMP_TEL;
-	@FXML
-	private TableColumn<VPM_EMP, String> EMP_EMAIL;
-	@FXML
-	private TableColumn<VPM_EMP, String> EMP_LOGIN;
-	@FXML
-	private TableColumn<Object, LocalDate> EMP_WORKSTART;
-	@FXML
-	private TableColumn<Object, LocalDate> EMP_WORKEND;
+	private TableColumn<?, LocalDate> DOC_END;
 	// </TableColumn>
 
 	/**
@@ -103,7 +93,7 @@ public class RootPmDoc {
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
 			stage.setTitle("Добавить: ");
-			stage.initOwner((Stage) PM_EMP.getScene().getWindow());
+			stage.initOwner((Stage) PM_DOCS.getScene().getWindow());
 			stage.setResizable(true);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -341,8 +331,8 @@ public class RootPmDoc {
 			EMP_FIRSTNAME.setCellValueFactory(cellData -> cellData.getValue().EMP_FIRSTNAMEProperty());
 			EMP_LASTNAME.setCellValueFactory(cellData -> cellData.getValue().EMP_LASTNAMEProperty());
 			EMP_MIDDLENAME.setCellValueFactory(cellData -> cellData.getValue().EMP_MIDDLENAMEProperty());
-			EMP_WORKSTART.setCellValueFactory(cellData -> ((VPM_EMP)cellData.getValue()).EMP_WORKSTARTProperty());
-			EMP_WORKEND.setCellValueFactory(cellData -> ((VPM_EMP)cellData.getValue()).EMP_WORKENDProperty());
+			EMP_WORKSTART.setCellValueFactory(cellData -> ((VPM_EMP) cellData.getValue()).EMP_WORKSTARTProperty());
+			EMP_WORKEND.setCellValueFactory(cellData -> ((VPM_EMP) cellData.getValue()).EMP_WORKENDProperty());
 			// connect
 			dbConnect();
 			// load table
