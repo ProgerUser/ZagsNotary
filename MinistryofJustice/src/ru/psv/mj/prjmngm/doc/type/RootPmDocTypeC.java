@@ -140,7 +140,7 @@ public class RootPmDocTypeC {
 					selforupd.executeQuery();
 					selforupd.close();
 					// add lock row
-					String lock = DbUtil.Lock_Row(sel.getDOC_TP_ID(), "PM_EMP", conn);
+					String lock = DbUtil.Lock_Row(sel.getDOC_TP_ID(), "PM_DOC_TYPES", conn);
 					if (lock != null) {// if error add row
 						Msg.Message(lock);
 						conn.rollback();
@@ -169,7 +169,7 @@ public class RootPmDocTypeC {
 								if (controller.getStatus()) {
 									conn.commit();
 									// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-									String lock = DbUtil.Lock_Row_Delete(sel.getDOC_TP_ID(), "PM_EMP", conn);
+									String lock = DbUtil.Lock_Row_Delete(sel.getDOC_TP_ID(), "PM_DOC_TYPES", conn);
 									if (lock != null) {// if error add row
 										Msg.Message(lock);
 									}
@@ -191,7 +191,7 @@ public class RootPmDocTypeC {
 					// </FXML>---------------------------------------
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(sel.getDOC_TP_ID(), "PM_EMP"));
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(sel.getDOC_TP_ID(), "PM_DOC_TYPES"));
 						DbUtil.Log_Error(e);
 					} else {
 						DbUtil.Log_Error(e);

@@ -111,6 +111,7 @@ public class EditPmDocC {
 	/**
 	 * Для типа документов
 	 */
+	@SuppressWarnings("unused")
 	private void convertComboDisplayList() {
 		EMP_LOGIN.setConverter(new StringConverter<USR>() {
 			@Override

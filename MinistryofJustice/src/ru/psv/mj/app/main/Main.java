@@ -44,6 +44,7 @@ import ru.psv.mj.notary.doc.html.controller.NotaryDocList;
 import ru.psv.mj.notary.template.html.controller.NtTemplate;
 import ru.psv.mj.prjmngm.doc.type.RootPmDocTypeC;
 import ru.psv.mj.prjmngm.emps.RootPmEmpController;
+import ru.psv.mj.prjmngm.inboxdocs.RootPmDocController;
 import ru.psv.mj.report.Report;
 import ru.psv.mj.sprav.courts.CourtList;
 import ru.psv.mj.sprav.notary.NotaryList;
@@ -180,9 +181,9 @@ public class Main extends Application {
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DbUtil.Db_Connect();
-//			initRootLayout();
-//			RT();
-			PmDocType();
+			initRootLayout();
+			RT();
+			//PmDocType();
 			// OTD();
 //			new NotaryDocList().HtmlEditor(primaryStage);
 //
@@ -711,8 +712,10 @@ public class Main extends Application {
 				PmInBoxDocsWin = false;
 				Stage stage = new Stage();
 				FXMLLoader loader = new FXMLLoader(
-						Main.class.getResource("/ru/psv/mj/prjmngm/emps/RootPmEmpView.fxml"));
-				RootPmEmpController controller = new RootPmEmpController();
+						Main.class.getResource("/ru/psv/mj/prjmngm/inboxdocs/RootPmDocView.fxml"));
+				
+				RootPmDocController controller = new RootPmDocController();
+				
 				loader.setController(controller);
 				Parent root = loader.load();
 				Scene scene = new Scene(root);
