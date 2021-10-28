@@ -82,9 +82,9 @@ public class RootPmDocTypeC {
 				@Override
 				public void handle(WindowEvent paramT) {
 					try {
-						//delete file
+						// delete file
 						FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
-						//------------
+						// ------------
 						controller.dbDisconnect();
 						LoadTable();
 					} catch (Exception e) {
@@ -150,10 +150,10 @@ public class RootPmDocTypeC {
 					Stage stage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/doc/type/IUPmDocType.fxml"));
-					
+
 					EditPmDocTypeC controller = new EditPmDocTypeC();
 					controller.SetClass(sel, conn);
-					
+
 					loader.setController(controller);
 					Parent root = loader.load();
 					stage.setScene(new Scene(root));
@@ -173,14 +173,14 @@ public class RootPmDocTypeC {
 									if (lock != null) {// if error add row
 										Msg.Message(lock);
 									}
-									//delete file
+									// delete file
 									FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
-									//------------
+									// ------------
 									LoadTable();
-								}else {
-									//delete file
+								} else {
+									// delete file
 									FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
-									//------------
+									// ------------
 								}
 							} catch (Exception e) {
 								DbUtil.Log_Error(e);
@@ -202,8 +202,6 @@ public class RootPmDocTypeC {
 			DbUtil.Log_Error(e);
 		}
 	}
-
-
 
 	/**
 	 * Обновить

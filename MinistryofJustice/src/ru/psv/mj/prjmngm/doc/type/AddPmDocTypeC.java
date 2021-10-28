@@ -139,6 +139,7 @@ public class AddPmDocTypeC {
 					new ExtensionFilter("DOC", "*.doc"));
 			File file = fileChooser.showOpenDialog(null);
 			if (file != null) {
+				FileWord = file;
 				WordPath.setText(file.getAbsolutePath());
 			}
 		} catch (Exception e) {
@@ -226,7 +227,7 @@ public class AddPmDocTypeC {
 				}
 			});
 
-			if(FileWord!=null) {
+			if (FileWord != null) {
 				clientSite.dispose();
 				clientSite = new OleClientSite(frame, SWT.NONE, "Word.Document", FileWord);
 				clientSite.doVerb(OLE.OLEIVERB_INPLACEACTIVATE);

@@ -85,6 +85,7 @@ public class EditPmDocTypeC {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	@FXML
 	void CreWord(ActionEvent event) {
 		try {
@@ -103,6 +104,7 @@ public class EditPmDocTypeC {
 					new ExtensionFilter("DOC", "*.doc"));
 			File file = fileChooser.showOpenDialog(null);
 			if (file != null) {
+				FileWord = file;
 				WordPath.setText(file.getAbsolutePath());
 			}
 		} catch (Exception e) {
