@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
@@ -57,6 +58,10 @@ public class RootPmDocController {
 	private TableColumn<Object, LocalDate> DOC_END;
 	@FXML
 	private TableColumn<VPM_DOCS, String> DOC_ISFAST;
+	@FXML
+	private TableColumn<VPM_DOCS, String> DOC_USR;
+	@FXML
+	private TableColumn<Object, LocalDateTime> DOC_START;
 	// </TableColumn>
 
 	/**
@@ -77,10 +82,9 @@ public class RootPmDocController {
 			Stage stage = new Stage();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/emps/IUPmEmp.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/inboxdocs/IUPmDoc.fxml"));
 
 			AddPmDocC controller = new AddPmDocC();
-			controller.SetConn(conn);
 			loader.setController(controller);
 
 			Parent root = loader.load();
@@ -94,6 +98,7 @@ public class RootPmDocController {
 				@Override
 				public void handle(WindowEvent paramT) {
 					try {
+						controller.dbDisconnect();
 						LoadTable();
 					} catch (Exception e) {
 						DbUtil.Log_Error(e);
@@ -157,9 +162,9 @@ public class RootPmDocController {
 					// <FXML>---------------------------------------
 					Stage stage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/emps/IUPmEmp.fxml"));
+					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/inboxdocs/IUPmDoc.fxml"));
 					EditPmDocC controller = new EditPmDocC();
-					// controller.SetClass(sel, conn);
+					controller.SetClass(sel, conn);
 
 					loader.setController(controller);
 					Parent root = loader.load();
@@ -173,8 +178,6 @@ public class RootPmDocController {
 						@Override
 						public void handle(WindowEvent paramT) {
 							try {
-								// сохрнаить для сравнения
-								controller.SaveCompare();
 								if (controller.getStatus()) {
 									conn.commit();
 									// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
@@ -194,7 +197,6 @@ public class RootPmDocController {
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
 						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(sel.getDOC_ID(), "PM_DOCS"));
-						DbUtil.Log_Error(e);
 					} else {
 						DbUtil.Log_Error(e);
 					}
@@ -227,6 +229,7 @@ public class RootPmDocController {
 		try {
 			new ConvConst().TableColumnDate(DOC_DATE);
 			new ConvConst().TableColumnDate(DOC_END);
+			new ConvConst().TableColumnDateTime(DOC_START);
 			// init table column
 			DOC_ID.setCellValueFactory(cellData -> cellData.getValue().DOC_IDProperty().asObject());
 			DOC_COMMENT.setCellValueFactory(cellData -> cellData.getValue().DOC_COMMENTProperty());
@@ -235,6 +238,8 @@ public class RootPmDocController {
 			DOC_TP_NAME.setCellValueFactory(cellData -> cellData.getValue().DOC_TP_NAMEProperty());
 			DOC_END.setCellValueFactory(cellData -> ((VPM_DOCS) cellData.getValue()).DOC_ENDProperty());
 			DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
+			DOC_USR.setCellValueFactory(cellData -> cellData.getValue().DOC_USRProperty());
+			DOC_START.setCellValueFactory(cellData -> ((VPM_DOCS) cellData.getValue()).TM$DOC_STARTProperty());
 			dbConnect();
 			// load table
 			LoadTable();
@@ -277,14 +282,18 @@ public class RootPmDocController {
 								DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 						: null);
 				list.setDOC_REF(rs.getLong("DOC_REF"));
+				list.setDOC_TP_ID(rs.getLong("DOC_TP_ID"));
 				list.setDOC_TP_NAME(rs.getString("DOC_TP_NAME"));
 				list.setDOC_END((rs.getDate("DOC_END") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_END")),
 								DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 						: null);
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
-				list.setDOC_TP_ID(rs.getLong("DOC_TP_ID"));
+				list.setTM$DOC_START((rs.getDate("TM$DOC_START") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_START")),
+						DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) : null);
 				list.setDOC_USR(rs.getString("DOC_USR"));
+
 				obslist.add(list);
 			}
 			// add data
@@ -316,7 +325,7 @@ public class RootPmDocController {
 	void ResizeColumns(TableView<?> table) {
 		table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 		table.getColumns().stream().forEach((column_) -> {
-			if (column_.getText().equals("")) {
+			if (column_.getText().equals("Сист.данные")) {
 			} else {
 				Text t = new Text(column_.getText());
 				double max = t.getLayoutBounds().getWidth();

@@ -83,7 +83,9 @@ public class RootPmDocTypeC {
 				public void handle(WindowEvent paramT) {
 					try {
 						// delete file
-						FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
+						if (controller.FileWord != null && controller.FileWord.exists()) {
+							FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
+						}
 						// ------------
 						controller.dbDisconnect();
 						LoadTable();
@@ -174,12 +176,16 @@ public class RootPmDocTypeC {
 										Msg.Message(lock);
 									}
 									// delete file
-									FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
+									if (controller.FileWord != null && controller.FileWord.exists()) {
+										FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
+									}
 									// ------------
 									LoadTable();
 								} else {
 									// delete file
-									FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
+									if (controller.FileWord != null && controller.FileWord.exists()) {
+										FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
+									}
 									// ------------
 								}
 							} catch (Exception e) {

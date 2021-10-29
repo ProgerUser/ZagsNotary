@@ -1,5 +1,6 @@
 package ru.psv.mj.prjmngm.inboxdocs;
 
+import java.time.LocalDateTime;
 import java.time.LocalDate;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -25,6 +26,8 @@ public class VPM_DOCS {
 	/** Нет данных */
 	private LongProperty DOC_REF;
 	/** Нет данных */
+	private SimpleObjectProperty<LocalDateTime> TM$DOC_START;
+	/** Нет данных */
 	private LongProperty DOC_TP_ID;
 	/** Нет данных */
 	private StringProperty DOC_TP_NAME;
@@ -38,6 +41,7 @@ public class VPM_DOCS {
 		this.DOC_ISFAST = new SimpleStringProperty();
 		this.DOC_NUMBER = new SimpleStringProperty();
 		this.DOC_REF = new SimpleLongProperty();
+		this.TM$DOC_START = new SimpleObjectProperty<>();
 		this.DOC_TP_ID = new SimpleLongProperty();
 		this.DOC_TP_NAME = new SimpleStringProperty();
 	}
@@ -72,6 +76,10 @@ public class VPM_DOCS {
 
 	public void setDOC_REF(Long DOC_REF) {
 		this.DOC_REF.set(DOC_REF);
+	}
+
+	public void setTM$DOC_START(LocalDateTime TM$DOC_START) {
+		this.TM$DOC_START.set(TM$DOC_START);
 	}
 
 	public void setDOC_TP_ID(Long DOC_TP_ID) {
@@ -114,6 +122,10 @@ public class VPM_DOCS {
 		return DOC_REF.get();
 	}
 
+	public LocalDateTime getTM$DOC_START() {
+		return TM$DOC_START.get();
+	}
+
 	public Long getDOC_TP_ID() {
 		return DOC_TP_ID.get();
 	}
@@ -152,6 +164,10 @@ public class VPM_DOCS {
 
 	public LongProperty DOC_REFProperty() {
 		return DOC_REF;
+	}
+
+	public SimpleObjectProperty<LocalDateTime> TM$DOC_STARTProperty() {
+		return TM$DOC_START;
 	}
 
 	public LongProperty DOC_TP_IDProperty() {
