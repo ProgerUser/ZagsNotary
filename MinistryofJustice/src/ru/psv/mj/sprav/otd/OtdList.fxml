@@ -13,7 +13,7 @@
 <?import org.controlsfx.control.tableview2.FilteredTableColumn?>
 <?import org.controlsfx.control.tableview2.FilteredTableView?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#F5" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#F5" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 
 		<ToolBar style="-fx-border-color: silver;">
 			<items>
