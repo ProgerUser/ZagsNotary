@@ -35,6 +35,8 @@ public class VPM_DOCS {
 	private StringProperty ORG_NAME;
 	/** Нет данных */
 	private LongProperty ORG_ID;
+	/** Нет данных */
+	private StringProperty DOC_NAME;
 
 	public VPM_DOCS() {
 		this.DOC_ID = new SimpleLongProperty();
@@ -50,6 +52,7 @@ public class VPM_DOCS {
 		this.DOC_TP_NAME = new SimpleStringProperty();
 		this.ORG_NAME = new SimpleStringProperty();
 		this.ORG_ID = new SimpleLongProperty();
+		this.DOC_NAME = new SimpleStringProperty();
 	}
 
 	public void setDOC_ID(Long DOC_ID) {
@@ -104,6 +107,10 @@ public class VPM_DOCS {
 		this.ORG_ID.set(ORG_ID);
 	}
 
+	public void setDOC_NAME(String DOC_NAME) {
+		this.DOC_NAME.set(DOC_NAME);
+	}
+
 	public Long getDOC_ID() {
 		return DOC_ID.get();
 	}
@@ -156,6 +163,10 @@ public class VPM_DOCS {
 		return ORG_ID.get();
 	}
 
+	public String getDOC_NAME() {
+		return DOC_NAME.get();
+	}
+
 	public LongProperty DOC_IDProperty() {
 		return DOC_ID;
 	}
@@ -206,5 +217,9 @@ public class VPM_DOCS {
 
 	public LongProperty ORG_IDProperty() {
 		return ORG_ID;
+	}
+
+	public StringProperty DOC_NAMEProperty() {
+		return DOC_NAME;
 	}
 }

@@ -10,10 +10,13 @@ public class PM_DOC_TYPES {
 	private LongProperty DOC_TP_ID;
 	/** Название */
 	private StringProperty DOC_TP_NAME;
+	/** Запрос */
+	private StringProperty DOC_TP_SQL;
 
 	public PM_DOC_TYPES() {
 		this.DOC_TP_ID = new SimpleLongProperty();
 		this.DOC_TP_NAME = new SimpleStringProperty();
+		this.DOC_TP_SQL = new SimpleStringProperty();
 	}
 
 	public void setDOC_TP_ID(Long DOC_TP_ID) {
@@ -24,6 +27,10 @@ public class PM_DOC_TYPES {
 		this.DOC_TP_NAME.set(DOC_TP_NAME);
 	}
 
+	public void setDOC_TP_SQL(String DOC_TP_SQL) {
+		this.DOC_TP_SQL.set(DOC_TP_SQL);
+	}
+
 	public Long getDOC_TP_ID() {
 		return DOC_TP_ID.get();
 	}
@@ -32,11 +39,19 @@ public class PM_DOC_TYPES {
 		return DOC_TP_NAME.get();
 	}
 
+	public String getDOC_TP_SQL() {
+		return DOC_TP_SQL.get();
+	}
+
 	public LongProperty DOC_TP_IDProperty() {
 		return DOC_TP_ID;
 	}
 
 	public StringProperty DOC_TP_NAMEProperty() {
 		return DOC_TP_NAME;
+	}
+
+	public StringProperty DOC_TP_SQLProperty() {
+		return DOC_TP_SQL;
 	}
 }

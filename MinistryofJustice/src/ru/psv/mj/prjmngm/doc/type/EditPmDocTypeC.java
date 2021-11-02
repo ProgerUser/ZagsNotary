@@ -37,6 +37,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -71,6 +72,8 @@ public class EditPmDocTypeC {
 	private TextField DOC_TP_NAME;
 	@FXML
 	private TextField WordPath;
+	@FXML
+	private TextArea SQL;
 
 	/**
 	 * Отмена
@@ -121,7 +124,7 @@ public class EditPmDocTypeC {
 	void Ok(ActionEvent event) {
 		try {
 			try {
-				CallableStatement callStmt = conn.prepareCall("{call pm_sprav_pkg.EDIT_DOC_TYPE(?,?,?,?)}");
+				CallableStatement callStmt = conn.prepareCall("{call pm_sprav_pkg.EDIT_DOC_TYPE(?,?,?,?,?)}");
 				callStmt.registerOutParameter(1, Types.VARCHAR);
 				/* ID */
 				callStmt.setLong(2, class_.getDOC_TP_ID());
@@ -133,6 +136,7 @@ public class EditPmDocTypeC {
 				InputStream is = new ByteArrayInputStream(bArray);
 				// </>
 				callStmt.setBlob(4, is, bArray.length);
+				callStmt.setString(5, SQL.getText());
 				// выполнение
 				callStmt.execute();
 				if (callStmt.getString(1) == null) {
@@ -175,6 +179,7 @@ public class EditPmDocTypeC {
 	private void initialize() {
 		try {
 			DOC_TP_NAME.setText(class_.getDOC_TP_NAME());
+			SQL.setText(class_.getDOC_TP_SQL());
 			{
 				// <prp>
 				PreparedStatement prp = conn

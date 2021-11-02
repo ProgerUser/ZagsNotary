@@ -263,7 +263,7 @@ public class RootPmDocTypeC {
 	void LoadTable() {
 		try {
 			// loop
-			String selectStmt = "select * from PM_DOC_TYPES t";
+			String selectStmt = "select DOC_TP_ID,DOC_TP_NAME,DOC_TP_SQL from PM_DOC_TYPES t";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<PM_DOC_TYPES> obslist = FXCollections.observableArrayList();
@@ -271,6 +271,8 @@ public class RootPmDocTypeC {
 				PM_DOC_TYPES list = new PM_DOC_TYPES();
 				list.setDOC_TP_ID(rs.getLong("DOC_TP_ID"));
 				list.setDOC_TP_NAME(rs.getString("DOC_TP_NAME"));
+				list.setDOC_TP_SQL(rs.getString("DOC_TP_SQL"));
+
 				obslist.add(list);
 			}
 			// add data

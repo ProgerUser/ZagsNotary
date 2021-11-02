@@ -5,23 +5,33 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
@@ -55,6 +65,8 @@ public class EditPmDocC {
 	private TextField DOC_COMMENT;
 	@FXML
 	private TextField DOC_REF;
+	@FXML
+	private TextField DOC_NAME;
 	@FXML
 	private TableView<PM_DOC_WORD> DocWord;
 	@FXML
@@ -182,17 +194,61 @@ public class EditPmDocC {
 
 	/**
 	 * Создать ворд с шаблона
+	 * 
 	 * @param event
 	 */
-    @FXML
-    void CopeFromTempl(ActionEvent event) {
+	@FXML
+	void CopeFromTempl(ActionEvent event) {
 		try {
-			
+			if (DOC_TYPE.getSelectionModel().getSelectedItem() != null) {
+				// Create the custom dialog.
+				Dialog<Pair<String, String>> dialog = new Dialog<>();
+				dialog.setTitle("Создание из шаблона");
+
+				Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+				stage.getIcons().add(new Image(this.getClass().getResource("/icon.png").toString()));
+
+				// Set the button types.
+				ButtonType loginButtonType = new ButtonType("OK", ButtonData.OK_DONE);
+				dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+				GridPane gridPane = new GridPane();
+				gridPane.setHgap(10);
+				gridPane.setVgap(10);
+				gridPane.setPadding(new Insets(20, 150, 10, 10));
+
+				// текстовое поле
+				TextField acc = new TextField();
+				acc.setPrefWidth(200);
+
+				gridPane.add(new Label("Наименование файла:"), 0, 0);
+				gridPane.add(acc, 1, 0);
+
+				dialog.getDialogPane().setContent(gridPane);
+
+				Platform.runLater(() -> acc.requestFocus());
+				// Convert the result to
+				// clicked.
+				dialog.setResultConverter(dialogButton -> {
+					if (dialogButton == loginButtonType) {
+						return new Pair<>(acc.getText(), acc.getText());
+					}
+					return null;
+				});
+
+				Optional<Pair<String, String>> result = dialog.showAndWait();
+				// Нажали OK
+				result.ifPresent(pair -> {
+					System.out.println("OK");
+				});
+			} else {
+				Msg.Message("Выберите тип документа!");
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
-    }
-    
+	}
+
 	/**
 	 * ОК
 	 * 
@@ -335,6 +391,7 @@ public class EditPmDocC {
 			if (class_.getDOC_REF() != 0) {
 				DOC_REF.setText(String.valueOf(class_.getDOC_REF()));
 			}
+			DOC_NAME.setText(class_.getDOC_NAME());
 			// -------------------
 			{
 				String selectStmt = "select * from PM_DOC_TYPES t";

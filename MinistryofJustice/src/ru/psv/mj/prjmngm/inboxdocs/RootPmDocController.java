@@ -265,7 +265,6 @@ public class RootPmDocController {
 		}
 	}
 
-    
 	/**
 	 * Initialize table
 	 */
@@ -278,7 +277,7 @@ public class RootPmDocController {
 			ObservableList<VPM_DOCS> obslist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				VPM_DOCS list = new VPM_DOCS();
-				
+
 				list.setORG_NAME(rs.getString("ORG_NAME"));
 				list.setDOC_ID(rs.getLong("DOC_ID"));
 				list.setDOC_COMMENT(rs.getString("DOC_COMMENT"));
@@ -287,6 +286,7 @@ public class RootPmDocController {
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_DATE")),
 								DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 						: null);
+				list.setDOC_NAME(rs.getString("DOC_NAME"));
 				list.setDOC_REF(rs.getLong("DOC_REF"));
 				list.setDOC_TP_ID(rs.getLong("DOC_TP_ID"));
 				list.setDOC_TP_NAME(rs.getString("DOC_TP_NAME"));
