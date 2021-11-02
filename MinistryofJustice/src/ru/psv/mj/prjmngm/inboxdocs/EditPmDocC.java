@@ -180,6 +180,18 @@ public class EditPmDocC {
 		}
 	}
 
+	/**
+	 * Создать ворд с шаблона
+	 * @param event
+	 */
+    @FXML
+    void CopeFromTempl(ActionEvent event) {
+		try {
+			
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+    }
     
 	/**
 	 * ОК
