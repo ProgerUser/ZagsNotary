@@ -31,6 +31,10 @@ public class VPM_DOCS {
 	private LongProperty DOC_TP_ID;
 	/** Нет данных */
 	private StringProperty DOC_TP_NAME;
+	/** Нет данных */
+	private StringProperty ORG_NAME;
+	/** Нет данных */
+	private LongProperty ORG_ID;
 
 	public VPM_DOCS() {
 		this.DOC_ID = new SimpleLongProperty();
@@ -44,6 +48,8 @@ public class VPM_DOCS {
 		this.TM$DOC_START = new SimpleObjectProperty<>();
 		this.DOC_TP_ID = new SimpleLongProperty();
 		this.DOC_TP_NAME = new SimpleStringProperty();
+		this.ORG_NAME = new SimpleStringProperty();
+		this.ORG_ID = new SimpleLongProperty();
 	}
 
 	public void setDOC_ID(Long DOC_ID) {
@@ -90,6 +96,14 @@ public class VPM_DOCS {
 		this.DOC_TP_NAME.set(DOC_TP_NAME);
 	}
 
+	public void setORG_NAME(String ORG_NAME) {
+		this.ORG_NAME.set(ORG_NAME);
+	}
+
+	public void setORG_ID(Long ORG_ID) {
+		this.ORG_ID.set(ORG_ID);
+	}
+
 	public Long getDOC_ID() {
 		return DOC_ID.get();
 	}
@@ -134,6 +148,14 @@ public class VPM_DOCS {
 		return DOC_TP_NAME.get();
 	}
 
+	public String getORG_NAME() {
+		return ORG_NAME.get();
+	}
+
+	public Long getORG_ID() {
+		return ORG_ID.get();
+	}
+
 	public LongProperty DOC_IDProperty() {
 		return DOC_ID;
 	}
@@ -176,5 +198,13 @@ public class VPM_DOCS {
 
 	public StringProperty DOC_TP_NAMEProperty() {
 		return DOC_TP_NAME;
+	}
+
+	public StringProperty ORG_NAMEProperty() {
+		return ORG_NAME;
+	}
+
+	public LongProperty ORG_IDProperty() {
+		return ORG_ID;
 	}
 }

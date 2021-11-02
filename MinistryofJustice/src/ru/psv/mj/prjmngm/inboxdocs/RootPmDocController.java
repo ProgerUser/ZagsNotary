@@ -61,6 +61,8 @@ public class RootPmDocController {
 	@FXML
 	private TableColumn<VPM_DOCS, String> DOC_USR;
 	@FXML
+	private TableColumn<VPM_DOCS, String> ORG_NAME;
+	@FXML
 	private TableColumn<Object, LocalDateTime> DOC_START;
 	// </TableColumn>
 
@@ -240,6 +242,7 @@ public class RootPmDocController {
 			DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 			DOC_USR.setCellValueFactory(cellData -> cellData.getValue().DOC_USRProperty());
 			DOC_START.setCellValueFactory(cellData -> ((VPM_DOCS) cellData.getValue()).TM$DOC_STARTProperty());
+			ORG_NAME.setCellValueFactory(cellData -> cellData.getValue().ORG_NAMEProperty());
 			dbConnect();
 			// load table
 			LoadTable();
@@ -263,6 +266,19 @@ public class RootPmDocController {
 	}
 
 	/**
+	 * Создать ворд с шаблона
+	 * @param event
+	 */
+    @FXML
+    void CopeFromTempl(ActionEvent event) {
+		try {
+			
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+    }
+    
+	/**
 	 * Initialize table
 	 */
 	void LoadTable() {
@@ -274,6 +290,8 @@ public class RootPmDocController {
 			ObservableList<VPM_DOCS> obslist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				VPM_DOCS list = new VPM_DOCS();
+				
+				list.setORG_NAME(rs.getString("ORG_NAME"));
 				list.setDOC_ID(rs.getLong("DOC_ID"));
 				list.setDOC_COMMENT(rs.getString("DOC_COMMENT"));
 				list.setDOC_ISFAST(rs.getString("DOC_ISFAST"));
@@ -284,6 +302,7 @@ public class RootPmDocController {
 				list.setDOC_REF(rs.getLong("DOC_REF"));
 				list.setDOC_TP_ID(rs.getLong("DOC_TP_ID"));
 				list.setDOC_TP_NAME(rs.getString("DOC_TP_NAME"));
+				list.setORG_ID(rs.getLong("ORG_ID"));
 				list.setDOC_END((rs.getDate("DOC_END") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_END")),
 								DateTimeFormatter.ofPattern("dd.MM.yyyy"))

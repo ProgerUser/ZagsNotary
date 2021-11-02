@@ -1,8 +1,10 @@
 package ru.psv.mj.prjmngm.inboxdocs;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 
 import org.apache.log4j.Logger;
 
@@ -22,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import ru.psv.mj.app.main.Main;
+import ru.psv.mj.msg.Msg;
 import ru.psv.mj.prjmngm.doc.type.PM_DOC_TYPES;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
@@ -38,6 +41,8 @@ public class EditPmDocC {
 
 	@FXML
 	private ComboBox<PM_DOC_TYPES> DOC_TYPE;
+	@FXML
+	private ComboBox<PM_ORG> DOC_ORG;
 	@FXML
 	private TextField DOC_NUMBER;
 	@FXML
@@ -175,6 +180,7 @@ public class EditPmDocC {
 		}
 	}
 
+    
 	/**
 	 * ОК
 	 * 
@@ -183,7 +189,61 @@ public class EditPmDocC {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-
+			CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.EDIT_DOC_INBOX(?,?,?,?,?,?,?,?,?,?)}");
+			callStmt.registerOutParameter(1, Types.VARCHAR);
+			// ID документы
+			if (class_ != null) {
+				callStmt.setLong(2, class_.getDOC_ID());
+			} else {
+				callStmt.setNull(2, java.sql.Types.INTEGER);
+			}
+			// Срок документа
+			callStmt.setDate(3, (DOC_END.getValue() != null) ? java.sql.Date.valueOf(DOC_END.getValue()) : null);
+			// Ссылка на типы документов
+			if (DOC_TYPE.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setLong(4, DOC_TYPE.getSelectionModel().getSelectedItem().getDOC_TP_ID());
+			} else {
+				callStmt.setNull(4, java.sql.Types.INTEGER);
+			}
+			// Комментарий
+			callStmt.setString(5, DOC_COMMENT.getText());
+			// Срочность, 'Y','N'
+			if (DOC_ISFAST.isSelected()) {
+				callStmt.setString(6, "Y");
+			} else if (!DOC_ISFAST.isSelected()) {
+				callStmt.setString(6, "N");
+			}
+			// Номер документа
+			callStmt.setString(7, DOC_NUMBER.getText());
+			// Дата поступления документа
+			callStmt.setDate(8, (DOC_DATE.getValue() != null) ? java.sql.Date.valueOf(DOC_DATE.getValue()) : null);
+			// Ссылка на связанный документ
+			if (!DOC_REF.getText().equals("")) {
+				callStmt.setLong(9, Integer.valueOf(DOC_REF.getText()));
+			} else {
+				callStmt.setNull(9, java.sql.Types.INTEGER);
+			}
+			// Ссылка на организацию
+			if (DOC_ORG.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setLong(10, DOC_ORG.getSelectionModel().getSelectedItem().getORG_ID());
+			} else {
+				callStmt.setNull(10, java.sql.Types.INTEGER);
+			}
+			// выполнение
+			callStmt.execute();
+			// выполнение
+			callStmt.execute();
+			if (callStmt.getString(1) == null) {
+				conn.commit();
+				setStatus(true);
+				callStmt.close();
+				OnClose();
+			} else {
+				conn.rollback();
+				setStatus(false);
+				Msg.Message(callStmt.getString(1));
+				callStmt.close();
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -222,6 +282,25 @@ public class EditPmDocC {
 	}
 
 	/**
+	 * Для организации
+	 */
+	private void ConvDocOrg() {
+		DOC_ORG.setConverter(new StringConverter<PM_ORG>() {
+			@Override
+			public String toString(PM_ORG object) {
+				return object != null ? object.getORG_ID() + "=" + object.getORG_NAME() : "";
+			}
+
+			@Override
+			public PM_ORG fromString(final String string) {
+				return DOC_ORG.getItems().stream()
+						.filter(product -> (product.getORG_ID() + "=" + product.getORG_NAME()).equals(string))
+						.findFirst().orElse(null);
+			}
+		});
+	}
+
+	/**
 	 * Инициализация
 	 */
 	@FXML
@@ -241,7 +320,9 @@ public class EditPmDocC {
 				DOC_ISFAST.setSelected(false);
 			}
 			DOC_COMMENT.setText(class_.getDOC_COMMENT());
-			DOC_REF.setText(String.valueOf(class_.getDOC_REF()));
+			if (class_.getDOC_REF() != 0) {
+				DOC_REF.setText(String.valueOf(class_.getDOC_REF()));
+			}
 			// -------------------
 			{
 				String selectStmt = "select * from PM_DOC_TYPES t";
@@ -256,20 +337,46 @@ public class EditPmDocC {
 				}
 				prepStmt.close();
 				rs.close();
-
 				DOC_TYPE.setItems(obslist);
-
 				FxUtilTest.getComboBoxValue(DOC_TYPE);
 				FxUtilTest.autoCompleteComboBoxPlus(DOC_TYPE,
 						(typedText,
 								itemToCompare) -> (itemToCompare.getDOC_TP_ID() + "=" + itemToCompare.getDOC_TP_NAME())
 										.toLowerCase().contains(typedText.toLowerCase()));
-
 				convertComboDisplayList();
-
 				for (PM_DOC_TYPES sel : DOC_TYPE.getItems()) {
 					if (sel.getDOC_TP_ID().equals(class_.getDOC_TP_ID())) {
 						DOC_TYPE.getSelectionModel().select(sel);
+						break;
+					}
+				}
+			}
+			// -------------------
+			{
+				String selectStmt = "select * from PM_ORG t";
+				PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+				ResultSet rs = prepStmt.executeQuery();
+				ObservableList<PM_ORG> obslist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					PM_ORG list = new PM_ORG();
+					list.setORG_DOLJ(rs.getString("ORG_DOLJ"));
+					list.setORG_ID(rs.getLong("ORG_ID"));
+					list.setORG_RUK(rs.getString("ORG_RUK"));
+					list.setORG_NAME(rs.getString("ORG_NAME"));
+					list.setORG_SHNAME(rs.getString("ORG_SHNAME"));
+					obslist.add(list);
+				}
+				prepStmt.close();
+				rs.close();
+				DOC_ORG.setItems(obslist);
+				FxUtilTest.getComboBoxValue(DOC_ORG);
+				FxUtilTest.autoCompleteComboBoxPlus(DOC_ORG,
+						(typedText, itemToCompare) -> (itemToCompare.getORG_ID() + "=" + itemToCompare.getORG_NAME())
+								.toLowerCase().contains(typedText.toLowerCase()));
+				ConvDocOrg();
+				for (PM_ORG sel : DOC_ORG.getItems()) {
+					if (sel.getORG_ID().equals(class_.getORG_ID())) {
+						DOC_ORG.getSelectionModel().select(sel);
 						break;
 					}
 				}

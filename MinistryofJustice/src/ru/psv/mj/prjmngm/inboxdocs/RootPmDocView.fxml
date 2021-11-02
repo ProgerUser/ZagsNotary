@@ -118,6 +118,11 @@
                         <TableColumn fx:id="DOC_ISFAST" prefWidth="100.0" text="Срочность" />
                      </columns>
                   </TableColumn>
+                  <TableColumn prefWidth="75.0" text="Организация">
+                     <columns>
+                        <TableColumn fx:id="ORG_NAME" prefWidth="75.0" text="Наименование" />
+                     </columns>
+                  </TableColumn>
                   <TableColumn prefWidth="75.0" text="Сист.данные">
                      <columns>
                         <TableColumn fx:id="DOC_USR" prefWidth="100.0" text="Пользователь" />
