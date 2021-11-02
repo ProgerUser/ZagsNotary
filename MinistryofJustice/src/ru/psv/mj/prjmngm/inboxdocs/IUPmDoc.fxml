@@ -211,7 +211,7 @@
                                  </tooltip>
                               </Button>
                               <Separator layoutX="49.0" layoutY="10.0" orientation="VERTICAL" />
-                              <Button layoutX="59.0" layoutY="10.0" mnemonicParsing="false" onAction="#CopeFromTempl" prefWidth="35.0">
+                              <Button layoutX="59.0" layoutY="10.0" mnemonicParsing="false" onAction="#CopyFromTempl" prefWidth="35.0">
                                  <graphic>
                                     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="COPY" size="15" />
                                  </graphic>

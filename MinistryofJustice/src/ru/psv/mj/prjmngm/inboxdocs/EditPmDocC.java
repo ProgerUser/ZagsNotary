@@ -1,12 +1,18 @@
 package ru.psv.mj.prjmngm.inboxdocs;
 
+import java.io.File;
+import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import javafx.application.Platform;
@@ -39,6 +45,10 @@ import ru.psv.mj.prjmngm.doc.type.PM_DOC_TYPES;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.widgets.FxUtilTest;
+import ru.psv.mj.www.pl.jsolve.Docx;
+import ru.psv.mj.www.pl.jsolve.TextVariable;
+import ru.psv.mj.www.pl.jsolve.VariablePattern;
+import ru.psv.mj.www.pl.jsolve.Variables;
 
 public class EditPmDocC {
 	/**
@@ -198,7 +208,7 @@ public class EditPmDocC {
 	 * @param event
 	 */
 	@FXML
-	void CopeFromTempl(ActionEvent event) {
+	void CopyFromTempl(ActionEvent event) {
 		try {
 			if (DOC_TYPE.getSelectionModel().getSelectedItem() != null) {
 				// Create the custom dialog.
@@ -239,7 +249,72 @@ public class EditPmDocC {
 				Optional<Pair<String, String>> result = dialog.showAndWait();
 				// Нажали OK
 				result.ifPresent(pair -> {
-					System.out.println("OK");
+					try {
+						String SQL = "";
+						// <prp>
+						{
+							PreparedStatement prp = conn
+									.prepareStatement("select DOC_TP_SQL from PM_DOC_TYPES where doc_tp_id = ?");
+							prp.setLong(1, class_.getDOC_TP_ID());
+							ResultSet rs = prp.executeQuery();
+							if (rs.next()) {
+								SQL = rs.getString(1);
+							}
+							prp.close();
+							rs.close();
+						}
+						// </prp>
+						InputStream is = null;
+						// <prp>
+						{
+							PreparedStatement prp = conn
+									.prepareStatement("select DOC_TP_WORD from PM_DOC_TYPES where doc_tp_id = ?");
+							prp.setLong(1, class_.getDOC_TP_ID());
+							ResultSet rs = prp.executeQuery();
+							if (rs.next()) {
+								is = rs.getBinaryStream("DOC_TP_WORD");
+							}
+							prp.close();
+							rs.close();
+						}
+						// </prp>
+						File targetFile = new File(
+								System.getenv("MJ_PATH") + "OutReports/" + java.util.UUID.randomUUID() + ".docx");
+						FileUtils.copyInputStreamToFile(is, targetFile);
+						// Вызов
+						Docx docx = new Docx(targetFile.getAbsolutePath());
+						docx.setVariablePattern(new VariablePattern("#{", "}"));
+						// preparing variables
+						Variables variables = new Variables();
+						String str = "";
+						Map<String, String> map = new HashMap<String, String>();
+						// <prp>
+						{
+							PreparedStatement prp = conn.prepareStatement(SQL);
+							prp.setLong(1, class_.getDOC_ID());
+							ResultSet rs = prp.executeQuery();
+							while (rs.next()) {
+								map.put(rs.getString("NAME_"), rs.getString("VALUE_"));
+							}
+							prp.close();
+							rs.close();
+						}
+						// </prp>
+						for (String list : docx.findVariables()) {
+							if (list.contains("_")) {
+								str = list.replace("#{", "").replace("}", "");
+								str = str.substring(0, str.indexOf("_"));
+							} else if (!list.contains("_")) {
+								str = list.replace("#{", "").replace("}", "");
+							}
+							variables.addTextVariable(
+									new TextVariable(list, (map.get(str) == null) ? "ПУСТО!" : map.get(str)));
+						}
+						docx.fillTemplate(variables);
+						docx.save(targetFile.getAbsolutePath());
+					} catch (Exception e) {
+						DbUtil.Log_Error(e);
+					}
 				});
 			} else {
 				Msg.Message("Выберите тип документа!");
