@@ -20,9 +20,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 import org.eclipse.swt.SWT;
@@ -162,12 +162,13 @@ public class EditPmDocC {
 				// Вставить
 				PreparedStatement prp = conn.prepareStatement("insert into PM_DOC_SCANS "
 						+ "(DS_FILENAME,DS_TYPE,DS_FILE,DS_DOCID) " + "values " + "(?,?,?,?)");
-				prp.setString(1,name);
+				prp.setString(1, name);
 				prp.setString(2, ext);
 				prp.setBlob(3, is, bArray.length);
 				prp.setLong(4, class_.getDOC_ID());
 				prp.executeUpdate();
 				prp.close();
+				is.close();
 				// Сохраним транзакцию
 				conn.commit();
 				// Обновим
@@ -316,6 +317,7 @@ public class EditPmDocC {
 					}
 					prp.close();
 					rs.close();
+					is.close();
 					// </prp>
 					File targetFile = new File(
 							System.getenv("MJ_PATH") + "OutReports/" + java.util.UUID.randomUUID() + ".docx");
@@ -462,6 +464,8 @@ public class EditPmDocC {
 						File targetFile = new File(
 								System.getenv("MJ_PATH") + "OutReports/" + java.util.UUID.randomUUID() + ".docx");
 						FileUtils.copyInputStreamToFile(is, targetFile);
+						is.close();
+						IOUtils.closeQuietly(is);
 						// Вызов
 						Docx docx = new Docx(targetFile.getAbsolutePath());
 						docx.setVariablePattern(new VariablePattern("#{", "}"));
@@ -506,17 +510,27 @@ public class EditPmDocC {
 							prp.setString(2, fext);
 							// получить файл
 							byte[] bArray = java.nio.file.Files.readAllBytes(Paths.get(targetFile.getAbsolutePath()));
-							InputStream ist = new ByteArrayInputStream(bArray);
+							ByteArrayInputStream barr = new ByteArrayInputStream(bArray);
+							InputStream ist = barr;
+
 							// </>
 							prp.setBlob(3, ist, bArray.length);
 							prp.setLong(4, class_.getDOC_ID());
 							prp.executeUpdate();
 							prp.close();
+
+							ist.close();
+							is.close();
+							barr.close();
+							IOUtils.closeQuietly(barr);
+							IOUtils.closeQuietly(ist);
+							IOUtils.closeQuietly(is);
+
 							conn.commit();
 							LoadTableWord();
 							// delete file
 							if (targetFile != null && targetFile.exists()) {
-								FileUtils.forceDelete(FileUtils.getFile(targetFile));
+								targetFile.delete();
 							}
 							// ------------
 						}
@@ -946,6 +960,7 @@ public class EditPmDocC {
 									prp.setLong(2, DocWord.getSelectionModel().getSelectedItem().getDW_ID());
 									prp.executeUpdate();
 									prp.close();
+									is.close();
 									conn.commit();
 									// delete file
 									if (FileWord != null && FileWord.exists()) {
@@ -1015,6 +1030,7 @@ public class EditPmDocC {
 											prp.setLong(4, class_.getDOC_ID());
 											prp.executeUpdate();
 											prp.close();
+											ist.close();
 											conn.commit();
 											Platform.runLater(() -> {
 												LoadTableWord();
