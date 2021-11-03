@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.311" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
@@ -67,12 +67,12 @@
                                           <ComboBox fx:id="DOC_ORG" editable="true" layoutX="131.0" layoutY="13.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <DatePicker fx:id="DOC_DATE" layoutX="143.0" layoutY="103.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                           <DatePicker fx:id="DOC_END" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                          <CheckBox fx:id="DOC_ISFAST" mnemonicParsing="false" onAction="#DOC_ISFAST" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                          <CheckBox fx:id="DOC_ISFAST" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </CheckBox>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Тип документа" GridPane.halignment="RIGHT">
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Шаблон текста" GridPane.halignment="RIGHT">
                                              <GridPane.margin>
                                                 <Insets right="5.0" />
                                              </GridPane.margin>
@@ -234,6 +234,7 @@
                             <TableColumn fx:id="DocWordFilename" prefWidth="110.0" text="Название файла" />
                               <TableColumn fx:id="DocWordExt" text="Расширение" />
                               <TableColumn fx:id="DocWordKb" prefWidth="110.0" text="Размер" />
+                              <TableColumn fx:id="DW_DATE" prefWidth="110.0" text="Дата" />
                           </columns>
                         </TableView>
                      </children>
@@ -274,21 +275,22 @@
                                     </Tooltip>
                                  </tooltip>
                               </Button>
-                              <Button layoutX="53.0" layoutY="10.0" mnemonicParsing="false" onAction="#EditScan" prefWidth="35.0">
+                              <Button layoutX="86.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteScan" prefWidth="35.0">
                                  <graphic>
-                                    <FontAwesomeIconView fontSmoothingType="LCD" glyphName="EDIT" size="14" />
+                                    <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="14" />
                                  </graphic>
                                  <tooltip>
-                                    <Tooltip text="Редактировать документ">
+                                    <Tooltip text="Удалить документ">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Tooltip>
                                  </tooltip>
                               </Button>
-                              <Button layoutX="86.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteScan" prefWidth="35.0">
+                              <Separator layoutX="49.0" layoutY="10.0" orientation="VERTICAL" />
+                              <Button layoutX="98.0" layoutY="10.0" mnemonicParsing="false" onAction="#ScanPrint" prefWidth="35.0">
                                  <graphic>
-                                    <FontAwesomeIconView fontSmoothingType="LCD" glyphName="TRASH_ALT" size="14" />
+                                    <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PRINT" size="14" />
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Удалить документ">
@@ -309,6 +311,7 @@
                               <TableColumn fx:id="DocScanFileName" prefWidth="110.0" text="Название файла" />
                               <TableColumn fx:id="DocScanExt" text="Расширение" />
                               <TableColumn fx:id="DocScanKb" prefWidth="110.0" text="Размер" />
+                              <TableColumn fx:id="DS_DATE" prefWidth="110.0" text="Дата" />
                            </columns>
                         </TableView>
                      </children>

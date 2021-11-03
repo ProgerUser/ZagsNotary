@@ -37,25 +37,25 @@ public class AddPmDocC {
 	@FXML
 	private TextField DOC_REF;
 	@FXML
-	private TableView<PM_DOC_WORD> DocWord;
+	private TableView<VPM_DOC_WORD> DocWord;
 	@FXML
-	private TableColumn<PM_DOC_WORD, ?> DocWordId;
+	private TableColumn<VPM_DOC_WORD, ?> DocWordId;
 	@FXML
-	private TableColumn<PM_DOC_WORD, ?> DocWordFilename;
+	private TableColumn<VPM_DOC_WORD, ?> DocWordFilename;
 	@FXML
-	private TableColumn<PM_DOC_WORD, ?> DocWordExt;
+	private TableColumn<VPM_DOC_WORD, ?> DocWordExt;
 	@FXML
-	private TableColumn<PM_DOC_WORD, ?> DocWordKb;
+	private TableColumn<VPM_DOC_WORD, ?> DocWordKb;
 	@FXML
-	private TableView<PM_DOC_SCANS> DocScans;
+	private TableView<VPM_DOC_SCANS> DocScans;
 	@FXML
-	private TableColumn<PM_DOC_SCANS, ?> DocScanId;
+	private TableColumn<VPM_DOC_SCANS, ?> DocScanId;
 	@FXML
-	private TableColumn<PM_DOC_SCANS, ?> DocScanFileName;
+	private TableColumn<VPM_DOC_SCANS, ?> DocScanFileName;
 	@FXML
-	private TableColumn<PM_DOC_SCANS, ?> DocScanExt;
+	private TableColumn<VPM_DOC_SCANS, ?> DocScanExt;
 	@FXML
-	private TableColumn<PM_DOC_SCANS, ?> DocScanKb;
+	private TableColumn<VPM_DOC_SCANS, ?> DocScanKb;
 
 	/**
 	 * Для типа документов

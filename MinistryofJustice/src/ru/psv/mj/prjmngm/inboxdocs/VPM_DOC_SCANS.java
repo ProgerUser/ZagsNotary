@@ -7,28 +7,27 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class PM_DOC_SCANS {
-	/** Дата добавления */
-	private SimpleObjectProperty<LocalDateTime> DS_DATE;
-	/** ID */
+public class VPM_DOC_SCANS {
+	/** Нет данных */
 	private LongProperty DS_ID;
-	/** Название файла */
+	/** Нет данных */
 	private StringProperty DS_FILENAME;
-	/** Тип файла */
+	/** Нет данных */
 	private StringProperty DS_TYPE;
-	/** Ссылка на документ */
+	/** Нет данных */
 	private LongProperty DS_DOCID;
+	/** Нет данных */
+	private SimpleObjectProperty<LocalDateTime> TM$DS_DATE;
+	/** Нет данных */
+	private StringProperty DocScanKb;
 
-	public PM_DOC_SCANS() {
-		this.DS_DATE = new SimpleObjectProperty<>();
+	public VPM_DOC_SCANS() {
 		this.DS_ID = new SimpleLongProperty();
 		this.DS_FILENAME = new SimpleStringProperty();
 		this.DS_TYPE = new SimpleStringProperty();
 		this.DS_DOCID = new SimpleLongProperty();
-	}
-
-	public void setDS_DATE(LocalDateTime DS_DATE) {
-		this.DS_DATE.set(DS_DATE);
+		this.TM$DS_DATE = new SimpleObjectProperty<>();
+		this.DocScanKb = new SimpleStringProperty();
 	}
 
 	public void setDS_ID(Long DS_ID) {
@@ -47,8 +46,12 @@ public class PM_DOC_SCANS {
 		this.DS_DOCID.set(DS_DOCID);
 	}
 
-	public LocalDateTime getDS_DATE() {
-		return DS_DATE.get();
+	public void setTM$DS_DATE(LocalDateTime TM$DS_DATE) {
+		this.TM$DS_DATE.set(TM$DS_DATE);
+	}
+
+	public void setDocScanKb(String DocScanKb) {
+		this.DocScanKb.set(DocScanKb);
 	}
 
 	public Long getDS_ID() {
@@ -67,8 +70,12 @@ public class PM_DOC_SCANS {
 		return DS_DOCID.get();
 	}
 
-	public SimpleObjectProperty<LocalDateTime> DS_DATEProperty() {
-		return DS_DATE;
+	public LocalDateTime getTM$DS_DATE() {
+		return TM$DS_DATE.get();
+	}
+
+	public String getDocScanKb() {
+		return DocScanKb.get();
 	}
 
 	public LongProperty DS_IDProperty() {
@@ -85,5 +92,13 @@ public class PM_DOC_SCANS {
 
 	public LongProperty DS_DOCIDProperty() {
 		return DS_DOCID;
+	}
+
+	public SimpleObjectProperty<LocalDateTime> TM$DS_DATEProperty() {
+		return TM$DS_DATE;
+	}
+
+	public StringProperty DocScanKbProperty() {
+		return DocScanKb;
 	}
 }

@@ -7,24 +7,27 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class PM_DOC_WORD {
-	/** ID */
+public class VPM_DOC_WORD {
+	/** Нет данных */
 	private LongProperty DW_ID;
-	/** Название файла */
+	/** Нет данных */
 	private StringProperty DW_FILENAME;
-	/** Тип файла */
+	/** Нет данных */
 	private StringProperty DW_TYPE;
-	/** Ссылка на документ */
+	/** Нет данных */
 	private LongProperty DW_DOCID;
-	/** Дата добавления */
-	private SimpleObjectProperty<LocalDateTime> DW_DATE;
+	/** Нет данных */
+	private SimpleObjectProperty<LocalDateTime> TM$DW_DATE;
+	/** Нет данных */
+	private StringProperty DocWordKb;
 
-	public PM_DOC_WORD() {
+	public VPM_DOC_WORD() {
 		this.DW_ID = new SimpleLongProperty();
 		this.DW_FILENAME = new SimpleStringProperty();
 		this.DW_TYPE = new SimpleStringProperty();
 		this.DW_DOCID = new SimpleLongProperty();
-		this.DW_DATE = new SimpleObjectProperty<>();
+		this.TM$DW_DATE = new SimpleObjectProperty<>();
+		this.DocWordKb = new SimpleStringProperty();
 	}
 
 	public void setDW_ID(Long DW_ID) {
@@ -43,8 +46,12 @@ public class PM_DOC_WORD {
 		this.DW_DOCID.set(DW_DOCID);
 	}
 
-	public void setDW_DATE(LocalDateTime DW_DATE) {
-		this.DW_DATE.set(DW_DATE);
+	public void setTM$DW_DATE(LocalDateTime TM$DW_DATE) {
+		this.TM$DW_DATE.set(TM$DW_DATE);
+	}
+
+	public void setDocWordKb(String DocWordKb) {
+		this.DocWordKb.set(DocWordKb);
 	}
 
 	public Long getDW_ID() {
@@ -63,8 +70,12 @@ public class PM_DOC_WORD {
 		return DW_DOCID.get();
 	}
 
-	public LocalDateTime getDW_DATE() {
-		return DW_DATE.get();
+	public LocalDateTime getTM$DW_DATE() {
+		return TM$DW_DATE.get();
+	}
+
+	public String getDocWordKb() {
+		return DocWordKb.get();
 	}
 
 	public LongProperty DW_IDProperty() {
@@ -83,7 +94,11 @@ public class PM_DOC_WORD {
 		return DW_DOCID;
 	}
 
-	public SimpleObjectProperty<LocalDateTime> DW_DATEProperty() {
-		return DW_DATE;
+	public SimpleObjectProperty<LocalDateTime> TM$DW_DATEProperty() {
+		return TM$DW_DATE;
+	}
+
+	public StringProperty DocWordKbProperty() {
+		return DocWordKb;
 	}
 }

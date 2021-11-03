@@ -113,7 +113,8 @@
                   <TableColumn prefWidth="75.0" text="Описание">
                      <columns>
                         <TableColumn fx:id="DOC_NUMBER" prefWidth="120.0" text="Номер документа" />
-                      <TableColumn fx:id="DOC_TP_NAME" prefWidth="120.0" text="Тип документа" />
+                        <TableColumn fx:id="DOC_NAME" prefWidth="120.0" text="Наименование" />
+                      <TableColumn fx:id="DOC_TP_NAME" prefWidth="120.0" text="Шаблон Word" />
                         <TableColumn fx:id="DOC_COMMENT" prefWidth="120.0" text="Комментарий" />
                         <TableColumn fx:id="DOC_ISFAST" prefWidth="100.0" text="Срочность" />
                      </columns>

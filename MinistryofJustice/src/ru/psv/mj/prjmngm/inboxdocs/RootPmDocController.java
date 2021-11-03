@@ -63,6 +63,8 @@ public class RootPmDocController {
 	@FXML
 	private TableColumn<VPM_DOCS, String> ORG_NAME;
 	@FXML
+	private TableColumn<VPM_DOCS, String> DOC_NAME;
+	@FXML
 	private TableColumn<Object, LocalDateTime> DOC_START;
 	// </TableColumn>
 
@@ -243,6 +245,7 @@ public class RootPmDocController {
 			DOC_USR.setCellValueFactory(cellData -> cellData.getValue().DOC_USRProperty());
 			DOC_START.setCellValueFactory(cellData -> ((VPM_DOCS) cellData.getValue()).TM$DOC_STARTProperty());
 			ORG_NAME.setCellValueFactory(cellData -> cellData.getValue().ORG_NAMEProperty());
+			DOC_NAME.setCellValueFactory(cellData -> cellData.getValue().DOC_NAMEProperty());
 			dbConnect();
 			// load table
 			LoadTable();

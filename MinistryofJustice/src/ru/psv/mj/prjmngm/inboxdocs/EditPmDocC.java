@@ -1,19 +1,45 @@
 package ru.psv.mj.prjmngm.inboxdocs;
 
+import java.awt.Desktop;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Blob;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+import org.controlsfx.control.table.TableFilter;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.ole.win32.OLE;
+import org.eclipse.swt.ole.win32.OleClientSite;
+import org.eclipse.swt.ole.win32.OleFrame;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -23,6 +49,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -35,8 +63,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Pair;
 import javafx.util.StringConverter;
 import ru.psv.mj.app.main.Main;
@@ -51,6 +82,9 @@ import ru.psv.mj.www.pl.jsolve.VariablePattern;
 import ru.psv.mj.www.pl.jsolve.Variables;
 
 public class EditPmDocC {
+	public File FileWord;
+	public String AddEdit;
+
 	/**
 	 * Конструктор
 	 */
@@ -78,45 +112,127 @@ public class EditPmDocC {
 	@FXML
 	private TextField DOC_NAME;
 	@FXML
-	private TableView<PM_DOC_WORD> DocWord;
+	private TableView<VPM_DOC_WORD> DocWord;
 	@FXML
-	private TableColumn<PM_DOC_WORD, ?> DocWordId;
+	private TableColumn<VPM_DOC_WORD, Long> DocWordId;
 	@FXML
-	private TableColumn<PM_DOC_WORD, ?> DocWordFilename;
+	private TableColumn<Object, LocalDateTime> DW_DATE;
 	@FXML
-	private TableColumn<PM_DOC_WORD, ?> DocWordExt;
+	private TableColumn<VPM_DOC_WORD, String> DocWordFilename;
 	@FXML
-	private TableColumn<PM_DOC_WORD, ?> DocWordKb;
+	private TableColumn<VPM_DOC_WORD, String> DocWordExt;
 	@FXML
-	private TableView<PM_DOC_SCANS> DocScans;
+	private TableColumn<VPM_DOC_WORD, String> DocWordKb;
 	@FXML
-	private TableColumn<PM_DOC_SCANS, ?> DocScanId;
+	private TableView<VPM_DOC_SCANS> DocScans;
 	@FXML
-	private TableColumn<PM_DOC_SCANS, ?> DocScanFileName;
+	private TableColumn<VPM_DOC_SCANS, Long> DocScanId;
 	@FXML
-	private TableColumn<PM_DOC_SCANS, ?> DocScanExt;
+	private TableColumn<VPM_DOC_SCANS, String> DocScanFileName;
 	@FXML
-	private TableColumn<PM_DOC_SCANS, ?> DocScanKb;
+	private TableColumn<VPM_DOC_SCANS, String> DocScanExt;
+	@FXML
+	private TableColumn<VPM_DOC_SCANS, String> DocScanKb;
+	@FXML
+	private TableColumn<Object, LocalDateTime> DS_DATE;
 
+	/**
+	 * Добавить Скан
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void AddScan(ActionEvent event) {
 		try {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Выбрать файл");
+			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("PDF документ", "*.pdf"),
+					new ExtensionFilter("JPEG документ", "*.jpeg"), new ExtensionFilter("JPG документ", "*.jpg"));
+			File file = fileChooser.showOpenDialog(null);
+			if (file != null) {
+				String name = file.getName();
+				String paths = file.getAbsolutePath();
+				String ext = FilenameUtils.getExtension(file.getAbsolutePath());
+				System.out.println(ext);
+				// получить файл
+				byte[] bArray = null;
+				Path path = Paths.get(paths);
+				bArray = java.nio.file.Files.readAllBytes(path);
+				InputStream is = new ByteArrayInputStream(bArray);
+				// Вставить
+				PreparedStatement prp = conn.prepareStatement("insert into PM_DOC_SCANS "
+						+ "(DS_FILENAME,DS_TYPE,DS_FILE,DS_DOCID) " + "values " + "(?,?,?,?)");
+				prp.setString(1,name);
+				prp.setString(2, ext);
+				prp.setBlob(3, is, bArray.length);
+				prp.setLong(4, class_.getDOC_ID());
+				prp.executeUpdate();
+				prp.close();
+				// Сохраним транзакцию
+				conn.commit();
+				// Обновим
+				LoadTableScan();
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
 
+	/**
+	 * Добавить файл
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void AddWord(ActionEvent event) {
 		try {
+			AddEdit = "Add";
+			new AbrirWordJFrame();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
 
+	/**
+	 * Распечатать pdf
+	 * 
+	 * @param event
+	 */
 	@FXML
-	void DOC_ISFAST(ActionEvent event) {
+	void ScanPrint(ActionEvent event) {
 		try {
+			if (DocScans.getSelectionModel().getSelectedItem() != null) {
+				VPM_DOC_SCANS sel = DocScans.getSelectionModel().getSelectedItem();
+				PreparedStatement prp = conn
+						.prepareStatement("select DS_FILE,DS_FILENAME,DS_TYPE from PM_DOC_SCANS t where DS_ID = ?");
+				prp.setLong(1, sel.getDS_ID());
+				ResultSet rs = prp.executeQuery();
+				String file_format = "";
+				String fname = "";
+				Blob blob = null;
+				if (rs.next()) {
+					blob = rs.getBlob("DS_FILE");
+					file_format = rs.getString("DS_TYPE");
+					fname = rs.getString("DS_FILENAME");
+				}
+				prp.close();
+				rs.close();
+				// ---------------------
+				int blobLength = (int) blob.length();
+				byte[] blobAsBytes = blob.getBytes(1, blobLength);
+
+				File tempFile = File.createTempFile(fname, "." + file_format,
+						new File(System.getenv("MJ_PATH") + "OutReports"));
+				OutputStream outStream = new FileOutputStream(tempFile);
+				outStream.write(blobAsBytes);
+
+				tempFile.deleteOnExit();
+				if (Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(tempFile);
+				}
+				outStream.close();
+				blob.free();
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -130,9 +246,28 @@ public class EditPmDocC {
 		}
 	}
 
+	/**
+	 * Удалить скан
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void DeleteScan(ActionEvent event) {
 		try {
+			if (DocScans.getSelectionModel().getSelectedItem() != null) {
+				VPM_DOC_SCANS sel = DocScans.getSelectionModel().getSelectedItem();
+
+				final Alert alert = new Alert(AlertType.CONFIRMATION, "Удалить " + sel.getDS_ID() + "?", ButtonType.YES,
+						ButtonType.NO);
+				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+					PreparedStatement prp = conn.prepareStatement("delete from PM_DOC_SCANS where DS_ID = ?");
+					prp.setLong(1, sel.getDS_ID());
+					prp.executeUpdate();
+					prp.close();
+					conn.commit();
+					LoadTableWord();
+				}
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -141,38 +276,83 @@ public class EditPmDocC {
 	@FXML
 	void DeleteWord(ActionEvent event) {
 		try {
+			if (DocWord.getSelectionModel().getSelectedItem() != null) {
+				VPM_DOC_WORD sel = DocWord.getSelectionModel().getSelectedItem();
+
+				final Alert alert = new Alert(AlertType.CONFIRMATION, "Удалить " + sel.getDW_ID() + "?", ButtonType.YES,
+						ButtonType.NO);
+				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+					PreparedStatement prp = conn.prepareStatement("delete from PM_DOC_WORD where DW_ID = ?");
+					prp.setLong(1, sel.getDW_ID());
+					prp.executeUpdate();
+					prp.close();
+					conn.commit();
+					LoadTableWord();
+				}
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
 
-	@FXML
-	void EditScan(ActionEvent event) {
-		try {
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
-
+	/**
+	 * Редактировать файл
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void EditWord(ActionEvent event) {
 		try {
+			if (DocWord.getSelectionModel().getSelectedItem() != null) {
+				VPM_DOC_WORD sel = DocWord.getSelectionModel().getSelectedItem();
+				{
+					// <prp>
+					PreparedStatement prp = conn.prepareStatement("select DW_FILE from PM_DOC_WORD t where DW_ID = ?");
+					prp.setLong(1, sel.getDW_ID());
+					ResultSet rs = prp.executeQuery();
+					InputStream is = null;
+					if (rs.next()) {
+						is = rs.getBinaryStream("DW_FILE");
+					}
+					prp.close();
+					rs.close();
+					// </prp>
+					File targetFile = new File(
+							System.getenv("MJ_PATH") + "OutReports/" + java.util.UUID.randomUUID() + ".docx");
+					FileUtils.copyInputStreamToFile(is, targetFile);
+					FileWord = targetFile;
+				}
+				AddEdit = "Edit";
+				new AbrirWordJFrame();
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
 
+	/**
+	 * Обновить pdf
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void ReshreshScan(ActionEvent event) {
 		try {
+			LoadTableScan();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
 
+	/**
+	 * Обновить WORD
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void ReshreshWord(ActionEvent event) {
 		try {
+			LoadTableWord();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -210,7 +390,7 @@ public class EditPmDocC {
 	@FXML
 	void CopyFromTempl(ActionEvent event) {
 		try {
-			if (DOC_TYPE.getSelectionModel().getSelectedItem() != null) {
+			if (DOC_TYPE.getSelectionModel().getSelectedItem() != null & !DOC_NAME.getText().equals("")) {
 				// Create the custom dialog.
 				Dialog<Pair<String, String>> dialog = new Dialog<>();
 				dialog.setTitle("Создание из шаблона");
@@ -230,6 +410,7 @@ public class EditPmDocC {
 				// текстовое поле
 				TextField acc = new TextField();
 				acc.setPrefWidth(200);
+				acc.setText(DOC_NAME.getText());
 
 				gridPane.add(new Label("Наименование файла:"), 0, 0);
 				gridPane.add(acc, 1, 0);
@@ -310,15 +491,159 @@ public class EditPmDocC {
 							variables.addTextVariable(
 									new TextVariable(list, (map.get(str) == null) ? "ПУСТО!" : map.get(str)));
 						}
+						// Сохранить
 						docx.fillTemplate(variables);
 						docx.save(targetFile.getAbsolutePath());
+						// Добавить в таблицу
+						{
+							String fext = targetFile.getName();
+							fext = fext.substring(fext.indexOf(".") + 1, fext.length());
+							// System.out.println(fext);
+							PreparedStatement prp = conn.prepareStatement(
+									"insert into " + "PM_DOC_WORD (" + "dw_filename, \r\n" + "dw_type, \r\n"
+											+ "dw_file, \r\n" + "dw_docid" + ") " + "values (?,?,?,?)");
+							prp.setString(1, acc.getText());
+							prp.setString(2, fext);
+							// получить файл
+							byte[] bArray = java.nio.file.Files.readAllBytes(Paths.get(targetFile.getAbsolutePath()));
+							InputStream ist = new ByteArrayInputStream(bArray);
+							// </>
+							prp.setBlob(3, ist, bArray.length);
+							prp.setLong(4, class_.getDOC_ID());
+							prp.executeUpdate();
+							prp.close();
+							conn.commit();
+							LoadTableWord();
+							// delete file
+							if (targetFile != null && targetFile.exists()) {
+								FileUtils.forceDelete(FileUtils.getFile(targetFile));
+							}
+							// ------------
+						}
 					} catch (Exception e) {
 						DbUtil.Log_Error(e);
 					}
 				});
 			} else {
-				Msg.Message("Выберите тип документа!");
+				Msg.Message("Выберите шаблон и введите наименование!");
 			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Авто расширение
+	 * 
+	 * @param table
+	 */
+	void ResizeColumns(TableView<?> table) {
+		table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+		table.getColumns().stream().forEach((column_) -> {
+			if (column_.getText().equals("")) {
+			} else {
+				Text t = new Text(column_.getText());
+				double max = t.getLayoutBounds().getWidth();
+				for (int i = 0; i < table.getItems().size(); i++) {
+					if (column_.getCellData(i) != null) {
+						if (column_.getCellData(i) != null) {
+							t = new Text(column_.getCellData(i).toString());
+							double calcwidth = t.getLayoutBounds().getWidth();
+							if (calcwidth > max) {
+								max = calcwidth;
+							}
+						}
+					}
+				}
+				column_.setPrefWidth(max + 20.0d);
+			}
+		});
+	}
+
+	/**
+	 * Initialize table Word
+	 */
+	void LoadTableWord() {
+		try {
+			// loop
+			String selectStmt = "select * from vpm_doc_word t where DW_DOCID = ?";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			prepStmt.setLong(1, class_.getDOC_ID());
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<VPM_DOC_WORD> obslist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				VPM_DOC_WORD list = new VPM_DOC_WORD();
+				list.setDW_DOCID(rs.getLong("DW_DOCID"));
+				list.setTM$DW_DATE((rs.getDate("TM$DW_DATE") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DW_DATE")),
+						DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) : null);
+				list.setDW_ID(rs.getLong("DW_ID"));
+				list.setDW_FILENAME(rs.getString("DW_FILENAME"));
+				list.setDW_TYPE(rs.getString("DW_TYPE"));
+				list.setDocWordKb(rs.getString("DocWordKb"));
+
+				obslist.add(list);
+			}
+			// add data
+			DocWord.setItems(obslist);
+			// close
+			prepStmt.close();
+			rs.close();
+			// add filter
+			TableFilter<VPM_DOC_WORD> tableFilter = TableFilter.forTableView(DocWord).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+			// resize
+			ResizeColumns(DocWord);
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Initialize table Scan
+	 */
+	void LoadTableScan() {
+		try {
+			// loop
+			String selectStmt = "select * from VPM_DOC_SCANS t where DS_DOCID = ?";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			prepStmt.setLong(1, class_.getDOC_ID());
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<VPM_DOC_SCANS> obslist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				VPM_DOC_SCANS list = new VPM_DOC_SCANS();
+				list.setTM$DS_DATE((rs.getDate("TM$DS_DATE") != null) ? LocalDateTime.parse(
+						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DS_DATE")),
+						DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) : null);
+				list.setDocScanKb(rs.getString("DocScanKb"));
+				list.setDS_FILENAME(rs.getString("DS_FILENAME"));
+				list.setDS_TYPE(rs.getString("DS_TYPE"));
+				list.setDS_DOCID(rs.getLong("DS_DOCID"));
+				list.setDS_ID(rs.getLong("DS_ID"));
+				obslist.add(list);
+			}
+			// add data
+			DocScans.setItems(obslist);
+			// close
+			prepStmt.close();
+			rs.close();
+			// add filter
+			TableFilter<VPM_DOC_SCANS> tableFilter = TableFilter.forTableView(DocScans).apply();
+			tableFilter.setSearchStrategy((input, target) -> {
+				try {
+					return target.toLowerCase().contains(input.toLowerCase());
+				} catch (Exception e) {
+					return false;
+				}
+			});
+			// resize
+			ResizeColumns(DocScans);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -332,7 +657,7 @@ public class EditPmDocC {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.EDIT_DOC_INBOX(?,?,?,?,?,?,?,?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.EDIT_DOC_INBOX(?,?,?,?,?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			// ID документы
 			if (class_ != null) {
@@ -372,6 +697,8 @@ public class EditPmDocC {
 			} else {
 				callStmt.setNull(10, java.sql.Types.INTEGER);
 			}
+			// Наименование
+			callStmt.setString(11, DOC_NAME.getText());
 			// выполнение
 			callStmt.execute();
 			// выполнение
@@ -451,6 +778,20 @@ public class EditPmDocC {
 		try {
 			new ConvConst().FormatDatePiker(DOC_END);
 			new ConvConst().FormatDatePiker(DOC_DATE);
+			new ConvConst().TableColumnDateTime(DW_DATE);
+			new ConvConst().TableColumnDateTime(DS_DATE);
+			// -------------------
+			DocWordId.setCellValueFactory(cellData -> cellData.getValue().DW_IDProperty().asObject());
+			DocWordExt.setCellValueFactory(cellData -> cellData.getValue().DW_TYPEProperty());
+			DocWordFilename.setCellValueFactory(cellData -> cellData.getValue().DW_FILENAMEProperty());
+			DocWordKb.setCellValueFactory(cellData -> cellData.getValue().DocWordKbProperty());
+			DW_DATE.setCellValueFactory(cellData -> ((VPM_DOC_WORD) cellData.getValue()).TM$DW_DATEProperty());
+			// =-=-=-=-=---=-==-=-=-=-=--=
+			DocScanId.setCellValueFactory(cellData -> cellData.getValue().DS_IDProperty().asObject());
+			DocScanExt.setCellValueFactory(cellData -> cellData.getValue().DS_TYPEProperty());
+			DocScanFileName.setCellValueFactory(cellData -> cellData.getValue().DS_FILENAMEProperty());
+			DocScanKb.setCellValueFactory(cellData -> cellData.getValue().DocScanKbProperty());
+			DS_DATE.setCellValueFactory(cellData -> ((VPM_DOC_SCANS) cellData.getValue()).TM$DS_DATEProperty());
 			// -------------------
 			DOC_NUMBER.setText(class_.getDOC_NUMBER());
 
@@ -525,9 +866,236 @@ public class EditPmDocC {
 					}
 				}
 			}
+			// WORD
+			LoadTableWord();
+			// Scan
+			LoadTableScan();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
 
+	/**
+	 * Класс работы с Word
+	 * 
+	 * @author saidp
+	 *
+	 */
+	public class AbrirWordJFrame {
+		OleClientSite clientSite;
+		OleFrame frame;
+		KeyListener keyListener;
+		Shell shell;
+		Display display;
+
+		public AbrirWordJFrame() {
+			display = new Display();
+			shell = new Shell(display);
+
+			shell.setSize(800, 600);
+			shell.setText("MS Word");
+			shell.setLayout(new FillLayout());
+
+			org.eclipse.swt.graphics.Image image = new org.eclipse.swt.graphics.Image(display,
+					getClass().getResourceAsStream("/icon.png"));
+			shell.setImage(image);
+
+			try {
+				frame = new OleFrame(shell, SWT.APPLICATION_MODAL);
+				clientSite = new OleClientSite(frame, SWT.NONE, "Word.Document");
+				addFileMenu(frame);
+				System.out.println(" I am in run method ");
+			} catch (final SWTError e) {
+				System.out.println("Unable to open activeX control");
+				display.dispose();
+				return;
+			}
+
+			// close
+			shell.addListener(SWT.Close, new Listener() {
+				public void handleEvent(Event event) {
+					if (clientSite.isDirty()) {
+						final Alert alert = new Alert(AlertType.CONFIRMATION, "Закрыть документ без сохранения?",
+								ButtonType.YES, ButtonType.NO);
+						if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait()
+								.orElse(ButtonType.NO) == ButtonType.YES) {
+							try {
+								// delete file
+								if (FileWord != null && FileWord.exists()) {
+									FileUtils.forceDelete(FileUtils.getFile(FileWord));
+								}
+								// ------------
+							} catch (Exception e) {
+								DbUtil.Log_Error(e);
+							}
+						} else {
+							event.doit = false;
+						}
+					} else {
+						if (FileWord != null) {
+							if (AddEdit.equals("Edit")) {
+								try {
+									PreparedStatement prp = conn
+											.prepareStatement("update PM_DOC_WORD set DW_FILE = ? where DW_ID = ?");
+									// получить файл
+									byte[] bArray = java.nio.file.Files
+											.readAllBytes(Paths.get(FileWord.getAbsolutePath()));
+									InputStream is = new ByteArrayInputStream(bArray);
+									// </>
+									prp.setBlob(1, is, bArray.length);
+									prp.setLong(2, DocWord.getSelectionModel().getSelectedItem().getDW_ID());
+									prp.executeUpdate();
+									prp.close();
+									conn.commit();
+									// delete file
+									if (FileWord != null && FileWord.exists()) {
+										FileUtils.forceDelete(FileUtils.getFile(FileWord));
+									}
+									// ------------
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							} else if (AddEdit.equals("Add")) {
+								try {
+									// Create the custom dialog.
+									// Наименование создаваемого файла
+									Dialog<Pair<String, String>> dialog = new Dialog<>();
+									dialog.setTitle("Наименование создаваемого файла");
+
+									Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+									stage.getIcons()
+											.add(new Image(this.getClass().getResource("/icon.png").toString()));
+
+									// Set the button types.
+									ButtonType loginButtonType = new ButtonType("OK", ButtonData.OK_DONE);
+									dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+									GridPane gridPane = new GridPane();
+									gridPane.setHgap(10);
+									gridPane.setVgap(10);
+									gridPane.setPadding(new Insets(20, 150, 10, 10));
+
+									// текстовое поле
+									TextField acc = new TextField();
+									acc.setPrefWidth(200);
+									acc.setText(DOC_NAME.getText());
+
+									gridPane.add(new Label("Наименование файла:"), 0, 0);
+									gridPane.add(acc, 1, 0);
+
+									dialog.getDialogPane().setContent(gridPane);
+
+									Platform.runLater(() -> acc.requestFocus());
+									// Convert the result to
+									// clicked.
+									dialog.setResultConverter(dialogButton -> {
+										if (dialogButton == loginButtonType) {
+											return new Pair<>(acc.getText(), acc.getText());
+										}
+										return null;
+									});
+
+									Optional<Pair<String, String>> result = dialog.showAndWait();
+									// Нажали OK
+									result.ifPresent(pair -> {
+										try {
+											String fext = FileWord.getName();
+											fext = fext.substring(fext.indexOf(".") + 1, fext.length());
+											PreparedStatement prp = conn.prepareStatement("insert into "
+													+ "PM_DOC_WORD (" + "dw_filename, \r\n" + "dw_type, \r\n"
+													+ "dw_file, \r\n" + "dw_docid" + ") " + "values (?,?,?,?)");
+											prp.setString(1, acc.getText());
+											prp.setString(2, fext);
+											// получить файл
+											byte[] bArray = java.nio.file.Files
+													.readAllBytes(Paths.get(FileWord.getAbsolutePath()));
+											InputStream ist = new ByteArrayInputStream(bArray);
+											// </>
+											prp.setBlob(3, ist, bArray.length);
+											prp.setLong(4, class_.getDOC_ID());
+											prp.executeUpdate();
+											prp.close();
+											conn.commit();
+											Platform.runLater(() -> {
+												LoadTableWord();
+											});
+											// delete file
+											if (FileWord != null && FileWord.exists()) {
+												FileUtils.forceDelete(FileUtils.getFile(FileWord));
+											}
+											// ------------
+										} catch (Exception e) {
+											DbUtil.Log_Error(e);
+										}
+									});
+
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						}
+					}
+				}
+			});
+
+			if (FileWord != null) {
+				clientSite.dispose();
+				clientSite = new OleClientSite(frame, SWT.NONE, "Word.Document", FileWord);
+				clientSite.doVerb(OLE.OLEIVERB_INPLACEACTIVATE);
+			}
+			shell.open();
+
+			while (!shell.isDisposed()) {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
+			display.dispose();
+		}
+
+		void addFileMenu(OleFrame frame) {
+			final Shell shell = frame.getShell();
+			Menu menuBar = shell.getMenuBar();
+			if (menuBar == null) {
+				menuBar = new Menu(shell, SWT.BAR);
+				shell.setMenuBar(menuBar);
+			}
+			MenuItem fileMenu = new MenuItem(menuBar, SWT.CASCADE);
+			fileMenu.setText("&Файл");
+			Menu menuFile = new Menu(fileMenu);
+			fileMenu.setMenu(menuFile);
+			frame.setFileMenus(new MenuItem[] { fileMenu });
+
+			MenuItem menuFilePrint = new MenuItem(menuFile, SWT.CASCADE);
+			menuFilePrint.setText("Печать");
+			menuFilePrint.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					clientSite.exec(OLE.OLECMDID_PRINT, OLE.OLECMDEXECOPT_PROMPTUSER, null, null);
+				}
+			});
+
+			MenuItem menuFileSave = new MenuItem(menuFile, SWT.CASCADE);
+			menuFileSave.setText("Сохранить");
+			menuFileSave.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					if (AddEdit.equals("Edit")) {
+						clientSite.save(FileWord, false);
+						shell.close();
+					} else if (AddEdit.equals("Add")) {
+						FileWord = new File(
+								System.getenv("MJ_PATH") + "OutReports/" + java.util.UUID.randomUUID() + ".docx");
+						clientSite.save(FileWord, false);
+						shell.close();
+					}
+				}
+			});
+			MenuItem menuFileClose = new MenuItem(menuFile, SWT.CASCADE);
+			menuFileClose.setText("Закрыть");
+			menuFileClose.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					shell.close();
+				}
+			});
+		}
+	}
 }
