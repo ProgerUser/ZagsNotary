@@ -152,7 +152,7 @@
                   </VBox>
                </content>
           </Tab>
-          <Tab text="Word файлы">
+          <Tab fx:id="Word" text="Word файлы">
                <content>
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
                      <padding>
@@ -241,7 +241,7 @@
                   </VBox>
                </content>
           </Tab>
-            <Tab text="Скан копии">
+            <Tab fx:id="Scan" text="Скан копии">
                <content>
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
                      <padding>
