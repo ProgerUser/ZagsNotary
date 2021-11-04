@@ -30,6 +30,7 @@ public class TutorialAircraftProject extends Application {
 
 	/**
 	 * Обычный объект данных, хранящий фиктивную информацию о проектах.
+	 * 
 	 * @author saidp
 	 *
 	 */
@@ -52,6 +53,7 @@ public class TutorialAircraftProject extends Application {
 	 * Деятельность, представляющая полет. Этот объект будет отображаться как полоса
 	 * в графическом представлении диаграммы Ганта. Полет изменчив, поэтому
 	 * пользователь сможет с ним взаимодействовать.
+	 * 
 	 * @author saidp
 	 *
 	 */
@@ -67,6 +69,7 @@ public class TutorialAircraftProject extends Application {
 	/**
 	 * Каждая строка представляет собой самолет в этом примере. Мероприятия,
 	 * показанные на строка относится к типу Project.
+	 * 
 	 * @author saidp
 	 *
 	 */
@@ -85,7 +88,12 @@ public class TutorialAircraftProject extends Application {
 		Layer layer = new Layer("Projects");
 		gantt.getLayers().add(layer);
 
-		Employees psv = new Employees("Пачулия Саид Викторович");
+		Employees psv = null;
+		psv = new Employees("Пачулия Саид Викторович");
+		psv.addActivity(layer, new Project(new ProjectData("Дело 1", 1, "PSV")));
+		psv.addActivity(layer, new Project(new ProjectData("Дело 2", 2, "PSV")));
+
+	    psv = new Employees("Пачулия Саид Викторович1");
 		psv.addActivity(layer, new Project(new ProjectData("Дело 1", 1, "PSV")));
 		psv.addActivity(layer, new Project(new ProjectData("Дело 2", 2, "PSV")));
 

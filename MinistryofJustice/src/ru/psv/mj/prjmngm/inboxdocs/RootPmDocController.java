@@ -5,10 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
@@ -202,15 +202,14 @@ public class RootPmDocController {
 		String PrjName;
 		String Fio;
 		Integer CountPrj;
-		Instant departureTime = Instant.now();
-		Instant arrivalTime = Instant.now().plus(Duration.ofDays(6));
+		Instant start;
+		Instant end;
 
-		public ProjectData(String ProjectNo, int day, String Fio, Integer CountPrj) {
-			this.PrjName = ProjectNo;
+		public ProjectData(String PrjName, String Fio, Instant start, Instant end) {
+			this.PrjName = PrjName;
 			this.Fio = Fio;
-			this.CountPrj = CountPrj;
-			departureTime = departureTime.plus(Duration.ofDays(day));
-			arrivalTime = arrivalTime.plus(Duration.ofDays(day));
+			this.start = start;
+			this.end = end;
 		}
 	}
 
@@ -226,10 +225,18 @@ public class RootPmDocController {
 		public Project(ProjectData data) {
 			setUserObject(data);
 			setName(data.Fio);
-			setStartTime(data.departureTime);
-			setEndTime(data.arrivalTime);
+			setStartTime(data.start);
+			setEndTime(data.end);
 		}
 	}
+//	class Project extends MutableActivityBase<VPM_PROJECTS> {
+//		public Project(VPM_PROJECTS data) {
+//			setUserObject(data);
+//			setName(data.getEMP_LASTNAME());
+//			setStartTime(data.getDOC_DATE().atStartOfDay(ZoneId.systemDefault()).toInstant());
+//			setEndTime(data.getDOC_END().atStartOfDay(ZoneId.systemDefault()).toInstant());
+//		}
+//	}
 
 	/**
 	 * Каждая строка представляет собой самолет в этом примере. Мероприятия,
@@ -249,7 +256,7 @@ public class RootPmDocController {
 	 * 
 	 * @param event
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes", "null" })
 	@FXML
 	void CrePrj(ActionEvent event) {
 		try {
@@ -261,11 +268,47 @@ public class RootPmDocController {
 			Layer layer = new Layer("Projects");
 			gantt.getLayers().add(layer);
 
-			Employees psv = new Employees("Пачулия Саид Викторович");
-			psv.addActivity(layer, new Project(new ProjectData("Дело 1", 1, "PSV", 50)));
-			psv.addActivity(layer, new Project(new ProjectData("Дело 2", 2, "PSV", 100)));
+			ObservableList<Employees> obslist = FXCollections.observableArrayList();
+			{
+				PreparedStatement prp1 = null;
+				ResultSet rs1 = null;
+				PreparedStatement prp = conn.prepareStatement(
+						"select distinct PRJ_EMP,EMP_LASTNAME,EMP_FIRSTNAME,EMP_MIDDLENAME from VPM_PROJECTS");
+				ResultSet rs = prp.executeQuery();
+				while (rs.next()) {
+					Employees psv = new Employees(rs.getString("EMP_LASTNAME") + " " + rs.getString("EMP_FIRSTNAME")
+							+ " " + rs.getString("EMP_MIDDLENAME"));
+					// ____________________________
+					{
+						prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ?");
+						prp1.setLong(1, rs.getLong("PRJ_EMP"));
+						rs1 = prp1.executeQuery();
+						while (rs1.next()) {
+							psv.addActivity(layer, new Project(new ProjectData(rs1.getString("EMP_LASTNAME"),
+									rs1.getString("EMP_LASTNAME") + " " + rs.getString("EMP_FIRSTNAME") + " "
+											+ rs1.getString("EMP_MIDDLENAME"),
+									LocalDate
+											.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_DATE")),
+													DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+											.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+									LocalDate
+											.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_END")),
+													DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+											.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+						}
+					}
+					// ____________________________
+					obslist.add(psv);
+				}
+				//
+				prp1.close();
+				rs1.close();
+				//
+				prp.close();
+				rs.close();
+			}
 
-			gantt.getRoot().getChildren().setAll(psv);
+			gantt.getRoot().getChildren().setAll(obslist);
 
 			Timeline timeline = gantt.getTimeline();
 			timeline.showTemporalUnit(ChronoUnit.DAYS, 10);
@@ -285,6 +328,8 @@ public class RootPmDocController {
 			stage.setScene(scene);
 			stage.sizeToScene();
 			stage.centerOnScreen();
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Диаграмма Ганта");
 			stage.show();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);

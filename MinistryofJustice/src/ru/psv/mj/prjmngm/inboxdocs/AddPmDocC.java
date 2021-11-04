@@ -75,6 +75,11 @@ public class AddPmDocC {
 	}
 
 	@FXML
+	void DelRef(ActionEvent event) {
+		DOC_REF.setText("");
+	}
+	
+	@FXML
 	void AddScan(ActionEvent event) {
 		try {
 		} catch (Exception e) {
