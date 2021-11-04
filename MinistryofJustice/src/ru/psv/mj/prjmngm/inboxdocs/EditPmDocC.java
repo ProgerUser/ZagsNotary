@@ -47,8 +47,12 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -65,6 +69,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -240,8 +245,43 @@ public class EditPmDocC {
 	}
 
 	@FXML
+	void DelRef(ActionEvent event) {
+		DOC_REF.setText("");
+	}
+
+	@FXML
 	void DOC_REF(ActionEvent event) {
 		try {
+			// <FXML>---------------------------------------
+			Stage stage = new Stage();
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/inboxdocs/SelRootPmDocView.fxml"));
+
+			SelRootPmDocController controller = new SelRootPmDocController();
+			controller.SetClass(class_, conn);
+			loader.setController(controller);
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Список документов:");
+			stage.initOwner((Stage) DOC_ORG.getScene().getWindow());
+			stage.setResizable(true);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+					try {
+						if (controller.getStatus()) {
+							DOC_REF.setText(String.valueOf(controller.getRetId()));
+						}
+					} catch (Exception e) {
+						DbUtil.Log_Error(e);
+					}
+				}
+			});
+			stage.show();
+			// </FXML>---------------------------------------
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -317,11 +357,12 @@ public class EditPmDocC {
 					}
 					prp.close();
 					rs.close();
-					is.close();
 					// </prp>
 					File targetFile = new File(
 							System.getenv("MJ_PATH") + "OutReports/" + java.util.UUID.randomUUID() + ".docx");
 					FileUtils.copyInputStreamToFile(is, targetFile);
+					is.close();
+					IOUtils.closeQuietly(is);
 					FileWord = targetFile;
 				}
 				AddEdit = "Edit";
@@ -520,11 +561,9 @@ public class EditPmDocC {
 							prp.close();
 
 							ist.close();
-							is.close();
 							barr.close();
 							IOUtils.closeQuietly(barr);
 							IOUtils.closeQuietly(ist);
-							IOUtils.closeQuietly(is);
 
 							conn.commit();
 							LoadTableWord();
@@ -701,7 +740,7 @@ public class EditPmDocC {
 			callStmt.setDate(8, (DOC_DATE.getValue() != null) ? java.sql.Date.valueOf(DOC_DATE.getValue()) : null);
 			// Ссылка на связанный документ
 			if (!DOC_REF.getText().equals("")) {
-				callStmt.setLong(9, Integer.valueOf(DOC_REF.getText()));
+				callStmt.setLong(9, Long.valueOf(DOC_REF.getText()));
 			} else {
 				callStmt.setNull(9, java.sql.Types.INTEGER);
 			}
@@ -925,7 +964,7 @@ public class EditPmDocC {
 				return;
 			}
 
-			// close
+			// При закрытии
 			shell.addListener(SWT.Close, new Listener() {
 				public void handleEvent(Event event) {
 					if (clientSite.isDirty()) {
@@ -1054,6 +1093,7 @@ public class EditPmDocC {
 				}
 			});
 
+			// Открытие документа
 			if (FileWord != null) {
 				clientSite.dispose();
 				clientSite = new OleClientSite(frame, SWT.NONE, "Word.Document", FileWord);

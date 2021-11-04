@@ -82,7 +82,7 @@
                </tooltip>
             </Button>
             <Separator layoutX="176.0" layoutY="10.0" orientation="VERTICAL" />
-            <Button layoutX="186.0" layoutY="10.0" mnemonicParsing="false" prefWidth="35.0">
+            <Button layoutX="186.0" layoutY="10.0" mnemonicParsing="false" onAction="#CrePrj" prefWidth="35.0">
                <graphic>
                   <FontAwesomeIconView fontSmoothingType="LCD" glyphName="USER_PLUS" size="14" />
                </graphic>

@@ -5,11 +5,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
+
+import com.flexganttfx.extras.GanttChartStatusBar;
+import com.flexganttfx.extras.GanttChartToolBar;
+import com.flexganttfx.model.Layer;
+import com.flexganttfx.model.Row;
+import com.flexganttfx.model.activity.MutableActivityBase;
+import com.flexganttfx.model.layout.GanttLayout;
+import com.flexganttfx.view.GanttChart;
+import com.flexganttfx.view.graphics.GraphicsBase;
+import com.flexganttfx.view.graphics.renderer.ActivityBarRenderer;
+import com.flexganttfx.view.timeline.Timeline;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -21,12 +36,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -170,6 +186,106 @@ public class RootPmDocController {
 					LoadTable();
 				}
 			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Обычный объект данных, хранящий фиктивную информацию о проектах.
+	 * 
+	 * @author saidp
+	 *
+	 */
+	class ProjectData {
+
+		String PrjName;
+		String Fio;
+		Integer CountPrj;
+		Instant departureTime = Instant.now();
+		Instant arrivalTime = Instant.now().plus(Duration.ofDays(6));
+
+		public ProjectData(String ProjectNo, int day, String Fio, Integer CountPrj) {
+			this.PrjName = ProjectNo;
+			this.Fio = Fio;
+			this.CountPrj = CountPrj;
+			departureTime = departureTime.plus(Duration.ofDays(day));
+			arrivalTime = arrivalTime.plus(Duration.ofDays(day));
+		}
+	}
+
+	/**
+	 * Деятельность, представляющая полет. Этот объект будет отображаться как полоса
+	 * в графическом представлении диаграммы Ганта. Полет изменчив, поэтому
+	 * пользователь сможет с ним взаимодействовать.
+	 * 
+	 * @author saidp
+	 *
+	 */
+	class Project extends MutableActivityBase<ProjectData> {
+		public Project(ProjectData data) {
+			setUserObject(data);
+			setName(data.Fio);
+			setStartTime(data.departureTime);
+			setEndTime(data.arrivalTime);
+		}
+	}
+
+	/**
+	 * Каждая строка представляет собой самолет в этом примере. Мероприятия,
+	 * показанные на строка относится к типу Project.
+	 * 
+	 * @author saidp
+	 *
+	 */
+	class Employees extends Row<Employees, Employees, Project> {
+		public Employees(String name) {
+			super(name);
+		}
+	}
+
+	/**
+	 * Создать проект, привязать к сотруднику
+	 * 
+	 * @param event
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@FXML
+	void CrePrj(ActionEvent event) {
+		try {
+			// Stage = (Stage) PM_DOCS.getScene().getWindow();
+			Stage stage = new Stage();
+			// Create the Gantt chart
+			GanttChart<Employees> gantt = new GanttChart<Employees>(new Employees("Сотрудники"));
+
+			Layer layer = new Layer("Projects");
+			gantt.getLayers().add(layer);
+
+			Employees psv = new Employees("Пачулия Саид Викторович");
+			psv.addActivity(layer, new Project(new ProjectData("Дело 1", 1, "PSV", 50)));
+			psv.addActivity(layer, new Project(new ProjectData("Дело 2", 2, "PSV", 100)));
+
+			gantt.getRoot().getChildren().setAll(psv);
+
+			Timeline timeline = gantt.getTimeline();
+			timeline.showTemporalUnit(ChronoUnit.DAYS, 10);
+
+			GraphicsBase<Employees> graphics = gantt.getGraphics();
+			graphics.setActivityRenderer(Project.class, GanttLayout.class,
+					new ActivityBarRenderer<>(graphics, "Project Renderer"));
+			graphics.showEarliestActivities();
+
+			BorderPane borderPane = new BorderPane();
+			borderPane.setTop(new GanttChartToolBar(gantt));
+			borderPane.setCenter(gantt);
+			borderPane.setBottom(new GanttChartStatusBar(gantt));
+
+			Scene scene = new Scene(borderPane);
+
+			stage.setScene(scene);
+			stage.sizeToScene();
+			stage.centerOnScreen();
+			stage.show();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

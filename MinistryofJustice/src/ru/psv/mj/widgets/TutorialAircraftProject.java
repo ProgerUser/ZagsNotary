@@ -1,16 +1,17 @@
 package ru.psv.mj.widgets;
 
+/**
+ * Copyright (C) 2014 - 2020 DLSC Software & Consulting GmbH (dlsc.com)
+ *
+ * This file is part of FlexGanttFX.
+ */
+
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 import com.flexganttfx.extras.GanttChartStatusBar;
 import com.flexganttfx.extras.GanttChartToolBar;
-/**
- * Copyright (C) 2014 - 2020 DLSC Software & Consulting GmbH (dlsc.com)
- *
- * This file is part of FlexGanttFX.
- */
 import com.flexganttfx.model.Layer;
 import com.flexganttfx.model.Row;
 import com.flexganttfx.model.activity.MutableActivityBase;
@@ -27,8 +28,10 @@ import javafx.stage.Stage;
 
 public class TutorialAircraftProject extends Application {
 
-	/*
-	 * Обычный объект данных, хранящий фиктивную информацию о полете.
+	/**
+	 * Обычный объект данных, хранящий фиктивную информацию о проектах.
+	 * @author saidp
+	 *
 	 */
 	class ProjectData {
 
@@ -45,10 +48,12 @@ public class TutorialAircraftProject extends Application {
 		}
 	}
 
-	/*
+	/**
 	 * Деятельность, представляющая полет. Этот объект будет отображаться как полоса
 	 * в графическом представлении диаграммы Ганта. Полет изменчив, поэтому
 	 * пользователь сможет с ним взаимодействовать.
+	 * @author saidp
+	 *
 	 */
 	class Project extends MutableActivityBase<ProjectData> {
 		public Project(ProjectData data) {
@@ -59,9 +64,11 @@ public class TutorialAircraftProject extends Application {
 		}
 	}
 
-	/*
+	/**
 	 * Каждая строка представляет собой самолет в этом примере. Мероприятия,
 	 * показанные на строка относится к типу Project.
+	 * @author saidp
+	 *
 	 */
 	class Employees extends Row<Employees, Employees, Project> {
 		public Employees(String name) {
