@@ -5,26 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
-
-import com.flexganttfx.extras.GanttChartStatusBar;
-import com.flexganttfx.extras.GanttChartToolBar;
-import com.flexganttfx.model.Layer;
-import com.flexganttfx.model.Row;
-import com.flexganttfx.model.activity.MutableActivityBase;
-import com.flexganttfx.model.layout.GanttLayout;
-import com.flexganttfx.view.GanttChart;
-import com.flexganttfx.view.graphics.GraphicsBase;
-import com.flexganttfx.view.graphics.renderer.ActivityBarRenderer;
-import com.flexganttfx.view.timeline.Timeline;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -42,7 +28,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -192,144 +177,39 @@ public class RootPmDocController {
 	}
 
 	/**
-	 * Обычный объект данных, хранящий фиктивную информацию о проектах.
-	 * 
-	 * @author saidp
-	 *
-	 */
-	class ProjectData {
-
-		String PrjName;
-		String Fio;
-		Integer CountPrj;
-		Instant start;
-		Instant end;
-
-		public ProjectData(String PrjName, String Fio, Instant start, Instant end) {
-			this.PrjName = PrjName;
-			this.Fio = Fio;
-			this.start = start;
-			this.end = end;
-		}
-	}
-
-	/**
-	 * Деятельность, представляющая полет. Этот объект будет отображаться как полоса
-	 * в графическом представлении диаграммы Ганта. Полет изменчив, поэтому
-	 * пользователь сможет с ним взаимодействовать.
-	 * 
-	 * @author saidp
-	 *
-	 */
-	class Project extends MutableActivityBase<ProjectData> {
-		public Project(ProjectData data) {
-			setUserObject(data);
-			setName(data.Fio);
-			setStartTime(data.start);
-			setEndTime(data.end);
-		}
-	}
-//	class Project extends MutableActivityBase<VPM_PROJECTS> {
-//		public Project(VPM_PROJECTS data) {
-//			setUserObject(data);
-//			setName(data.getEMP_LASTNAME());
-//			setStartTime(data.getDOC_DATE().atStartOfDay(ZoneId.systemDefault()).toInstant());
-//			setEndTime(data.getDOC_END().atStartOfDay(ZoneId.systemDefault()).toInstant());
-//		}
-//	}
-
-	/**
-	 * Каждая строка представляет собой самолет в этом примере. Мероприятия,
-	 * показанные на строка относится к типу Project.
-	 * 
-	 * @author saidp
-	 *
-	 */
-	class Employees extends Row<Employees, Employees, Project> {
-		public Employees(String name) {
-			super(name);
-		}
-	}
-
-	/**
 	 * Создать проект, привязать к сотруднику
 	 * 
 	 * @param event
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes", "null" })
 	@FXML
 	void CrePrj(ActionEvent event) {
 		try {
-			// Stage = (Stage) PM_DOCS.getScene().getWindow();
 			Stage stage = new Stage();
-			// Create the Gantt chart
-			GanttChart<Employees> gantt = new GanttChart<Employees>(new Employees("Сотрудники"));
 
-			Layer layer = new Layer("Projects");
-			gantt.getLayers().add(layer);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/inboxdocs/GantChart.fxml"));
 
-			ObservableList<Employees> obslist = FXCollections.observableArrayList();
-			{
-				PreparedStatement prp1 = null;
-				ResultSet rs1 = null;
-				PreparedStatement prp = conn.prepareStatement(
-						"select distinct PRJ_EMP,EMP_LASTNAME,EMP_FIRSTNAME,EMP_MIDDLENAME from VPM_PROJECTS");
-				ResultSet rs = prp.executeQuery();
-				while (rs.next()) {
-					Employees psv = new Employees(rs.getString("EMP_LASTNAME") + " " + rs.getString("EMP_FIRSTNAME")
-							+ " " + rs.getString("EMP_MIDDLENAME"));
-					// ____________________________
-					{
-						prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ?");
-						prp1.setLong(1, rs.getLong("PRJ_EMP"));
-						rs1 = prp1.executeQuery();
-						while (rs1.next()) {
-							psv.addActivity(layer, new Project(new ProjectData(rs1.getString("EMP_LASTNAME"),
-									rs1.getString("EMP_LASTNAME") + " " + rs.getString("EMP_FIRSTNAME") + " "
-											+ rs1.getString("EMP_MIDDLENAME"),
-									LocalDate
-											.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_DATE")),
-													DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-											.atStartOfDay(ZoneId.systemDefault()).toInstant(),
-									LocalDate
-											.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_END")),
-													DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-											.atStartOfDay(ZoneId.systemDefault()).toInstant())));
-						}
-					}
-					// ____________________________
-					obslist.add(psv);
-				}
-				//
-				prp1.close();
-				rs1.close();
-				//
-				prp.close();
-				rs.close();
-			}
+			CrePrjGantChart controller = new CrePrjGantChart();
+			loader.setController(controller);
 
-			gantt.getRoot().getChildren().setAll(obslist);
-
-			Timeline timeline = gantt.getTimeline();
-			timeline.showTemporalUnit(ChronoUnit.DAYS, 10);
-
-			GraphicsBase<Employees> graphics = gantt.getGraphics();
-			graphics.setActivityRenderer(Project.class, GanttLayout.class,
-					new ActivityBarRenderer<>(graphics, "Project Renderer"));
-			graphics.showEarliestActivities();
-
-			BorderPane borderPane = new BorderPane();
-			borderPane.setTop(new GanttChartToolBar(gantt));
-			borderPane.setCenter(gantt);
-			borderPane.setBottom(new GanttChartStatusBar(gantt));
-
-			Scene scene = new Scene(borderPane);
-
-			stage.setScene(scene);
-			stage.sizeToScene();
-			stage.centerOnScreen();
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Диаграмма Ганта");
+			stage.setTitle("Создать проект и привязать к сотруднику:");
+			stage.initOwner((Stage) PM_DOCS.getScene().getWindow());
+			stage.setResizable(true);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+					try {
+						controller.dbDisconnect();
+						LoadTable();
+					} catch (Exception e) {
+						DbUtil.Log_Error(e);
+					}
+				}
+			});
 			stage.show();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
