@@ -25,9 +25,12 @@ import com.flexganttfx.view.timeline.Timeline;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.utils.DbUtil;
 
@@ -98,6 +101,41 @@ public class CrePrjGantChart {
 	@FXML
 	private BorderPane GantBorder;
 
+	GanttChart<Employees> gantt = null;
+
+	/**
+	 * Отмена
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void Cancel(ActionEvent event) {
+		try {
+			OnClose();
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * ОК
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void Ok(ActionEvent event) {
+		try {
+			System.out.println(gantt.getTreeTable().getSelectionModel().getSelectedItem().getValue());
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	void OnClose() {
+		Stage stage = (Stage) GantBorder.getScene().getWindow();
+		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+	}
+
 	/**
 	 * Инициализация
 	 */
@@ -110,7 +148,7 @@ public class CrePrjGantChart {
 			// Stage = (Stage) PM_DOCS.getScene().getWindow();
 //			Stage stage = new Stage();
 			// Create the Gantt chart
-			GanttChart<Employees> gantt = new GanttChart<Employees>(new Employees("Сотрудники"));
+			gantt = new GanttChart<Employees>(new Employees("Сотрудники"));
 
 			Layer layer = new Layer("Projects");
 			gantt.getLayers().add(layer);
@@ -122,15 +160,16 @@ public class CrePrjGantChart {
 				PreparedStatement prp = conn.prepareStatement("select * from PM_EMP");
 				ResultSet rs = prp.executeQuery();
 				while (rs.next()) {
-					Employees psv = new Employees(rs.getString("EMP_LASTNAME") + " " + rs.getString("EMP_FIRSTNAME")
-							+ " " + rs.getString("EMP_MIDDLENAME"));
+					Employees psv = new Employees("ФИО=" + (rs.getString("EMP_LASTNAME") + " "
+							+ rs.getString("EMP_FIRSTNAME") + " " + rs.getString("EMP_MIDDLENAME")) + ";");
 					// ____________________________
 					{
 						prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ?");
 						prp1.setLong(1, rs.getLong("EMP_ID"));
 						rs1 = prp1.executeQuery();
 						while (rs1.next()) {
-							Employees pr = new Employees(rs1.getString("DOC_NAME"));
+							Employees pr = new Employees("Наз.пр.=" + rs1.getString("DOC_NAME") + ";" + "Срочн.="
+									+ rs1.getString("doc_isfast"));
 							psv.getChildren().add(pr);
 							pr.addActivity(layer, new Project(new ProjectData(rs1.getString("EMP_LASTNAME"),
 									rs1.getString("EMP_LASTNAME") + " " + rs.getString("EMP_FIRSTNAME") + " "
@@ -171,6 +210,8 @@ public class CrePrjGantChart {
 			GantBorder.setCenter(gantt);
 			GantBorder.setBottom(new GanttChartStatusBar(gantt));
 
+			// gantt.getRoot().getChildren().get
+			// TreeItem<Employee> itemMcNeil = new TreeItem<Employee>(empMcNeil);
 //			GantVbox.getChildren().addAll(new GanttChartToolBar(gantt), gantt, new GanttChartStatusBar(gantt));
 
 //			Scene scene = new Scene(borderPane);

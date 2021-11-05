@@ -41,7 +41,7 @@
       </TabPane>
       <ButtonBar>
         <buttons>
-          <Button mnemonicParsing="false" onAction="#OK" text="Привязать" />
+          <Button mnemonicParsing="false" onAction="#Ok" text="Привязать" />
             <Button layoutX="206.0" layoutY="10.0" mnemonicParsing="false" onAction="#Cancel" text="Отмена" />
         </buttons>
       </ButtonBar>

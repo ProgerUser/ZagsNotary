@@ -184,33 +184,37 @@ public class RootPmDocController {
 	@FXML
 	void CrePrj(ActionEvent event) {
 		try {
-			Stage stage = new Stage();
+			// выбранна€ запись
+			VPM_DOCS sel = PM_DOCS.getSelectionModel().getSelectedItem();
+			if (sel != null) {
+				Stage stage = new Stage();
 
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/inboxdocs/GantChart.fxml"));
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/inboxdocs/GantChart.fxml"));
 
-			CrePrjGantChart controller = new CrePrjGantChart();
-			loader.setController(controller);
+				CrePrjGantChart controller = new CrePrjGantChart();
+				loader.setController(controller);
 
-			Parent root = loader.load();
-			stage.setScene(new Scene(root));
-			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("—оздать проект и прив€зать к сотруднику:");
-			stage.initOwner((Stage) PM_DOCS.getScene().getWindow());
-			stage.setResizable(true);
-			stage.initModality(Modality.WINDOW_MODAL);
-			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				@Override
-				public void handle(WindowEvent paramT) {
-					try {
-						controller.dbDisconnect();
-						LoadTable();
-					} catch (Exception e) {
-						DbUtil.Log_Error(e);
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("—оздать проект и прив€зать к сотруднику:");
+				stage.initOwner((Stage) PM_DOCS.getScene().getWindow());
+				stage.setResizable(true);
+				stage.initModality(Modality.WINDOW_MODAL);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						try {
+							controller.dbDisconnect();
+							LoadTable();
+						} catch (Exception e) {
+							DbUtil.Log_Error(e);
+						}
 					}
-				}
-			});
-			stage.show();
+				});
+				stage.show();
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
