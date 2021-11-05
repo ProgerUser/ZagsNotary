@@ -11,7 +11,29 @@ import ru.psv.mj.www.mulya.petrovich.PetrovichDeclinationMaker;
 
 public class Petrovich {
 
+	public static void main(String[] args) {
+		
+	}
+
 	public static String Lname(String gender, String name) {
+		String ret = "";
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		try {
+			PetrovichDeclinationMaker maker = PetrovichDeclinationMaker.getInstance();
+			if (gender.equals("MALE")) {
+				ret = maker.make(NamePart.LASTNAME, Gender.MALE, Case.GENITIVE, name);
+			} else if (gender.equals("FEMALE")) {
+				ret = maker.make(NamePart.LASTNAME, Gender.FEMALE, Case.GENITIVE, name);
+			}
+		} catch (Exception e) {
+			e.printStackTrace(pw);
+			ret = sw.toString();
+		}
+		return ret;
+	}
+	
+	public static String LFMname(String gender, String name) {
 		String ret = "";
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);

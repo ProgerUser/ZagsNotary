@@ -18,6 +18,8 @@ public class PM_ORG {
 	private StringProperty ORG_DOLJ;
 	/** Обращение */
 	private StringProperty ORG_OBRASH;
+	/** Пол Руководителя */
+	private StringProperty ORG_RUK_GENDER;
 
 	public PM_ORG() {
 		this.ORG_ID = new SimpleLongProperty();
@@ -26,6 +28,7 @@ public class PM_ORG {
 		this.ORG_SHNAME = new SimpleStringProperty();
 		this.ORG_DOLJ = new SimpleStringProperty();
 		this.ORG_OBRASH = new SimpleStringProperty();
+		this.ORG_RUK_GENDER = new SimpleStringProperty();
 	}
 
 	public void setORG_ID(Long ORG_ID) {
@@ -52,6 +55,10 @@ public class PM_ORG {
 		this.ORG_OBRASH.set(ORG_OBRASH);
 	}
 
+	public void setORG_RUK_GENDER(String ORG_RUK_GENDER) {
+		this.ORG_RUK_GENDER.set(ORG_RUK_GENDER);
+	}
+
 	public Long getORG_ID() {
 		return ORG_ID.get();
 	}
@@ -76,6 +83,10 @@ public class PM_ORG {
 		return ORG_OBRASH.get();
 	}
 
+	public String getORG_RUK_GENDER() {
+		return ORG_RUK_GENDER.get();
+	}
+
 	public LongProperty ORG_IDProperty() {
 		return ORG_ID;
 	}
@@ -98,5 +109,9 @@ public class PM_ORG {
 
 	public StringProperty ORG_OBRASHProperty() {
 		return ORG_OBRASH;
+	}
+
+	public StringProperty ORG_RUK_GENDERProperty() {
+		return ORG_RUK_GENDER;
 	}
 }

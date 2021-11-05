@@ -6,6 +6,7 @@ import java.sql.Types;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -24,7 +25,8 @@ public class AddPmOrgC {
 	private TextField ORG_DOLJ;
 	@FXML
 	private TextField ORG_OBRASH;
-
+	@FXML
+	private ComboBox<String> ORG_RUK_GENDER;
 	/**
 	 * ОК
 	 * 
@@ -33,7 +35,7 @@ public class AddPmOrgC {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ call PM_SPRAV_PKG.ADD_ORG(?,?,?,?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall("{ call PM_SPRAV_PKG.ADD_ORG(?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			// Наименование
 			callStmt.setString(2, ORG_NAME.getText());
@@ -45,8 +47,8 @@ public class AddPmOrgC {
 			callStmt.setString(5, ORG_DOLJ.getText());
 			// Обращение
 			callStmt.setString(6, ORG_OBRASH.getText());
-			// выполнение
-			callStmt.execute();
+			// Пол Руководителя
+			callStmt.setString(7, ORG_RUK_GENDER.getSelectionModel().getSelectedItem());
 			// выполнение
 			callStmt.execute();
 			if (callStmt.getString(1) == null) {
@@ -70,6 +72,7 @@ public class AddPmOrgC {
 	private void initialize() {
 		try {
 			dbConnect();
+			ORG_RUK_GENDER.getItems().addAll("М", "Ж");
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

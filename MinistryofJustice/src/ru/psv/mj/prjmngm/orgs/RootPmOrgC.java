@@ -272,7 +272,7 @@ public class RootPmOrgC {
 				list.setORG_SHNAME(rs.getString("ORG_SHNAME"));
 				list.setORG_DOLJ(rs.getString("ORG_DOLJ"));
 				list.setORG_OBRASH(rs.getString("ORG_OBRASH"));
-
+				list.setORG_RUK_GENDER(rs.getString("ORG_RUK_GENDER"));
 				obslist.add(list);
 			}
 			// add data

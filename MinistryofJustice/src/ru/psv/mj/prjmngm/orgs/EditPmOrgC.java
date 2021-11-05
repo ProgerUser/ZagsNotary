@@ -10,6 +10,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -37,7 +38,8 @@ public class EditPmOrgC {
 	private TextField ORG_DOLJ;
 	@FXML
 	private TextField ORG_OBRASH;
-
+	@FXML
+	private ComboBox<String> ORG_RUK_GENDER;
 	// _________________________
 	private BooleanProperty Status;
 
@@ -72,7 +74,7 @@ public class EditPmOrgC {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ call pm_sprav_pkg.edit_org(?,?,?,?,?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall("{ call pm_sprav_pkg.edit_org(?,?,?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			// ID
 			if (class_ != null) {
@@ -90,8 +92,8 @@ public class EditPmOrgC {
 			callStmt.setString(6, ORG_DOLJ.getText());
 			// Обращение
 			callStmt.setString(7, ORG_OBRASH.getText());
-			// выполнение
-			callStmt.execute();
+			// Пол Руководителя
+			callStmt.setString(8, ORG_RUK_GENDER.getSelectionModel().getSelectedItem());
 			// выполнение
 			callStmt.execute();
 			if (callStmt.getString(1) == null) {
@@ -134,6 +136,14 @@ public class EditPmOrgC {
 			ORG_SHNAME.setText(class_.getORG_SHNAME());
 			ORG_DOLJ.setText(class_.getORG_DOLJ());
 			ORG_OBRASH.setText(class_.getORG_OBRASH());
+
+			ORG_RUK_GENDER.getItems().addAll("М", "Ж");
+			
+			for (String gen : ORG_RUK_GENDER.getItems()) {
+				if (gen.equals(class_.getORG_RUK_GENDER())) {
+					ORG_RUK_GENDER.getSelectionModel().select(gen);
+				}
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
