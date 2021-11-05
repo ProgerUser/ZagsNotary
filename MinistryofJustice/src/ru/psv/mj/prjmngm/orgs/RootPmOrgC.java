@@ -1,11 +1,10 @@
-package ru.psv.mj.prjmngm.doc.type;
+package ru.psv.mj.prjmngm.orgs;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
@@ -17,9 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -32,23 +28,31 @@ import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
 import ru.psv.mj.utils.DbUtil;
 
-public class RootPmDocTypeC {
+public class RootPmOrgC {
 	/**
 	 * Конструктор
 	 */
-	public RootPmDocTypeC() {
+	public RootPmOrgC() {
 		Main.logger = Logger.getLogger(getClass());
 	}
 
 	// <TableView>
 	@FXML
-	private TableView<PM_DOC_TYPES> PM_DOC_TYPES;
+	private TableView<PM_ORG> PM_ORG;
 	// </TableView>
 	// <TableColumn>
 	@FXML
-	private TableColumn<PM_DOC_TYPES, Long> DOC_TP_ID;
+	private TableColumn<PM_ORG, Long> ORG_ID;
 	@FXML
-	private TableColumn<PM_DOC_TYPES, String> DOC_TP_NAME;
+	private TableColumn<PM_ORG, String> ORG_NAME;
+	@FXML
+	private TableColumn<PM_ORG, String> ORG_RUK;
+	@FXML
+	private TableColumn<PM_ORG, String> ORG_SHNAME;
+	@FXML
+	private TableColumn<PM_ORG, String> ORG_DOLJ;
+	@FXML
+	private TableColumn<PM_ORG, String> ORG_OBRASH;
 	// </TableColumn>
 
 	/**
@@ -69,27 +73,22 @@ public class RootPmDocTypeC {
 			Stage stage = new Stage();
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/doc/type/IUPmDocType.fxml"));
+			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/orgs/IUPmOrg.fxml"));
 
-			AddPmDocTypeC controller = new AddPmDocTypeC();
+			AddPmOrgC controller = new AddPmOrgC();
 			loader.setController(controller);
 
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
 			stage.setTitle("Добавить: ");
-			stage.initOwner((Stage) PM_DOC_TYPES.getScene().getWindow());
+			stage.initOwner((Stage) PM_ORG.getScene().getWindow());
 			stage.setResizable(true);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
 				public void handle(WindowEvent paramT) {
 					try {
-						// delete file
-						if (controller.FileWord != null && controller.FileWord.exists()) {
-							FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
-						}
-						// ------------
 						controller.dbDisconnect();
 						LoadTable();
 					} catch (Exception e) {
@@ -116,20 +115,6 @@ public class RootPmDocTypeC {
 				Msg.Message("Нет доступа!");
 				return;
 			}
-			if (PM_DOC_TYPES.getSelectionModel().getSelectedItem() != null) {
-				PM_DOC_TYPES sel = PM_DOC_TYPES.getSelectionModel().getSelectedItem();
-
-				final Alert alert = new Alert(AlertType.CONFIRMATION, "Удалить " + sel.getDOC_TP_ID() + "?",
-						ButtonType.YES, ButtonType.NO);
-				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-					PreparedStatement prp = conn.prepareStatement("delete from PM_DOC_TYPES where DOC_TP_ID = ?");
-					prp.setLong(1, sel.getDOC_TP_ID());
-					prp.executeUpdate();
-					prp.close();
-					conn.commit();
-					LoadTable();
-				}
-			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -149,17 +134,17 @@ public class RootPmDocTypeC {
 //				return;
 //			}
 			// выбранная запись
-			PM_DOC_TYPES sel = PM_DOC_TYPES.getSelectionModel().getSelectedItem();
+			PM_ORG sel = PM_ORG.getSelectionModel().getSelectedItem();
 			if (sel != null) {
 				// удержать
 				PreparedStatement selforupd = conn
 						.prepareStatement("SELECT * FROM PM_DOC_TYPES WHERE DOC_TP_ID = ? FOR UPDATE NOWAIT");
-				selforupd.setLong(1, sel.getDOC_TP_ID());
+				selforupd.setLong(1, sel.getORG_ID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
 					// add lock row
-					String lock = DbUtil.Lock_Row(sel.getDOC_TP_ID(), "PM_DOC_TYPES", conn);
+					String lock = DbUtil.Lock_Row(sel.getORG_ID(), "PM_DOC_TYPES", conn);
 					if (lock != null) {// if error add row
 						Msg.Message(lock);
 						conn.rollback();
@@ -168,17 +153,17 @@ public class RootPmDocTypeC {
 					// <FXML>---------------------------------------
 					Stage stage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/doc/type/IUPmDocType.fxml"));
+					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/orgs/IUPmOrg.fxml"));
 
-					EditPmDocTypeC controller = new EditPmDocTypeC();
+					EditPmOrgC controller = new EditPmOrgC();
 					controller.SetClass(sel, conn);
 
 					loader.setController(controller);
 					Parent root = loader.load();
 					stage.setScene(new Scene(root));
 					stage.getIcons().add(new Image("/icon.png"));
-					stage.setTitle("Редактирование: " + sel.getDOC_TP_ID());
-					stage.initOwner((Stage) PM_DOC_TYPES.getScene().getWindow());
+					stage.setTitle("Редактирование: " + sel.getORG_ID());
+					stage.initOwner((Stage) PM_ORG.getScene().getWindow());
 					stage.setResizable(true);
 					stage.initModality(Modality.WINDOW_MODAL);
 					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -188,22 +173,13 @@ public class RootPmDocTypeC {
 								if (controller.getStatus()) {
 									conn.commit();
 									// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-									String lock = DbUtil.Lock_Row_Delete(sel.getDOC_TP_ID(), "PM_DOC_TYPES", conn);
+									String lock = DbUtil.Lock_Row_Delete(sel.getORG_ID(), "PM_ORG", conn);
 									if (lock != null) {// if error add row
 										Msg.Message(lock);
 									}
-									// delete file
-									if (controller.FileWord != null && controller.FileWord.exists()) {
-										FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
-									}
-									// ------------
 									LoadTable();
 								} else {
-									// delete file
-									if (controller.FileWord != null && controller.FileWord.exists()) {
-										FileUtils.forceDelete(FileUtils.getFile(controller.FileWord));
-									}
-									// ------------
+									conn.rollback();
 								}
 							} catch (Exception e) {
 								DbUtil.Log_Error(e);
@@ -214,7 +190,7 @@ public class RootPmDocTypeC {
 					// </FXML>---------------------------------------
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(sel.getDOC_TP_ID(), "PM_DOC_TYPES"));
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(sel.getORG_ID(), "PM_ORG"));
 						DbUtil.Log_Error(e);
 					} else {
 						DbUtil.Log_Error(e);
@@ -249,8 +225,12 @@ public class RootPmDocTypeC {
 //			new ConvConst().TableColumnDate(EMP_WORKEND);
 //			new ConvConst().TableColumnDate(EMP_WORKSTART);
 			// init table column
-			DOC_TP_ID.setCellValueFactory(cellData -> cellData.getValue().DOC_TP_IDProperty().asObject());
-			DOC_TP_NAME.setCellValueFactory(cellData -> cellData.getValue().DOC_TP_NAMEProperty());
+			ORG_ID.setCellValueFactory(cellData -> cellData.getValue().ORG_IDProperty().asObject());
+			ORG_NAME.setCellValueFactory(cellData -> cellData.getValue().ORG_NAMEProperty());
+			ORG_RUK.setCellValueFactory(cellData -> cellData.getValue().ORG_RUKProperty());
+			ORG_SHNAME.setCellValueFactory(cellData -> cellData.getValue().ORG_SHNAMEProperty());
+			ORG_DOLJ.setCellValueFactory(cellData -> cellData.getValue().ORG_DOLJProperty());
+			ORG_OBRASH.setCellValueFactory(cellData -> cellData.getValue().ORG_OBRASHProperty());
 			// connect
 			dbConnect();
 			// load table
@@ -258,11 +238,11 @@ public class RootPmDocTypeC {
 			/**
 			 * Двойной щелчок по строке
 			 */
-			PM_DOC_TYPES.setRowFactory(tv -> {
-				TableRow<PM_DOC_TYPES> row = new TableRow<>();
+			PM_ORG.setRowFactory(tv -> {
+				TableRow<PM_ORG> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
-						if (PM_DOC_TYPES.getSelectionModel().getSelectedItem() != null) {
+						if (PM_ORG.getSelectionModel().getSelectedItem() != null) {
 							Edit(null);
 						}
 					}
@@ -280,25 +260,28 @@ public class RootPmDocTypeC {
 	void LoadTable() {
 		try {
 			// loop
-			String selectStmt = "select DOC_TP_ID,DOC_TP_NAME,DOC_TP_SQL from PM_DOC_TYPES t";
+			String selectStmt = "select * from PM_ORG t";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
-			ObservableList<PM_DOC_TYPES> obslist = FXCollections.observableArrayList();
+			ObservableList<PM_ORG> obslist = FXCollections.observableArrayList();
 			while (rs.next()) {
-				PM_DOC_TYPES list = new PM_DOC_TYPES();
-				list.setDOC_TP_ID(rs.getLong("DOC_TP_ID"));
-				list.setDOC_TP_NAME(rs.getString("DOC_TP_NAME"));
-				list.setDOC_TP_SQL(rs.getString("DOC_TP_SQL"));
+				PM_ORG list = new PM_ORG();
+				list.setORG_ID(rs.getLong("ORG_ID"));
+				list.setORG_NAME(rs.getString("ORG_NAME"));
+				list.setORG_RUK(rs.getString("ORG_RUK"));
+				list.setORG_SHNAME(rs.getString("ORG_SHNAME"));
+				list.setORG_DOLJ(rs.getString("ORG_DOLJ"));
+				list.setORG_OBRASH(rs.getString("ORG_OBRASH"));
 
 				obslist.add(list);
 			}
 			// add data
-			PM_DOC_TYPES.setItems(obslist);
+			PM_ORG.setItems(obslist);
 			// close
 			prepStmt.close();
 			rs.close();
 			// add filter
-			TableFilter<PM_DOC_TYPES> tableFilter = TableFilter.forTableView(PM_DOC_TYPES).apply();
+			TableFilter<PM_ORG> tableFilter = TableFilter.forTableView(PM_ORG).apply();
 			tableFilter.setSearchStrategy((input, target) -> {
 				try {
 					return target.toLowerCase().contains(input.toLowerCase());
@@ -307,7 +290,7 @@ public class RootPmDocTypeC {
 				}
 			});
 			// resize
-			ResizeColumns(PM_DOC_TYPES);
+			ResizeColumns(PM_ORG);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

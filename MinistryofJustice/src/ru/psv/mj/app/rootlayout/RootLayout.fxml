@@ -51,9 +51,19 @@
 							<items>
 								<MenuItem fx:id="244" mnemonicParsing="false" onAction="#PmDocType" text="Типы документов" />
 								<MenuItem fx:id="204" mnemonicParsing="false" onAction="#PmEmp" text="Сотрудники" />
+								<MenuItem fx:id="263" mnemonicParsing="false" onAction="#PmOrg" text="Организации" />
 							</items>
 						</Menu>
-						<MenuItem fx:id="223" mnemonicParsing="false" onAction="#InBoxDocs" text="Входящие документы" />
+						<Menu fx:id="265" mnemonicParsing="false" text="Документы">
+							<items>
+								<MenuItem fx:id="223" mnemonicParsing="false" onAction="#InBoxDocs" text="Входящие документы" />
+							</items>
+						</Menu>
+						 <Menu fx:id="264" mnemonicParsing="false" text="Проекты">
+							<items>
+								<MenuItem fx:id="266" mnemonicParsing="false" onAction="#PmPrj" text="Проекты сотрудников" />
+							</items>
+						</Menu>
 					</items>
 				</Menu>
 				<Menu fx:id="16" mnemonicParsing="false" text="Администратор">

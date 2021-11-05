@@ -45,6 +45,7 @@ import ru.psv.mj.notary.template.html.controller.NtTemplate;
 import ru.psv.mj.prjmngm.doc.type.RootPmDocTypeC;
 import ru.psv.mj.prjmngm.emps.RootPmEmpController;
 import ru.psv.mj.prjmngm.inboxdocs.RootPmDocController;
+import ru.psv.mj.prjmngm.orgs.RootPmOrgC;
 import ru.psv.mj.report.Report;
 import ru.psv.mj.sprav.courts.CourtList;
 import ru.psv.mj.sprav.notary.NotaryList;
@@ -104,6 +105,8 @@ public class Main extends Application {
 	public static boolean PmEmpWin = true;
 	public static boolean PmInBoxDocsWin = true;
 	public static boolean PmDocTypeWin = true;
+	public static boolean PmOrgWin = true;
+	public static boolean PmPrjWin = true;
 	public static boolean CourtsWin = true;
 	public static boolean ZagsWin = true;
 	public static boolean NotaryWin = true;
@@ -183,7 +186,7 @@ public class Main extends Application {
 			DbUtil.Db_Connect();
 			initRootLayout();
 			RT();
-			//PmDocType();
+			// PmDocType();
 			// OTD();
 //			new NotaryDocList().HtmlEditor(primaryStage);
 //
@@ -713,9 +716,9 @@ public class Main extends Application {
 				Stage stage = new Stage();
 				FXMLLoader loader = new FXMLLoader(
 						Main.class.getResource("/ru/psv/mj/prjmngm/inboxdocs/RootPmDocView.fxml"));
-				
+
 				RootPmDocController controller = new RootPmDocController();
-				
+
 				loader.setController(controller);
 				Parent root = loader.load();
 				Scene scene = new Scene(root);
@@ -759,6 +762,68 @@ public class Main extends Application {
 					public void handle(WindowEvent paramT) {
 						controller.dbDisconnect();
 						PmDocTypeWin = true;
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	public static void PmOrg() {
+		try {
+			if (PmOrgWin) {
+				PmOrgWin = false;
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/prjmngm/orgs/RootPmOrgView.fxml"));
+
+				RootPmOrgC controller = new RootPmOrgC();
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Список организации");
+				stage.initOwner(primaryStage);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						PmOrgWin = true;
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	public static void PmPrj() {
+		try {
+			if (PmPrjWin) {
+				PmPrjWin = false;
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/prjmngm/projects/RootPmOrgView.fxml"));
+
+				RootPmOrgC controller = new RootPmOrgC();
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Проекты сотрудников");
+				stage.initOwner(primaryStage);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						PmPrjWin = true;
 					}
 				});
 				stage.show();

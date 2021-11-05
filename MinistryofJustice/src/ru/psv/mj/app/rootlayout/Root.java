@@ -74,6 +74,22 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
+	@FXML
+	void PmOrg(ActionEvent event) {
+		try {
+			Main.PmOrg();
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+	@FXML
+	void PmPrj(ActionEvent event) {
+		try {
+			Main.PmPrj();
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
 	// --------------------------------------
 
 	/**
