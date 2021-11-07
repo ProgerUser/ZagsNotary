@@ -1,8 +1,10 @@
 package ru.psv.mj.prjmngm.inboxdocs;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -32,6 +34,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
+import ru.psv.mj.msg.Msg;
+import ru.psv.mj.prjmngm.doc.type.PM_DOC_TYPES;
 import ru.psv.mj.utils.DbUtil;
 
 public class CrePrjGantChart {
@@ -117,6 +121,12 @@ public class CrePrjGantChart {
 		}
 	}
 
+	private Long docid;
+
+	public void SetClass(Long docid) {
+		this.docid = docid;
+	}
+
 	/**
 	 * ОК
 	 * 
@@ -125,7 +135,36 @@ public class CrePrjGantChart {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-			System.out.println(gantt.getTreeTable().getSelectionModel().getSelectedItem().getValue());
+			String sel = gantt.getTreeTable().getSelectionModel().getSelectedItem().getValue().getName();
+			System.out.println(sel);
+			if (sel.contains("ФИО=\"")) {
+				System.out.println(sel);
+//				CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.ADD_PRJ(?,?,?)}");
+//				callStmt.registerOutParameter(1, Types.VARCHAR);
+//				// Ссылка на документ
+//				if (docid != null) {
+//					callStmt.setLong(2, docid);
+//				} else {
+//					callStmt.setNull(2, java.sql.Types.INTEGER);
+//				}
+//				// Ссылка на сотрудника
+//				if (!PRJ_EMP.getText().equals("")) {
+//					callStmt.setLong(3, Integer.valueOf(PRJ_EMP.getText()));
+//				} else {
+//					callStmt.setNull(3, java.sql.Types.INTEGER);
+//				}
+//				// выполнение
+//				callStmt.execute();
+//				if (callStmt.getString(1) == null) {
+//					conn.commit();
+//					callStmt.close();
+//					OnClose();
+//				} else {
+//					conn.rollback();
+//					Msg.Message(callStmt.getString(1));
+//					callStmt.close();
+//				}
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -160,16 +199,17 @@ public class CrePrjGantChart {
 				PreparedStatement prp = conn.prepareStatement("select * from PM_EMP");
 				ResultSet rs = prp.executeQuery();
 				while (rs.next()) {
-					Employees psv = new Employees("ФИО=" + (rs.getString("EMP_LASTNAME") + " "
-							+ rs.getString("EMP_FIRSTNAME") + " " + rs.getString("EMP_MIDDLENAME")) + ";");
+					Employees psv = new Employees(
+							"ФИО=\"" + (rs.getString("EMP_LASTNAME") + " " + rs.getString("EMP_FIRSTNAME") + " "
+									+ rs.getString("EMP_MIDDLENAME")) + "\";ID=\"" + rs.getLong("EMP_ID") + "\";");
 					// ____________________________
 					{
 						prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ?");
 						prp1.setLong(1, rs.getLong("EMP_ID"));
 						rs1 = prp1.executeQuery();
 						while (rs1.next()) {
-							Employees pr = new Employees("Наз.пр.=" + rs1.getString("DOC_NAME") + ";" + "Срочн.="
-									+ rs1.getString("doc_isfast"));
+							Employees pr = new Employees("Наз.пр.=\"" + rs1.getString("DOC_NAME") + "\";" + "Срочн.=\""
+									+ rs1.getString("doc_isfast") + "\";");
 							psv.getChildren().add(pr);
 							pr.addActivity(layer, new Project(new ProjectData(rs1.getString("EMP_LASTNAME"),
 									rs1.getString("EMP_LASTNAME") + " " + rs.getString("EMP_FIRSTNAME") + " "
@@ -204,24 +244,16 @@ public class CrePrjGantChart {
 			GraphicsBase<Employees> graphics = gantt.getGraphics();
 			graphics.setActivityRenderer(Project.class, GanttLayout.class,
 					new ActivityBarRenderer<>(graphics, "Project Renderer"));
-			graphics.showEarliestActivities();
+			
+			//graphics.showEarliestActivities();
+			
+			graphics.showAllActivities();
 
+			graphics.setDisable(true);
+			
 			GantBorder.setTop(new GanttChartToolBar(gantt));
 			GantBorder.setCenter(gantt);
 			GantBorder.setBottom(new GanttChartStatusBar(gantt));
-
-			// gantt.getRoot().getChildren().get
-			// TreeItem<Employee> itemMcNeil = new TreeItem<Employee>(empMcNeil);
-//			GantVbox.getChildren().addAll(new GanttChartToolBar(gantt), gantt, new GanttChartStatusBar(gantt));
-
-//			Scene scene = new Scene(borderPane);
-//
-//			stage.setScene(scene);
-//			stage.sizeToScene();
-//			stage.centerOnScreen();
-//			stage.getIcons().add(new Image("/icon.png"));
-//			stage.setTitle("Диаграмма Ганта");
-//			stage.show();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -258,4 +290,6 @@ public class CrePrjGantChart {
 		}
 	}
 	// </ORACLE_CONNECT>
+	
+	
 }

@@ -193,6 +193,7 @@ public class RootPmDocController {
 				loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/inboxdocs/GantChart.fxml"));
 
 				CrePrjGantChart controller = new CrePrjGantChart();
+				controller.SetClass(sel.getDOC_ID());
 				loader.setController(controller);
 
 				Parent root = loader.load();
