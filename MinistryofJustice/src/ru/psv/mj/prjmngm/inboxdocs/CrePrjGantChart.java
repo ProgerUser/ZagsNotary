@@ -35,7 +35,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
-import ru.psv.mj.prjmngm.doc.type.PM_DOC_TYPES;
 import ru.psv.mj.utils.DbUtil;
 
 public class CrePrjGantChart {
@@ -138,32 +137,34 @@ public class CrePrjGantChart {
 			String sel = gantt.getTreeTable().getSelectionModel().getSelectedItem().getValue().getName();
 			System.out.println(sel);
 			if (sel.contains("‘»ќ=\"")) {
-				System.out.println(sel);
-//				CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.ADD_PRJ(?,?,?)}");
-//				callStmt.registerOutParameter(1, Types.VARCHAR);
-//				// —сылка на документ
-//				if (docid != null) {
-//					callStmt.setLong(2, docid);
-//				} else {
-//					callStmt.setNull(2, java.sql.Types.INTEGER);
-//				}
-//				// —сылка на сотрудника
-//				if (!PRJ_EMP.getText().equals("")) {
-//					callStmt.setLong(3, Integer.valueOf(PRJ_EMP.getText()));
-//				} else {
-//					callStmt.setNull(3, java.sql.Types.INTEGER);
-//				}
-//				// выполнение
-//				callStmt.execute();
-//				if (callStmt.getString(1) == null) {
-//					conn.commit();
-//					callStmt.close();
-//					OnClose();
-//				} else {
-//					conn.rollback();
-//					Msg.Message(callStmt.getString(1));
-//					callStmt.close();
-//				}
+				String empid = sel.substring(sel.indexOf("ID="), sel.length());
+				empid = empid.replace("ID=\"", "").replace("\";", "");
+				System.out.println(empid);
+				CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.ADD_PRJ(?,?,?)}");
+				callStmt.registerOutParameter(1, Types.VARCHAR);
+				// —сылка на документ
+				if (docid != null) {
+					callStmt.setLong(2, docid);
+				} else {
+					callStmt.setNull(2, java.sql.Types.INTEGER);
+				}
+				// —сылка на сотрудника
+				if (empid.equals("")) {
+					callStmt.setLong(3, Integer.valueOf(empid));
+				} else {
+					callStmt.setNull(3, java.sql.Types.INTEGER);
+				}
+				// выполнение
+				callStmt.execute();
+				if (callStmt.getString(1) == null) {
+					conn.commit();
+					callStmt.close();
+					OnClose();
+				} else {
+					conn.rollback();
+					Msg.Message(callStmt.getString(1));
+					callStmt.close();
+				}
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -244,16 +245,30 @@ public class CrePrjGantChart {
 			GraphicsBase<Employees> graphics = gantt.getGraphics();
 			graphics.setActivityRenderer(Project.class, GanttLayout.class,
 					new ActivityBarRenderer<>(graphics, "Project Renderer"));
-			
-			//graphics.showEarliestActivities();
-			
+
+			// graphics.showEarliestActivities();
+
 			graphics.showAllActivities();
 
-			graphics.setDisable(true);
-			
+			// graphics.setDisable(true);
+
 			GantBorder.setTop(new GanttChartToolBar(gantt));
 			GantBorder.setCenter(gantt);
 			GantBorder.setBottom(new GanttChartStatusBar(gantt));
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+	
+	/**
+	 * ќбновить
+	 * 
+	 * @param event
+	 */
+	@FXML
+	private void Reshresh(ActionEvent event) {
+		try {
+			
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -290,6 +305,5 @@ public class CrePrjGantChart {
 		}
 	}
 	// </ORACLE_CONNECT>
-	
-	
+
 }

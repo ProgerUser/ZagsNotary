@@ -34,6 +34,7 @@ public class Main {
 	
 	
 	boolean is_update = false;
+	
 	public boolean start() {
 		try {
 			// log--------------------------------------
@@ -169,6 +170,9 @@ public class Main {
 			// ----------------------
 			// <update_form>--------------------------------------
 			{
+				//close
+				SQLIETEDisconnect();
+				//close
 				FXMLLoader loader = new FXMLLoader(this.getClass().getResource("Update.fxml"));
 				UpdateController controller = new UpdateController();
 				controller.setStatus(false);
