@@ -25,8 +25,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -50,6 +52,7 @@ import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.app.model.ACTFORLIST;
 import ru.psv.mj.msg.Msg;
+import ru.psv.mj.sprav.zags.SelZags;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.zags.doc.cus.CUS;
@@ -129,24 +132,24 @@ public class AddPatern {
 	@FXML
 	private TextField PC_ZMNAME;
 
-    //Новые поля 11.03.2021
-    @FXML
-    private TitledPane Bef;
-    @FXML
-    private TitledPane Doc_Num;
+	// Новые поля 11.03.2021
+	@FXML
+	private TitledPane Bef;
+	@FXML
+	private TitledPane Doc_Num;
 
-    @FXML
-    private TextField BEF_LNAME;
+	@FXML
+	private TextField BEF_LNAME;
 
-    @FXML
-    private TextField BEF_FNAME;
+	@FXML
+	private TextField BEF_FNAME;
 
-    @FXML
-    private TextField BEF_MNAME;
-    
-    @FXML
-    private TextField DOC_NUMBER;
-    
+	@FXML
+	private TextField BEF_MNAME;
+
+	@FXML
+	private TextField DOC_NUMBER;
+
 	// ______________Методы_____________
 	/**
 	 * Выбрать ребенка
@@ -177,18 +180,17 @@ public class AddPatern {
 	 */
 	@FXML
 	void FindAct(ActionEvent event) {
-		//ActList(PC_ACT_ID);
+		// ActList(PC_ACT_ID);
 		UtilCus cus = new UtilCus();
 		cus.Find_Brn(PC_ACT_ID, (Stage) PC_ACT_ID.getScene().getWindow());
 	}
-	
+
 	@FXML
 	void AddAct(ActionEvent event) {
-		//ActList(PC_ACT_ID);
+		// ActList(PC_ACT_ID);
 		UtilCus cus = new UtilCus();
 		cus.Add_Brn(PC_ACT_ID, (Stage) PC_ACT_ID.getScene().getWindow(), conn);
 	}
-	
 
 	/**
 	 * Выбрать мать
@@ -544,6 +546,9 @@ public class AddPatern {
 		}
 	}
 
+	Long ZagsId = null;
+	boolean IfArchiveNotSelect = false;
+
 	/**
 	 * Сохранить
 	 * 
@@ -552,65 +557,121 @@ public class AddPatern {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn
-					.prepareCall("{ call PATERN.AddPatern(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
-			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.setString(2, PС_NUMBER.getText());
-			callStmt.setString(3, PС_SERIA.getText());
-			callStmt.setDate(4, (PС_CRDATE.getValue() != null) ? java.sql.Date.valueOf(PС_CRDATE.getValue()) : null);
-			callStmt.setString(5, PС_CRNAME.getText());
-			callStmt.setDate(6, (PС_FZ.getValue() != null) ? java.sql.Date.valueOf(PС_FZ.getValue()) : null);
-			callStmt.setDate(7, (PС_TRZ.getValue() != null) ? java.sql.Date.valueOf(PС_TRZ.getValue()) : null);
-			callStmt.setString(8, PС_TYPE.getValue());
-			if (!PС_M.getText().equals("")) {
-				callStmt.setLong(9, Long.valueOf(PС_M.getText()));
-			} else {
-				callStmt.setNull(9, java.sql.Types.INTEGER);
-			}
-			if (!PС_F.getText().equals("")) {
-				callStmt.setLong(10, Long.valueOf(PС_F.getText()));
-			} else {
-				callStmt.setNull(10, java.sql.Types.INTEGER);
-			}
-			if (!PС_CH.getText().equals("")) {
-				callStmt.setLong(11, Long.valueOf(PС_CH.getText()));
-			} else {
-				callStmt.setNull(11, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(12, PС_AFT_MNAME.getText());
-			callStmt.setString(13, PС_AFT_FNAME.getText());
-			callStmt.setString(14, PС_AFT_LNAME.getText());
-			if (!PC_ACT_ID.getText().equals("")) {
-				callStmt.setLong(15, Long.valueOf(PC_ACT_ID.getText()));
-			} else {
-				callStmt.setNull(15, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(16, PC_ZPLACE.getText());
-			callStmt.setString(17, PC_ZLNAME.getText());
-			callStmt.setString(18, PC_ZFNAME.getText());
-			callStmt.setString(19, PC_ZMNAME.getText());
-			
-			callStmt.registerOutParameter(20, Types.INTEGER);
-			
-			callStmt.setString(21, BEF_LNAME.getText());
-			callStmt.setString(22, BEF_FNAME.getText());
-			callStmt.setString(23, BEF_MNAME.getText());
-			callStmt.setString(24, DOC_NUMBER.getText());
-			
-			callStmt.execute();
+			// Проверка на архив
+			{
+				PreparedStatement prp = conn.prepareStatement("select zags_id from usr where usr.cusrlogname = user");
+				ResultSet rs = prp.executeQuery();
+				if (rs.next()) {
+					if (rs.getInt(1) == 5) {
+						// <FXML>---------------------------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/SelZags.fxml"));
 
-			if (callStmt.getString(1) == null) {
-				conn.commit();
-				setStatus(true);
-				setId(callStmt.getLong(20));
-				callStmt.close();
-				onclose();
-			} else {
-				conn.rollback();
-				setStatus(false);
-				Stage stage_ = (Stage) PС_SERIA.getScene().getWindow();
-				Msg.MessageBox(callStmt.getString(1), stage_);
-				callStmt.close();
+						SelZags controller = new SelZags();
+
+						loader.setController(controller);
+
+						Parent root = loader.load();
+						stage.setScene(new Scene(root));
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Выбрать ЗАГС");
+						stage.initOwner((Stage) PC_ZFNAME.getScene().getWindow());
+						stage.setResizable(true);
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									if (controller.getStatus()) {
+										ZagsId = controller.getZagsId();
+										IfArchiveNotSelect = false;
+									} else {
+										IfArchiveNotSelect = true;
+										Msg.Message("Не выбран!");
+										return;
+									}
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						});
+						stage.showAndWait();
+						// </FXML>---------------------------------------
+					}
+				}
+				prp.close();
+				rs.close();
+			}
+			if (IfArchiveNotSelect == false) {
+				CallableStatement callStmt = conn
+						.prepareCall("{ call PATERN.AddPatern(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+				callStmt.registerOutParameter(1, Types.VARCHAR);
+				callStmt.setString(2, PС_NUMBER.getText());
+				callStmt.setString(3, PС_SERIA.getText());
+				callStmt.setDate(4,
+						(PС_CRDATE.getValue() != null) ? java.sql.Date.valueOf(PС_CRDATE.getValue()) : null);
+				callStmt.setString(5, PС_CRNAME.getText());
+				callStmt.setDate(6, (PС_FZ.getValue() != null) ? java.sql.Date.valueOf(PС_FZ.getValue()) : null);
+				callStmt.setDate(7, (PС_TRZ.getValue() != null) ? java.sql.Date.valueOf(PС_TRZ.getValue()) : null);
+				callStmt.setString(8, PС_TYPE.getValue());
+				if (!PС_M.getText().equals("")) {
+					callStmt.setLong(9, Long.valueOf(PС_M.getText()));
+				} else {
+					callStmt.setNull(9, java.sql.Types.INTEGER);
+				}
+				if (!PС_F.getText().equals("")) {
+					callStmt.setLong(10, Long.valueOf(PС_F.getText()));
+				} else {
+					callStmt.setNull(10, java.sql.Types.INTEGER);
+				}
+				if (!PС_CH.getText().equals("")) {
+					callStmt.setLong(11, Long.valueOf(PС_CH.getText()));
+				} else {
+					callStmt.setNull(11, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(12, PС_AFT_MNAME.getText());
+				callStmt.setString(13, PС_AFT_FNAME.getText());
+				callStmt.setString(14, PС_AFT_LNAME.getText());
+				if (!PC_ACT_ID.getText().equals("")) {
+					callStmt.setLong(15, Long.valueOf(PC_ACT_ID.getText()));
+				} else {
+					callStmt.setNull(15, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(16, PC_ZPLACE.getText());
+				callStmt.setString(17, PC_ZLNAME.getText());
+				callStmt.setString(18, PC_ZFNAME.getText());
+				callStmt.setString(19, PC_ZMNAME.getText());
+
+				callStmt.registerOutParameter(20, Types.INTEGER);
+
+				callStmt.setString(21, BEF_LNAME.getText());
+				callStmt.setString(22, BEF_FNAME.getText());
+				callStmt.setString(23, BEF_MNAME.getText());
+				callStmt.setString(24, DOC_NUMBER.getText());
+
+				if (ZagsId != null) {
+					callStmt.setLong(25, ZagsId);
+				} else {
+					callStmt.setNull(25, java.sql.Types.INTEGER);
+				}
+
+				
+				callStmt.execute();
+
+				if (callStmt.getString(1) == null) {
+					conn.commit();
+					setStatus(true);
+					setId(callStmt.getLong(20));
+					callStmt.close();
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Stage stage_ = (Stage) PС_SERIA.getScene().getWindow();
+					Msg.MessageBox(callStmt.getString(1), stage_);
+					callStmt.close();
+				}
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -672,7 +733,7 @@ public class AddPatern {
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Doc_Num.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
-			
+
 			PС_CH_NAME.setText(getCusFio());
 			PС_CH.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
 
@@ -695,7 +756,7 @@ public class AddPatern {
 
 			if (conn == null) {
 				dbConnect();
-				//DbUtil.Run_Process(conn,getClass().getName());
+				// DbUtil.Run_Process(conn,getClass().getName());
 			}
 			/**
 			 * Тип основания для уст. отцовства
@@ -703,11 +764,11 @@ public class AddPatern {
 			PС_TYPE.getItems().addAll("Совместное заявление родителей, не состоящихмежду собой в браке",
 					"Заявление отца ребенка", "Решение суда об установлении отцовства",
 					"Решение суда об установления факта признания");
-			
+
 			new ConvConst().FormatDatePiker(PС_FZ);
 			new ConvConst().FormatDatePiker(PС_CRDATE);
 			new ConvConst().FormatDatePiker(PС_TRZ);
-			
+
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -776,7 +837,8 @@ public class AddPatern {
 	// ---------------------------------------
 	//
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 	}
 
 	public boolean getStatus() {

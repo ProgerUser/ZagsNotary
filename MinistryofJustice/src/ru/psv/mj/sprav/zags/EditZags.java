@@ -33,31 +33,22 @@ public class EditZags {
 
 	@FXML
 	private TextField ZAGS_NAME;
-
 	@FXML
 	private ComboBox<OTD> ZAGS_OTD;
-
 	@FXML
 	private TextField ZAGS_RUK;
-
 	@FXML
 	private TextField ZAGS_ID;
-
     @FXML
     private TextField ZAGS_RUK_ABH;
-
     @FXML
     private TextField ADDR;
-
     @FXML
     private TextField ZAGS_ADR_ABH;
-
     @FXML
     private TextField ZAGS_CITY_ABH;
-    
     @FXML
     private TextField ZAGS_ADR;
-    
     @FXML
     private TextField ADDR_ABH;
     

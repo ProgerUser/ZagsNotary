@@ -440,45 +440,66 @@
 			<version>4.3</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.kordamp.ikonli/ikonli-core -->
+		<!-- org.kordamp.ikonli -->
 		<dependency>
 			<groupId>org.kordamp.ikonli</groupId>
 			<artifactId>ikonli-core</artifactId>
 			<version>2.6.0</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.kordamp.ikonli/ikonli-javafx -->
-		<dependency>
-			<groupId>org.kordamp.ikonli</groupId>
-			<artifactId>ikonli-javafx</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.kordamp.ikonli</groupId>
-			<artifactId>ikonli-devicons-pack</artifactId>
-			<version>1.9.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.kordamp.ikonli</groupId>
-			<artifactId>ikonli-swing</artifactId>
-			<version>12.2.0</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.kordamp.ikonli/ikonli-fontawesome-pack -->
-		<dependency>
-			<groupId>org.kordamp.ikonli</groupId>
-			<artifactId>ikonli-fontawesome-pack</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.kordamp.ikonli/ikonli-materialdesign-pack -->
 		<dependency>
 			<groupId>org.kordamp.ikonli</groupId>
 			<artifactId>ikonli-materialdesign-pack</artifactId>
 			<version>2.6.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.kordamp.ikonli</groupId>
+			<artifactId>ikonli-javafx</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.kordamp.ikonli</groupId>
+			<artifactId>ikonli-fontawesome-pack</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.kordamp.ikonli</groupId> -->
+		<!-- <artifactId>ikonli-core</artifactId> -->
+		<!-- <version>2.6.0</version> -->
+		<!-- </dependency> -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.kordamp.ikonli</groupId> -->
+		<!-- <artifactId>ikonli-javafx</artifactId> -->
+		<!-- <version>2.6.0</version> -->
+		<!-- </dependency> -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.kordamp.ikonli</groupId> -->
+		<!-- <artifactId>ikonli-devicons-pack</artifactId> -->
+		<!-- <version>1.9.0</version> -->
+		<!-- </dependency> -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.kordamp.ikonli</groupId> -->
+		<!-- <artifactId>ikonli-swing</artifactId> -->
+		<!-- <version>12.2.0</version> -->
+		<!-- </dependency> -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.kordamp.ikonli</groupId> -->
+		<!-- <artifactId>ikonli-fontawesome-pack</artifactId> -->
+		<!-- <version>2.6.0</version> -->
+		<!-- </dependency> -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.kordamp.ikonli</groupId> -->
+		<!-- <artifactId>ikonli-materialdesign-pack</artifactId> -->
+		<!-- <version>2.6.0</version> -->
+		<!-- </dependency> -->
+		<!--//////////////////////// -->
 
 		<dependency>
 			<groupId>flexganttfx-extras</groupId>

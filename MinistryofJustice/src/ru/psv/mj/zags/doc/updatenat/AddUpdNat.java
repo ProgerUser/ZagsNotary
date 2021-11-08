@@ -25,8 +25,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -49,6 +51,7 @@ import javafx.util.StringConverter;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.app.model.ACTFORLIST;
 import ru.psv.mj.msg.Msg;
+import ru.psv.mj.sprav.zags.SelZags;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.widgets.FxUtilTest;
 import ru.psv.mj.zags.doc.cus.CUS;
@@ -58,7 +61,7 @@ public class AddUpdNat {
 
 	@FXML
 	private TextField DOC_NUMBER;
-	
+
 	@FXML
 	private TextField BRN_ACT_ID;
 
@@ -100,7 +103,7 @@ public class AddUpdNat {
 							nationals.add(list);
 						}
 						sqlStatement.close();
-						
+
 //						FilteredList<NATIONALITY> filterednationals1 = new FilteredList<NATIONALITY>(nationals);
 //						FilteredList<NATIONALITY> filterednationals2 = new FilteredList<NATIONALITY>(nationals);
 //
@@ -110,16 +113,16 @@ public class AddUpdNat {
 						NEW_NAT.setItems(nationals);
 
 						FxUtilTest.getComboBoxValue(NEW_NAT);
-						FxUtilTest.autoCompleteComboBoxPlus(NEW_NAT, (typedText, itemToCompare) -> itemToCompare.getNAME()
-								.toLowerCase().contains(typedText.toLowerCase()));
+						FxUtilTest.autoCompleteComboBoxPlus(NEW_NAT, (typedText, itemToCompare) -> itemToCompare
+								.getNAME().toLowerCase().contains(typedText.toLowerCase()));
 //						OLD_NAT.getEditor().textProperty()
 //								.addListener(new InputFilter<NATIONALITY>(OLD_NAT, filterednationals2, false));
 
 						OLD_NAT.setItems(nationals);
-						
+
 						FxUtilTest.getComboBoxValue(OLD_NAT);
-						FxUtilTest.autoCompleteComboBoxPlus(OLD_NAT, (typedText, itemToCompare) -> itemToCompare.getNAME()
-								.toLowerCase().contains(typedText.toLowerCase()));
+						FxUtilTest.autoCompleteComboBoxPlus(OLD_NAT, (typedText, itemToCompare) -> itemToCompare
+								.getNAME().toLowerCase().contains(typedText.toLowerCase()));
 
 						rs.close();
 
@@ -461,60 +464,118 @@ public class AddUpdNat {
 		}
 	}
 
+	Long ZagsId = null;
+	boolean IfArchiveNotSelect = false;
+
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			Main.logger = Logger.getLogger(getClass());
+			// Проверка на архив
+			{
+				PreparedStatement prp = conn.prepareStatement("select zags_id from usr where usr.cusrlogname = user");
+				ResultSet rs = prp.executeQuery();
+				if (rs.next()) {
+					if (rs.getInt(1) == 5) {
+						// <FXML>---------------------------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/SelZags.fxml"));
 
-			CallableStatement callStmt = conn.prepareCall("{ call UDPNAT.AddUpdNat(?,?,?,?,?,?,?,?,?) }");
+						SelZags controller = new SelZags();
 
-			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.registerOutParameter(2, Types.INTEGER);
+						loader.setController(controller);
 
-			if (NEW_NAT.getSelectionModel().getSelectedItem() != null) {
-				NATIONALITY nat = NEW_NAT.getSelectionModel().getSelectedItem();
-				callStmt.setLong(3, nat.getID());
-			} else {
-				callStmt.setNull(3, java.sql.Types.INTEGER);
+						Parent root = loader.load();
+						stage.setScene(new Scene(root));
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Выбрать ЗАГС");
+						stage.initOwner((Stage) NEW_NAT.getScene().getWindow());
+						stage.setResizable(true);
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									if (controller.getStatus()) {
+										ZagsId = controller.getZagsId();
+										IfArchiveNotSelect = false;
+									} else {
+										IfArchiveNotSelect = true;
+										Msg.Message("Не выбран!");
+										return;
+									}
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						});
+						stage.showAndWait();
+						// </FXML>---------------------------------------
+					}
+				}
+				prp.close();
+				rs.close();
 			}
+			if (IfArchiveNotSelect == false) {
+				Main.logger = Logger.getLogger(getClass());
 
-			if (OLD_NAT.getSelectionModel().getSelectedItem() != null) {
-				NATIONALITY nat = OLD_NAT.getSelectionModel().getSelectedItem();
-				callStmt.setLong(4, nat.getID());
-			} else {
-				callStmt.setNull(4, java.sql.Types.INTEGER);
-			}
+				CallableStatement callStmt = conn.prepareCall("{ call UDPNAT.AddUpdNat(?,?,?,?,?,?,?,?,?,?) }");
 
-			if (!BRN_ACT_ID.getText().equals("")) {
-				callStmt.setLong(5, Long.valueOf(BRN_ACT_ID.getText()));
-			} else {
-				callStmt.setNull(5, java.sql.Types.INTEGER);
-			}
+				callStmt.registerOutParameter(1, Types.VARCHAR);
+				callStmt.registerOutParameter(2, Types.INTEGER);
 
-			if (!CUSID.getText().equals("")) {
-				callStmt.setLong(6, Long.valueOf(CUSID.getText()));
-			} else {
-				callStmt.setNull(6, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(7, SVID_SERIA.getText());
-			callStmt.setString(8, SVID_NUMBER.getText());
-			callStmt.setString(9, DOC_NUMBER.getText());
-			callStmt.execute();
+				if (NEW_NAT.getSelectionModel().getSelectedItem() != null) {
+					NATIONALITY nat = NEW_NAT.getSelectionModel().getSelectedItem();
+					callStmt.setLong(3, nat.getID());
+				} else {
+					callStmt.setNull(3, java.sql.Types.INTEGER);
+				}
 
-			if (callStmt.getString(1) == null) {
-				conn.commit();
-				setStatus(true);
-				setId(callStmt.getLong(2));
-				callStmt.close();
-				onclose();
-			} else {
-				conn.rollback();
-				setStatus(false);
-				Stage stage_ = (Stage) CUSID.getScene().getWindow();
-				Msg.MessageBox(callStmt.getString(1), stage_);
-				callStmt.close();
+				if (OLD_NAT.getSelectionModel().getSelectedItem() != null) {
+					NATIONALITY nat = OLD_NAT.getSelectionModel().getSelectedItem();
+					callStmt.setLong(4, nat.getID());
+				} else {
+					callStmt.setNull(4, java.sql.Types.INTEGER);
+				}
+
+				if (!BRN_ACT_ID.getText().equals("")) {
+					callStmt.setLong(5, Long.valueOf(BRN_ACT_ID.getText()));
+				} else {
+					callStmt.setNull(5, java.sql.Types.INTEGER);
+				}
+
+				if (!CUSID.getText().equals("")) {
+					callStmt.setLong(6, Long.valueOf(CUSID.getText()));
+				} else {
+					callStmt.setNull(6, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(7, SVID_SERIA.getText());
+				callStmt.setString(8, SVID_NUMBER.getText());
+				callStmt.setString(9, DOC_NUMBER.getText());
+				
+				if (ZagsId != null) {
+					callStmt.setLong(10, ZagsId);
+				} else {
+					callStmt.setNull(10, java.sql.Types.INTEGER);
+				}
+				
+				callStmt.execute();
+
+				if (callStmt.getString(1) == null) {
+					conn.commit();
+					setStatus(true);
+					setId(callStmt.getLong(2));
+					callStmt.close();
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Stage stage_ = (Stage) CUSID.getScene().getWindow();
+					Msg.MessageBox(callStmt.getString(1), stage_);
+					callStmt.close();
+				}
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
@@ -582,7 +643,7 @@ public class AddUpdNat {
 
 			if (conn == null) {
 				dbConnect();
-				//DbUtil.Run_Process(conn,getClass().getName());
+				// DbUtil.Run_Process(conn,getClass().getName());
 			}
 			{
 				Statement sqlStatement = conn.createStatement();
@@ -596,7 +657,7 @@ public class AddUpdNat {
 					nationals.add(list);
 				}
 				sqlStatement.close();
-				
+
 //				FilteredList<NATIONALITY> filterednationals1 = new FilteredList<NATIONALITY>(nationals);
 //				FilteredList<NATIONALITY> filterednationals2 = new FilteredList<NATIONALITY>(nationals);
 //
@@ -604,16 +665,16 @@ public class AddUpdNat {
 //						.addListener(new InputFilter<NATIONALITY>(NEW_NAT, filterednationals1, false));
 
 				NEW_NAT.setItems(nationals);
-				
+
 				FxUtilTest.getComboBoxValue(NEW_NAT);
 				FxUtilTest.autoCompleteComboBoxPlus(NEW_NAT, (typedText, itemToCompare) -> itemToCompare.getNAME()
 						.toLowerCase().contains(typedText.toLowerCase()));
-				
+
 //				OLD_NAT.getEditor().textProperty()
 //						.addListener(new InputFilter<NATIONALITY>(OLD_NAT, filterednationals2, false));
 
 				OLD_NAT.setItems(nationals);
-				
+
 				FxUtilTest.getComboBoxValue(OLD_NAT);
 				FxUtilTest.autoCompleteComboBoxPlus(OLD_NAT, (typedText, itemToCompare) -> itemToCompare.getNAME()
 						.toLowerCase().contains(typedText.toLowerCase()));
@@ -667,7 +728,8 @@ public class AddUpdNat {
 	}
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 	}
 
 	public Long getId() {

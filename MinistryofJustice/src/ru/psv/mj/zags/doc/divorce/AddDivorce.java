@@ -25,8 +25,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -51,6 +53,7 @@ import javafx.util.StringConverter;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
 import ru.psv.mj.sprav.courts.VCOURTS;
+import ru.psv.mj.sprav.zags.SelZags;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.zags.doc.cus.CUS;
@@ -61,7 +64,7 @@ public class AddDivorce {
 
 	@FXML
 	private TextField DOC_NUMBER;
-	
+
 	@FXML
 	private DatePicker DIVC_ZOSCD2;
 
@@ -188,7 +191,7 @@ public class AddDivorce {
 	void FindMercer(ActionEvent event) {
 //		Mercer(DIVC_MC_MERCER);
 		UtilCus cus = new UtilCus();
-		cus.FindMercer(DIVC_MC_MERCER, (Stage) DIVC_MC_MERCER.getScene().getWindow(),conn);
+		cus.FindMercer(DIVC_MC_MERCER, (Stage) DIVC_MC_MERCER.getScene().getWindow(), conn);
 	}
 
 	void CusList(TextField num, TextField name) {
@@ -375,85 +378,145 @@ public class AddDivorce {
 		}
 	}
 
+	Long ZagsId = null;
+	boolean IfArchiveNotSelect = false;
+
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn.prepareCall(
-					"{ call Divorce.AddDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
-			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.setString(2, DIVC_SERIA.getText());
-			callStmt.setString(3, DIVC_NUM.getText());
-			if (!DIVC_MC_MERCER.getText().equals("")) {
-				callStmt.setLong(4, Long.valueOf(DIVC_MC_MERCER.getText()));
-			} else {
-				callStmt.setNull(4, java.sql.Types.INTEGER);
-			}
-			if (!DIVC_ZOSPRISON.getText().equals("")) {
-				callStmt.setLong(5, Long.valueOf(DIVC_ZOSPRISON.getText()));
-			} else {
-				callStmt.setNull(5, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(6, DIVC_ZOSFIO2.getText());
-			callStmt.setDate(7,
-					(DIVC_ZOSCD2.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD2.getValue()) : null);
-			if (DIVC_ZOSCN2.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setLong(8, DIVC_ZOSCN2.getSelectionModel().getSelectedItem().getID());
-			} else {
-				callStmt.setNull(8, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(9, DIVC_ZOSFIO.getText());
-			callStmt.setDate(10, (DIVC_ZOSCD.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD.getValue()) : null);
-			if (DIVC_ZOSCN.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setLong(11, DIVC_ZOSCN.getSelectionModel().getSelectedItem().getID());
-			} else {
-				callStmt.setNull(11, java.sql.Types.INTEGER);
-			}
-			callStmt.setDate(12, (DIVC_CAD.getValue() != null) ? java.sql.Date.valueOf(DIVC_CAD.getValue()) : null);
-			if (DIVC_CAN.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setLong(13, DIVC_CAN.getSelectionModel().getSelectedItem().getID());
-			} else {
-				callStmt.setNull(13, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(14, DIVC_TCHNUM.getText());
-			callStmt.setDate(15, (DIVC_TCHD.getValue() != null) ? java.sql.Date.valueOf(DIVC_TCHD.getValue()) : null);
-			callStmt.setString(16, DIVC_TYPE.getValue());
-			callStmt.setDate(17, (DIVC_DT.getValue() != null) ? java.sql.Date.valueOf(DIVC_DT.getValue()) : null);
-			callStmt.setString(18, DIVC_SHE_LNAFT.getText());
-			callStmt.setString(19, DIVC_SHE_LNBEF.getText());
-			callStmt.setString(20, DIVC_HE_LNAFT.getText());
-			callStmt.setString(21, DIVC_HE_LNBEF.getText());
-			if (!DIVC_SHE.getText().equals("")) {
-				callStmt.setLong(22, Long.valueOf(DIVC_SHE.getText()));
-			} else {
-				callStmt.setNull(22, java.sql.Types.INTEGER);
-			}
-			if (!DIVC_HE.getText().equals("")) {
-				callStmt.setLong(23, Long.valueOf(DIVC_HE.getText()));
-			} else {
-				callStmt.setNull(23, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(24, DIVC_ZPLACE.getText());
-			callStmt.setString(25, DIVC_ZMNAME.getText());
-			callStmt.setString(26, DIVC_ZАNAME.getText());
-			callStmt.setString(27, DIVC_ZLNAME.getText());
-			callStmt.registerOutParameter(28, Types.INTEGER);
-			callStmt.setString(29, DOC_NUMBER.getText());
-			callStmt.execute();
+			// Проверка на архив
+			{
+				PreparedStatement prp = conn.prepareStatement("select zags_id from usr where usr.cusrlogname = user");
+				ResultSet rs = prp.executeQuery();
+				if (rs.next()) {
+					if (rs.getInt(1) == 5) {
+						// <FXML>---------------------------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/SelZags.fxml"));
 
-			if (callStmt.getString(1) == null) {
-				conn.commit();
-				setStatus(true);
-				setId(callStmt.getLong(28));
-				callStmt.close();
-				onclose();
-			} else {
-				conn.rollback();
-				setStatus(false);
-				Stage stage_ = (Stage) DIVC_HE_LNBEF.getScene().getWindow();
-				Msg.MessageBox(callStmt.getString(1), stage_);
-				callStmt.close();
+						SelZags controller = new SelZags();
+
+						loader.setController(controller);
+
+						Parent root = loader.load();
+						stage.setScene(new Scene(root));
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Выбрать ЗАГС");
+						stage.initOwner((Stage) DIVC_ZOSFIO.getScene().getWindow());
+						stage.setResizable(true);
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									if (controller.getStatus()) {
+										ZagsId = controller.getZagsId();
+										IfArchiveNotSelect = false;
+									} else {
+										IfArchiveNotSelect = true;
+										Msg.Message("Не выбран!");
+										return;
+									}
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						});
+						stage.showAndWait();
+						// </FXML>---------------------------------------
+					}
+				}
+				prp.close();
+				rs.close();
 			}
-		} catch (SQLException e) {
+			if (IfArchiveNotSelect == false) {
+				CallableStatement callStmt = conn.prepareCall(
+						"{ call Divorce.AddDivorce(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+				callStmt.registerOutParameter(1, Types.VARCHAR);
+				callStmt.setString(2, DIVC_SERIA.getText());
+				callStmt.setString(3, DIVC_NUM.getText());
+				if (!DIVC_MC_MERCER.getText().equals("")) {
+					callStmt.setLong(4, Long.valueOf(DIVC_MC_MERCER.getText()));
+				} else {
+					callStmt.setNull(4, java.sql.Types.INTEGER);
+				}
+				if (!DIVC_ZOSPRISON.getText().equals("")) {
+					callStmt.setLong(5, Long.valueOf(DIVC_ZOSPRISON.getText()));
+				} else {
+					callStmt.setNull(5, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(6, DIVC_ZOSFIO2.getText());
+				callStmt.setDate(7,
+						(DIVC_ZOSCD2.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD2.getValue()) : null);
+				if (DIVC_ZOSCN2.getSelectionModel().getSelectedItem() != null) {
+					callStmt.setLong(8, DIVC_ZOSCN2.getSelectionModel().getSelectedItem().getID());
+				} else {
+					callStmt.setNull(8, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(9, DIVC_ZOSFIO.getText());
+				callStmt.setDate(10,
+						(DIVC_ZOSCD.getValue() != null) ? java.sql.Date.valueOf(DIVC_ZOSCD.getValue()) : null);
+				if (DIVC_ZOSCN.getSelectionModel().getSelectedItem() != null) {
+					callStmt.setLong(11, DIVC_ZOSCN.getSelectionModel().getSelectedItem().getID());
+				} else {
+					callStmt.setNull(11, java.sql.Types.INTEGER);
+				}
+				callStmt.setDate(12, (DIVC_CAD.getValue() != null) ? java.sql.Date.valueOf(DIVC_CAD.getValue()) : null);
+				if (DIVC_CAN.getSelectionModel().getSelectedItem() != null) {
+					callStmt.setLong(13, DIVC_CAN.getSelectionModel().getSelectedItem().getID());
+				} else {
+					callStmt.setNull(13, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(14, DIVC_TCHNUM.getText());
+				callStmt.setDate(15,
+						(DIVC_TCHD.getValue() != null) ? java.sql.Date.valueOf(DIVC_TCHD.getValue()) : null);
+				callStmt.setString(16, DIVC_TYPE.getValue());
+				callStmt.setDate(17, (DIVC_DT.getValue() != null) ? java.sql.Date.valueOf(DIVC_DT.getValue()) : null);
+				callStmt.setString(18, DIVC_SHE_LNAFT.getText());
+				callStmt.setString(19, DIVC_SHE_LNBEF.getText());
+				callStmt.setString(20, DIVC_HE_LNAFT.getText());
+				callStmt.setString(21, DIVC_HE_LNBEF.getText());
+				if (!DIVC_SHE.getText().equals("")) {
+					callStmt.setLong(22, Long.valueOf(DIVC_SHE.getText()));
+				} else {
+					callStmt.setNull(22, java.sql.Types.INTEGER);
+				}
+				if (!DIVC_HE.getText().equals("")) {
+					callStmt.setLong(23, Long.valueOf(DIVC_HE.getText()));
+				} else {
+					callStmt.setNull(23, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(24, DIVC_ZPLACE.getText());
+				callStmt.setString(25, DIVC_ZMNAME.getText());
+				callStmt.setString(26, DIVC_ZАNAME.getText());
+				callStmt.setString(27, DIVC_ZLNAME.getText());
+				callStmt.registerOutParameter(28, Types.INTEGER);
+				callStmt.setString(29, DOC_NUMBER.getText());
+				
+				if (ZagsId != null) {
+					callStmt.setLong(30, ZagsId);
+				} else {
+					callStmt.setNull(30, java.sql.Types.INTEGER);
+				}
+				
+				callStmt.execute();
+
+				if (callStmt.getString(1) == null) {
+					conn.commit();
+					setStatus(true);
+					setId(callStmt.getLong(28));
+					callStmt.close();
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Stage stage_ = (Stage) DIVC_HE_LNBEF.getScene().getWindow();
+					Msg.MessageBox(callStmt.getString(1), stage_);
+					callStmt.close();
+				}
+			}
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
@@ -673,7 +736,7 @@ public class AddDivorce {
 			}
 		});
 	}
-	
+
 	private void convert_DIVC_ZOSCN() {
 		DIVC_ZOSCN.setConverter(new StringConverter<VCOURTS>() {
 			@Override
@@ -688,6 +751,7 @@ public class AddDivorce {
 			}
 		});
 	}
+
 	private void convert_DIVC_CAN() {
 		DIVC_CAN.setConverter(new StringConverter<VCOURTS>() {
 			@Override
@@ -702,11 +766,11 @@ public class AddDivorce {
 			}
 		});
 	}
-	
+
 	@FXML
 	private void initialize() {
 		try {
-			
+
 			if (getCusGen() == 1) {
 				HeFio.setText(getCusFio());
 				DIVC_HE.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
@@ -714,7 +778,7 @@ public class AddDivorce {
 				SheFio.setText(getCusFio());
 				DIVC_SHE.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
 			}
-			
+
 			Pane1.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Pane2.heightProperty().addListener(
@@ -731,8 +795,8 @@ public class AddDivorce {
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
-			
+			// DbUtil.Run_Process(conn,getClass().getName());
+
 			// Суды
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from VCOURTS");
@@ -765,20 +829,20 @@ public class AddDivorce {
 
 				rs.close();
 			}
-						
+
 			DIVC_TYPE.getItems().addAll(
 					"Совместное заявление супругов, не имеющих общих детей, не достигших совершеннолетия",
 					"Решение суда о расторжении брака",
 					"Заявление одного из супругов и решение суда о признании безвестно отсутствующим",
 					"Заявление одного из супругов и решение суда о признании недееспособным",
 					"Приговор суда об осуждении и лишении свободы");
-			
+
 			new ConvConst().FormatDatePiker(DIVC_ZOSCD2);
 			new ConvConst().FormatDatePiker(DIVC_CAD);
 			new ConvConst().FormatDatePiker(DIVC_DT);
 			new ConvConst().FormatDatePiker(DIVC_TCHD);
 			new ConvConst().FormatDatePiker(DIVC_ZOSCD);
-			
+
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -823,7 +887,7 @@ public class AddDivorce {
 	public Long getId() {
 		return this.Id.get();
 	}
-	
+
 	//
 	// если открыт от гражданина
 	//
@@ -834,11 +898,11 @@ public class AddDivorce {
 	public void setCusGen(Long value) {
 		this.CusGen.set(value);
 	}
-	
+
 	public Long getCusGen() {
 		return this.CusGen.get();
 	}
-	
+
 	public void setCusId(Long value) {
 		this.CusId.set(value);
 	}
@@ -863,7 +927,7 @@ public class AddDivorce {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 		this.Id = new SimpleLongProperty();
-		
+
 		this.CusId = new SimpleLongProperty();
 		this.CusFio = new SimpleStringProperty();
 		this.CusGen = new SimpleLongProperty();

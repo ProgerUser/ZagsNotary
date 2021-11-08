@@ -48,6 +48,7 @@ import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.app.model.ACTFORLIST;
 import ru.psv.mj.msg.Msg;
+import ru.psv.mj.sprav.zags.SelZags;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.widgets.KeyBoard;
 import ru.psv.mj.zags.doc.cus.CUS;
@@ -57,7 +58,7 @@ public class AddUpdName {
 
 	@FXML
 	private TextField DOC_NUMBER;
-	
+
 	@FXML
 	private TextField OLD_LASTNAME_AB;
 
@@ -139,7 +140,7 @@ public class AddUpdName {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void FindClient(ActionEvent event) {
 		UtilCus cus = new UtilCus();
@@ -457,58 +458,116 @@ public class AddUpdName {
 		}
 	}
 
+	Long ZagsId = null;
+	boolean IfArchiveNotSelect = false;
+
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ call UpdName.AddUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
-			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.registerOutParameter(2, Types.INTEGER);
-			callStmt.setString(3, OLD_LASTNAME.getText());
-			callStmt.setString(4, OLD_FIRSTNAME.getText());
-			callStmt.setString(5, OLD_MIDDLNAME.getText());
-			callStmt.setString(6, NEW_LASTNAME.getText());
-			callStmt.setString(7, NEW_FIRSTNAME.getText());
-			callStmt.setString(8, NEW_MIDDLNAME.getText());
-			if (!BRN_ACT_ID.getText().equals("")) {
-				callStmt.setLong(9, Long.valueOf(BRN_ACT_ID.getText()));
-			} else {
-				callStmt.setNull(9, java.sql.Types.INTEGER);
-			}
-			if (!CUSID.getText().equals("")) {
-				callStmt.setLong(10, Long.valueOf(CUSID.getText()));
-			} else {
-				callStmt.setNull(10, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(11, SVID_NUMBER.getText());
-			callStmt.setString(12, SVID_SERIA.getText());
-			//Фамилия до перемены АБХ
-			callStmt.setString(13,OLD_LASTNAME_AB.getText());
-			//Имя до перемены АБХ
-			callStmt.setString(14,OLD_FIRSTNAME_AB.getText());
-			//Отчество до перемены АБХ
-			callStmt.setString(15,OLD_MIDDLNAME_AB.getText());
-			//Фамилия после перемены АБХ
-			callStmt.setString(16,NEW_LASTNAME_AB.getText());
-			//Имя после перемены АБХ
-			callStmt.setString(17,NEW_FIRSTNAME_AB.getText());
-			//Отчество после перемены АБХ
-			callStmt.setString(18,NEW_MIDDLNAME_AB.getText());
-			callStmt.setString(19,DOC_NUMBER.getText());
-			
-			callStmt.execute();
+			// Проверка на архив
+			{
+				PreparedStatement prp = conn.prepareStatement("select zags_id from usr where usr.cusrlogname = user");
+				ResultSet rs = prp.executeQuery();
+				if (rs.next()) {
+					if (rs.getInt(1) == 5) {
+						// <FXML>---------------------------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/SelZags.fxml"));
 
-			if (callStmt.getString(1) == null) {
-				conn.commit();
-				setStatus(true);
-				setId(callStmt.getLong(2));
-				callStmt.close();
-				onclose();
-			} else {
-				conn.rollback();
-				setStatus(false);
-				Stage stage_ = (Stage) OLD_FIRSTNAME.getScene().getWindow();
-				Msg.MessageBox(callStmt.getString(1), stage_);
-				callStmt.close();
+						SelZags controller = new SelZags();
+
+						loader.setController(controller);
+
+						Parent root = loader.load();
+						stage.setScene(new Scene(root));
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Выбрать ЗАГС");
+						stage.initOwner((Stage) SVID_SERIA.getScene().getWindow());
+						stage.setResizable(true);
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									if (controller.getStatus()) {
+										ZagsId = controller.getZagsId();
+										IfArchiveNotSelect = false;
+									} else {
+										IfArchiveNotSelect = true;
+										Msg.Message("Не выбран!");
+										return;
+									}
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						});
+						stage.showAndWait();
+						// </FXML>---------------------------------------
+					}
+				}
+				prp.close();
+				rs.close();
+			}
+			if (IfArchiveNotSelect == false) {
+				CallableStatement callStmt = conn
+						.prepareCall("{ call UpdName.AddUpdName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+				callStmt.registerOutParameter(1, Types.VARCHAR);
+				callStmt.registerOutParameter(2, Types.INTEGER);
+				callStmt.setString(3, OLD_LASTNAME.getText());
+				callStmt.setString(4, OLD_FIRSTNAME.getText());
+				callStmt.setString(5, OLD_MIDDLNAME.getText());
+				callStmt.setString(6, NEW_LASTNAME.getText());
+				callStmt.setString(7, NEW_FIRSTNAME.getText());
+				callStmt.setString(8, NEW_MIDDLNAME.getText());
+				if (!BRN_ACT_ID.getText().equals("")) {
+					callStmt.setLong(9, Long.valueOf(BRN_ACT_ID.getText()));
+				} else {
+					callStmt.setNull(9, java.sql.Types.INTEGER);
+				}
+				if (!CUSID.getText().equals("")) {
+					callStmt.setLong(10, Long.valueOf(CUSID.getText()));
+				} else {
+					callStmt.setNull(10, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(11, SVID_NUMBER.getText());
+				callStmt.setString(12, SVID_SERIA.getText());
+				// Фамилия до перемены АБХ
+				callStmt.setString(13, OLD_LASTNAME_AB.getText());
+				// Имя до перемены АБХ
+				callStmt.setString(14, OLD_FIRSTNAME_AB.getText());
+				// Отчество до перемены АБХ
+				callStmt.setString(15, OLD_MIDDLNAME_AB.getText());
+				// Фамилия после перемены АБХ
+				callStmt.setString(16, NEW_LASTNAME_AB.getText());
+				// Имя после перемены АБХ
+				callStmt.setString(17, NEW_FIRSTNAME_AB.getText());
+				// Отчество после перемены АБХ
+				callStmt.setString(18, NEW_MIDDLNAME_AB.getText());
+				callStmt.setString(19, DOC_NUMBER.getText());
+
+				if (ZagsId != null) {
+					callStmt.setLong(20, ZagsId);
+				} else {
+					callStmt.setNull(20, java.sql.Types.INTEGER);
+				}
+				
+				callStmt.execute();
+
+				if (callStmt.getString(1) == null) {
+					conn.commit();
+					setStatus(true);
+					setId(callStmt.getLong(2));
+					callStmt.close();
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Stage stage_ = (Stage) OLD_FIRSTNAME.getScene().getWindow();
+					Msg.MessageBox(callStmt.getString(1), stage_);
+					callStmt.close();
+				}
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -561,7 +620,7 @@ public class AddUpdName {
 			 */
 			if (conn == null) {
 				dbConnect();
-				//DbUtil.Run_Process(conn,getClass().getName());
+				// DbUtil.Run_Process(conn,getClass().getName());
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -577,6 +636,7 @@ public class AddUpdName {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	public void dbDisconnect() {
 		try {
 			Main.logger = Logger.getLogger(getClass());
@@ -609,13 +669,14 @@ public class AddUpdName {
 	}
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 	}
 
 //	
 //	
 //	
-	public void setField(String LASTNAME, String FIRSTNAME, String MIDDLNAME,String cusid) {
+	public void setField(String LASTNAME, String FIRSTNAME, String MIDDLNAME, String cusid) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {

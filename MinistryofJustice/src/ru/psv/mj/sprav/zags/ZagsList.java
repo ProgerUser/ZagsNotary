@@ -39,16 +39,12 @@ public class ZagsList {
 
 	@FXML
 	private TableColumn<VZAGS, String> ZAGS_NAME;
-
 	@FXML
 	private TableColumn<VZAGS, String> ZAGS_OTD;
-
 	@FXML
 	private TableColumn<VZAGS, String> ZAGS_RUK;
-
 	@FXML
 	private TableView<VZAGS> ZAGS;
-
 	@FXML
 	private TableColumn<VZAGS, Long> ZAGS_ID;
 

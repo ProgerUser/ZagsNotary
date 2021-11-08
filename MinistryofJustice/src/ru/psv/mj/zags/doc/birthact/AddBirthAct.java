@@ -34,8 +34,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -64,6 +66,7 @@ import ru.psv.mj.init.Validation;
 import ru.psv.mj.init.Validator;
 import ru.psv.mj.init.Validity;
 import ru.psv.mj.msg.Msg;
+import ru.psv.mj.sprav.zags.SelZags;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.zags.doc.cus.CUS;
@@ -92,20 +95,19 @@ public class AddBirthAct {
 			DbUtil.Log_Error(e);
 		}
 	}
-    
-    @FXML
-    private TextField IFMAL_F_LAST_NAME;
 
-    @FXML
-    private GridPane IfMNotAlone;
-    
-    @FXML
-    private CheckBox MotherAlone;
-    
-    @FXML
-    private TextField DOC_NUMBER;
-    
-    
+	@FXML
+	private TextField IFMAL_F_LAST_NAME;
+
+	@FXML
+	private GridPane IfMNotAlone;
+
+	@FXML
+	private CheckBox MotherAlone;
+
+	@FXML
+	private TextField DOC_NUMBER;
+
 	@FXML
 	private TextField FADFIRST_NAME;
 
@@ -295,7 +297,7 @@ public class AddBirthAct {
 
 	@FXML
 	void FindMerCert(ActionEvent event) {
-		//Mercer(MARR_CER_ID);
+		// Mercer(MARR_CER_ID);
 		UtilCus cus = new UtilCus();
 		cus.FindMercer(MARR_CER_ID, (Stage) MARR_CER_ID.getScene().getWindow(), conn);
 	}
@@ -828,6 +830,9 @@ public class AddBirthAct {
 
 	/********************/
 
+	Long ZagsId = null;
+	boolean IfArchiveNotSelect = false;
+
 	/**
 	 * Сохранить
 	 * 
@@ -836,175 +841,228 @@ public class AddBirthAct {
 	@FXML
 	void SAVE(ActionEvent event) {
 		try {
-			// ре - валидация 
-			ch_cnt_val.revalidate();
-			ld_val.revalidate();
-			ch_cus_id_val.revalidate();
-			m_cus_id_val.revalidate();
-			
+			// Проверка на архив
+			{
+				PreparedStatement prp = conn.prepareStatement("select zags_id from usr where usr.cusrlogname = user");
+				ResultSet rs = prp.executeQuery();
+				if (rs.next()) {
+					if (rs.getInt(1) == 5) {
+						// <FXML>---------------------------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/SelZags.fxml"));
+
+						SelZags controller = new SelZags();
+
+						loader.setController(controller);
+
+						Parent root = loader.load();
+						stage.setScene(new Scene(root));
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Выбрать ЗАГС");
+						stage.initOwner((Stage) MotherCusId.getScene().getWindow());
+						stage.setResizable(true);
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									if (controller.getStatus()) {
+										ZagsId = controller.getZagsId();
+										IfArchiveNotSelect = false;
+									} else {
+										IfArchiveNotSelect = true;
+										Msg.Message("Не выбран!");
+										return;
+									}
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						});
+						stage.showAndWait();
+						// </FXML>---------------------------------------
+					}
+				}
+				prp.close();
+				rs.close();
+			}
+			if (IfArchiveNotSelect == false) {
+				// ре - валидация
+				ch_cnt_val.revalidate();
+				ld_val.revalidate();
+				ch_cus_id_val.revalidate();
+				m_cus_id_val.revalidate();
+
 //			if(!MotherAlone.isSelected()) {
 //				f_cus_id_val.revalidate();
 //			}
-			
-			BR_ACT_DBF_VAL.revalidate();
-			SERIA_VAL.revalidate();
-			NUM_VAL.revalidate();
-			FatherType_val.revalidate();
-			// проверка
-			if (!NUM_VAL.isValid() | !SERIA_VAL.isValid() | !BR_ACT_DBF_VAL.isValid() | !ch_cnt_val.isValid()
-					| !ld_val.isValid() | !ch_cus_id_val.isValid() | !m_cus_id_val.isValid()
-					| /*!f_cus_id_val.isValid()|*/!FatherType_val.isValid()) {
-				// показать диалог с ошибкой
-				Dialog<ActionType> d = DialogFactory.createError(null, "Не все поля заполнены!", null, "Ошибка");
-				d.showAndWait();
-				return;
-			}
-			//___________________________________________
-			
-			/* Вызов функции CRE_BURN из пакета BIRN_UTIL */
-			{
-				CallableStatement callStmt = conn.prepareCall(
-						"{ ? = call BURN_UTIL.CRE_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
-				callStmt.registerOutParameter(1, Types.VARCHAR);
-				/* Тип заявителя.F-физик.-J-юрик */
-				if (BIRTH_ACT_TYPE.getValue() != null) {
-					if (BIRTH_ACT_TYPE.getValue().equals("Физ. лицо")) {
-						callStmt.setString(2, "F");
-					} else if (BIRTH_ACT_TYPE.getValue().equals("Организация")) {
-						callStmt.setString(2, "J");
-					}
-				} else {
-					callStmt.setString(2, null);
-				}
-				/* Количество родившихся детей */
-				if (!ChildCnt.getText().equals("")) {
-					callStmt.setLong(3, Long.valueOf(ChildCnt.getText()));
-				} else {
-					callStmt.setNull(3, java.sql.Types.INTEGER);
-				}
-				/* Живорожденный или мертворожденный */
-				if (LD.getValue() != null) {
-					if (LD.getValue().equals("Живорожденный")) {
-						callStmt.setString(4, "L");
-					} else if (LD.getValue().equals("Мертворожденный")) {
-						callStmt.setString(4, "D");
-					}
-				} else {
-					callStmt.setString(4, null);
-				}
-				// Тип основании сведении об отце
-				if (FatherType.getValue() != null) {
-					if (FatherType.getValue().equals("Свидетельства о заключении брака")) {
-						callStmt.setString(5, "A");
-					} else if (FatherType.getValue().equals("Свидетельства об установлении отцовства")) {
-						callStmt.setString(5, "B");
-					} else if (FatherType.getValue().equals("Заявления матери")) {
-						callStmt.setString(5, "V");
-					}else if (FatherType.getValue().equals("Со слов матери")) {
-						callStmt.setString(5, "G");
-					}
-				} else {
-					callStmt.setString(5, null);
-				}
 
-				/* Дата заявления от матери, если (FatherType = V) */
-				callStmt.setDate(6,
-						(BIRTH_ACT_ZM.getValue() != null) ? java.sql.Date.valueOf(BIRTH_ACT_ZM.getValue()) : null);
-				/* Документ подтверждающий факт о рождении ребенка, тип */
-				if (BR_ACT_DBF.getValue() != null) {
-					if (BR_ACT_DBF.getValue().equals("Документ установленной формы о рождении")) {
-						callStmt.setString(7, "A");
-					} else if (BR_ACT_DBF.getValue().equals("Заявление")) {
-						callStmt.setString(7, "B");
-					}
-				} else {
-					callStmt.setString(7, null);
+				BR_ACT_DBF_VAL.revalidate();
+				SERIA_VAL.revalidate();
+				NUM_VAL.revalidate();
+				FatherType_val.revalidate();
+				// проверка
+				if (!NUM_VAL.isValid() | !SERIA_VAL.isValid() | !BR_ACT_DBF_VAL.isValid() | !ch_cnt_val.isValid()
+						| !ld_val.isValid() | !ch_cus_id_val.isValid() | !m_cus_id_val.isValid()
+						| /* !f_cus_id_val.isValid()| */!FatherType_val.isValid()) {
+					// показать диалог с ошибкой
+					Dialog<ActionType> d = DialogFactory.createError(null, "Не все поля заполнены!", null, "Ошибка");
+					d.showAndWait();
+					return;
 				}
-				/* Ссылка на ребенка */
-				if (!ChildCusId.getText().equals("")) {
-					callStmt.setLong(8, Long.valueOf(ChildCusId.getText()));
-				} else {
-					callStmt.setNull(8, java.sql.Types.INTEGER);
-				}
-				/* Ссылка на отца */
-				if (!FatherCusId.getText().equals("")) {
-					callStmt.setLong(9, Long.valueOf(FatherCusId.getText()));
-				} else {
-					callStmt.setNull(9, java.sql.Types.INTEGER);
-				}
-				/* Ссылка на мать */
-				if (!MotherCusId.getText().equals("")) {
-					callStmt.setLong(10, Long.valueOf(MotherCusId.getText()));
-				} else {
-					callStmt.setNull(10, java.sql.Types.INTEGER);
-				}
-				/* Наименование мед. организации выдавший документ (A-Док. уст. формы) */
-				callStmt.setString(11, MEDORG_A.getText());
-				/* Дата документа (A-Док. уст. формы) */
-				callStmt.setDate(12,
-						(DATEDOCB_A.getValue() != null) ? java.sql.Date.valueOf(DATEDOCB_A.getValue()) : null);
-				/* Номер документа (A-Док. уст. формы) */
-				callStmt.setString(13, NDOC_A.getText());
-				/* ФИО лица присутствовавшего во время родов (Б-Заявление) */
-				callStmt.setString(14, FIO_B.getText());
-				/* Дата документа (Б-Заявление) */
-				callStmt.setDate(15,
-						(DATEDOCB_B.getValue() != null) ? java.sql.Date.valueOf(DATEDOCB_B.getValue()) : null);
-				/* Наименование суда */
-				callStmt.setString(16, NAME_COURT.getText());
-				/* Решение суда № */
-				callStmt.setString(17, DESC_C.getText());
-				/* Дата решения суда */
-				callStmt.setDate(18, (DCOURT.getValue() != null) ? java.sql.Date.valueOf(DCOURT.getValue()) : null);
-				/* Имя (Заявитель о рождении) */
-				callStmt.setString(19, FADFIRST_NAME.getText());
-				/* Фамилия (Заявитель о рождении) */
-				callStmt.setString(20, FADLAST_NAME.getText());
-				/* Отчество (Заявитель о рождении) */
-				callStmt.setString(21, FADMIDDLE_NAME.getText());
-				/* Место жительства (Заявитель о рождении) */
-				callStmt.setString(22, FADLOCATION.getText());
-				/* Наименование организации (Заявитель о рождении) */
-				callStmt.setString(23, FADORG_NAME.getText());
-				/* Адрес регистрации (Заявитель о рождении) */
-				callStmt.setString(24, FADREG_ADR.getText());
-				/* Ссылка на свидетельство о заключении брака */
-				if (!MARR_CER_ID.getText().equals("")) {
-					callStmt.setLong(25, Long.valueOf(MARR_CER_ID.getText()));
-				} else {
-					callStmt.setNull(25, java.sql.Types.INTEGER);
-				}
-				/* Номер (печать ЗАГСа) */
-				callStmt.setString(26, NUM.getText());
-				/* Серия (печать ЗАГСа) */
-				callStmt.setString(27, SERIA.getText());
-				/* Ссылка на установлении отцовства */
-				if (!PAT_CER_ID.getText().equals("")) {
-					callStmt.setLong(28, Long.valueOf(PAT_CER_ID.getText()));
-				} else {
-					callStmt.setNull(28, java.sql.Types.INTEGER);
-				}
-				callStmt.registerOutParameter(29, Types.INTEGER);
+				// ___________________________________________
 
-				callStmt.setString(30, DOC_NUMBER.getText());
-				callStmt.setString(31, (MotherAlone.isSelected() ? "Y" : "N"));
-				callStmt.setString(32, IFMAL_F_LAST_NAME.getText());
-				/* Выполнить */
-				callStmt.execute();
-				String ret = callStmt.getString(1);
-				Long id = callStmt.getLong(29);
-				if (ret.equals("ok")) {
-					conn.commit();
-					setStatus(true);
-					setId(id);
-					callStmt.close();
-					onclose();
-				} else {
-					conn.rollback();
-					setStatus(false);
-					Stage stage_ = (Stage) SERIA.getScene().getWindow();
-					Msg.ErrorView(stage_, "AddBrnAct", conn);
-					callStmt.close();
+				/* Вызов функции CRE_BURN из пакета BIRN_UTIL */
+				{
+					CallableStatement callStmt = conn.prepareCall(
+							"{ ? = call BURN_UTIL.CRE_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+					callStmt.registerOutParameter(1, Types.VARCHAR);
+					/* Тип заявителя.F-физик.-J-юрик */
+					if (BIRTH_ACT_TYPE.getValue() != null) {
+						if (BIRTH_ACT_TYPE.getValue().equals("Физ. лицо")) {
+							callStmt.setString(2, "F");
+						} else if (BIRTH_ACT_TYPE.getValue().equals("Организация")) {
+							callStmt.setString(2, "J");
+						}
+					} else {
+						callStmt.setString(2, null);
+					}
+					/* Количество родившихся детей */
+					if (!ChildCnt.getText().equals("")) {
+						callStmt.setLong(3, Long.valueOf(ChildCnt.getText()));
+					} else {
+						callStmt.setNull(3, java.sql.Types.INTEGER);
+					}
+					/* Живорожденный или мертворожденный */
+					if (LD.getValue() != null) {
+						if (LD.getValue().equals("Живорожденный")) {
+							callStmt.setString(4, "L");
+						} else if (LD.getValue().equals("Мертворожденный")) {
+							callStmt.setString(4, "D");
+						}
+					} else {
+						callStmt.setString(4, null);
+					}
+					// Тип основании сведении об отце
+					if (FatherType.getValue() != null) {
+						if (FatherType.getValue().equals("Свидетельства о заключении брака")) {
+							callStmt.setString(5, "A");
+						} else if (FatherType.getValue().equals("Свидетельства об установлении отцовства")) {
+							callStmt.setString(5, "B");
+						} else if (FatherType.getValue().equals("Заявления матери")) {
+							callStmt.setString(5, "V");
+						} else if (FatherType.getValue().equals("Со слов матери")) {
+							callStmt.setString(5, "G");
+						}
+					} else {
+						callStmt.setString(5, null);
+					}
+
+					/* Дата заявления от матери, если (FatherType = V) */
+					callStmt.setDate(6,
+							(BIRTH_ACT_ZM.getValue() != null) ? java.sql.Date.valueOf(BIRTH_ACT_ZM.getValue()) : null);
+					/* Документ подтверждающий факт о рождении ребенка, тип */
+					if (BR_ACT_DBF.getValue() != null) {
+						if (BR_ACT_DBF.getValue().equals("Документ установленной формы о рождении")) {
+							callStmt.setString(7, "A");
+						} else if (BR_ACT_DBF.getValue().equals("Заявление")) {
+							callStmt.setString(7, "B");
+						}
+					} else {
+						callStmt.setString(7, null);
+					}
+					/* Ссылка на ребенка */
+					if (!ChildCusId.getText().equals("")) {
+						callStmt.setLong(8, Long.valueOf(ChildCusId.getText()));
+					} else {
+						callStmt.setNull(8, java.sql.Types.INTEGER);
+					}
+					/* Ссылка на отца */
+					if (!FatherCusId.getText().equals("")) {
+						callStmt.setLong(9, Long.valueOf(FatherCusId.getText()));
+					} else {
+						callStmt.setNull(9, java.sql.Types.INTEGER);
+					}
+					/* Ссылка на мать */
+					if (!MotherCusId.getText().equals("")) {
+						callStmt.setLong(10, Long.valueOf(MotherCusId.getText()));
+					} else {
+						callStmt.setNull(10, java.sql.Types.INTEGER);
+					}
+					/* Наименование мед. организации выдавший документ (A-Док. уст. формы) */
+					callStmt.setString(11, MEDORG_A.getText());
+					/* Дата документа (A-Док. уст. формы) */
+					callStmt.setDate(12,
+							(DATEDOCB_A.getValue() != null) ? java.sql.Date.valueOf(DATEDOCB_A.getValue()) : null);
+					/* Номер документа (A-Док. уст. формы) */
+					callStmt.setString(13, NDOC_A.getText());
+					/* ФИО лица присутствовавшего во время родов (Б-Заявление) */
+					callStmt.setString(14, FIO_B.getText());
+					/* Дата документа (Б-Заявление) */
+					callStmt.setDate(15,
+							(DATEDOCB_B.getValue() != null) ? java.sql.Date.valueOf(DATEDOCB_B.getValue()) : null);
+					/* Наименование суда */
+					callStmt.setString(16, NAME_COURT.getText());
+					/* Решение суда № */
+					callStmt.setString(17, DESC_C.getText());
+					/* Дата решения суда */
+					callStmt.setDate(18, (DCOURT.getValue() != null) ? java.sql.Date.valueOf(DCOURT.getValue()) : null);
+					/* Имя (Заявитель о рождении) */
+					callStmt.setString(19, FADFIRST_NAME.getText());
+					/* Фамилия (Заявитель о рождении) */
+					callStmt.setString(20, FADLAST_NAME.getText());
+					/* Отчество (Заявитель о рождении) */
+					callStmt.setString(21, FADMIDDLE_NAME.getText());
+					/* Место жительства (Заявитель о рождении) */
+					callStmt.setString(22, FADLOCATION.getText());
+					/* Наименование организации (Заявитель о рождении) */
+					callStmt.setString(23, FADORG_NAME.getText());
+					/* Адрес регистрации (Заявитель о рождении) */
+					callStmt.setString(24, FADREG_ADR.getText());
+					/* Ссылка на свидетельство о заключении брака */
+					if (!MARR_CER_ID.getText().equals("")) {
+						callStmt.setLong(25, Long.valueOf(MARR_CER_ID.getText()));
+					} else {
+						callStmt.setNull(25, java.sql.Types.INTEGER);
+					}
+					/* Номер (печать ЗАГСа) */
+					callStmt.setString(26, NUM.getText());
+					/* Серия (печать ЗАГСа) */
+					callStmt.setString(27, SERIA.getText());
+					/* Ссылка на установлении отцовства */
+					if (!PAT_CER_ID.getText().equals("")) {
+						callStmt.setLong(28, Long.valueOf(PAT_CER_ID.getText()));
+					} else {
+						callStmt.setNull(28, java.sql.Types.INTEGER);
+					}
+					callStmt.registerOutParameter(29, Types.INTEGER);
+
+					callStmt.setString(30, DOC_NUMBER.getText());
+					callStmt.setString(31, (MotherAlone.isSelected() ? "Y" : "N"));
+					callStmt.setString(32, IFMAL_F_LAST_NAME.getText());
+					if (ZagsId != null) {
+						callStmt.setLong(33, ZagsId);
+					} else {
+						callStmt.setNull(33, java.sql.Types.INTEGER);
+					}
+					/* Выполнить */
+					callStmt.execute();
+					String ret = callStmt.getString(1);
+					Long id = callStmt.getLong(29);
+					if (ret.equals("ok")) {
+						conn.commit();
+						setStatus(true);
+						setId(id);
+						callStmt.close();
+						onclose();
+					} else {
+						conn.rollback();
+						setStatus(false);
+						Stage stage_ = (Stage) SERIA.getScene().getWindow();
+						Msg.ErrorView(stage_, "AddBrnAct", conn);
+						callStmt.close();
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -1155,15 +1213,14 @@ public class AddBirthAct {
 	Validity NUM_VAL;
 	@SuppressWarnings("rawtypes")
 	Validity FatherType_val;
-	
 
 	@FXML
 	private void initialize() {
 		try {
-			//если открыт от формы гражданина
-			
+			// если открыт от формы гражданина
+
 			ChildName.setText(getCusFio());
-			//System.out.print(getCusId());
+			// System.out.print(getCusId());
 			ChildCusId.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
 			// Валидация
 			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
@@ -1189,9 +1246,9 @@ public class AddBirthAct {
 					Decorator.createWarningDecorator("Поле не может быть пустым!"));
 			NUM_VAL = Validation.installValidator(NUM, Validator.createEmptyValidator(NUM), Validation.Type.EAGER,
 					Decorator.createWarningDecorator("Поле не может быть пустым!"));
-			
-			FatherType_val = Validation.installValidator(FatherType, Validator.createEmptyValidator(FatherType), Validation.Type.EAGER,
-					Decorator.createWarningDecorator("Выберите тип!"));
+
+			FatherType_val = Validation.installValidator(FatherType, Validator.createEmptyValidator(FatherType),
+					Validation.Type.EAGER, Decorator.createWarningDecorator("Выберите тип!"));
 			// button.disableProperty().bind(v1.and(v2).not());
 			// button.setOnAction(e -> {
 			// boolean allValid = v1.and(v2).get();
@@ -1231,7 +1288,7 @@ public class AddBirthAct {
 			});
 
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
+			// DbUtil.Run_Process(conn,getClass().getName());
 			{
 				OnlyDigits(ChildCnt);
 				OnlyDigits(NDOC_A);
@@ -1262,9 +1319,9 @@ public class AddBirthAct {
 				FirstWUpp(FADREG_ADR);
 			}
 			FatherType.getItems().addAll("Свидетельства о заключении брака", "Свидетельства об установлении отцовства",
-					"Заявления матери","Со слов матери");
+					"Заявления матери", "Со слов матери");
 			BR_ACT_DBF.getItems().addAll("Документ установленной формы о рождении", "Заявление");
-			
+
 			new ConvConst().FormatDatePiker(BIRTH_ACT_ZM);
 			new ConvConst().FormatDatePiker(DATEDOCB_B);
 			new ConvConst().FormatDatePiker(DATEDOCB_A);
@@ -1380,7 +1437,7 @@ public class AddBirthAct {
 
 	private BooleanProperty Status;
 	private LongProperty Id;
-	
+
 //
 //если открыт от гражданина
 //
@@ -1394,18 +1451,18 @@ public class AddBirthAct {
 	public void setCusFio(String value) {
 		this.CusFio.set(value);
 	}
-	
+
 	public Long getCusId() {
 		return this.CusId.get();
 	}
-	
+
 	public String getCusFio() {
 		return this.CusFio.get();
 	}
 //
 // ---------------------------------------
 //
-	
+
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
 	}

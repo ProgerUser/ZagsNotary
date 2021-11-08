@@ -24,8 +24,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -50,6 +52,7 @@ import javafx.util.StringConverter;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
 import ru.psv.mj.sprav.courts.VCOURTS;
+import ru.psv.mj.sprav.zags.SelZags;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.zags.doc.cus.CUS;
@@ -443,6 +446,9 @@ public class AddDeath {
 		}
 
 	}
+	
+	Long ZagsId = null;
+	boolean IfArchiveNotSelect = false;
 
 	/**
 	 * Сохранить
@@ -452,54 +458,107 @@ public class AddDeath {
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn
-					.prepareCall("{ ? = call Deatch.AddDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
-			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.setString(2, DC_NUMBER.getText());
-			callStmt.setString(3, DC_SERIA.getText());
-			callStmt.setString(4, DC_FADREG_ADR.getText());
-			callStmt.setString(5, DC_FADORG_NAME.getText());
-			callStmt.setString(6, DC_FADLOCATION.getText());
-			callStmt.setString(7, DC_FADMIDDLE_NAME.getText());
-			callStmt.setString(8, DC_FADLAST_NAME.getText());
-			callStmt.setString(9, DC_FADFIRST_NAME.getText());
-			callStmt.setString(10, DC_ZTP.getValue());
-			callStmt.setString(11, DC_LLOC.getText());
-			callStmt.setString(12, DC_NRNAME.getText());
-			if (DC_RCNAME.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setLong(13, DC_RCNAME.getSelectionModel().getSelectedItem().getID());
-			} else {
-				callStmt.setNull(13, java.sql.Types.INTEGER);
+			// Проверка на архив
+			{
+				PreparedStatement prp = conn.prepareStatement("select zags_id from usr where usr.cusrlogname = user");
+				ResultSet rs = prp.executeQuery();
+				if (rs.next()) {
+					if (rs.getInt(1) == 5) {
+						// <FXML>---------------------------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/SelZags.fxml"));
+
+						SelZags controller = new SelZags();
+
+						loader.setController(controller);
+
+						Parent root = loader.load();
+						stage.setScene(new Scene(root));
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Выбрать ЗАГС");
+						stage.initOwner((Stage) DC_FADREG_ADR.getScene().getWindow());
+						stage.setResizable(true);
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									if (controller.getStatus()) {
+										ZagsId = controller.getZagsId();
+										IfArchiveNotSelect = false;
+									} else {
+										IfArchiveNotSelect = true;
+										Msg.Message("Не выбран!");
+										return;
+									}
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						});
+						stage.showAndWait();
+						// </FXML>---------------------------------------
+					}
+				}
+				prp.close();
+				rs.close();
 			}
-			callStmt.setString(14, DC_FMON.getText());
-			callStmt.setString(15, DC_FTYPE.getValue());
-			callStmt.setDate(16, (DC_FD.getValue() != null) ? java.sql.Date.valueOf(DC_FD.getValue()) : null);
-			callStmt.setString(17, DC_FNUM.getText());
-			callStmt.setString(18, DC_CD.getText());
-			callStmt.setString(19, DC_DPL.getText());
-			callStmt.setDate(20, (DC_DD.getValue() != null) ? java.sql.Date.valueOf(DC_DD.getValue()) : null);
-			if (!DC_CUS.getText().equals("")) {
-				callStmt.setLong(21, Long.valueOf(DC_CUS.getText()));
-			} else {
-				callStmt.setNull(21, java.sql.Types.INTEGER);
-			}
-			callStmt.registerOutParameter(22, Types.INTEGER);
-			callStmt.setString(23, DOC_NUMBER.getText());
-			callStmt.execute();
-			String ret = callStmt.getString(1);
-			Long id = callStmt.getLong(22);
-			if (ret.equals("ok")) {
-				conn.commit();
-				setStatus(true);
-				setId(id);
-				callStmt.close();
-				onclose();
-			} else {
-				conn.rollback();
-				setStatus(false);
-				Stage stage_ = (Stage) DC_ZTP.getScene().getWindow();
-				Msg.ErrorView(stage_, "AddDeath", conn);
-				callStmt.close();
+			if (IfArchiveNotSelect == false) {
+				CallableStatement callStmt = conn
+						.prepareCall("{ ? = call Deatch.AddDeath(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+				callStmt.registerOutParameter(1, Types.VARCHAR);
+				callStmt.setString(2, DC_NUMBER.getText());
+				callStmt.setString(3, DC_SERIA.getText());
+				callStmt.setString(4, DC_FADREG_ADR.getText());
+				callStmt.setString(5, DC_FADORG_NAME.getText());
+				callStmt.setString(6, DC_FADLOCATION.getText());
+				callStmt.setString(7, DC_FADMIDDLE_NAME.getText());
+				callStmt.setString(8, DC_FADLAST_NAME.getText());
+				callStmt.setString(9, DC_FADFIRST_NAME.getText());
+				callStmt.setString(10, DC_ZTP.getValue());
+				callStmt.setString(11, DC_LLOC.getText());
+				callStmt.setString(12, DC_NRNAME.getText());
+				if (DC_RCNAME.getSelectionModel().getSelectedItem() != null) {
+					callStmt.setLong(13, DC_RCNAME.getSelectionModel().getSelectedItem().getID());
+				} else {
+					callStmt.setNull(13, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(14, DC_FMON.getText());
+				callStmt.setString(15, DC_FTYPE.getValue());
+				callStmt.setDate(16, (DC_FD.getValue() != null) ? java.sql.Date.valueOf(DC_FD.getValue()) : null);
+				callStmt.setString(17, DC_FNUM.getText());
+				callStmt.setString(18, DC_CD.getText());
+				callStmt.setString(19, DC_DPL.getText());
+				callStmt.setDate(20, (DC_DD.getValue() != null) ? java.sql.Date.valueOf(DC_DD.getValue()) : null);
+				if (!DC_CUS.getText().equals("")) {
+					callStmt.setLong(21, Long.valueOf(DC_CUS.getText()));
+				} else {
+					callStmt.setNull(21, java.sql.Types.INTEGER);
+				}
+				callStmt.registerOutParameter(22, Types.INTEGER);
+				callStmt.setString(23, DOC_NUMBER.getText());
+				if (ZagsId != null) {
+					callStmt.setLong(24, ZagsId);
+				} else {
+					callStmt.setNull(24, java.sql.Types.INTEGER);
+				}
+				callStmt.execute();
+				String ret = callStmt.getString(1);
+				Long id = callStmt.getLong(22);
+				if (ret.equals("ok")) {
+					conn.commit();
+					setStatus(true);
+					setId(id);
+					callStmt.close();
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Stage stage_ = (Stage) DC_ZTP.getScene().getWindow();
+					Msg.ErrorView(stage_, "AddDeath", conn);
+					callStmt.close();
+				}
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -538,7 +597,7 @@ public class AddDeath {
 
 	@FXML
 	private TitledPane Pane4;
-	
+
 	private void convert_DC_RCNAME() {
 		DC_RCNAME.setConverter(new StringConverter<VCOURTS>() {
 			@Override
@@ -553,7 +612,7 @@ public class AddDeath {
 			}
 		});
 	}
-	
+
 	/**
 	 * Инициализация
 	 */
@@ -563,7 +622,7 @@ public class AddDeath {
 
 			DFIO.setText(getCusFio());
 			DC_CUS.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
-				
+
 			Pane1.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Pane2.heightProperty().addListener(
@@ -572,10 +631,10 @@ public class AddDeath {
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Pane4.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
-			
+
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
-			
+			// DbUtil.Run_Process(conn,getClass().getName());
+
 			// Суды
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from VCOURTS");
@@ -676,11 +735,11 @@ public class AddDeath {
 	public void setCusGen(Long value) {
 		this.CusGen.set(value);
 	}
-	
+
 	public Long getCusGen() {
 		return this.CusGen.get();
 	}
-	
+
 	public void setCusId(Long value) {
 		this.CusId.set(value);
 	}
@@ -701,12 +760,11 @@ public class AddDeath {
 	// ---------------------------------------
 	//
 
-	
 	public AddDeath() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 		this.Id = new SimpleLongProperty();
-		
+
 		this.CusId = new SimpleLongProperty();
 		this.CusFio = new SimpleStringProperty();
 		this.CusGen = new SimpleLongProperty();

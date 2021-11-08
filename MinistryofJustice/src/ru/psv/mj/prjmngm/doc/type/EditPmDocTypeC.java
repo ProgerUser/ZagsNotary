@@ -230,7 +230,7 @@ public class EditPmDocTypeC {
 
 			try {
 				frame = new OleFrame(shell, SWT.APPLICATION_MODAL);
-				clientSite = new OleClientSite(frame, SWT.NONE, "Word.Document");
+				clientSite = new OleClientSite(frame, SWT.NONE,FileWord/*, "Word.Document"*/);
 				addFileMenu(frame);
 				System.out.println(" I am in run method ");
 			} catch (final SWTError e) {
@@ -263,7 +263,7 @@ public class EditPmDocTypeC {
 
 			if (FileWord != null) {
 				clientSite.dispose();
-				clientSite = new OleClientSite(frame, SWT.NONE, "Word.Document", FileWord);
+				clientSite = new OleClientSite(frame, SWT.NONE,/* "Word.Document",*/ FileWord);
 				clientSite.doVerb(OLE.OLEIVERB_INPLACEACTIVATE);
 			}
 			shell.open();

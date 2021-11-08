@@ -372,7 +372,7 @@ public class RootPmEmpController {
 	void LoadTable() {
 		try {
 			// loop
-			String selectStmt = "select * from VPM_EMP t";
+			String selectStmt = "select * from vpm_emp t";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<VPM_EMP> obslist = FXCollections.observableArrayList();

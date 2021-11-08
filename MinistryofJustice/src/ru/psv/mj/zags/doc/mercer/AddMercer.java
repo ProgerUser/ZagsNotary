@@ -25,8 +25,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -49,6 +51,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
+import ru.psv.mj.sprav.zags.SelZags;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.zags.doc.cus.CUS;
@@ -104,12 +107,12 @@ public class AddMercer {
 	private TextField MERCER_HEAGE;
 	@FXML
 	private TextField MERCER_SHE;
-	
+
 	@FXML
 	private TextField DOC_NUMBER;
 	@FXML
 	private DatePicker MC_DATE;
-    
+
 	@FXML
 	void FindHe(ActionEvent event) {
 		UtilCus cus = new UtilCus();
@@ -244,7 +247,8 @@ public class AddMercer {
 			while (rs.next()) {
 				DEATH_CERT list = new DEATH_CERT();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-				//DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+				// DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy
+				// HH:mm:ss");
 
 				list.setDFIO(rs.getString("DFIO"));
 				list.setDC_ID(rs.getLong("DC_ID"));
@@ -273,9 +277,11 @@ public class AddMercer {
 				list.setDC_SERIA(rs.getString("DC_SERIA"));
 				list.setDC_NUMBER(rs.getString("DC_NUMBER"));
 				list.setDC_USR(rs.getString("DC_USR"));
-				/*list.setTM$DC_OPEN((rs.getDate("TM$DC_OPEN") != null) ? LocalDateTime.parse(
-						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DC_OPEN")), formatterdt) : null);
-						*/
+				/*
+				 * list.setTM$DC_OPEN((rs.getDate("TM$DC_OPEN") != null) ? LocalDateTime.parse(
+				 * new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("DC_OPEN")),
+				 * formatterdt) : null);
+				 */
 				list.setDC_ZAGS(rs.getLong("DC_ZAGS"));
 
 				cuslist.add(list);
@@ -597,80 +603,138 @@ public class AddMercer {
 		}
 	}
 
+	Long ZagsId = null;
+	boolean IfArchiveNotSelect = false;
+
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn
-					.prepareCall("{ call Mercer.AddMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
-			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.registerOutParameter(2, Types.INTEGER);
-			callStmt.setString(3, MERCER_OTHER.getText());
-			if (!MERCER_DIEHE.getText().equals("")) {
-				callStmt.setLong(4, Long.valueOf(MERCER_DIEHE.getText()));
-			} else {
-				callStmt.setNull(4, java.sql.Types.INTEGER);
-			}
-			if (!MERCER_DIESHE.getText().equals("")) {
-				callStmt.setLong(5, Long.valueOf(MERCER_DIESHE.getText()));
-			} else {
-				callStmt.setNull(5, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(6, MERCER_SERIA.getText());
-			callStmt.setString(7, MERCER_NUM.getText());
-			callStmt.setString(8, MERCER_DSPMT_HE.getValue());
-			if (!MERCER_DIVHE.getText().equals("")) {
-				callStmt.setLong(9, Long.valueOf(MERCER_DIVHE.getText()));
-			} else {
-				callStmt.setNull(9, java.sql.Types.INTEGER);
-			}
-			if (!MERCER_DIVSHE.getText().equals("")) {
-				callStmt.setLong(10, Long.valueOf(MERCER_DIVSHE.getText()));
-			} else {
-				callStmt.setNull(10, java.sql.Types.INTEGER);
-			}
-			if (!MERCER_SHEAGE.getText().equals("")) {
-				callStmt.setLong(11, Long.valueOf(MERCER_SHEAGE.getText()));
-			} else {
-				callStmt.setNull(11, java.sql.Types.INTEGER);
-			}
-			if (!MERCER_HEAGE.getText().equals("")) {
-				callStmt.setLong(12, Long.valueOf(MERCER_HEAGE.getText()));
-			} else {
-				callStmt.setNull(12, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(13, MERCER_SHE_LNBAFT.getText());
-			callStmt.setString(14, MERCER_SHE_LNBEF.getText());
-			callStmt.setString(15, MERCER_HE_LNAFT.getText());
-			callStmt.setString(16, MERCER_HE_LNBEF.getText());
-			if (!MERCER_SHE.getText().equals("")) {
-				callStmt.setLong(17, Long.valueOf(MERCER_SHE.getText()));
-			} else {
-				callStmt.setNull(17, java.sql.Types.INTEGER);
-			}
-			if (!MERCER_HE.getText().equals("")) {
-				callStmt.setLong(18, Long.valueOf(MERCER_HE.getText()));
-			} else {
-				callStmt.setNull(18, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(19, MERCER_DSPMT_SHE.getValue());
-			callStmt.setDate(20, (MC_DATE.getValue() != null) ? java.sql.Date.valueOf(MC_DATE.getValue()) : null);
-			callStmt.setString(21, DOC_NUMBER.getText());
-			callStmt.execute();
+			// Проверка на архив
+			{
+				PreparedStatement prp = conn.prepareStatement("select zags_id from usr where usr.cusrlogname = user");
+				ResultSet rs = prp.executeQuery();
+				if (rs.next()) {
+					if (rs.getInt(1) == 5) {
+						// <FXML>---------------------------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/SelZags.fxml"));
 
-			if (callStmt.getString(1) == null) {
-				conn.commit();
-				setStatus(true);
-				setId(callStmt.getLong(2));
-				callStmt.close();
-				onclose();
-			} else {
-				conn.rollback();
-				setStatus(false);
-				Stage stage_ = (Stage) HeTypeB.getScene().getWindow();
-				Msg.MessageBox(callStmt.getString(1), stage_);
-				callStmt.close();
+						SelZags controller = new SelZags();
+
+						loader.setController(controller);
+
+						Parent root = loader.load();
+						stage.setScene(new Scene(root));
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Выбрать ЗАГС");
+						stage.initOwner((Stage) MERCER_DIESHE.getScene().getWindow());
+						stage.setResizable(true);
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									if (controller.getStatus()) {
+										ZagsId = controller.getZagsId();
+										IfArchiveNotSelect = false;
+									} else {
+										IfArchiveNotSelect = true;
+										Msg.Message("Не выбран!");
+										return;
+									}
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						});
+						stage.showAndWait();
+						// </FXML>---------------------------------------
+					}
+				}
+				prp.close();
+				rs.close();
 			}
-		} catch (SQLException e) {
+			if (IfArchiveNotSelect == false) {
+				CallableStatement callStmt = conn
+						.prepareCall("{ call Mercer.AddMercer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+				callStmt.registerOutParameter(1, Types.VARCHAR);
+				callStmt.registerOutParameter(2, Types.INTEGER);
+				callStmt.setString(3, MERCER_OTHER.getText());
+				if (!MERCER_DIEHE.getText().equals("")) {
+					callStmt.setLong(4, Long.valueOf(MERCER_DIEHE.getText()));
+				} else {
+					callStmt.setNull(4, java.sql.Types.INTEGER);
+				}
+				if (!MERCER_DIESHE.getText().equals("")) {
+					callStmt.setLong(5, Long.valueOf(MERCER_DIESHE.getText()));
+				} else {
+					callStmt.setNull(5, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(6, MERCER_SERIA.getText());
+				callStmt.setString(7, MERCER_NUM.getText());
+				callStmt.setString(8, MERCER_DSPMT_HE.getValue());
+				if (!MERCER_DIVHE.getText().equals("")) {
+					callStmt.setLong(9, Long.valueOf(MERCER_DIVHE.getText()));
+				} else {
+					callStmt.setNull(9, java.sql.Types.INTEGER);
+				}
+				if (!MERCER_DIVSHE.getText().equals("")) {
+					callStmt.setLong(10, Long.valueOf(MERCER_DIVSHE.getText()));
+				} else {
+					callStmt.setNull(10, java.sql.Types.INTEGER);
+				}
+				if (!MERCER_SHEAGE.getText().equals("")) {
+					callStmt.setLong(11, Long.valueOf(MERCER_SHEAGE.getText()));
+				} else {
+					callStmt.setNull(11, java.sql.Types.INTEGER);
+				}
+				if (!MERCER_HEAGE.getText().equals("")) {
+					callStmt.setLong(12, Long.valueOf(MERCER_HEAGE.getText()));
+				} else {
+					callStmt.setNull(12, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(13, MERCER_SHE_LNBAFT.getText());
+				callStmt.setString(14, MERCER_SHE_LNBEF.getText());
+				callStmt.setString(15, MERCER_HE_LNAFT.getText());
+				callStmt.setString(16, MERCER_HE_LNBEF.getText());
+				if (!MERCER_SHE.getText().equals("")) {
+					callStmt.setLong(17, Long.valueOf(MERCER_SHE.getText()));
+				} else {
+					callStmt.setNull(17, java.sql.Types.INTEGER);
+				}
+				if (!MERCER_HE.getText().equals("")) {
+					callStmt.setLong(18, Long.valueOf(MERCER_HE.getText()));
+				} else {
+					callStmt.setNull(18, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(19, MERCER_DSPMT_SHE.getValue());
+				callStmt.setDate(20, (MC_DATE.getValue() != null) ? java.sql.Date.valueOf(MC_DATE.getValue()) : null);
+				callStmt.setString(21, DOC_NUMBER.getText());
+				
+				if (ZagsId != null) {
+					callStmt.setLong(22, ZagsId);
+				} else {
+					callStmt.setNull(22, java.sql.Types.INTEGER);
+				}
+				
+				callStmt.execute();
+
+				if (callStmt.getString(1) == null) {
+					conn.commit();
+					setStatus(true);
+					setId(callStmt.getLong(2));
+					callStmt.close();
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Stage stage_ = (Stage) HeTypeB.getScene().getWindow();
+					Msg.MessageBox(callStmt.getString(1), stage_);
+					callStmt.close();
+				}
+			}
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
@@ -718,9 +782,8 @@ public class AddMercer {
 				MERCER_SHE.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
 			}
 
-			
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
+			// DbUtil.Run_Process(conn,getClass().getName());
 			ShePane.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			HePane.heightProperty().addListener(
@@ -792,11 +855,11 @@ public class AddMercer {
 	public void setCusGen(Long value) {
 		this.CusGen.set(value);
 	}
-	
+
 	public Long getCusGen() {
 		return this.CusGen.get();
 	}
-	
+
 	public void setCusId(Long value) {
 		this.CusId.set(value);
 	}
@@ -816,7 +879,7 @@ public class AddMercer {
 	//
 	// ---------------------------------------
 	//
-	
+
 	public AddMercer() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();

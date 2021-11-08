@@ -183,6 +183,8 @@ public class Main extends Application {
 			Connect.connectionURL = "localhost:1522/orcl";
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
+//			Connect.userID = "psv";
+//			Connect.userPassword = "ipman165";
 			DbUtil.Db_Connect();
 			initRootLayout();
 			RT();

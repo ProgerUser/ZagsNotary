@@ -48,6 +48,7 @@ import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.app.model.ACTFORLIST;
 import ru.psv.mj.msg.Msg;
+import ru.psv.mj.sprav.zags.SelZags;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.widgets.KeyBoard;
 import ru.psv.mj.zags.doc.cus.CUS;
@@ -57,7 +58,7 @@ public class AddUpdAbhName {
 
 	@FXML
 	private TextField NEW_LASTNAME;
-	
+
 	@FXML
 	private TextField DOC_NUMBER;
 
@@ -90,7 +91,7 @@ public class AddUpdAbhName {
 
 	@FXML
 	private TextField OLD_MIDDLNAME;
-	
+
 	@FXML
 	private TextField OLD_LASTNAME_AB;
 
@@ -139,7 +140,7 @@ public class AddUpdAbhName {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	public void setField(String LASTNAME, String FIRSTNAME, String MIDDLNAME, String cusid) {
 		Platform.runLater(new Runnable() {
 			@Override
@@ -462,55 +463,114 @@ public class AddUpdAbhName {
 		}
 	}
 
+	Long ZagsId = null;
+	boolean IfArchiveNotSelect = false;
+
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ call UpdAbhName.AddUpdAbhName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+			// Проверка на архив
+			{
+				PreparedStatement prp = conn.prepareStatement("select zags_id from usr where usr.cusrlogname = user");
+				ResultSet rs = prp.executeQuery();
+				if (rs.next()) {
+					if (rs.getInt(1) == 5) {
+						// <FXML>---------------------------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/SelZags.fxml"));
 
-			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.registerOutParameter(2, Types.INTEGER);
-			callStmt.setString(3, OLD_LASTNAME.getText());
-			callStmt.setString(4, OLD_FIRSTNAME.getText());
-			callStmt.setString(5, OLD_MIDDLNAME.getText());
-			callStmt.setString(6, NEW_LASTNAME.getText());
-			callStmt.setString(7, NEW_FIRSTNAME.getText());
-			callStmt.setString(8, NEW_MIDDLNAME.getText());
-			if (!BRN_ACT_ID.getText().equals("")) {
-				callStmt.setLong(9, Long.valueOf(BRN_ACT_ID.getText()));
-			} else {
-				callStmt.setNull(9, java.sql.Types.INTEGER);
-			}
-			if (!CUSID.getText().equals("")) {
-				callStmt.setLong(10, Long.valueOf(CUSID.getText()));
-			} else {
-				callStmt.setNull(10, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(11, SVID_NUMBER.getText());
-			callStmt.setString(12, SVID_SERIA.getText());
-			callStmt.setString(13, DOC_NUMBER.getText());
-			
-			callStmt.setString(14, OLD_LASTNAME_AB.getText());
-			callStmt.setString(15, OLD_FIRSTNAME_AB.getText());
-			callStmt.setString(16, OLD_MIDDLNAME_AB.getText());
-			callStmt.setString(17, NEW_LASTNAME_AB.getText());
-			callStmt.setString(18, NEW_FIRSTNAME_AB.getText());
-			callStmt.setString(19, NEW_MIDDLNAME_AB.getText());
-			callStmt.execute();
+						SelZags controller = new SelZags();
 
-			if (callStmt.getString(1) == null) {
-				conn.commit();
-				setStatus(true);
-				setId(callStmt.getLong(2));
-				callStmt.close();
-				onclose();
-			} else {
-				conn.rollback();
-				setStatus(false);
-				Stage stage_ = (Stage) OLD_FIRSTNAME.getScene().getWindow();
-				Msg.MessageBox(callStmt.getString(1), stage_);
-				callStmt.close();
+						loader.setController(controller);
+
+						Parent root = loader.load();
+						stage.setScene(new Scene(root));
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Выбрать ЗАГС");
+						stage.initOwner((Stage) BRN_ACT_ID.getScene().getWindow());
+						stage.setResizable(true);
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									if (controller.getStatus()) {
+										ZagsId = controller.getZagsId();
+										IfArchiveNotSelect = false;
+									} else {
+										IfArchiveNotSelect = true;
+										Msg.Message("Не выбран!");
+										return;
+									}
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						});
+						stage.showAndWait();
+						// </FXML>---------------------------------------
+					}
+				}
+				prp.close();
+				rs.close();
 			}
-		} catch (SQLException e) {
+			if (IfArchiveNotSelect == false) {
+				CallableStatement callStmt = conn
+						.prepareCall("{ call UpdAbhName.AddUpdAbhName(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+
+				callStmt.registerOutParameter(1, Types.VARCHAR);
+				callStmt.registerOutParameter(2, Types.INTEGER);
+				callStmt.setString(3, OLD_LASTNAME.getText());
+				callStmt.setString(4, OLD_FIRSTNAME.getText());
+				callStmt.setString(5, OLD_MIDDLNAME.getText());
+				callStmt.setString(6, NEW_LASTNAME.getText());
+				callStmt.setString(7, NEW_FIRSTNAME.getText());
+				callStmt.setString(8, NEW_MIDDLNAME.getText());
+				if (!BRN_ACT_ID.getText().equals("")) {
+					callStmt.setLong(9, Long.valueOf(BRN_ACT_ID.getText()));
+				} else {
+					callStmt.setNull(9, java.sql.Types.INTEGER);
+				}
+				if (!CUSID.getText().equals("")) {
+					callStmt.setLong(10, Long.valueOf(CUSID.getText()));
+				} else {
+					callStmt.setNull(10, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(11, SVID_NUMBER.getText());
+				callStmt.setString(12, SVID_SERIA.getText());
+				callStmt.setString(13, DOC_NUMBER.getText());
+
+				callStmt.setString(14, OLD_LASTNAME_AB.getText());
+				callStmt.setString(15, OLD_FIRSTNAME_AB.getText());
+				callStmt.setString(16, OLD_MIDDLNAME_AB.getText());
+				callStmt.setString(17, NEW_LASTNAME_AB.getText());
+				callStmt.setString(18, NEW_FIRSTNAME_AB.getText());
+				callStmt.setString(19, NEW_MIDDLNAME_AB.getText());
+				
+				if (ZagsId != null) {
+					callStmt.setLong(20, ZagsId);
+				} else {
+					callStmt.setNull(20, java.sql.Types.INTEGER);
+				}
+				
+				callStmt.execute();
+
+				if (callStmt.getString(1) == null) {
+					conn.commit();
+					setStatus(true);
+					setId(callStmt.getLong(2));
+					callStmt.close();
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Stage stage_ = (Stage) OLD_FIRSTNAME.getScene().getWindow();
+					Msg.MessageBox(callStmt.getString(1), stage_);
+					callStmt.close();
+				}
+			}
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
@@ -550,7 +610,7 @@ public class AddUpdAbhName {
 
 			if (conn == null) {
 				dbConnect();
-				//DbUtil.Run_Process(conn,getClass().getName());
+				// DbUtil.Run_Process(conn,getClass().getName());
 			}
 			/*
 			 * Pane1.heightProperty().addListener( (observable, oldValue, newValue) ->
@@ -619,7 +679,8 @@ public class AddUpdAbhName {
 	}
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 	}
 
 	public Long getId() {

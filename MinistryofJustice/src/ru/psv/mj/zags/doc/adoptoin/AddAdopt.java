@@ -56,6 +56,7 @@ import ru.psv.mj.app.main.Main;
 import ru.psv.mj.app.model.ACTFORLIST;
 import ru.psv.mj.msg.Msg;
 import ru.psv.mj.sprav.courts.VCOURTS;
+import ru.psv.mj.sprav.zags.SelZags;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.widgets.KeyBoard;
@@ -64,17 +65,17 @@ import ru.psv.mj.zags.doc.cus.UtilCus;
 
 public class AddAdopt {
 
-    @FXML
-    private ComboBox<VCOURTS> GR_COURT;
-    @FXML
-    private GridPane GR_ADOPT_B;
-    @FXML
-    private DatePicker GR_COURT_DATE;
-    @FXML
-    private ComboBox<String> GR_ADOPT;
-    @FXML
-    private GridPane GR_ADOPT_A;
-    
+	@FXML
+	private ComboBox<VCOURTS> GR_COURT;
+	@FXML
+	private GridPane GR_ADOPT_B;
+	@FXML
+	private DatePicker GR_COURT_DATE;
+	@FXML
+	private ComboBox<String> GR_ADOPT;
+	@FXML
+	private GridPane GR_ADOPT_A;
+
 	@FXML
 	private TextField OLD_LASTNAME_AB;
 	@FXML
@@ -170,7 +171,7 @@ public class AddAdopt {
 			DbUtil.Log_Error(e);
 		}
 	}
-    
+
 	@FXML
 	void FindChildren(ActionEvent event) {
 		UtilCus cus = new UtilCus();
@@ -345,7 +346,7 @@ public class AddAdopt {
 			}
 			prepStmt.close();
 			rs.close();
-			
+
 			cusllists.setItems(cuslist);
 
 			cusllists.setPrefWidth(500);
@@ -665,100 +666,156 @@ public class AddAdopt {
 		}
 	}
 
+	Long ZagsId = null;
+	boolean IfArchiveNotSelect = false;
+
 	@FXML
 	void Save(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn
-					.prepareCall("{ call ADOPT.AddAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+			// Проверка на архив
+			{
+				PreparedStatement prp = conn.prepareStatement("select zags_id from usr where usr.cusrlogname = user");
+				ResultSet rs = prp.executeQuery();
+				if (rs.next()) {
+					if (rs.getInt(1) == 5) {
+						// <FXML>---------------------------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/ru/psv/mj/sprav/zags/SelZags.fxml"));
 
-			callStmt.registerOutParameter(1, Types.VARCHAR);
-			callStmt.registerOutParameter(2, Types.INTEGER);
-			callStmt.setString(3, OLD_LASTNAME.getText());
-			callStmt.setString(4, OLD_FIRSTNAME.getText());
-			callStmt.setString(5, OLD_MIDDLNAME.getText());
-			callStmt.setString(6, NEW_LASTNAME.getText());
-			callStmt.setString(7, NEW_FIRSTNAME.getText());
-			callStmt.setString(8, NEW_MIDDLNAME.getText());
-			if (!CUSID_CH.getText().equals("")) {
-				callStmt.setLong(9, Long.valueOf(CUSID_CH.getText()));
-			} else {
-				callStmt.setNull(9, java.sql.Types.INTEGER);
-			}
-			if (!CUSID_M.getText().equals("")) {
-				callStmt.setLong(10, Long.valueOf(CUSID_M.getText()));
-			} else {
-				callStmt.setNull(10, java.sql.Types.INTEGER);
-			}
-			if (!CUSID_F.getText().equals("")) {
-				callStmt.setLong(11, Long.valueOf(CUSID_F.getText()));
-			} else {
-				callStmt.setNull(11, java.sql.Types.INTEGER);
-			}
-			if (!BRNACT.getText().equals("")) {
-				callStmt.setLong(12, Long.valueOf(BRNACT.getText()));
-			} else {
-				callStmt.setNull(12, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(13, SVID_SERIA.getText());
-			callStmt.setString(14, SVID_NOMER.getText());
-			if (!CUSID_M_AD.getText().equals("")) {
-				callStmt.setLong(15, Long.valueOf(CUSID_M_AD.getText()));
-			} else {
-				callStmt.setNull(15, java.sql.Types.INTEGER);
-			}
-			if (!CUSID_F_AD.getText().equals("")) {
-				callStmt.setLong(16, Long.valueOf(CUSID_F_AD.getText()));
-			} else {
-				callStmt.setNull(16, java.sql.Types.INTEGER);
-			}
-			callStmt.setString(17, (ADOPT_PARENTS.isSelected()) ? "Y" : "N");
-			callStmt.setString(18, ZAP_ISPOLKOM_RESH.getText());
-			callStmt.setString(19, ZAP_SOVET_DEP_TRUD.getText());
-			callStmt.setDate(20, (ZAP_DATE.getValue() != null) ? java.sql.Date.valueOf(ZAP_DATE.getValue()) : null);
-			callStmt.setString(21, ZAP_NUMBER.getText());
-			callStmt.setDate(22, (NEW_BRTH.getValue() != null) ? java.sql.Date.valueOf(NEW_BRTH.getValue()) : null);
-			callStmt.setDate(23, (OLD_BRTH.getValue() != null) ? java.sql.Date.valueOf(OLD_BRTH.getValue()) : null);
+						SelZags controller = new SelZags();
 
-			callStmt.setString(24, BRN_CITY.getText());
-			callStmt.setString(25, BRN_AREA.getText());
-			callStmt.setString(26, BRN_OBL_RESP.getText());
-			callStmt.setString(27, DOC_NUMBER.getText());
-			
-			callStmt.setString(28, OLD_LASTNAME_AB.getText());
-			callStmt.setString(29, OLD_FIRSTNAME_AB.getText());
-			callStmt.setString(30, OLD_MIDDLNAME_AB.getText());
-			callStmt.setString(31, NEW_LASTNAME_AB.getText());
-			callStmt.setString(32, NEW_FIRSTNAME_AB.getText());
-			callStmt.setString(33, NEW_MIDDLNAME_AB.getText());
-			
-			// Основание записи об усыновлении
-			callStmt.setString(34, (GR_ADOPT.getValue().equals("Решение суда") ? "B" : "A"));
-			// Решение суда дата
-			callStmt.setDate(35,
-					(GR_COURT_DATE.getValue() != null) ? java.sql.Date.valueOf(GR_COURT_DATE.getValue()) : null);
-			// Решение суда дата
-			if (GR_COURT.getValue() != null) {
-				callStmt.setLong(36, GR_COURT.getSelectionModel().getSelectedItem().getID());
-			} else {
-				callStmt.setNull(36, java.sql.Types.INTEGER);
-			}
+						loader.setController(controller);
 
-			callStmt.execute();
-
-			if (callStmt.getString(1) == null) {
-				conn.commit();
-				setStatus(true);
-				setId(callStmt.getLong(2));
-				callStmt.close();
-				onclose();
-			} else {
-				conn.rollback();
-				setStatus(false);
-				Stage stage_ = (Stage) OLD_FIRSTNAME.getScene().getWindow();
-				Msg.MessageBox(callStmt.getString(1), stage_);
-				callStmt.close();
+						Parent root = loader.load();
+						stage.setScene(new Scene(root));
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Выбрать ЗАГС");
+						stage.initOwner((Stage) CUSID_F.getScene().getWindow());
+						stage.setResizable(true);
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									if (controller.getStatus()) {
+										ZagsId = controller.getZagsId();
+										IfArchiveNotSelect = false;
+									} else {
+										IfArchiveNotSelect = true;
+										Msg.Message("Не выбран!");
+										return;
+									}
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						});
+						stage.showAndWait();
+						// </FXML>---------------------------------------
+					}
+				}
+				prp.close();
+				rs.close();
 			}
-		} catch (SQLException e) {
+			if (IfArchiveNotSelect == false) {
+				CallableStatement callStmt = conn.prepareCall(
+						"{ call ADOPT.AddAdopt(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+
+				callStmt.registerOutParameter(1, Types.VARCHAR);
+				callStmt.registerOutParameter(2, Types.INTEGER);
+				callStmt.setString(3, OLD_LASTNAME.getText());
+				callStmt.setString(4, OLD_FIRSTNAME.getText());
+				callStmt.setString(5, OLD_MIDDLNAME.getText());
+				callStmt.setString(6, NEW_LASTNAME.getText());
+				callStmt.setString(7, NEW_FIRSTNAME.getText());
+				callStmt.setString(8, NEW_MIDDLNAME.getText());
+				if (!CUSID_CH.getText().equals("")) {
+					callStmt.setLong(9, Long.valueOf(CUSID_CH.getText()));
+				} else {
+					callStmt.setNull(9, java.sql.Types.INTEGER);
+				}
+				if (!CUSID_M.getText().equals("")) {
+					callStmt.setLong(10, Long.valueOf(CUSID_M.getText()));
+				} else {
+					callStmt.setNull(10, java.sql.Types.INTEGER);
+				}
+				if (!CUSID_F.getText().equals("")) {
+					callStmt.setLong(11, Long.valueOf(CUSID_F.getText()));
+				} else {
+					callStmt.setNull(11, java.sql.Types.INTEGER);
+				}
+				if (!BRNACT.getText().equals("")) {
+					callStmt.setLong(12, Long.valueOf(BRNACT.getText()));
+				} else {
+					callStmt.setNull(12, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(13, SVID_SERIA.getText());
+				callStmt.setString(14, SVID_NOMER.getText());
+				if (!CUSID_M_AD.getText().equals("")) {
+					callStmt.setLong(15, Long.valueOf(CUSID_M_AD.getText()));
+				} else {
+					callStmt.setNull(15, java.sql.Types.INTEGER);
+				}
+				if (!CUSID_F_AD.getText().equals("")) {
+					callStmt.setLong(16, Long.valueOf(CUSID_F_AD.getText()));
+				} else {
+					callStmt.setNull(16, java.sql.Types.INTEGER);
+				}
+				callStmt.setString(17, (ADOPT_PARENTS.isSelected()) ? "Y" : "N");
+				callStmt.setString(18, ZAP_ISPOLKOM_RESH.getText());
+				callStmt.setString(19, ZAP_SOVET_DEP_TRUD.getText());
+				callStmt.setDate(20, (ZAP_DATE.getValue() != null) ? java.sql.Date.valueOf(ZAP_DATE.getValue()) : null);
+				callStmt.setString(21, ZAP_NUMBER.getText());
+				callStmt.setDate(22, (NEW_BRTH.getValue() != null) ? java.sql.Date.valueOf(NEW_BRTH.getValue()) : null);
+				callStmt.setDate(23, (OLD_BRTH.getValue() != null) ? java.sql.Date.valueOf(OLD_BRTH.getValue()) : null);
+
+				callStmt.setString(24, BRN_CITY.getText());
+				callStmt.setString(25, BRN_AREA.getText());
+				callStmt.setString(26, BRN_OBL_RESP.getText());
+				callStmt.setString(27, DOC_NUMBER.getText());
+
+				callStmt.setString(28, OLD_LASTNAME_AB.getText());
+				callStmt.setString(29, OLD_FIRSTNAME_AB.getText());
+				callStmt.setString(30, OLD_MIDDLNAME_AB.getText());
+				callStmt.setString(31, NEW_LASTNAME_AB.getText());
+				callStmt.setString(32, NEW_FIRSTNAME_AB.getText());
+				callStmt.setString(33, NEW_MIDDLNAME_AB.getText());
+
+				// Основание записи об усыновлении
+				callStmt.setString(34, (GR_ADOPT.getValue().equals("Решение суда") ? "B" : "A"));
+				// Решение суда дата
+				callStmt.setDate(35,
+						(GR_COURT_DATE.getValue() != null) ? java.sql.Date.valueOf(GR_COURT_DATE.getValue()) : null);
+				// Решение суда дата
+				if (GR_COURT.getValue() != null) {
+					callStmt.setLong(36, GR_COURT.getSelectionModel().getSelectedItem().getID());
+				} else {
+					callStmt.setNull(36, java.sql.Types.INTEGER);
+				}
+				if (ZagsId != null) {
+					callStmt.setLong(37, ZagsId);
+				} else {
+					callStmt.setNull(37, java.sql.Types.INTEGER);
+				}
+
+				callStmt.execute();
+
+				if (callStmt.getString(1) == null) {
+					conn.commit();
+					setStatus(true);
+					setId(callStmt.getLong(2));
+					callStmt.close();
+					onclose();
+				} else {
+					conn.rollback();
+					setStatus(false);
+					Stage stage_ = (Stage) OLD_FIRSTNAME.getScene().getWindow();
+					Msg.MessageBox(callStmt.getString(1), stage_);
+					callStmt.close();
+				}
+			}
+		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
@@ -798,7 +855,7 @@ public class AddAdopt {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void Cencel(ActionEvent event) {
 		onclose();
@@ -848,13 +905,13 @@ public class AddAdopt {
 			}
 		});
 	}
-	
+
 	@FXML
 	private void initialize() {
 		try {
-			
-			GR_ADOPT.getItems().addAll("Решение исполкома","Решение суда");
-			
+
+			GR_ADOPT.getItems().addAll("Решение исполкома", "Решение суда");
+
 			ChildrenFio.setText(getCusFio());
 			//
 			OLD_LASTNAME.setText(getCusLname());
@@ -865,12 +922,11 @@ public class AddAdopt {
 			NEW_LASTNAME.setText(getCusLname());
 			NEW_FIRSTNAME.setText(getCusFname());
 			NEW_MIDDLNAME.setText(getCusMname());
-			
+
 			NEW_BRTH.setValue(getCusBrdate() != null ? getCusBrdate() : null);
 			//
 			CUSID_CH.setText(getCusId() != null & getCusId() != 0 ? String.valueOf(getCusId()) : null);
 
-			
 			Pane1.heightProperty().addListener(
 					(observable, oldValue, newValue) -> MainScroll.vvalueProperty().set(newValue.doubleValue()));
 			Pane2.heightProperty().addListener(
@@ -896,9 +952,9 @@ public class AddAdopt {
 
 			if (conn == null) {
 				dbConnect();
-				//DbUtil.Run_Process(conn,getClass().getName());
+				// DbUtil.Run_Process(conn,getClass().getName());
 			}
-			
+
 			// Суды
 			{
 				PreparedStatement stsmt = conn.prepareStatement("select * from VCOURTS");
@@ -919,10 +975,10 @@ public class AddAdopt {
 				stsmt.close();
 				rs.close();
 				GR_COURT.setItems(combolist);
-				//НАИМЕНОВАНИЯ СУДА, ЕСЛИ ЕСТЬ
+				// НАИМЕНОВАНИЯ СУДА, ЕСЛИ ЕСТЬ
 				convert_GR_COURT();
 			}
-			
+
 			new ConvConst().FormatDatePiker(GR_COURT_DATE);
 			new ConvConst().FormatDatePiker(OLD_BRTH);
 			new ConvConst().FormatDatePiker(ZAP_DATE);
@@ -969,7 +1025,8 @@ public class AddAdopt {
 	}
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 	}
 
 	public Long getId() {
@@ -981,7 +1038,7 @@ public class AddAdopt {
 	//
 	private LongProperty CusId;
 	private StringProperty CusFio;
-	
+
 	private StringProperty CusLname;
 	private StringProperty CusFname;
 	private StringProperty CusMname;
@@ -990,31 +1047,35 @@ public class AddAdopt {
 	public void setCusBrdate(LocalDate value) {
 		this.CusBrdate.set(value);
 	}
-	
+
 	public LocalDate getCusBrdate() {
 		return CusBrdate.get();
 	}
-	
+
 	public void setCusLname(String value) {
 		this.CusLname.set(value);
 	}
+
 	public void setCusFname(String value) {
 		this.CusFname.set(value);
 	}
+
 	public void setCusMname(String value) {
 		this.CusMname.set(value);
 	}
-	
+
 	public String getCusLname() {
 		return this.CusLname.get();
 	}
+
 	public String getCusFname() {
 		return this.CusFname.get();
 	}
+
 	public String getCusMname() {
 		return this.CusMname.get();
 	}
-	
+
 	public void setCusId(Long value) {
 		this.CusId.set(value);
 	}
@@ -1034,20 +1095,20 @@ public class AddAdopt {
 	//
 	// ---------------------------------------
 	//
-	
+
 	public AddAdopt() {
 		Main.logger = Logger.getLogger(getClass());
-		
+
 		this.Status = new SimpleBooleanProperty();
 		this.Id = new SimpleLongProperty();
-		
+
 		this.CusBrdate = new SimpleObjectProperty<>();
-		
+
 		this.CusId = new SimpleLongProperty();
 		this.CusFio = new SimpleStringProperty();
 		this.CusLname = new SimpleStringProperty();
 		this.CusFname = new SimpleStringProperty();
 		this.CusMname = new SimpleStringProperty();
-		
+
 	}
 }
