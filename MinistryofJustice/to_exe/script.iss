@@ -7,6 +7,7 @@
 #define MyAppExeName "MJ_UPDATES.exe"
 
 #define OutReports "OutReports"
+#define OraCli "OraCli"
 #define HTML "HTML"
 #define NT_REP "NT_REP"
 #define bin "bin"
@@ -49,6 +50,7 @@ Name: desktopicon_stun; Description: {cm:CreateDesktopIcon}; GroupDescription: {
 [Files]
 Source: C:\MJ\{#MyAppExeName}; DestDir: {app}; Flags: ignoreversion
 Source: OutReports\*; DestDir: {app}\{#OutReports}; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: OraCli\*; DestDir: {app}\{#OraCli}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: HTML\*; DestDir: {app}\{#HTML}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: NT_REP\*; DestDir: {app}\{#NT_REP}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: Reports\*; DestDir: {app}\{#Reports}; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -83,7 +85,7 @@ Name: {autodesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: deskto
 
 
 [Registry]
-Root: HKCU; Subkey: "Environment"; ValueType:string; ValueName: "MJPATH"; \
+Root: HKCU; Subkey: "Environment"; ValueType:string; ValueName: "MJ_PATH"; \
     ValueData: "{app}\"; Flags: preservestringtype
 
 [Registry]
