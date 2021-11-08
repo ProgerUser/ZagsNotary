@@ -496,8 +496,8 @@ public class AddUpdName {
 									} else {
 										IfArchiveNotSelect = true;
 										Msg.Message("Не выбран!");
-										return;
 									}
+									controller.dbDisconnect();
 								} catch (Exception e) {
 									DbUtil.Log_Error(e);
 								}

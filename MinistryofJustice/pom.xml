@@ -356,12 +356,61 @@
 		<!-- <artifactId>fontawesomefx</artifactId> -->
 		<!-- <version>8.6</version> -->
 		<!-- </dependency> -->
-		<!-- https://mvnrepository.com/artifact/de.jensd/fontawesomefx -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>de.jensd</groupId> -->
+		<!-- <artifactId>fontawesomefx</artifactId> -->
+		<!-- <version>8.9</version> -->
+		<!-- </dependency> -->
+
 		<dependency>
-			<groupId>de.jensd</groupId>
-			<artifactId>fontawesomefx</artifactId>
-			<version>8.9</version>
+			<groupId>fontawesomefx-commons-8.15</groupId>
+			<artifactId>fontawesomefx-commons-8.15</artifactId>
+			<version>8.15</version>
 		</dependency>
+
+		<dependency>
+			<groupId>fontawesomefx-controls-8.15</groupId>
+			<artifactId>fontawesomefx-controls-8.15</artifactId>
+			<version>8.15</version>
+		</dependency>
+
+		<dependency>
+			<groupId>fontawesomefx-fontawesome-4.7.0-5</groupId>
+			<artifactId>fontawesomefx-fontawesome-4.7.0-5</artifactId>
+			<version>4.7.0-5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>fontawesomefx-icons525-3.0.0-4</groupId>
+			<artifactId>fontawesomefx-icons525-3.0.0-4</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>fontawesomefx-materialdesignfont-1.7.22-4</groupId>
+			<artifactId>fontawesomefx-materialdesignfont-1.7.22-4</artifactId>
+			<version>1.7.22</version>
+		</dependency>
+
+		<dependency>
+			<groupId>fontawesomefx-materialicons-2.2.0-5</groupId>
+			<artifactId>fontawesomefx-materialicons-2.2.0-5</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>fontawesomefx-octicons-4.3.0-5</groupId>
+			<artifactId>fontawesomefx-octicons-4.3.0-5</artifactId>
+			<version>4.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>fontawesomefx-weathericons-2.0.10-5</groupId>
+			<artifactId>fontawesomefx-weathericons-2.0.10-5</artifactId>
+			<version>2.0.10</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.jfoenix</groupId>
@@ -441,29 +490,29 @@
 		</dependency>
 
 		<!-- org.kordamp.ikonli -->
-		<dependency>
-			<groupId>org.kordamp.ikonli</groupId>
-			<artifactId>ikonli-core</artifactId>
-			<version>2.6.0</version>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.kordamp.ikonli</groupId> -->
+		<!-- <artifactId>ikonli-core</artifactId> -->
+		<!-- <version>2.6.0</version> -->
+		<!-- </dependency> -->
 
-		<dependency>
-			<groupId>org.kordamp.ikonli</groupId>
-			<artifactId>ikonli-materialdesign-pack</artifactId>
-			<version>2.6.0</version>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.kordamp.ikonli</groupId> -->
+		<!-- <artifactId>ikonli-materialdesign-pack</artifactId> -->
+		<!-- <version>2.6.0</version> -->
+		<!-- </dependency> -->
 
-		<dependency>
-			<groupId>org.kordamp.ikonli</groupId>
-			<artifactId>ikonli-javafx</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.kordamp.ikonli</groupId>
-			<artifactId>ikonli-fontawesome-pack</artifactId>
-			<version>2.6.0</version>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.kordamp.ikonli</groupId> -->
+		<!-- <artifactId>ikonli-javafx</artifactId> -->
+		<!-- <version>2.6.0</version> -->
+		<!-- </dependency> -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.kordamp.ikonli</groupId> -->
+		<!-- <artifactId>ikonli-fontawesome-pack</artifactId> -->
+		<!-- <version>2.6.0</version> -->
+		<!-- </dependency> -->
 		<!-- <dependency> -->
 		<!-- <groupId>org.kordamp.ikonli</groupId> -->
 		<!-- <artifactId>ikonli-core</artifactId> -->
@@ -501,11 +550,11 @@
 		<!-- </dependency> -->
 		<!--//////////////////////// -->
 
-		<dependency>
-			<groupId>flexganttfx-extras</groupId>
-			<artifactId>flexganttfx-extras</artifactId>
-			<version>8.12</version>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>flexganttfx-extras</groupId> -->
+		<!-- <artifactId>flexganttfx-extras</artifactId> -->
+		<!-- <version>8.12</version> -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>flexganttfx-model</groupId>
