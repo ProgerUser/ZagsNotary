@@ -145,13 +145,21 @@ public class EditPmEmpController {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-			if (validate(EMP_EMAIL.getText()) == false) {
+			if (EMP_EMAIL.getText() == null || EMP_EMAIL.getText().trim().isEmpty()) {
 				TrayNotification tray = new TrayNotification("Ошибка", "Ошибка в поле Email!", Notifications.ERROR);
 				tray.showAndWait();
 				Platform.runLater(() -> {
 					EMP_EMAIL.requestFocus();
 				});
-				return;
+			} else {
+				if (validate(EMP_EMAIL.getText()) == false) {
+					TrayNotification tray = new TrayNotification("Ошибка", "Ошибка в поле Email!", Notifications.ERROR);
+					tray.showAndWait();
+					Platform.runLater(() -> {
+						EMP_EMAIL.requestFocus();
+					});
+					return;
+				}
 			}
 
 			CallableStatement callStmt = conn.prepareCall("{ call PM_EMP_PKG.EDIT(?,?,?,?,?,?,?,?,?,?,?)}");

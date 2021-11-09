@@ -135,6 +135,20 @@ public class RootPmEmpController {
 				Msg.Message("Нет доступа!");
 				return;
 			}
+			if (PM_EMP.getSelectionModel().getSelectedItem() != null) {
+				VPM_EMP sel = PM_EMP.getSelectionModel().getSelectedItem();
+
+				final Alert alert = new Alert(AlertType.CONFIRMATION, "Удалить " + sel.getEMP_ID() + "?",
+						ButtonType.YES, ButtonType.NO);
+				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+					PreparedStatement prp = conn.prepareStatement("delete from PM_EMP where EMP_ID = ?");
+					prp.setLong(1, sel.getEMP_ID());
+					prp.executeUpdate();
+					prp.close();
+					conn.commit();
+					LoadTable();
+				}
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -341,8 +355,8 @@ public class RootPmEmpController {
 			EMP_FIRSTNAME.setCellValueFactory(cellData -> cellData.getValue().EMP_FIRSTNAMEProperty());
 			EMP_LASTNAME.setCellValueFactory(cellData -> cellData.getValue().EMP_LASTNAMEProperty());
 			EMP_MIDDLENAME.setCellValueFactory(cellData -> cellData.getValue().EMP_MIDDLENAMEProperty());
-			EMP_WORKSTART.setCellValueFactory(cellData -> ((VPM_EMP)cellData.getValue()).EMP_WORKSTARTProperty());
-			EMP_WORKEND.setCellValueFactory(cellData -> ((VPM_EMP)cellData.getValue()).EMP_WORKENDProperty());
+			EMP_WORKSTART.setCellValueFactory(cellData -> ((VPM_EMP) cellData.getValue()).EMP_WORKSTARTProperty());
+			EMP_WORKEND.setCellValueFactory(cellData -> ((VPM_EMP) cellData.getValue()).EMP_WORKENDProperty());
 			// connect
 			dbConnect();
 			// load table

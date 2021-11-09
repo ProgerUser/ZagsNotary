@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Types;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
@@ -234,7 +235,7 @@ public class EditPmDocTypeC {
 				addFileMenu(frame);
 				System.out.println(" I am in run method ");
 			} catch (final SWTError e) {
-				System.out.println("Unable to open activeX control");
+				Msg.Message(ExceptionUtils.getStackTrace(e));
 				display.dispose();
 				return;
 			}

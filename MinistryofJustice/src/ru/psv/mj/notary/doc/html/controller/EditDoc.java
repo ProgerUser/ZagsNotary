@@ -403,8 +403,8 @@ public class EditDoc {
 			// при печати сохраним содержимое страницы
 			// Замена input = span
 			WebView webView = (WebView) HtmlEditor.lookup("WebView");
-			webView.getEngine()
-					.executeScript(DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "HTMLInputToSpan"));
+			webView.getEngine().executeScript(
+					DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "HTMLInputToSpan"));
 
 //			Printer pdfPrinter = null;
 //			Iterator<Printer> iter = Printer.getAllPrinters().iterator();
@@ -516,8 +516,8 @@ public class EditDoc {
 			V_NT_TEMP_LIST val = TYPE_NAME.getSelectionModel().getSelectedItem();
 			if (val != null) {
 				WebView webView = (WebView) HtmlEditor.lookup("WebView");
-				PreparedStatement prp = conn.prepareStatement(
-						DbUtil.Sql_From_Prop("/ru/psv/mj/notary/doc/html/controller/Sql.properties", "EditDocListValWithLocPrm"));
+				PreparedStatement prp = conn.prepareStatement(DbUtil.Sql_From_Prop(
+						"/ru/psv/mj/notary/doc/html/controller/Sql.properties", "EditDocListValWithLocPrm"));
 				prp.setString(1, id);
 				prp.setLong(2, val.getID());
 				prp.setString(3, id);
@@ -886,7 +886,7 @@ public class EditDoc {
 				webView.getEngine().executeScript(tbl.getValue().getHTML_CODE());
 				String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
 				// Запишем в файл
-				//Reload2(html);
+				// Reload2(html);
 				fillTree();
 			}
 		} catch (Exception e) {
@@ -984,50 +984,36 @@ public class EditDoc {
 				@Override
 				public void handle(WindowEvent paramT) {
 					if (controller.getHTML() != null) {
-			
+
 						String content = controller.getHTML();
-					    //content = content.replace("'", "\\'");
-					    //content = content.replace("class=\"source-tableeditor\"", "");
-					    content = content.replace(System.getProperty("line.separator"), "\\n");
-					    content = content.replace("\n", "\\n");
-					    content = content.replace("\r", "\\n");
-					    
-					    String js = 
-								 "function pasteHtmlAtCaret(html) {\n"
-								 + "    var sel, range;\n"
-								 + "    if (window.getSelection) {\n"
-								 + "        // IE9 and non-IE\n"
-								 + "        sel = window.getSelection();\n"
-								 + "        if (sel.getRangeAt && sel.rangeCount) {\n"
-								 + "            range = sel.getRangeAt(0);\n"
-								 + "            range.deleteContents();\n"
-								 + "\n"
-								 + "            // Range.createContextualFragment() would be useful here but is\n"
-								 + "            // non-standard and not supported in all browsers (IE9, for one)\n"
-								 + "            var el = document.createElement(\"div\");\n"
-								 + "            el.innerHTML = html;\n"
-								 + "            var frag = document.createDocumentFragment(), node, lastNode;\n"
-								 + "            while ( (node = el.firstChild) ) {\n"
-								 + "                lastNode = frag.appendChild(node);\n"
-								 + "            }\n"
-								 + "            range.insertNode(frag);\n"
-								 + "            \n"
-								 + "            // Preserve the selection\n"
-								 + "            if (lastNode) {\n"
-								 + "                range = range.cloneRange();\n"
-								 + "                range.setStartAfter(lastNode);\n"
-								 + "                range.collapse(true);\n"
-								 + "                sel.removeAllRanges();\n"
-								 + "                sel.addRange(range);\n"
-								 + "            }\n"
-								 + "        }\n"
-								 + "    } else if (document.selection && document.selection.type != \"Control\") {\n"
-								 + "        // IE < 9\n"
-								 + "        document.selection.createRange().pasteHTML(html);\n"
-								 + "    }\n"
-								 + "}\n"
-								 + "pasteHtmlAtCaret('"+content+"');";					    
-					    System.out.println(js);
+						// content = content.replace("'", "\\'");
+						// content = content.replace("class=\"source-tableeditor\"", "");
+						content = content.replace(System.getProperty("line.separator"), "\\n");
+						content = content.replace("\n", "\\n");
+						content = content.replace("\r", "\\n");
+
+						String js = "function pasteHtmlAtCaret(html) {\n" + "    var sel, range;\n"
+								+ "    if (window.getSelection) {\n" + "        // IE9 and non-IE\n"
+								+ "        sel = window.getSelection();\n"
+								+ "        if (sel.getRangeAt && sel.rangeCount) {\n"
+								+ "            range = sel.getRangeAt(0);\n" + "            range.deleteContents();\n"
+								+ "\n" + "            // Range.createContextualFragment() would be useful here but is\n"
+								+ "            // non-standard and not supported in all browsers (IE9, for one)\n"
+								+ "            var el = document.createElement(\"div\");\n"
+								+ "            el.innerHTML = html;\n"
+								+ "            var frag = document.createDocumentFragment(), node, lastNode;\n"
+								+ "            while ( (node = el.firstChild) ) {\n"
+								+ "                lastNode = frag.appendChild(node);\n" + "            }\n"
+								+ "            range.insertNode(frag);\n" + "            \n"
+								+ "            // Preserve the selection\n" + "            if (lastNode) {\n"
+								+ "                range = range.cloneRange();\n"
+								+ "                range.setStartAfter(lastNode);\n"
+								+ "                range.collapse(true);\n" + "                sel.removeAllRanges();\n"
+								+ "                sel.addRange(range);\n" + "            }\n" + "        }\n"
+								+ "    } else if (document.selection && document.selection.type != \"Control\") {\n"
+								+ "        // IE < 9\n" + "        document.selection.createRange().pasteHTML(html);\n"
+								+ "    }\n" + "}\n" + "pasteHtmlAtCaret('" + content + "');";
+						System.out.println(js);
 						WebView webView = (WebView) HtmlEditor.lookup("WebView");
 						webView.getEngine().executeScript(js);
 					}
@@ -1115,7 +1101,7 @@ public class EditDoc {
 													WebView webView = (WebView) HtmlEditor.lookup("WebView");
 													webView.getEngine()
 															.executeScript(DbUtil.Sql_From_Prop(
-																	"/notary/doc/html/controller/Sql.properties",
+																	"/ru/psv/mj/notary/doc/html/controller/Sql.properties",
 																	"HTMLInputToSpan"));
 
 													///
@@ -1166,7 +1152,8 @@ public class EditDoc {
 										}
 										// show
 										{
-											FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.EYE_SLASH);
+											FontAwesomeIconView icon = new FontAwesomeIconView(
+													FontAwesomeIcon.EYE_SLASH);
 											icon.setFontSmoothingType(FontSmoothingType.LCD);
 											icon.setSize("18");
 											ToggleButton myButton = new ToggleButton("", icon);
@@ -1268,7 +1255,7 @@ public class EditDoc {
 								// Сами параметры
 								{
 									PreparedStatement stsmt = conn.prepareStatement(DbUtil.Sql_From_Prop(
-											"/notary/doc/html/controller/Sql.properties", "EditNtDocPrmVals"));
+											"/ru/psv/mj/notary/doc/html/controller/Sql.properties", "EditNtDocPrmVals"));
 									stsmt.setLong(1, NT_DOC.getID());
 									stsmt.setLong(2, NT_DOC.getID());
 									ResultSet rs = stsmt.executeQuery();
@@ -1644,7 +1631,7 @@ public class EditDoc {
 	}
 
 	// limits the fonts a user can select from in the html editor.
-	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman","Arial");
+	private static final List<String> limitedFonts = FXCollections.observableArrayList("Times New Roman", "Arial");
 
 	@FXML
 	void PrintScan(ActionEvent event) {

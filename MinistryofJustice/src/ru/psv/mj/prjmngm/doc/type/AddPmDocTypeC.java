@@ -31,6 +31,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -46,6 +47,8 @@ public class AddPmDocTypeC {
 	private TextField DOC_TP_NAME;
 	@FXML
 	private TextField WordPath;
+	@FXML
+	private TextArea SQL;
 
 	/**
 	 * ОК
@@ -55,7 +58,7 @@ public class AddPmDocTypeC {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{call pm_sprav_pkg.ADD_DOC_TYPE(?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall("{call pm_sprav_pkg.ADD_DOC_TYPE(?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			/* Название */
 			callStmt.setString(2, DOC_TP_NAME.getText());
@@ -65,6 +68,7 @@ public class AddPmDocTypeC {
 			InputStream is = new ByteArrayInputStream(bArray);
 			// </>
 			callStmt.setBlob(3, is, bArray.length);
+			callStmt.setString(4, SQL.getText());
 			// выполнение
 			callStmt.execute();
 			if (callStmt.getString(1) == null) {

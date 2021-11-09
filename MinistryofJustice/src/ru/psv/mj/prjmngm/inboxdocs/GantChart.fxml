@@ -49,7 +49,7 @@
                               <Separator orientation="VERTICAL" />
                            </items>
                         </ToolBar>
-                        <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="prj_tbl" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="900.0" styleClass="mylistview" stylesheets="ScrPane.css" VBox.vgrow="ALWAYS">
                           <columns>
                             <TableColumn maxWidth="1.7976931348623157E308" prefWidth="200.0" text="Данные документа">
                                  <columns>
@@ -71,11 +71,21 @@
                                     </TableColumn>
                                  </columns>
                               </TableColumn>
-                              <TableColumn prefWidth="75.0" text="Данные Проект">
+                              <TableColumn prefWidth="75.0" text="Данные Проекта">
                                  <columns>
                                     <TableColumn prefWidth="75.0" text="Сотрудник">
                                        <columns>
-                                          <TableColumn prefWidth="120.0" text="ФИО" />
+                                          <TableColumn fx:id="emp_lastname" prefWidth="120.0" text="Фамилия" />
+                                          <TableColumn fx:id="emp_firstname" prefWidth="120.0" text="Имя" />
+                                          <TableColumn fx:id="emp_middlename" prefWidth="120.0" text="Отчество" />
+                                          <TableColumn fx:id="emp_position" prefWidth="120.0" text="Должность" />
+                                       </columns>
+                                    </TableColumn>
+                                    <TableColumn prefWidth="75.0" text="Проект">
+                                       <columns>
+                                          <TableColumn fx:id="prj_creusr" prefWidth="150.0" text="Пользователь привязал" />
+                                          <TableColumn fx:id="tm$prj_startdate" prefWidth="120.0" text="Время привязки" />
+                                          <TableColumn fx:id="prj_status_char" prefWidth="75.0" text="Статус" />
                                        </columns>
                                     </TableColumn>
                                  </columns>
