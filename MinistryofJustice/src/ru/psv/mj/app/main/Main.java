@@ -46,6 +46,7 @@ import ru.psv.mj.prjmngm.doc.type.RootPmDocTypeC;
 import ru.psv.mj.prjmngm.emps.RootPmEmpController;
 import ru.psv.mj.prjmngm.inboxdocs.RootPmDocController;
 import ru.psv.mj.prjmngm.orgs.RootPmOrgC;
+import ru.psv.mj.prjmngm.projects.CrePrjGantChartPrj;
 import ru.psv.mj.report.Report;
 import ru.psv.mj.sprav.courts.CourtList;
 import ru.psv.mj.sprav.notary.NotaryList;
@@ -184,11 +185,11 @@ public class Main extends Application {
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 //			Connect.userID = "psv";
-//			Connect.userPassword = "ipman165";
+//			Connect.userPassword = "";
 			DbUtil.Db_Connect();
 			initRootLayout();
 			RT();
-			PmInBoxDocs();
+			//PmInBoxDocs();
 			// PmDocType();
 			// OTD();
 //			new NotaryDocList().HtmlEditor(primaryStage);
@@ -811,9 +812,9 @@ public class Main extends Application {
 				PmPrjWin = false;
 				Stage stage = new Stage();
 				FXMLLoader loader = new FXMLLoader(
-						Main.class.getResource("/ru/psv/mj/prjmngm/projects/RootPmOrgView.fxml"));
+						Main.class.getResource("/ru/psv/mj/prjmngm/projects/GantChart.fxml"));
 
-				RootPmOrgC controller = new RootPmOrgC();
+				CrePrjGantChartPrj controller = new CrePrjGantChartPrj();
 				loader.setController(controller);
 
 				Parent root = loader.load();

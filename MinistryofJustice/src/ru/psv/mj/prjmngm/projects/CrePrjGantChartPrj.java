@@ -1,10 +1,8 @@
-package ru.psv.mj.prjmngm.inboxdocs;
+package ru.psv.mj.prjmngm.projects;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -52,11 +50,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
-import ru.psv.mj.msg.Msg;
+import ru.psv.mj.prjmngm.inboxdocs.VPM_PROJECTS;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 
-public class CrePrjGantChart {
+public class CrePrjGantChartPrj {
 
 	@FXML
 	private TableView<VPM_PROJECTS> prj_tbl;
@@ -94,7 +92,7 @@ public class CrePrjGantChart {
 	/**
 	 * Конструктор
 	 */
-	public CrePrjGantChart() {
+	public CrePrjGantChartPrj() {
 		Main.logger = Logger.getLogger(getClass());
 	}
 
@@ -104,67 +102,15 @@ public class CrePrjGantChart {
 	@FXML
 	private BorderPane GantBorder;
 
-	/**
-	 * Отмена
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void Cancel(ActionEvent event) {
-		try {
-			OnClose();
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
 
+	@SuppressWarnings("unused")
 	private Long docid;
 
 	public void SetClass(Long docid) {
 		this.docid = docid;
 	}
 
-	/**
-	 * ОК
-	 * 
-	 * @param event
-	 */
-	@SuppressWarnings("null")
-	@FXML
-	void Ok(ActionEvent event) {
-		try {
-			ActivityRow treetable = table.getSelectionModel().getSelectedItem().getValue();
-
-			if (treetable != null) {
-				Long sel = treetable.data.empid;
-				if (sel != null) {
-					CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.ADD_PRJ(?,?,?)}");
-					callStmt.registerOutParameter(1, Types.VARCHAR);
-					// Ссылка на документ
-					if (docid != null) {
-						callStmt.setLong(2, docid);
-					} else {
-						callStmt.setNull(2, java.sql.Types.INTEGER);
-					}
-					// Ссылка на сотрудника
-					callStmt.setLong(3, sel);
-					// выполнение
-					callStmt.execute();
-					if (callStmt.getString(1) == null) {
-						conn.commit();
-						callStmt.close();
-						OnClose();
-					} else {
-						conn.rollback();
-						Msg.Message(callStmt.getString(1));
-						callStmt.close();
-					}
-				}
-			}
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+	
 
 	void OnClose() {
 		Stage stage = (Stage) GantBorder.getScene().getWindow();
@@ -177,7 +123,7 @@ public class CrePrjGantChart {
 	void LoadTable() {
 		try {
 			// loop
-			String selectStmt = "select * from VPM_PROJECTS t";
+			String selectStmt = "select * from VPM_PROJECTS t order by PRJ_ID desc";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<VPM_PROJECTS> obslist = FXCollections.observableArrayList();
@@ -606,6 +552,32 @@ public class CrePrjGantChart {
 		}
 	}
 
+	/**
+	 * Удалить проект
+	 * @param event
+	 */
+	@FXML
+    void DeletePrj(ActionEvent event) {
+		try {
+			
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+    }
+
+	/**
+	 * Редактировать проект
+	 * @param event
+	 */
+    @FXML
+    void EditPrj(ActionEvent event) {
+		try {
+			
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+    }
+    
 	/**
 	 * Обновить
 	 * 
