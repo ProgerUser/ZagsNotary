@@ -12,51 +12,47 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.table.TableFilter;
 
 import com.flexganttfx.extras.GanttChartStatusBar;
 import com.flexganttfx.extras.GanttChartToolBar;
-import com.flexganttfx.model.ActivityLink;
+import com.flexganttfx.model.ActivityRef;
 import com.flexganttfx.model.Layer;
 import com.flexganttfx.model.Row;
-import com.flexganttfx.model.activity.ActivityBase;
-import com.flexganttfx.model.activity.MutableCompletableActivityBase;
+import com.flexganttfx.model.activity.MutableActivityBase;
+import com.flexganttfx.model.layout.GanttLayout;
 import com.flexganttfx.view.GanttChart;
-import com.flexganttfx.view.GanttChartBase;
+import com.flexganttfx.view.graphics.GraphicsBase;
 import com.flexganttfx.view.graphics.ListViewGraphics;
-import com.flexganttfx.view.graphics.renderer.StraightLinkRenderer;
+import com.flexganttfx.view.graphics.renderer.ActivityBarRenderer;
+import com.flexganttfx.view.graphics.renderer.RowRenderer;
+import com.flexganttfx.view.timeline.Timeline;
 
-import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
+import static org.controlsfx.control.PopOver.ArrowLocation.TOP_CENTER;
 
-public class CrePrjGantChart {
+public class CrePrjGantChartOld {
 
 	@FXML
 	private TableView<VPM_PROJECTS> prj_tbl;
@@ -94,8 +90,73 @@ public class CrePrjGantChart {
 	/**
 	 * Конструктор
 	 */
-	public CrePrjGantChart() {
+	public CrePrjGantChartOld() {
 		Main.logger = Logger.getLogger(getClass());
+	}
+
+	/**
+	 * Обычный объект данных, хранящий фиктивную информацию о проектах.
+	 * 
+	 * @author saidp
+	 *
+	 */
+	class ProjectData {
+
+		String PrjName;
+		String Fio;
+		Integer CountPrj;
+		Instant start;
+		Instant end;
+
+		public ProjectData(String PrjName, String Fio, Instant start, Instant end) {
+			this.PrjName = PrjName;
+			this.Fio = Fio;
+			this.start = start;
+			this.end = end;
+		}
+	}
+
+	public class EmployeesRowRenderer extends RowRenderer<Employees> {
+
+		public EmployeesRowRenderer(GraphicsBase<?> graphics) {
+			super(graphics, "Aircraft Row Renderer");
+		}
+
+		protected void drawRow(Employees row, GraphicsContext gc, double w, double h, boolean selected, boolean hover,
+				boolean highlighted, boolean pressed) {
+			gc.setFill(Color.ORANGE);
+			gc.fillRect(0, 0, w, h);
+		}
+	}
+
+	/**
+	 * Деятельность, представляющая полет. Этот объект будет отображаться как полоса
+	 * в графическом представлении диаграммы Ганта. Полет изменчив, поэтому
+	 * пользователь сможет с ним взаимодействовать.
+	 * 
+	 * @author saidp
+	 *
+	 */
+	class Project extends MutableActivityBase<ProjectData> {
+		public Project(ProjectData data) {
+			setUserObject(data);
+			setName(data.Fio);
+			setStartTime(data.start);
+			setEndTime(data.end);
+		}
+	}
+
+	/**
+	 * Каждая строка представляет собой самолет в этом примере. Мероприятия,
+	 * показанные на строка относится к типу Project.
+	 * 
+	 * @author saidp
+	 *
+	 */
+	class Employees extends Row<Employees, Employees, Project> {
+		public Employees(String name) {
+			super(name);
+		}
 	}
 
 	@FXML
@@ -103,6 +164,8 @@ public class CrePrjGantChart {
 
 	@FXML
 	private BorderPane GantBorder;
+
+	GanttChart<Employees> gantt = null;
 
 	/**
 	 * Отмена
@@ -133,32 +196,36 @@ public class CrePrjGantChart {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-			ActivityRow treetable = table.getSelectionModel().getSelectedItem().getValue();
-
-			if (treetable != null) {
-				Long sel = treetable.data.empid;
-				if (sel != null) {
-					CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.ADD_PRJ(?,?,?)}");
-					callStmt.registerOutParameter(1, Types.VARCHAR);
-					// Ссылка на документ
-					if (docid != null) {
-						callStmt.setLong(2, docid);
-					} else {
-						callStmt.setNull(2, java.sql.Types.INTEGER);
-					}
-					// Ссылка на сотрудника
-					callStmt.setLong(3, sel);
-					// выполнение
-					callStmt.execute();
-					if (callStmt.getString(1) == null) {
-						conn.commit();
-						callStmt.close();
-						OnClose();
-					} else {
-						conn.rollback();
-						Msg.Message(callStmt.getString(1));
-						callStmt.close();
-					}
+			String sel = gantt.getTreeTable().getSelectionModel().getSelectedItem().getValue().getName();
+			System.out.println(sel);
+			if (sel.contains("ФИО=\"")) {
+				String empid = sel.substring(sel.indexOf("ID="), sel.length());
+				empid = empid.replace("ID=\"", "").replace("\";", "");
+				System.out.println(empid);
+				CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.ADD_PRJ(?,?,?)}");
+				callStmt.registerOutParameter(1, Types.VARCHAR);
+				// Ссылка на документ
+				if (docid != null) {
+					callStmt.setLong(2, docid);
+				} else {
+					callStmt.setNull(2, java.sql.Types.INTEGER);
+				}
+				// Ссылка на сотрудника
+				if (empid != null || !empid.trim().isEmpty()) {
+					callStmt.setLong(3, Integer.valueOf(empid));
+				} else {
+					callStmt.setNull(3, java.sql.Types.INTEGER);
+				}
+				// выполнение
+				callStmt.execute();
+				if (callStmt.getString(1) == null) {
+					conn.commit();
+					callStmt.close();
+					OnClose();
+				} else {
+					conn.rollback();
+					Msg.Message(callStmt.getString(1));
+					callStmt.close();
 				}
 			}
 		} catch (Exception e) {
@@ -286,264 +353,109 @@ public class CrePrjGantChart {
 		});
 	}
 
-	class Data {
-		Instant start;
-		Instant end;
-		String name;
-		String comment;
-		String docnumber;
-		String isfast;
-		String docname;
-		Long empid;
-		Long dtdiff;
-	}
-
-	Layer layer = new Layer("Activities");
-	int shift = 1;
-
-	class ActivityRow extends Row<ActivityRow, ActivityRow, ActivityBase<Data>> {
-		Data data;
-		int linksIn;
-		int linksOut;
-
-		protected MutableCompletableActivityBase<Data> act;
-
-		public ActivityRow(String name, Long empid) {
-			data = new Data();
-			data.name = name;
-			data.empid = empid;
-			setExpanded(true);
-			if (data != null && name != null) {
-				setName(data.name);
-			}
-		}
-
-		public ActivityRow(String name, ActivityRow parent, Instant start, Instant end, String comment,
-				String docnumber, String isfast, String docname, Long dtdiff) {
-			data = new Data();
-			data.start = start;
-			data.end = end;
-			data.name = name;
-			data.comment = comment;
-			data.docnumber = docnumber;
-			data.isfast = isfast;
-			data.docname = docname;
-			data.dtdiff = dtdiff;
-			setExpanded(true);
-			if (data != null && name != null) {
-				createActivity(data);
-				setName(data.name);
-			}
-		}
-
-		public int getLinksIn() {
-			return linksIn;
-		}
-
-		public void setLinksIn(int linksIn) {
-			this.linksIn = linksIn;
-		}
-
-		public int getLinksOut() {
-			return linksOut;
-		}
-
-		public void setLinksOut(int linksOut) {
-			this.linksOut = linksOut;
-		}
-
-		protected void createActivity(Data data) {
-			act = new MutableCompletableActivityBase<>(data.name, data.start, data.end);
-			act.setUserObject(data);
-			addActivity(layer, act);
-		}
-	}
-
-	TreeTableView<ActivityRow> table;
-
-	@SuppressWarnings({ "unchecked", "rawtypes", "unused" })
-	protected GanttChartBase<?> createGanttChart() throws Exception {
-
-		GanttChart<ActivityRow> gantt = new GanttChart();
-		List<ActivityRow> roots = new ArrayList<>();
-
-		// --------------------------------------------------------------
-		{
-			PreparedStatement prp1 = null;
-			ResultSet rs1 = null;
-			PreparedStatement prp = conn.prepareStatement("select * from PM_EMP");
-			ResultSet rs = prp.executeQuery();
-			while (rs.next()) {
-				System.out.println(rs.getString("EMP_LASTNAME"));
-				final ActivityRow row = new ActivityRow(rs.getString("EMP_LASTNAME") + " "
-						+ rs.getString("EMP_FIRSTNAME") + " " + rs.getString("EMP_MIDDLENAME"), rs.getLong("EMP_ID"));
-				roots.add(row);
-				// ____________________________
-				{
-					prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ? order by DOC_END desc");
-					prp1.setLong(1, rs.getLong("EMP_ID"));
-					rs1 = prp1.executeQuery();
-					while (rs1.next()) {
-						row.getChildren().add(new ActivityRow("", row,
-								LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_DATE")),
-										DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay(ZoneId.systemDefault())
-										.toInstant(),
-								LocalDate
-										.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_END")),
-												DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-										.atStartOfDay(ZoneId.systemDefault()).toInstant(),
-								rs1.getString("doc_comment"), rs1.getString("DOC_NUMBER"), rs1.getString("doc_isfast"),
-								rs1.getString("doc_name"), rs1.getLong("dtdiff")));
-					}
-				}
-				// ____________________________
-			}
-			//
-			prp1.close();
-			rs1.close();
-			//
-			prp.close();
-			rs.close();
-		}
-		// --------------------------------------------------------------
-		ActivityRow root = new ActivityRow(null, null);
-		root.setExpanded(true);
-		root.getChildren().addAll(roots);
-		gantt.setRoot(root);
-		gantt.getLayers().add(layer);
-
-		// source set ensures that only one link will come "out of" an activity.
-		Set<ActivityRow> sourceSet = new HashSet<>();
-
-		ListViewGraphics graphics = gantt.getGraphics();
-		graphics.setLinkRenderer(ActivityLink.class, new StraightLinkRenderer<>(graphics, "Straight Link Renderer"));
-
-		table = gantt.getTreeTable();
-		table.getSelectionModel().getSelectedItems().addListener((InvalidationListener) observable -> {
-			TreeItem<ActivityRow> item = table.getSelectionModel().getSelectedItem();
-			if (item != null && item.getValue().act != null) {
-				gantt.getGraphics().getTimeline().showTime(item.getValue().act.getStartTime());
-			}
-		});
-
-		TreeTableColumn<ActivityRow, Long> empid = new TreeTableColumn<>("ИД сотр.");
-		empid.setPrefWidth(75);
-		empid.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.empid));
-
-		TreeTableColumn<ActivityRow, Long> dtdiff = new TreeTableColumn<>("Осталось дней");
-		dtdiff.setPrefWidth(75);
-		dtdiff.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.dtdiff));
-
-		TreeTableColumn<ActivityRow, String> docname = new TreeTableColumn<>("Название документа");
-		docname.setPrefWidth(150);
-		docname.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.docname));
-
-		TreeTableColumn<ActivityRow, String> docnumber = new TreeTableColumn<>("Номер документа");
-		docnumber.setPrefWidth(100);
-		docnumber.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.docnumber));
-
-		TreeTableColumn<ActivityRow, String> isfast = new TreeTableColumn<>("Срочный");
-		isfast.setPrefWidth(75);
-		isfast.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.isfast));
-
-		TreeTableColumn<ActivityRow, String> comment = new TreeTableColumn<>("Док. комментарий");
-		comment.setPrefWidth(120);
-		comment.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.comment));
-
-		TreeTableColumn<ActivityRow, Instant> docdate = new TreeTableColumn<>("Дата документа");
-		docdate.setPrefWidth(100);
-		docdate.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.start));
-
-		TreeTableColumn<ActivityRow, Instant> docend = new TreeTableColumn<>("Срок документа");
-		docend.setPrefWidth(100);
-		docend.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.end));
-
-		// ---------------------------------
-		docdate.setCellFactory(column_ -> {
-
-			TreeTableCell<ActivityRow, Instant> cell_ = new TreeTableCell<ActivityRow, Instant>() {
-
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withLocale(Locale.getDefault())
-						.withZone(ZoneId.systemDefault());
-
-				@Override
-				protected void updateItem(Instant item, boolean empty) {
-					super.updateItem(item, empty);
-					if (empty) {
-						setText(null);
-					} else {
-						if (item != null) {
-							this.setText(formatter.format(item));
-						}
-					}
-				}
-			};
-
-			return cell_;
-		});
-		docend.setCellFactory(column_ -> {
-
-			TreeTableCell<ActivityRow, Instant> cell_ = new TreeTableCell<ActivityRow, Instant>() {
-
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withLocale(Locale.getDefault())
-						.withZone(ZoneId.systemDefault());
-
-				@Override
-				protected void updateItem(Instant item, boolean empty) {
-					super.updateItem(item, empty);
-					if (empty) {
-						setText(null);
-					} else {
-						if (item != null) {
-							this.setText(formatter.format(item));
-
-							LocalDate lt = LocalDate.now();
-							LocalDate lcd = item.atZone(ZoneId.systemDefault()).toLocalDate();
-							long daysBetween = ChronoUnit.DAYS.between(lt, lcd);
-							if (daysBetween >= 20) {
-								setStyle("-fx-text-fill: red;-fx-font-weight: bold");
-							} else if (daysBetween <= 20) {
-								setStyle("-fx-text-fill: orange;-fx-font-weight: bold");
-							} else {
-								setStyle("");
-							}
-						}
-					}
-				}
-			};
-
-			return cell_;
-		});
-
-		// ---------------------------------
-		table.getColumns().addAll(empid, docname, docnumber, isfast, comment, docdate, docend, dtdiff);
-
-		links.forEach(link -> gantt.getLinks().add(link));
-
-		gantt.getGraphics().showEarliestActivities();
-
-		Platform.runLater(() -> gantt.getGraphics().showAllActivities());
-
-		return gantt;
-	}
-
-	private final ArrayList<ActivityLink<?>> links = new ArrayList<>();
-
 	/**
 	 * 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	void CreGant() {
 		try {
+			Employees emps = new Employees("Сотрудники");
+			emps.setExpanded(true);
+			gantt = new GanttChart<Employees>(emps);
 
-			GanttChartBase<?> gant = createGanttChart();
+			Layer layer = new Layer("Projects");
+			gantt.getLayers().add(layer);
 
-			GantBorder.setTop(new GanttChartToolBar(gant));
-			GantBorder.setCenter(gant);
-			GantBorder.setBottom(new GanttChartStatusBar(gant));
+			ObservableList<Employees> obslist = FXCollections.observableArrayList();
+			{
+				PreparedStatement prp1 = null;
+				ResultSet rs1 = null;
+				PreparedStatement prp = conn.prepareStatement("select * from PM_EMP");
+				ResultSet rs = prp.executeQuery();
+				while (rs.next()) {
+					Employees psv = new Employees(
+							"ФИО=\"" + (rs.getString("EMP_LASTNAME") + " " + rs.getString("EMP_FIRSTNAME") + " "
+									+ rs.getString("EMP_MIDDLENAME")) + "\";ID=\"" + rs.getLong("EMP_ID") + "\";");
+					// ____________________________
+					{
+						prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ?");
+						prp1.setLong(1, rs.getLong("EMP_ID"));
+						rs1 = prp1.executeQuery();
+						while (rs1.next()) {
+							Employees pr = new Employees("Наз.пр.=\"" + rs1.getString("DOC_NAME") + "\";" + "Срочн.=\""
+									+ rs1.getString("doc_isfast") + "\";");
+							psv.getChildren().add(pr);
+							pr.addActivity(layer, new Project(new ProjectData(rs1.getString("EMP_LASTNAME"),
+									rs1.getString("EMP_LASTNAME") + " " + rs.getString("EMP_FIRSTNAME") + " "
+											+ rs1.getString("EMP_MIDDLENAME"),
+									LocalDate
+											.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_DATE")),
+													DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+											.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+									LocalDate
+											.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_END")),
+													DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+											.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+
+						}
+					}
+					// ____________________________
+					obslist.add(psv);
+					psv.setExpanded(true);
+				}
+				//
+				prp1.close();
+				rs1.close();
+				//
+				prp.close();
+				rs.close();
+			}
+
+			gantt.getRoot().getChildren().setAll(obslist);
+
+			Timeline timeline = gantt.getTimeline();
+			timeline.showTemporalUnit(ChronoUnit.DAYS, 10);
+
+			GraphicsBase<Employees> graphics = gantt.getGraphics();
+			graphics.setActivityRenderer(Project.class, GanttLayout.class,
+					new ActivityBarRenderer<>(graphics, "Project Renderer"));
+
+			graphics.showAllActivities();
+
+			GantBorder.setTop(new GanttChartToolBar(gantt));
+			GantBorder.setCenter(gantt);
+			GantBorder.setBottom(new GanttChartStatusBar(gantt));
+
+			ListViewGraphics<Employees> gr = gantt.getGraphics();
+			gr.getListView().addEventHandler(MouseEvent.MOUSE_MOVED, evt -> mouseMoved(evt));
 
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
+		}
+	}
+
+	private PopOver popOver;
+
+	private void mouseMoved(MouseEvent evt) {
+		ActivityRef<?> ref = gantt.getGraphics().getActivityRefAt(evt.getX(), evt.getY());
+		if (ref != null) {
+			if (popOver == null || popOver.isDetached()) {
+				popOver = new PopOver();
+				popOver.setArrowLocation(TOP_CENTER);
+				popOver.getContentNode().setMouseTransparent(true);
+			}
+
+			double x = evt.getScreenX();
+			double y = evt.getScreenY();
+
+			if (!popOver.isShowing()) {
+				popOver.setTitle(ref.getActivity().getName());
+				popOver.show(gantt.getGraphics(), x, y, Duration.ONE);
+			}
+		} else {
+			if (popOver != null && !popOver.isDetached()) {
+				popOver.hide();
+			}
 		}
 	}
 

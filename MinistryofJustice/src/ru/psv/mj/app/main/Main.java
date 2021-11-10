@@ -188,6 +188,7 @@ public class Main extends Application {
 			DbUtil.Db_Connect();
 			initRootLayout();
 			RT();
+			PmInBoxDocs();
 			// PmDocType();
 			// OTD();
 //			new NotaryDocList().HtmlEditor(primaryStage);

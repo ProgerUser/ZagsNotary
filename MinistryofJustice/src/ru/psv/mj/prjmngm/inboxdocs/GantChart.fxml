@@ -22,6 +22,18 @@
    <children>
       <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="floating" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
+          <Tab text="Диаграмма Ганта">
+               <content>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <children>
+                        <BorderPane fx:id="GantBorder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
           <Tab text="Сотрудники и проекты">
                <content>
                   <VBox fx:id="EmpPrjVbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
@@ -92,18 +104,6 @@
                               </TableColumn>
                           </columns>
                         </TableView>
-                     </children>
-                  </VBox>
-               </content>
-            </Tab>
-          <Tab text="Диаграмма Ганта">
-               <content>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                     <children>
-                        <BorderPane fx:id="GantBorder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </content>

@@ -45,7 +45,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	/**
 	 * Управление проектами
 	 */
@@ -57,7 +57,8 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
-	//--
+
+	// --
 	@FXML
 	void InBoxDocs(ActionEvent event) {
 		try {
@@ -66,6 +67,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	@FXML
 	void PmDocType(ActionEvent event) {
 		try {
@@ -74,6 +76,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	@FXML
 	void PmOrg(ActionEvent event) {
 		try {
@@ -82,6 +85,7 @@ public class Root {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	@FXML
 	void PmPrj(ActionEvent event) {
 		try {
@@ -438,13 +442,13 @@ public class Root {
 		try {
 			menubar.getMenus().forEach(menu -> {
 				if (!menu.getId().equals("exit")) {
-					if (chk_menu(Long.valueOf(menu.getId()), Connect.userID) == 1) {
+					if (chk_menu(Long.valueOf(menu.getId()), Connect.userID) >= 1) {
 						menu.setVisible(true);
 					} else {
 						menu.setVisible(false);
 					}
 					menu.getItems().forEach(menuItem -> {
-						if (chk_menu(Long.valueOf(menuItem.getId()), Connect.userID) == 1) {
+						if (chk_menu(Long.valueOf(menuItem.getId()), Connect.userID) >= 1) {
 							menuItem.setVisible(true);
 						} else {
 							menuItem.setVisible(false);
