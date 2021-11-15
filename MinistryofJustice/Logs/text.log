@@ -38694,4 +38694,19 @@ Caused by: Error : 54, Position : 0, Sql = SELECT * FROM PM_DOC_TYPES WHERE DOC_
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
 	at java.lang.Thread.run(Thread.java:748)
 
+] - $End$[11.11.2021 10:24:57] $Sep$ [ru.psv.mj.update.root.Main.start()] $Sep$ [ERROR] $Sep$ [214] $Sep$ [java.lang.NullPointerException
+	at ru.psv.mj.update.root.dbutil.DBUtil.LogToDb(DBUtil.java:79)
+	at ru.psv.mj.update.root.dbutil.DBUtil.dbConnect(DBUtil.java:53)
+	at ru.psv.mj.update.root.Main.start(Main.java:57)
+	at ru.psv.mj.app.main.Main.start(Main.java:175)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
+	at java.lang.Thread.run(Thread.java:748)
+~JavaFX Application Thread
 ] - $End$
