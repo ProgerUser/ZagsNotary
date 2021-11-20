@@ -54,56 +54,59 @@ import java.util.Map;
 import org.controlsfx.control.PropertySheet;
 import org.controlsfx.property.BeanPropertyUtils;
 
+@SuppressWarnings({ "unused", "rawtypes" })
 public class ItemFactory {
-    private static final Map<Class, ItemProvider<?>> PROVIDER_MAP = new HashMap();
+	@SuppressWarnings({ "unchecked" })
+	private static final Map<Class, ItemProvider<?>> PROVIDER_MAP = new HashMap();
 
-    public List<PropertySheet.Item> getItems(Object object) {
-        ItemProvider<Object> itemProvider = this.findItemProvider(object);
-        if (itemProvider == null) {
-            return BeanPropertyUtils.getProperties(object);
-        }
-        return itemProvider.getPropertySheetItems(object);
-    }
+	public List<PropertySheet.Item> getItems(Object object) {
+		ItemProvider<Object> itemProvider = this.findItemProvider(object);
+		if (itemProvider == null) {
+			return BeanPropertyUtils.getProperties(object);
+		}
+		return itemProvider.getPropertySheetItems(object);
+	}
 
-    public static <T> void registerItemProvider(Class<T> clazz, ItemProvider<T> itemProvider) {
-        PROVIDER_MAP.put(clazz, itemProvider);
-    }
+	public static <T> void registerItemProvider(Class<T> clazz, ItemProvider<T> itemProvider) {
+		PROVIDER_MAP.put(clazz, itemProvider);
+	}
 
-    private ItemProvider<Object> findItemProvider(Object object) {
-        return this.doFindItemProvider(object.getClass());
-    }
+	private ItemProvider<Object> findItemProvider(Object object) {
+		return this.doFindItemProvider(object.getClass());
+	}
 
-    private ItemProvider<Object> doFindItemProvider(Class clazz) {
-        do {
-            ItemProvider<Object> itemProvider;
-            if ((itemProvider = (ItemProvider<Object>) PROVIDER_MAP.get(clazz)) == null) continue;
-            return itemProvider;
-        } while ((clazz = clazz.getSuperclass()) != null && clazz != Object.class);
-        return null;
-    }
+	@SuppressWarnings({ "unchecked" })
+	private ItemProvider<Object> doFindItemProvider(Class clazz) {
+		do {
+			ItemProvider<Object> itemProvider;
+			if ((itemProvider = (ItemProvider<Object>) PROVIDER_MAP.get(clazz)) == null)
+				continue;
+			return itemProvider;
+		} while ((clazz = clazz.getSuperclass()) != null && clazz != Object.class);
+		return null;
+	}
 
-    static {
-        PROVIDER_MAP.put(GanttChartBase.class, new GanttChartBaseItemProvider());
-        PROVIDER_MAP.put(GanttChart.class, new GanttChartItemProvider());
-        PROVIDER_MAP.put(GraphicsBase.class, new GraphicsBaseItemProvider());
-        PROVIDER_MAP.put(Dateline.class, new DatelineItemProvider());
-        PROVIDER_MAP.put(Timeline.class, new TimelineItemProvider());
-        PROVIDER_MAP.put(Eventline.class, new EventlineItemProvider());
-        PROVIDER_MAP.put(AgendaLinesLayer.class, new AgendaLinesLayerItemProvider());
-        PROVIDER_MAP.put(ChartLinesLayer.class, new ChartLinesLayerItemProvider());
-        PROVIDER_MAP.put(DSTLineLayer.class, new DSTLineLayerItemProvider());
-        PROVIDER_MAP.put(GridLinesLayer.class, new GridLinesLayerItemProvider());
-        PROVIDER_MAP.put(HoverTimeIntervalLayer.class, new HoverTimeIntervalLayerItemProvider());
-        PROVIDER_MAP.put(InnerLinesLayer.class, new InnerLinesLayerItemProvider());
-        PROVIDER_MAP.put(LayoutLayer.class, new LayoutLayerItemProvider());
-        PROVIDER_MAP.put(NowLineLayer.class, new NowLineLayerItemProvider());
-        PROVIDER_MAP.put(SelectedTimeIntervalsLayer.class, new SelectedTimeIntervalsLayerItemProvider());
-        PROVIDER_MAP.put(SystemLayer.class, new SystemLayerItemProvider());
-        PROVIDER_MAP.put(ZoomTimeIntervalLayer.class, new ZoomIntervalLayerItemProvider());
-        PROVIDER_MAP.put(ActivityBarRenderer.class, new ActivityBarRendererItemProvider());
-        PROVIDER_MAP.put(ActivityRendererItemProvider.class, new ActivityRendererItemProvider());
-        PROVIDER_MAP.put(CompletableActivityRenderer.class, new CompletableActivityRendererItemProvider());
-        PROVIDER_MAP.put(Renderer.class, new RendererItemProvider());
-    }
+	static {
+		PROVIDER_MAP.put(GanttChartBase.class, new GanttChartBaseItemProvider());
+		PROVIDER_MAP.put(GanttChart.class, new GanttChartItemProvider());
+		PROVIDER_MAP.put(GraphicsBase.class, new GraphicsBaseItemProvider());
+		PROVIDER_MAP.put(Dateline.class, new DatelineItemProvider());
+		PROVIDER_MAP.put(Timeline.class, new TimelineItemProvider());
+		PROVIDER_MAP.put(Eventline.class, new EventlineItemProvider());
+		PROVIDER_MAP.put(AgendaLinesLayer.class, new AgendaLinesLayerItemProvider());
+		PROVIDER_MAP.put(ChartLinesLayer.class, new ChartLinesLayerItemProvider());
+		PROVIDER_MAP.put(DSTLineLayer.class, new DSTLineLayerItemProvider());
+		PROVIDER_MAP.put(GridLinesLayer.class, new GridLinesLayerItemProvider());
+		PROVIDER_MAP.put(HoverTimeIntervalLayer.class, new HoverTimeIntervalLayerItemProvider());
+		PROVIDER_MAP.put(InnerLinesLayer.class, new InnerLinesLayerItemProvider());
+		PROVIDER_MAP.put(LayoutLayer.class, new LayoutLayerItemProvider());
+		PROVIDER_MAP.put(NowLineLayer.class, new NowLineLayerItemProvider());
+		PROVIDER_MAP.put(SelectedTimeIntervalsLayer.class, new SelectedTimeIntervalsLayerItemProvider());
+		PROVIDER_MAP.put(SystemLayer.class, new SystemLayerItemProvider());
+		PROVIDER_MAP.put(ZoomTimeIntervalLayer.class, new ZoomIntervalLayerItemProvider());
+		PROVIDER_MAP.put(ActivityBarRenderer.class, new ActivityBarRendererItemProvider());
+		PROVIDER_MAP.put(ActivityRendererItemProvider.class, new ActivityRendererItemProvider());
+		PROVIDER_MAP.put(CompletableActivityRenderer.class, new CompletableActivityRendererItemProvider());
+		PROVIDER_MAP.put(Renderer.class, new RendererItemProvider());
+	}
 }
- 

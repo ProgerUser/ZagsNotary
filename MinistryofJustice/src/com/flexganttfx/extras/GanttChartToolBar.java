@@ -1,5 +1,11 @@
 package com.flexganttfx.extras;
 
+import java.text.MessageFormat;
+import java.util.Objects;
+
+import org.controlsfx.control.PopOver;
+import org.controlsfx.control.textfield.CustomTextField;
+
 import com.flexganttfx.extras.util.Messages;
 import com.flexganttfx.model.Row;
 import com.flexganttfx.view.GanttChart;
@@ -10,10 +16,6 @@ import com.flexganttfx.view.timeline.Timeline;
 
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
-
-import java.text.MessageFormat;
-import java.util.Objects;
-import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
@@ -30,8 +32,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
 import javafx.stage.PopupWindow;
 import javafx.util.StringConverter;
-import org.controlsfx.control.PopOver;
-import org.controlsfx.control.textfield.CustomTextField;
 
 public class GanttChartToolBar<R extends Row<?, ?, ?>> extends ToolBar {
 	private final ObjectProperty<GanttChartBase<R>> ganttChart;
@@ -65,6 +65,7 @@ public class GanttChartToolBar<R extends Row<?, ?, ?>> extends ToolBar {
 		ganttChartProperty().set(ganttChart);
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void buildToolBar() {
 		getItems().clear();
 		if (this.layerControlsPopOver != null) {

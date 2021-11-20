@@ -1,75 +1,51 @@
-/*    */ package com.flexganttfx.extras.properties.layer;
-/*    */ 
-/*    */ import com.flexganttfx.extras.properties.ItemProvider;
-/*    */ import com.flexganttfx.view.graphics.layer.HoverTimeIntervalLayer;
-/*    */ import com.flexganttfx.view.graphics.layer.SystemLayer;
-/*    */ import java.util.List;
-/*    */ import java.util.Optional;
-/*    */ import javafx.beans.value.ObservableValue;
-/*    */ import javafx.scene.paint.Color;
-/*    */ import javafx.scene.paint.Paint;
-/*    */ import org.controlsfx.control.PropertySheet;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class HoverTimeIntervalLayerItemProvider
-/*    */   implements ItemProvider<HoverTimeIntervalLayer>
-/*    */ {
-/*    */   public List<PropertySheet.Item> getPropertySheetItems(final HoverTimeIntervalLayer layer) {
-/* 26 */     SystemLayerItemProvider provider = new SystemLayerItemProvider();
-/* 27 */     List<PropertySheet.Item> items = provider.getPropertySheetItems((SystemLayer)layer);
-/*    */     
-/* 29 */     items.add(new PropertySheet.Item()
-/*    */         {
-/*    */           public Optional<ObservableValue<?>> getObservableValue()
-/*    */           {
-/* 33 */             return Optional.of(layer.hoverTimeIntervalFillProperty());
-/*    */           }
-/*    */ 
-/*    */           
-/*    */           public void setValue(Object value) {
-/* 38 */             layer.setHoverTimeIntervalFill((Color)value);
-/*    */           }
-/*    */ 
-/*    */           
-/*    */           public Object getValue() {
-/* 43 */             return layer.getHoverTimeIntervalFill();
-/*    */           }
-/*    */ 
-/*    */           
-/*    */           public Class<?> getType() {
-/* 48 */             return Paint.class;
-/*    */           }
-/*    */ 
-/*    */           
-/*    */           public String getName() {
-/* 53 */             return "Focused Time Fill";
-/*    */           }
-/*    */ 
-/*    */           
-/*    */           public String getDescription() {
-/* 58 */             return "The color used for visualizing the hover time interval of the dateline.";
-/*    */           }
-/*    */ 
-/*    */           
-/*    */           public String getCategory() {
-/* 63 */             return "System Layer: " + layer.getName();
-/*    */           }
-/*    */         });
-/*    */     
-/* 67 */     return items;
-/*    */   }
-/*    */ }
+package com.flexganttfx.extras.properties.layer;
 
+import com.flexganttfx.extras.properties.ItemProvider;
+import com.flexganttfx.view.graphics.layer.HoverTimeIntervalLayer;
+import com.flexganttfx.view.graphics.layer.SystemLayer;
+import java.util.List;
+import java.util.Optional;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import org.controlsfx.control.PropertySheet;
 
-/* Location:              C:\Users\Said.000\git\ZagsNotary\MinistryofJustice\lib\flexganttfx-extras-8.12.0.jar!\com\flexganttfx\extras\properties\layer\HoverTimeIntervalLayerItemProvider.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */
+@SuppressWarnings("rawtypes")
+public class HoverTimeIntervalLayerItemProvider implements ItemProvider<HoverTimeIntervalLayer> {
+	public List<PropertySheet.Item> getPropertySheetItems(final HoverTimeIntervalLayer layer) {
+		SystemLayerItemProvider provider = new SystemLayerItemProvider();
+		List<PropertySheet.Item> items = provider.getPropertySheetItems((SystemLayer) layer);
+
+		items.add(new PropertySheet.Item() {
+			public Optional<ObservableValue<?>> getObservableValue() {
+				return Optional.of(layer.hoverTimeIntervalFillProperty());
+			}
+
+			public void setValue(Object value) {
+				layer.setHoverTimeIntervalFill((Color) value);
+			}
+
+			public Object getValue() {
+				return layer.getHoverTimeIntervalFill();
+			}
+
+			public Class<?> getType() {
+				return Paint.class;
+			}
+
+			public String getName() {
+				return "Focused Time Fill";
+			}
+
+			public String getDescription() {
+				return "The color used for visualizing the hover time interval of the dateline.";
+			}
+
+			public String getCategory() {
+				return "System Layer: " + layer.getName();
+			}
+		});
+
+		return items;
+	}
+}

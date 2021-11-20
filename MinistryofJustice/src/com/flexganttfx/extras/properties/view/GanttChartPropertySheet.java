@@ -1,13 +1,15 @@
 package com.flexganttfx.extras.properties.view;
 
-import com.flexganttfx.extras.properties.ItemFactory;
-import com.flexganttfx.model.Row;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.Observable;
+
+import org.controlsfx.control.PropertySheet;
+
+import com.flexganttfx.extras.properties.ItemFactory;
+import com.flexganttfx.model.Row;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.controlsfx.control.PropertySheet;
 
 public class GanttChartPropertySheet<R extends Row<?, ?, ?>> extends PropertySheet {
 	private final ObservableList<Object> targets;
@@ -27,6 +29,7 @@ public class GanttChartPropertySheet<R extends Row<?, ?, ?>> extends PropertyShe
 		return this.targets;
 	}
 
+	@SuppressWarnings("unused")
 	private void update() {
 		ItemFactory itemFactory = new ItemFactory();
 		List<PropertySheet.Item> targetItems = new ArrayList<>();

@@ -2,8 +2,7 @@ package impl.com.flexganttfx.extras.skin;
 
 import com.flexganttfx.extras.VirtualGridControl;
 import com.flexganttfx.model.dateline.VirtualGrid;
-import javafx.beans.Observable;
-import javafx.event.ActionEvent;
+
 import javafx.scene.control.SkinBase;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
