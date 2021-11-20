@@ -102,15 +102,12 @@ public class CrePrjGantChartPrj {
 	@FXML
 	private BorderPane GantBorder;
 
-
 	@SuppressWarnings("unused")
 	private Long docid;
 
 	public void SetClass(Long docid) {
 		this.docid = docid;
 	}
-
-	
 
 	void OnClose() {
 		Stage stage = (Stage) GantBorder.getScene().getWindow();
@@ -447,9 +444,9 @@ public class CrePrjGantChartPrj {
 							LocalDate lcd = item.atZone(ZoneId.systemDefault()).toLocalDate();
 							long daysBetween = ChronoUnit.DAYS.between(lt, lcd);
 							if (daysBetween >= 20) {
-								setStyle("-fx-text-fill: red;-fx-font-weight: bold");
-							} else if (daysBetween <= 20) {
 								setStyle("-fx-text-fill: orange;-fx-font-weight: bold");
+							} else if (daysBetween <= 20) {
+								setStyle("-fx-text-fill: red;-fx-font-weight: bold");
 							} else {
 								setStyle("");
 							}
@@ -554,30 +551,32 @@ public class CrePrjGantChartPrj {
 
 	/**
 	 * Удалить проект
+	 * 
 	 * @param event
 	 */
 	@FXML
-    void DeletePrj(ActionEvent event) {
+	void DeletePrj(ActionEvent event) {
 		try {
-			
+
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
-    }
+	}
 
 	/**
 	 * Редактировать проект
+	 * 
 	 * @param event
 	 */
-    @FXML
-    void EditPrj(ActionEvent event) {
+	@FXML
+	void EditPrj(ActionEvent event) {
 		try {
-			
+
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
-    }
-    
+	}
+
 	/**
 	 * Обновить
 	 * 
@@ -591,7 +590,7 @@ public class CrePrjGantChartPrj {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	// <ORACLE_CONNECT>
 	/**
 	 * Строка соединения
