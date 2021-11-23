@@ -380,7 +380,7 @@ public class EditCus {
 	private ComboBox<String> AREA;
 
 	/**
-	 * �?мя
+	 * Имя
 	 */
 	@FXML
 	private TextField CCUSFIRST_NAME;
@@ -524,7 +524,7 @@ public class EditCus {
 	private TableColumn<CUS_DOCUM, String> DOC_AGENCY;
 
 	/**
-	 * �?нфраструктура - улица
+	 * Инфраструктура - улица
 	 */
 	@FXML
 	private TextField INFR_NAME;
@@ -685,7 +685,7 @@ public class EditCus {
 	}
 
 	/**
-	 * �?нициализация гражданства
+	 * Инициализация гражданства
 	 */
 	void InitCitizen() {
 		try {
@@ -1286,7 +1286,7 @@ public class EditCus {
 							+ "	<ДанныеАвторизации IDБазы=\"" + exdb.ID() + "\" ДатаПоследнейАвторизации=\""
 							+ xml_last_auth + "\"/>\r\n" + "	<РодительскийЭлемент>\r\n"
 							+ "		<ПерсональныеДанные Оператор=\"" + DB_NAME + "/" + rs.getString("OPER")
-							+ "\" ID=\"\" КодСсылки=\"\" Фамилия=\"" + rs.getString("CCUSLAST_NAME") + "\" �?мя=\""
+							+ "\" ID=\"\" КодСсылки=\"\" Фамилия=\"" + rs.getString("CCUSLAST_NAME") + "\" Имя=\""
 							+ rs.getString("CCUSFIRST_NAME") + "\" Отчество=\"" + rs.getString("CCUSMIDDLE_NAME")
 							+ "\" ДатаРождения=\"" + rs.getString("BR_DATE") + "\" КодПола=\"" + rs.getString("CCUSSEX")
 							+ "\"/>\r\n" + "		<МестоЖительства КодРайона=\"" + rs.getString("CODE_AREA")
@@ -1903,7 +1903,7 @@ public class EditCus {
 	private MenuButton ZAGS_MENU_BUT;
 
 	/**
-	 * �?нициализация
+	 * Инициализация
 	 */
 	@FXML
 	private void initialize() {
@@ -2091,7 +2091,7 @@ public class EditCus {
 				// UpperCase(DOC_AGENCY_T);
 			}
 			/**
-			 * �?нициализация столбцов
+			 * Инициализация столбцов
 			 */
 			ID_DOC_TP.setCellValueFactory(cellData -> cellData.getValue().ID_DOC_TPProperty());
 			DOC_SER.setCellValueFactory(cellData -> cellData.getValue().DOC_SERProperty());
@@ -2107,7 +2107,7 @@ public class EditCus {
 			DateFormatCol(DOC_DATE);
 			DateFormatCol(DOC_PERIOD);
 			/**
-			 * �?нициализация столбцов таблицы-Гражданства
+			 * Инициализация столбцов таблицы-Гражданства
 			 */
 			// COUNTRY.setCellValueFactory(cellData ->
 			// cellData.getValue().COUNTRY_CODEProperty());
@@ -2317,7 +2317,7 @@ public class EditCus {
 
 			}
 			/**
-			 * ОТДЕЛЕН�?Я
+			 * ОТДЕЛЕНИЯ
 			 */
 			{
 				Statement sqlStatement = conn.createStatement();

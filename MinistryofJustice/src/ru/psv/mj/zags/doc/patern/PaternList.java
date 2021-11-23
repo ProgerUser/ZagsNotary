@@ -479,7 +479,7 @@ public class PaternList {
 										if (from == null) {
 											Refresh();
 										}
-										// УДАЛ�?ТЬ ЗАП�?СЬ О "ЛОЧКЕ"=
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 										String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
@@ -530,7 +530,7 @@ public class PaternList {
 													e.printStackTrace();
 												}
 												newWindow_yn.close();
-												// УДАЛ�?ТЬ ЗАП�?СЬ О "ЛОЧКЕ"=
+												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 												String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
@@ -549,7 +549,7 @@ public class PaternList {
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										conn.rollback();
 										isopen = false;
-										// УДАЛ�?ТЬ ЗАП�?СЬ О "ЛОЧКЕ"=
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 										String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
@@ -1046,7 +1046,7 @@ public class PaternList {
 		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
 		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("�?спользуйте операцию \"�?\" для многоколоночного фильтра");
+		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
 		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
 		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
@@ -1058,7 +1058,7 @@ public class PaternList {
 	}
 
 	/**
-	 * �?нициализация
+	 * Инициализация
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML

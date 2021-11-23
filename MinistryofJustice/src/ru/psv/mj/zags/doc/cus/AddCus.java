@@ -229,7 +229,7 @@ public class AddCus {
 	@FXML
 	void NoDubl(ActionEvent event) {
 		try {
-			// сверка по совпадению Ф.�?.О.
+			// сверка по совпадению Ф.И.О.
 			DUBL.getItems().stream().forEach(o -> {
 				try {
 					PreparedStatement prpstmt = conn.prepareStatement("select count(*) cnt from cus where "
@@ -265,7 +265,7 @@ public class AddCus {
 
 			if (find) {
 				Stage stage = (Stage) CCUSFIRST_NAME.getScene().getWindow();
-				Label alert = new Label("Обнаружено полное совпадение Ф�?О, продолжить создание дубликата?");
+				Label alert = new Label("Обнаружено полное совпадение ФИО, продолжить создание дубликата?");
 				alert.setLayoutX(10.0);
 				alert.setLayoutY(10.0);
 				alert.setPrefHeight(17.0);
@@ -391,9 +391,9 @@ public class AddCus {
 					String request;
 					{
 						request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
-								+ "	<ДанныеАвторизации �?мяБазы=\"" + DB_NAME + "\" ДатаПоследнейАвторизации=\""
+								+ "	<ДанныеАвторизации ИмяБазы=\"" + DB_NAME + "\" ДатаПоследнейАвторизации=\""
 								+ xml_last_auth + "\"/>\r\n" + "	<РодительскийЭлемент>\r\n"
-								+ "		<ПерсональныеДанные Фамилия=\"" + CCUSLAST_NAME.getText() + "\" �?мя=\""
+								+ "		<ПерсональныеДанные Фамилия=\"" + CCUSLAST_NAME.getText() + "\" Имя=\""
 								+ CCUSFIRST_NAME.getText() + "\" Отчество=\"" + CCUSMIDDLE_NAME.getText()
 								+ "\" ДатаРождения=\"" + DCUSBIRTHDAY.getValue().format(formatter) + " 0:00:00\"/>\r\n"
 								+ "	</РодительскийЭлемент>\r\n" + "</Контейнер>";
@@ -549,7 +549,7 @@ public class AddCus {
 //					request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<Контейнер>\r\n"
 //							+ "	<ДанныеАвторизации IDБазы=\"" + exdb.ID() + "\" ДатаПоследнейАвторизации=\""
 //							+ xml_last_auth + "\"/>\r\n" + "	<РодительскийЭлемент>\r\n"
-//							+ "		<ПерсональныеДанные Фамилия=\"" + CCUSLAST_NAME.getText() + "\" �?мя=\""
+//							+ "		<ПерсональныеДанные Фамилия=\"" + CCUSLAST_NAME.getText() + "\" Имя=\""
 //							+ CCUSFIRST_NAME.getText() + "\" Отчество=\"" + CCUSMIDDLE_NAME.getText()
 //							+ "\" ДатаРождения=\"" + DCUSBIRTHDAY.getValue().format(formatter) + " 0:00:00\"/>\r\n"
 //							+ "	</РодительскийЭлемент>\r\n" + "</Контейнер>";
@@ -891,7 +891,7 @@ public class AddCus {
 	private ComboBox<String> AREA;
 
 	/**
-	 * �?мя
+	 * Имя
 	 */
 	@FXML
 	private TextField CCUSFIRST_NAME;
@@ -1041,7 +1041,7 @@ public class AddCus {
 	private TableColumn<CUS_DOCUM, String> DOC_AGENCY;
 
 	/**
-	 * �?нфраструктура - улица
+	 * Инфраструктура - улица
 	 */
 	@FXML
 	private TextField INFR_NAME;
@@ -1169,7 +1169,7 @@ public class AddCus {
 	}
 
 	/**
-	 * �?нициализация гражданства
+	 * Инициализация гражданства
 	 */
 	void InitCitizen() {
 		try {
@@ -1868,7 +1868,7 @@ public class AddCus {
 									+ xml_last_auth + "\"/>\r\n" + "	<РодительскийЭлемент>\r\n"
 									+ "		<ПерсональныеДанные Оператор=\"" + DB_NAME + "/" + rs.getString("OPER")
 									+ "\" ID=\"\" КодСсылки=\"\" Фамилия=\"" + rs.getString("CCUSLAST_NAME")
-									+ "\" �?мя=\"" + rs.getString("CCUSFIRST_NAME") + "\" Отчество=\""
+									+ "\" Имя=\"" + rs.getString("CCUSFIRST_NAME") + "\" Отчество=\""
 									+ rs.getString("CCUSMIDDLE_NAME") + "\" ДатаРождения=\"" + rs.getString("BR_DATE")
 									+ "\" КодПола=\"" + rs.getString("CCUSSEX") + "\"/>\r\n"
 									+ "		<МестоЖительства КодРайона=\"" + rs.getString("CODE_AREA")
@@ -2214,7 +2214,7 @@ public class AddCus {
 	private TabPane CusTab;
 
 	/**
-	 * При потере фокуса Ф�?О
+	 * При потере фокуса ФИО
 	 * 
 	 * @param event
 	 */
@@ -2233,7 +2233,7 @@ public class AddCus {
 	}
 
 	/**
-	 * При потере фокуса Ф�?О
+	 * При потере фокуса ФИО
 	 * 
 	 * @param event
 	 */
@@ -2320,7 +2320,7 @@ public class AddCus {
 	}
 
 	/**
-	 * �?нициализация
+	 * Инициализация
 	 */
 	@FXML
 	private void initialize() {
@@ -2410,7 +2410,7 @@ public class AddCus {
 				return t;
 			});
 
-			// при смене фокуса Ф�?О
+			// при смене фокуса ФИО
 			{
 				focusedProperty(CCUSLAST_NAME, CCUSFIRST_NAME, null);
 				focusedProperty(CCUSFIRST_NAME, CCUSMIDDLE_NAME, null);
@@ -2505,7 +2505,7 @@ public class AddCus {
 				// UpperCase(DOC_AGENCY_T);
 			}
 			/**
-			 * �?нициализация столбцов
+			 * Инициализация столбцов
 			 */
 			ID_DOC_TP.setCellValueFactory(cellData -> cellData.getValue().ID_DOC_TPProperty());
 			DOC_SER.setCellValueFactory(cellData -> cellData.getValue().DOC_SERProperty());
@@ -2526,7 +2526,7 @@ public class AddCus {
 			// DateFormatPiker(DOC_DATE_T);
 			// DateFormatPiker(DCUSBIRTHDAY);
 			/**
-			 * �?нициализация столбцов таблицы-Гражданства
+			 * Инициализация столбцов таблицы-Гражданства
 			 */
 			// COUNTRY.setCellValueFactory(cellData ->
 			// cellData.getValue().COUNTRY_CODEProperty());
@@ -2676,7 +2676,7 @@ public class AddCus {
 			CCUSSEX.getItems().addAll("Мужской", "Женский");
 
 			/**
-			 * ОТДЕЛЕН�?Я
+			 * ОТДЕЛЕНИЯ
 			 */
 			{
 

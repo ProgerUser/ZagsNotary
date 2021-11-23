@@ -451,7 +451,7 @@ public class DivorceList {
 										if (from == null) {
 											Refresh();
 										}
-										// УДАЛ�?ТЬ ЗАП�?СЬ О "ЛОЧКЕ"=
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 										String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
@@ -502,7 +502,7 @@ public class DivorceList {
 													e.printStackTrace();
 												}
 												newWindow_yn.close();
-												// УДАЛ�?ТЬ ЗАП�?СЬ О "ЛОЧКЕ"=
+												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 												String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
@@ -521,7 +521,7 @@ public class DivorceList {
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										conn.rollback();
 										isopen = false;
-										// УДАЛ�?ТЬ ЗАП�?СЬ О "ЛОЧКЕ"=
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 										String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
@@ -1025,7 +1025,7 @@ public class DivorceList {
 		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
 		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("�?спользуйте операцию \"�?\" для многоколоночного фильтра");
+		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
 		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
 		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
