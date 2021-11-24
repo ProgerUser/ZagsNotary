@@ -39044,4 +39044,47 @@ Caused by: Error : 2292, Position : 0, Sql = delete from PM_DOC_TYPES where DOC_
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
 	at java.lang.Thread.run(Thread.java:748)
 
+] - $End$[23.11.2021 11:21:07] $Sep$ [ru.psv.mj.update.root.Main.start()] $Sep$ [ERROR] $Sep$ [214] $Sep$ [java.sql.SQLSyntaxErrorException: ORA-01756: нет завершающей кавычки
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:494)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:446)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1054)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:623)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:252)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:612)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:226)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:59)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForDescribe(T4CPreparedStatement.java:747)
+	at oracle.jdbc.driver.OracleStatement.executeMaybeDescribe(OracleStatement.java:904)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1082)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3780)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeInternal(T4CPreparedStatement.java:1343)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeQuery(OraclePreparedStatement.java:3822)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeQuery(OraclePreparedStatementWrapper.java:1165)
+	at ru.psv.mj.update.root.Main.start(Main.java:117)
+	at ru.psv.mj.app.main.Main.start(Main.java:175)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$8(LauncherImpl.java:863)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$7(PlatformImpl.java:326)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: Error : 1756, Position : 283, Sql = select count(*) CNT
+  from (select prj_id, prj_parent, BYTES, prj_name, is_folder, version
+          from project where PRJ_NAME = 'MJ_UPDATES.exe'
+        minus
+        select prj_id, prj_parent, BYTES, prj_name, is_folder, version
+          from project_temp where PRJ_NAME = 'MJ_UPDATES.exe), OriginalSql = select count(*) CNT
+  from (select prj_id, prj_parent, BYTES, prj_name, is_folder, version
+          from project where PRJ_NAME = 'MJ_UPDATES.exe'
+        minus
+        select prj_id, prj_parent, BYTES, prj_name, is_folder, version
+          from project_temp where PRJ_NAME = 'MJ_UPDATES.exe), Error Msg = ORA-01756: нет завершающей кавычки
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:498)
+	... 25 more
+~JavaFX Application Thread
 ] - $End$
