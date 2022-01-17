@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -243,21 +246,25 @@ public class EditPmEmpController {
 			}
 		});
 	}
-	
+
 	/**
 	 * Для руководителя
 	 */
 	private void ConvBoss() {
-		EMP_LOGIN.setConverter(new StringConverter<USR>() {
+		EMP_BOSS.setConverter(new StringConverter<VPM_EMP>() {
 			@Override
-			public String toString(USR object) {
-				return object != null ? object.getCUSRLOGNAME() + "=" + object.getCUSRNAME() : "";
+			public String toString(VPM_EMP object) {
+				return object != null
+						? object.getEMP_ID() + "=" + object.getEMP_LASTNAME() + " " + object.getEMP_FIRSTNAME() + " "
+								+ object.getEMP_MIDDLENAME()
+						: "";
 			}
 
 			@Override
-			public USR fromString(final String string) {
-				return EMP_LOGIN.getItems().stream()
-						.filter(product -> (product.getCUSRLOGNAME() + "=" + product.getCUSRNAME()).equals(string))
+			public VPM_EMP fromString(final String string) {
+				return EMP_BOSS.getItems().stream()
+						.filter(product -> (product.getEMP_ID() + "=" + product.getEMP_LASTNAME() + " "
+								+ product.getEMP_FIRSTNAME() + " " + product.getEMP_MIDDLENAME()).equals(string))
 						.findFirst().orElse(null);
 			}
 		});
@@ -315,6 +322,57 @@ public class EditPmEmpController {
 					}
 				}
 			}
+			// Руководство
+			{
+				PreparedStatement sqlStatement = DbUtil.conn
+						.prepareStatement("select * from usr where usr.dusrfire is null");
+				ResultSet rs = sqlStatement.executeQuery();
+				ObservableList<VPM_EMP> areas = FXCollections.observableArrayList();
+				while (rs.next()) {
+					VPM_EMP list = new VPM_EMP();
+
+					list.setEMP_EMAIL(rs.getString("EMP_EMAIL"));
+					list.setEMP_ID(rs.getLong("EMP_ID"));
+					list.setEMP_WORKSTART((rs.getDate("EMP_WORKSTART") != null)
+							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("EMP_WORKSTART")),
+									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+							: null);
+					list.setEMP_TEL(rs.getString("EMP_TEL"));
+					list.setEMP_LOGIN(rs.getString("EMP_LOGIN"));
+					list.setEMP_LOGIN_L(rs.getLong("EMP_LOGIN_L"));
+					list.setEMP_POSITION(rs.getString("EMP_POSITION"));
+					list.setEMP_FIRSTNAME(rs.getString("EMP_FIRSTNAME"));
+					list.setEMP_LASTNAME(rs.getString("EMP_LASTNAME"));
+					list.setEMP_MIDDLENAME(rs.getString("EMP_MIDDLENAME"));
+					list.setEMP_WORKEND((rs.getDate("EMP_WORKEND") != null)
+							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("EMP_WORKEND")),
+									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+							: null);
+
+					areas.add(list);
+				}
+
+				sqlStatement.close();
+				rs.close();
+
+				EMP_BOSS.setItems(areas);
+
+				FxUtilTest.getComboBoxValue(EMP_BOSS);
+				FxUtilTest.autoCompleteComboBoxPlus(EMP_BOSS,
+						(typedText, itemToCompare) -> (itemToCompare.getEMP_ID() + "=" + itemToCompare.getEMP_LASTNAME()
+								+ " " + itemToCompare.getEMP_FIRSTNAME() + " " + itemToCompare.getEMP_MIDDLENAME())
+										.toLowerCase().contains(typedText.toLowerCase()));
+
+				ConvBoss();
+
+				for (USR usr : EMP_BOSS.getItems()) {
+					if (usr.getIUSRID().equals(pm_emp.getEMP_LOGIN_L())) {
+						EMP_LOGIN.getSelectionModel().select(usr);
+						break;
+					}
+				}
+			}
+
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
