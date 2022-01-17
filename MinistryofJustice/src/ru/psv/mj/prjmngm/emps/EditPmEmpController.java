@@ -72,6 +72,11 @@ public class EditPmEmpController {
 	 */
 	@FXML
 	private ComboBox<VPM_EMP> EMP_BOSS;
+	/**
+	 * Тип сотрудника
+	 */
+	@FXML
+	private ComboBox<PM_EMP_JBTP> EMP_JBTYPE;
 	@FXML
 	private MaskField EMP_TEL;
 	@FXML
@@ -95,7 +100,7 @@ public class EditPmEmpController {
 
 	void SaveCompare() {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ call PM_EMP_PKG.EDIT(?,?,?,?,?,?,?,?,?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall("{ call PM_EMP_PKG.EDIT(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			// Ошибка
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			// ИД сотрудника
@@ -128,6 +133,18 @@ public class EditPmEmpController {
 			/* Дата увольнения */
 			callStmt.setDate(11,
 					(EMP_WORKEND.getValue() != null) ? java.sql.Date.valueOf(EMP_WORKEND.getValue()) : null);
+			// Руководитель
+			if (EMP_BOSS.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setLong(12, EMP_BOSS.getSelectionModel().getSelectedItem().getEMP_ID());
+			} else {
+				callStmt.setNull(12, java.sql.Types.INTEGER);
+			}
+			// Тип сотрудника
+			if (EMP_JBTYPE.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setLong(13, EMP_JBTYPE.getSelectionModel().getSelectedItem().getJB_ID());
+			} else {
+				callStmt.setNull(13, java.sql.Types.INTEGER);
+			}
 			// выполнение
 			callStmt.execute();
 			// закрыть
@@ -170,7 +187,7 @@ public class EditPmEmpController {
 				}
 			}
 
-			CallableStatement callStmt = conn.prepareCall("{ call PM_EMP_PKG.EDIT(?,?,?,?,?,?,?,?,?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall("{ call PM_EMP_PKG.EDIT(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			// Ошибка
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			// ИД сотрудника
@@ -203,8 +220,18 @@ public class EditPmEmpController {
 			/* Дата увольнения */
 			callStmt.setDate(11,
 					(EMP_WORKEND.getValue() != null) ? java.sql.Date.valueOf(EMP_WORKEND.getValue()) : null);
-			// выполнение
-			callStmt.execute();
+			// Руководитель
+			if (EMP_BOSS.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setLong(12, EMP_BOSS.getSelectionModel().getSelectedItem().getEMP_ID());
+			} else {
+				callStmt.setNull(12, java.sql.Types.INTEGER);
+			}
+			// Тип сотрудника
+			if (EMP_JBTYPE.getSelectionModel().getSelectedItem() != null) {
+				callStmt.setLong(13, EMP_JBTYPE.getSelectionModel().getSelectedItem().getJB_ID());
+			} else {
+				callStmt.setNull(13, java.sql.Types.INTEGER);
+			}
 			// выполнение
 			callStmt.execute();
 			if (callStmt.getString(1) == null) {
@@ -271,6 +298,25 @@ public class EditPmEmpController {
 	}
 
 	/**
+	 * Для типа сотрудника
+	 */
+	private void ConvEmpJobType() {
+		EMP_JBTYPE.setConverter(new StringConverter<PM_EMP_JBTP>() {
+			@Override
+			public String toString(PM_EMP_JBTP object) {
+				return object != null ? object.getJB_ID() + "=" + object.getJP_NAME() : "";
+			}
+
+			@Override
+			public PM_EMP_JBTP fromString(final String string) {
+				return EMP_JBTYPE.getItems().stream()
+						.filter(product -> (product.getJB_ID() + "=" + product.getJP_NAME()).equals(string)).findFirst()
+						.orElse(null);
+			}
+		});
+	}
+
+	/**
 	 * Инициализация
 	 */
 	@FXML
@@ -325,7 +371,8 @@ public class EditPmEmpController {
 			// Руководство
 			{
 				PreparedStatement sqlStatement = DbUtil.conn
-						.prepareStatement("select * from usr where usr.dusrfire is null");
+						.prepareStatement("select * from VPM_EMP t where EMP_ID <> ?");
+				sqlStatement.setLong(1, pm_emp.getEMP_ID());
 				ResultSet rs = sqlStatement.executeQuery();
 				ObservableList<VPM_EMP> areas = FXCollections.observableArrayList();
 				while (rs.next()) {
@@ -348,7 +395,6 @@ public class EditPmEmpController {
 							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("EMP_WORKEND")),
 									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 							: null);
-
 					areas.add(list);
 				}
 
@@ -365,9 +411,40 @@ public class EditPmEmpController {
 
 				ConvBoss();
 
-				for (USR usr : EMP_BOSS.getItems()) {
-					if (usr.getIUSRID().equals(pm_emp.getEMP_LOGIN_L())) {
-						EMP_LOGIN.getSelectionModel().select(usr);
+				for (VPM_EMP emp : EMP_BOSS.getItems()) {
+					if (emp.getEMP_ID().equals(pm_emp.getEMP_BOSS())) {
+						EMP_BOSS.getSelectionModel().select(emp);
+						break;
+					}
+				}
+			}
+			// Тип сотрудника
+			{
+				PreparedStatement sqlStatement = DbUtil.conn.prepareStatement("select * from PM_EMP_JBTP t");
+				ResultSet rs = sqlStatement.executeQuery();
+				ObservableList<PM_EMP_JBTP> areas = FXCollections.observableArrayList();
+				while (rs.next()) {
+					PM_EMP_JBTP list = new PM_EMP_JBTP();
+					list.setJP_NAME(rs.getString("JP_NAME"));
+					list.setJB_ID(rs.getLong("JB_ID"));
+					areas.add(list);
+				}
+
+				sqlStatement.close();
+				rs.close();
+
+				EMP_JBTYPE.setItems(areas);
+
+				FxUtilTest.getComboBoxValue(EMP_JBTYPE);
+				FxUtilTest.autoCompleteComboBoxPlus(EMP_JBTYPE,
+						(typedText, itemToCompare) -> (itemToCompare.getJB_ID() + "=" + itemToCompare.getJP_NAME())
+								.toLowerCase().contains(typedText.toLowerCase()));
+
+				ConvEmpJobType();
+
+				for (PM_EMP_JBTP jbtp : EMP_JBTYPE.getItems()) {
+					if (jbtp.getJB_ID().equals(pm_emp.getEMP_JBTYPE())) {
+						EMP_JBTYPE.getSelectionModel().select(jbtp);
 						break;
 					}
 				}

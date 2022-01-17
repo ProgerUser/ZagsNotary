@@ -12,14 +12,15 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
+
 <?import ru.psv.mj.widgets.MaskField?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="500.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="500.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
    <children>
-      <ScrollPane fitToWidth="true" maxHeight="300.0" styleClass="mylistview" stylesheets="ScrPane.css" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+      <ScrollPane fitToWidth="true" maxHeight="400.0" maxWidth="1.7976931348623157E308" styleClass="mylistview" stylesheets="ScrPane.css" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets />
          </VBox.margin>
@@ -41,6 +42,8 @@
                         <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints prefHeight="30.0" />
+                        <RowConstraints prefHeight="30.0" />
                     </rowConstraints>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Фамилия" GridPane.halignment="RIGHT">
@@ -97,12 +100,18 @@
                         </Text>
                         <DatePicker fx:id="EMP_WORKSTART" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <DatePicker fx:id="EMP_WORKEND" layoutX="143.0" layoutY="223.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <Text layoutX="44.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Руководитель" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
+                        <Text layoutX="44.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Руководитель отдела" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
                            <GridPane.margin>
                               <Insets right="5.0" />
                            </GridPane.margin>
                         </Text>
                         <ComboBox fx:id="EMP_BOSS" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <Text layoutX="44.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Тип сотрудника" GridPane.halignment="RIGHT" GridPane.rowIndex="10">
+                           <GridPane.margin>
+                              <Insets right="5.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <ComboBox fx:id="EMP_JBTYPE" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                      </children>
                   </GridPane>
                </children>

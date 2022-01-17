@@ -30,6 +30,12 @@ public class VPM_EMP {
 	private SimpleObjectProperty<LocalDate> EMP_WORKSTART;
 	/** Дата увольнения */
 	private SimpleObjectProperty<LocalDate> EMP_WORKEND;
+	/** Начальник */
+	private LongProperty EMP_BOSS;
+	/** Тип сотрудника */
+	private LongProperty EMP_JBTYPE;
+	/** Штат/полштата/удаленка */
+	private LongProperty EMP_JB_YPE2;
 
 	public VPM_EMP() {
 		this.EMP_ID = new SimpleLongProperty();
@@ -43,6 +49,9 @@ public class VPM_EMP {
 		this.EMP_LOGIN_L = new SimpleLongProperty();
 		this.EMP_WORKSTART = new SimpleObjectProperty<>();
 		this.EMP_WORKEND = new SimpleObjectProperty<>();
+		this.EMP_BOSS = new SimpleLongProperty();
+		this.EMP_JBTYPE = new SimpleLongProperty();
+		this.EMP_JB_YPE2 = new SimpleLongProperty();
 	}
 
 	public void setEMP_ID(Long EMP_ID) {
@@ -89,6 +98,18 @@ public class VPM_EMP {
 		this.EMP_WORKEND.set(EMP_WORKEND);
 	}
 
+	public void setEMP_BOSS(Long EMP_BOSS) {
+		this.EMP_BOSS.set(EMP_BOSS);
+	}
+
+	public void setEMP_JBTYPE(Long EMP_JBTYPE) {
+		this.EMP_JBTYPE.set(EMP_JBTYPE);
+	}
+
+	public void setEMP_JB_YPE2(Long EMP_JB_YPE2) {
+		this.EMP_JB_YPE2.set(EMP_JB_YPE2);
+	}
+
 	public Long getEMP_ID() {
 		return EMP_ID.get();
 	}
@@ -133,6 +154,18 @@ public class VPM_EMP {
 		return EMP_WORKEND.get();
 	}
 
+	public Long getEMP_BOSS() {
+		return EMP_BOSS.get();
+	}
+
+	public Long getEMP_JBTYPE() {
+		return EMP_JBTYPE.get();
+	}
+
+	public Long getEMP_JB_YPE2() {
+		return EMP_JB_YPE2.get();
+	}
+
 	public LongProperty EMP_IDProperty() {
 		return EMP_ID;
 	}
@@ -175,5 +208,17 @@ public class VPM_EMP {
 
 	public SimpleObjectProperty<LocalDate> EMP_WORKENDProperty() {
 		return EMP_WORKEND;
+	}
+
+	public LongProperty EMP_BOSSProperty() {
+		return EMP_BOSS;
+	}
+
+	public LongProperty EMP_JBTYPEProperty() {
+		return EMP_JBTYPE;
+	}
+
+	public LongProperty EMP_JB_YPE2Property() {
+		return EMP_JB_YPE2;
 	}
 }

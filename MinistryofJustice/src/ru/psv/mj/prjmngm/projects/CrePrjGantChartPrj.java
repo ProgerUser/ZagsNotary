@@ -210,7 +210,11 @@ public class CrePrjGantChartPrj {
 		table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 		table.getColumns().stream().forEach((column_) -> {
 			if (column_.getText().equals("")) {
+				
 			} else {
+				System.out.println(column_.getText());
+				System.out.println(column_.getColumns().size());
+				
 				Text t = new Text(column_.getText());
 				double max = t.getLayoutBounds().getWidth();
 				for (int i = 0; i < table.getItems().size(); i++) {

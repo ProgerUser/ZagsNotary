@@ -393,16 +393,19 @@ public class RootPmEmpController {
 			while (rs.next()) {
 				VPM_EMP list = new VPM_EMP();
 				list.setEMP_EMAIL(rs.getString("EMP_EMAIL"));
+				list.setEMP_JBTYPE(rs.getLong("EMP_JBTYPE"));
 				list.setEMP_ID(rs.getLong("EMP_ID"));
 				list.setEMP_WORKSTART((rs.getDate("EMP_WORKSTART") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("EMP_WORKSTART")),
 								DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 						: null);
+				list.setEMP_JB_YPE2(rs.getLong("EMP_JB_YPE2"));
 				list.setEMP_TEL(rs.getString("EMP_TEL"));
 				list.setEMP_LOGIN(rs.getString("EMP_LOGIN"));
 				list.setEMP_LOGIN_L(rs.getLong("EMP_LOGIN_L"));
 				list.setEMP_POSITION(rs.getString("EMP_POSITION"));
 				list.setEMP_FIRSTNAME(rs.getString("EMP_FIRSTNAME"));
+				list.setEMP_BOSS(rs.getLong("EMP_BOSS"));
 				list.setEMP_LASTNAME(rs.getString("EMP_LASTNAME"));
 				list.setEMP_MIDDLENAME(rs.getString("EMP_MIDDLENAME"));
 				list.setEMP_WORKEND((rs.getDate("EMP_WORKEND") != null)
