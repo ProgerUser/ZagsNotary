@@ -64,6 +64,11 @@ public class EditPmEmpController {
 	private TextField EMP_EMAIL;
 	@FXML
 	private ComboBox<USR> EMP_LOGIN;
+	/**
+	 * Руководитель
+	 */
+	@FXML
+	private ComboBox<VPM_EMP> EMP_BOSS;
 	@FXML
 	private MaskField EMP_TEL;
 	@FXML
@@ -224,6 +229,25 @@ public class EditPmEmpController {
 	 * Для типа документов
 	 */
 	private void convertComboDisplayList() {
+		EMP_LOGIN.setConverter(new StringConverter<USR>() {
+			@Override
+			public String toString(USR object) {
+				return object != null ? object.getCUSRLOGNAME() + "=" + object.getCUSRNAME() : "";
+			}
+
+			@Override
+			public USR fromString(final String string) {
+				return EMP_LOGIN.getItems().stream()
+						.filter(product -> (product.getCUSRLOGNAME() + "=" + product.getCUSRNAME()).equals(string))
+						.findFirst().orElse(null);
+			}
+		});
+	}
+	
+	/**
+	 * Для руководителя
+	 */
+	private void ConvBoss() {
 		EMP_LOGIN.setConverter(new StringConverter<USR>() {
 			@Override
 			public String toString(USR object) {

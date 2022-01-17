@@ -97,6 +97,12 @@
                         </Text>
                         <DatePicker fx:id="EMP_WORKSTART" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <DatePicker fx:id="EMP_WORKEND" layoutX="143.0" layoutY="223.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <Text layoutX="44.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Руководитель" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
+                           <GridPane.margin>
+                              <Insets right="5.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <ComboBox fx:id="EMP_BOSS" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                      </children>
                   </GridPane>
                </children>

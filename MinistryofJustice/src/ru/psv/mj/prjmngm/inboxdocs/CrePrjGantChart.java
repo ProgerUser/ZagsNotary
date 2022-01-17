@@ -130,7 +130,6 @@ public class CrePrjGantChart {
 	 * 
 	 * @param event
 	 */
-	@SuppressWarnings("null")
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
@@ -501,9 +500,9 @@ public class CrePrjGantChart {
 							LocalDate lt = LocalDate.now();
 							LocalDate lcd = item.atZone(ZoneId.systemDefault()).toLocalDate();
 							long daysBetween = ChronoUnit.DAYS.between(lt, lcd);
-							if (daysBetween >= 20) {
+							if (daysBetween >= 20 | daysBetween < 0) {
 								setStyle("-fx-text-fill: red;-fx-font-weight: bold");
-							} else if (daysBetween <= 20) {
+							} else if (daysBetween <= 20 & daysBetween > 0) {
 								setStyle("-fx-text-fill: orange;-fx-font-weight: bold");
 							} else {
 								setStyle("");
