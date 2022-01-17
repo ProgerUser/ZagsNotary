@@ -34,6 +34,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
+import ru.psv.mj.prjmngm.inboxdocs.model.VPM_DOCS;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 

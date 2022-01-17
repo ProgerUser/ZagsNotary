@@ -1,4 +1,4 @@
-package ru.psv.mj.prjmngm.inboxdocs;
+package ru.psv.mj.prjmngm.inboxdocs.model;
 
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;

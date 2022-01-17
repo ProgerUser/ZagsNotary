@@ -27,6 +27,7 @@ import javafx.util.StringConverter;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
 import ru.psv.mj.prjmngm.doc.type.PM_DOC_TYPES;
+import ru.psv.mj.prjmngm.inboxdocs.model.PM_ORG;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.widgets.FxUtilTest;
 
