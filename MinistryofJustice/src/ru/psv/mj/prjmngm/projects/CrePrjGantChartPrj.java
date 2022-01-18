@@ -3,6 +3,7 @@ package ru.psv.mj.prjmngm.projects;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -37,20 +38,28 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
-import ru.psv.mj.prjmngm.inboxdocs.model.VPM_PROJECTS;
+import ru.psv.mj.msg.Msg;
+import ru.psv.mj.prjmngm.inboxdocs.EditPmDocC;
+import ru.psv.mj.prjmngm.projects.model.VPM_PROJECTS;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 
@@ -210,11 +219,11 @@ public class CrePrjGantChartPrj {
 		table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 		table.getColumns().stream().forEach((column_) -> {
 			if (column_.getText().equals("")) {
-				
+
 			} else {
 				System.out.println(column_.getText());
 				System.out.println(column_.getColumns().size());
-				
+
 				Text t = new Text(column_.getText());
 				double max = t.getLayoutBounds().getWidth();
 				for (int i = 0; i < table.getItems().size(); i++) {
@@ -575,7 +584,65 @@ public class CrePrjGantChartPrj {
 	@FXML
 	void EditPrj(ActionEvent event) {
 		try {
+			VPM_PROJECTS sel = prj_tbl.getSelectionModel().getSelectedItem();
+			if (sel != null) {
+				// удержать
+				PreparedStatement selforupd = conn
+						.prepareStatement("select * from VPM_PROJECTS where PRJ_ID = ? FOR UPDATE NOWAIT");
+				selforupd.setLong(1, sel.getPRJ_ID());
+				try {
+					selforupd.executeQuery();
+					selforupd.close();
+					// add lock row
+					String lock = DbUtil.Lock_Row(sel.getDOC_ID(), "VPM_PROJECTS", conn);
+					if (lock != null) {// if error add row
+						Msg.Message(lock);
+						conn.rollback();
+						return;
+					}
+					// <FXML>---------------------------------------
+					Stage stage = new Stage();
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/projects/IUPmDoc.fxml"));
+					EditPmPrjC controller = new EditPmPrjC();
+					controller.SetClass(sel, conn);
 
+					loader.setController(controller);
+					Parent root = loader.load();
+					stage.setScene(new Scene(root));
+					stage.getIcons().add(new Image("/icon.png"));
+					stage.setTitle("Редактирование: " + sel.getDOC_ID());
+					stage.initOwner((Stage) PM_DOCS.getScene().getWindow());
+					stage.setResizable(true);
+					stage.initModality(Modality.WINDOW_MODAL);
+					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+						@Override
+						public void handle(WindowEvent paramT) {
+							try {
+								if (controller.getStatus()) {
+									conn.commit();
+									// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+									String lock = DbUtil.Lock_Row_Delete(sel.getDOC_ID(), "PM_DOCS", conn);
+									if (lock != null) {// if error add row
+										Msg.Message(lock);
+									}
+									LoadTable();
+								}
+							} catch (Exception e) {
+								DbUtil.Log_Error(e);
+							}
+						}
+					});
+					stage.show();
+					// </FXML>---------------------------------------
+				} catch (SQLException e) {
+					if (e.getErrorCode() == 54) {
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(sel.getDOC_ID(), "PM_DOCS"));
+					} else {
+						DbUtil.Log_Error(e);
+					}
+				}
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

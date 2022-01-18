@@ -53,7 +53,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
-import ru.psv.mj.prjmngm.inboxdocs.model.VPM_PROJECTS;
+import ru.psv.mj.prjmngm.projects.model.VPM_PROJECTS;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 

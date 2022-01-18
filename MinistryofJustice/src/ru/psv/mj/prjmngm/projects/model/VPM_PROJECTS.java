@@ -1,4 +1,4 @@
-package ru.psv.mj.prjmngm.inboxdocs.model;
+package ru.psv.mj.prjmngm.projects.model;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
