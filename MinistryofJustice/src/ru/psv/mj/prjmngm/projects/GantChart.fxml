@@ -81,15 +81,15 @@
                                           <TableColumn fx:id="doc_id" prefWidth="75.0" text="ИД" />
                                           <TableColumn fx:id="doc_date" prefWidth="120.0" text="Дата документа" />
                                           <TableColumn fx:id="doc_end" prefWidth="120.0" text="Срок документа" />
-                                          <TableColumn fx:id="doc_name" prefWidth="120.0" text="Наименование" />
-                                          <TableColumn fx:id="doc_comment" prefWidth="120.0" text="Комментарий" />
-                                          <TableColumn fx:id="doc_tp_name" prefWidth="120.0" text="Шаблон  word" />
+                                          <TableColumn fx:id="doc_name" prefWidth="250.0" text="Наименование" />
+                                          <TableColumn fx:id="doc_comment" prefWidth="250.0" text="Комментарий" />
+                                          <TableColumn fx:id="doc_tp_name" prefWidth="200.0" text="Шаблон  word" />
                                        </columns>
                                     </TableColumn>
                                     <TableColumn prefWidth="120.0" text="Организация">
                                        <columns>
-                                          <TableColumn fx:id="org_name" prefWidth="100.0" text="Название орг." />
-                                          <TableColumn fx:id="org_ruk" prefWidth="120.0" text="Руководитель ФИО" />
+                                          <TableColumn fx:id="org_name" prefWidth="300.0" text="Название орг." />
+                                          <TableColumn fx:id="org_ruk" prefWidth="250.0" text="Руководитель ФИО" />
                                        </columns>
                                     </TableColumn>
                                  </columns>
@@ -101,14 +101,14 @@
                                           <TableColumn fx:id="emp_lastname" prefWidth="120.0" text="Фамилия" />
                                           <TableColumn fx:id="emp_firstname" prefWidth="120.0" text="Имя" />
                                           <TableColumn fx:id="emp_middlename" prefWidth="120.0" text="Отчество" />
-                                          <TableColumn fx:id="emp_position" prefWidth="120.0" text="Должность" />
+                                          <TableColumn fx:id="emp_position" prefWidth="150.0" text="Должность" />
                                        </columns>
                                     </TableColumn>
                                     <TableColumn prefWidth="75.0" text="Проект">
                                        <columns>
                                           <TableColumn fx:id="prj_creusr" prefWidth="150.0" text="Пользователь привязал" />
                                           <TableColumn fx:id="tm$prj_startdate" prefWidth="120.0" text="Время привязки" />
-                                          <TableColumn fx:id="prj_status_char" prefWidth="75.0" text="Статус" />
+                                          <TableColumn fx:id="prj_status_char" prefWidth="120.0" text="Статус" />
                                        </columns>
                                     </TableColumn>
                                  </columns>

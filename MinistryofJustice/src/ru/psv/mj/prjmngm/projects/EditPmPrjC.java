@@ -77,6 +77,7 @@ import ru.psv.mj.prjmngm.doc.type.PM_DOC_TYPES;
 import ru.psv.mj.prjmngm.inboxdocs.model.PM_ORG;
 import ru.psv.mj.prjmngm.inboxdocs.model.VPM_DOC_SCANS;
 import ru.psv.mj.prjmngm.inboxdocs.model.VPM_DOC_WORD;
+import ru.psv.mj.prjmngm.projects.model.PM_PRJ_STATUS;
 import ru.psv.mj.prjmngm.projects.model.VPM_PROJECTS;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
@@ -102,6 +103,11 @@ public class EditPmPrjC {
 	private ComboBox<PM_DOC_TYPES> DOC_TYPE;
 	@FXML
 	private ComboBox<PM_ORG> DOC_ORG;
+	/**
+	 * Статус
+	 */
+	@FXML
+	private ComboBox<PM_PRJ_STATUS> PRJ_STATUS;
 	@FXML
 	private TextField DOC_NUMBER;
 	@FXML
@@ -114,6 +120,11 @@ public class EditPmPrjC {
 	private TextField DOC_COMMENT;
 	@FXML
 	private TextField DOC_REF;
+	/**
+	 * Сотрудник
+	 */
+	@FXML
+	private TextField PRJ_EMP;
 	@FXML
 	private TextField DOC_NAME;
 	@FXML
@@ -282,6 +293,34 @@ public class EditPmPrjC {
 //			});
 //			stage.show();
 //			// </FXML>---------------------------------------
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Выбрать сотрудника
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void SelPrjRef(ActionEvent event) {
+		try {
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Удалить сотрудника
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void DelPrjRef(ActionEvent event) {
+		try {
+
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -805,6 +844,25 @@ public class EditPmPrjC {
 	}
 
 	/**
+	 * Статус
+	 */
+	private void PrjStatusCombo() {
+		PRJ_STATUS.setConverter(new StringConverter<PM_PRJ_STATUS>() {
+			@Override
+			public String toString(PM_PRJ_STATUS object) {
+				return object != null ? object.getPJST_ID() + "=" + object.getPJST_NAME() : "";
+			}
+
+			@Override
+			public PM_PRJ_STATUS fromString(final String string) {
+				return PRJ_STATUS.getItems().stream()
+						.filter(product -> (product.getPJST_ID() + "=" + product.getPJST_NAME()).equals(string))
+						.findFirst().orElse(null);
+			}
+		});
+	}
+
+	/**
 	 * Для организации
 	 */
 	private void ConvDocOrg() {
@@ -861,6 +919,8 @@ public class EditPmPrjC {
 				DOC_REF.setText(String.valueOf(class_.getDOC_REF()));
 			}
 			DOC_NAME.setText(class_.getDOC_NAME());
+			PRJ_EMP.setText(
+					class_.getEMP_LASTNAME() + " " + class_.getEMP_FIRSTNAME() + " " + class_.getEMP_MIDDLENAME());
 			// -------------------
 			{
 				String selectStmt = "select * from PM_DOC_TYPES t";
@@ -915,6 +975,33 @@ public class EditPmPrjC {
 				for (PM_ORG sel : DOC_ORG.getItems()) {
 					if (sel.getORG_ID().equals(class_.getORG_ID())) {
 						DOC_ORG.getSelectionModel().select(sel);
+						break;
+					}
+				}
+			}
+			// -------------------
+			{
+				String selectStmt = "select * from PM_PRJ_STATUS t order by PJST_ID asc";
+				PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+				ResultSet rs = prepStmt.executeQuery();
+				ObservableList<PM_PRJ_STATUS> obslist = FXCollections.observableArrayList();
+				while (rs.next()) {
+					PM_PRJ_STATUS list = new PM_PRJ_STATUS();
+					list.setPJST_ID(rs.getLong("PJST_ID"));
+					list.setPJST_NAME(rs.getString("PJST_NAME"));
+					obslist.add(list);
+				}
+				prepStmt.close();
+				rs.close();
+				PRJ_STATUS.setItems(obslist);
+//				FxUtilTest.getComboBoxValue(PRJ_STATUS);
+//				FxUtilTest.autoCompleteComboBoxPlus(PRJ_STATUS,
+//						(typedText, itemToCompare) -> (itemToCompare.getORG_ID() + "=" + itemToCompare.getORG_NAME())
+//								.toLowerCase().contains(typedText.toLowerCase()));
+				PrjStatusCombo();
+				for (PM_PRJ_STATUS sel : PRJ_STATUS.getItems()) {
+					if (sel.getPJST_ID().equals(class_.getPRJ_STATUS())) {
+						PRJ_STATUS.getSelectionModel().select(sel);
 						break;
 					}
 				}

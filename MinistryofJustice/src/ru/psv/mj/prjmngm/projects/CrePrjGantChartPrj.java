@@ -43,6 +43,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
@@ -58,7 +61,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
-import ru.psv.mj.prjmngm.inboxdocs.EditPmDocC;
 import ru.psv.mj.prjmngm.projects.model.VPM_PROJECTS;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
@@ -204,7 +206,7 @@ public class CrePrjGantChartPrj {
 				}
 			});
 			// resize
-			ResizeColumns(prj_tbl);
+			//ResizeColumns(prj_tbl);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -570,7 +572,20 @@ public class CrePrjGantChartPrj {
 	@FXML
 	void DeletePrj(ActionEvent event) {
 		try {
+			if (prj_tbl.getSelectionModel().getSelectedItem() != null) {
+				VPM_PROJECTS sel = prj_tbl.getSelectionModel().getSelectedItem();
 
+				final Alert alert = new Alert(AlertType.CONFIRMATION, "Удалить " + sel.getDOC_ID() + "?",
+						ButtonType.YES, ButtonType.NO);
+				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+					PreparedStatement prp = conn.prepareStatement("delete from PM_PROJECTS where PRJ_ID = ?");
+					prp.setLong(1, sel.getDOC_ID());
+					prp.executeUpdate();
+					prp.close();
+					conn.commit();
+					LoadTable();
+				}
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -603,7 +618,7 @@ public class CrePrjGantChartPrj {
 					// <FXML>---------------------------------------
 					Stage stage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/projects/IUPmDoc.fxml"));
+					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/projects/IUPmPrj.fxml"));
 					EditPmPrjC controller = new EditPmPrjC();
 					controller.SetClass(sel, conn);
 
@@ -612,7 +627,7 @@ public class CrePrjGantChartPrj {
 					stage.setScene(new Scene(root));
 					stage.getIcons().add(new Image("/icon.png"));
 					stage.setTitle("Редактирование: " + sel.getDOC_ID());
-					stage.initOwner((Stage) PM_DOCS.getScene().getWindow());
+					stage.initOwner((Stage) prj_tbl.getScene().getWindow());
 					stage.setResizable(true);
 					stage.initModality(Modality.WINDOW_MODAL);
 					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -622,7 +637,7 @@ public class CrePrjGantChartPrj {
 								if (controller.getStatus()) {
 									conn.commit();
 									// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-									String lock = DbUtil.Lock_Row_Delete(sel.getDOC_ID(), "PM_DOCS", conn);
+									String lock = DbUtil.Lock_Row_Delete(sel.getDOC_ID(), "VPM_PROJECTS", conn);
 									if (lock != null) {// if error add row
 										Msg.Message(lock);
 									}
@@ -637,7 +652,7 @@ public class CrePrjGantChartPrj {
 					// </FXML>---------------------------------------
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(sel.getDOC_ID(), "PM_DOCS"));
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(sel.getDOC_ID(), "VPM_PROJECTS"));
 					} else {
 						DbUtil.Log_Error(e);
 					}
