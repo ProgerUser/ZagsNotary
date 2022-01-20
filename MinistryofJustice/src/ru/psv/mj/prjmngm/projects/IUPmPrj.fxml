@@ -185,7 +185,7 @@
                                           <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <ComboBox fx:id="PRJ_STATUS" layoutX="131.0" layoutY="13.0" maxWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <ComboBox fx:id="PRJ_STATUS" layoutX="131.0" layoutY="13.0" maxWidth="250.0" onAction="#ChangeStatus" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Text layoutX="44.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Сотрудник" GridPane.halignment="RIGHT">
                                              <GridPane.margin>
                                                 <Insets right="5.0" />
