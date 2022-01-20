@@ -29,29 +29,27 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                      <children>
-                        <BorderPane fx:id="GantBorder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
-                           <top>
-                              <ToolBar BorderPane.alignment="CENTER">
-                                 <items>
-                                    <Button mnemonicParsing="false" onAction="#RefrGant" prefWidth="35.0">
-                                       <graphic>
-                                          <FontAwesomeIconView fontSmoothingType="LCD" glyphName="REFRESH" size="14" />
-                                       </graphic>
-                                       <tooltip>
-                                          <Tooltip text="Обновить таблицу">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Tooltip>
-                                       </tooltip>
-                                    </Button>
-                                    <Separator orientation="VERTICAL" />
-                                 </items>
-                                 <BorderPane.margin>
-                                    <Insets left="-5.0" right="-5.0" top="-5.0" />
-                                 </BorderPane.margin>
-                              </ToolBar>
-                           </top></BorderPane>
+                        <ToolBar>
+                           <items>
+                              <Button mnemonicParsing="false" onAction="#RefrGant" prefWidth="35.0">
+                                 <graphic>
+                                    <FontAwesomeIconView fontSmoothingType="LCD" glyphName="REFRESH" size="14" />
+                                 </graphic>
+                                 <tooltip>
+                                    <Tooltip text="Обновить таблицу">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Tooltip>
+                                 </tooltip>
+                              </Button>
+                              <Separator orientation="VERTICAL" />
+                           </items>
+                           <VBox.margin>
+                              <Insets left="-5.0" right="-5.0" top="-5.0" />
+                           </VBox.margin>
+                        </ToolBar>
+                        <BorderPane fx:id="GantBorder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </content>
@@ -92,15 +90,16 @@
                                           <TableColumn fx:id="doc_id" prefWidth="75.0" text="ИД" />
                                           <TableColumn fx:id="doc_date" prefWidth="120.0" text="Дата документа" />
                                           <TableColumn fx:id="doc_end" prefWidth="120.0" text="Срок документа" />
-                                          <TableColumn fx:id="doc_name" prefWidth="120.0" text="Наименование" />
-                                          <TableColumn fx:id="doc_comment" prefWidth="120.0" text="Комментарий" />
-                                          <TableColumn fx:id="doc_tp_name" prefWidth="120.0" text="Шаблон  word" />
+                                          <TableColumn fx:id="prj_status_char" prefWidth="120.0" text="Статус" />
+                                          <TableColumn fx:id="doc_name" prefWidth="250.0" text="Наименование" />
+                                          <TableColumn fx:id="doc_comment" prefWidth="250.0" text="Комментарий" />
+<!--                                           <TableColumn fx:id="doc_tp_name" prefWidth="200.0" text="Шаблон  word" /> -->
                                        </columns>
                                     </TableColumn>
                                     <TableColumn prefWidth="120.0" text="Организация">
                                        <columns>
-                                          <TableColumn fx:id="org_name" prefWidth="100.0" text="Название орг." />
-                                          <TableColumn fx:id="org_ruk" prefWidth="120.0" text="Руководитель ФИО" />
+                                          <TableColumn fx:id="org_name" prefWidth="300.0" text="Название орг." />
+<!--                                           <TableColumn fx:id="org_ruk" prefWidth="250.0" text="Руководитель ФИО" /> -->
                                        </columns>
                                     </TableColumn>
                                  </columns>
@@ -112,14 +111,13 @@
                                           <TableColumn fx:id="emp_lastname" prefWidth="120.0" text="Фамилия" />
                                           <TableColumn fx:id="emp_firstname" prefWidth="120.0" text="Имя" />
                                           <TableColumn fx:id="emp_middlename" prefWidth="120.0" text="Отчество" />
-                                          <TableColumn fx:id="emp_position" prefWidth="120.0" text="Должность" />
+                                          <TableColumn fx:id="emp_position" prefWidth="150.0" text="Должность" />
                                        </columns>
                                     </TableColumn>
                                     <TableColumn prefWidth="75.0" text="Проект">
                                        <columns>
-                                          <TableColumn fx:id="prj_creusr" prefWidth="150.0" text="Пользователь привязал" />
+<!--                                           <TableColumn fx:id="prj_creusr" prefWidth="150.0" text="Пользователь привязал" /> -->
                                           <TableColumn fx:id="tm$prj_startdate" prefWidth="120.0" text="Время привязки" />
-                                          <TableColumn fx:id="prj_status_char" prefWidth="75.0" text="Статус" />
                                        </columns>
                                     </TableColumn>
                                  </columns>

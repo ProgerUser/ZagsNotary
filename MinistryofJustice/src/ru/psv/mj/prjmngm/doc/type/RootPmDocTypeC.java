@@ -134,6 +134,41 @@ public class RootPmDocTypeC {
 			DbUtil.Log_Error(e);
 		}
 	}
+	
+	/**
+	 * Клонировать шаблон
+	 * 
+	 * @param event
+	 */
+	@FXML
+	private void Clone(ActionEvent event) {
+		try {
+			// права
+			if (DbUtil.Odb_Action(Long.valueOf(244)) == 0) {
+				Msg.Message("Нет доступа!");
+				return;
+			}
+			if (PM_DOC_TYPES.getSelectionModel().getSelectedItem() != null) {
+				PM_DOC_TYPES sel = PM_DOC_TYPES.getSelectionModel().getSelectedItem();
+
+				final Alert alert = new Alert(AlertType.CONFIRMATION, "Клонировать " + sel.getDOC_TP_NAME() + "?",
+						ButtonType.YES, ButtonType.NO);
+				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+					PreparedStatement prp = conn.prepareStatement("insert into PM_DOC_TYPES (DOC_TP_NAME, DOC_TP_WORD, DOC_TP_SQL) select DOC_TP_NAME || ' Копия ' || to_char(sysdate, 'hh24:mi:ss'),\r\n"
+							+ "       DOC_TP_WORD,\r\n"
+							+ "       DOC_TP_SQL\r\n"
+							+ "  from PM_DOC_TYPES t where DOC_TP_ID = ?");
+					prp.setLong(1, sel.getDOC_TP_ID());
+					prp.executeUpdate();
+					prp.close();
+					conn.commit();
+					LoadTable();
+				}
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
 
 	/**
 	 * Редактировать

@@ -38,6 +38,9 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventDispatchChain;
+import javafx.event.EventDispatcher;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,12 +50,17 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -131,7 +139,45 @@ public class CrePrjGantChartPrj {
 	void LoadTable() {
 		try {
 			// loop
-			String selectStmt = "select * from VPM_PROJECTS t order by PRJ_ID desc";
+			String selectStmt = "SELECT *\r\n"
+					+ "  FROM VPM_PROJECTS PRJ\r\n"
+					+ " WHERE --≈—À» –” Œ¬Œƒ»“≈À‹ Œ“ƒ≈À¿ » ¬—≈ ≈√Œ œŒƒ◊»≈ÕÕÕ€≈\r\n"
+					+ " (EXISTS\r\n"
+					+ "  (SELECT NULL\r\n"
+					+ "     FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
+					+ "    WHERE MEM.IUSRID = USR.IUSRID\r\n"
+					+ "      AND MEM.GRP_ID = GRP.GRP_ID\r\n"
+					+ "      AND GRP.GRP_NAME = 'PrjMngRukOtd'\r\n"
+					+ "      AND USR.CUSRLOGNAME = USER) AND\r\n"
+					+ "  PRJ.EMP_ID IN\r\n"
+					+ "  (SELECT EMP_ID\r\n"
+					+ "     FROM PM_EMP\r\n"
+					+ "    WHERE PM_EMP.EMP_BOSS IN\r\n"
+					+ "          (SELECT EMP_ID\r\n"
+					+ "             FROM PM_EMP\r\n"
+					+ "            WHERE PM_EMP.EMP_LOGIN =\r\n"
+					+ "                  (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = USER))))\r\n"
+					+ "--≈—À» –” Œ¬Œƒ»“≈À‹, ¬»ƒ≈“‹ ¬—≈\r\n"
+					+ " OR EXISTS\r\n"
+					+ " (SELECT NULL\r\n"
+					+ "    FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
+					+ "   WHERE MEM.IUSRID = USR.IUSRID\r\n"
+					+ "     AND MEM.GRP_ID = GRP.GRP_ID\r\n"
+					+ "     AND GRP.GRP_NAME = 'PrjMngRuk'\r\n"
+					+ "     AND USR.CUSRLOGNAME = USER)\r\n"
+					+ "--≈—À» Œ¡€◊Õ€… œŒÀ‹«Œ¬¿“≈À‹\r\n"
+					+ " OR ((NOT EXISTS (SELECT NULL\r\n"
+					+ "                 FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
+					+ "                WHERE MEM.IUSRID = USR.IUSRID\r\n"
+					+ "                  AND MEM.GRP_ID = GRP.GRP_ID\r\n"
+					+ "                  AND GRP.GRP_NAME IN ('PrjMngRuk', 'PrjMngRukOtd')\r\n"
+					+ "                  AND USR.CUSRLOGNAME = USER)) AND\r\n"
+					+ " PRJ.EMP_LOGIN IN\r\n"
+					+ " (SELECT EMP_ID\r\n"
+					+ "     FROM PM_EMP\r\n"
+					+ "    WHERE PM_EMP.EMP_LOGIN =\r\n"
+					+ "          (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = USER)))"
+					+ " order by PRJ_ID desc";
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<VPM_PROJECTS> obslist = FXCollections.observableArrayList();
@@ -475,7 +521,13 @@ public class CrePrjGantChartPrj {
 
 		// ---------------------------------
 		table.getColumns().addAll(empid, docname, docnumber, isfast, comment, docdate, docend, dtdiff);
-
+		
+		//
+		EventDispatcher treeOriginal = table.getEventDispatcher();
+		table.setEventDispatcher(new CellEventDispatcher(treeOriginal));
+		gantt.getTreeTable().setSortMode(null);
+		//
+		
 		links.forEach(link -> gantt.getLinks().add(link));
 
 		gantt.getGraphics().showEarliestActivities();
@@ -485,6 +537,30 @@ public class CrePrjGantChartPrj {
 		return gantt;
 	}
 
+	class CellEventDispatcher implements EventDispatcher {
+
+	    private final EventDispatcher original;
+
+	    public CellEventDispatcher(EventDispatcher original) {
+	        this.original = original;
+	    }
+
+	    @Override
+	    public Event dispatchEvent(Event event, EventDispatchChain tail) {
+	        if (event.getEventType().equals(MouseEvent.MOUSE_PRESSED) || 
+	             event.getEventType().equals(ContextMenuEvent.ANY)){
+	            event.consume();
+	        }
+	        if(event instanceof KeyEvent && event.getEventType().equals(KeyEvent.KEY_PRESSED)){
+	            if((((KeyEvent)event).getCode().equals(KeyCode.LEFT) || 
+	                 ((KeyEvent)event).getCode().equals(KeyCode.RIGHT))){
+	                event.consume();
+	            }
+	        }
+	        return original.dispatchEvent(event, tail);
+	    }
+	}
+	
 	private final ArrayList<ActivityLink<?>> links = new ArrayList<>();
 
 	/**
@@ -495,7 +571,6 @@ public class CrePrjGantChartPrj {
 		try {
 
 			GanttChartBase<?> gant = createGanttChart();
-
 			GantBorder.setTop(new GanttChartToolBar(gant));
 			GantBorder.setCenter(gant);
 			GantBorder.setBottom(new GanttChartStatusBar(gant));
@@ -514,9 +589,9 @@ public class CrePrjGantChartPrj {
 			prj_status_char.setCellValueFactory(cellData -> cellData.getValue().PRJ_STATUS_CHARProperty());
 			emp_position.setCellValueFactory(cellData -> cellData.getValue().EMP_POSITIONProperty());
 			doc_comment.setCellValueFactory(cellData -> cellData.getValue().DOC_COMMENTProperty());
-			org_ruk.setCellValueFactory(cellData -> cellData.getValue().ORG_RUKProperty());
-			prj_creusr.setCellValueFactory(cellData -> cellData.getValue().PRJ_CREUSRProperty());
-			doc_tp_name.setCellValueFactory(cellData -> cellData.getValue().DOC_TP_NAMEProperty());
+//			org_ruk.setCellValueFactory(cellData -> cellData.getValue().ORG_RUKProperty());
+//			prj_creusr.setCellValueFactory(cellData -> cellData.getValue().PRJ_CREUSRProperty());
+//			doc_tp_name.setCellValueFactory(cellData -> cellData.getValue().DOC_TP_NAMEProperty());
 			emp_middlename.setCellValueFactory(cellData -> cellData.getValue().EMP_MIDDLENAMEProperty());
 			emp_firstname.setCellValueFactory(cellData -> cellData.getValue().EMP_FIRSTNAMEProperty());
 			doc_id.setCellValueFactory(cellData -> cellData.getValue().DOC_IDProperty().asObject());
@@ -545,6 +620,20 @@ public class CrePrjGantChartPrj {
 			InitTabCol();
 			LoadTable();
 			CreGant();
+			/**
+			 * ƒ‚ÓÈÌÓÈ ˘ÂÎ˜ÓÍ ÔÓ ÒÚÓÍÂ
+			 */
+			prj_tbl.setRowFactory(tv -> {
+				TableRow<VPM_PROJECTS> row = new TableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						if (prj_tbl.getSelectionModel().getSelectedItem() != null) {
+							EditPrj(null);
+						}
+					}
+				});
+				return row;
+			});
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -578,8 +667,12 @@ public class CrePrjGantChartPrj {
 				final Alert alert = new Alert(AlertType.CONFIRMATION, "”‰‡ÎËÚ¸ " + sel.getDOC_ID() + "?",
 						ButtonType.YES, ButtonType.NO);
 				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-					PreparedStatement prp = conn.prepareStatement("delete from PM_PROJECTS where PRJ_ID = ?");
-					prp.setLong(1, sel.getDOC_ID());
+					PreparedStatement prp = conn.prepareStatement("declare prjid number:= ?;"
+							+ "begin "
+							+ "delete from PM_PRJ_STAT_HIST where STH_PRJ = prjid;"
+							+ "delete from PM_PROJECTS where PRJ_ID = prjid;"
+							+ "end;");
+					prp.setLong(1, sel.getPRJ_ID());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
@@ -601,6 +694,7 @@ public class CrePrjGantChartPrj {
 		try {
 			VPM_PROJECTS sel = prj_tbl.getSelectionModel().getSelectedItem();
 			if (sel != null) {
+				
 				// Û‰ÂÊ‡Ú¸
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from VPM_PROJECTS where PRJ_ID = ? FOR UPDATE NOWAIT");

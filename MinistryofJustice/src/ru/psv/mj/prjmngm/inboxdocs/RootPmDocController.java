@@ -185,6 +185,11 @@ public class RootPmDocController {
 	@FXML
 	void CrePrj(ActionEvent event) {
 		try {
+			// права
+			if (DbUtil.Odb_Action(Long.valueOf(262)) == 0) {
+				Msg.Message("Нет доступа!");
+				return;
+			}
 			// выбранная запись
 			VPM_DOCS sel = PM_DOCS.getSelectionModel().getSelectedItem();
 			if (sel != null) {

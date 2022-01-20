@@ -39,6 +39,9 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventDispatchChain;
+import javafx.event.EventDispatcher;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -46,6 +49,10 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -515,20 +522,60 @@ public class CrePrjGantChart {
 			return cell_;
 		});
 
+		//----------------------------------
+//		empid.setSortable(false);
+//		docname.setSortable(false);
+//		docnumber.setSortable(false);
+//		isfast.setSortable(false);
+//		comment.setSortable(false);
+//		docdate.setSortable(false);
+//		docend.setSortable(false);
+//		dtdiff.setSortable(false);
 		// ---------------------------------
 		table.getColumns().addAll(empid, docname, docnumber, isfast, comment, docdate, docend, dtdiff);
 
+		//
+		EventDispatcher treeOriginal = table.getEventDispatcher();
+		table.setEventDispatcher(new CellEventDispatcher(treeOriginal));
+		gantt.getTreeTable().setSortMode(null);
+		//
 		links.forEach(link -> gantt.getLinks().add(link));
 
 		gantt.getGraphics().showEarliestActivities();
 
 		Platform.runLater(() -> gantt.getGraphics().showAllActivities());
 
+		
 		return gantt;
 	}
 
+	public class CellEventDispatcher implements EventDispatcher {
+
+	    private final EventDispatcher original;
+
+	    public CellEventDispatcher(EventDispatcher original) {
+	        this.original = original;
+	    }
+
+	    @Override
+	    public Event dispatchEvent(Event event, EventDispatchChain tail) {
+	        if (event.getEventType().equals(MouseEvent.MOUSE_PRESSED) || 
+	             event.getEventType().equals(ContextMenuEvent.ANY)){
+	            event.consume();
+	        }
+	        if(event instanceof KeyEvent && event.getEventType().equals(KeyEvent.KEY_PRESSED)){
+	            if((((KeyEvent)event).getCode().equals(KeyCode.LEFT) || 
+	                 ((KeyEvent)event).getCode().equals(KeyCode.RIGHT))){
+	                event.consume();
+	            }
+	        }
+	        return original.dispatchEvent(event, tail);
+	    }
+	}
+	
 	private final ArrayList<ActivityLink<?>> links = new ArrayList<>();
 
+	
 	/**
 	 * 
 	 */
@@ -556,9 +603,9 @@ public class CrePrjGantChart {
 			prj_status_char.setCellValueFactory(cellData -> cellData.getValue().PRJ_STATUS_CHARProperty());
 			emp_position.setCellValueFactory(cellData -> cellData.getValue().EMP_POSITIONProperty());
 			doc_comment.setCellValueFactory(cellData -> cellData.getValue().DOC_COMMENTProperty());
-			org_ruk.setCellValueFactory(cellData -> cellData.getValue().ORG_RUKProperty());
-			prj_creusr.setCellValueFactory(cellData -> cellData.getValue().PRJ_CREUSRProperty());
-			doc_tp_name.setCellValueFactory(cellData -> cellData.getValue().DOC_TP_NAMEProperty());
+//			org_ruk.setCellValueFactory(cellData -> cellData.getValue().ORG_RUKProperty());
+//			prj_creusr.setCellValueFactory(cellData -> cellData.getValue().PRJ_CREUSRProperty());
+//			doc_tp_name.setCellValueFactory(cellData -> cellData.getValue().DOC_TP_NAMEProperty());
 			emp_middlename.setCellValueFactory(cellData -> cellData.getValue().EMP_MIDDLENAMEProperty());
 			emp_firstname.setCellValueFactory(cellData -> cellData.getValue().EMP_FIRSTNAMEProperty());
 			doc_id.setCellValueFactory(cellData -> cellData.getValue().DOC_IDProperty().asObject());
