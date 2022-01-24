@@ -77,6 +77,10 @@ public class VPM_PROJECTS {
 	private StringProperty DOC_NAME;
 	/** Нет данных */
 	private StringProperty ORG_RUK;
+	/** Нет данных */
+	private LongProperty DTDIFF;
+	/** Нет данных */
+	private StringProperty DTDIFF_CH;
 
 	public VPM_PROJECTS() {
 		this.PRJ_ID = new SimpleLongProperty();
@@ -113,6 +117,8 @@ public class VPM_PROJECTS {
 		this.ORG_ID = new SimpleLongProperty();
 		this.DOC_NAME = new SimpleStringProperty();
 		this.ORG_RUK = new SimpleStringProperty();
+		this.DTDIFF = new SimpleLongProperty();
+		this.DTDIFF_CH = new SimpleStringProperty();
 	}
 
 	public void setPRJ_ID(Long PRJ_ID) {
@@ -251,6 +257,14 @@ public class VPM_PROJECTS {
 		this.ORG_RUK.set(ORG_RUK);
 	}
 
+	public void setDTDIFF(Long DTDIFF) {
+		this.DTDIFF.set(DTDIFF);
+	}
+
+	public void setDTDIFF_CH(String DTDIFF_CH) {
+		this.DTDIFF_CH.set(DTDIFF_CH);
+	}
+
 	public Long getPRJ_ID() {
 		return PRJ_ID.get();
 	}
@@ -387,6 +401,14 @@ public class VPM_PROJECTS {
 		return ORG_RUK.get();
 	}
 
+	public Long getDTDIFF() {
+		return DTDIFF.get();
+	}
+
+	public String getDTDIFF_CH() {
+		return DTDIFF_CH.get();
+	}
+
 	public LongProperty PRJ_IDProperty() {
 		return PRJ_ID;
 	}
@@ -521,5 +543,13 @@ public class VPM_PROJECTS {
 
 	public StringProperty ORG_RUKProperty() {
 		return ORG_RUK;
+	}
+
+	public LongProperty DTDIFFProperty() {
+		return DTDIFF;
+	}
+
+	public StringProperty DTDIFF_CHProperty() {
+		return DTDIFF_CH;
 	}
 }

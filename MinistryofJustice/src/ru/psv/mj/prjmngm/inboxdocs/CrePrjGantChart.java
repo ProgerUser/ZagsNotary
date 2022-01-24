@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -39,9 +40,6 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventDispatchChain;
-import javafx.event.EventDispatcher;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -49,10 +47,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -100,6 +94,154 @@ public class CrePrjGantChart {
 	private TableColumn<VPM_PROJECTS, String> prj_status_char;
 
 	/**
+	 * Tree table **************************************** 24.01.2022
+	 */
+
+	TreeItem<VPM_PROJECTS> root = null;
+	VPM_PROJECTS tree_item;
+
+	void FillTreePrj() throws SQLException {
+
+		tree_item = new VPM_PROJECTS();
+
+		tree_item.setEMP_LASTNAME("");
+		tree_item.setEMP_FIRSTNAME("");
+		tree_item.setEMP_MIDDLENAME("");
+
+		root = new TreeItem<VPM_PROJECTS>(tree_item);
+		// --------------------------------------------------------------
+
+		PreparedStatement prp1 = null;
+		ResultSet rs1 = null;
+		PreparedStatement prp = conn.prepareStatement("select * from PM_EMP");
+		ResultSet rs = prp.executeQuery();
+
+		while (rs.next()) {
+			tree_item = new VPM_PROJECTS();
+
+			tree_item.setEMP_LASTNAME(rs.getString("EMP_LASTNAME"));
+			tree_item.setEMP_FIRSTNAME(rs.getString("EMP_FIRSTNAME"));
+			tree_item.setEMP_MIDDLENAME(rs.getString("EMP_MIDDLENAME"));
+
+			TreeItem<VPM_PROJECTS> emp = new TreeItem<>(tree_item);
+			// ____________________________
+			{
+				prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ? order by DOC_END desc");
+				prp1.setLong(1, rs.getLong("EMP_ID"));
+				rs1 = prp1.executeQuery();
+				while (rs1.next()) {
+					tree_item = new VPM_PROJECTS();
+					/**
+					 * Data
+					 */
+					tree_item.setDOC_DATE((rs1.getDate("DOC_DATE") != null)
+							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_DATE")),
+									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+							: null);
+					tree_item.setEMP_EMAIL(rs1.getString("EMP_EMAIL"));
+					tree_item.setEMP_TEL(rs1.getString("EMP_TEL"));
+					tree_item.setPRJ_STATUS(rs1.getLong("PRJ_STATUS"));
+					tree_item.setDOC_NUMBER(rs1.getString("DOC_NUMBER"));
+					tree_item.setDOC_REF(rs1.getLong("DOC_REF"));
+					tree_item.setPRJ_STATUS_CHAR(rs1.getString("PRJ_STATUS_CHAR"));
+					tree_item.setEMP_WORKEND((rs1.getDate("EMP_WORKEND") != null)
+							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("EMP_WORKEND")),
+									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+							: null);
+					tree_item.setEMP_ID(rs1.getLong("EMP_ID"));
+					tree_item.setEMP_POSITION(rs1.getString("EMP_POSITION"));
+					tree_item.setDOC_COMMENT(rs1.getString("DOC_COMMENT"));
+					tree_item.setEMP_WORKSTART((rs1.getDate("EMP_WORKSTART") != null)
+							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("EMP_WORKSTART")),
+									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+							: null);
+					tree_item.setDTDIFF(rs1.getLong("DTDIFF"));
+					tree_item.setTM$DOC_START((rs1.getDate("TM$DOC_START") != null) ? LocalDateTime.parse(
+							new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs1.getDate("TM$DOC_START")),
+							DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) : null);
+					tree_item.setORG_ID(rs1.getLong("ORG_ID"));
+					tree_item.setORG_RUK(rs1.getString("ORG_RUK"));
+					tree_item.setPRJ_ID(rs1.getLong("PRJ_ID"));
+					tree_item.setEMP_LOGIN(rs1.getLong("EMP_LOGIN"));
+					tree_item.setPRJ_CREUSR(rs1.getString("PRJ_CREUSR"));
+					tree_item.setDOC_TP_NAME(rs1.getString("DOC_TP_NAME"));
+					tree_item.setEMP_MIDDLENAME("");
+					tree_item.setDOC_ISFAST(rs1.getString("DOC_ISFAST"));
+					tree_item.setPRJ_DOCID(rs1.getLong("PRJ_DOCID"));
+					tree_item.setEMP_FIRSTNAME("");
+					tree_item.setEMP_BOSS(rs1.getLong("EMP_BOSS"));
+					tree_item.setEMP_JBTYPE(rs1.getLong("EMP_JBTYPE"));
+					tree_item.setDOC_ID(rs1.getLong("DOC_ID"));
+					tree_item.setTM$PRJ_STARTDATE((rs1.getDate("TM$PRJ_STARTDATE") != null) ? LocalDateTime.parse(
+							new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs1.getDate("TM$PRJ_STARTDATE")),
+							DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) : null);
+					tree_item.setPRJ_EMP(rs1.getLong("PRJ_EMP"));
+					tree_item.setDOC_USR(rs1.getString("DOC_USR"));
+					tree_item.setDOC_TP_ID(rs1.getLong("DOC_TP_ID"));
+					tree_item.setORG_NAME(rs1.getString("ORG_NAME"));
+					tree_item.setEMP_LASTNAME("");
+					tree_item.setDOC_END((rs1.getDate("DOC_END") != null)
+							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_END")),
+									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+							: null);
+					tree_item.setDOC_NAME(rs1.getString("DOC_NAME"));
+					tree_item.setDTDIFF_CH(rs1.getString("DTDIFF_CH"));
+					/**
+					 * Data
+					 * 
+					 */
+					TreeItem<VPM_PROJECTS> prj = new TreeItem<>(tree_item);
+					prj.setExpanded(true);
+					emp.getChildren().add(prj);
+
+				}
+				emp.setExpanded(true);
+				root.getChildren().add(emp);
+			}
+			// ____________________________
+
+		}
+		//
+		prp1.close();
+		rs1.close();
+		//
+		prp.close();
+		rs.close();
+
+		// --------------------------------------------------------------
+		root.setExpanded(true);
+		TreeTable.setRoot(root);
+	}
+
+	@FXML
+	private TreeTableView<VPM_PROJECTS> TreeTable;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_emp_fio;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_doc_name;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_doc_number;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_is_fast;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_doc_comm;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, LocalDate> tr_doc_start_date;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, LocalDate> tr_doc_end_date;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_prj_end_days;
+
+	@FXML
+	void ReshreshTree(ActionEvent event) {
+
+	}
+
+	/**
+	 * Tree Table ****************************************
+	 */
+
+	/**
 	 * Конструктор
 	 */
 	public CrePrjGantChart() {
@@ -140,10 +282,10 @@ public class CrePrjGantChart {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-			ActivityRow treetable = table.getSelectionModel().getSelectedItem().getValue();
+			VPM_PROJECTS treetable = TreeTable.getSelectionModel().getSelectedItem().getValue();
 
 			if (treetable != null) {
-				Long sel = treetable.data.empid;
+				Long sel = treetable.getPRJ_ID();
 				if (sel != null) {
 					CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.ADD_PRJ(?,?,?)}");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -303,6 +445,8 @@ public class CrePrjGantChart {
 		String docname;
 		Long empid;
 		Long dtdiff;
+		String start_;
+		String end_;
 	}
 
 	Layer layer = new Layer("Activities");
@@ -326,10 +470,12 @@ public class CrePrjGantChart {
 		}
 
 		public ActivityRow(String name, ActivityRow parent, Instant start, Instant end, String comment,
-				String docnumber, String isfast, String docname, Long dtdiff) {
+				String docnumber, String isfast, String docname, Long dtdiff, String start_, String end_) {
 			data = new Data();
 			data.start = start;
 			data.end = end;
+			data.start_ = start_;
+			data.end_ = end_;
 			data.name = name;
 			data.comment = comment;
 			data.docnumber = docnumber;
@@ -384,7 +530,7 @@ public class CrePrjGantChart {
 				System.out.println(rs.getString("EMP_LASTNAME"));
 				final ActivityRow row = new ActivityRow(rs.getString("EMP_LASTNAME") + " "
 						+ rs.getString("EMP_FIRSTNAME") + " " + rs.getString("EMP_MIDDLENAME"), rs.getLong("EMP_ID"));
-				roots.add(row);
+
 				// ____________________________
 				{
 					prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ? order by DOC_END desc");
@@ -400,10 +546,13 @@ public class CrePrjGantChart {
 												DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 										.atStartOfDay(ZoneId.systemDefault()).toInstant(),
 								rs1.getString("doc_comment"), rs1.getString("DOC_NUMBER"), rs1.getString("doc_isfast"),
-								rs1.getString("doc_name"), rs1.getLong("dtdiff")));
+								rs1.getString("doc_name"), rs1.getLong("dtdiff"),
+								new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_DATE")),
+								new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_END"))));
 					}
 				}
 				// ____________________________
+				roots.add(row);
 			}
 			//
 			prp1.close();
@@ -426,6 +575,7 @@ public class CrePrjGantChart {
 		graphics.setLinkRenderer(ActivityLink.class, new StraightLinkRenderer<>(graphics, "Straight Link Renderer"));
 
 		table = gantt.getTreeTable();
+
 		table.getSelectionModel().getSelectedItems().addListener((InvalidationListener) observable -> {
 			TreeItem<ActivityRow> item = table.getSelectionModel().getSelectedItem();
 			if (item != null && item.getValue().act != null) {
@@ -457,72 +607,72 @@ public class CrePrjGantChart {
 		comment.setPrefWidth(120);
 		comment.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.comment));
 
-		TreeTableColumn<ActivityRow, Instant> docdate = new TreeTableColumn<>("Дата документа");
+		TreeTableColumn<ActivityRow, String> docdate = new TreeTableColumn<>("Дата документа");
 		docdate.setPrefWidth(100);
-		docdate.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.start));
+		docdate.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.start_));
 
-		TreeTableColumn<ActivityRow, Instant> docend = new TreeTableColumn<>("Срок документа");
+		TreeTableColumn<ActivityRow, String> docend = new TreeTableColumn<>("Срок документа");
 		docend.setPrefWidth(100);
-		docend.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.end));
-
+		docend.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().data.end_));
 		// ---------------------------------
-		docdate.setCellFactory(column_ -> {
 
-			TreeTableCell<ActivityRow, Instant> cell_ = new TreeTableCell<ActivityRow, Instant>() {
+//		docdate.setCellFactory(column_ -> {
+//
+//			TreeTableCell<ActivityRow, Instant> cell_ = new TreeTableCell<ActivityRow, Instant>() {
+//
+//				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withLocale(Locale.getDefault())
+//						.withZone(ZoneId.systemDefault());
+//
+//				@Override
+//				protected void updateItem(Instant item, boolean empty) {
+//					super.updateItem(item, empty);
+//					if (empty) {
+//						setText(null);
+//					} else {
+//						if (item != null) {
+//							this.setText(formatter.format(item));
+//						}
+//					}
+//				}
+//			};
+//
+//			return cell_;
+//		});
+//		docend.setCellFactory(column_ -> {
+//
+//			TreeTableCell<ActivityRow, Instant> cell_ = new TreeTableCell<ActivityRow, Instant>() {
+//
+//				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withLocale(Locale.getDefault())
+//						.withZone(ZoneId.systemDefault());
+//
+//				@Override
+//				protected void updateItem(Instant item, boolean empty) {
+//					super.updateItem(item, empty);
+//					if (empty) {
+//						setText(null);
+//					} else {
+//						if (item != null) {
+//							this.setText(formatter.format(item));
+//
+//							LocalDate lt = LocalDate.now();
+//							LocalDate lcd = item.atZone(ZoneId.systemDefault()).toLocalDate();
+//							long daysBetween = ChronoUnit.DAYS.between(lt, lcd);
+//							if (daysBetween >= 20 | daysBetween < 0) {
+//								setStyle("-fx-text-fill: red;-fx-font-weight: bold");
+//							} else if (daysBetween <= 20 & daysBetween > 0) {
+//								setStyle("-fx-text-fill: orange;-fx-font-weight: bold");
+//							} else {
+//								setStyle("");
+//							}
+//						}
+//					}
+//				}
+//			};
+//
+//			return cell_;
+//		});
 
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withLocale(Locale.getDefault())
-						.withZone(ZoneId.systemDefault());
-
-				@Override
-				protected void updateItem(Instant item, boolean empty) {
-					super.updateItem(item, empty);
-					if (empty) {
-						setText(null);
-					} else {
-						if (item != null) {
-							this.setText(formatter.format(item));
-						}
-					}
-				}
-			};
-
-			return cell_;
-		});
-		docend.setCellFactory(column_ -> {
-
-			TreeTableCell<ActivityRow, Instant> cell_ = new TreeTableCell<ActivityRow, Instant>() {
-
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withLocale(Locale.getDefault())
-						.withZone(ZoneId.systemDefault());
-
-				@Override
-				protected void updateItem(Instant item, boolean empty) {
-					super.updateItem(item, empty);
-					if (empty) {
-						setText(null);
-					} else {
-						if (item != null) {
-							this.setText(formatter.format(item));
-
-							LocalDate lt = LocalDate.now();
-							LocalDate lcd = item.atZone(ZoneId.systemDefault()).toLocalDate();
-							long daysBetween = ChronoUnit.DAYS.between(lt, lcd);
-							if (daysBetween >= 20 | daysBetween < 0) {
-								setStyle("-fx-text-fill: red;-fx-font-weight: bold");
-							} else if (daysBetween <= 20 & daysBetween > 0) {
-								setStyle("-fx-text-fill: orange;-fx-font-weight: bold");
-							} else {
-								setStyle("");
-							}
-						}
-					}
-				}
-			};
-
-			return cell_;
-		});
-
-		//----------------------------------
+		// ----------------------------------
 //		empid.setSortable(false);
 //		docname.setSortable(false);
 //		docnumber.setSortable(false);
@@ -534,48 +684,61 @@ public class CrePrjGantChart {
 		// ---------------------------------
 		table.getColumns().addAll(empid, docname, docnumber, isfast, comment, docdate, docend, dtdiff);
 
-		//
-		EventDispatcher treeOriginal = table.getEventDispatcher();
-		table.setEventDispatcher(new CellEventDispatcher(treeOriginal));
-		gantt.getTreeTable().setSortMode(null);
-		//
+		/*
+		 * Прослушиватель!!!!!!!!!!!!!!!!!!!!!!
+		 */
+//		EventDispatcher treeOriginal = table.getEventDispatcher();
+//		table.setEventDispatcher(new CellEventDispatcher(treeOriginal));
+//		gantt.getTreeTable().setSortMode(null);
+//		
+//		table.addEventHandler(TreeItem.branchCollapsedEvent(), new EventHandler<TreeModificationEvent<String>>() {
+//			@Override
+//			public void handle(TreeModificationEvent<String> event) {
+//				event.getTreeItem().setExpanded(true);
+//			}
+//		});
+		/*
+		 * 
+		 */
 		links.forEach(link -> gantt.getLinks().add(link));
 
 		gantt.getGraphics().showEarliestActivities();
 
 		Platform.runLater(() -> gantt.getGraphics().showAllActivities());
 
-		
 		return gantt;
 	}
 
-	public class CellEventDispatcher implements EventDispatcher {
+//	public class CellEventDispatcher implements EventDispatcher {
+//
+//	    private final EventDispatcher original;
+//
+//	    public CellEventDispatcher(EventDispatcher original) {
+//	        this.original = original;
+//	    }
+//
+//	    @Override
+//	    public Event dispatchEvent(Event event, EventDispatchChain tail) {
+//	    	
+//	        if (
+//	        	event.getEventType().equals(MouseEvent.MOUSE_PRESSED) || 
+//	             event.getEventType().equals(ContextMenuEvent.ANY)
+//	             ){
+//	        	System.out.println(event.getEventType().getName());
+//	            //event.consume();
+//	        }
+//	        if(event instanceof KeyEvent && event.getEventType().equals(KeyEvent.KEY_PRESSED)){
+//	            if((((KeyEvent)event).getCode().equals(KeyCode.LEFT) || 
+//	                 ((KeyEvent)event).getCode().equals(KeyCode.RIGHT))){
+//	                event.consume();
+//	            }
+//	        }
+//	        return original.dispatchEvent(event, tail);
+//	    }
+//	}
 
-	    private final EventDispatcher original;
-
-	    public CellEventDispatcher(EventDispatcher original) {
-	        this.original = original;
-	    }
-
-	    @Override
-	    public Event dispatchEvent(Event event, EventDispatchChain tail) {
-	        if (event.getEventType().equals(MouseEvent.MOUSE_PRESSED) || 
-	             event.getEventType().equals(ContextMenuEvent.ANY)){
-	            event.consume();
-	        }
-	        if(event instanceof KeyEvent && event.getEventType().equals(KeyEvent.KEY_PRESSED)){
-	            if((((KeyEvent)event).getCode().equals(KeyCode.LEFT) || 
-	                 ((KeyEvent)event).getCode().equals(KeyCode.RIGHT))){
-	                event.consume();
-	            }
-	        }
-	        return original.dispatchEvent(event, tail);
-	    }
-	}
-	
 	private final ArrayList<ActivityLink<?>> links = new ArrayList<>();
 
-	
 	/**
 	 * 
 	 */
@@ -623,6 +786,7 @@ public class CrePrjGantChart {
 	/**
 	 * Инициализация
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
 	private void initialize() {
 		try {
@@ -633,7 +797,116 @@ public class CrePrjGantChart {
 			dbConnect();
 			InitTabCol();
 			LoadTable();
-			CreGant();
+			//CreGant();
+			// InitTree
+			tr_prj_end_days.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDTDIFF_CH());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_doc_end_date.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_END());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_doc_start_date.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_DATE());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_doc_comm.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_COMMENT());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_is_fast.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_ISFAST());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_doc_number.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_NUMBER());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_emp_fio.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getEMP_LASTNAME() + " "
+							+ cellData.getValue().getValue().getEMP_FIRSTNAME() + " "
+							+ cellData.getValue().getValue().getEMP_MIDDLENAME());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_doc_name.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_NAME());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			FillTreePrj();
+
+			tr_doc_start_date.setCellFactory(column_ -> {
+
+				TreeTableCell<VPM_PROJECTS, LocalDate> cell_ = new TreeTableCell<VPM_PROJECTS, LocalDate>() {
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+							.withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault());
+
+					@Override
+					protected void updateItem(LocalDate item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setText(null);
+						} else {
+							if (item != null) {
+								this.setText(formatter.format(item));
+							}
+						}
+					}
+				};
+
+				return cell_;
+			});
+			tr_doc_end_date.setCellFactory(column_ -> {
+
+				TreeTableCell<VPM_PROJECTS, LocalDate> cell_ = new TreeTableCell<VPM_PROJECTS, LocalDate>() {
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+							.withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault());
+
+					@Override
+					protected void updateItem(LocalDate item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setText(null);
+						} else {
+							if (item != null) {
+								this.setText(formatter.format(item));
+
+								LocalDate lt = LocalDate.now();
+								LocalDate lcd = item;// .atZone(ZoneId.systemDefault()).toLocalDate();
+								long daysBetween = ChronoUnit.DAYS.between(lt, lcd);
+								if (daysBetween >= 20 | daysBetween < 0) {
+									setStyle("-fx-text-fill: red;-fx-font-weight: bold");
+								} else if (daysBetween <= 20 & daysBetween > 0) {
+									setStyle("-fx-text-fill: orange;-fx-font-weight: bold");
+								} else {
+									setStyle("");
+								}
+							}
+						}
+					}
+				};
+
+				return cell_;
+			});
+
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -666,7 +939,7 @@ public class CrePrjGantChart {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	// <ORACLE_CONNECT>
 	/**
 	 * Строка соединения
