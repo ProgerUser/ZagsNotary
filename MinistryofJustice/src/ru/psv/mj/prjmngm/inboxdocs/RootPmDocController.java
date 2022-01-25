@@ -196,7 +196,7 @@ public class RootPmDocController {
 				Stage stage = new Stage();
 
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/inboxdocs/GantChart.fxml"));
+				loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/inboxdocs/GantChartInbox.fxml"));
 
 				CrePrjGantChart controller = new CrePrjGantChart();
 				controller.SetClass(sel.getDOC_ID());

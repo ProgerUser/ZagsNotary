@@ -211,7 +211,7 @@
                                                       <Insets right="5.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <Button disable="true" mnemonicParsing="false" onAction="#SelPrjRef" GridPane.columnIndex="1">
+                                                <Button fx:id="BtSelEmp" disable="true" mnemonicParsing="false" onAction="#SelPrjRef" GridPane.columnIndex="1">
                                                    <graphic>
                                                       <FontAwesomeIconView glyphName="SEARCH" size="14" />
                                                    </graphic>

@@ -40,20 +40,33 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventDispatchChain;
+import javafx.event.EventDispatcher;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
+import ru.psv.mj.prjmngm.projects.model.PM_PRJ_STATUS;
 import ru.psv.mj.prjmngm.projects.model.VPM_PROJECTS;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
@@ -97,10 +110,124 @@ public class CrePrjGantChart {
 	 * Tree table **************************************** 24.01.2022
 	 */
 
+	/**
+	 * ФИО
+	 */
+	@FXML
+	private TextField FilterEmpEmp;
+	/**
+	 * Оператор > < =
+	 */
+	@FXML
+	private ComboBox<String> FilterOperator;
+	/**
+	 * Количество дней
+	 */
+	@FXML
+	private TextField FilterDtDiff;
+
+	/**
+	 * Очистить фильтр
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void FilterSearchDel(ActionEvent event) {
+		try {
+			FilterEmpEmp.setText("");
+			FilterOperator.getSelectionModel().select(null);
+			FilterStatus.getSelectionModel().select(null);
+			FilterDtDiff.setText("");
+			FillTreePrj("", "", "", "");
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+
+	}
+
+	/**
+	 * Выполнить поиск по фильтру
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void FilterSearch(ActionEvent event) {
+		try {
+			String fio = "";
+			String operator = "";
+			String days = "";
+			String status = "";
+			if (!FilterEmpEmp.getText().equals("")) {
+				fio = FilterEmpEmp.getText();
+			}
+//			else {
+//				Msg.Message("Введите ФИО!");
+//			}
+			if (FilterOperator.getSelectionModel().getSelectedItem() != null) {
+				operator = FilterOperator.getSelectionModel().getSelectedItem();
+			}
+//			else {
+//				Msg.Message("Выберите условие");
+//			}
+			if (!FilterDtDiff.getText().equals("")) {
+				days = FilterDtDiff.getText();
+			}
+//			else {
+//				Msg.Message("Введите количество дней!");
+//			}
+			if (FilterStatus.getSelectionModel().getSelectedItem() != null) {
+				status = String.valueOf(FilterStatus.getSelectionModel().getSelectedItem().getPJST_ID());
+			}
+			FillTreePrj(fio, operator, days, status);
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Root tree table view
+	 */
 	TreeItem<VPM_PROJECTS> root = null;
+	/**
+	 * Model tree
+	 */
 	VPM_PROJECTS tree_item;
 
-	void FillTreePrj() throws SQLException {
+	/**
+	 * Заполнить Древовидную таблицу
+	 * 
+	 * @throws SQLException
+	 */
+	void FillTreePrj(String fio, String operator, String days, String status) throws SQLException {
+
+		String fiowhere = "";
+		String operatorwhere = "";
+		String operatorwhereemp = "";
+		String statuswhereemp = "";
+		String statuswhere = "";
+
+		if (!status.equals("")) {
+			statuswhereemp = "\r\nand exists (select null from VPM_PROJECTS prj where prj.emp_id = PM_EMP.EMP_ID and "
+					+ "PRJ_STATUS = " + status + ")";
+			statuswhere = "\r\n and PRJ_STATUS = " + status + " ";
+
+		}
+
+		if (!fio.equals("")) {
+			fiowhere = "\r\n and lower(EMP_LASTNAME||' '||EMP_FIRSTNAME||' '||EMP_MIDDLENAME) like '%" + fio + "%'";
+		}
+		System.out.println(operator);
+		System.out.println(days);
+		if (!operator.equals("") & !days.equals("")) {
+
+			operatorwhere = "\r\n and (dtdiff > 0 and dtdiff " + operator + " " + days + " or\r\n"
+					+ "       (dtdiff < 0 and dtdiff " + operator + " -" + days + "))";
+			operatorwhereemp = " and exists (select null from VPM_PROJECTS prj where prj.emp_id = PM_EMP.EMP_ID\r\n"
+					+ "and (prj.dtdiff > 0 and prj.dtdiff " + operator + " " + days + " or\r\n"
+					+ "       (prj.dtdiff < 0 and prj.dtdiff " + operator + " -" + days + ")))";
+			System.out.println(operatorwhere);
+			System.out.println(operatorwhereemp);
+		}
 
 		tree_item = new VPM_PROJECTS();
 
@@ -113,7 +240,8 @@ public class CrePrjGantChart {
 
 		PreparedStatement prp1 = null;
 		ResultSet rs1 = null;
-		PreparedStatement prp = conn.prepareStatement("select * from PM_EMP");
+		PreparedStatement prp = conn
+				.prepareStatement("select * from PM_EMP where 1=1 " + fiowhere + operatorwhereemp + statuswhereemp);
 		ResultSet rs = prp.executeQuery();
 
 		while (rs.next()) {
@@ -122,11 +250,13 @@ public class CrePrjGantChart {
 			tree_item.setEMP_LASTNAME(rs.getString("EMP_LASTNAME"));
 			tree_item.setEMP_FIRSTNAME(rs.getString("EMP_FIRSTNAME"));
 			tree_item.setEMP_MIDDLENAME(rs.getString("EMP_MIDDLENAME"));
+			tree_item.setEMP_ID(rs.getLong("EMP_ID"));
 
 			TreeItem<VPM_PROJECTS> emp = new TreeItem<>(tree_item);
 			// ____________________________
 			{
-				prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ? order by DOC_END desc");
+				prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ? " + operatorwhere
+						+ statuswhere + " order by DOC_END desc");
 				prp1.setLong(1, rs.getLong("EMP_ID"));
 				rs1 = prp1.executeQuery();
 				while (rs1.next()) {
@@ -202,16 +332,57 @@ public class CrePrjGantChart {
 
 		}
 		//
-		prp1.close();
-		rs1.close();
+		if (prp1 != null) {
+			prp1.close();
+		}
+		if (rs1 != null) {
+			rs1.close();
+		}
 		//
-		prp.close();
-		rs.close();
+		if (rs != null) {
+			rs.close();
+		}
+		if (prp != null) {
+			prp.close();
+		}
 
 		// --------------------------------------------------------------
+//		root.expandedProperty().addListener(new ChangeListener<Boolean>() {
+//			@Override
+//			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//				System.out.println("newValue = " + newValue);
+//				BooleanProperty bb = (BooleanProperty) observable;
+//				System.out.println("bb.getBean() = " + bb.getBean());
+//				TreeItem t = (TreeItem) bb.getBean();
+//				// Do whatever with t
+//			}
+//		});
+
+//		root.addEventHandler(MouseEvent.ANY, event -> {
+//			if (event.getClickCount() == 1 && (event.getButton().equals(MouseButton.PRIMARY)
+//					|| event.getButton().equals(MouseButton.SECONDARY))) {
+//				if (event.getEventType().equals(MouseEvent.MOUSE_CLICKED)) {
+//					System.out.println(event.getEventType()); // perform some action
+//					event.consume();
+//				}
+//			}
+//		});
+		/**
+		 * Отключить expand/collapse
+		 */
+		root.addEventHandler(TreeItem.branchCollapsedEvent(), new EventHandler<TreeModificationEvent<String>>() {
+			@Override
+			public void handle(TreeModificationEvent<String> event) {
+				event.getTreeItem().setExpanded(true);
+			}
+		});
+
 		root.setExpanded(true);
 		TreeTable.setRoot(root);
 	}
+
+	@FXML
+	private ComboBox<PM_PRJ_STATUS> FilterStatus;
 
 	@FXML
 	private TreeTableView<VPM_PROJECTS> TreeTable;
@@ -231,10 +402,21 @@ public class CrePrjGantChart {
 	private TreeTableColumn<VPM_PROJECTS, LocalDate> tr_doc_end_date;
 	@FXML
 	private TreeTableColumn<VPM_PROJECTS, String> tr_prj_end_days;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_prj_status;
 
+	/**
+	 * Обновить таблицу
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void ReshreshTree(ActionEvent event) {
-
+		try {
+			FillTreePrj("", "", "", "");
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
 	}
 
 	/**
@@ -285,7 +467,8 @@ public class CrePrjGantChart {
 			VPM_PROJECTS treetable = TreeTable.getSelectionModel().getSelectedItem().getValue();
 
 			if (treetable != null) {
-				Long sel = treetable.getPRJ_ID();
+				System.out.println(treetable.getEMP_ID());
+				Long sel = treetable.getEMP_ID();
 				if (sel != null) {
 					CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.ADD_PRJ(?,?,?)}");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
@@ -316,7 +499,7 @@ public class CrePrjGantChart {
 	}
 
 	void OnClose() {
-		Stage stage = (Stage) GantBorder.getScene().getWindow();
+		Stage stage = (Stage) EmpPrjVbox.getScene().getWindow();
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
@@ -709,33 +892,31 @@ public class CrePrjGantChart {
 		return gantt;
 	}
 
-//	public class CellEventDispatcher implements EventDispatcher {
-//
-//	    private final EventDispatcher original;
-//
-//	    public CellEventDispatcher(EventDispatcher original) {
-//	        this.original = original;
-//	    }
-//
-//	    @Override
-//	    public Event dispatchEvent(Event event, EventDispatchChain tail) {
-//	    	
-//	        if (
-//	        	event.getEventType().equals(MouseEvent.MOUSE_PRESSED) || 
-//	             event.getEventType().equals(ContextMenuEvent.ANY)
-//	             ){
-//	        	System.out.println(event.getEventType().getName());
-//	            //event.consume();
-//	        }
-//	        if(event instanceof KeyEvent && event.getEventType().equals(KeyEvent.KEY_PRESSED)){
-//	            if((((KeyEvent)event).getCode().equals(KeyCode.LEFT) || 
-//	                 ((KeyEvent)event).getCode().equals(KeyCode.RIGHT))){
-//	                event.consume();
-//	            }
-//	        }
-//	        return original.dispatchEvent(event, tail);
-//	    }
-//	}
+	public class CellEventDispatcher implements EventDispatcher {
+
+		private final EventDispatcher original;
+
+		public CellEventDispatcher(EventDispatcher original) {
+			this.original = original;
+		}
+
+		@Override
+		public Event dispatchEvent(Event event, EventDispatchChain tail) {
+
+			if (event.getEventType().equals(MouseEvent.MOUSE_PRESSED)
+					|| event.getEventType().equals(ContextMenuEvent.ANY)) {
+				System.out.println(event.getEventType().getName());
+				event.consume();
+			}
+			if (event instanceof KeyEvent && event.getEventType().equals(KeyEvent.KEY_PRESSED)) {
+				if ((((KeyEvent) event).getCode().equals(KeyCode.LEFT)
+						|| ((KeyEvent) event).getCode().equals(KeyCode.RIGHT))) {
+					event.consume();
+				}
+			}
+			return original.dispatchEvent(event, tail);
+		}
+	}
 
 	private final ArrayList<ActivityLink<?>> links = new ArrayList<>();
 
@@ -784,21 +965,56 @@ public class CrePrjGantChart {
 	}
 
 	/**
-	 * Инициализация
+	 * Для типа документов
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@FXML
-	private void initialize() {
+	private void ComboStatus() {
+		FilterStatus.setConverter(new StringConverter<PM_PRJ_STATUS>() {
+			@Override
+			public String toString(PM_PRJ_STATUS object) {
+				return object != null ? object.getPJST_ID() + "=" + object.getPJST_NAME() : "";
+			}
+
+			@Override
+			public PM_PRJ_STATUS fromString(final String string) {
+				return FilterStatus.getItems().stream()
+						.filter(product -> (product.getPJST_ID() + "=" + product.getPJST_NAME()).equals(string))
+						.findFirst().orElse(null);
+			}
+		});
+	}
+
+	/**
+	 * Заполнить статусы
+	 * 
+	 * @throws SQLException
+	 */
+	void FilterComboStatus() throws SQLException {
+		// -------------------
+		{
+
+			String selectStmt = "SELECT * FROM PM_PRJ_STATUS ORDER BY PJST_ID ASC";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<PM_PRJ_STATUS> obslist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				PM_PRJ_STATUS list = new PM_PRJ_STATUS();
+				list.setPJST_ID(rs.getLong("PJST_ID"));
+				list.setPJST_NAME(rs.getString("PJST_NAME"));
+				obslist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+			FilterStatus.setItems(obslist);
+			ComboStatus();
+		}
+	}
+
+	/**
+	 * Столбцы таблицы
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	void InitTreeTable() {
 		try {
-			new ConvConst().TableColumnDate(doc_date);
-			new ConvConst().TableColumnDate(doc_end);
-			new ConvConst().TableColumnDateTime(tm$prj_startdate);
-			// ________________________________
-			dbConnect();
-			InitTabCol();
-			LoadTable();
-			//CreGant();
-			// InitTree
 			tr_prj_end_days.setCellValueFactory(cellData -> {
 				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
 					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDTDIFF_CH());
@@ -849,7 +1065,14 @@ public class CrePrjGantChart {
 				}
 				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
 			});
-			FillTreePrj();
+			tr_prj_status.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getPRJ_STATUS_CHAR());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+
+			FillTreePrj("", "", "", "");
 
 			tr_doc_start_date.setCellFactory(column_ -> {
 
@@ -906,7 +1129,60 @@ public class CrePrjGantChart {
 
 				return cell_;
 			});
+			// Отключить сортировку
+			TreeTable.setSortMode(null);
 
+			/*
+			 * Прослушиватель!!!!!!!!!!!!!!!!!!!!!!
+			 */
+//			EventDispatcher treeOriginal = TreeTable.getEventDispatcher();
+//			TreeTable.setEventDispatcher(new CellEventDispatcher(treeOriginal));
+//
+//			TreeTable.addEventHandler(TreeItem.branchCollapsedEvent(),
+//					new EventHandler<TreeModificationEvent<String>>() {
+//						@Override
+//						public void handle(TreeModificationEvent<String> event) {
+//							event.getTreeItem().setExpanded(true);
+//						}
+//					});
+
+//			TreeTable.addEventHandler(MouseEvent.ANY, event -> {
+//				if (event.getClickCount() == 1 && (event.getButton().equals(MouseButton.PRIMARY)
+//						|| event.getButton().equals(MouseButton.SECONDARY))) {
+//					if (event.getEventType().equals(MouseEvent.MOUSE_CLICKED)) {
+//						System.out.println(event.getEventType()); // perform some action
+//						event.consume();
+//					}
+//				}
+//			});
+
+		} catch (
+
+		Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Инициализация
+	 */
+	@FXML
+	private void initialize() {
+		try {
+			new ConvConst().TableColumnDate(doc_date);
+			new ConvConst().TableColumnDate(doc_end);
+			new ConvConst().TableColumnDateTime(tm$prj_startdate);
+			// ________________________________
+			dbConnect();
+			InitTabCol();
+			LoadTable();
+			// CreGant();
+			// InitTree
+			InitTreeTable();
+			// FilterOperator.getSelectionModel().getSelectedIndex()
+			FilterOperator.getItems().addAll(">", "<", "=");
+			// new ConvConst().OnlyNumber(FilterDtDiff);
+			FilterComboStatus();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

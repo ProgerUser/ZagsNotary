@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.311" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+   <children>
+      <ToolBar>
+        <items>
+          <Button mnemonicParsing="false" onAction="#Reshresh">
+               <graphic>
+                  <FontAwesomeIconView fontSmoothingType="LCD" glyphName="REFRESH" size="15" />
+               </graphic>
+            </Button>
+            <Separator orientation="VERTICAL" />
+        </items>
+         <VBox.margin>
+            <Insets left="-5.0" right="-5.0" top="-5.0" />
+         </VBox.margin>
+      </ToolBar>
+      <TableView fx:id="PM_EMP" prefWidth="700.0" styleClass="mylistview" stylesheets="ScrPane.css" VBox.vgrow="ALWAYS">
+        <columns>
+          <TableColumn fx:id="EMP_ID" prefWidth="75.0" text="ИД сотрудника" />
+          <TableColumn fx:id="EMP_LASTNAME" prefWidth="75.0" text="Фамилия" />
+            <TableColumn fx:id="EMP_FIRSTNAME" prefWidth="75.0" text="Имя" />
+            <TableColumn fx:id="EMP_MIDDLENAME" prefWidth="75.0" text="Отсчество" />
+            <TableColumn fx:id="EMP_POSITION" prefWidth="75.0" text="Должность" />
+            <TableColumn fx:id="EMP_TEL" prefWidth="75.0" text="Телефон" />
+            <TableColumn fx:id="EMP_EMAIL" prefWidth="75.0" text="Email" />
+            <TableColumn fx:id="EMP_LOGIN" prefWidth="75.0" text="Логин" />
+            <TableColumn fx:id="EMP_WORKSTART" prefWidth="75.0" text="Дата приема на работу" />
+            <TableColumn fx:id="EMP_WORKEND" prefWidth="75.0" text="Дата увольнения" />
+        </columns>
+      </TableView>
+      <ButtonBar>
+        <buttons>
+          <Button mnemonicParsing="false" onAction="#Ok" text="Выбрать" />
+            <Button layoutX="635.0" layoutY="18.0" mnemonicParsing="false" onAction="#Cancel" text="Отмена" />
+        </buttons>
+      </ButtonBar>
+   </children>
+</VBox>

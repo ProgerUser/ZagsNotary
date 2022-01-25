@@ -812,7 +812,7 @@ public class Main extends Application {
 				PmPrjWin = false;
 				Stage stage = new Stage();
 				FXMLLoader loader = new FXMLLoader(
-						Main.class.getResource("/ru/psv/mj/prjmngm/projects/GantChart.fxml"));
+						Main.class.getResource("/ru/psv/mj/prjmngm/projects/GantChartPrj.fxml"));
 
 				CrePrjGantChartPrj controller = new CrePrjGantChartPrj();
 				loader.setController(controller);

@@ -13,6 +13,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -48,10 +49,15 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -67,6 +73,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Pair;
@@ -151,6 +158,9 @@ public class EditPmPrjC {
 	private TableColumn<VPM_DOC_SCANS, String> DocScanKb;
 	@FXML
 	private TableColumn<Object, LocalDateTime> DS_DATE;
+
+	@FXML
+	private Button BtSelEmp;
 
 	/**
 	 * Добавить Скан
@@ -306,6 +316,37 @@ public class EditPmPrjC {
 	@FXML
 	void SelPrjRef(ActionEvent event) {
 		try {
+
+			Stage stage = new Stage();
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/projects/SelEmpPrj.fxml"));
+
+			SelEmpPrj controller = new SelEmpPrj();
+			controller.SetClass(class_,conn);
+			loader.setController(controller);
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("Сотрудники:");
+			stage.initOwner((Stage) DocWord.getScene().getWindow());
+			stage.setResizable(true);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+					try {
+						//controller.dbDisconnect();
+						PRJ_EMP.setText(
+								controller.getEmp().getEMP_LASTNAME() + " " + controller.getEmp().getEMP_FIRSTNAME()
+										+ " " + controller.getEmp().getEMP_MIDDLENAME());
+					} catch (Exception e) {
+						DbUtil.Log_Error(e);
+					}
+				}
+			});
+			stage.show();
 
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -882,6 +923,51 @@ public class EditPmPrjC {
 	}
 
 	/**
+	 * Изменить статус
+	 */
+	@FXML
+	void ChangeStatus(ActionEvent event) {
+		try {
+			if (PRJ_STATUS.getSelectionModel().getSelectedItem() != null) {
+				PM_PRJ_STATUS sel = PRJ_STATUS.getSelectionModel().getSelectedItem();
+
+				final Alert alert = new Alert(AlertType.CONFIRMATION, "Изменить статус " + sel.getPJST_NAME() + "?",
+						ButtonType.YES, ButtonType.NO);
+				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+					String update = "DECLARE\r\n"
+							+ "  STATUS_ NUMBER := ?;\r\n"
+							+ "  PRJID_  NUMBER := ?;\r\n"
+							+ "  EMP_    NUMBER := ?;\r\n"
+							+ "BEGIN\r\n"
+							+ "  INSERT INTO PM_PRJ_STAT_HIST\r\n"
+							+ "    (STH_PRJ, STH_STAT, STH_EMP)\r\n"
+							+ "  VALUES\r\n"
+							+ "    (PRJID_, STATUS_, EMP_);\r\n"
+							+ "  UPDATE PM_PROJECTS SET PRJ_STATUS = STATUS_ WHERE PRJ_ID = PRJID_;\r\n"
+							+ "END;\r\n"
+							+ "";
+					PreparedStatement prp = conn.prepareStatement(update);
+					prp.setLong(1, sel.getPJST_ID());
+					prp.setLong(2, class_.getPRJ_ID());
+					prp.setLong(3, class_.getEMP_ID());
+					try {
+						prp.executeUpdate();
+						conn.commit();
+
+					} catch (SQLException e) {
+						conn.rollback();
+						DbUtil.Log_Error(e);
+					}
+					prp.close();
+				}
+
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
 	 * Инициализация
 	 */
 	@FXML
@@ -1007,6 +1093,7 @@ public class EditPmPrjC {
 						+ "                  AND GRP.GRP_NAME IN ('PrjMngRuk', 'PrjMngRukOtd')\r\n"
 						+ "                  AND USR.CUSRLOGNAME = USER)) AND STAT.PJST_ID IN (1, 2))\r\n"
 						+ " ORDER BY PJST_ID ASC";
+				//System.out.println(selectStmt);
 				PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 				ResultSet rs = prepStmt.executeQuery();
 				ObservableList<PM_PRJ_STATUS> obslist = FXCollections.observableArrayList();
@@ -1035,6 +1122,10 @@ public class EditPmPrjC {
 			LoadTableWord();
 			// Scan
 			LoadTableScan();
+			// Права на изменение сотрудника
+			if (DbUtil.Odb_Action(Long.valueOf(282)) > 0) {
+				BtSelEmp.setDisable(false);
+			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

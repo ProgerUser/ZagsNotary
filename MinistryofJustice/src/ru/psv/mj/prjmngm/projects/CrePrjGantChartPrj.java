@@ -48,10 +48,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
@@ -67,9 +70,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
+import ru.psv.mj.prjmngm.projects.model.PM_PRJ_STATUS;
 import ru.psv.mj.prjmngm.projects.model.VPM_PROJECTS;
+import ru.psv.mj.report.Report;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 
@@ -107,6 +113,323 @@ public class CrePrjGantChartPrj {
 	private TableColumn<Object, LocalDateTime> tm$prj_startdate;
 	@FXML
 	private TableColumn<VPM_PROJECTS, String> prj_status_char;
+
+	/**
+	 * Tree table **************************************** 24.01.2022
+	 */
+
+	/**
+	 * ФИО
+	 */
+	@FXML
+	private TextField FilterEmpEmp;
+	/**
+	 * Оператор > < =
+	 */
+	@FXML
+	private ComboBox<String> FilterOperator;
+	/**
+	 * Количество дней
+	 */
+	@FXML
+	private TextField FilterDtDiff;
+
+	/**
+	 * Очистить фильтр
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void FilterSearchDel(ActionEvent event) {
+		try {
+			FilterEmpEmp.setText("");
+			FilterOperator.getSelectionModel().select(null);
+			FilterStatus.getSelectionModel().select(null);
+			FilterDtDiff.setText("");
+			FillTreePrj("", "", "", "");
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+
+	}
+
+	/**
+	 * Выполнить поиск по фильтру
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void FilterSearch(ActionEvent event) {
+		try {
+			String fio = "";
+			String operator = "";
+			String days = "";
+			String status = "";
+			if (!FilterEmpEmp.getText().equals("")) {
+				fio = FilterEmpEmp.getText();
+			}
+//			else {
+//				Msg.Message("Введите ФИО!");
+//			}
+			if (FilterOperator.getSelectionModel().getSelectedItem() != null) {
+				operator = FilterOperator.getSelectionModel().getSelectedItem();
+			}
+//			else {
+//				Msg.Message("Выберите условие");
+//			}
+			if (!FilterDtDiff.getText().equals("")) {
+				days = FilterDtDiff.getText();
+			}
+//			else {
+//				Msg.Message("Введите количество дней!");
+//			}
+			if (FilterStatus.getSelectionModel().getSelectedItem() != null) {
+				status = String.valueOf(FilterStatus.getSelectionModel().getSelectedItem().getPJST_ID());
+			}
+			FillTreePrj(fio, operator, days, status);
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Root tree table view
+	 */
+	TreeItem<VPM_PROJECTS> root = null;
+	/**
+	 * Model tree
+	 */
+	VPM_PROJECTS tree_item;
+
+	/**
+	 * Заполнить Древовидную таблицу
+	 * 
+	 * @throws SQLException
+	 */
+	void FillTreePrj(String fio, String operator, String days, String status) throws SQLException {
+
+		String fiowhere = "";
+		String operatorwhere = "";
+		String operatorwhereemp = "";
+		String statuswhereemp = "";
+		String statuswhere = "";
+
+		if (!status.equals("")) {
+			statuswhereemp = "\r\nand exists (select null from VPM_PROJECTS prj where prj.emp_id = PM_EMP.EMP_ID and "
+					+ "PRJ_STATUS = " + status + ")";
+			statuswhere = "\r\n and PRJ_STATUS = " + status + " ";
+
+		}
+
+		if (!fio.equals("")) {
+			fiowhere = "\r\n and lower(EMP_LASTNAME||' '||EMP_FIRSTNAME||' '||EMP_MIDDLENAME) like '%" + fio + "%'";
+		}
+		System.out.println(operator);
+		System.out.println(days);
+		if (!operator.equals("") & !days.equals("")) {
+
+			operatorwhere = "\r\n and (dtdiff > 0 and dtdiff " + operator + " " + days + " or\r\n"
+					+ "       (dtdiff < 0 and dtdiff " + operator + " -" + days + "))";
+			operatorwhereemp = " and exists (select null from VPM_PROJECTS prj where prj.emp_id = PM_EMP.EMP_ID\r\n"
+					+ "and (prj.dtdiff > 0 and prj.dtdiff " + operator + " " + days + " or\r\n"
+					+ "       (prj.dtdiff < 0 and prj.dtdiff " + operator + " -" + days + ")))";
+			System.out.println(operatorwhere);
+			System.out.println(operatorwhereemp);
+		}
+
+		tree_item = new VPM_PROJECTS();
+
+		tree_item.setEMP_LASTNAME("");
+		tree_item.setEMP_FIRSTNAME("");
+		tree_item.setEMP_MIDDLENAME("");
+
+		root = new TreeItem<VPM_PROJECTS>(tree_item);
+		// --------------------------------------------------------------
+
+		PreparedStatement prp1 = null;
+		ResultSet rs1 = null;
+		PreparedStatement prp = conn
+				.prepareStatement("select * from PM_EMP where 1=1 " + fiowhere + operatorwhereemp + statuswhereemp);
+		ResultSet rs = prp.executeQuery();
+
+		while (rs.next()) {
+			tree_item = new VPM_PROJECTS();
+
+			tree_item.setEMP_LASTNAME(rs.getString("EMP_LASTNAME"));
+			tree_item.setEMP_FIRSTNAME(rs.getString("EMP_FIRSTNAME"));
+			tree_item.setEMP_MIDDLENAME(rs.getString("EMP_MIDDLENAME"));
+			tree_item.setEMP_ID(rs.getLong("EMP_ID"));
+
+			TreeItem<VPM_PROJECTS> emp = new TreeItem<>(tree_item);
+			// ____________________________
+			{
+				prp1 = conn.prepareStatement("select * from VPM_PROJECTS where PRJ_EMP = ? " + operatorwhere
+						+ statuswhere + " order by DOC_END desc");
+				prp1.setLong(1, rs.getLong("EMP_ID"));
+				rs1 = prp1.executeQuery();
+				while (rs1.next()) {
+					tree_item = new VPM_PROJECTS();
+					/**
+					 * Data
+					 */
+					tree_item.setDOC_DATE((rs1.getDate("DOC_DATE") != null)
+							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_DATE")),
+									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+							: null);
+					tree_item.setEMP_EMAIL(rs1.getString("EMP_EMAIL"));
+					tree_item.setEMP_TEL(rs1.getString("EMP_TEL"));
+					tree_item.setPRJ_STATUS(rs1.getLong("PRJ_STATUS"));
+					tree_item.setDOC_NUMBER(rs1.getString("DOC_NUMBER"));
+					tree_item.setDOC_REF(rs1.getLong("DOC_REF"));
+					tree_item.setPRJ_STATUS_CHAR(rs1.getString("PRJ_STATUS_CHAR"));
+					tree_item.setEMP_WORKEND((rs1.getDate("EMP_WORKEND") != null)
+							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("EMP_WORKEND")),
+									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+							: null);
+					tree_item.setEMP_ID(rs1.getLong("EMP_ID"));
+					tree_item.setEMP_POSITION(rs1.getString("EMP_POSITION"));
+					tree_item.setDOC_COMMENT(rs1.getString("DOC_COMMENT"));
+					tree_item.setEMP_WORKSTART((rs1.getDate("EMP_WORKSTART") != null)
+							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("EMP_WORKSTART")),
+									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+							: null);
+					tree_item.setDTDIFF(rs1.getLong("DTDIFF"));
+					tree_item.setTM$DOC_START((rs1.getDate("TM$DOC_START") != null) ? LocalDateTime.parse(
+							new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs1.getDate("TM$DOC_START")),
+							DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) : null);
+					tree_item.setORG_ID(rs1.getLong("ORG_ID"));
+					tree_item.setORG_RUK(rs1.getString("ORG_RUK"));
+					tree_item.setPRJ_ID(rs1.getLong("PRJ_ID"));
+					tree_item.setEMP_LOGIN(rs1.getLong("EMP_LOGIN"));
+					tree_item.setPRJ_CREUSR(rs1.getString("PRJ_CREUSR"));
+					tree_item.setDOC_TP_NAME(rs1.getString("DOC_TP_NAME"));
+					tree_item.setEMP_MIDDLENAME("");
+					tree_item.setDOC_ISFAST(rs1.getString("DOC_ISFAST"));
+					tree_item.setPRJ_DOCID(rs1.getLong("PRJ_DOCID"));
+					tree_item.setEMP_FIRSTNAME("");
+					tree_item.setEMP_BOSS(rs1.getLong("EMP_BOSS"));
+					tree_item.setEMP_JBTYPE(rs1.getLong("EMP_JBTYPE"));
+					tree_item.setDOC_ID(rs1.getLong("DOC_ID"));
+					tree_item.setTM$PRJ_STARTDATE((rs1.getDate("TM$PRJ_STARTDATE") != null) ? LocalDateTime.parse(
+							new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs1.getDate("TM$PRJ_STARTDATE")),
+							DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) : null);
+					tree_item.setPRJ_EMP(rs1.getLong("PRJ_EMP"));
+					tree_item.setDOC_USR(rs1.getString("DOC_USR"));
+					tree_item.setDOC_TP_ID(rs1.getLong("DOC_TP_ID"));
+					tree_item.setORG_NAME(rs1.getString("ORG_NAME"));
+					tree_item.setEMP_LASTNAME("");
+					tree_item.setDOC_END((rs1.getDate("DOC_END") != null)
+							? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs1.getDate("DOC_END")),
+									DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+							: null);
+					tree_item.setDOC_NAME(rs1.getString("DOC_NAME"));
+					tree_item.setDTDIFF_CH(rs1.getString("DTDIFF_CH"));
+					/**
+					 * Data
+					 * 
+					 */
+					TreeItem<VPM_PROJECTS> prj = new TreeItem<>(tree_item);
+					prj.setExpanded(true);
+					emp.getChildren().add(prj);
+
+				}
+				emp.setExpanded(true);
+				root.getChildren().add(emp);
+			}
+			// ____________________________
+
+		}
+		//
+		if (prp1 != null) {
+			prp1.close();
+		}
+		if (rs1 != null) {
+			rs1.close();
+		}
+		//
+		if (rs != null) {
+			rs.close();
+		}
+		if (prp != null) {
+			prp.close();
+		}
+
+		// --------------------------------------------------------------
+//		root.expandedProperty().addListener(new ChangeListener<Boolean>() {
+//			@Override
+//			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//				System.out.println("newValue = " + newValue);
+//				BooleanProperty bb = (BooleanProperty) observable;
+//				System.out.println("bb.getBean() = " + bb.getBean());
+//				TreeItem t = (TreeItem) bb.getBean();
+//				// Do whatever with t
+//			}
+//		});
+
+//		root.addEventHandler(MouseEvent.ANY, event -> {
+//			if (event.getClickCount() == 1 && (event.getButton().equals(MouseButton.PRIMARY)
+//					|| event.getButton().equals(MouseButton.SECONDARY))) {
+//				if (event.getEventType().equals(MouseEvent.MOUSE_CLICKED)) {
+//					System.out.println(event.getEventType()); // perform some action
+//					event.consume();
+//				}
+//			}
+//		});
+		/**
+		 * Отключить expand/collapse
+		 */
+		root.addEventHandler(TreeItem.branchCollapsedEvent(), new EventHandler<TreeModificationEvent<String>>() {
+			@Override
+			public void handle(TreeModificationEvent<String> event) {
+				event.getTreeItem().setExpanded(true);
+			}
+		});
+
+		root.setExpanded(true);
+		TreeTable.setRoot(root);
+	}
+
+	@FXML
+	private ComboBox<PM_PRJ_STATUS> FilterStatus;
+
+	@FXML
+	private TreeTableView<VPM_PROJECTS> TreeTable;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_emp_fio;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_doc_name;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_doc_number;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_is_fast;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_doc_comm;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, LocalDate> tr_doc_start_date;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, LocalDate> tr_doc_end_date;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_prj_end_days;
+	@FXML
+	private TreeTableColumn<VPM_PROJECTS, String> tr_prj_status;
+
+	/**
+	 * Обновить таблицу
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void ReshreshTree(ActionEvent event) {
+		try {
+			FillTreePrj("", "", "", "");
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Tree Table ****************************************
+	 */
 
 	/**
 	 * Конструктор
@@ -176,8 +499,8 @@ public class CrePrjGantChartPrj {
 					+ " (SELECT EMP_ID\r\n"
 					+ "     FROM PM_EMP\r\n"
 					+ "    WHERE PM_EMP.EMP_LOGIN =\r\n"
-					+ "          (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = USER)))"
-					+ " order by PRJ_ID desc";
+					+ "          (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = USER))) order by PRJ_ID desc";
+			//System.out.println(selectStmt);
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<VPM_PROJECTS> obslist = FXCollections.observableArrayList();
@@ -252,7 +575,7 @@ public class CrePrjGantChartPrj {
 				}
 			});
 			// resize
-			//ResizeColumns(prj_tbl);
+			// ResizeColumns(prj_tbl);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -521,13 +844,13 @@ public class CrePrjGantChartPrj {
 
 		// ---------------------------------
 		table.getColumns().addAll(empid, docname, docnumber, isfast, comment, docdate, docend, dtdiff);
-		
+
 		//
 		EventDispatcher treeOriginal = table.getEventDispatcher();
 		table.setEventDispatcher(new CellEventDispatcher(treeOriginal));
 		gantt.getTreeTable().setSortMode(null);
 		//
-		
+
 		links.forEach(link -> gantt.getLinks().add(link));
 
 		gantt.getGraphics().showEarliestActivities();
@@ -539,28 +862,28 @@ public class CrePrjGantChartPrj {
 
 	class CellEventDispatcher implements EventDispatcher {
 
-	    private final EventDispatcher original;
+		private final EventDispatcher original;
 
-	    public CellEventDispatcher(EventDispatcher original) {
-	        this.original = original;
-	    }
+		public CellEventDispatcher(EventDispatcher original) {
+			this.original = original;
+		}
 
-	    @Override
-	    public Event dispatchEvent(Event event, EventDispatchChain tail) {
-	        if (event.getEventType().equals(MouseEvent.MOUSE_PRESSED) || 
-	             event.getEventType().equals(ContextMenuEvent.ANY)){
-	            event.consume();
-	        }
-	        if(event instanceof KeyEvent && event.getEventType().equals(KeyEvent.KEY_PRESSED)){
-	            if((((KeyEvent)event).getCode().equals(KeyCode.LEFT) || 
-	                 ((KeyEvent)event).getCode().equals(KeyCode.RIGHT))){
-	                event.consume();
-	            }
-	        }
-	        return original.dispatchEvent(event, tail);
-	    }
+		@Override
+		public Event dispatchEvent(Event event, EventDispatchChain tail) {
+			if (event.getEventType().equals(MouseEvent.MOUSE_PRESSED)
+					|| event.getEventType().equals(ContextMenuEvent.ANY)) {
+				event.consume();
+			}
+			if (event instanceof KeyEvent && event.getEventType().equals(KeyEvent.KEY_PRESSED)) {
+				if ((((KeyEvent) event).getCode().equals(KeyCode.LEFT)
+						|| ((KeyEvent) event).getCode().equals(KeyCode.RIGHT))) {
+					event.consume();
+				}
+			}
+			return original.dispatchEvent(event, tail);
+		}
 	}
-	
+
 	private final ArrayList<ActivityLink<?>> links = new ArrayList<>();
 
 	/**
@@ -607,6 +930,136 @@ public class CrePrjGantChartPrj {
 	}
 
 	/**
+	 * Столбцы таблицы
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	void InitTreeTable() {
+		try {
+			tr_prj_end_days.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDTDIFF_CH());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_doc_end_date.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_END());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_doc_start_date.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_DATE());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_doc_comm.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_COMMENT());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_is_fast.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_ISFAST());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_doc_number.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_NUMBER());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_emp_fio.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getEMP_LASTNAME() + " "
+							+ cellData.getValue().getValue().getEMP_FIRSTNAME() + " "
+							+ cellData.getValue().getValue().getEMP_MIDDLENAME());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_doc_name.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getDOC_NAME());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+			tr_prj_status.setCellValueFactory(cellData -> {
+				if (cellData.getValue().getValue() instanceof VPM_PROJECTS) {
+					return new ReadOnlyObjectWrapper(cellData.getValue().getValue().getPRJ_STATUS_CHAR());
+				}
+				return new ReadOnlyObjectWrapper(cellData.getValue().getValue());
+			});
+
+			FillTreePrj("", "", "", "");
+
+			tr_doc_start_date.setCellFactory(column_ -> {
+
+				TreeTableCell<VPM_PROJECTS, LocalDate> cell_ = new TreeTableCell<VPM_PROJECTS, LocalDate>() {
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+							.withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault());
+
+					@Override
+					protected void updateItem(LocalDate item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setText(null);
+						} else {
+							if (item != null) {
+								this.setText(formatter.format(item));
+							}
+						}
+					}
+				};
+
+				return cell_;
+			});
+			tr_doc_end_date.setCellFactory(column_ -> {
+
+				TreeTableCell<VPM_PROJECTS, LocalDate> cell_ = new TreeTableCell<VPM_PROJECTS, LocalDate>() {
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+							.withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault());
+
+					@Override
+					protected void updateItem(LocalDate item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setText(null);
+						} else {
+							if (item != null) {
+								this.setText(formatter.format(item));
+
+								LocalDate lt = LocalDate.now();
+								LocalDate lcd = item;// .atZone(ZoneId.systemDefault()).toLocalDate();
+								long daysBetween = ChronoUnit.DAYS.between(lt, lcd);
+								if (daysBetween >= 20 | daysBetween < 0) {
+									setStyle("-fx-text-fill: red;-fx-font-weight: bold");
+								} else if (daysBetween <= 20 & daysBetween > 0) {
+									setStyle("-fx-text-fill: orange;-fx-font-weight: bold");
+								} else {
+									setStyle("");
+								}
+							}
+						}
+					}
+				};
+
+				return cell_;
+			});
+			// Отключить сортировку
+			TreeTable.setSortMode(null);
+
+		} catch (
+
+		Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
 	 * Инициализация
 	 */
 	@FXML
@@ -619,7 +1072,7 @@ public class CrePrjGantChartPrj {
 			dbConnect();
 			InitTabCol();
 			LoadTable();
-			CreGant();
+			// CreGant();
 			/**
 			 * Двойной щелчок по строке
 			 */
@@ -634,8 +1087,58 @@ public class CrePrjGantChartPrj {
 				});
 				return row;
 			});
+			InitTreeTable();
+			// FilterOperator.getSelectionModel().getSelectedIndex()
+			FilterOperator.getItems().addAll(">", "<", "=");
+			// new ConvConst().OnlyNumber(FilterDtDiff);
+			FilterComboStatus();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Для типа документов
+	 */
+	private void ComboStatus() {
+		FilterStatus.setConverter(new StringConverter<PM_PRJ_STATUS>() {
+			@Override
+			public String toString(PM_PRJ_STATUS object) {
+				return object != null ? object.getPJST_ID() + "=" + object.getPJST_NAME() : "";
+			}
+
+			@Override
+			public PM_PRJ_STATUS fromString(final String string) {
+				return FilterStatus.getItems().stream()
+						.filter(product -> (product.getPJST_ID() + "=" + product.getPJST_NAME()).equals(string))
+						.findFirst().orElse(null);
+			}
+		});
+	}
+
+	/**
+	 * Заполнить статусы
+	 * 
+	 * @throws SQLException
+	 */
+	void FilterComboStatus() throws SQLException {
+		// -------------------
+		{
+
+			String selectStmt = "SELECT * FROM PM_PRJ_STATUS ORDER BY PJST_ID ASC";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<PM_PRJ_STATUS> obslist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				PM_PRJ_STATUS list = new PM_PRJ_STATUS();
+				list.setPJST_ID(rs.getLong("PJST_ID"));
+				list.setPJST_NAME(rs.getString("PJST_NAME"));
+				obslist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+			FilterStatus.setItems(obslist);
+			ComboStatus();
 		}
 	}
 
@@ -667,17 +1170,56 @@ public class CrePrjGantChartPrj {
 				final Alert alert = new Alert(AlertType.CONFIRMATION, "Удалить " + sel.getDOC_ID() + "?",
 						ButtonType.YES, ButtonType.NO);
 				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-					PreparedStatement prp = conn.prepareStatement("declare prjid number:= ?;"
-							+ "begin "
-							+ "delete from PM_PRJ_STAT_HIST where STH_PRJ = prjid;"
-							+ "delete from PM_PROJECTS where PRJ_ID = prjid;"
-							+ "end;");
+					PreparedStatement prp = conn.prepareStatement(
+							"DECLARE\r\n"
+							+ "  PRJID NUMBER := ?;\r\n"
+							+ "BEGIN\r\n"
+							+ "  DELETE FROM PM_PRJ_STAT_HIST WHERE STH_PRJ = PRJID;\r\n"
+							+ "  DELETE FROM PM_PROJECTS WHERE PRJ_ID = PRJID;\r\n"
+							+ "END;\r\n"
+							+ "");
 					prp.setLong(1, sel.getPRJ_ID());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
 					LoadTable();
 				}
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Печать
+	 */
+	@FXML
+	void Print(ActionEvent event) {
+		try {
+			if (prj_tbl.getSelectionModel().getSelectedItem() != null) {
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/report/Report.fxml"));
+
+				Report controller = new Report();
+				controller.setId(4l);
+				controller.setRecId(prj_tbl.getSelectionModel().getSelectedItem().getPRJ_ID());
+				// FRREPRunner runner = new FRREPRunner();
+				// controller.setDllOption(runner);
+				loader.setController(controller);
+
+				Parent root = loader.load();
+				stage.setScene(new Scene(root));
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("(" + controller.getId() + ") Печать");
+				stage.initOwner((Stage) prj_tbl.getScene().getWindow());
+
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+					}
+				});
+				stage.show();
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -694,7 +1236,7 @@ public class CrePrjGantChartPrj {
 		try {
 			VPM_PROJECTS sel = prj_tbl.getSelectionModel().getSelectedItem();
 			if (sel != null) {
-				
+
 				// удержать
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from VPM_PROJECTS where PRJ_ID = ? FOR UPDATE NOWAIT");
@@ -735,7 +1277,10 @@ public class CrePrjGantChartPrj {
 									if (lock != null) {// if error add row
 										Msg.Message(lock);
 									}
+									// Таблица
 									LoadTable();
+									// Tree table
+									InitTreeTable();
 								}
 							} catch (Exception e) {
 								DbUtil.Log_Error(e);
