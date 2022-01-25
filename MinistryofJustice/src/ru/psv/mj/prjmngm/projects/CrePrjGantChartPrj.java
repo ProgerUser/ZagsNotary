@@ -1,9 +1,11 @@
 package ru.psv.mj.prjmngm.projects;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -48,7 +50,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -56,6 +57,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
@@ -500,13 +502,16 @@ public class CrePrjGantChartPrj {
 					+ "     FROM PM_EMP\r\n"
 					+ "    WHERE PM_EMP.EMP_LOGIN =\r\n"
 					+ "          (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = USER))) order by PRJ_ID desc";
-			//System.out.println(selectStmt);
+			System.out.println(selectStmt);
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<VPM_PROJECTS> obslist = FXCollections.observableArrayList();
 			while (rs.next()) {
 				VPM_PROJECTS list = new VPM_PROJECTS();
 
+				//System.out.println(rs.getString("PRJ_EMP_LOGIN"));
+				
+				list.setPRJ_EMP_LOGIN(rs.getString("PRJ_EMP_LOGIN"));
 				list.setDOC_DATE((rs.getDate("DOC_DATE") != null)
 						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_DATE")),
 								DateTimeFormatter.ofPattern("dd.MM.yyyy"))
@@ -1227,6 +1232,24 @@ public class CrePrjGantChartPrj {
 	}
 
 	/**
+	 * Проверка возможности редактирования
+	 * @param sel
+	 * @return
+	 * @throws SQLException
+	 */
+	boolean IsEditable(VPM_PROJECTS sel) throws SQLException {
+		boolean ret = false;
+		CallableStatement cl = conn.prepareCall("{ ? = call PM_DOC.PRJ_IS_EDITABLE(?)}");
+		cl.registerOutParameter(1, Types.INTEGER);
+		cl.setLong(2,sel.getPRJ_ID());
+		cl.execute();
+		if (cl.getInt(1) == 1) {
+			ret = true;
+		}
+		return ret;
+	}
+	
+	/**
 	 * Редактировать проект
 	 * 
 	 * @param event
@@ -1236,7 +1259,11 @@ public class CrePrjGantChartPrj {
 		try {
 			VPM_PROJECTS sel = prj_tbl.getSelectionModel().getSelectedItem();
 			if (sel != null) {
-
+				//System.out.println( sel.getPRJ_EMP_LOGIN());
+				//System.out.println( sel.getPRJ_STATUS());
+				if(IsEditable(sel)) {
+					
+				
 				// удержать
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from VPM_PROJECTS where PRJ_ID = ? FOR UPDATE NOWAIT");
@@ -1297,6 +1324,9 @@ public class CrePrjGantChartPrj {
 					}
 				}
 			}
+		}else {
+			Msg.Message("Нет прав на редактирование, статус выше '1'!");
+		}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

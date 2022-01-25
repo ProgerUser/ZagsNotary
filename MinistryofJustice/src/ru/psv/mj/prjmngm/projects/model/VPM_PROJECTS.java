@@ -81,6 +81,8 @@ public class VPM_PROJECTS {
 	private LongProperty DTDIFF;
 	/** Нет данных */
 	private StringProperty DTDIFF_CH;
+	/** Нет данных */
+	private StringProperty PRJ_EMP_LOGIN;
 
 	public VPM_PROJECTS() {
 		this.PRJ_ID = new SimpleLongProperty();
@@ -119,6 +121,7 @@ public class VPM_PROJECTS {
 		this.ORG_RUK = new SimpleStringProperty();
 		this.DTDIFF = new SimpleLongProperty();
 		this.DTDIFF_CH = new SimpleStringProperty();
+		this.PRJ_EMP_LOGIN = new SimpleStringProperty();
 	}
 
 	public void setPRJ_ID(Long PRJ_ID) {
@@ -265,6 +268,10 @@ public class VPM_PROJECTS {
 		this.DTDIFF_CH.set(DTDIFF_CH);
 	}
 
+	public void setPRJ_EMP_LOGIN(String PRJ_EMP_LOGIN) {
+		this.PRJ_EMP_LOGIN.set(PRJ_EMP_LOGIN);
+	}
+
 	public Long getPRJ_ID() {
 		return PRJ_ID.get();
 	}
@@ -409,6 +416,10 @@ public class VPM_PROJECTS {
 		return DTDIFF_CH.get();
 	}
 
+	public String getPRJ_EMP_LOGIN() {
+		return PRJ_EMP_LOGIN.get();
+	}
+
 	public LongProperty PRJ_IDProperty() {
 		return PRJ_ID;
 	}
@@ -551,5 +562,9 @@ public class VPM_PROJECTS {
 
 	public StringProperty DTDIFF_CHProperty() {
 		return DTDIFF_CH;
+	}
+
+	public StringProperty PRJ_EMP_LOGINProperty() {
+		return PRJ_EMP_LOGIN;
 	}
 }
