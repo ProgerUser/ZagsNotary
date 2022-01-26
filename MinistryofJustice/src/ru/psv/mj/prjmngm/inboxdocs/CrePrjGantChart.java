@@ -214,7 +214,7 @@ public class CrePrjGantChart {
 		}
 
 		if (!fio.equals("")) {
-			fiowhere = "\r\n and lower(EMP_LASTNAME||' '||EMP_FIRSTNAME||' '||EMP_MIDDLENAME) like '%" + fio + "%'";
+			fiowhere = "\r\n and lower(EMP_LASTNAME||' '||EMP_FIRSTNAME||' '||EMP_MIDDLENAME) like lower('%" + fio + "%')";
 		}
 		System.out.println(operator);
 		System.out.println(days);

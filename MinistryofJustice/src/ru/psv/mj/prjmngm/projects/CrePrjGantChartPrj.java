@@ -502,7 +502,7 @@ public class CrePrjGantChartPrj {
 					+ "     FROM PM_EMP\r\n"
 					+ "    WHERE PM_EMP.EMP_LOGIN =\r\n"
 					+ "          (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = USER))) order by PRJ_ID desc";
-			System.out.println(selectStmt);
+			//System.out.println(selectStmt);
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<VPM_PROJECTS> obslist = FXCollections.observableArrayList();
@@ -1239,13 +1239,16 @@ public class CrePrjGantChartPrj {
 	 */
 	boolean IsEditable(VPM_PROJECTS sel) throws SQLException {
 		boolean ret = false;
-		CallableStatement cl = conn.prepareCall("{ ? = call PM_DOC.PRJ_IS_EDITABLE(?)}");
+		CallableStatement cl = conn.prepareCall("{ ? = call PM_DOC.PRJ_IS_EDITABLE(?,?,?)}");
 		cl.registerOutParameter(1, Types.INTEGER);
 		cl.setLong(2,sel.getPRJ_ID());
+		cl.setLong(3,sel.getEMP_ID());
+		cl.setLong(4,sel.getPRJ_STATUS());
 		cl.execute();
 		if (cl.getInt(1) == 1) {
 			ret = true;
 		}
+		cl.close();
 		return ret;
 	}
 	

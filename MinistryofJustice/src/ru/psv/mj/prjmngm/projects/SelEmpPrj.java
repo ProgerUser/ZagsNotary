@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,6 +38,17 @@ public class SelEmpPrj {
 	 */
 	public SelEmpPrj() {
 		Main.logger = Logger.getLogger(getClass());
+		this.Status = new SimpleBooleanProperty();
+	}
+
+	private BooleanProperty Status;
+
+	public boolean getStatus() {
+		return this.Status.get();
+	}
+
+	public void setStatus(Boolean value) {
+		this.Status.set(value);
 	}
 
 	// <TableView>
@@ -85,6 +98,7 @@ public class SelEmpPrj {
 	@FXML
 	void Cancel(ActionEvent event) {
 		try {
+			setStatus(false);
 			OnClose();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -125,6 +139,7 @@ public class SelEmpPrj {
 					prp.close();
 					conn.commit();
 					class_emp_ = sel;
+					setStatus(true);
 					OnClose();	
 				}
 			}
