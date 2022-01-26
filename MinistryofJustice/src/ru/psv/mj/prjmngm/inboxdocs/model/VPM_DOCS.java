@@ -37,6 +37,10 @@ public class VPM_DOCS {
 	private LongProperty ORG_ID;
 	/** Нет данных */
 	private StringProperty DOC_NAME;
+	/** Нет данных */
+	private SimpleObjectProperty<LocalDate> DOC_ISH_DATE;
+	/** Нет данных */
+	private StringProperty DOC_ISFH_NUMBER;
 
 	public VPM_DOCS() {
 		this.DOC_ID = new SimpleLongProperty();
@@ -53,6 +57,8 @@ public class VPM_DOCS {
 		this.ORG_NAME = new SimpleStringProperty();
 		this.ORG_ID = new SimpleLongProperty();
 		this.DOC_NAME = new SimpleStringProperty();
+		this.DOC_ISH_DATE = new SimpleObjectProperty<>();
+		this.DOC_ISFH_NUMBER = new SimpleStringProperty();
 	}
 
 	public void setDOC_ID(Long DOC_ID) {
@@ -111,6 +117,14 @@ public class VPM_DOCS {
 		this.DOC_NAME.set(DOC_NAME);
 	}
 
+	public void setDOC_ISH_DATE(LocalDate DOC_ISH_DATE) {
+		this.DOC_ISH_DATE.set(DOC_ISH_DATE);
+	}
+
+	public void setDOC_ISFH_NUMBER(String DOC_ISFH_NUMBER) {
+		this.DOC_ISFH_NUMBER.set(DOC_ISFH_NUMBER);
+	}
+
 	public Long getDOC_ID() {
 		return DOC_ID.get();
 	}
@@ -167,6 +181,14 @@ public class VPM_DOCS {
 		return DOC_NAME.get();
 	}
 
+	public LocalDate getDOC_ISH_DATE() {
+		return DOC_ISH_DATE.get();
+	}
+
+	public String getDOC_ISFH_NUMBER() {
+		return DOC_ISFH_NUMBER.get();
+	}
+
 	public LongProperty DOC_IDProperty() {
 		return DOC_ID;
 	}
@@ -221,5 +243,13 @@ public class VPM_DOCS {
 
 	public StringProperty DOC_NAMEProperty() {
 		return DOC_NAME;
+	}
+
+	public SimpleObjectProperty<LocalDate> DOC_ISH_DATEProperty() {
+		return DOC_ISH_DATE;
+	}
+
+	public StringProperty DOC_ISFH_NUMBERProperty() {
+		return DOC_ISFH_NUMBER;
 	}
 }
