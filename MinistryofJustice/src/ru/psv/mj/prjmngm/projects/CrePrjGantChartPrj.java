@@ -1262,6 +1262,7 @@ public class CrePrjGantChartPrj {
 		try {
 			VPM_PROJECTS sel = prj_tbl.getSelectionModel().getSelectedItem();
 			if (sel != null) {
+				System.out.println(sel);
 				//System.out.println( sel.getPRJ_EMP_LOGIN());
 				//System.out.println( sel.getPRJ_STATUS());
 				if(IsEditable(sel)) {
