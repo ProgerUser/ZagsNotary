@@ -446,7 +446,7 @@ public class Root {
 
 	/**
 	 * Итерация по меню
-	 * 
+	 * 27.01.2022
 	 * @param menu
 	 */
 	void IterateMenu(Menu menu) {

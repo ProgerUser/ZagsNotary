@@ -1169,6 +1169,12 @@ public class CrePrjGantChartPrj {
 	@FXML
 	void DeletePrj(ActionEvent event) {
 		try {
+			
+			if (DbUtil.Odb_Action(Long.valueOf(301)) == 0) {
+				Msg.Message("Нет доступа!");
+				return;
+			}
+			
 			if (prj_tbl.getSelectionModel().getSelectedItem() != null) {
 				VPM_PROJECTS sel = prj_tbl.getSelectionModel().getSelectedItem();
 
@@ -1263,74 +1269,74 @@ public class CrePrjGantChartPrj {
 			VPM_PROJECTS sel = prj_tbl.getSelectionModel().getSelectedItem();
 			if (sel != null) {
 				System.out.println(sel);
-				//System.out.println( sel.getPRJ_EMP_LOGIN());
-				//System.out.println( sel.getPRJ_STATUS());
-				if(IsEditable(sel)) {
-					
-				
-				// удержать
-				PreparedStatement selforupd = conn
-						.prepareStatement("select * from VPM_PROJECTS where PRJ_ID = ? FOR UPDATE NOWAIT");
-				selforupd.setLong(1, sel.getPRJ_ID());
-				try {
-					selforupd.executeQuery();
-					selforupd.close();
-					// add lock row
-					String lock = DbUtil.Lock_Row(sel.getDOC_ID(), "VPM_PROJECTS", conn);
-					if (lock != null) {// if error add row
-						Msg.Message(lock);
-						conn.rollback();
-						return;
-					}
-					// <FXML>---------------------------------------
-					Stage stage = new Stage();
-					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/projects/IUPmPrj.fxml"));
-					EditPmPrjC controller = new EditPmPrjC();
-					controller.SetClass(sel, conn);
+				// System.out.println( sel.getPRJ_EMP_LOGIN());
+				// System.out.println( sel.getPRJ_STATUS());
+				if (IsEditable(sel)) {
 
-					loader.setController(controller);
-					Parent root = loader.load();
-					stage.setScene(new Scene(root));
-					stage.getIcons().add(new Image("/icon.png"));
-					stage.setTitle("Редактирование: " + sel.getDOC_ID());
-					stage.initOwner((Stage) prj_tbl.getScene().getWindow());
-					stage.setResizable(true);
-					stage.initModality(Modality.WINDOW_MODAL);
-					stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-						@Override
-						public void handle(WindowEvent paramT) {
-							try {
-								if (controller.getStatus()) {
-									conn.commit();
-									// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-									String lock = DbUtil.Lock_Row_Delete(sel.getDOC_ID(), "VPM_PROJECTS", conn);
-									if (lock != null) {// if error add row
-										Msg.Message(lock);
-									}
-									// Таблица
-									LoadTable();
-									// Tree table
-									InitTreeTable();
-								}
-							} catch (Exception e) {
-								DbUtil.Log_Error(e);
-							}
+					// удержать
+					PreparedStatement selforupd = conn
+							.prepareStatement("select * from VPM_PROJECTS where PRJ_ID = ? FOR UPDATE NOWAIT");
+					selforupd.setLong(1, sel.getPRJ_ID());
+					try {
+						selforupd.executeQuery();
+						selforupd.close();
+						// add lock row
+						String lock = DbUtil.Lock_Row(sel.getDOC_ID(), "VPM_PROJECTS", conn);
+						if (lock != null) {// if error add row
+							Msg.Message(lock);
+							conn.rollback();
+							return;
 						}
-					});
-					stage.show();
-					// </FXML>---------------------------------------
-				} catch (SQLException e) {
-					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(sel.getDOC_ID(), "VPM_PROJECTS"));
-					} else {
-						DbUtil.Log_Error(e);
+						// <FXML>---------------------------------------
+						Stage stage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/projects/IUPmPrj.fxml"));
+						EditPmPrjC controller = new EditPmPrjC();
+						controller.SetClass(sel, conn);
+
+						loader.setController(controller);
+						Parent root = loader.load();
+						stage.setScene(new Scene(root));
+						stage.getIcons().add(new Image("/icon.png"));
+						stage.setTitle("Редактирование: " + sel.getDOC_ID());
+						stage.initOwner((Stage) prj_tbl.getScene().getWindow());
+						stage.setResizable(true);
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent paramT) {
+								try {
+									if (controller.getStatus()) {
+										conn.commit();
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+										String lock = DbUtil.Lock_Row_Delete(sel.getDOC_ID(), "VPM_PROJECTS", conn);
+										if (lock != null) {// if error add row
+											Msg.Message(lock);
+										}
+										// Таблица
+										LoadTable();
+										// Tree table
+										InitTreeTable();
+									}
+								} catch (Exception e) {
+									DbUtil.Log_Error(e);
+								}
+							}
+						});
+						stage.show();
+						// </FXML>---------------------------------------
+					} catch (SQLException e) {
+						if (e.getErrorCode() == 54) {
+							Msg.Message(
+									"Запись редактируется " + DbUtil.Lock_Row_View(sel.getDOC_ID(), "VPM_PROJECTS"));
+						} else {
+							DbUtil.Log_Error(e);
+						}
 					}
+				} else {
+					Msg.Message("Нет прав на редактирование!");
 				}
 			}
-		}else {
-			Msg.Message("Нет прав на редактирование, статус выше '1'!");
-		}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

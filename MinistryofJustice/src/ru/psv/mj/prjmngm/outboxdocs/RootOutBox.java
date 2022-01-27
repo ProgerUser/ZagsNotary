@@ -394,7 +394,7 @@ public class RootOutBox {
 	}
 
 	/**
-	 * Редактировать проект
+	 * Редактировать проект/Документ
 	 * 
 	 * @param event
 	 */
@@ -465,9 +465,9 @@ public class RootOutBox {
 							DbUtil.Log_Error(e);
 						}
 					}
+				} else {
+					Msg.Message("Нет прав на редактирование!");
 				}
-			} else {
-				Msg.Message("Нет прав на редактирование, статус выше '1'!");
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);

@@ -986,7 +986,10 @@ public class EditPmPrjC {
 			if (PRJ_STATUS.getSelectionModel().getSelectedItem() != null) {
 				PM_PRJ_STATUS sel = PRJ_STATUS.getSelectionModel().getSelectedItem();
 
-				if(!sel.getPJST_ID().equals(class_.getPRJ_STATUS())) {
+				if(
+						!sel.getPJST_ID().equals(class_.getPRJ_STATUS()) 
+						& !sel.getPJST_ID().equals(5l)
+				) {
 
 				final Alert alert = new Alert(AlertType.CONFIRMATION, "Изменить статус " + sel.getPJST_NAME() + "?",
 						ButtonType.YES, ButtonType.NO);
