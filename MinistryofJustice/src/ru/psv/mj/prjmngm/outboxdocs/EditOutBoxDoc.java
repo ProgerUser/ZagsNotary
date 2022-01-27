@@ -1,4 +1,4 @@
-package ru.psv.mj.prjmngm.inboxdocs;
+package ru.psv.mj.prjmngm.outboxdocs;
 
 import java.awt.Desktop;
 import java.io.ByteArrayInputStream;
@@ -13,13 +13,16 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -47,14 +50,11 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -69,19 +69,19 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Pair;
 import javafx.util.StringConverter;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
 import ru.psv.mj.prjmngm.doc.type.PM_DOC_TYPES;
 import ru.psv.mj.prjmngm.inboxdocs.model.PM_ORG;
-import ru.psv.mj.prjmngm.inboxdocs.model.VPM_DOCS;
 import ru.psv.mj.prjmngm.inboxdocs.model.VPM_DOC_SCANS;
 import ru.psv.mj.prjmngm.inboxdocs.model.VPM_DOC_WORD;
+import ru.psv.mj.prjmngm.projects.model.PM_PRJ_STATUS;
+import ru.psv.mj.prjmngm.projects.model.VPM_PROJECTS;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.widgets.FxUtilTest;
@@ -90,14 +90,14 @@ import ru.psv.mj.www.pl.jsolve.TextVariable;
 import ru.psv.mj.www.pl.jsolve.VariablePattern;
 import ru.psv.mj.www.pl.jsolve.Variables;
 
-public class EditPmDocC {
+public class EditOutBoxDoc {
 	public File FileWord;
 	public String AddEdit;
 
 	/**
 	 * Конструктор
 	 */
-	public EditPmDocC() {
+	public EditOutBoxDoc() {
 		Main.logger = Logger.getLogger(getClass());
 		this.Status = new SimpleBooleanProperty();
 	}
@@ -106,18 +106,32 @@ public class EditPmDocC {
 	private ComboBox<PM_DOC_TYPES> DOC_TYPE;
 	@FXML
 	private ComboBox<PM_ORG> DOC_ORG;
+	/**
+	 * Статус
+	 */
+	@FXML
+	private ComboBox<PM_PRJ_STATUS> PRJ_STATUS;
 	@FXML
 	private TextField DOC_NUMBER;
+	@FXML
+	private TextField DOC_ISFH_NUMBER;
 	@FXML
 	private DatePicker DOC_END;
 	@FXML
 	private DatePicker DOC_DATE;
+	@FXML
+	private DatePicker DOC_ISH_DATE;
 	@FXML
 	private CheckBox DOC_ISFAST;
 	@FXML
 	private TextField DOC_COMMENT;
 	@FXML
 	private TextField DOC_REF;
+	/**
+	 * Сотрудник
+	 */
+	@FXML
+	private TextField PRJ_EMP;
 	@FXML
 	private TextField DOC_NAME;
 	@FXML
@@ -144,6 +158,9 @@ public class EditPmDocC {
 	private TableColumn<VPM_DOC_SCANS, String> DocScanKb;
 	@FXML
 	private TableColumn<Object, LocalDateTime> DS_DATE;
+
+	@FXML
+	private Button BtSelEmp;
 
 	/**
 	 * Добавить Скан
@@ -256,36 +273,35 @@ public class EditPmDocC {
 	@FXML
 	void DOC_REF(ActionEvent event) {
 		try {
-			// <FXML>---------------------------------------
-			Stage stage = new Stage();
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/ru/psv/mj/prjmngm/inboxdocs/SelRootPmDocView.fxml"));
 
-			SelRootPmDocController controller = new SelRootPmDocController();
-			controller.SetClass(class_, conn);
-			loader.setController(controller);
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
 
-			Parent root = loader.load();
-			stage.setScene(new Scene(root));
-			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Список документов:");
-			stage.initOwner((Stage) DOC_ORG.getScene().getWindow());
-			stage.setResizable(true);
-			stage.initModality(Modality.WINDOW_MODAL);
-			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				@Override
-				public void handle(WindowEvent paramT) {
-					try {
-						if (controller.getStatus()) {
-							DOC_REF.setText(String.valueOf(controller.getRetId()));
-						}
-					} catch (Exception e) {
-						DbUtil.Log_Error(e);
-					}
-				}
-			});
-			stage.show();
-			// </FXML>---------------------------------------
+	/**
+	 * Выбрать сотрудника
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void SelPrjRef(ActionEvent event) {
+		try {
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Удалить сотрудника
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void DelPrjRef(ActionEvent event) {
+		try {
+
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -714,7 +730,7 @@ public class EditPmDocC {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-			CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.EDIT_DOC_INBOX(?,?,?,?,?,?,?,?,?,?,?)}");
+			CallableStatement callStmt = conn.prepareCall("{ call PM_DOC.EDIT_DOC_OUTBOX(?,?,?,?,?,?)}");
 			callStmt.registerOutParameter(1, Types.VARCHAR);
 			// ID документы
 			if (class_ != null) {
@@ -722,40 +738,23 @@ public class EditPmDocC {
 			} else {
 				callStmt.setNull(2, java.sql.Types.INTEGER);
 			}
-			// Срок документа
-			callStmt.setDate(3, (DOC_END.getValue() != null) ? java.sql.Date.valueOf(DOC_END.getValue()) : null);
-			// Ссылка на типы документов
-			if (DOC_TYPE.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setLong(4, DOC_TYPE.getSelectionModel().getSelectedItem().getDOC_TP_ID());
+			// ID ПРОЕКТА
+			if (class_ != null) {
+				callStmt.setLong(3, class_.getPRJ_ID());
+			} else {
+				callStmt.setNull(3, java.sql.Types.INTEGER);
+			}
+			// ID Сотрудника
+			if (class_ != null) {
+				callStmt.setLong(4, class_.getEMP_ID());
 			} else {
 				callStmt.setNull(4, java.sql.Types.INTEGER);
 			}
-			// Комментарий
-			callStmt.setString(5, DOC_COMMENT.getText());
-			// Срочность, 'Y','N'
-			if (DOC_ISFAST.isSelected()) {
-				callStmt.setString(6, "Y");
-			} else if (!DOC_ISFAST.isSelected()) {
-				callStmt.setString(6, "N");
-			}
-			// Номер документа
-			callStmt.setString(7, DOC_NUMBER.getText());
-			// Дата поступления документа
-			callStmt.setDate(8, (DOC_DATE.getValue() != null) ? java.sql.Date.valueOf(DOC_DATE.getValue()) : null);
-			// Ссылка на связанный документ
-			if (!DOC_REF.getText().equals("")) {
-				callStmt.setLong(9, Long.valueOf(DOC_REF.getText()));
-			} else {
-				callStmt.setNull(9, java.sql.Types.INTEGER);
-			}
-			// Ссылка на организацию
-			if (DOC_ORG.getSelectionModel().getSelectedItem() != null) {
-				callStmt.setLong(10, DOC_ORG.getSelectionModel().getSelectedItem().getORG_ID());
-			} else {
-				callStmt.setNull(10, java.sql.Types.INTEGER);
-			}
-			// Наименование
-			callStmt.setString(11, DOC_NAME.getText());
+			// Дата отправки
+			callStmt.setDate(5,
+					(DOC_ISH_DATE.getValue() != null) ? java.sql.Date.valueOf(DOC_ISH_DATE.getValue()) : null);
+			// Номер документа исх.
+			callStmt.setString(6, DOC_ISFH_NUMBER.getText());
 			// выполнение
 			callStmt.execute();
 			if (callStmt.getString(1) == null) {
@@ -779,10 +778,10 @@ public class EditPmDocC {
 		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
-	VPM_DOCS class_;
+	VPM_PROJECTS class_;
 	Connection conn;
 
-	public void SetClass(VPM_DOCS class_, Connection conn) {
+	public void SetClass(VPM_PROJECTS class_, Connection conn) {
 		this.class_ = class_;
 		this.conn = conn;
 	}
@@ -801,6 +800,25 @@ public class EditPmDocC {
 			public PM_DOC_TYPES fromString(final String string) {
 				return DOC_TYPE.getItems().stream()
 						.filter(product -> (product.getDOC_TP_ID() + "=" + product.getDOC_TP_NAME()).equals(string))
+						.findFirst().orElse(null);
+			}
+		});
+	}
+
+	/**
+	 * Статус
+	 */
+	private void PrjStatusCombo() {
+		PRJ_STATUS.setConverter(new StringConverter<PM_PRJ_STATUS>() {
+			@Override
+			public String toString(PM_PRJ_STATUS object) {
+				return object != null ? object.getPJST_ID() + "=" + object.getPJST_NAME() : "";
+			}
+
+			@Override
+			public PM_PRJ_STATUS fromString(final String string) {
+				return PRJ_STATUS.getItems().stream()
+						.filter(product -> (product.getPJST_ID() + "=" + product.getPJST_NAME()).equals(string))
 						.findFirst().orElse(null);
 			}
 		});
@@ -826,6 +844,271 @@ public class EditPmDocC {
 	}
 
 	/**
+	 * Обновить данные модели
+	 * 
+	 * @throws SQLException
+	 */
+	void LoadModel() throws SQLException {
+		String selectStmt = "SELECT * FROM VPM_PROJECTS PRJ where PRJ.PRJ_ID = ?";
+		PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+		prepStmt.setLong(1, class_.getPRJ_ID());
+		ResultSet rs = prepStmt.executeQuery();
+		if (rs.next()) {
+			VPM_PROJECTS list = new VPM_PROJECTS();
+
+			list.setDOC_DATE((rs.getDate("DOC_DATE") != null)
+					? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_DATE")),
+							DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+					: null);
+			list.setEMP_EMAIL(rs.getString("EMP_EMAIL"));
+			list.setEMP_TEL(rs.getString("EMP_TEL"));
+			list.setPRJ_STATUS(rs.getLong("PRJ_STATUS"));
+			list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+			list.setDOC_REF(rs.getLong("DOC_REF"));
+			list.setPRJ_STATUS_CHAR(rs.getString("PRJ_STATUS_CHAR"));
+			list.setEMP_WORKEND((rs.getDate("EMP_WORKEND") != null)
+					? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("EMP_WORKEND")),
+							DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+					: null);
+			list.setEMP_ID(rs.getLong("EMP_ID"));
+			list.setEMP_POSITION(rs.getString("EMP_POSITION"));
+			list.setDOC_COMMENT(rs.getString("DOC_COMMENT"));
+			list.setPRJ_EMP_LOGIN(rs.getString("PRJ_EMP_LOGIN"));
+			list.setEMP_WORKSTART((rs.getDate("EMP_WORKSTART") != null)
+					? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("EMP_WORKSTART")),
+							DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+					: null);
+			list.setDTDIFF(rs.getLong("DTDIFF"));
+			list.setTM$DOC_START((rs.getDate("TM$DOC_START") != null) ? LocalDateTime.parse(
+					new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_START")),
+					DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) : null);
+			list.setORG_ID(rs.getLong("ORG_ID"));
+			list.setORG_RUK(rs.getString("ORG_RUK"));
+			list.setPRJ_ID(rs.getLong("PRJ_ID"));
+			list.setEMP_LOGIN(rs.getLong("EMP_LOGIN"));
+			list.setPRJ_CREUSR(rs.getString("PRJ_CREUSR"));
+			list.setDOC_TP_NAME(rs.getString("DOC_TP_NAME"));
+			list.setEMP_MIDDLENAME(rs.getString("EMP_MIDDLENAME"));
+			list.setDOC_ISFAST(rs.getString("DOC_ISFAST"));
+			list.setPRJ_DOCID(rs.getLong("PRJ_DOCID"));
+			list.setEMP_FIRSTNAME(rs.getString("EMP_FIRSTNAME"));
+			list.setEMP_BOSS(rs.getLong("EMP_BOSS"));
+			list.setDTDIFF_CH(rs.getString("DTDIFF_CH"));
+			list.setEMP_JBTYPE(rs.getLong("EMP_JBTYPE"));
+			list.setDOC_ID(rs.getLong("DOC_ID"));
+			list.setTM$PRJ_STARTDATE((rs.getDate("TM$PRJ_STARTDATE") != null) ? LocalDateTime.parse(
+					new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$PRJ_STARTDATE")),
+					DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) : null);
+			list.setPRJ_EMP(rs.getLong("PRJ_EMP"));
+			list.setDOC_USR(rs.getString("DOC_USR"));
+			list.setDOC_TP_ID(rs.getLong("DOC_TP_ID"));
+			list.setORG_NAME(rs.getString("ORG_NAME"));
+			list.setEMP_LASTNAME(rs.getString("EMP_LASTNAME"));
+			list.setDOC_END((rs.getDate("DOC_END") != null)
+					? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_END")),
+							DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+					: null);
+			list.setDOC_NAME(rs.getString("DOC_NAME"));
+			class_ = list;
+		}
+	}
+
+	/**
+	 * Изменить статус
+	 */
+	@FXML
+	void ChangeStatus(ActionEvent event) {
+		try {
+			if (PRJ_STATUS.getSelectionModel().getSelectedItem() != null) {
+				PM_PRJ_STATUS sel = PRJ_STATUS.getSelectionModel().getSelectedItem();
+
+				if (!sel.getPJST_ID().equals(class_.getPRJ_STATUS())) {
+
+					final Alert alert = new Alert(AlertType.CONFIRMATION, "Изменить статус " + sel.getPJST_NAME() + "?",
+							ButtonType.YES, ButtonType.NO);
+					if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait()
+							.orElse(ButtonType.NO) == ButtonType.YES) {
+						String update = "DECLARE\r\n" + "  STATUS_ NUMBER := ?;\r\n" + "  PRJID_  NUMBER := ?;\r\n"
+								+ "  EMP_    NUMBER := ?;\r\n" + "BEGIN\r\n" + "  INSERT INTO PM_PRJ_STAT_HIST\r\n"
+								+ "    (STH_PRJ, STH_STAT, STH_EMP)\r\n" + "  VALUES\r\n"
+								+ "    (PRJID_, STATUS_, EMP_);\r\n"
+								+ "  UPDATE PM_PROJECTS SET PRJ_STATUS = STATUS_ WHERE PRJ_ID = PRJID_;\r\n"
+								+ "END;\r\n" + "";
+						PreparedStatement prp = conn.prepareStatement(update);
+						prp.setLong(1, sel.getPJST_ID());
+						prp.setLong(2, class_.getPRJ_ID());
+						prp.setLong(3, class_.getEMP_ID());
+						try {
+							prp.executeUpdate();
+							conn.commit();
+							LoadModel();
+						} catch (SQLException e) {
+							conn.rollback();
+							DbUtil.Log_Error(e);
+						}
+						prp.close();
+					} else {
+						for (PM_PRJ_STATUS sel_ : PRJ_STATUS.getItems()) {
+							if (sel_.getPJST_ID().equals(class_.getPRJ_STATUS())) {
+								PRJ_STATUS.getSelectionModel().select(sel_);
+								break;
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	void PrjStatus() throws SQLException {
+
+		// -------------------
+		{
+			String selectStmt = "SELECT *\r\n" + "  FROM PM_PRJ_STATUS STAT\r\n"
+					+ " WHERE --ЕСЛИ РУКОВОДИТЕЛЬ ОТДЕЛА И ВСЕ ЕГО ПОДЧИЕНННЫЕ\r\n" + " (EXISTS\r\n"
+					+ "  (SELECT NULL\r\n" + "     FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
+					+ "    WHERE MEM.IUSRID = USR.IUSRID\r\n" + "      AND MEM.GRP_ID = GRP.GRP_ID\r\n"
+					+ "      AND GRP.GRP_NAME = 'PrjMngRukOtd'\r\n"
+					+ "      AND USR.CUSRLOGNAME = USER) AND STAT.PJST_ID IN (1, 2, 3))\r\n"
+					+ "--ЕСЛИ РУКОВОДИТЕЛЬ, ВИДЕТЬ ВСЕ\r\n" + " OR EXISTS\r\n" + " (SELECT NULL\r\n"
+					+ "    FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n" + "   WHERE MEM.IUSRID = USR.IUSRID\r\n"
+					+ "     AND MEM.GRP_ID = GRP.GRP_ID\r\n" + "     AND GRP.GRP_NAME = 'PrjMngRuk'\r\n"
+					+ "     AND USR.CUSRLOGNAME = USER)\r\n" + "--ЕСЛИ ОБЫЧНЫЙ ПОЛЬЗОВАТЕЛЬ\r\n"
+					+ " OR ((NOT EXISTS (SELECT NULL\r\n"
+					+ "                 FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
+					+ "                WHERE MEM.IUSRID = USR.IUSRID\r\n"
+					+ "                  AND MEM.GRP_ID = GRP.GRP_ID\r\n"
+					+ "                  AND GRP.GRP_NAME IN ('PrjMngRuk', 'PrjMngRukOtd')\r\n"
+					+ "                  AND USR.CUSRLOGNAME = USER)) AND STAT.PJST_ID IN (1, 2))\r\n"
+					+ " ORDER BY PJST_ID ASC";
+			// System.out.println(selectStmt);
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<PM_PRJ_STATUS> obslist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				PM_PRJ_STATUS list = new PM_PRJ_STATUS();
+				list.setPJST_ID(rs.getLong("PJST_ID"));
+				list.setPJST_NAME(rs.getString("PJST_NAME"));
+				obslist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+			PRJ_STATUS.setItems(obslist);
+//						FxUtilTest.getComboBoxValue(PRJ_STATUS);
+//						FxUtilTest.autoCompleteComboBoxPlus(PRJ_STATUS,
+//								(typedText, itemToCompare) -> (itemToCompare.getORG_ID() + "=" + itemToCompare.getORG_NAME())
+//										.toLowerCase().contains(typedText.toLowerCase()));
+			PrjStatusCombo();
+			for (PM_PRJ_STATUS sel : PRJ_STATUS.getItems()) {
+				if (sel.getPJST_ID().equals(class_.getPRJ_STATUS())) {
+					PRJ_STATUS.getSelectionModel().select(sel);
+					break;
+				}
+			}
+		}
+	}
+
+	void OrgRuk() throws SQLException {
+		// -------------------
+		{
+			String selectStmt = "select * from PM_ORG t";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<PM_ORG> obslist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				PM_ORG list = new PM_ORG();
+				list.setORG_DOLJ(rs.getString("ORG_DOLJ"));
+				list.setORG_ID(rs.getLong("ORG_ID"));
+				list.setORG_RUK(rs.getString("ORG_RUK"));
+				list.setORG_NAME(rs.getString("ORG_NAME"));
+				list.setORG_SHNAME(rs.getString("ORG_SHNAME"));
+				obslist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+			DOC_ORG.setItems(obslist);
+			FxUtilTest.getComboBoxValue(DOC_ORG);
+			FxUtilTest.autoCompleteComboBoxPlus(DOC_ORG,
+					(typedText, itemToCompare) -> (itemToCompare.getORG_ID() + "=" + itemToCompare.getORG_NAME())
+							.toLowerCase().contains(typedText.toLowerCase()));
+			ConvDocOrg();
+			for (PM_ORG sel : DOC_ORG.getItems()) {
+				if (sel.getORG_ID().equals(class_.getORG_ID())) {
+					DOC_ORG.getSelectionModel().select(sel);
+					break;
+				}
+			}
+		}
+	}
+
+	void DocTypes() throws SQLException {
+		// -------------------
+		{
+			String selectStmt = "select * from PM_DOC_TYPES t";
+			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			ObservableList<PM_DOC_TYPES> obslist = FXCollections.observableArrayList();
+			while (rs.next()) {
+				PM_DOC_TYPES list = new PM_DOC_TYPES();
+				list.setDOC_TP_ID(rs.getLong("DOC_TP_ID"));
+				list.setDOC_TP_NAME(rs.getString("DOC_TP_NAME"));
+				obslist.add(list);
+			}
+			prepStmt.close();
+			rs.close();
+			DOC_TYPE.setItems(obslist);
+			FxUtilTest.getComboBoxValue(DOC_TYPE);
+			FxUtilTest.autoCompleteComboBoxPlus(DOC_TYPE,
+					(typedText, itemToCompare) -> (itemToCompare.getDOC_TP_ID() + "=" + itemToCompare.getDOC_TP_NAME())
+							.toLowerCase().contains(typedText.toLowerCase()));
+			convertComboDisplayList();
+			for (PM_DOC_TYPES sel : DOC_TYPE.getItems()) {
+				if (sel.getDOC_TP_ID().equals(class_.getDOC_TP_ID())) {
+					DOC_TYPE.getSelectionModel().select(sel);
+					break;
+				}
+			}
+		}
+	}
+
+	void InitTabCpl() {
+		// -------------------
+		DocWordId.setCellValueFactory(cellData -> cellData.getValue().DW_IDProperty().asObject());
+		DocWordExt.setCellValueFactory(cellData -> cellData.getValue().DW_TYPEProperty());
+		DocWordFilename.setCellValueFactory(cellData -> cellData.getValue().DW_FILENAMEProperty());
+		DocWordKb.setCellValueFactory(cellData -> cellData.getValue().DocWordKbProperty());
+		DW_DATE.setCellValueFactory(cellData -> ((VPM_DOC_WORD) cellData.getValue()).TM$DW_DATEProperty());
+		// =-=-=-=-=---=-==-=-=-=-=--=
+		DocScanId.setCellValueFactory(cellData -> cellData.getValue().DS_IDProperty().asObject());
+		DocScanExt.setCellValueFactory(cellData -> cellData.getValue().DS_TYPEProperty());
+		DocScanFileName.setCellValueFactory(cellData -> cellData.getValue().DS_FILENAMEProperty());
+		DocScanKb.setCellValueFactory(cellData -> cellData.getValue().DocScanKbProperty());
+		DS_DATE.setCellValueFactory(cellData -> ((VPM_DOC_SCANS) cellData.getValue()).TM$DS_DATEProperty());
+		// -------------------
+	}
+
+	void InitFields() {
+		DOC_NUMBER.setText(class_.getDOC_NUMBER());
+
+		DOC_END.setValue(class_.getDOC_END());
+		DOC_DATE.setValue(class_.getDOC_DATE());
+
+		if (class_.getDOC_ISFAST().equals("Да")) {
+			DOC_ISFAST.setSelected(true);
+		} else if (class_.getDOC_ISFAST().equals("Нет")) {
+			DOC_ISFAST.setSelected(false);
+		}
+		DOC_COMMENT.setText(class_.getDOC_COMMENT());
+		if (class_.getDOC_REF() != 0) {
+			DOC_REF.setText(String.valueOf(class_.getDOC_REF()));
+		}
+		DOC_NAME.setText(class_.getDOC_NAME());
+		PRJ_EMP.setText(class_.getEMP_LASTNAME() + " " + class_.getEMP_FIRSTNAME() + " " + class_.getEMP_MIDDLENAME());
+	}
+
+	/**
 	 * Инициализация
 	 */
 	@FXML
@@ -835,96 +1118,27 @@ public class EditPmDocC {
 			new ConvConst().FormatDatePiker(DOC_DATE);
 			new ConvConst().TableColumnDateTime(DW_DATE);
 			new ConvConst().TableColumnDateTime(DS_DATE);
-			// -------------------
-			DocWordId.setCellValueFactory(cellData -> cellData.getValue().DW_IDProperty().asObject());
-			DocWordExt.setCellValueFactory(cellData -> cellData.getValue().DW_TYPEProperty());
-			DocWordFilename.setCellValueFactory(cellData -> cellData.getValue().DW_FILENAMEProperty());
-			DocWordKb.setCellValueFactory(cellData -> cellData.getValue().DocWordKbProperty());
-			DW_DATE.setCellValueFactory(cellData -> ((VPM_DOC_WORD) cellData.getValue()).TM$DW_DATEProperty());
-			// =-=-=-=-=---=-==-=-=-=-=--=
-			DocScanId.setCellValueFactory(cellData -> cellData.getValue().DS_IDProperty().asObject());
-			DocScanExt.setCellValueFactory(cellData -> cellData.getValue().DS_TYPEProperty());
-			DocScanFileName.setCellValueFactory(cellData -> cellData.getValue().DS_FILENAMEProperty());
-			DocScanKb.setCellValueFactory(cellData -> cellData.getValue().DocScanKbProperty());
-			DS_DATE.setCellValueFactory(cellData -> ((VPM_DOC_SCANS) cellData.getValue()).TM$DS_DATEProperty());
-			// -------------------
-			DOC_NUMBER.setText(class_.getDOC_NUMBER());
 
-			DOC_END.setValue(class_.getDOC_END());
-			DOC_DATE.setValue(class_.getDOC_DATE());
+			InitTabCpl();
 
-			if (class_.getDOC_ISFAST().equals("Да")) {
-				DOC_ISFAST.setSelected(true);
-			} else if (class_.getDOC_ISFAST().equals("Нет")) {
-				DOC_ISFAST.setSelected(false);
-			}
-			DOC_COMMENT.setText(class_.getDOC_COMMENT());
-			if (class_.getDOC_REF() != 0) {
-				DOC_REF.setText(String.valueOf(class_.getDOC_REF()));
-			}
-			DOC_NAME.setText(class_.getDOC_NAME());
-			// -------------------
-			{
-				String selectStmt = "select * from PM_DOC_TYPES t";
-				PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-				ResultSet rs = prepStmt.executeQuery();
-				ObservableList<PM_DOC_TYPES> obslist = FXCollections.observableArrayList();
-				while (rs.next()) {
-					PM_DOC_TYPES list = new PM_DOC_TYPES();
-					list.setDOC_TP_ID(rs.getLong("DOC_TP_ID"));
-					list.setDOC_TP_NAME(rs.getString("DOC_TP_NAME"));
-					obslist.add(list);
-				}
-				prepStmt.close();
-				rs.close();
-				DOC_TYPE.setItems(obslist);
-				FxUtilTest.getComboBoxValue(DOC_TYPE);
-				FxUtilTest.autoCompleteComboBoxPlus(DOC_TYPE,
-						(typedText,
-								itemToCompare) -> (itemToCompare.getDOC_TP_ID() + "=" + itemToCompare.getDOC_TP_NAME())
-										.toLowerCase().contains(typedText.toLowerCase()));
-				convertComboDisplayList();
-				for (PM_DOC_TYPES sel : DOC_TYPE.getItems()) {
-					if (sel.getDOC_TP_ID().equals(class_.getDOC_TP_ID())) {
-						DOC_TYPE.getSelectionModel().select(sel);
-						break;
-					}
-				}
-			}
-			// -------------------
-			{
-				String selectStmt = "select * from PM_ORG t";
-				PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-				ResultSet rs = prepStmt.executeQuery();
-				ObservableList<PM_ORG> obslist = FXCollections.observableArrayList();
-				while (rs.next()) {
-					PM_ORG list = new PM_ORG();
-					list.setORG_DOLJ(rs.getString("ORG_DOLJ"));
-					list.setORG_ID(rs.getLong("ORG_ID"));
-					list.setORG_RUK(rs.getString("ORG_RUK"));
-					list.setORG_NAME(rs.getString("ORG_NAME"));
-					list.setORG_SHNAME(rs.getString("ORG_SHNAME"));
-					obslist.add(list);
-				}
-				prepStmt.close();
-				rs.close();
-				DOC_ORG.setItems(obslist);
-				FxUtilTest.getComboBoxValue(DOC_ORG);
-				FxUtilTest.autoCompleteComboBoxPlus(DOC_ORG,
-						(typedText, itemToCompare) -> (itemToCompare.getORG_ID() + "=" + itemToCompare.getORG_NAME())
-								.toLowerCase().contains(typedText.toLowerCase()));
-				ConvDocOrg();
-				for (PM_ORG sel : DOC_ORG.getItems()) {
-					if (sel.getORG_ID().equals(class_.getORG_ID())) {
-						DOC_ORG.getSelectionModel().select(sel);
-						break;
-					}
-				}
-			}
+			InitFields();
+
+			PrjStatus();
+
+			OrgRuk();
+
+			DocTypes();
+
 			// WORD
 			LoadTableWord();
 			// Scan
 			LoadTableScan();
+			// Права на изменение сотрудника
+			if (DbUtil.Odb_Action(Long.valueOf(282)) > 0) {
+				// BtSelEmp.setDisable(false);
+			}
+			// Выбор статуса
+
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -1132,21 +1346,21 @@ public class EditPmDocC {
 				}
 			});
 
-			MenuItem menuFileSave = new MenuItem(menuFile, SWT.CASCADE);
-			menuFileSave.setText("Сохранить");
-			menuFileSave.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
-					if (AddEdit.equals("Edit")) {
-						clientSite.save(FileWord, false);
-						shell.close();
-					} else if (AddEdit.equals("Add")) {
-						FileWord = new File(
-								System.getenv("MJ_PATH") + "OutReports/" + java.util.UUID.randomUUID() + ".docx");
-						clientSite.save(FileWord, false);
-						shell.close();
-					}
-				}
-			});
+//			MenuItem menuFileSave = new MenuItem(menuFile, SWT.CASCADE);
+//			menuFileSave.setText("Сохранить");
+//			menuFileSave.addSelectionListener(new SelectionAdapter() {
+//				public void widgetSelected(SelectionEvent e) {
+//					if (AddEdit.equals("Edit")) {
+//						clientSite.save(FileWord, false);
+//						shell.close();
+//					} else if (AddEdit.equals("Add")) {
+//						FileWord = new File(
+//								System.getenv("MJ_PATH") + "OutReports/" + java.util.UUID.randomUUID() + ".docx");
+//						clientSite.save(FileWord, false);
+//						shell.close();
+//					}
+//				}
+//			});
 			MenuItem menuFileClose = new MenuItem(menuFile, SWT.CASCADE);
 			menuFileClose.setText("Закрыть");
 			menuFileClose.addSelectionListener(new SelectionAdapter() {

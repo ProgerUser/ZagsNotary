@@ -838,8 +838,6 @@ public class EditPmPrjC {
 			callStmt.setString(11, DOC_NAME.getText());
 			// выполнение
 			callStmt.execute();
-			// выполнение
-			callStmt.execute();
 			if (callStmt.getString(1) == null) {
 				conn.commit();
 				setStatus(true);
