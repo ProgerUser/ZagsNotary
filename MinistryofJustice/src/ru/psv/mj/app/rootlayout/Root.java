@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.app.model.Connect;
@@ -63,6 +64,15 @@ public class Root {
 	void InBoxDocs(ActionEvent event) {
 		try {
 			Main.PmInBoxDocs();
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	@FXML
+	void OutBoxDocs(ActionEvent event) {
+		try {
+			Main.PmOutBoxDocs();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -435,26 +445,41 @@ public class Root {
 	}
 
 	/**
+	 * Итерация по меню
+	 * 
+	 * @param menu
+	 */
+	void IterateMenu(Menu menu) {
+		// Проверка
+		if (chk_menu(Long.valueOf(menu.getId()), Connect.userID) >= 1) {
+			menu.setVisible(true);
+		} else {
+			menu.setVisible(false);
+		}
+		// Пункты
+		menu.getItems().forEach(menuItem -> {
+			//System.out.println("__Item=" + menuItem.getText() + ", Class=" + menuItem.getClass().getName());
+			// Проверка
+			if (chk_menu(Long.valueOf(menuItem.getId()), Connect.userID) >= 1) {
+				menuItem.setVisible(true);
+			} else {
+				menuItem.setVisible(false);
+			}
+			if(menuItem.getClass().getName().equals("javafx.scene.control.Menu")) {
+				IterateMenu((Menu) menuItem);
+			}
+		});
+	}
+
+	/**
 	 * Инициализация
 	 */
 	@FXML
 	private void initialize() {
 		try {
 			menubar.getMenus().forEach(menu -> {
-				if (!menu.getId().equals("exit")) {
-					if (chk_menu(Long.valueOf(menu.getId()), Connect.userID) >= 1) {
-						menu.setVisible(true);
-					} else {
-						menu.setVisible(false);
-					}
-					menu.getItems().forEach(menuItem -> {
-						if (chk_menu(Long.valueOf(menuItem.getId()), Connect.userID) >= 1) {
-							menuItem.setVisible(true);
-						} else {
-							menuItem.setVisible(false);
-						}
-					});
-				}
+				//System.out.println("_Root=" + menu.getText() + ", Class=" + menu.getClass().getName());
+				IterateMenu(menu);
 			});
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);

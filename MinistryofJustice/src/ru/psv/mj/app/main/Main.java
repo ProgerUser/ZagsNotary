@@ -105,6 +105,7 @@ public class Main extends Application {
 	public static boolean OtdWin = true;
 	public static boolean PmEmpWin = true;
 	public static boolean PmInBoxDocsWin = true;
+	public static boolean PmOutBoxDocsWin = true;
 	public static boolean PmDocTypeWin = true;
 	public static boolean PmOrgWin = true;
 	public static boolean PmPrjWin = true;
@@ -712,7 +713,7 @@ public class Main extends Application {
 		Platform.exit();
 		System.exit(0);
 	}
-
+	
 	public static void PmInBoxDocs() {
 		try {
 			if (PmInBoxDocsWin) {
@@ -735,6 +736,37 @@ public class Main extends Application {
 					public void handle(WindowEvent paramT) {
 						controller.dbDisconnect();
 						PmInBoxDocsWin = true;
+					}
+				});
+				stage.show();
+			}
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+	
+	public static void PmOutBoxDocs() {
+		try {
+			if (PmOutBoxDocsWin) {
+				PmOutBoxDocsWin = false;
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(
+						Main.class.getResource("/ru/psv/mj/prjmngm/outboxdocs/RootPmDocView.fxml"));
+
+				RootPmDocController controller = new RootPmDocController();
+
+				loader.setController(controller);
+				Parent root = loader.load();
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.getIcons().add(new Image("/icon.png"));
+				stage.setTitle("Исходящие документы");
+				stage.initOwner(primaryStage);
+				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent paramT) {
+						controller.dbDisconnect();
+						PmOutBoxDocsWin = true;
 					}
 				});
 				stage.show();
