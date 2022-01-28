@@ -166,35 +166,34 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			/* log4j */
 			DOMConfigurator.configure(getClass().getResource("/log4j.xml"));
-			// logger.info("MJ Start: " + Thread.currentThread().getName());
 			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
 			Main.primaryStage = primaryStage;
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
- 
+
+//
+//			Def Enter
+//
+
 //			boolean is_upd = new ru.psv.mj.update.root.Main().start();
 
-//			if(is_upd == false) {
-//				Enter();	
-//			}
+//
+//			END 		
+//	
+
 
 //
 //	Fast enter
-//			
+//
+
 			Connect.connectionURL = "localhost:1522/orcl";
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
-//			Connect.userID = "psv";
-//			Connect.userPassword = "";
 			DbUtil.Db_Connect();
 			initRootLayout();
 			RT();
-			//PmInBoxDocs();
-			// PmDocType();
-			// OTD();
-//			new NotaryDocList().HtmlEditor(primaryStage);
+
 //
 //	END 		
 //			
