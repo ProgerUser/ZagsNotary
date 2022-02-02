@@ -45,12 +45,16 @@ import javafx.event.EventDispatchChain;
 import javafx.event.EventDispatcher;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
+import javafx.scene.image.Image;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
@@ -68,6 +72,7 @@ import ru.psv.mj.app.main.Main;
 import ru.psv.mj.msg.Msg;
 import ru.psv.mj.prjmngm.projects.model.PM_PRJ_STATUS;
 import ru.psv.mj.prjmngm.projects.model.VPM_PROJECTS;
+import ru.psv.mj.report.Report;
 import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 
@@ -1163,6 +1168,42 @@ public class CrePrjGantChart {
 		}
 	}
 
+	/**
+	 * Печать
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void Print(ActionEvent event) {
+		try {
+			Stage stage = new Stage();
+			FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/report/Report.fxml"));
+
+			Report controller = new Report();
+			controller.setId(4l);
+			controller.setRecId(prj_tbl.getSelectionModel().getSelectedItem().getPRJ_ID());
+			// FRREPRunner runner = new FRREPRunner();
+			// controller.setDllOption(runner);
+			loader.setController(controller);
+
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.getIcons().add(new Image("/icon.png"));
+			stage.setTitle("(" + controller.getId() + ") Печать");
+			stage.initOwner((Stage) prj_tbl.getScene().getWindow());
+
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent paramT) {
+					controller.dbDisconnect();
+				}
+			});
+			stage.show();
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+    
 	/**
 	 * Инициализация
 	 */

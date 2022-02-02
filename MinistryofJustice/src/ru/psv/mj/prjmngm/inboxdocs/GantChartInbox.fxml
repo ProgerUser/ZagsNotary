@@ -57,6 +57,18 @@
                                  </tooltip>
                               </Button>
                               <Separator orientation="VERTICAL" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#Print" prefWidth="35.0">
+                                 <graphic>
+                                    <FontAwesomeIconView fontSmoothingType="LCD" glyphName="PRINT" size="14" />
+                                 </graphic>
+                                 <tooltip>
+                                    <Tooltip text="Обновить таблицу">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Tooltip>
+                                 </tooltip>
+                              </Button>
                            </items>
                         </ToolBar>
                         <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">

@@ -53,7 +53,7 @@ import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 import static org.controlsfx.control.PopOver.ArrowLocation.TOP_CENTER;
 
-public class CrePrjGantChartOld {
+public class _CrePrjGantChartOld_ {
 
 	@FXML
 	private TableView<VPM_PROJECTS> prj_tbl;
@@ -91,7 +91,7 @@ public class CrePrjGantChartOld {
 	/**
 	 * Конструктор
 	 */
-	public CrePrjGantChartOld() {
+	public _CrePrjGantChartOld_() {
 		Main.logger = Logger.getLogger(getClass());
 	}
 
