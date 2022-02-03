@@ -1180,8 +1180,8 @@ public class CrePrjGantChart {
 			FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ru/psv/mj/report/Report.fxml"));
 
 			Report controller = new Report();
-			controller.setId(4l);
-			controller.setRecId(prj_tbl.getSelectionModel().getSelectedItem().getPRJ_ID());
+			controller.setId(5l);
+//			controller.setRecId(prj_tbl.getSelectionModel().getSelectedItem().getPRJ_ID());
 			// FRREPRunner runner = new FRREPRunner();
 			// controller.setDllOption(runner);
 			loader.setController(controller);
