@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>MinistryofJustice</groupId>
 	<artifactId>MinistryofJustice</artifactId>
@@ -58,7 +56,6 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
-
 
 
 			<resource>
@@ -135,6 +132,10 @@
 		</repository>
 	</repositories>
 
+	<properties>
+		<oracle.jdbc.version>18.15.0.0</oracle.jdbc.version>
+	</properties>
+
 	<dependencies>
 
 		<dependency>
@@ -179,11 +180,13 @@
 			<version>1.0</version>
 		</dependency>
 
+<!--
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc8</artifactId>
 			<version>8</version>
 		</dependency>
+		-->
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -578,6 +581,24 @@
 			<groupId>flexganttfx-lic</groupId>
 			<artifactId>flexganttfx-lic</artifactId>
 			<version>8.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ucp</artifactId>
+			<version>${oracle.jdbc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.database.ha</groupId>
+			<artifactId>ons</artifactId>
+			<version>${oracle.jdbc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<version>${oracle.jdbc.version}</version>
 		</dependency>
 
 	</dependencies>
