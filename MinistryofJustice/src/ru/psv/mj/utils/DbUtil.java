@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Properties;
-import java.util.Timer;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -173,6 +172,7 @@ public class DbUtil {
 
 	public static void Db_Connect() {
 		try {
+			String cln = "";
 			// Get the PoolDataSource for UCP
 			pds = PoolDataSourceFactory.getPoolDataSource();
 			// Set the connection factory first before all other properties
@@ -184,11 +184,28 @@ public class DbUtil {
 			pds.setConnectionPoolName("JDBC_UCP_POOL");
 			// pds.setInitialPoolSize(5);
 			pds.setMinPoolSize(5);
-			pds.setMaxPoolSize(1000);
+			pds.setMaxPoolSize(1000000);
 			pds.setValidateConnectionOnBorrow(true);
 			pds.setSQLForValidateConnection("select user from dual");
 			conn = pds.getConnection();
 			conn.setAutoCommit(false);
+			try {
+				if (DbUtil.class.getName() != null) {
+					if (DbUtil.class.getName().length() < 30) {
+						cln = DbUtil.class.getName();
+					} else if (DbUtil.class.getName().length() > 30) {
+						cln = DbUtil.class.getName().substring(0, 29);
+					}
+				}
+				CallableStatement cstmt = conn.prepareCall("{call dbms_application_info.set_module(?,?)}");
+				cstmt.setString(1, cln);
+				cstmt.setString(2, cln);
+				cstmt.execute();
+				cstmt.close();
+			} catch (Exception e) {
+
+			}
+			
 			// Run_Proc(conn, DbUtil.class.getName());
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -236,6 +253,7 @@ public class DbUtil {
 //	}
 	public static Connection GetConnect(String ClassName) {
 		Connection conn = null;
+		String cln = "";
 		try {
 			if (pds != null) {
 				conn = pds.getConnection();
@@ -250,9 +268,25 @@ public class DbUtil {
 				pds.setConnectionPoolName("JDBC_UCP_POOL");
 				// pds.setInitialPoolSize(5);
 				pds.setMinPoolSize(5);
-				pds.setMaxPoolSize(1000);
+				pds.setMaxPoolSize(1000000);
 				pds.setValidateConnectionOnBorrow(true);
 				pds.setSQLForValidateConnection("select user from dual");
+			}
+			try {
+				if (ClassName != null) {
+					if (ClassName.length() < 30) {
+						cln = ClassName;
+					} else if (ClassName.length() > 30) {
+						cln = ClassName.substring(0, 29);
+					}
+				}
+				CallableStatement cstmt = conn.prepareCall("{call dbms_application_info.set_module(?,?)}");
+				cstmt.setString(1, cln);
+				cstmt.setString(2, cln);
+				cstmt.execute();
+				cstmt.close();
+			} catch (Exception e) {
+
 			}
 			conn.setAutoCommit(false);
 		} catch (Exception e) {
