@@ -22,6 +22,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import oracle.jdbc.pool.OracleDataSource;
+import oracle.ucp.jdbc.PoolDataSource;
+import oracle.ucp.jdbc.PoolDataSourceFactory;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.app.model.Connect;
 import ru.psv.mj.app.model.SqlMap;
@@ -101,70 +103,158 @@ public class DbUtil {
 		}
 	}
 
+	/**
+	 * Пул подключений
+	 */
+	public static OracleDataSource ods;
 	// Connect to DB
+//	public static void Db_Connect() {
+//		try {
+//			//Use connection descriptors
+//			String DB_URL="jdbc:oracle:thin:@  (DESCRIPTION =(ENABLE=broken)\n"
+//					+ "    (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1522))\n"
+//					+ "    (CONNECT_DATA =\n"
+//					+ "      (SID = orcl)\n"
+//					+ "    )\n"
+//					+ "    )\n"
+//					+ "  )"; 
+//			// Get the PoolDataSource for UCP
+//			PoolDataSource pds = PoolDataSourceFactory.getPoolDataSource();
+//			//Set the connection factory first before all other properties
+//			pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
+//			pds.setURL(DB_URL);
+//			pds.setUser(Connect.userID);
+//			pds.setPassword(Connect.userPassword);
+//			//Set the pool level properties
+//			pds.setConnectionPoolName("JDBC_UCP_POOL");
+//			//pds.setInitialPoolSize(5);
+//			pds.setMinPoolSize(5);
+//			pds.setMaxPoolSize(100);
+//			Connection conn = pds.getConnection();
+//			// System.out.println(OracleConnection.CONNECTION_PROPERTY_THIN_NET_CONNECT_TIMEOUT);
+//			if (ods == null) {
+//				System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
+//				ods = new OracleDataSource();
+//				ods.setTNSEntryName("mj_orcl");
+//				ods.setDriverType("thin");
+//				ods.setUser(Connect.userID);
+//				ods.setPassword(Connect.userPassword);
+//				ods.setLoginTimeout(2);
+//
+//				Properties cp = new Properties();
+//				cp.setProperty("SetBigStringTryClob", "true");
+//				cp.put("Oracle.net.CONNECT_TIMEOUT", 0);
+//				cp.put("Oracle.net.READ_TIMEOUT", 0);
+//				cp.put("Oracle.jdbc.ReadTimeout", 0);
+//				cp.put("Oracle.net.tcpKeepAlive", "true");
+//				cp.put("v$session.program", DbUtil.class.getName());
+//
+//				ods.setConnectionProperties(cp);
+//			}
+//			conn = ods.getConnection();
+//
+//			conn.setAutoCommit(false);
+//
+//			Run_Proc(conn, DbUtil.class.getName());
+//		} catch (Exception e) {
+//			DbUtil.Log_Error(e);
+//		}
+//	}
+	public static PoolDataSource pds;
+
+	// Use connection descriptors
+	final static String DB_URL = "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PORT=1522)(PROTOCOL=tcp))(CONNECT_DATA=(SERVICE_NAME=orcl)))";
+//	final static String DB_URL ="(DESCRIPTION=\n"
+//	+ "(CONNECT_TIMEOUT=15)(RETRY_COUNT=20) (RETRY_DELAY=3)\n"
+//	+ "(ADDRESS_LIST =\n"
+//	+ "(LOAD_BALANCE=ON)\n"
+//	+ "(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1522)))\n"
+//	+ "(CONNECT_DATA=(SERVICE_NAME=orcl)))";
+
 	public static void Db_Connect() {
 		try {
-			// System.out.println(OracleConnection.CONNECTION_PROPERTY_THIN_NET_CONNECT_TIMEOUT);
-
-			System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
-			OracleDataSource ods = new OracleDataSource();
-			ods.setTNSEntryName("mj_orcl");
-			ods.setDriverType("thin");
-			ods.setUser(Connect.userID);
-			ods.setPassword(Connect.userPassword);
-			ods.setLoginTimeout(2);
-
-			Properties cp = new Properties();
-			cp.setProperty("SetBigStringTryClob", "true");
-			cp.put("Oracle.net.CONNECT_TIMEOUT", 0);
-			cp.put("Oracle.net.READ_TIMEOUT", 0);
-			cp.put("Oracle.jdbc.ReadTimeout", 0);
-			cp.put("Oracle.net.tcpKeepAlive", "true");
-			cp.put("v$session.program", DbUtil.class.getName());
-
-			ods.setConnectionProperties(cp);
-
-			conn = ods.getConnection();
-
+			// Get the PoolDataSource for UCP
+			pds = PoolDataSourceFactory.getPoolDataSource();
+			// Set the connection factory first before all other properties
+			pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
+			pds.setURL(DB_URL);
+			pds.setUser(Connect.userID);
+			pds.setPassword(Connect.userPassword);
+			// Set the pool level properties
+			pds.setConnectionPoolName("JDBC_UCP_POOL");
+			// pds.setInitialPoolSize(5);
+			pds.setMinPoolSize(5);
+			pds.setMaxPoolSize(1000);
+			pds.setValidateConnectionOnBorrow(true);
+			pds.setSQLForValidateConnection("select user from dual");
+			conn = pds.getConnection();
 			conn.setAutoCommit(false);
-
-			Run_Proc(conn, DbUtil.class.getName());
+			// Run_Proc(conn, DbUtil.class.getName());
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 	}
 
+//	public static Connection GetConnect(String ClassName) {
+//		Connection conn = null;
+//		try {
+//			if (ods == null) {
+//				System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
+//				ods = new OracleDataSource();
+//				ods.setTNSEntryName("mj_orcl");
+//				ods.setDriverType("thin");
+//				ods.setUser(Connect.userID);
+//				ods.setPassword(Connect.userPassword);
+//				ods.setLoginTimeout(2);
+//
+//				Properties cp = new Properties();
+//				cp.setProperty("SetBigStringTryClob", "true");
+//				cp.put("Oracle.net.CONNECT_TIMEOUT", 0);
+//				cp.put("Oracle.net.READ_TIMEOUT", 0);
+//				cp.put("Oracle.jdbc.ReadTimeout", 0);
+//				cp.put("Oracle.net.tcpKeepAlive", "true");
+//
+//				if (ClassName != null) {
+//					if (ClassName.length() < 30) {
+//						cp.put("v$session.program", ClassName);
+//					} else if (ClassName.length() > 30) {
+//						cp.put("v$session.program", ClassName.substring(0, 29));
+//					}
+//				}
+//
+//				ods.setConnectionProperties(cp);
+//			}
+//
+//			conn = ods.getConnection();
+//			conn.setAutoCommit(false);
+//
+//			Run_Proc(conn, ClassName);
+//		} catch (Exception e) {
+//			DbUtil.Log_Error(e);
+//		}
+//		return conn;
+//	}
 	public static Connection GetConnect(String ClassName) {
 		Connection conn = null;
 		try {
-			System.setProperty("oracle.net.tns_admin", System.getenv("MJ_PATH") + "OraCli/network/admin");
-			OracleDataSource ods = new OracleDataSource();
-			ods.setTNSEntryName("mj_orcl");
-			ods.setDriverType("thin");
-			ods.setUser(Connect.userID);
-			ods.setPassword(Connect.userPassword);
-			ods.setLoginTimeout(2);
-
-			Properties cp = new Properties();
-			cp.setProperty("SetBigStringTryClob", "true");
-			cp.put("Oracle.net.CONNECT_TIMEOUT", 0);
-			cp.put("Oracle.net.READ_TIMEOUT", 0);
-			cp.put("Oracle.jdbc.ReadTimeout", 0);
-			cp.put("Oracle.net.tcpKeepAlive", "true");
-
-			if (ClassName != null) {
-				if (ClassName.length() < 30) {
-					cp.put("v$session.program", ClassName);
-				} else if (ClassName.length() > 30) {
-					cp.put("v$session.program", ClassName.substring(0, 29));
-				}
+			if (pds != null) {
+				conn = pds.getConnection();
+			} else {
+				pds = PoolDataSourceFactory.getPoolDataSource();
+				// Set the connection factory first before all other properties
+				pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
+				pds.setURL(DB_URL);
+				pds.setUser(Connect.userID);
+				pds.setPassword(Connect.userPassword);
+				// Set the pool level properties
+				pds.setConnectionPoolName("JDBC_UCP_POOL");
+				// pds.setInitialPoolSize(5);
+				pds.setMinPoolSize(5);
+				pds.setMaxPoolSize(1000);
+				pds.setValidateConnectionOnBorrow(true);
+				pds.setSQLForValidateConnection("select user from dual");
 			}
-
-			ods.setConnectionProperties(cp);
-			conn = ods.getConnection();
 			conn.setAutoCommit(false);
-
-			Run_Proc(conn, ClassName);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -224,10 +314,10 @@ public class DbUtil {
 
 	public static void Run_Proc(Connection conn, String ClassName) {
 		try {
-			Timer time = new Timer(); // Instantiate Timer Object
-			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-			st.setConn(conn, ClassName);
-			time.schedule(st, 0, 40000); // Create task repeating every 1 min = 60 000
+//			Timer time = new Timer(); // Instantiate Timer Object
+//			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
+//			st.setConn(conn, ClassName);
+//			time.schedule(st, 0, 40000); // Create task repeating every 1 min = 60 000
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
