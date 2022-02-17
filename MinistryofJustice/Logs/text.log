@@ -41629,4 +41629,5 @@ Caused by: Error : 2292, Position : 0, Sql = delete from PM_DOCS where DOC_ID = 
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
 	at java.lang.Thread.run(Thread.java:748)
 
+] - $End$[15.02.2022 16:23:13] $Sep$ [ru.psv.mj.admin.users.AddUser.save()] $Sep$ [INFO] $Sep$ [140] $Sep$ [Пользователь TextField[id=CUSRLOGNAME, styleClass=text-input text-field] Создан~JavaFX Application Thread
 ] - $End$
