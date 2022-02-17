@@ -14,6 +14,7 @@ public class ScheduledTask extends TimerTask {
 
 	@SuppressWarnings("unused")
 	public void run() {
+		
 		String sessionid = null;
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
@@ -29,11 +30,25 @@ public class ScheduledTask extends TimerTask {
 				rs.close();
 				prp.close();
 			} catch (Exception e) {
+				try {
+					conn = DbUtil.pds.getConnection();
+					System.out.println("Reconnect!");
+				} catch (SQLException e1) {
+					System.out.println("<ErrorNewCon=\"" + e1.getMessage() + "\">" + "<Time=\"" + dtf.format(now) + "\">"
+							+ "<Class=\"" + ClassName + "\">"+ "<ClassId=\"" + ClassName + "\">");
+				}
 				System.out.println("<Error=\"" + e.getMessage() + "\">" + "<Time=\"" + dtf.format(now) + "\">"
 						+ "<Class=\"" + ClassName + "\">"+ "<ClassId=\"" + ClassName + "\">");
-				this.cancel();
+				//this.cancel();
 			}
 		} else {
+			try {
+				conn = DbUtil.pds.getConnection();
+				System.out.println("Reconnect1!");
+			} catch (SQLException e) {
+				System.out.println("<ErrorNewCon1=\"" + e.getMessage() + "\">" + "<Time=\"" + dtf.format(now) + "\">"
+						+ "<Class=\"" + ClassName + "\">"+ "<ClassId=\"" + ClassName + "\">");
+			}
 //			try {
 //				Class.forName("oracle.jdbc.OracleDriver");
 //				Properties props = new Properties();

@@ -11,7 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Timer;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -173,22 +176,25 @@ public class DbUtil {
 	public static void Db_Connect() {
 		try {
 			String cln = "";
-			// Get the PoolDataSource for UCP
-			pds = PoolDataSourceFactory.getPoolDataSource();
-			// Set the connection factory first before all other properties
-			pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
-			pds.setURL(DB_URL);
-			pds.setUser(Connect.userID);
-			pds.setPassword(Connect.userPassword);
-			// Set the pool level properties
-			pds.setConnectionPoolName("JDBC_UCP_POOL");
-			// pds.setInitialPoolSize(5);
-			pds.setMinPoolSize(5);
-			pds.setMaxPoolSize(1000000);
-			pds.setValidateConnectionOnBorrow(true);
-			pds.setSQLForValidateConnection("select user from dual");
-			conn = pds.getConnection();
-			conn.setAutoCommit(false);
+			if (pds == null) {
+				pds = PoolDataSourceFactory.getPoolDataSource();
+				// Set the connection factory first before all other properties
+				pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
+				pds.setURL(DB_URL);
+				pds.setUser(Connect.userID);
+				pds.setPassword(Connect.userPassword);
+				// Set the pool level properties
+				pds.setConnectionPoolName("JDBC_UCP_POOL");
+				// pds.setInitialPoolSize(5);
+				pds.setMinPoolSize(5);
+				pds.setMaxPoolSize(1000000);
+				pds.setValidateConnectionOnBorrow(true);
+				pds.setSQLForValidateConnection("select user from dual");
+				conn = pds.getConnection();
+			} else {
+				conn = pds.getConnection();
+			}
+			System.out.println(conn.isValid(3));
 			try {
 				if (DbUtil.class.getName() != null) {
 					if (DbUtil.class.getName().length() < 30) {
@@ -205,11 +211,33 @@ public class DbUtil {
 			} catch (Exception e) {
 
 			}
-			
-			// Run_Proc(conn, DbUtil.class.getName());
+
+			if (sessions == null) {
+				sessions = new HashMap<Long, String>();
+				sessions.put(GetSession(conn), cln);
+			} else {
+				sessions.put(GetSession(conn), cln);
+			}
+			Run_Proc(conn, DbUtil.class.getName());
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
+	}
+
+	/**
+	 * Получить сессию...
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 */
+	static Long GetSession(Connection conn) throws SQLException {
+		Long ret = 0l;
+		PreparedStatement prp = conn.prepareStatement("select sys_context('USERENV', 'SESSIONID') from dual");
+		ResultSet rs = prp.executeQuery();
+		if (rs.next()) {
+			ret = rs.getLong(1);
+		}
+		return ret;
 	}
 
 //	public static Connection GetConnect(String ClassName) {
@@ -288,7 +316,14 @@ public class DbUtil {
 			} catch (Exception e) {
 
 			}
+			if (sessions == null) {
+				sessions = new HashMap<Long, String>();
+				sessions.put(GetSession(conn), cln);
+			} else {
+				sessions.put(GetSession(conn), cln);
+			}
 			conn.setAutoCommit(false);
+			Run_Proc(conn, ClassName);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -346,12 +381,14 @@ public class DbUtil {
 		return ret;
 	}
 
+	public static Map<Long, String> sessions;
+
 	public static void Run_Proc(Connection conn, String ClassName) {
 		try {
-//			Timer time = new Timer(); // Instantiate Timer Object
-//			ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-//			st.setConn(conn, ClassName);
-//			time.schedule(st, 0, 40000); // Create task repeating every 1 min = 60 000
+			Timer time = new Timer(); // Instantiate Timer Object
+			ScheduledTask2 st = new ScheduledTask2(); // Instantiate SheduledTask class
+			st.setConn(conn, ClassName);
+			time.schedule(st, 0, 10000); // Create task repeating every 1 min = 60 000
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
