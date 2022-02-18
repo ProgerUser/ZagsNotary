@@ -2490,7 +2490,10 @@ public class AddCus {
 			 * Добавление Абхазии по умолчанию в список гражданства
 			 */
 			{
-				CRUDCitizen(1l, "Абхазия", "Y", "{ ? = call MJCUS.ADD_CUS_CITIZEN_TEMP(?,?,?)}", "add");
+				Platform.runLater(()->{
+					CRUDCitizen(1l, "Абхазия", "Y", "{ ? = call MJCUS.ADD_CUS_CITIZEN_TEMP(?,?,?)}", "add");
+				});
+				
 			}
 			/**
 			 * Первая буква заглавная
@@ -2771,6 +2774,7 @@ public class AddCus {
 		try {
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
+				System.out.println("dbDisconnect");
 			}
 		} catch (SQLException e) {
 			DbUtil.Log_Error(e);

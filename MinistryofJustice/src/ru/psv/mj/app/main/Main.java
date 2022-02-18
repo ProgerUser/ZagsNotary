@@ -1241,7 +1241,6 @@ public class Main extends Application {
 					}
 				});
 				stage.show();
-
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
