@@ -2,17 +2,15 @@ package ru.psv.mj.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Timer;
 
@@ -20,12 +18,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
 import oracle.jdbc.pool.OracleDataSource;
-import oracle.ucp.jdbc.PoolDataSource;
-import oracle.ucp.jdbc.PoolDataSourceFactory;
+//import oracle.ucp.jdbc.PoolDataSource;
 import ru.psv.mj.app.main.Main;
 import ru.psv.mj.app.model.Connect;
 import ru.psv.mj.app.model.SqlMap;
@@ -79,31 +73,31 @@ public class DbUtil {
 //		}
 //	}
 
-	// Connect to DB
-	@SuppressWarnings("resource")
-	public static void Db_Connect1() {
-		try {
-
-			Properties props = new Properties();
-			props.setProperty("dataSourceClassName", "oracle.jdbc.pool.OracleDataSource");
-			props.setProperty("dataSource.user", Connect.userID);
-			props.setProperty("dataSource.password", Connect.userPassword);
-			// props.setProperty("keepaliveTime", "30000");
-			props.setProperty("dataSource.url", "jdbc:oracle:thin:@" + Connect.connectionURL);
-			// props.put("data-source-properties.v$session.program",
-			// DbUtil.class.getName());
-			props.put("dataSource.logWriter", new PrintWriter("D:/log.txt"));
-
-			HikariConfig config = new HikariConfig(props);
-			HikariDataSource ds = new HikariDataSource(config);
-
-			conn = ds.getConnection();
-
-			conn.setAutoCommit(false);
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+//	// Connect to DB
+//	@SuppressWarnings("resource")
+//	public static void Db_Connect1() {
+//		try {
+//
+//			Properties props = new Properties();
+//			props.setProperty("dataSourceClassName", "oracle.jdbc.pool.OracleDataSource");
+//			props.setProperty("dataSource.user", Connect.userID);
+//			props.setProperty("dataSource.password", Connect.userPassword);
+//			// props.setProperty("keepaliveTime", "30000");
+//			props.setProperty("dataSource.url", "jdbc:oracle:thin:@" + Connect.connectionURL);
+//			// props.put("data-source-properties.v$session.program",
+//			// DbUtil.class.getName());
+//			props.put("dataSource.logWriter", new PrintWriter("D:/log.txt"));
+//
+//			HikariConfig config = new HikariConfig(props);
+//			HikariDataSource ds = new HikariDataSource(config);
+//
+//			conn = ds.getConnection();
+//
+//			conn.setAutoCommit(false);
+//		} catch (Exception e) {
+//			DbUtil.Log_Error(e);
+//		}
+//	}
 
 	/**
 	 * Пул подключений
@@ -162,7 +156,7 @@ public class DbUtil {
 //			DbUtil.Log_Error(e);
 //		}
 //	}
-	public static PoolDataSource pds;
+	//public static PoolDataSource pds;
 
 	// Use connection descriptors
 	final static String DB_URL = "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(HOST=localhost)(PORT=1522)(PROTOCOL=tcp))(CONNECT_DATA=(SERVICE_NAME=orcl)))";
@@ -173,33 +167,70 @@ public class DbUtil {
 //	+ "(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1522)))\n"
 //	+ "(CONNECT_DATA=(SERVICE_NAME=orcl)))";
 
+//	public static void Db_Connect() {
+//		try {
+//			String cln = "";
+//			if (pds == null) {
+//				pds = PoolDataSourceFactory.getPoolDataSource();
+//				// Set the connection factory first before all other properties
+//				pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
+//				pds.setURL(DB_URL);
+//				pds.setUser(Connect.userID);
+//				pds.setPassword(Connect.userPassword);
+//				// Set the pool level properties
+//				pds.setConnectionPoolName("JDBC_UCP_POOL");
+//				// pds.setInitialPoolSize(5);
+//				pds.setMinPoolSize(5);
+//				pds.setMaxPoolSize(1000000);
+//				pds.setValidateConnectionOnBorrow(true);
+//				pds.setSQLForValidateConnection("select user from dual");
+//				conn = pds.getConnection();
+//			} else {
+//				conn = pds.getConnection();
+//			}
+//			System.out.println(conn.isValid(3));
+//			try {
+//				if (DbUtil.class.getName() != null) {
+//					if (DbUtil.class.getName().length() < 30) {
+//						cln = DbUtil.class.getName();
+//					} else if (DbUtil.class.getName().length() >= 30) {
+//						cln = DbUtil.class.getName().substring(0, 29);
+//					}
+//				}
+//				CallableStatement cstmt = conn.prepareCall("{call dbms_application_info.set_module(?,?)}");
+//				cstmt.setString(1, cln);
+//				cstmt.setString(2, cln);
+//				cstmt.execute();
+//				cstmt.close();
+//			} catch (Exception e) {
+//
+//			}
+//
+////			if (sessions == null) {
+////				sessions = new HashMap<Long, String>();
+////				sessions.put(GetSession(conn), cln);
+////			} else {
+////				sessions.put(GetSession(conn), cln);
+////			}
+//			Run_Proc(conn, DbUtil.class.getName());
+//		} catch (Exception e) {
+//			DbUtil.Log_Error(e);
+//		}
+//	}
+
 	public static void Db_Connect() {
 		try {
 			String cln = "";
-			if (pds == null) {
-				pds = PoolDataSourceFactory.getPoolDataSource();
-				// Set the connection factory first before all other properties
-				pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
-				pds.setURL(DB_URL);
-				pds.setUser(Connect.userID);
-				pds.setPassword(Connect.userPassword);
-				// Set the pool level properties
-				pds.setConnectionPoolName("JDBC_UCP_POOL");
-				// pds.setInitialPoolSize(5);
-				pds.setMinPoolSize(5);
-				pds.setMaxPoolSize(1000000);
-				pds.setValidateConnectionOnBorrow(true);
-				pds.setSQLForValidateConnection("select user from dual");
-				conn = pds.getConnection();
-			} else {
-				conn = pds.getConnection();
-			}
-			System.out.println(conn.isValid(3));
+			// Setting Oracle JDBC Driver
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL);
+			conn.setAutoCommit(false);
 			try {
 				if (DbUtil.class.getName() != null) {
 					if (DbUtil.class.getName().length() < 30) {
 						cln = DbUtil.class.getName();
-					} else if (DbUtil.class.getName().length() > 30) {
+					} else if (DbUtil.class.getName().length() >= 30) {
 						cln = DbUtil.class.getName().substring(0, 29);
 					}
 				}
@@ -211,13 +242,6 @@ public class DbUtil {
 			} catch (Exception e) {
 
 			}
-
-			if (sessions == null) {
-				sessions = new HashMap<Long, String>();
-				sessions.put(GetSession(conn), cln);
-			} else {
-				sessions.put(GetSession(conn), cln);
-			}
 			Run_Proc(conn, DbUtil.class.getName());
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -226,6 +250,7 @@ public class DbUtil {
 
 	/**
 	 * Получить сессию...
+	 * 
 	 * @param conn
 	 * @return
 	 * @throws SQLException
@@ -279,32 +304,23 @@ public class DbUtil {
 //		}
 //		return conn;
 //	}
+
 	public static Connection GetConnect(String ClassName) {
 		Connection conn = null;
-		String cln = "";
+		String cln = "~~~~~~";
 		try {
-			if (pds != null) {
-				conn = pds.getConnection();
-			} else {
-				pds = PoolDataSourceFactory.getPoolDataSource();
-				// Set the connection factory first before all other properties
-				pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
-				pds.setURL(DB_URL);
-				pds.setUser(Connect.userID);
-				pds.setPassword(Connect.userPassword);
-				// Set the pool level properties
-				pds.setConnectionPoolName("JDBC_UCP_POOL");
-				// pds.setInitialPoolSize(5);
-				pds.setMinPoolSize(5);
-				pds.setMaxPoolSize(1000000);
-				pds.setValidateConnectionOnBorrow(true);
-				pds.setSQLForValidateConnection("select user from dual");
-			}
+			// Setting Oracle JDBC Driver
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:" + Connect.userID + "/" + Connect.userPassword + "@" + Connect.connectionURL);
+			conn.setAutoCommit(false);
+			// ----------------
+			// Sess name
 			try {
 				if (ClassName != null) {
 					if (ClassName.length() < 30) {
 						cln = ClassName;
-					} else if (ClassName.length() > 30) {
+					} else if (ClassName.length() >= 30) {
 						cln = ClassName.substring(0, 29);
 					}
 				}
@@ -314,21 +330,65 @@ public class DbUtil {
 				cstmt.execute();
 				cstmt.close();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
-			if (sessions == null) {
-				sessions = new HashMap<Long, String>();
-				sessions.put(GetSession(conn), cln);
-			} else {
-				sessions.put(GetSession(conn), cln);
-			}
-			conn.setAutoCommit(false);
+			// --------------------
 			Run_Proc(conn, ClassName);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
 		return conn;
 	}
+	
+//	public static Connection GetConnect(String ClassName) {
+//		Connection conn = null;
+//		String cln = "~~~~~~";
+//		System.out.println("ClassName="+ClassName);
+//		try {
+//			//Conn
+//			if (pds != null) {
+//				conn = pds.getConnection();
+//			} else {
+//				pds = PoolDataSourceFactory.getPoolDataSource();
+//				// Set the connection factory first before all other properties
+//				pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
+//				pds.setURL(DB_URL);
+//				pds.setUser(Connect.userID);
+//				pds.setPassword(Connect.userPassword);
+//				// Set the pool level properties
+//				pds.setConnectionPoolName("JDBC_UCP_POOL");
+//				// pds.setInitialPoolSize(5);
+//				//pds.setMinPoolSize(5);
+//				//pds.setMaxPoolSize(1000000);
+//				pds.setValidateConnectionOnBorrow(true);
+//				pds.setSQLForValidateConnection("select user from dual");
+//			}
+//			//----------------
+//			//Sess name
+//			try {
+//				if (ClassName != null) {
+//					if (ClassName.length() < 30) {
+//						cln = ClassName;
+//					} else if (ClassName.length() >= 30) {
+//						cln = ClassName.substring(0, 29);
+//					}
+//				}
+//				CallableStatement cstmt = conn.prepareCall("{call dbms_application_info.set_module(?,?)}");
+//				cstmt.setString(1, cln);
+//				cstmt.setString(2, cln);
+//				cstmt.execute();
+//				cstmt.close();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			//--------------------
+//			conn.setAutoCommit(false);
+//			Run_Proc(conn, ClassName);
+//		} catch (Exception e) {
+//			DbUtil.Log_Error(e);
+//		}
+//		return conn;
+//	}
 
 	// Close Connection
 	public static void Db_Disconnect() {
@@ -381,14 +441,14 @@ public class DbUtil {
 		return ret;
 	}
 
-	public static Map<Long, String> sessions;
+	// public static Map<Long, String> sessions;
 
 	public static void Run_Proc(Connection conn, String ClassName) {
 		try {
 			Timer time = new Timer(); // Instantiate Timer Object
 			ScheduledTask2 st = new ScheduledTask2(); // Instantiate SheduledTask class
 			st.setConn(conn, ClassName);
-			time.schedule(st, 0, 10000); // Create task repeating every 1 min = 60 000
+			time.schedule(st, 0, 60000); // Create task repeating every 1 min = 60 000
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

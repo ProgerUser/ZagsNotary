@@ -83,7 +83,6 @@ public class CusList {
 
 	public CusList() {
 		Main.logger = Logger.getLogger(getClass());
-		dbConnect();
 	}
 
 	@FXML
