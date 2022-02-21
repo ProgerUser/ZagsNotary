@@ -6,16 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
-import org.controlsfx.control.Notifications;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
 import org.controlsfx.control.tableview2.cell.TextField2TableCell;
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
-
-import com.dlsc.formsfx.model.structure.Field;
-import com.dlsc.formsfx.model.structure.Form;
-import com.dlsc.formsfx.model.structure.Group;
-import com.dlsc.formsfx.view.renderer.FormRenderer;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,13 +28,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Duration;
 import javafx.util.StringConverter;
 import ru.psv.mj.admin.users.OTD;
 import ru.psv.mj.app.main.Main;
@@ -93,8 +83,8 @@ public class OtdList {
 //			
 //			BP.setRight(SCB);
 
-			Notifications.create().darkStyle().title("Title").graphic(new Rectangle(600, 400, Color.AQUA))
-					.hideAfter(Duration.seconds(10)).show();
+//			Notifications.create().darkStyle().title("Title").graphic(new Rectangle(600, 400, Color.AQUA))
+//					.hideAfter(Duration.seconds(10)).show();
 
 			// проверка доступа
 			if (DbUtil.Odb_Action(122l) == 0) {
@@ -135,29 +125,29 @@ public class OtdList {
 	@FXML
 	void Edit(ActionEvent event) {
 		
-		Form loginForm = Form.of(
-				Group.of(
-					Field.ofStringType("").label("Username"),
-					Field.ofStringType("").label("Password").required("This field can’t be empty")
-					)
-				).title("Login");
+//		Form loginForm = Form.of(
+//				Group.of(
+//					Field.ofStringType("").label("Username"),
+//					Field.ofStringType("").label("Password").required("This field can’t be empty")
+//					)
+//				).title("Login");
+//		
+//		Pane root = new Pane();
+//		root.getChildren().add(new FormRenderer(loginForm));
+//		Stage stage = new Stage();
+//		stage.setScene(new Scene(root));
+//		stage.show();
 		
-		Pane root = new Pane();
-		root.getChildren().add(new FormRenderer(loginForm));
-		Stage stage = new Stage();
-		stage.setScene(new Scene(root));
-		stage.show();
-		
-//		// проверка доступа
-//		if (DbUtil.Odb_Action(123l) == 0) {
-//			Msg.Message("Нет доступа!");
-//			return;
-//		}
-//		if (OTD.getSelectionModel().getSelectedItem() == null) {
-//			Msg.Message("Выберите строку!");
-//		} else {
-//			Edit(OTD.getSelectionModel().getSelectedItem().getIOTDNUM(), (Stage) OTD.getScene().getWindow());
-//		}
+		// проверка доступа
+		if (DbUtil.Odb_Action(123l) == 0) {
+			Msg.Message("Нет доступа!");
+			return;
+		}
+		if (OTD.getSelectionModel().getSelectedItem() == null) {
+			Msg.Message("Выберите строку!");
+		} else {
+			Edit(OTD.getSelectionModel().getSelectedItem().getIOTDNUM(), (Stage) OTD.getScene().getWindow());
+		}
 
 	}
 
