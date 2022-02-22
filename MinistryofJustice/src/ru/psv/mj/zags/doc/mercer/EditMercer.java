@@ -824,7 +824,9 @@ public class EditMercer {
 			MC_DATE.setValue(mercer.getMC_DATE());
 			
 			DOC_NUMBER.setText(mercer.getDOC_NUMBER());
-			
+			//22.02.2022 Исполнилось лет, только цифры
+			new ConvConst().OnlyNumber(MERCER_SHEAGE);
+			new ConvConst().OnlyNumber(MERCER_HEAGE);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
