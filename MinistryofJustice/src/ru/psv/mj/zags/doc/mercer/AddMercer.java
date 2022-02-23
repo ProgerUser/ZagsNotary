@@ -800,6 +800,8 @@ public class AddMercer {
 			MERCER_DSPMT_HE.getItems().addAll("Свидетельство о расторжении брака", "Свидетельство о смерти");
 			MERCER_DSPMT_SHE.getItems().addAll("Свидетельство о расторжении брака", "Свидетельство о смерти");
 
+			new ConvConst().OnlyNumber(MERCER_SHEAGE);
+			new ConvConst().OnlyNumber(MERCER_HEAGE);
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}

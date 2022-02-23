@@ -8,7 +8,6 @@ public class ScheduledTask extends TimerTask {
 	Connection conn = null;
 	String ClassName = null;
 
-	@SuppressWarnings("unused")
 	public void run() {
 		
 //		String sessionid = null;

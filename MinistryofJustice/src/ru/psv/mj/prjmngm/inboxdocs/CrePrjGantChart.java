@@ -22,8 +22,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.table.TableFilter;
 
-import com.flexganttfx.extras.GanttChartStatusBar;
-import com.flexganttfx.extras.GanttChartToolBar;
 import com.flexganttfx.model.ActivityLink;
 import com.flexganttfx.model.Layer;
 import com.flexganttfx.model.Row;
@@ -925,23 +923,7 @@ public class CrePrjGantChart {
 
 	private final ArrayList<ActivityLink<?>> links = new ArrayList<>();
 
-	/**
-	 * 
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	void CreGant() {
-		try {
 
-			GanttChartBase<?> gant = createGanttChart();
-
-			GantBorder.setTop(new GanttChartToolBar(gant));
-			GantBorder.setCenter(gant);
-			GantBorder.setBottom(new GanttChartStatusBar(gant));
-
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
 
 	/**
 	 * Привязка столбцов к данным
@@ -1243,19 +1225,7 @@ public class CrePrjGantChart {
 		}
 	}
 
-	/**
-	 * Обновить
-	 * 
-	 * @param event
-	 */
-	@FXML
-	private void RefrGant(ActionEvent event) {
-		try {
-			CreGant();
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+
 
 	// <ORACLE_CONNECT>
 	/**

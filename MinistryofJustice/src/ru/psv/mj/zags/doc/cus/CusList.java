@@ -43,21 +43,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ru.psv.mj.app.main.Main;
@@ -313,7 +312,7 @@ public class CusList {
 			Msg.Message("Выберите документ!");
 		} else {
 			Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
-					(Stage) CUSLIST.getScene().getWindow()/*
+					(Stage) CUSLIST.getScene().getWindow(),""/*
 															 * , conn
 															 */);
 		}
@@ -348,92 +347,44 @@ public class CusList {
 				PreparedStatement check = conn.prepareStatement(readRecordSQL);
 				check.setLong(1, CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
 				ResultSet rs = check.executeQuery();
-				String txt = "Удалить запись?";
-				int sc_wdth = 200;
+				String txt = "Удалить " + CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM() + "?";
 				if (rs.next()) {
 					if (rs.getLong(1) > 0) {
 						txt = "Найдены связанные документы, продолжить удаление?";
-						sc_wdth = 350;
 					}
 				}
 				check.close();
 				rs.close();
 
-				Stage stage = (Stage) CUSLIST.getScene().getWindow();
-				Label alert = new Label(txt);
-				alert.setLayoutX(10.0);
-				alert.setLayoutY(10.0);
-				alert.setPrefHeight(17.0);
-
-				Button no = new Button();
-				no.setText("Нет");
-				no.setLayoutX(111.0);
-				no.setLayoutY(56.0);
-				no.setPrefWidth(72.0);
-				no.setPrefHeight(21.0);
-
-				Button yes = new Button();
-				yes.setText("Да");
-				yes.setLayoutX(14.0);
-				yes.setLayoutY(56.0);
-				yes.setPrefWidth(72.0);
-				yes.setPrefHeight(21.0);
-
-				AnchorPane yn = new AnchorPane();
-				yn.getChildren().add(alert);
-				yn.getChildren().add(no);
-				yn.getChildren().add(yes);
-				Scene ynScene = new Scene(yn, sc_wdth, 100);
-				Stage newWindow_yn = new Stage();
-				no.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
-						newWindow_yn.close();
-					}
-				});
-				yes.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
-						try {
-							VCUS cl = CUSLIST.getSelectionModel().getSelectedItem();
-							CallableStatement callStmt = conn.prepareCall("{call MJCUS.DelCus(?,?)}");
-							callStmt.registerOutParameter(1, Types.VARCHAR);
-							callStmt.setLong(2, cl.getICUSNUM());
-							callStmt.execute();
-							if (callStmt.getString(1) != null) {
-								Msg.Message(callStmt.getString(1));
-							}
-							callStmt.close();
-							/*
-							 * PreparedStatement delete = conn .prepareStatement("declare " +
-							 * "pragma autonomous_transaction;" + "begin " +
-							 * " delete from CUS where ICUSNUM = ?;" + "commit;" + "end;"); VCUS cl =
-							 * CUSLIST.getSelectionModel().getSelectedItem(); delete.setLong(1,
-							 * cl.getICUSNUM()); delete.executeUpdate();
-							 */
-							InitVCus(null, null, null, null, null, "null", null);
-						} catch (SQLException e) {
-							try {
-								conn.rollback();
-							} catch (SQLException e1) {
-								DbUtil.Log_Error(e1);
-							}
-							DbUtil.Log_Error(e);
+				//
+				final Alert alert = new Alert(AlertType.CONFIRMATION,
+						txt, ButtonType.YES,
+						ButtonType.NO);
+				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+					try {
+						VCUS cl = CUSLIST.getSelectionModel().getSelectedItem();
+						CallableStatement callStmt = conn.prepareCall("{call MJCUS.DelCus(?,?)}");
+						callStmt.registerOutParameter(1, Types.VARCHAR);
+						callStmt.setLong(2, cl.getICUSNUM());
+						callStmt.execute();
+						if (callStmt.getString(1) != null) {
+							Msg.Message(callStmt.getString(1));
 						}
-						newWindow_yn.close();
+						callStmt.close();
+
+						InitVCus(null, null, null, null, null, "null", null);
+					} catch (SQLException e) {
+						try {
+							conn.rollback();
+						} catch (SQLException e1) {
+							DbUtil.Log_Error(e1);
+						}
+						DbUtil.Log_Error(e);
 					}
-				});
-				newWindow_yn.setTitle("Внимание");
-				newWindow_yn.setScene(ynScene);
-				newWindow_yn.initModality(Modality.WINDOW_MODAL);
-				newWindow_yn.initOwner(stage);
-				newWindow_yn.setResizable(false);
-				newWindow_yn.getIcons().add(new Image("/icon.png"));
-				newWindow_yn.show();
+				}
 			}
+
 		} catch (Exception e) {
-			/*
-			 * DialogFactory.showError(CUSLIST.getScene().getWindow(),
-			 * ExceptionUtils.getStackTrace(e), null, "Ошибка");
-			 */
 			DbUtil.Log_Error(e);
 		}
 	}
@@ -607,13 +558,22 @@ public class CusList {
 	 * 
 	 * @param event
 	 */
-	public void Edit(Long docid, Stage stage_/* , Connection conn */) {
+	public void Edit(Long docid, Stage stage_, String open) {
 		try {
 			if (isopen == false) {
 				if (DbUtil.Odb_Action(28l) == 0) {
 					Msg.Message("Нет доступа!");
 					return;
 				}
+				
+				try {
+					if (conn == null | conn.isClosed()|!conn.isValid(3)) {
+						dbConnect();
+					}
+				} catch (Exception e) {
+					dbConnect();
+				}
+				
 				Main.logger = Logger.getLogger(getClass());
 				PreparedStatement selforupd = conn
 						.prepareStatement("select * from cus where  ICUSNUM = ? for update nowait");
@@ -680,61 +640,25 @@ public class CusList {
 										/**
 										 * Проверка выхода без сохранения
 										 */
-										Stage stage = stage_;
-										Label alert = new Label("Закрыть форму без сохранения?");
-										alert.setLayoutX(75.0);
-										alert.setLayoutY(11.0);
-										alert.setPrefHeight(17.0);
-
-										Button no = new Button();
-										no.setText("Нет");
-										no.setLayoutX(111.0);
-										no.setLayoutY(56.0);
-										no.setPrefWidth(72.0);
-										no.setPrefHeight(21.0);
-
-										Button yes = new Button();
-										yes.setText("Да");
-										yes.setLayoutX(14.0);
-										yes.setLayoutY(56.0);
-										yes.setPrefWidth(72.0);
-										yes.setPrefHeight(21.0);
-
-										AnchorPane yn = new AnchorPane();
-										yn.getChildren().add(alert);
-										yn.getChildren().add(no);
-										yn.getChildren().add(yes);
-										Scene ynScene = new Scene(yn, 300, 100);
-										Stage newWindow_yn = new Stage();
-										no.setOnAction(new EventHandler<ActionEvent>() {
-											public void handle(ActionEvent event) {
-												newWindow_yn.close();
-												paramT.consume();
+										final Alert alert = new Alert(AlertType.CONFIRMATION,
+												"Закрыть форму без сохранения?", ButtonType.YES,
+												ButtonType.NO);
+										if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+											try {
+												conn.rollback();
+											} catch (SQLException e) {
+												e.printStackTrace();
 											}
-										});
-										yes.setOnAction(new EventHandler<ActionEvent>() {
-											public void handle(ActionEvent event) {
-												try {
-													conn.rollback();
-												} catch (SQLException e) {
-													e.printStackTrace();
-												}
-												newWindow_yn.close();
-												isopen = false;
-												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DbUtil.Lock_Row_Delete(docid, "CUS",conn);
-												if (lock != null) {// if error add row
-													Msg.Message(lock);
-												}
+											isopen = false;
+											// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+											String lock = DbUtil.Lock_Row_Delete(docid, "CUS",conn);
+											if (lock != null) {// if error add row
+												Msg.Message(lock);
 											}
-										});
-										newWindow_yn.setTitle("Внимание");
-										newWindow_yn.setScene(ynScene);
-										newWindow_yn.initModality(Modality.WINDOW_MODAL);
-										newWindow_yn.initOwner(stage);
-										newWindow_yn.setResizable(false);
-										newWindow_yn.getIcons().add(new Image("/icon.png"));
-										newWindow_yn.showAndWait();
+										}else {
+											paramT.consume();
+										}
+										
 									} // Если нажали "X" или "Cancel" и до этого ничего не меняли
 									else if (!controller.getStatus() & CompareBeforeClose(docid, conn) == 0) {
 										conn.rollback();
@@ -744,6 +668,9 @@ public class CusList {
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
+									}
+									if(open.equals("OpenDoc")) {
+										dbDisconnect();
 									}
 								} catch (SQLException e) {
 									DbUtil.Log_Error(e);
@@ -825,7 +752,7 @@ public class CusList {
 			Msg.Message("Выберите документ!");
 		} else {
 			Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
-					(Stage) CUSLIST.getScene().getWindow()/*
+					(Stage) CUSLIST.getScene().getWindow(),""/*
 															 * , conn
 															 */);
 		}
@@ -1157,7 +1084,7 @@ public class CusList {
 	@FXML
 	private void initialize() {
 		try {
-
+			dbConnect();
 //			addIfNotPresent(CUS_BORDER.getStyleClass(), JMetroStyleClass.BACKGROUND);
 //			addIfNotPresent(CUS_BORDER.getStyleClass(), JMetroStyleClass.LIGHT_BUTTONS);
 //			addIfNotPresent(CUSLIST.getStyleClass(), JMetroStyleClass.TABLE_GRID_LINES);
@@ -1258,7 +1185,7 @@ public class CusList {
 							Msg.Message("Выберите документ!");
 						} else {
 							Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
-									(Stage) CUSLIST.getScene().getWindow()/* , conn */);
+									(Stage) CUSLIST.getScene().getWindow(),""/* , conn */);
 						}
 					}
 				});
@@ -1268,7 +1195,7 @@ public class CusList {
 			/**
 			 * Создать сессию
 			 */
-			dbConnect();
+			//dbConnect();
 			//DbUtil.Run_Process(conn,getClass().getName());
 			/**
 			 * Инициализация столбцов таблицы

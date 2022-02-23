@@ -1937,7 +1937,7 @@ public class AddCus {
 				if (edit.equals("Y")) {
 					CusList cus = new CusList();
 					cus.Edit(getId(), (Stage) ((txtfld != null) ? txtfld.getScene().getWindow()
-							: CCUSLAST_NAME.getScene().getWindow())/* , ForConn */);
+							: CCUSLAST_NAME.getScene().getWindow()),""/* , ForConn */);
 				}
 			});
 			exec.execute(task);
@@ -2183,9 +2183,9 @@ public class AddCus {
 			} else {
 				CUS cus = DUBL.getSelectionModel().getSelectedItem();
 				CusList doc = new CusList();
-				// doc.setConn(ConnToDublOpenEdit, "AddEdit");
+				//doc.setConn(ConnToDublOpenEdit, "AddEdit");
 				doc.Edit(cus.getICUSNUM(), (Stage) ((txtfld != null) ? txtfld.getScene().getWindow()
-						: CCUSLAST_NAME.getScene().getWindow())/* , ConnToDublOpenEdit */);
+						: CCUSLAST_NAME.getScene().getWindow()),"OpenDoc"/* , ConnToDublOpenEdit */);
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
