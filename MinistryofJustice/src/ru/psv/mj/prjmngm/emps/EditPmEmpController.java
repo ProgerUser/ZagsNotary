@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -33,8 +32,6 @@ import ru.psv.mj.util.ConvConst;
 import ru.psv.mj.utils.DbUtil;
 import ru.psv.mj.widgets.FxUtilTest;
 import ru.psv.mj.widgets.MaskField;
-import ru.psv.mj.www.plushaze.traynotification.Notifications;
-import ru.psv.mj.www.plushaze.traynotification.TrayNotification;
 
 public class EditPmEmpController {
 	/**
@@ -170,22 +167,22 @@ public class EditPmEmpController {
 	@FXML
 	void Ok(ActionEvent event) {
 		try {
-			if (EMP_EMAIL.getText() == null || EMP_EMAIL.getText().trim().isEmpty()) {
-				TrayNotification tray = new TrayNotification("Ошибка", "Ошибка в поле Email!", Notifications.ERROR);
-				tray.showAndWait();
-				Platform.runLater(() -> {
-					EMP_EMAIL.requestFocus();
-				});
-			} else {
-				if (validate(EMP_EMAIL.getText()) == false) {
-					TrayNotification tray = new TrayNotification("Ошибка", "Ошибка в поле Email!", Notifications.ERROR);
-					tray.showAndWait();
-					Platform.runLater(() -> {
-						EMP_EMAIL.requestFocus();
-					});
-					return;
-				}
-			}
+//			if (EMP_EMAIL.getText() == null || EMP_EMAIL.getText().trim().isEmpty()) {
+//				TrayNotification tray = new TrayNotification("Ошибка", "Ошибка в поле Email!", Notifications.ERROR);
+//				tray.showAndWait();
+//				Platform.runLater(() -> {
+//					EMP_EMAIL.requestFocus();
+//				});
+//			} else {
+//				if (validate(EMP_EMAIL.getText()) == false) {
+//					TrayNotification tray = new TrayNotification("Ошибка", "Ошибка в поле Email!", Notifications.ERROR);
+//					tray.showAndWait();
+//					Platform.runLater(() -> {
+//						EMP_EMAIL.requestFocus();
+//					});
+//					return;
+//				}
+//			}
 
 			CallableStatement callStmt = conn.prepareCall("{ call PM_EMP_PKG.EDIT(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			// Ошибка
