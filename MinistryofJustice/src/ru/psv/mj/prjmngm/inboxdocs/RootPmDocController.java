@@ -85,7 +85,7 @@ public class RootPmDocController {
 		try {
 
 			// права
-			if (DbUtil.Odb_Action(Long.valueOf(245)) == 0) {
+			if (DbUtil.Odb_Action(Long.valueOf(321)) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -154,7 +154,7 @@ public class RootPmDocController {
 	private void Delete(ActionEvent event) {
 		try {
 			// права
-			if (DbUtil.Odb_Action(Long.valueOf(244)) == 0) {
+			if (DbUtil.Odb_Action(Long.valueOf(323)) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}
@@ -236,7 +236,7 @@ public class RootPmDocController {
 	private void Edit(ActionEvent event) {
 		try {
 			// права
-			if (DbUtil.Odb_Action(Long.valueOf(243)) == 0) {
+			if (DbUtil.Odb_Action(Long.valueOf(322)) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
 			}

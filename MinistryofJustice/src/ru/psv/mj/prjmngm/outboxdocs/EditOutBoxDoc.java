@@ -1194,6 +1194,7 @@ public class EditOutBoxDoc {
 									FileUtils.forceDelete(FileUtils.getFile(FileWord));
 								}
 								// ------------
+								FileWord = null;
 							} catch (Exception e) {
 								DbUtil.Log_Error(e);
 							}
@@ -1222,6 +1223,7 @@ public class EditOutBoxDoc {
 										FileUtils.forceDelete(FileUtils.getFile(FileWord));
 									}
 									// ------------
+									FileWord = null;
 								} catch (Exception e) {
 									DbUtil.Log_Error(e);
 								}
@@ -1295,6 +1297,7 @@ public class EditOutBoxDoc {
 												FileUtils.forceDelete(FileUtils.getFile(FileWord));
 											}
 											// ------------
+											FileWord = null;
 										} catch (Exception e) {
 											DbUtil.Log_Error(e);
 										}

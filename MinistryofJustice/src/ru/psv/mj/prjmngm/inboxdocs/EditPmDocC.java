@@ -980,6 +980,7 @@ public class EditPmDocC {
 									FileUtils.forceDelete(FileUtils.getFile(FileWord));
 								}
 								// ------------
+								FileWord = null;
 							} catch (Exception e) {
 								DbUtil.Log_Error(e);
 							}
@@ -1008,6 +1009,7 @@ public class EditPmDocC {
 										FileUtils.forceDelete(FileUtils.getFile(FileWord));
 									}
 									// ------------
+									FileWord = null;
 								} catch (Exception e) {
 									DbUtil.Log_Error(e);
 								}
@@ -1081,6 +1083,7 @@ public class EditPmDocC {
 												FileUtils.forceDelete(FileUtils.getFile(FileWord));
 											}
 											// ------------
+											FileWord = null;
 										} catch (Exception e) {
 											DbUtil.Log_Error(e);
 										}

@@ -39,7 +39,12 @@ public class Set_Up_Pass {
 
 	private BooleanProperty Status;
 	private StringProperty Usr;
+	private StringProperty Pass;
 
+	public String getPass() {
+		return this.Pass.get();
+	}
+	
 	public void setStatus(Boolean value) {
 		this.Status.set(value);
 	}

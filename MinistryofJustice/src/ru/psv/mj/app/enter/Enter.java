@@ -106,6 +106,9 @@ public class Enter {
 						Main.RT();
 					}
 					controller.dbDisconnect();
+					
+				    Main main = new Main();
+					main.Close();
 				}
 			});
 			stage.show();
