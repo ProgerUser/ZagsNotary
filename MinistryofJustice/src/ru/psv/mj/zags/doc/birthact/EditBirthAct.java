@@ -82,63 +82,45 @@ public class EditBirthAct {
 			DbUtil.Log_Error(e);
 		}
 	}
-    
-    @FXML
-    private TextField IFMAL_F_LAST_NAME;
-    
-    @FXML
-    private TextField DOC_NUMBER;
-    
-    
 
-    @FXML
-    private GridPane IfMNotAlone;
-    
-    @FXML
-    private CheckBox MotherAlone;
-    
+	@FXML
+	private DatePicker BR_ACT_DATE_FROM;
+	@FXML
+	private TextField IFMAL_F_LAST_NAME;
+	@FXML
+	private TextField DOC_NUMBER;
+	@FXML
+	private GridPane IfMNotAlone;
+	@FXML
+	private CheckBox MotherAlone;
 	@FXML
 	private TextField FADFIRST_NAME;
-
 	@FXML
 	private DatePicker BIRTH_ACT_ZM;
-
 	@FXML
 	private TitledPane osnvosst;
-
 	@FXML
 	private TitledPane father;
-
 	@FXML
 	private TextField ChildCnt;
-
 	@FXML
 	private TextField MEDORG_A;
-
 	@FXML
 	private TextField NAME_COURT;
-
 	@FXML
 	private ComboBox<String> FatherType;
-
 	@FXML
 	private ComboBox<String> BR_ACT_DBF;
-
 	@FXML
 	private DatePicker DATEDOCB_B;
-
 	@FXML
 	private DatePicker DATEDOCB_A;
-
 	@FXML
 	private TextField FADLOCATION;
-
 	@FXML
 	private TitledPane printdoc;
-
 	@FXML
 	private TextField FADORG_NAME;
-
 	@FXML
 	private TitledPane mother;
 
@@ -656,7 +638,7 @@ public class EditBirthAct {
 			PAT_CER_ID.setText("");
 			BIRTH_ACT_ZM.setValue(null);
 
-		}else if (FatherType.getValue().equals("Со слов матери")) {
+		} else if (FatherType.getValue().equals("Со слов матери")) {
 
 			IF1.setVisible(false);
 			IF2.setVisible(false);
@@ -833,7 +815,7 @@ public class EditBirthAct {
 		try {
 			{
 				CallableStatement callStmt = conn.prepareCall(
-						"{ ? = call BURN_UTIL.EDIT_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+						"{ ? = call BURN_UTIL.EDIT_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 				callStmt.registerOutParameter(1, Types.VARCHAR);
 				/* Тип заявителя.F-физик.-J-юрик */
 				if (BIRTH_ACT_TYPE.getValue() != null) {
@@ -869,7 +851,7 @@ public class EditBirthAct {
 						callStmt.setString(5, "B");
 					} else if (FatherType.getValue().equals("Заявления матери")) {
 						callStmt.setString(5, "V");
-					}else if (FatherType.getValue().equals("Со слов матери")) {
+					} else if (FatherType.getValue().equals("Со слов матери")) {
 						callStmt.setString(5, "G");
 					}
 				} else {
@@ -954,10 +936,14 @@ public class EditBirthAct {
 					callStmt.setNull(28, java.sql.Types.INTEGER);
 				}
 				callStmt.setLong(29, getId());
-				
+
 				callStmt.setString(30, DOC_NUMBER.getText());
 				callStmt.setString(31, (MotherAlone.isSelected() ? "Y" : "N"));
 				callStmt.setString(32, IFMAL_F_LAST_NAME.getText());
+				/* Штамп органа ЗАГС-а */
+				callStmt.setDate(33,
+						(BR_ACT_DATE_FROM.getValue() != null) ? java.sql.Date.valueOf(BR_ACT_DATE_FROM.getValue())
+								: null);
 				/* Выполнить */
 				callStmt.execute();
 				String ret = callStmt.getString(1);
@@ -984,7 +970,7 @@ public class EditBirthAct {
 		try {
 			{
 				CallableStatement callStmt = conn.prepareCall(
-						"{ ? = call BURN_UTIL.EDIT_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+						"{ ? = call BURN_UTIL.EDIT_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 				callStmt.registerOutParameter(1, Types.VARCHAR);
 				/* Тип заявителя.F-физик.-J-юрик */
 				if (BIRTH_ACT_TYPE.getValue() != null) {
@@ -1020,7 +1006,7 @@ public class EditBirthAct {
 						callStmt.setString(5, "B");
 					} else if (FatherType.getValue().equals("Заявления матери")) {
 						callStmt.setString(5, "V");
-					}else if (FatherType.getValue().equals("Со слов матери")) {
+					} else if (FatherType.getValue().equals("Со слов матери")) {
 						callStmt.setString(5, "G");
 					}
 				} else {
@@ -1105,10 +1091,14 @@ public class EditBirthAct {
 					callStmt.setNull(28, java.sql.Types.INTEGER);
 				}
 				callStmt.setLong(29, getId());
-				
+
 				callStmt.setString(30, DOC_NUMBER.getText());
 				callStmt.setString(31, (MotherAlone.isSelected() ? "Y" : "N"));
 				callStmt.setString(32, IFMAL_F_LAST_NAME.getText());
+				/* Штамп органа ЗАГС-а */
+				callStmt.setDate(33,
+						(BR_ACT_DATE_FROM.getValue() != null) ? java.sql.Date.valueOf(BR_ACT_DATE_FROM.getValue())
+								: null);
 				/* Выполнить */
 				callStmt.execute();
 				callStmt.close();
@@ -1225,6 +1215,8 @@ public class EditBirthAct {
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
 				list.setMOTHERALONE(rs.getString("MOTHERALONE"));
 				list.setIFMAL_F_LAST_NAME(rs.getString("IFMAL_F_LAST_NAME"));
+				list.setBR_ACT_DATE_FROM((rs.getDate("BR_ACT_DATE_FROM") != null) ? LocalDate.parse(
+						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("BR_ACT_DATE_FROM")), formatter) : null);
 				burnlist.add(list);
 			}
 			prepStmt.close();
@@ -1394,7 +1386,7 @@ public class EditBirthAct {
 
 			FatherType.getItems().addAll("Свидетельства о заключении брака", "Свидетельства об установлении отцовства",
 					"Заявления матери", "Со слов матери");
-			
+
 			if (selbrn.getBR_ACT_TGRABF() != null) {
 				if (selbrn.getBR_ACT_TGRABF().equals("Свидетельства о заключении брака")) {
 					FatherType.getSelectionModel().select(selbrn.getBR_ACT_TGRABF());
@@ -1405,7 +1397,7 @@ public class EditBirthAct {
 				} else if (selbrn.getBR_ACT_TGRABF().equals("Заявления матери")) {
 					FatherType.getSelectionModel().select(selbrn.getBR_ACT_TGRABF());
 					IF3.setVisible(true);
-				}else if (selbrn.getBR_ACT_TGRABF().equals("Со слов матери")) {
+				} else if (selbrn.getBR_ACT_TGRABF().equals("Со слов матери")) {
 					FatherType.getSelectionModel().select(selbrn.getBR_ACT_TGRABF());
 				}
 			}
@@ -1456,22 +1448,24 @@ public class EditBirthAct {
 
 			{
 				DOC_NUMBER.setText(selbrn.getDOC_NUMBER());
-				
+
 				if (selbrn.getMOTHERALONE() != null && selbrn.getMOTHERALONE().equals("Y")) {
-					
+
 					MotherAlone.setSelected(true);
-					
+
 					IfMNotAlone.setVisible(false);
 					IFMAL_F_LAST_NAME.setVisible(true);
 					IFMAL_F_LAST_NAME.setText(selbrn.getIFMAL_F_LAST_NAME());
 				} else if (selbrn.getMOTHERALONE() != null && selbrn.getMOTHERALONE().equals("N")) {
-					
+
 					MotherAlone.setSelected(false);
-					
+
 					IfMNotAlone.setVisible(true);
 					IFMAL_F_LAST_NAME.setVisible(false);
 				}
 			}
+			BR_ACT_DATE_FROM.setValue(selbrn.getBR_ACT_DATE_FROM());
+			new ConvConst().FormatDatePiker(BR_ACT_DATE_FROM);
 			new ConvConst().FormatDatePiker(BIRTH_ACT_ZM);
 			new ConvConst().FormatDatePiker(DATEDOCB_B);
 			new ConvConst().FormatDatePiker(DATEDOCB_A);
@@ -1547,7 +1541,8 @@ public class EditBirthAct {
 	}
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 	}
 
 	public EditBirthAct() {

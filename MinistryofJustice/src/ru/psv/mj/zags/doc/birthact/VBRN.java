@@ -83,8 +83,12 @@ public class VBRN {
 	private StringProperty DOC_NUMBER;
 	/** Фамилия отца если мать одиночка */
 	private StringProperty IFMAL_F_LAST_NAME;
+	/** Нет данных */
+	private SimpleObjectProperty<LocalDate> BR_ACT_DATE_FROM;
 
 	public VBRN() {
+		this.BR_ACT_DATE_FROM = new SimpleObjectProperty<>();
+		
 		this.DOC_NUMBER = new SimpleStringProperty();
 		this.IFMAL_F_LAST_NAME = new SimpleStringProperty();
 		this.MOTHERALONE = new SimpleStringProperty();
@@ -123,6 +127,16 @@ public class VBRN {
 		this.BR_ACT_ZTP = new SimpleStringProperty();
 		this.BR_ACT_DATE = new SimpleObjectProperty<>();
 		this.BR_ACT_ID = new SimpleLongProperty();
+	}
+	
+	public LocalDate getBR_ACT_DATE_FROM() {
+		return BR_ACT_DATE_FROM.get();
+	}
+	public SimpleObjectProperty<LocalDate> BR_ACT_DATE_FROMProperty() {
+		return BR_ACT_DATE_FROM;
+	}
+	public void setBR_ACT_DATE_FROM(LocalDate BR_ACT_DATE_FROM) {
+		this.BR_ACT_DATE_FROM.set(BR_ACT_DATE_FROM);
 	}
 
 	public void setIFMAL_F_LAST_NAME(String IFMAL_F_LAST_NAME) {
