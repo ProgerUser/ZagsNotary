@@ -45794,4 +45794,7 @@ Caused by: java.io.IOException: Удаленный хост принудительно разорвал существующ
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:185)
 	at java.lang.Thread.run(Thread.java:748)
 
+] - $End$[11.05.2022 15:38:14] $Sep$ [ru.psv.mj.admin.users.AddUser.save()] $Sep$ [INFO] $Sep$ [140] $Sep$ [Пользователь TextField[id=CUSRLOGNAME, styleClass=text-input text-field] Создан~JavaFX Application Thread
+] - $End$[11.05.2022 15:40:16] $Sep$ [ru.psv.mj.admin.users.AddUser.save()] $Sep$ [INFO] $Sep$ [140] $Sep$ [Пользователь TextField[id=CUSRLOGNAME, styleClass=text-input text-field] Создан~JavaFX Application Thread
+] - $End$[11.05.2022 15:40:44] $Sep$ [ru.psv.mj.admin.users.AddUser.save()] $Sep$ [INFO] $Sep$ [140] $Sep$ [Пользователь TextField[id=CUSRLOGNAME, styleClass=text-input text-field] Создан~JavaFX Application Thread
 ] - $End$
