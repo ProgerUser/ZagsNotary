@@ -74,6 +74,13 @@ import ru.psv.mj.zags.doc.cus.UtilCus;
 import ru.psv.mj.zags.doc.mercer.MC_MERCER;
 import ru.psv.mj.zags.doc.patern.PATERN_CERT;
 
+/**
+ * 01.05.2022
+ * Добавлено поле, дата штампа ЗАГСа
+ * Запрос от 04.04.2022
+ * @author SAIDP
+ *
+ */
 public class AddBirthAct {
 
 	@FXML
@@ -98,151 +105,104 @@ public class AddBirthAct {
 
 	@FXML
 	private TextField IFMAL_F_LAST_NAME;
-
 	@FXML
 	private GridPane IfMNotAlone;
-
 	@FXML
 	private CheckBox MotherAlone;
-
 	@FXML
 	private TextField DOC_NUMBER;
-
 	@FXML
 	private TextField FADFIRST_NAME;
-
+	@FXML
+	private DatePicker BR_ACT_DATE_FROM;
 	@FXML
 	private DatePicker BIRTH_ACT_ZM;
-
 	@FXML
 	private TitledPane osnvosst;
-
 	@FXML
 	private TitledPane father;
-
 	@FXML
 	private TextField ChildCnt;
-
 	@FXML
 	private TextField MEDORG_A;
-
 	@FXML
 	private TextField NAME_COURT;
-
 	@FXML
 	private ComboBox<String> FatherType;
-
 	@FXML
 	private ComboBox<String> BR_ACT_DBF;
-
 	@FXML
 	private DatePicker DATEDOCB_B;
-
 	@FXML
 	private DatePicker DATEDOCB_A;
-
 	@FXML
 	private TextField FADLOCATION;
-
 	@FXML
 	private TitledPane printdoc;
-
 	@FXML
 	private TextField FADORG_NAME;
-
 	@FXML
 	private TitledPane mother;
-
 	@FXML
 	private TextField FIO_B;
-
 	@FXML
 	private TitledPane children;
-
 	@FXML
 	private TextField MotherName;
-
 	@FXML
 	private Button SAVE;
-
 	@FXML
 	private TitledPane osndoc;
-
 	@FXML
 	private TextField ChildName;
-
 	@FXML
 	private GridPane FIZIK;
-
 	@FXML
 	private TextField FADMIDDLE_NAME;
-
 	@FXML
 	private TitledPane sved_thaver;
-
 	@FXML
 	private TextField MARR_CER_ID;
-
 	@FXML
 	private TextField NUM;
-
 	@FXML
 	private TextField DESC_C;
-
 	@FXML
 	private TextField SERIA;
-
 	@FXML
 	private TextField PAT_CER_ID;
-
 	@FXML
 	private TextField FADREG_ADR;
-
 	@FXML
 	private TextField ChildCusId;
-
 	@FXML
 	private TextField NDOC_A;
-
 	@FXML
 	private GridPane JURIK;
-
 	@FXML
 	private GridPane IF2;
-
 	@FXML
 	private TextField FADLAST_NAME;
-
 	@FXML
 	private GridPane IF1;
-
 	@FXML
 	private GridPane IF3;
-
 	@FXML
 	private ComboBox<String> BIRTH_ACT_TYPE;
-
 	@FXML
 	private ComboBox<String> LD;
-
 	@FXML
 	private DatePicker DCOURT;
-
 	@FXML
 	private TextField MotherCusId;
-
 	@FXML
 	private TextField FatherCusId;
-
 	@FXML
 	private TextField FatherName;
-
 	@FXML
 	private TitledPane fiozaiav;
-
 	@FXML
 	private GridPane FIOLPVR;
-
 	@FXML
 	private GridPane DUFOR;
 
@@ -916,7 +876,7 @@ public class AddBirthAct {
 				/* Вызов функции CRE_BURN из пакета BIRN_UTIL */
 				{
 					CallableStatement callStmt = conn.prepareCall(
-							"{ ? = call BURN_UTIL.CRE_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
+							"{ ? = call BURN_UTIL.CRE_BURN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 					callStmt.registerOutParameter(1, Types.VARCHAR);
 					/* Тип заявителя.F-физик.-J-юрик */
 					if (BIRTH_ACT_TYPE.getValue() != null) {
@@ -1037,7 +997,6 @@ public class AddBirthAct {
 						callStmt.setNull(28, java.sql.Types.INTEGER);
 					}
 					callStmt.registerOutParameter(29, Types.INTEGER);
-
 					callStmt.setString(30, DOC_NUMBER.getText());
 					callStmt.setString(31, (MotherAlone.isSelected() ? "Y" : "N"));
 					callStmt.setString(32, IFMAL_F_LAST_NAME.getText());
@@ -1046,6 +1005,9 @@ public class AddBirthAct {
 					} else {
 						callStmt.setNull(33, java.sql.Types.INTEGER);
 					}
+					/*Штамп органа ЗАГС-а*/
+					callStmt.setDate(34,
+							(BR_ACT_DATE_FROM.getValue() != null) ? java.sql.Date.valueOf(BR_ACT_DATE_FROM.getValue()) : null);
 					/* Выполнить */
 					callStmt.execute();
 					String ret = callStmt.getString(1);
