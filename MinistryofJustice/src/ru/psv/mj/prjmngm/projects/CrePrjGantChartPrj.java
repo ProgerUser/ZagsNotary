@@ -461,44 +461,7 @@ public class CrePrjGantChartPrj {
 	void LoadTable() {
 		try {
 			// loop
-			String selectStmt = "SELECT *\r\n"
-					+ "  FROM VPM_PROJECTS PRJ\r\n"
-					+ " WHERE --еякх псйнбндхрекэ нрдекю х бяе ецн ондвхемммше\r\n"
-					+ " (EXISTS\r\n"
-					+ "  (SELECT NULL\r\n"
-					+ "     FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
-					+ "    WHERE MEM.IUSRID = USR.IUSRID\r\n"
-					+ "      AND MEM.GRP_ID = GRP.GRP_ID\r\n"
-					+ "      AND GRP.GRP_NAME = 'PrjMngRukOtd'\r\n"
-					+ "      AND USR.CUSRLOGNAME = USER) AND\r\n"
-					+ "  PRJ.EMP_ID IN\r\n"
-					+ "  (SELECT EMP_ID\r\n"
-					+ "     FROM PM_EMP\r\n"
-					+ "    WHERE PM_EMP.EMP_BOSS IN\r\n"
-					+ "          (SELECT EMP_ID\r\n"
-					+ "             FROM PM_EMP\r\n"
-					+ "            WHERE PM_EMP.EMP_LOGIN =\r\n"
-					+ "                  (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = USER))))\r\n"
-					+ "--еякх псйнбндхрекэ, бхдерэ бяе\r\n"
-					+ " OR EXISTS\r\n"
-					+ " (SELECT NULL\r\n"
-					+ "    FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
-					+ "   WHERE MEM.IUSRID = USR.IUSRID\r\n"
-					+ "     AND MEM.GRP_ID = GRP.GRP_ID\r\n"
-					+ "     AND GRP.GRP_NAME = 'PrjMngRuk'\r\n"
-					+ "     AND USR.CUSRLOGNAME = USER)\r\n"
-					+ "--еякх нашвмши онкэгнбюрекэ\r\n"
-					+ " OR ((NOT EXISTS (SELECT NULL\r\n"
-					+ "                 FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
-					+ "                WHERE MEM.IUSRID = USR.IUSRID\r\n"
-					+ "                  AND MEM.GRP_ID = GRP.GRP_ID\r\n"
-					+ "                  AND GRP.GRP_NAME IN ('PrjMngRuk', 'PrjMngRukOtd')\r\n"
-					+ "                  AND USR.CUSRLOGNAME = USER)) AND\r\n"
-					+ " PRJ.EMP_LOGIN IN\r\n"
-					+ " (SELECT EMP_ID\r\n"
-					+ "     FROM PM_EMP\r\n"
-					+ "    WHERE PM_EMP.EMP_LOGIN =\r\n"
-					+ "          (SELECT USR.IUSRID FROM USR WHERE USR.CUSRLOGNAME = USER))) order by PRJ_ID desc";
+			String selectStmt = "SELECT * FROM VPM_PROJECTS_GR";
 			//System.out.println(selectStmt);
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();

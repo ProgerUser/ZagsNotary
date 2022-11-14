@@ -381,17 +381,13 @@ public class EditPmPrjC {
 		try {
 			if (DocScans.getSelectionModel().getSelectedItem() != null) {
 				VPM_DOC_SCANS sel = DocScans.getSelectionModel().getSelectedItem();
-
-				final Alert alert = new Alert(AlertType.CONFIRMATION, "сДЮКХРЭ " + sel.getDS_ID() + "?", ButtonType.YES,
-						ButtonType.NO);
-				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
 					PreparedStatement prp = conn.prepareStatement("delete from PM_DOC_SCANS where DS_ID = ?");
 					prp.setLong(1, sel.getDS_ID());
 					prp.executeUpdate();
 					prp.close();
 					conn.commit();
 					LoadTableWord();
-				}
+				
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -1040,32 +1036,7 @@ public class EditPmPrjC {
 		
 		// -------------------
 					{
-						String selectStmt = "SELECT *\r\n"
-								+ "  FROM PM_PRJ_STATUS STAT\r\n"
-								+ " WHERE --еякх псйнбндхрекэ нрдекю х бяе ецн ондвхемммше\r\n"
-								+ " (EXISTS\r\n"
-								+ "  (SELECT NULL\r\n"
-								+ "     FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
-								+ "    WHERE MEM.IUSRID = USR.IUSRID\r\n"
-								+ "      AND MEM.GRP_ID = GRP.GRP_ID\r\n"
-								+ "      AND GRP.GRP_NAME = 'PrjMngRukOtd'\r\n"
-								+ "      AND USR.CUSRLOGNAME = USER) AND STAT.PJST_ID IN (1, 2, 3))\r\n"
-								+ "--еякх псйнбндхрекэ, бхдерэ бяе\r\n"
-								+ " OR EXISTS\r\n"
-								+ " (SELECT NULL\r\n"
-								+ "    FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
-								+ "   WHERE MEM.IUSRID = USR.IUSRID\r\n"
-								+ "     AND MEM.GRP_ID = GRP.GRP_ID\r\n"
-								+ "     AND GRP.GRP_NAME = 'PrjMngRuk'\r\n"
-								+ "     AND USR.CUSRLOGNAME = USER)\r\n"
-								+ "--еякх нашвмши онкэгнбюрекэ\r\n"
-								+ " OR ((NOT EXISTS (SELECT NULL\r\n"
-								+ "                 FROM ODB_GRP_MEMBER MEM, USR, ODB_GROUP_USR GRP\r\n"
-								+ "                WHERE MEM.IUSRID = USR.IUSRID\r\n"
-								+ "                  AND MEM.GRP_ID = GRP.GRP_ID\r\n"
-								+ "                  AND GRP.GRP_NAME IN ('PrjMngRuk', 'PrjMngRukOtd')\r\n"
-								+ "                  AND USR.CUSRLOGNAME = USER)) AND STAT.PJST_ID IN (1, 2))\r\n"
-								+ " ORDER BY PJST_ID ASC";
+						String selectStmt = "SELECT * from PM_PRJ_STATUS_GR";
 						//System.out.println(selectStmt);
 						PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 						ResultSet rs = prepStmt.executeQuery();
