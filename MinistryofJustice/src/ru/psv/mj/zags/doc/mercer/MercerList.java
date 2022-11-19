@@ -118,7 +118,7 @@ public class MercerList {
 	@FXML
 	void Spravka_28(ActionEvent event) {
 		try {
-			// Р’С‹Р·РѕРІ
+			// Вызов
 			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_MC_MERCER_28.docx");
 			docx.setVariablePattern(new VariablePattern("#{", "}"));
 			// preparing variables
@@ -161,7 +161,7 @@ public class MercerList {
 	@FXML
 	void Spravka_29(ActionEvent event) {
 		try {
-			// Р’С‹Р·РѕРІ
+			// Вызов
 			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_MC_MERCER_29.docx");
 			docx.setVariablePattern(new VariablePattern("#{", "}"));
 			// preparing variables
@@ -204,7 +204,7 @@ public class MercerList {
 		try {
 
 			if (DbUtil.Odb_Action(95l) == 0) {
-				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
+				Msg.Message("Нет доступа!");
 				return;
 			}
 
@@ -220,7 +220,7 @@ public class MercerList {
 			Parent root = loader.load();
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ");
+			stage.setTitle("Добавить новую запись");
 			stage.initOwner(stage_);
 			stage.setResizable(false);
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -242,30 +242,30 @@ public class MercerList {
 		try {
 
 			if (DbUtil.Odb_Action(97l) == 0) {
-				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
+				Msg.Message("Нет доступа!");
 				return;
 			}
 
 			if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+				Msg.Message("Выберите строку!");
 			} else {
 				Main.logger = Logger.getLogger(getClass());
 
 				Stage stage = (Stage) MC_MERCER.getScene().getWindow();
-				Label alert = new Label("РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ?");
+				Label alert = new Label("Удалить запись?");
 				alert.setLayoutX(75.0);
 				alert.setLayoutY(11.0);
 				alert.setPrefHeight(17.0);
 
 				Button no = new Button();
-				no.setText("РќРµС‚");
+				no.setText("Нет");
 				no.setLayoutX(111.0);
 				no.setLayoutY(56.0);
 				no.setPrefWidth(72.0);
 				no.setPrefHeight(21.0);
 
 				Button yes = new Button();
-				yes.setText("Р”Р°");
+				yes.setText("Да");
 				yes.setLayoutX(14.0);
 				yes.setLayoutY(56.0);
 				yes.setPrefWidth(72.0);
@@ -304,7 +304,7 @@ public class MercerList {
 						newWindow_yn.close();
 					}
 				});
-				newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
+				newWindow_yn.setTitle("Внимание");
 				newWindow_yn.setScene(ynScene);
 				newWindow_yn.initModality(Modality.WINDOW_MODAL);
 				newWindow_yn.initOwner(stage);
@@ -382,7 +382,7 @@ public class MercerList {
 			if (isopen == false) {
 
 				if (DbUtil.Odb_Action(96l) == 0) {
-					Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
+					Msg.Message("Нет доступа!");
 					return;
 				}
 
@@ -415,7 +415,7 @@ public class MercerList {
 						Parent root = loader.load();
 						stage.setScene(new Scene(root));
 						stage.getIcons().add(new Image("/icon.png"));
-						stage.setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ: ");
+						stage.setTitle("Редактирование: ");
 						stage.initOwner(stage_);
 						stage.setResizable(false);
 						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -428,32 +428,32 @@ public class MercerList {
 										if (from == null) {
 											Refresh();
 										}
-										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 										String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 										isopen = false;
-									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ С‡С‚Рѕ-С‚Рѕ РјРµРЅСЏР»Рё
+									} // Если нажали "X" или "Cancel" и до этого что-то меняли
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 1) {
 										/**
-										 * РџСЂРѕРІРµСЂРєР° РІС‹С…РѕРґР° Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
+										 * Проверка выхода без сохранения
 										 */
 										Stage stage = stage_;
-										Label alert = new Label("Р—Р°РєСЂС‹С‚СЊ С„РѕСЂРјСѓ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ?");
+										Label alert = new Label("Закрыть форму без сохранения?");
 										alert.setLayoutX(75.0);
 										alert.setLayoutY(11.0);
 										alert.setPrefHeight(17.0);
 
 										Button no = new Button();
-										no.setText("РќРµС‚");
+										no.setText("Нет");
 										no.setLayoutX(111.0);
 										no.setLayoutY(56.0);
 										no.setPrefWidth(72.0);
 										no.setPrefHeight(21.0);
 
 										Button yes = new Button();
-										yes.setText("Р”Р°");
+										yes.setText("Да");
 										yes.setLayoutX(14.0);
 										yes.setLayoutY(56.0);
 										yes.setPrefWidth(72.0);
@@ -479,7 +479,7 @@ public class MercerList {
 													e.printStackTrace();
 												}
 												newWindow_yn.close();
-												// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
+												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 												String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
@@ -487,18 +487,18 @@ public class MercerList {
 												isopen = false;
 											}
 										});
-										newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
+										newWindow_yn.setTitle("Внимание");
 										newWindow_yn.setScene(ynScene);
 										newWindow_yn.initModality(Modality.WINDOW_MODAL);
 										newWindow_yn.initOwner(stage);
 										newWindow_yn.setResizable(false);
 										newWindow_yn.getIcons().add(new Image("/icon.png"));
 										newWindow_yn.showAndWait();
-									}// Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ РЅРёС‡РµРіРѕ РЅРµ РјРµРЅСЏР»Рё
+									}// Если нажали "X" или "Cancel" и до этого ничего не меняли
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										conn.rollback();
 										isopen = false;
-										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 										String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
@@ -514,7 +514,7 @@ public class MercerList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Р—Р°РїРёСЃСЊ СЂРµРґР°РєС‚РёСЂСѓРµС‚СЃСЏ " + DbUtil.Lock_Row_View(docid, "MC_MERCER"));
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "MC_MERCER"));
 						DbUtil.Log_Error(e);
 					} else {
 						DbUtil.Log_Error(e);
@@ -522,7 +522,7 @@ public class MercerList {
 				}
 
 			} else {
-				Msg.Message("Р¤РѕСЂРјР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СѓР¶Рµ РѕС‚РєСЂС‹С‚Р°!");
+				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -533,14 +533,14 @@ public class MercerList {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 			if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+				Msg.Message("Выберите строку!");
 			} else {
 				ROOT.setDisable(true);
 				PB.setVisible(true);
 				Task<Object> task = new Task<Object>() {
 					@Override
 					public Object call() throws Exception {
-						// Р’С‹Р·РѕРІ
+						// Вызов
 						Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/MC_MERCER.docx");
 						docx.setVariablePattern(new VariablePattern("#{", "}"));
 						// preparing variables
@@ -784,7 +784,7 @@ public class MercerList {
 	@FXML
 	void CmEdit(ActionEvent event) {
 		if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+			Msg.Message("Выберите строку!");
 		} else {
 			Edit(MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID(),
 					(Stage) MC_MERCER.getScene().getWindow());
@@ -809,7 +809,7 @@ public class MercerList {
 	@FXML
 	void BtEdit(ActionEvent event) {
 		if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+			Msg.Message("Выберите строку!");
 		} else {
 			Edit(MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID(),
 					(Stage) MC_MERCER.getScene().getWindow());
@@ -823,7 +823,7 @@ public class MercerList {
 	
 	public void manipulatePdf(String src, String dest) throws Exception {
 		if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+			Msg.Message("Выберите строку!");
 		} else {
 			PdfReader reader = new PdfReader(src);
 			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
@@ -840,64 +840,64 @@ public class MercerList {
 			prp.setLong(1, MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
-				fields.setField("РўРµРєСЃС‚1", rs.getString("F1"));
-				fields.setField("РўРµРєСЃС‚2", rs.getString("F2"));
-				fields.setField("РўРµРєСЃС‚3", rs.getString("F3"));
-				fields.setField("РўРµРєСЃС‚6", rs.getString("F6"));
-				fields.setField("РўРµРєСЃС‚7", rs.getString("F7"));
-				fields.setField("РўРµРєСЃС‚9", rs.getString("F9"));
-				fields.setField("РўРµРєСЃС‚10", rs.getString("F10"));
-				fields.setField("РўРµРєСЃС‚11", rs.getString("F11"));
-				fields.setField("РўРµРєСЃС‚12", rs.getString("F12"));
-				fields.setField("РўРµРєСЃС‚13", rs.getString("F13"));
-				fields.setField("РўРµРєСЃС‚14", rs.getString("F14"));
-				fields.setField("РўРµРєСЃС‚15", rs.getString("F15"));
-				fields.setField("РўРµРєСЃС‚16", rs.getString("F16"));
-				fields.setField("РўРµРєСЃС‚17", rs.getString("F17"));
-				fields.setField("РўРµРєСЃС‚18", rs.getString("F18"));
-				fields.setField("РўРµРєСЃС‚19", rs.getString("F19"));
-				fields.setField("РўРµРєСЃС‚20", rs.getString("F20"));
-				fields.setField("РўРµРєСЃС‚21", rs.getString("F21"));
-				fields.setField("РўРµРєСЃС‚22", "-");
-				fields.setField("РўРµРєСЃС‚24", "-");
-				fields.setField("РўРµРєСЃС‚25", rs.getString("F25"));
-				fields.setField("РўРµРєСЃС‚26", rs.getString("F26"));
-				fields.setField("РўРµРєСЃС‚27", rs.getString("F6"));
-				fields.setField("РўРµРєСЃС‚28", rs.getString("F14"));
-				fields.setField("РўРµРєСЃС‚30", rs.getString("F30"));
-				fields.setField("РўРµРєСЃС‚31", rs.getString("F31"));
-				fields.setField("РўРµРєСЃС‚33", rs.getString("F26"));
-				fields.setField("РўРµРєСЃС‚34", rs.getString("F1"));
-				fields.setField("РўРµРєСЃС‚35", rs.getString("F35"));
-				fields.setField("РўРµРєСЃС‚36", rs.getString("F36"));
-				fields.setField("РўРµРєСЃС‚37", rs.getString("F37"));
-				fields.setField("РўРµРєСЃС‚38", rs.getString("F38"));
-				fields.setField("РўРµРєСЃС‚39", rs.getString("F11"));
-				fields.setField("РўРµРєСЃС‚40", rs.getString("F39"));
-				fields.setField("РўРµРєСЃС‚41", rs.getString("F64"));
-				fields.setField("РўРµРєСЃС‚42", rs.getString("F42"));
-				fields.setField("РўРµРєСЃС‚43", rs.getString("F43"));
-				fields.setField("РўРµРєСЃС‚44", rs.getString("F44"));
-				fields.setField("РўРµРєСЃС‚45", rs.getString("F45"));
-				fields.setField("РўРµРєСЃС‚46", rs.getString("F46"));
-				fields.setField("РўРµРєСЃС‚47", rs.getString("F18"));
-				fields.setField("РўРµРєСЃС‚48", rs.getString("F48"));
-				fields.setField("РўРµРєСЃС‚49", rs.getString("F49"));
-				fields.setField("РўРµРєСЃС‚51", rs.getString("F51"));
-				fields.setField("РўРµРєСЃС‚52", rs.getString("F52"));
-				fields.setField("РўРµРєСЃС‚53", rs.getString("F25"));
-				fields.setField("РўРµРєСЃС‚54", rs.getString("F54"));
-				fields.setField("РўРµРєСЃС‚55", rs.getString("F1"));
-				fields.setField("РўРµРєСЃС‚56", "-");
-				fields.setField("РўРµРєСЃС‚57", rs.getString("F35"));
-				fields.setField("РўРµРєСЃС‚58", rs.getString("F43"));
-				fields.setField("РўРµРєСЃС‚59", "Р—РђР“РЎ");
-				fields.setField("РўРµРєСЃС‚61", rs.getString("F61"));
-				fields.setField("РўРµРєСЃС‚63", rs.getString("F54"));
-				fields.setField("РўРµРєСЃС‚64", rs.getString("F64"));
-				fields.setField("РўРµРєСЃС‚65", rs.getString("F25"));
-				fields.setField("РўРµРєСЃС‚66", rs.getString("F67"));
-				fields.setField("РўРµРєСЃС‚67", rs.getString("F67"));
+				fields.setField("Текст1", rs.getString("F1"));
+				fields.setField("Текст2", rs.getString("F2"));
+				fields.setField("Текст3", rs.getString("F3"));
+				fields.setField("Текст6", rs.getString("F6"));
+				fields.setField("Текст7", rs.getString("F7"));
+				fields.setField("Текст9", rs.getString("F9"));
+				fields.setField("Текст10", rs.getString("F10"));
+				fields.setField("Текст11", rs.getString("F11"));
+				fields.setField("Текст12", rs.getString("F12"));
+				fields.setField("Текст13", rs.getString("F13"));
+				fields.setField("Текст14", rs.getString("F14"));
+				fields.setField("Текст15", rs.getString("F15"));
+				fields.setField("Текст16", rs.getString("F16"));
+				fields.setField("Текст17", rs.getString("F17"));
+				fields.setField("Текст18", rs.getString("F18"));
+				fields.setField("Текст19", rs.getString("F19"));
+				fields.setField("Текст20", rs.getString("F20"));
+				fields.setField("Текст21", rs.getString("F21"));
+				fields.setField("Текст22", "-");
+				fields.setField("Текст24", "-");
+				fields.setField("Текст25", rs.getString("F25"));
+				fields.setField("Текст26", rs.getString("F26"));
+				fields.setField("Текст27", rs.getString("F6"));
+				fields.setField("Текст28", rs.getString("F14"));
+				fields.setField("Текст30", rs.getString("F30"));
+				fields.setField("Текст31", rs.getString("F31"));
+				fields.setField("Текст33", rs.getString("F26"));
+				fields.setField("Текст34", rs.getString("F1"));
+				fields.setField("Текст35", rs.getString("F35"));
+				fields.setField("Текст36", rs.getString("F36"));
+				fields.setField("Текст37", rs.getString("F37"));
+				fields.setField("Текст38", rs.getString("F38"));
+				fields.setField("Текст39", rs.getString("F11"));
+				fields.setField("Текст40", rs.getString("F39"));
+				fields.setField("Текст41", rs.getString("F64"));
+				fields.setField("Текст42", rs.getString("F42"));
+				fields.setField("Текст43", rs.getString("F43"));
+				fields.setField("Текст44", rs.getString("F44"));
+				fields.setField("Текст45", rs.getString("F45"));
+				fields.setField("Текст46", rs.getString("F46"));
+				fields.setField("Текст47", rs.getString("F18"));
+				fields.setField("Текст48", rs.getString("F48"));
+				fields.setField("Текст49", rs.getString("F49"));
+				fields.setField("Текст51", rs.getString("F51"));
+				fields.setField("Текст52", rs.getString("F52"));
+				fields.setField("Текст53", rs.getString("F25"));
+				fields.setField("Текст54", rs.getString("F54"));
+				fields.setField("Текст55", rs.getString("F1"));
+				fields.setField("Текст56", "-");
+				fields.setField("Текст57", rs.getString("F35"));
+				fields.setField("Текст58", rs.getString("F43"));
+				fields.setField("Текст59", "ЗАГС");
+				fields.setField("Текст61", rs.getString("F61"));
+				fields.setField("Текст63", rs.getString("F54"));
+				fields.setField("Текст64", rs.getString("F64"));
+				fields.setField("Текст65", rs.getString("F25"));
+				fields.setField("Текст66", rs.getString("F67"));
+				fields.setField("Текст67", rs.getString("F67"));
 			}
 			prp.close();
 			rs.close();
@@ -987,26 +987,26 @@ public class MercerList {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");
 
-		CheckBox filterVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ С„РёР»СЊС‚СЂ");
+		CheckBox filterVisible = new CheckBox("Показать фильтр");
 		filterVisible.selectedProperty().bindBidirectional(table.filterRowVisibleProperty());
 
-		CheckBox menuButtonVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ РєРЅРѕРїРєСѓ РјРµРЅСЋ");
+		CheckBox menuButtonVisible = new CheckBox("Показать кнопку меню");
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
-		CheckBox firstFilterable = new CheckBox("Р¤РёР»СЊС‚СЂСѓРµРјС‹Р№ РїРµСЂРІС‹Р№ СЃС‚РѕР»Р±РµС†");
+		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
 		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(MERCER_ID.filterableProperty());
 
-		CheckBox includeHidden = new CheckBox("Р’РєР»СЋС‡РёС‚СЊ СЃРєСЂС‹С‚С‹Рµ СЃС‚РѕР»Р±С†С‹");
+		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
 		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("РСЃРїРѕР»СЊР·СѓР№С‚Рµ РѕРїРµСЂР°С†РёСЋ \"Р\" РґР»СЏ РјРЅРѕРіРѕРєРѕР»РѕРЅРѕС‡РЅРѕРіРѕ С„РёР»СЊС‚СЂР°");
+		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
 		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
 		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
 
-		TitledBorderPane p = new TitledBorderPane("РќР°СЃС‚СЂРѕР№РєРё", pane);
+		TitledBorderPane p = new TitledBorderPane("Настройки", pane);
 		p.getStyleClass().add("top-border-only");
 		p.setStyle("-fx-border-insets: 10 0 0 0");
 		return p;
@@ -1050,7 +1050,7 @@ public class MercerList {
 			dbConnect();
 			Refresh();
 			/**
-			 * РЎС‚РѕР»Р±С†С‹ С‚Р°Р±Р»РёС†С‹
+			 * Столбцы таблицы
 			 */
 			{
 				CR_DATE.setCellValueFactory(cellData -> cellData.getValue().CR_DATEProperty());
@@ -1062,13 +1062,13 @@ public class MercerList {
 				DOC_NUMBER.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMBERProperty());
 			}
 
-			// РґРІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє
+			// двойной щелчок
 			MC_MERCER.setRowFactory(tv -> {
 				TableRow<MC_MERCER> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
 						if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
-							Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+							Msg.Message("Выберите строку!");
 						} else {
 							Edit(MC_MERCER.getSelectionModel().getSelectedItem().getMERCER_ID(),
 									(Stage) MC_MERCER.getScene().getWindow());
@@ -1078,7 +1078,7 @@ public class MercerList {
 				return row;
 			});
 			/**
-			 * Р¤Р”
+			 * ФД
 			 */
 			{
 				CellDateFormatD(CR_DATE);
@@ -1106,7 +1106,7 @@ public class MercerList {
 	}
 
 	/**
-	 * РЎСЂР°РІРЅРµРЅРёРµ РґР°РЅРЅС‹С…
+	 * Сравнение данных
 	 * 
 	 * @return
 	 */
@@ -1139,7 +1139,7 @@ public class MercerList {
 	String RetXml;
 
 	/**
-	 * Р’РѕР·РІСЂР°С‚ XML С„Р°Р№Р»РѕРІ РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ
+	 * Возврат XML файлов для сравнения
 	 */
 	void XmlsForCompare(Long docid) {
 		try {
