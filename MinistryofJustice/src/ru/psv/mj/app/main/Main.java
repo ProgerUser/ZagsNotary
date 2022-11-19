@@ -187,7 +187,7 @@ public class Main extends Application {
 //	Fast enter
 //
 
-			Connect.connectionURL = "localhost:1522/orcl";
+			Connect.connectionURL = "localhost:89/orcl";
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DbUtil.Db_Connect();

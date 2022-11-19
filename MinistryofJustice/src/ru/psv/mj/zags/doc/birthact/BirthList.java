@@ -148,7 +148,7 @@ public class BirthList {
 	@FXML
 	void Spravka_25(ActionEvent event) {
 		try {
-			// Р’С‹Р·РѕРІ
+			// Вызов
 			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_BRN_BIRTH_ACT_25.docx");
 			docx.setVariablePattern(new VariablePattern("#{", "}"));
 			// preparing variables
@@ -188,7 +188,7 @@ public class BirthList {
 	@FXML
 	void Spravka_26(ActionEvent event) {
 		try {
-			// Р’С‹Р·РѕРІ
+			// Вызов
 			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_BRN_BIRTH_ACT_26.docx");
 			docx.setVariablePattern(new VariablePattern("#{", "}"));
 			// preparing variables
@@ -231,7 +231,7 @@ public class BirthList {
 	@FXML
 	void Spravka_27(ActionEvent event) {
 		try {
-			// Р’С‹Р·РѕРІ
+			// Вызов
 			Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/SPR_BRN_BIRTH_ACT_27.docx");
 			docx.setVariablePattern(new VariablePattern("#{", "}"));
 			// preparing variables
@@ -275,7 +275,7 @@ public class BirthList {
 			Logger.getLogger(getClass());
 
 			if (DbUtil.Odb_Action(82l) == 0) {
-				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
+				Msg.Message("Нет доступа!");
 				return;
 			}
 
@@ -296,7 +296,7 @@ public class BirthList {
 			stage.setScene(new Scene(rp));
 			// stage.initStyle(StageStyle.DECORATED);
 			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Р”РѕР±Р°РІРёС‚СЊ Р°РєС‚ Рѕ СЂРѕР¶РґРµРЅРёРё");
+			stage.setTitle("Добавить акт о рождении");
 			stage.setResizable(false);
 			stage.setIconified(false);
 			stage.initOwner(stage_);
@@ -320,7 +320,7 @@ public class BirthList {
 
 	public void manipulatePdf(String src, String dest) throws Exception {
 		if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+			Msg.Message("Выберите строку!");
 		} else {
 			PdfReader reader = new PdfReader(src);
 			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
@@ -330,56 +330,56 @@ public class BirthList {
 			prp.setLong(1, BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID());
 			ResultSet rs = prp.executeQuery();
 			while (rs.next()) {
-				fields.setField("РўРµРєСЃС‚1", rs.getString("F79"));
-				fields.setField("Text1", rs.getString("FT1") + " С€С‹Т›У™СЃР°Р·С‹");
-				fields.setField("РўРµРєСЃС‚2", rs.getString("F79"));
+				fields.setField("Текст1", rs.getString("F79"));
+				fields.setField("Text1", rs.getString("FT1") + " шы??сазы");
+				fields.setField("Текст2", rs.getString("F79"));
 				fields.setField("Text2", rs.getString("TEXT2"));
-				fields.setField("РўРµРєСЃС‚3", rs.getString("F3"));
-				fields.setField("РўРµРєСЃС‚4", rs.getString("F4"));
-				fields.setField("РўРµРєСЃС‚72", rs.getString("F72"));
-				fields.setField("РўРµРєСЃС‚73", rs.getString("F73"));
-				fields.setField("РўРµРєСЃС‚74", rs.getString("F74"));
-				fields.setField("РўРµРєСЃС‚75", "");
-				fields.setField("РўРµРєСЃС‚76", rs.getString("F76"));
-				fields.setField("РўРµРєСЃС‚77", rs.getString("F77"));
-				fields.setField("РўРµРєСЃС‚78", rs.getString("F78"));
-				fields.setField("РўРµРєСЃС‚79", rs.getString("F79"));
-				fields.setField("РўРµРєСЃС‚80", rs.getString("F80"));
-				fields.setField("РўРµРєСЃС‚81", rs.getString("F81"));
-				fields.setField("РўРµРєСЃС‚82", rs.getString("F82"));
-				fields.setField("РўРµРєСЃС‚83", rs.getString("F83") + " Р°С‚У™С‹Р»Р°СѓР°Т©С‹");
-				fields.setField("РўРµРєСЃС‚84", rs.getString("F84"));
-				fields.setField("РўРµРєСЃС‚85", rs.getString("F85"));
-				fields.setField("РўРµРєСЃС‚86", rs.getString("F86"));
-				fields.setField("РўРµРєСЃС‚87", rs.getString("F87") + " Р°С‚У™С‹Р»Р°СѓР°Т©С‹");
-				fields.setField("РўРµРєСЃС‚88", rs.getString("F88"));
-				fields.setField("РўРµРєСЃС‚89", rs.getString("F89"));
-				fields.setField("РўРµРєСЃС‚90", rs.getString("F90"));
-				fields.setField("РўРµРєСЃС‚91", rs.getString("F80"));
-				fields.setField("РўРµРєСЃС‚92", rs.getString("TEXT2"));
-				fields.setField("РўРµРєСЃС‚93", rs.getString("F93"));
-				fields.setField("РўРµРєСЃС‚94", rs.getString("F94"));
-				fields.setField("РўРµРєСЃС‚95", rs.getString("F95"));
-				fields.setField("РўРµРєСЃС‚96", rs.getString("F96"));
-				fields.setField("РўРµРєСЃС‚97", rs.getString("F97"));
-				fields.setField("РўРµРєСЃС‚98", rs.getString("F98"));
-				fields.setField("РўРµРєСЃС‚99", rs.getString("F99"));
-				fields.setField("РўРµРєСЃС‚100", rs.getString("F79"));
-				fields.setField("РўРµРєСЃС‚101", rs.getString("F101"));
-				fields.setField("РўРµРєСЃС‚102", rs.getString("F80"));
-				fields.setField("РўРµРєСЃС‚103", rs.getString("F78"));
-				fields.setField("РўРµРєСЃС‚104", rs.getString("F104"));
-				fields.setField("РўРµРєСЃС‚105", rs.getString("F105"));
-				fields.setField("РўРµРєСЃС‚106", rs.getString("F106"));
-				fields.setField("РўРµРєСЃС‚107", rs.getString("F107"));
-				fields.setField("РўРµРєСЃС‚108", rs.getString("F108"));
-				fields.setField("РўРµРєСЃС‚109", rs.getString("F109"));
-				fields.setField("РўРµРєСЃС‚110", rs.getString("F110"));
-				fields.setField("РўРµРєСЃС‚111", rs.getString("F111"));
-				fields.setField("РўРµРєСЃС‚112", "Р—РђР“РЎ");
-				fields.setField("РўРµРєСЃС‚113", rs.getString("F113"));
-				fields.setField("РўРµРєСЃС‚115", rs.getString("F80"));
-				fields.setField("РўРµРєСЃС‚116", rs.getString("F101"));
+				fields.setField("Текст3", rs.getString("F3"));
+				fields.setField("Текст4", rs.getString("F4"));
+				fields.setField("Текст72", rs.getString("F72"));
+				fields.setField("Текст73", rs.getString("F73"));
+				fields.setField("Текст74", rs.getString("F74"));
+				fields.setField("Текст75", "");
+				fields.setField("Текст76", rs.getString("F76"));
+				fields.setField("Текст77", rs.getString("F77"));
+				fields.setField("Текст78", rs.getString("F78"));
+				fields.setField("Текст79", rs.getString("F79"));
+				fields.setField("Текст80", rs.getString("F80"));
+				fields.setField("Текст81", rs.getString("F81"));
+				fields.setField("Текст82", rs.getString("F82"));
+				fields.setField("Текст83", rs.getString("F83") + " ат?ылауа?ы");
+				fields.setField("Текст84", rs.getString("F84"));
+				fields.setField("Текст85", rs.getString("F85"));
+				fields.setField("Текст86", rs.getString("F86"));
+				fields.setField("Текст87", rs.getString("F87") + " ат?ылауа?ы");
+				fields.setField("Текст88", rs.getString("F88"));
+				fields.setField("Текст89", rs.getString("F89"));
+				fields.setField("Текст90", rs.getString("F90"));
+				fields.setField("Текст91", rs.getString("F80"));
+				fields.setField("Текст92", rs.getString("TEXT2"));
+				fields.setField("Текст93", rs.getString("F93"));
+				fields.setField("Текст94", rs.getString("F94"));
+				fields.setField("Текст95", rs.getString("F95"));
+				fields.setField("Текст96", rs.getString("F96"));
+				fields.setField("Текст97", rs.getString("F97"));
+				fields.setField("Текст98", rs.getString("F98"));
+				fields.setField("Текст99", rs.getString("F99"));
+				fields.setField("Текст100", rs.getString("F79"));
+				fields.setField("Текст101", rs.getString("F101"));
+				fields.setField("Текст102", rs.getString("F80"));
+				fields.setField("Текст103", rs.getString("F78"));
+				fields.setField("Текст104", rs.getString("F104"));
+				fields.setField("Текст105", rs.getString("F105"));
+				fields.setField("Текст106", rs.getString("F106"));
+				fields.setField("Текст107", rs.getString("F107"));
+				fields.setField("Текст108", rs.getString("F108"));
+				fields.setField("Текст109", rs.getString("F109"));
+				fields.setField("Текст110", rs.getString("F110"));
+				fields.setField("Текст111", rs.getString("F111"));
+				fields.setField("Текст112", "ЗАГС");
+				fields.setField("Текст113", rs.getString("F113"));
+				fields.setField("Текст115", rs.getString("F80"));
+				fields.setField("Текст116", rs.getString("F101"));
 			}
 			prp.close();
 			rs.close();
@@ -408,7 +408,7 @@ public class BirthList {
 	@FXML
 	void BIRTH_ACT_EDIT(ActionEvent event) {
 		if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РґРѕРєСѓРјРµРЅС‚!");
+			Msg.Message("Выберите документ!");
 		} else {
 			Edit(BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID(),
 					(Stage) BIRTH_ACT.getScene().getWindow());
@@ -429,9 +429,9 @@ public class BirthList {
 
 	public void Edit(Long docid, Stage stage_) {
 		try {
-			//РџСЂРѕРІРµСЂРєР° РґРѕСЃС‚СѓРїР° Рє РґРµР№СЃС‚РІРёСЋ
+			//Проверка доступа к действию
 			if (DbUtil.Odb_Action(83l) == 0) {
-				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
+				Msg.Message("Нет доступа!");
 				return;
 			}
 			if (isopen == false) {
@@ -464,47 +464,47 @@ public class BirthList {
 						Parent root = loader.load();
 						stage.setScene(new Scene(root));
 						stage.getIcons().add(new Image("/icon.png"));
-						stage.setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ:");
+						stage.setTitle("Редактирование:");
 						stage.initOwner(stage_);
 						stage.setResizable(false);
 						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 							@Override
 							public void handle(WindowEvent paramT) {
 								try {
-									// РѕР±РЅРѕРІРёС‚СЊ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
+									// обновить без сохранения
 									controller.SAVECOMPARE();
-									// Р•СЃР»Рё РЅР°Р¶Р°Р»Рё СЃРѕС…СЂР°РЅРёС‚СЊ
+									// Если нажали сохранить
 									if (controller.getStatus()) {
 										if (from == null) {
 											AfterAdd(controller.getId());
 										}
 										conn.commit();
-										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 										String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
 										isopen = false;
-									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ С‡С‚Рѕ-С‚Рѕ РјРµРЅСЏР»Рё
+									} // Если нажали "X" или "Cancel" и до этого что-то меняли
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 1) {
 										/**
-										 * РџСЂРѕРІРµСЂРєР° РІС‹С…РѕРґР° Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
+										 * Проверка выхода без сохранения
 										 */
 										Stage stage = stage_;
-										Label alert = new Label("Р—Р°РєСЂС‹С‚СЊ С„РѕСЂРјСѓ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ?");
+										Label alert = new Label("Закрыть форму без сохранения?");
 										alert.setLayoutX(75.0);
 										alert.setLayoutY(11.0);
 										alert.setPrefHeight(17.0);
 
 										Button no = new Button();
-										no.setText("РќРµС‚");
+										no.setText("Нет");
 										no.setLayoutX(111.0);
 										no.setLayoutY(56.0);
 										no.setPrefWidth(72.0);
 										no.setPrefHeight(21.0);
 
 										Button yes = new Button();
-										yes.setText("Р”Р°");
+										yes.setText("Да");
 										yes.setLayoutX(14.0);
 										yes.setLayoutY(56.0);
 										yes.setPrefWidth(72.0);
@@ -530,7 +530,7 @@ public class BirthList {
 													e.printStackTrace();
 												}
 												newWindow_yn.close();
-												// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"=
+												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
 												String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
@@ -538,17 +538,17 @@ public class BirthList {
 												isopen = false;
 											}
 										});
-										newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
+										newWindow_yn.setTitle("Внимание");
 										newWindow_yn.setScene(ynScene);
 										newWindow_yn.initModality(Modality.WINDOW_MODAL);
 										newWindow_yn.initOwner(stage);
 										newWindow_yn.setResizable(false);
 										newWindow_yn.getIcons().add(new Image("/icon.png"));
 										newWindow_yn.showAndWait();
-									} // Р•СЃР»Рё РЅР°Р¶Р°Р»Рё "X" РёР»Рё "Cancel" Рё РґРѕ СЌС‚РѕРіРѕ РЅРёС‡РµРіРѕ РЅРµ РјРµРЅСЏР»Рё
+									} // Если нажали "X" или "Cancel" и до этого ничего не меняли
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										isopen = false;
-										// РЈР”РђР›РРўР¬ Р—РђРџРРЎР¬ Рћ "Р›РћР§РљР•"
+										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
 										String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
@@ -564,13 +564,13 @@ public class BirthList {
 					}
 				} catch (SQLException e) {
 					if (e.getErrorCode() == 54) {
-						Msg.Message("Р—Р°РїРёСЃСЊ СЂРµРґР°РєС‚РёСЂСѓРµС‚СЃСЏ " + DbUtil.Lock_Row_View(docid, "brn_birth_act"));
+						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "brn_birth_act"));
 					} else {
 						DbUtil.Log_Error(e);
 					}
 				}
 			} else {
-				Msg.Message("Р¤РѕСЂРјР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СѓР¶Рµ РѕС‚РєСЂС‹С‚Р°!");
+				Msg.Message("Форма редактирования уже открыта!");
 			}
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -580,7 +580,7 @@ public class BirthList {
 	@FXML
 	void EditBirth(ActionEvent event) {
 		if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РґРѕРєСѓРјРµРЅС‚!");
+			Msg.Message("Выберите документ!");
 		} else {
 			Edit(BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID(),
 					(Stage) BIRTH_ACT.getScene().getWindow());
@@ -759,12 +759,12 @@ public class BirthList {
 	}
 
 	/**
-	 * РЎРµСЃСЃРёСЏ BirtchList.fxml
+	 * Сессия BirtchList.fxml
 	 */
 	Connection conn = null;
 
 	/**
-	 * РћС‚РєСЂС‹С‚СЊ СЃРµСЃСЃРёСЋ BirtchList.fxml
+	 * Открыть сессию BirtchList.fxml
 	 */
 	private void dbConnect() {
 		try {
@@ -775,7 +775,7 @@ public class BirthList {
 	}
 
 	/**
-	 * РћС‚РєР»СЋС‡РёС‚СЊ СЃРµСЃСЃРёСЋ BirtchList.fxml
+	 * Отключить сессию BirtchList.fxml
 	 */
 	public void dbDisconnect() {
 		try {
@@ -790,28 +790,28 @@ public class BirthList {
 	void Delete() {
 		try {
 			if (DbUtil.Odb_Action(84l) == 0) {
-				Msg.Message("РќРµС‚ РґРѕСЃС‚СѓРїР°!");
+				Msg.Message("Нет доступа!");
 				return;
 			}
 			if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РґРѕРєСѓРјРµРЅС‚!");
+				Msg.Message("Выберите документ!");
 			} else {
 
 				Stage stage = (Stage) BIRTH_ACT.getScene().getWindow();
-				Label alert = new Label("РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ?");
+				Label alert = new Label("Удалить запись?");
 				alert.setLayoutX(75.0);
 				alert.setLayoutY(11.0);
 				alert.setPrefHeight(17.0);
 
 				Button no = new Button();
-				no.setText("РќРµС‚");
+				no.setText("Нет");
 				no.setLayoutX(111.0);
 				no.setLayoutY(56.0);
 				no.setPrefWidth(72.0);
 				no.setPrefHeight(21.0);
 
 				Button yes = new Button();
-				yes.setText("Р”Р°");
+				yes.setText("Да");
 				yes.setLayoutX(14.0);
 				yes.setLayoutY(56.0);
 				yes.setPrefWidth(72.0);
@@ -850,7 +850,7 @@ public class BirthList {
 						newWindow_yn.close();
 					}
 				});
-				newWindow_yn.setTitle("Р’РЅРёРјР°РЅРёРµ");
+				newWindow_yn.setTitle("Внимание");
 				newWindow_yn.setScene(ynScene);
 				// Specifies the modality for new window.
 				newWindow_yn.initModality(Modality.WINDOW_MODAL);
@@ -882,7 +882,7 @@ public class BirthList {
 	}
 
 	/**
-	 * РџРѕР»Рµ РЎ С„РёР»СЊС‚СЂР°
+	 * Поле С фильтра
 	 * 
 	 * @param event
 	 */
@@ -896,7 +896,7 @@ public class BirthList {
 	}
 
 	/**
-	 * РџРѕР»Рµ РџРћ С„РёР»СЊС‚СЂР°
+	 * Поле ПО фильтра
 	 * 
 	 * @param event
 	 */
@@ -936,7 +936,7 @@ public class BirthList {
 	void Print() {
 		try {
 			if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂРѕРєСѓ!");
+				Msg.Message("Выберите строку!");
 			} else {
 
 				ROOT.setDisable(true);
@@ -946,7 +946,7 @@ public class BirthList {
 					@Override
 					public Object call() throws Exception {
 
-						// Р’С‹Р·РѕРІ
+						// Вызов
 						Docx docx = new Docx(System.getenv("MJ_PATH") + "Reports/BRN_BIRTH_ACT.docx");
 						docx.setVariablePattern(new VariablePattern("#{", "}"));
 						// preparing variables
@@ -1085,9 +1085,9 @@ public class BirthList {
 						// byte[] xwpfDocumentBytes = out.toByteArray();
 
 						// ___________________________________
-						// РњРµС‚РѕРґ 1, СЃС„РѕСЂРјРёСЂРѕРІР°С‚СЊ С„Р°Р№Р» РІ C:\Users\<UserName>\AppData\Local\Temp\
-						// РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ СѓРґР°Р»РµРЅ jvm РїСЂРё Р·Р°РєСЂС‹С‚РёРё РїСЂРѕРіСЂР°РјРјС‹
-						// РЅРµ РѕС‡РµРЅСЊ РЅСЂР°РІРёС‚СЃСЏ
+						// Метод 1, сформировать файл в C:\Users\<UserName>\AppData\Local\Temp\
+						// который будет удален jvm при закрытии программы
+						// не очень нравится
 						{
 							/*
 							 * File tempFile = File.createTempFile("BRN_BIRTH_ACT", ".docx");
@@ -1100,8 +1100,8 @@ public class BirthList {
 							 */
 						}
 
-						// РјРµС‚РѕРґ 2
-						// РєРѕРЅРІРµСЂС‚РёСЂРѕРІР°С‚СЊ РІ pdf Рё РѕС‚РєСЂС‹С‚СЊ РІ view-РµСЂРµ
+						// метод 2
+						// конвертировать в pdf и открыть в view-ере
 						{
 //							ByteArrayOutputStream out = new ByteArrayOutputStream();
 //
@@ -1172,26 +1172,26 @@ public class BirthList {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");
 
-		CheckBox filterVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ С„РёР»СЊС‚СЂ");
+		CheckBox filterVisible = new CheckBox("Показать фильтр");
 		filterVisible.selectedProperty().bindBidirectional(table.filterRowVisibleProperty());
 
-		CheckBox menuButtonVisible = new CheckBox("РџРѕРєР°Р·Р°С‚СЊ РєРЅРѕРїРєСѓ РјРµРЅСЋ");
+		CheckBox menuButtonVisible = new CheckBox("Показать кнопку меню");
 		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
-		CheckBox firstFilterable = new CheckBox("Р¤РёР»СЊС‚СЂСѓРµРјС‹Р№ РїРµСЂРІС‹Р№ СЃС‚РѕР»Р±РµС†");
+		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
 		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
 		// table.getColumns().get(0);
 		firstFilterable.selectedProperty().bindBidirectional(BIRTH_ACT_ID.filterableProperty());
 
-		CheckBox includeHidden = new CheckBox("Р’РєР»СЋС‡РёС‚СЊ СЃРєСЂС‹С‚С‹Рµ СЃС‚РѕР»Р±С†С‹");
+		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
 		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("РСЃРїРѕР»СЊР·СѓР№С‚Рµ РѕРїРµСЂР°С†РёСЋ \"Р\" РґР»СЏ РјРЅРѕРіРѕРєРѕР»РѕРЅРѕС‡РЅРѕРіРѕ С„РёР»СЊС‚СЂР°");
+		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
 		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
 		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
 
-		TitledBorderPane p = new TitledBorderPane("РќР°СЃС‚СЂРѕР№РєРё", pane);
+		TitledBorderPane p = new TitledBorderPane("Настройки", pane);
 		p.getStyleClass().add("top-border-only");
 		p.setStyle("-fx-border-insets: 10 0 0 0");
 		return p;
@@ -1211,7 +1211,7 @@ public class BirthList {
 	}
 
 	/**
-	 * Р‘С‹СЃС‚СЂС‹Р№ СЃРїРѕСЃРѕР± Р·Р°РїРѕР»РЅРµРЅРёСЏ РґР°С‚С‹
+	 * Быстрый способ заполнения даты
 	 * 
 	 * @param dp
 	 */
@@ -1239,13 +1239,13 @@ public class BirthList {
 	}
 
 	/**
-	 * РџРѕР»Рµ РЎ
+	 * Поле С
 	 */
 	@FXML
 	private DatePicker DT1;
 
 	/**
-	 * РџРѕР»Рµ РџРћ
+	 * Поле ПО
 	 */
 	@FXML
 	private DatePicker DT2;
@@ -1254,7 +1254,7 @@ public class BirthList {
     private VBox VB;
     
 	/**
-	 * РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
+	 * Инициализация
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
@@ -1291,13 +1291,13 @@ public class BirthList {
 				return t;
 			});
 			InitBirths();
-			// РґРІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє
+			// двойной щелчок
 			BIRTH_ACT.setRowFactory(tv -> {
 				TableRow<SELECTBIRTH> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
 						if (BIRTH_ACT.getSelectionModel().getSelectedItem() == null) {
-							Msg.Message("Р’С‹Р±РµСЂРёС‚Рµ РґРѕРєСѓРјРµРЅС‚!");
+							Msg.Message("Выберите документ!");
 						} else {
 							Edit(BIRTH_ACT.getSelectionModel().getSelectedItem().getBRN_AC_ID(),
 									(Stage) BIRTH_ACT.getScene().getWindow());
@@ -1371,7 +1371,7 @@ public class BirthList {
 	}
 
 	/**
-	 * РЎСЂР°РІРЅРµРЅРёРµ РґР°РЅРЅС‹С…
+	 * Сравнение данных
 	 * 
 	 * @return
 	 */
@@ -1404,7 +1404,7 @@ public class BirthList {
 	String RetXml;
 
 	/**
-	 * Р’РѕР·РІСЂР°С‚ XML С„Р°Р№Р»РѕРІ РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ
+	 * Возврат XML файлов для сравнения
 	 */
 	void XmlsForCompare(Long docid) {
 		try {
