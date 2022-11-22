@@ -182,7 +182,6 @@ public class Main extends Application {
 //			END 		
 //	
 
-
 //
 //	Fast enter
 //
@@ -713,7 +712,7 @@ public class Main extends Application {
 		Platform.exit();
 		System.exit(0);
 	}
-	
+
 	public static void PmInBoxDocs() {
 		try {
 			if (PmInBoxDocsWin) {
@@ -744,7 +743,7 @@ public class Main extends Application {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	public static void PmOutBoxDocs() {
 		try {
 			if (PmOutBoxDocsWin) {
