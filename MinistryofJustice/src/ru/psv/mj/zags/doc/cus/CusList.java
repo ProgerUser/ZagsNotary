@@ -70,1297 +70,1314 @@ import ru.psv.mj.utils.DbUtil;
  * возможные доработки:<br>
  * вывод таблицы со всеми документами и переход к ним...<br>
  * Отредактирован 28.10.2020 <br>
- * 24.11.2020 изменен метод сопоставления выпад. списка для отслеживания
+ * 24.11.2020 изменен метод сопоставления выпадающего списка для отслеживания
  * изменении при закрытии <br>
  * 04.12.2020 <br>
  * Синхронизация с удаленной базой 1С
- * 
- * @author Said
  *
+ * @author Said
  */
 public class CusList {
 
-	public CusList() {
-		Main.logger = Logger.getLogger(getClass());
-	}
+    public CusList() {
+        Main.logger = Logger.getLogger(getClass());
+    }
 
-	@FXML
-	private BorderPane CUS_BORDER;
+    @FXML
+    private BorderPane CUS_BORDER;
 
-	@FXML
-	private XTableColumn<VCUS, String> COUNTRY_NAME;
+    @FXML
+    private XTableColumn<VCUS, String> COUNTRY_NAME;
 
-	@FXML
-	private XTableColumn<VCUS, String> NAME;
+    @FXML
+    private XTableColumn<VCUS, String> NAME;
 
-	@FXML
-	private XTableColumn<VCUS, String> CCUSIDOPEN;
+    @FXML
+    private XTableColumn<VCUS, String> CCUSIDOPEN;
 
-	@FXML
-	private XTableColumn<VCUS, String> CR_TIME;
+    @FXML
+    private XTableColumn<VCUS, String> CR_TIME;
 
-	@FXML
-	private XTableColumn<Object, LocalDate> CR_DATE;
+    @FXML
+    private XTableColumn<Object, LocalDate> CR_DATE;
 
-	/*
-	 * @FXML private XTableColumn<VCUS, LocalDateTime> DCUSOPEN;
-	 */
-	/**
-	 * Поле С
-	 */
-	@FXML
-	private DatePicker DT1;
+    /*
+     * @FXML private XTableColumn<VCUS, LocalDateTime> DCUSOPEN;
+     */
+    /**
+     * Поле С
+     */
+    @FXML
+    private DatePicker DT1;
 
-	/**
-	 * Поле ПО
-	 */
-	@FXML
-	private DatePicker DT2;
+    /**
+     * Поле ПО
+     */
+    @FXML
+    private DatePicker DT2;
 
-	/**
-	 * Таблица Граждан
-	 */
-	@FXML
-	private XTableView<VCUS> CUSLIST;
+    /**
+     * Таблица Граждан
+     */
+    @FXML
+    private XTableView<VCUS> CUSLIST;
 
-	/**
-	 * Серия документа
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> DOC_SER;
+    /**
+     * Серия документа
+     */
+    @FXML
+    private XTableColumn<VCUS, String> DOC_SER;
 
-	/**
-	 * Отчество
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> CCUSMIDDLE_NAMET;
+    /**
+     * Отчество
+     */
+    @FXML
+    private XTableColumn<VCUS, String> CCUSMIDDLE_NAMET;
 
-	/**
-	 * Фамилия
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> CCUSLAST_NAMET;
+    /**
+     * Фамилия
+     */
+    @FXML
+    private XTableColumn<VCUS, String> CCUSLAST_NAMET;
 
-	/**
-	 * Дата рождения
-	 */
-	@FXML
-	private XTableColumn<Object, LocalDate> DCUSBIRTHDAYT;
+    /**
+     * Дата рождения
+     */
+    @FXML
+    private XTableColumn<Object, LocalDate> DCUSBIRTHDAYT;
 
-	/**
-	 * Район
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> AREA;
+    /**
+     * Район
+     */
+    @FXML
+    private XTableColumn<VCUS, String> AREA;
 
-	/**
-	 * Страна
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> COUNTRY;
+    /**
+     * Страна
+     */
+    @FXML
+    private XTableColumn<VCUS, String> COUNTRY;
 
-	/**
-	 * Тип документа
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> ID_DOC_TP;
+    /**
+     * Тип документа
+     */
+    @FXML
+    private XTableColumn<VCUS, String> ID_DOC_TP;
 
-	/**
-	 * Пол
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> CCUSSEX;
+    /**
+     * Пол
+     */
+    @FXML
+    private XTableColumn<VCUS, String> CCUSSEX;
 
-	/**
-	 * Дом
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> DOM;
+    /**
+     * Дом
+     */
+    @FXML
+    private XTableColumn<VCUS, String> DOM;
 
-	/**
-	 * Квартира
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> KV;
+    /**
+     * Квартира
+     */
+    @FXML
+    private XTableColumn<VCUS, String> KV;
 
-	/**
-	 * Номер документа
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> DOC_NUM;
+    /**
+     * Номер документа
+     */
+    @FXML
+    private XTableColumn<VCUS, String> DOC_NUM;
 
-	/**
-	 * Город
-	 */
-	// @FXML
-	// private XTableColumn<VCUS, String> CITY;
+    /**
+     * Город
+     */
+    // @FXML
+    // private XTableColumn<VCUS, String> CITY;
 
-	/**
-	 * Орган выдавший документ
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> DOC_SUBDIV;
+    /**
+     * Орган выдавший документ
+     */
+    @FXML
+    private XTableColumn<VCUS, String> DOC_SUBDIV;
 
-	/**
-	 * Название инфраструктуры-улицы
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> INFR_NAME;
+    /**
+     * Название инфраструктуры-улицы
+     */
+    @FXML
+    private XTableColumn<VCUS, String> INFR_NAME;
 
-	/**
-	 * Дата окончания документа
-	 */
-	@FXML
-	private XTableColumn<Object, LocalDate> DOC_PERIOD;
+    /**
+     * Дата окончания документа
+     */
+    @FXML
+    private XTableColumn<Object, LocalDate> DOC_PERIOD;
 
-	/**
-	 * Дата выдачи документа
-	 */
-	@FXML
-	private XTableColumn<Object, LocalDate> DOC_DATE;
+    /**
+     * Дата выдачи документа
+     */
+    @FXML
+    private XTableColumn<Object, LocalDate> DOC_DATE;
 
-	/**
-	 * Имя фильтр
-	 */
-	@FXML
-	private TextField CCUSFIRST_NAME;
+    /**
+     * Имя фильтр
+     */
+    @FXML
+    private TextField CCUSFIRST_NAME;
 
-	/**
-	 * Фамилия фильтр
-	 */
-	@FXML
-	private TextField CCUSLAST_NAME;
+    /**
+     * Фамилия фильтр
+     */
+    @FXML
+    private TextField CCUSLAST_NAME;
 
-	/**
-	 * Отчество фильтр
-	 */
-	@FXML
-	private TextField CCUSMIDDLE_NAME;
+    /**
+     * Отчество фильтр
+     */
+    @FXML
+    private TextField CCUSMIDDLE_NAME;
 
-	/**
-	 * Имя таблица
-	 */
-	@FXML
-	private XTableColumn<VCUS, String> CCUSFIRST_NAMET;
+    /**
+     * Имя таблица
+     */
+    @FXML
+    private XTableColumn<VCUS, String> CCUSFIRST_NAMET;
 
-	/**
-	 * ИД документа
-	 */
-	@FXML
-	private XTableColumn<VCUS, Long> ICUSNUM;
+    /**
+     * ИД документа
+     */
+    @FXML
+    private XTableColumn<VCUS, Long> ICUSNUM;
 
-	@FXML
-	private XTableColumn<VCUS, String> NAS_PUNCT;
+    @FXML
+    private XTableColumn<VCUS, String> NAS_PUNCT;
 
-	/**
-	 * Добавить Гражданина = Контекстное меню
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void CmAdd(ActionEvent event) {
-		Add();
-	}
+    /**
+     * Добавить Гражданина = Контекстное меню
+     *
+     * @param event
+     */
+    @FXML
+    void CmAdd(ActionEvent event) {
+        Add();
+    }
 
-	/**
-	 * Удалить Гражданина = Контекстное меню
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void CmDelete(ActionEvent event) {
-		Delete();
-	}
+    /**
+     * Удалить Гражданина = Контекстное меню
+     *
+     * @param event
+     */
+    @FXML
+    void CmDelete(ActionEvent event) {
+        Delete();
+    }
 
-	private Pane createOptionPane(XTableView<?> table) {
-		FlowPane pane = new FlowPane(10, 10);
-		pane.setStyle("-fx-padding: 10 4");
+    private Pane createOptionPane(XTableView<?> table) {
+        FlowPane pane = new FlowPane(10, 10);
+        pane.setStyle("-fx-padding: 10 4");
 
-		CheckBox filterVisible = new CheckBox("Показать фильтр");
-		filterVisible.selectedProperty().bindBidirectional(table.filterRowVisibleProperty());
+        CheckBox filterVisible = new CheckBox("Показать фильтр");
+        filterVisible.selectedProperty().bindBidirectional(table.filterRowVisibleProperty());
 
-		CheckBox menuButtonVisible = new CheckBox("Показать кнопку меню");
-		menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
+        CheckBox menuButtonVisible = new CheckBox("Показать кнопку меню");
+        menuButtonVisible.selectedProperty().bindBidirectional(table.tableMenuButtonVisibleProperty());
 
-		CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
-		// XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
-		// table.getColumns().get(0);
-		firstFilterable.selectedProperty().bindBidirectional(ICUSNUM.filterableProperty());
+        CheckBox firstFilterable = new CheckBox("Фильтруемый первый столбец");
+        // XTableColumn<VCUS, Long> firstColumn = (XTableColumn<VCUS, Long>)
+        // table.getColumns().get(0);
+        firstFilterable.selectedProperty().bindBidirectional(ICUSNUM.filterableProperty());
 
-		CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
-		includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
+        CheckBox includeHidden = new CheckBox("Включить скрытые столбцы");
+        includeHidden.selectedProperty().bindBidirectional(table.getFilterController().includeHiddenProperty());
 
-		CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
-		andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
+        CheckBox andFilters = new CheckBox("Используйте операцию \"И\" для многоколоночного фильтра");
+        andFilters.selectedProperty().bindBidirectional(table.getFilterController().andFiltersProperty());
 
-		pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
+        pane.getChildren().addAll(filterVisible, menuButtonVisible, firstFilterable, includeHidden, andFilters);
 
-		TitledBorderPane p = new TitledBorderPane("Настройки", pane);
-		p.getStyleClass().add("top-border-only");
-		p.setStyle("-fx-border-insets: 10 0 0 0");
-		return p;
-	}
+        TitledBorderPane p = new TitledBorderPane("Настройки", pane);
+        p.getStyleClass().add("top-border-only");
+        p.setStyle("-fx-border-insets: 10 0 0 0");
+        return p;
+    }
 
-	/**
-	 * Редактировать Гражданина = Контекстное меню
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void CmEdit(ActionEvent event) {
-		if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите документ!");
-		} else {
-			Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
-					(Stage) CUSLIST.getScene().getWindow(),""/*
-															 * , conn
-															 */);
-		}
-	}
+    /**
+     * Редактировать Гражданина = Контекстное меню
+     *
+     * @param event
+     */
+    @FXML
+    void CmEdit(ActionEvent event) {
+        if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
+            Msg.Message("Выберите документ!");
+        } else {
+            Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
+                    (Stage) CUSLIST.getScene().getWindow(), ""/*
+                     * , conn
+                     */);
+        }
+    }
 
-	/**
-	 * Удалить Гражданина <Ссылка>
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void BtDelete(ActionEvent event) {
-		Delete();
-	}
+    /**
+     * Удалить Гражданина <Ссылка>
+     *
+     * @param event
+     */
+    @FXML
+    void BtDelete(ActionEvent event) {
+        Delete();
+    }
 
-	/**
-	 * Удалить гражданина - вызов из контекстного меню и из кнопок
-	 */
-	void Delete() {
-		try {
-			if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите троку!");
-			} else {
-				if (DbUtil.Odb_Action(29l) == 0) {
-					Msg.Message("Нет доступа!");
-					return;
-				}
-				Main.logger = Logger.getLogger(getClass());
+    /**
+     * Удалить гражданина - вызов из контекстного меню и из кнопок
+     */
+    void Delete() {
+        try {
+            if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
+                Msg.Message("Выберите троку!");
+            } else {
+                if (DbUtil.Odb_Action(29l) == 0) {
+                    Msg.Message("Нет доступа!");
+                    return;
+                }
+                Main.logger = Logger.getLogger(getClass());
 
-				SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
-				String readRecordSQL = sql.getSql("DocCnt");
-				PreparedStatement check = conn.prepareStatement(readRecordSQL);
-				check.setLong(1, CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
-				ResultSet rs = check.executeQuery();
-				String txt = "Удалить " + CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM() + "?";
-				if (rs.next()) {
-					if (rs.getLong(1) > 0) {
-						txt = "Найдены связанные документы, продолжить удаление?";
-					}
-				}
-				check.close();
-				rs.close();
+                SqlMap sql = new SqlMap().load("/ru/psv/mj/zags/doc/cus/SQL.xml");
+                String readRecordSQL = sql.getSql("DocCnt");
+                PreparedStatement check = conn.prepareStatement(readRecordSQL);
+                check.setLong(1, CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
+                ResultSet rs = check.executeQuery();
+                String txt = "Удалить " + CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM() + "?";
+                if (rs.next()) {
+                    if (rs.getLong(1) > 0) {
+                        txt = "Найдены связанные документы, продолжить удаление?";
+                    }
+                }
+                check.close();
+                rs.close();
 
-				//
-				final Alert alert = new Alert(AlertType.CONFIRMATION,
-						txt, ButtonType.YES,
-						ButtonType.NO);
-				if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-					try {
-						VCUS cl = CUSLIST.getSelectionModel().getSelectedItem();
-						CallableStatement callStmt = conn.prepareCall("{call MJCUS.DelCus(?,?)}");
-						callStmt.registerOutParameter(1, Types.VARCHAR);
-						callStmt.setLong(2, cl.getICUSNUM());
-						callStmt.execute();
-						if (callStmt.getString(1) != null) {
-							Msg.Message(callStmt.getString(1));
-						}
-						callStmt.close();
+                //
+                final Alert alert = new Alert(AlertType.CONFIRMATION,
+                        txt, ButtonType.YES,
+                        ButtonType.NO);
+                if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+                    try {
+                        VCUS cl = CUSLIST.getSelectionModel().getSelectedItem();
+                        CallableStatement callStmt = conn.prepareCall("{call MJCUS.DelCus(?,?)}");
+                        callStmt.registerOutParameter(1, Types.VARCHAR);
+                        callStmt.setLong(2, cl.getICUSNUM());
+                        callStmt.execute();
+                        if (callStmt.getString(1) != null) {
+                            Msg.Message(callStmt.getString(1));
+                        }
+                        callStmt.close();
 
-						InitVCus(null, null, null, null, null, "null", null);
-					} catch (SQLException e) {
-						try {
-							conn.rollback();
-						} catch (SQLException e1) {
-							DbUtil.Log_Error(e1);
-						}
-						DbUtil.Log_Error(e);
-					}
-				}
-			}
+                        InitVCus(null, null, null, null, null, "null", null);
+                    } catch (SQLException e) {
+                        try {
+                            conn.rollback();
+                        } catch (SQLException e1) {
+                            DbUtil.Log_Error(e1);
+                        }
+                        DbUtil.Log_Error(e);
+                    }
+                }
+            }
 
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
 
-	/**
-	 * Добавить Гражданина - кнопка
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void BtAdd(ActionEvent event) {
-		Add();
-	}
+    /**
+     * Добавить Гражданина - кнопка
+     *
+     * @param event
+     */
+    @FXML
+    void BtAdd(ActionEvent event) {
+        Add();
+    }
 
-	/**
-	 * Обновление Таблицы Граждан
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void CmRefresh(ActionEvent event) {
-		InitVCus(null, null, null, null, null, "null", null);
-	}
+    /**
+     * Обновление Таблицы Граждан
+     *
+     * @param event
+     */
+    @FXML
+    void CmRefresh(ActionEvent event) {
+        InitVCus(null, null, null, null, null, "null", null);
+    }
 
-	/**
-	 * Индикатор открытия формы редактирования
-	 */
-	boolean isopen = false;
+    /**
+     * Индикатор открытия формы редактирования
+     */
+    boolean isopen = false;
 
-	/**
-	 * CUS xml
-	 */
-	String CusXml;
-	/**
-	 * CusAddr xml
-	 */
-	String CusAddrXml;
-	/**
-	 * CusDocum xml
-	 */
-	String CusDocumXml;
-	/**
-	 * CusCitiz xml
-	 */
-	String CusCitizXml;
+    /**
+     * CUS xml
+     */
+    String CusXml;
+    /**
+     * CusAddr xml
+     */
+    String CusAddrXml;
+    /**
+     * CusDocum xml
+     */
+    String CusDocumXml;
+    /**
+     * CusCitiz xml
+     */
+    String CusCitizXml;
 
-	/**
-	 * Сравнение данных
-	 * 
-	 * @return
-	 */
-	Long CompareBeforeClose(Long docid, Connection conn) {
-		Long ret = 0l;
-		try {
-			Clob cus = conn.createClob();
-			cus.setString(1, CusXml);
-			Clob cusaddr = conn.createClob();
-			cusaddr.setString(1, CusAddrXml);
-			Clob cusdocum = conn.createClob();
-			cusdocum.setString(1, CusDocumXml);
-			Clob cuscit = conn.createClob();
-			cuscit.setString(1, CusCitizXml);
+    /**
+     * Сравнение данных
+     *
+     * @return
+     */
+    Long CompareBeforeClose(Long docid, Connection conn) {
+        Long ret = 0l;
+        try {
+            Clob cus = conn.createClob();
+            cus.setString(1, CusXml);
+            Clob cusaddr = conn.createClob();
+            cusaddr.setString(1, CusAddrXml);
+            Clob cusdocum = conn.createClob();
+            cusdocum.setString(1, CusDocumXml);
+            Clob cuscit = conn.createClob();
+            cuscit.setString(1, CusCitizXml);
 
-			CallableStatement callStmt = conn.prepareCall("{ call MJCUS.CompareXmls(?,?,?,?,?,?,?)}");
-			callStmt.setLong(1, docid);
-			callStmt.setClob(2, cus);
-			callStmt.setClob(3, cusaddr);
-			callStmt.setClob(4, cuscit);
-			callStmt.setClob(5, cusdocum);
-			callStmt.registerOutParameter(6, Types.VARCHAR);
-			callStmt.registerOutParameter(7, Types.INTEGER);
-			callStmt.execute();
-			if (callStmt.getString(6) == null) {
-				ret = callStmt.getLong(7);
-				System.out.println("ret=" + callStmt.getLong(7));
-			} else {
-				Msg.Message(callStmt.getString(6));
-				Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
-			}
-			callStmt.close();
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
+            CallableStatement callStmt = conn.prepareCall("{ call MJCUS.CompareXmls(?,?,?,?,?,?,?)}");
+            callStmt.setLong(1, docid);
+            callStmt.setClob(2, cus);
+            callStmt.setClob(3, cusaddr);
+            callStmt.setClob(4, cuscit);
+            callStmt.setClob(5, cusdocum);
+            callStmt.registerOutParameter(6, Types.VARCHAR);
+            callStmt.registerOutParameter(7, Types.INTEGER);
+            callStmt.execute();
+            if (callStmt.getString(6) == null) {
+                ret = callStmt.getLong(7);
+                System.out.println("ret=" + callStmt.getLong(7));
+            } else {
+                Msg.Message(callStmt.getString(6));
+                Main.logger.error(callStmt.getString(6) + "~" + Thread.currentThread().getName());
+            }
+            callStmt.close();
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
 
-		return ret;
-	}
+        return ret;
+    }
 
-	/**
-	 * Clob в строку
-	 * @param clob
-	 * @return
-	 * @throws SQLException
-	 * @throws IOException
-	 */
-	public String ClobToString(Clob clob) throws SQLException, IOException {
-		BufferedReader stringReader = new BufferedReader(clob.getCharacterStream());
-		String singleLine = null;
-		StringBuffer strBuff = new StringBuffer();
-		while ((singleLine = stringReader.readLine()) != null) {
-			strBuff.append(singleLine + "\r\n");
-		}
-		return strBuff.toString();
-	}
-	/**
-	 * Возврат XML файлов для сравнения
-	 */
-	void XmlsForCompare(Long docid, Connection conn) {
-		try {
-			CallableStatement callStmt = conn.prepareCall("{ call MJCUS.RetXmls(?,?,?,?,?,?)}");
-			callStmt.setLong(1, docid);
-			callStmt.registerOutParameter(2, Types.VARCHAR);
-			callStmt.registerOutParameter(3, Types.CLOB);
-			callStmt.registerOutParameter(4, Types.CLOB);
-			callStmt.registerOutParameter(5, Types.CLOB);
-			callStmt.registerOutParameter(6, Types.CLOB);
-			callStmt.execute();
-			if (callStmt.getString(2) == null) {
-				// clob
-				Clob cus = callStmt.getClob(3);
-				Clob cus_addr = callStmt.getClob(4);
-				Clob cus_citizen = callStmt.getClob(5);
-				Clob cus_docum = callStmt.getClob(6);
-				// chars
-				char cus_xmls[] = new char[(int) cus.length()];
-				char cus_addr_xmls[] = new char[(int) cus_addr.length()];
-				char cus_cit_xmls[] = new char[(int) cus_citizen.length()];
-				char cus_docum_xmls[] = new char[(int) cus_docum.length()];
-				// read
+    /**
+     * Clob в строку
+     *
+     * @param clob
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
+    public String ClobToString(Clob clob) throws SQLException, IOException {
+        BufferedReader stringReader = new BufferedReader(clob.getCharacterStream());
+        String singleLine = null;
+        StringBuffer strBuff = new StringBuffer();
+        while ((singleLine = stringReader.readLine()) != null) {
+            strBuff.append(singleLine + "\r\n");
+        }
+        return strBuff.toString();
+    }
 
-				Reader r1 = cus.getCharacterStream();
-				r1.read(cus_xmls);
+    /**
+     * Возврат XML файлов для сравнения
+     */
+    void XmlsForCompare(Long docid, Connection conn) {
+        try {
+            CallableStatement callStmt = conn.prepareCall("{ call MJCUS.RetXmls(?,?,?,?,?,?)}");
+            callStmt.setLong(1, docid);
+            callStmt.registerOutParameter(2, Types.VARCHAR);
+            callStmt.registerOutParameter(3, Types.CLOB);
+            callStmt.registerOutParameter(4, Types.CLOB);
+            callStmt.registerOutParameter(5, Types.CLOB);
+            callStmt.registerOutParameter(6, Types.CLOB);
+            callStmt.execute();
+            if (callStmt.getString(2) == null) {
+                // clob
+                Clob cus = callStmt.getClob(3);
+                Clob cus_addr = callStmt.getClob(4);
+                Clob cus_citizen = callStmt.getClob(5);
+                Clob cus_docum = callStmt.getClob(6);
+                // chars
+                char cus_xmls[] = new char[(int) cus.length()];
+                char cus_addr_xmls[] = new char[(int) cus_addr.length()];
+                char cus_cit_xmls[] = new char[(int) cus_citizen.length()];
+                char cus_docum_xmls[] = new char[(int) cus_docum.length()];
+                // read
 
-				Reader r2 = cus_addr.getCharacterStream();
-				r2.read(cus_addr_xmls);
+                Reader r1 = cus.getCharacterStream();
+                r1.read(cus_xmls);
 
-				Reader r3 = cus_citizen.getCharacterStream();
-				r3.read(cus_cit_xmls);
+                Reader r2 = cus_addr.getCharacterStream();
+                r2.read(cus_addr_xmls);
 
-				Reader r4 = cus_docum.getCharacterStream();
-				r4.read(cus_docum_xmls);
+                Reader r3 = cus_citizen.getCharacterStream();
+                r3.read(cus_cit_xmls);
 
-				// strings
-				CusXml = new String(cus_xmls);
-				CusAddrXml = new String(cus_addr_xmls);
-				CusDocumXml = new String(cus_docum_xmls);
-				CusCitizXml = new String(cus_cit_xmls);
+                Reader r4 = cus_docum.getCharacterStream();
+                r4.read(cus_docum_xmls);
+
+                // strings
+                CusXml = new String(cus_xmls);
+                CusAddrXml = new String(cus_addr_xmls);
+                CusDocumXml = new String(cus_docum_xmls);
+                CusCitizXml = new String(cus_cit_xmls);
 
 //				System.out.println(CusXml);
 //				System.out.println(CusAddrXml);
 //				System.out.println(CusDocumXml);
 //				System.out.println(CusCitizXml);
-			} else {
-				Msg.Message(callStmt.getString(2));
-			}
-			callStmt.close();
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+            } else {
+                Msg.Message(callStmt.getString(2));
+            }
+            callStmt.close();
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
 
-	String formname = "norm";
+    String formname = "norm";
 
-	public void setConn(Connection conn, String formname) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
-		this.formname = formname;
-		this.conn.setAutoCommit(false);
-	}
+    public void setConn(Connection conn, String formname) throws SQLException {
+        this.conn = conn;
+        this.conn.setAutoCommit(false);
+        this.formname = formname;
+        this.conn.setAutoCommit(false);
+    }
 
-	/**
-	 * Вызов формы редактирования
-	 * 
-	 * @param event
-	 */
-	public void Edit(Long docid, Stage stage_, String open) {
-		try {
-			if (isopen == false) {
-				if (DbUtil.Odb_Action(28l) == 0) {
-					Msg.Message("Нет доступа!");
-					return;
-				}
-				
-				try {
-					if (conn == null | conn.isClosed()|!conn.isValid(3)) {
-						dbConnect();
-					}
-				} catch (Exception e) {
-					dbConnect();
-				}
-				
-				Main.logger = Logger.getLogger(getClass());
-				PreparedStatement selforupd = conn
-						.prepareStatement("select * from cus where  ICUSNUM = ? for update nowait");
-				VCUS cl = Init2(docid, conn);
-				selforupd.setLong(1, cl.getICUSNUM());
-				try {
-					selforupd.executeQuery();
-					selforupd.close();
-					{
-						// add lock row
-						String lock = DbUtil.Lock_Row(docid, "CUS",conn);
-						if (lock != null) {// if error add row
-							Msg.Message(lock);
-							conn.rollback();
-							return;
-						}
-						// заполняем xml
-						XmlsForCompare(docid, conn);
-						// -------------------
-						Stage stage = new Stage();
-						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus.fxml"));
+    /**
+     * Вызов формы редактирования
+     *
+     * @param event
+     */
+    public void Edit(Long docid, Stage stage_, String open) {
+        try {
+            if (isopen == false) {
+                if (DbUtil.Odb_Action(28l) == 0) {
+                    Msg.Message("Нет доступа!");
+                    return;
+                }
 
-						EditCus controller = new EditCus();
-						controller.setId(cl.getICUSNUM());
-						controller.setConn(conn);
-						loader.setController(controller);
+                try {
+                    if (conn == null | conn.isClosed() | !conn.isValid(3)) {
+                        dbConnect();
+                    }
+                } catch (Exception e) {
+                    dbConnect();
+                }
 
-						Parent root = loader.load();
-						
-						Scene scene = new Scene(root);
-						
+                Main.logger = Logger.getLogger(getClass());
+                PreparedStatement selforupd = conn
+                        .prepareStatement("select * from cus where  ICUSNUM = ? for update nowait");
+                VCUS cl = Init2(docid, conn);
+                selforupd.setLong(1, cl.getICUSNUM());
+                try {
+                    selforupd.executeQuery();
+                    selforupd.close();
+                    {
+                        // add lock row
+                        String lock = DbUtil.Lock_Row(docid, "CUS", conn);
+                        if (lock != null) {// if error add row
+                            Msg.Message(lock);
+                            conn.rollback();
+                            return;
+                        }
+                        // заполняем xml
+                        XmlsForCompare(docid, conn);
+                        // -------------------
+                        Stage stage = new Stage();
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus.fxml"));
+
+                        EditCus controller = new EditCus();
+                        controller.setId(cl.getICUSNUM());
+                        controller.setConn(conn);
+                        loader.setController(controller);
+
+                        Parent root = loader.load();
+
+                        Scene scene = new Scene(root);
+
 //						Style startingStyle = Style.LIGHT;
 //						JMetro jMetro = new JMetro(startingStyle);
 //						System.setProperty("prism.lcdtext", "false");
 //						jMetro.setScene(scene);
-						
-						stage.setScene(scene);
-						stage.getIcons().add(new Image("/icon.png"));
-						stage.setTitle("Редактирование: " + cl.getCCUSLAST_NAME() + " " + cl.getCCUSFIRST_NAME() + " "
-								+ cl.getCCUSMIDDLE_NAME());
-						stage.initOwner(stage_);
-						stage.setResizable(false);
-						stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-							@Override
-							public void handle(WindowEvent paramT) {
-								try {
-									// Если нажали сохранить
-									// обновление без сохранения
-									controller.CallSaveToCompare();
-									if (controller.getStatus()) {
-										if (formname.equals("norm")) {
-											InitVCus(null, null, null, null, null, "edit", controller.getId());
-										}
-										conn.commit();
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "CUS",conn);
-										if (lock != null) {// if error add row
-											Msg.Message(lock);
-										}
-										isopen = false;
-									} // Если нажали "X" или "Cancel" и до этого что-то меняли
-									else if (!controller.getStatus() & CompareBeforeClose(docid, conn) == 1) {
-										/**
-										 * Проверка выхода без сохранения
-										 */
-										final Alert alert = new Alert(AlertType.CONFIRMATION,
-												"Закрыть форму без сохранения?", ButtonType.YES,
-												ButtonType.NO);
-										if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-											try {
-												conn.rollback();
-											} catch (SQLException e) {
-												e.printStackTrace();
-											}
-											isopen = false;
-											// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-											String lock = DbUtil.Lock_Row_Delete(docid, "CUS",conn);
-											if (lock != null) {// if error add row
-												Msg.Message(lock);
-											}
-										}else {
-											paramT.consume();
-										}
-										
-									} // Если нажали "X" или "Cancel" и до этого ничего не меняли
-									else if (!controller.getStatus() & CompareBeforeClose(docid, conn) == 0) {
-										conn.rollback();
-										isopen = false;
-										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "CUS",conn);
-										if (lock != null) {// if error add row
-											Msg.Message(lock);
-										}
-									}
-									if(open.equals("OpenDoc")) {
-										dbDisconnect();
-									}
-								} catch (SQLException e) {
-									DbUtil.Log_Error(e);
-								}
-							}
-						});
-						stage.show();
-						isopen = true;
-					}
-				} catch (SQLException e) {
-					if (e.getErrorCode() == 54) {
-						Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "CUS"));
-					} else {
-						DbUtil.Log_Error(e);
-					}
-				}
-			} else {
-				Msg.Message("Форма редактирования уже открыта!");
-			}
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
 
-	/**
-	 * Вызов формы добавления
-	 * 
-	 * @param event
-	 */
-	void Add() {
-		try {
-			if (DbUtil.Odb_Action(27l) == 0) {
-				Msg.Message("Нет доступа!");
-				return;
-			}
+                        stage.setScene(scene);
+                        stage.getIcons().add(new Image("/icon.png"));
+                        stage.setTitle("Редактирование: " + cl.getCCUSLAST_NAME() + " " + cl.getCCUSFIRST_NAME() + " "
+                                + cl.getCCUSMIDDLE_NAME());
+                        stage.initOwner(stage_);
+                        stage.setResizable(false);
+                        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                            @Override
+                            public void handle(WindowEvent paramT) {
+                                try {
+                                    // Если нажали сохранить
+                                    // обновление без сохранения
+                                    controller.CallSaveToCompare();
+                                    if (controller.getStatus()) {
+                                        if (formname.equals("norm")) {
+                                            InitVCus(null, null, null, null, null, "edit", controller.getId());
+                                        }
+                                        conn.commit();
+                                        // УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+                                        String lock = DbUtil.Lock_Row_Delete(docid, "CUS", conn);
+                                        if (lock != null) {// if error add row
+                                            Msg.Message(lock);
+                                        }
+                                        isopen = false;
+                                    } // Если нажали "X" или "Cancel" и до этого что-то меняли
+                                    else if (!controller.getStatus() & CompareBeforeClose(docid, conn) == 1) {
+                                        /**
+                                         * Проверка выхода без сохранения
+                                         */
+                                        final Alert alert = new Alert(AlertType.CONFIRMATION,
+                                                "Закрыть форму без сохранения?", ButtonType.YES,
+                                                ButtonType.NO);
+                                        if (Msg.setDefaultButton(alert, ButtonType.NO).showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+                                            try {
+                                                conn.rollback();
+                                            } catch (SQLException e) {
+                                                e.printStackTrace();
+                                            }
+                                            isopen = false;
+                                            // УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+                                            String lock = DbUtil.Lock_Row_Delete(docid, "CUS", conn);
+                                            if (lock != null) {// if error add row
+                                                Msg.Message(lock);
+                                            }
+                                        } else {
+                                            paramT.consume();
+                                        }
 
-			Stage stage = new Stage();
-			Stage stage_ = (Stage) CUSLIST.getScene().getWindow();
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus.fxml"));
+                                    } // Если нажали "X" или "Cancel" и до этого ничего не меняли
+                                    else if (!controller.getStatus() & CompareBeforeClose(docid, conn) == 0) {
+                                        conn.rollback();
+                                        isopen = false;
+                                        // УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
+                                        String lock = DbUtil.Lock_Row_Delete(docid, "CUS", conn);
+                                        if (lock != null) {// if error add row
+                                            Msg.Message(lock);
+                                        }
+                                    }
+                                    if (open.equals("OpenDoc")) {
+                                        dbDisconnect();
+                                    }
+                                } catch (SQLException e) {
+                                    DbUtil.Log_Error(e);
+                                }
+                            }
+                        });
+                        stage.show();
+                        isopen = true;
+                    }
+                } catch (SQLException e) {
+                    if (e.getErrorCode() == 54) {
+                        Msg.Message("Запись редактируется " + DbUtil.Lock_Row_View(docid, "CUS"));
+                    } else {
+                        DbUtil.Log_Error(e);
+                    }
+                }
+            } else {
+                Msg.Message("Форма редактирования уже открыта!");
+            }
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
 
-			AddCus controller = new AddCus();
-			loader.setController(controller);
+    /**
+     * Вызов формы добавления
+     *
+     * @param event
+     */
+    void Add() {
+        try {
+            if (DbUtil.Odb_Action(27l) == 0) {
+                Msg.Message("Нет доступа!");
+                return;
+            }
 
-			// controller.setConn2(conn);
-			// controller.setConn(conn);
+            Stage stage = new Stage();
+            Stage stage_ = (Stage) CUSLIST.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/IUCus.fxml"));
 
-			controller.setStage(CCUSFIRST_NAME);
+            AddCus controller = new AddCus();
+            loader.setController(controller);
 
-			Parent root = loader.load();
-			stage.setScene(new Scene(root));
-			stage.getIcons().add(new Image("/icon.png"));
-			stage.setTitle("Создание записи");
-			stage.initOwner(stage_);
-			stage.setResizable(false);
-			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				@Override
-				public void handle(WindowEvent paramT) {
-					if (controller.getStatus()) {
-						InitVCus(null, null, null, null, null, /* "crud" */"", controller.getId());
-					}
-					controller.dbDisconnect();
-				}
-			});
-			stage.show();
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+            // controller.setConn2(conn);
+            // controller.setConn(conn);
 
-	/**
-	 * Форма редактирования
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void BtEdit(ActionEvent event) {
-		if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
-			Msg.Message("Выберите документ!");
-		} else {
-			Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
-					(Stage) CUSLIST.getScene().getWindow(),""/*
-															 * , conn
-															 */);
-		}
-	}
+            controller.setStage(CCUSFIRST_NAME);
 
-	/**
-	 * Таблица внутри
-	 */
-	@FXML
-	private StackPane StackPane;
+            Parent root = loader.load();
+            stage.setScene(new Scene(root));
+            stage.getIcons().add(new Image("/icon.png"));
+            stage.setTitle("Создание записи");
+            stage.initOwner(stage_);
+            stage.setResizable(false);
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent paramT) {
+                    if (controller.getStatus()) {
+                        InitVCus(null, null, null, null, null, /* "crud" */"", controller.getId());
+                    }
+                    controller.dbDisconnect();
+                }
+            });
+            stage.show();
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
 
-	/**
-	 * Для выполнения в другом потоке, позволяет не <br>
-	 * "замораживать" интерфейс при долгом выполнении запроса
-	 * 
-	 * @param lname
-	 * @param fname
-	 * @param mname
-	 * @param dt1
-	 * @param dt2
-	 */
-	void Progress(String lname, String fname, String mname, LocalDate dt1, LocalDate dt2) {
-		try {
-			// Если многопоточность
-			StackPane.setDisable(true);
-			PB.setVisible(true);
-			Task<Object> task = new Task<Object>() {
-				@Override
-				public Object call() throws Exception {
-					InitVCus(lname, fname, mname, dt1, dt2, "filter", null);
-					return null;
-				}
-			};
-			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
-			task.setOnSucceeded(e -> BlockMain());
-			exec.execute(task);
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+    /**
+     * Форма редактирования
+     *
+     * @param event
+     */
+    @FXML
+    void BtEdit(ActionEvent event) {
+        if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
+            Msg.Message("Выберите документ!");
+        } else {
+            Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
+                    (Stage) CUSLIST.getScene().getWindow(), ""/*
+                     * , conn
+                     */);
+        }
+    }
 
-	/**
-	 * Результат выполнения процесса
-	 */
-	void BlockMain() {
-		StackPane.setDisable(false);
-		PB.setVisible(false);
-	}
+    /**
+     * Таблица внутри
+     */
+    @FXML
+    private StackPane StackPane;
 
-	/**
-	 * Индикатор прогресса
-	 */
-	@FXML
-	private ProgressIndicator PB;
+    /**
+     * Для выполнения в другом потоке, позволяет не <br>
+     * "замораживать" интерфейс при долгом выполнении запроса
+     *
+     * @param lname
+     * @param fname
+     * @param mname
+     * @param dt1
+     * @param dt2
+     */
+    void Progress(String lname, String fname, String mname, LocalDate dt1, LocalDate dt2) {
+        try {
+            // Если многопоточность
+            StackPane.setDisable(true);
+            PB.setVisible(true);
+            Task<Object> task = new Task<Object>() {
+                @Override
+                public Object call() throws Exception {
+                    InitVCus(lname, fname, mname, dt1, dt2, "filter", null);
+                    return null;
+                }
+            };
+            task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+            task.setOnSucceeded(e -> BlockMain());
+            exec.execute(task);
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
 
-	/**
-	 * Для фильтра
-	 * 
-	 * @param lname Фамилия
-	 * @param fname Имя
-	 * @param mname Отчество
-	 * @param dt1   Дата с
-	 * @param dt2   Дата по
-	 * @param ID    Клиент
-	 */
-	private void InitVCus(String lname, String fname, String mname, LocalDate dt1, LocalDate dt2, String type,
-			Long ID) {
-		try {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    /**
+     * Результат выполнения процесса
+     */
+    void BlockMain() {
+        StackPane.setDisable(false);
+        PB.setVisible(false);
+    }
 
-			String wlname = "";
-			String wfname = "";
-			String wmname = "";
-			String wdt1 = "";
-			String wdt2 = "";
-			String retid = "";
-			String order = "";
+    /**
+     * Индикатор прогресса
+     */
+    @FXML
+    private ProgressIndicator PB;
 
-			if (type.equals("filter")) {
-				if (!lname.equals("")) {
-					wlname = "and upper(VCUS.CCUSLAST_NAME) like '" + lname + "%'\r\n";
-				}
+    /**
+     * Для фильтра
+     *
+     * @param lname Фамилия
+     * @param fname Имя
+     * @param mname Отчество
+     * @param dt1   Дата с
+     * @param dt2   Дата по
+     * @param ID    Клиент
+     */
+    private void InitVCus(String lname, String fname, String mname, LocalDate dt1, LocalDate dt2, String type,
+                          Long ID) {
+        try {
+            boolean ifFilter = false;
 
-				if (!fname.equals("")) {
-					wfname = "and upper(VCUS.CCUSFIRST_NAME) like '" + fname + "%'\r\n";
-				}
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-				if (!mname.equals("")) {
-					wmname = "and upper(VCUS.CCUSMIDDLE_NAME) like '" + mname + "%'\r\n";
-				}
+            String wlname = "";
+            String wfname = "";
+            String wmname = "";
+            String wdt1 = "";
+            String wdt2 = "";
+            String retid = "";
+            String order = "";
 
-				if (!mname.equals("")) {
-					wmname = "and upper(VCUS.CCUSMIDDLE_NAME) like '" + mname + "%'\r\n";
-				}
+            if (type.equals("filter")) {
+                if (!lname.equals("")) {
+                    ifFilter = true;
+                    wlname = "and upper(VCUS.CCUSLAST_NAME) like '" + lname + "%'\r\n";
+                }
 
-				if (dt1 != null) {
-					wdt1 = "and VCUS.DCUSBIRTHDAY >= to_date('" + dt1.format(formatter) + "','dd.mm.yyyy') \r\n";
-				}
-				if (dt2 != null) {
-					wdt2 = "and VCUS.DCUSBIRTHDAY <= to_date('" + dt2.format(formatter) + "','dd.mm.yyyy') \r\n";
-				}
-			} else if (type.equals("crud")) {
-				retid = " and VCUS.ICUSNUM = " + ID;
-			} else if (type.equals("edit")) {
-				order = " order by case ICUSNUM when " + ID + " then 1 else 2 end\r\n";
-			} else {
-				order = " order by ICUSNUM desc\r\n";
-			}
+                if (!fname.equals("")) {
+                    ifFilter = true;
+                    wfname = "and upper(VCUS.CCUSFIRST_NAME) like '" + fname + "%'\r\n";
+                }
 
-			String selectStmt = "select * from VCUS where 1=1 \r\n" + wlname + wfname + wmname + wdt1 + wdt2 + retid
-					+ order;
-			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			ResultSet rs = prepStmt.executeQuery();
-			ObservableList<VCUS> cus_list = FXCollections.observableArrayList();
-			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			while (rs.next()) {
-				VCUS list = new VCUS();
+                if (!mname.equals("")) {
+                    ifFilter = true;
+                    wmname = "and upper(VCUS.CCUSMIDDLE_NAME) like '" + mname + "%'\r\n";
+                }
 
-				list.setCOUNTRY(rs.getString("COUNTRY"));
-				list.setDOC_DATE((rs.getDate("DOC_DATE") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_DATE")), formatter)
-						: null);
-				list.setID_DOC_TP(rs.getString("ID_DOC_TP"));
-				list.setDOC_SER(rs.getString("DOC_SER"));
-				list.setAREA(rs.getString("AREA"));
-				list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
-				list.setDCUSBIRTHDAY((rs.getDate("DCUSBIRTHDAY") != null) ? LocalDate.parse(
-						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY")), formatter) : null);
-				list.setPUNCT_NAME(rs.getString("PUNCT_NAME"));
-				list.setTM$DCUSOPEN((rs.getDate("TM$DCUSOPEN") != null) ? LocalDateTime.parse(
-						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DCUSOPEN")), dateFormatter)
-						: null);
-				list.setINFR_NAME(rs.getString("INFR_NAME"));
-				list.setDOM(rs.getString("DOM"));
-				list.setKV(rs.getString("KV"));
-				list.setCR_DATE((rs.getDate("CR_DATE") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
-						: null);
-				list.setICUSNUM(rs.getLong("ICUSNUM"));
-				list.setCCUSIDOPEN(rs.getString("CCUSIDOPEN"));
-				list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
-				list.setDOC_PERIOD((rs.getDate("DOC_PERIOD") != null) ? LocalDate
-						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_PERIOD")), formatter) : null);
-				list.setCCUSSEX(rs.getString("CCUSSEX"));
-				list.setNAME(rs.getString("NAME"));
-				list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
-				list.setCITY(rs.getString("CITY"));
-				list.setDOC_SUBDIV(rs.getString("DOC_SUBDIV"));
-				list.setDOC_NUM(rs.getString("DOC_NUM"));
-				list.setCR_TIME(rs.getString("CR_TIME"));
-				list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
+                if (!mname.equals("")) {
+                    ifFilter = true;
+                    wmname = "and upper(VCUS.CCUSMIDDLE_NAME) like '" + mname + "%'\r\n";
+                }
 
-				cus_list.add(list);
-			}
-			prepStmt.close();
-			rs.close();
-			
-			if (CUSLIST != null) {
-				CUSLIST.setItems(cus_list);
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						TableFilter<VCUS> tableFilter = TableFilter.forTableView(CUSLIST).apply();
-						tableFilter.setSearchStrategy((input, target) -> {
-							try {
-								return target.toLowerCase().contains(input.toLowerCase());
-							} catch (Exception e) {
-								return false;
-							}
-						});
-					}
-				});
-			}
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+                if (dt1 != null) {
+                    ifFilter = true;
+                    wdt1 = "and VCUS.DCUSBIRTHDAY >= to_date('" + dt1.format(formatter) + "','dd.mm.yyyy') \r\n";
+                }
+                if (dt2 != null) {
+                    ifFilter = true;
+                    wdt2 = "and VCUS.DCUSBIRTHDAY <= to_date('" + dt2.format(formatter) + "','dd.mm.yyyy') \r\n";
+                }
+            } else if (type.equals("crud")) {
+                retid = " and VCUS.ICUSNUM = " + ID;
+            } else if (type.equals("edit")) {
+                order = " order by case ICUSNUM when " + ID + " then 1 else 2 end\r\n";
+            } else {
+                order = " order by ICUSNUM desc\r\n";
+            }
 
-	/**
-	 * Возврат для инициализации
-	 * 
-	 * @return {@link VCUS}
-	 */
-	VCUS Init2(Long cusid, Connection conn) {
-		VCUS list = null;
-		try {
-			Main.logger = Logger.getLogger(getClass());
+            String selectStmt = "";
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            if (!ifFilter) {
+                selectStmt = "select * from VCUS where rownum <= 10";
+            } else {
+                selectStmt = "select * from VCUS where 1=1 \r\n" + wlname + wfname + wmname + wdt1 + wdt2 + retid
+                        + order;
+            }
 
-			String selectStmt = "select * from VCUS where VCUS.ICUSNUM = ?  \r\n";
-			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
-			prepStmt.setLong(1, cusid);
-			ResultSet rs = prepStmt.executeQuery();
-			ObservableList<VCUS> cus_list = FXCollections.observableArrayList();
-			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			while (rs.next()) {
-				list = new VCUS();
+            PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+            ResultSet rs = prepStmt.executeQuery();
+            ObservableList<VCUS> cus_list = FXCollections.observableArrayList();
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+            while (rs.next()) {
+                VCUS list = new VCUS();
 
-				list.setCOUNTRY(rs.getString("COUNTRY"));
-				list.setDOC_DATE((rs.getDate("DOC_DATE") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_DATE")), formatter)
-						: null);
-				list.setID_DOC_TP(rs.getString("ID_DOC_TP"));
-				list.setDOC_SER(rs.getString("DOC_SER"));
-				list.setAREA(rs.getString("AREA"));
-				list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
-				list.setDCUSBIRTHDAY((rs.getDate("DCUSBIRTHDAY") != null) ? LocalDate.parse(
-						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY")), formatter) : null);
-				list.setPUNCT_NAME(rs.getString("PUNCT_NAME"));
-				list.setTM$DCUSOPEN((rs.getDate("TM$DCUSOPEN") != null) ? LocalDateTime.parse(
-						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DCUSOPEN")), formatterwt)
-						: null);
-				list.setINFR_NAME(rs.getString("INFR_NAME"));
-				list.setDOM(rs.getString("DOM"));
-				list.setKV(rs.getString("KV"));
-				list.setCR_DATE((rs.getDate("CR_DATE") != null)
-						? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
-						: null);
-				list.setICUSNUM(rs.getLong("ICUSNUM"));
-				list.setCCUSIDOPEN(rs.getString("CCUSIDOPEN"));
-				list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
-				list.setDOC_PERIOD((rs.getDate("DOC_PERIOD") != null) ? LocalDate
-						.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_PERIOD")), formatter) : null);
-				list.setCCUSSEX(rs.getString("CCUSSEX"));
-				list.setNAME(rs.getString("NAME"));
-				list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
-				list.setCITY(rs.getString("CITY"));
-				list.setDOC_SUBDIV(rs.getString("DOC_SUBDIV"));
-				list.setDOC_NUM(rs.getString("DOC_NUM"));
-				list.setCR_TIME(rs.getString("CR_TIME"));
-				list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
+                list.setCOUNTRY(rs.getString("COUNTRY"));
+                list.setDOC_DATE((rs.getDate("DOC_DATE") != null)
+                        ? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_DATE")), formatter)
+                        : null);
+                list.setID_DOC_TP(rs.getString("ID_DOC_TP"));
+                list.setDOC_SER(rs.getString("DOC_SER"));
+                list.setAREA(rs.getString("AREA"));
+                list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
+                list.setDCUSBIRTHDAY((rs.getDate("DCUSBIRTHDAY") != null) ? LocalDate.parse(
+                        new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY")), formatter) : null);
+                list.setPUNCT_NAME(rs.getString("PUNCT_NAME"));
+                list.setTM$DCUSOPEN((rs.getDate("TM$DCUSOPEN") != null) ? LocalDateTime.parse(
+                        new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DCUSOPEN")), dateFormatter)
+                        : null);
+                list.setINFR_NAME(rs.getString("INFR_NAME"));
+                list.setDOM(rs.getString("DOM"));
+                list.setKV(rs.getString("KV"));
+                list.setCR_DATE((rs.getDate("CR_DATE") != null)
+                        ? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
+                        : null);
+                list.setICUSNUM(rs.getLong("ICUSNUM"));
+                list.setCCUSIDOPEN(rs.getString("CCUSIDOPEN"));
+                list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
+                list.setDOC_PERIOD((rs.getDate("DOC_PERIOD") != null) ? LocalDate
+                        .parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_PERIOD")), formatter) : null);
+                list.setCCUSSEX(rs.getString("CCUSSEX"));
+                list.setNAME(rs.getString("NAME"));
+                list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
+                list.setCITY(rs.getString("CITY"));
+                list.setDOC_SUBDIV(rs.getString("DOC_SUBDIV"));
+                list.setDOC_NUM(rs.getString("DOC_NUM"));
+                list.setCR_TIME(rs.getString("CR_TIME"));
+                list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
 
-				cus_list.add(list);
-			}
-			prepStmt.close();
-			rs.close();
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-		return list;
-	}
+                cus_list.add(list);
+            }
+            prepStmt.close();
+            rs.close();
 
-	/**
-	 * Сессия
-	 */
-	private Connection conn;
+            if (CUSLIST != null) {
+                CUSLIST.setItems(cus_list);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        TableFilter<VCUS> tableFilter = TableFilter.forTableView(CUSLIST).apply();
+                        tableFilter.setSearchStrategy((input, target) -> {
+                            try {
+                                return target.toLowerCase().contains(input.toLowerCase());
+                            } catch (Exception e) {
+                                return false;
+                            }
+                        });
+                    }
+                });
+            }
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
 
-	/**
-	 * Открыть сессию
-	 */
-	private void dbConnect() {
-		try {
-			conn = DbUtil.GetConnect(getClass().getName());
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+    /**
+     * Возврат для инициализации
+     *
+     * @return {@link VCUS}
+     */
+    VCUS Init2(Long cusid, Connection conn) {
+        VCUS list = null;
+        try {
+            Main.logger = Logger.getLogger(getClass());
 
-	/**
-	 * Отключить сессию
-	 */
-	public void dbDisconnect() {
-		try {
-			Main.logger = Logger.getLogger(getClass());
-			if (conn != null && !conn.isClosed()) {
-				conn.close();
-			}
-		} catch (SQLException e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-	/**
-	 * Для многопоточности
-	 */
-	private Executor exec;
+            String selectStmt = "select * from VCUS where VCUS.ICUSNUM = ?  \r\n";
+            PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+            prepStmt.setLong(1, cusid);
+            ResultSet rs = prepStmt.executeQuery();
+            ObservableList<VCUS> cus_list = FXCollections.observableArrayList();
+            DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+            while (rs.next()) {
+                list = new VCUS();
 
-	/**
-	 * Поле С фильтра
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void DT1(ActionEvent event) {
-		try {
-			Main.logger = Logger.getLogger(getClass());
-			Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
-					DT2.getValue());
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+                list.setCOUNTRY(rs.getString("COUNTRY"));
+                list.setDOC_DATE((rs.getDate("DOC_DATE") != null)
+                        ? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_DATE")), formatter)
+                        : null);
+                list.setID_DOC_TP(rs.getString("ID_DOC_TP"));
+                list.setDOC_SER(rs.getString("DOC_SER"));
+                list.setAREA(rs.getString("AREA"));
+                list.setCCUSLAST_NAME(rs.getString("CCUSLAST_NAME"));
+                list.setDCUSBIRTHDAY((rs.getDate("DCUSBIRTHDAY") != null) ? LocalDate.parse(
+                        new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DCUSBIRTHDAY")), formatter) : null);
+                list.setPUNCT_NAME(rs.getString("PUNCT_NAME"));
+                list.setTM$DCUSOPEN((rs.getDate("TM$DCUSOPEN") != null) ? LocalDateTime.parse(
+                        new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DCUSOPEN")), formatterwt)
+                        : null);
+                list.setINFR_NAME(rs.getString("INFR_NAME"));
+                list.setDOM(rs.getString("DOM"));
+                list.setKV(rs.getString("KV"));
+                list.setCR_DATE((rs.getDate("CR_DATE") != null)
+                        ? LocalDate.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter)
+                        : null);
+                list.setICUSNUM(rs.getLong("ICUSNUM"));
+                list.setCCUSIDOPEN(rs.getString("CCUSIDOPEN"));
+                list.setCOUNTRY_NAME(rs.getString("COUNTRY_NAME"));
+                list.setDOC_PERIOD((rs.getDate("DOC_PERIOD") != null) ? LocalDate
+                        .parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_PERIOD")), formatter) : null);
+                list.setCCUSSEX(rs.getString("CCUSSEX"));
+                list.setNAME(rs.getString("NAME"));
+                list.setCCUSFIRST_NAME(rs.getString("CCUSFIRST_NAME"));
+                list.setCITY(rs.getString("CITY"));
+                list.setDOC_SUBDIV(rs.getString("DOC_SUBDIV"));
+                list.setDOC_NUM(rs.getString("DOC_NUM"));
+                list.setCR_TIME(rs.getString("CR_TIME"));
+                list.setCCUSMIDDLE_NAME(rs.getString("CCUSMIDDLE_NAME"));
 
-	/**
-	 * Поле ПО фильтра
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void DT2(ActionEvent event) {
-		try {
-			Main.logger = Logger.getLogger(getClass());
-			Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
-					DT2.getValue());
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+                cus_list.add(list);
+            }
+            prepStmt.close();
+            rs.close();
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+        return list;
+    }
 
-	/**
-	 * Очистить поля
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void Clear(ActionEvent event) {
-		CCUSLAST_NAME.setText("");
-		CCUSFIRST_NAME.setText("");
-		CCUSMIDDLE_NAME.setText("");
-		DT1.setValue(null);
-		DT2.setValue(null);
-	}
+    /**
+     * Сессия
+     */
+    private Connection conn;
 
-	/**
-	 * Инициализация
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@FXML
-	private void initialize() {
-		try {
-			dbConnect();
+    /**
+     * Открыть сессию
+     */
+    private void dbConnect() {
+        try {
+            conn = DbUtil.GetConnect(getClass().getName());
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
+
+    /**
+     * Отключить сессию
+     */
+    public void dbDisconnect() {
+        try {
+            Main.logger = Logger.getLogger(getClass());
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            DbUtil.Log_Error(e);
+        }
+    }
+
+    /**
+     * Для многопоточности
+     */
+    private Executor exec;
+
+    /**
+     * Поле С фильтра
+     *
+     * @param event
+     */
+    @FXML
+    void DT1(ActionEvent event) {
+        try {
+            Main.logger = Logger.getLogger(getClass());
+            Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
+                    DT2.getValue());
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
+
+    /**
+     * Поле ПО фильтра
+     *
+     * @param event
+     */
+    @FXML
+    void DT2(ActionEvent event) {
+        try {
+            Main.logger = Logger.getLogger(getClass());
+            Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
+                    DT2.getValue());
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
+
+    /**
+     * Очистить поля
+     *
+     * @param event
+     */
+    @FXML
+    void Clear(ActionEvent event) {
+        CCUSLAST_NAME.setText("");
+        CCUSFIRST_NAME.setText("");
+        CCUSMIDDLE_NAME.setText("");
+        DT1.setValue(null);
+        DT2.setValue(null);
+    }
+
+    /**
+     * Инициализация
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @FXML
+    private void initialize() {
+        try {
+            dbConnect();
 //			addIfNotPresent(CUS_BORDER.getStyleClass(), JMetroStyleClass.BACKGROUND);
 //			addIfNotPresent(CUS_BORDER.getStyleClass(), JMetroStyleClass.LIGHT_BUTTONS);
 //			addIfNotPresent(CUSLIST.getStyleClass(), JMetroStyleClass.TABLE_GRID_LINES);
 //			addIfNotPresent(CUSLIST.getStyleClass(), JMetroStyleClass.ALTERNATING_ROW_COLORS);
-			
-			// ______Установка фильтра____________
-			CUSLIST.filterRowVisibleProperty();
-			
 
-			CUS_BORDER.setBottom(createOptionPane(CUSLIST));
+            // ______Установка фильтра____________
+            CUSLIST.filterRowVisibleProperty();
 
-			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
 
-			CCUSIDOPEN.setColumnFilter(new PatternColumnFilter<>());
+            CUS_BORDER.setBottom(createOptionPane(CUSLIST));
 
-			CR_DATE.setColumnFilter(new DateColumnFilter<>()); 
+            SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
 
-			CR_TIME.setColumnFilter(new PatternColumnFilter<>());
+            CCUSIDOPEN.setColumnFilter(new PatternColumnFilter<>());
 
-			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
-			ICUSNUM.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
-					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
+            CR_DATE.setColumnFilter(new DateColumnFilter<>());
 
-			CCUSLAST_NAMET.setColumnFilter(new PatternColumnFilter<>());
-			CCUSFIRST_NAMET.setColumnFilter(new PatternColumnFilter<>());
-			CCUSMIDDLE_NAMET.setColumnFilter(new PatternColumnFilter<>());
-			CCUSLAST_NAMET.setColumnFilter(new PatternColumnFilter<>());
-			CCUSLAST_NAMET.setColumnFilter(new PatternColumnFilter<>());
-			CCUSSEX.setColumnFilter(new PatternColumnFilter<>());
-			NAME.setColumnFilter(new PatternColumnFilter<>());
-			DCUSBIRTHDAYT.setColumnFilter(new DateColumnFilter<>());
-			COUNTRY_NAME.setColumnFilter(new PatternColumnFilter<>());
-			ID_DOC_TP.setColumnFilter(new PatternColumnFilter<>());
-			DOC_SER.setColumnFilter(new PatternColumnFilter<>());
-			DOC_NUM.setColumnFilter(new PatternColumnFilter<>());
-			DOC_DATE.setColumnFilter(new DateColumnFilter<>());
-			DOC_PERIOD.setColumnFilter(new DateColumnFilter<>());
-			DOC_SUBDIV.setColumnFilter(new PatternColumnFilter<>());
-			COUNTRY.setColumnFilter(new PatternColumnFilter<>());
-			AREA.setColumnFilter(new PatternColumnFilter<>());
-			// CITY.setColumnFilter(new PatternColumnFilter<>());
-			NAS_PUNCT.setColumnFilter(new PatternColumnFilter<>());
-			INFR_NAME.setColumnFilter(new PatternColumnFilter<>());
-			DOM.setColumnFilter(new PatternColumnFilter<>());
-			KV.setColumnFilter(new PatternColumnFilter<>());
-			// _______________
+            CR_TIME.setColumnFilter(new PatternColumnFilter<>());
 
-			// DateAutoComma(DT1);
-			// DateAutoComma(DT2);
-			/**
-			 * Для создания многопоточности
-			 */
-			exec = Executors.newCachedThreadPool((runnable) -> {
-				Thread t = new Thread(runnable);
-				t.setDaemon(true);
-				return t;
-			});
+            ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
+            ICUSNUM.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
+                    TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 
-			/**
-			 * Только буквы в фильтре
-			 */
-			// OnlyAlpha(CCUSLAST_NAME);
-			// OnlyAlpha(CCUSFIRST_NAME);
-			// OnlyAlpha(CCUSMIDDLE_NAME);
-			new ConvConst().OnlyAlpha(CCUSLAST_NAME);
-			new ConvConst().OnlyAlpha(CCUSFIRST_NAME);
-			new ConvConst().OnlyAlpha(CCUSMIDDLE_NAME);
+            CCUSLAST_NAMET.setColumnFilter(new PatternColumnFilter<>());
+            CCUSFIRST_NAMET.setColumnFilter(new PatternColumnFilter<>());
+            CCUSMIDDLE_NAMET.setColumnFilter(new PatternColumnFilter<>());
+            CCUSLAST_NAMET.setColumnFilter(new PatternColumnFilter<>());
+            CCUSLAST_NAMET.setColumnFilter(new PatternColumnFilter<>());
+            CCUSSEX.setColumnFilter(new PatternColumnFilter<>());
+            NAME.setColumnFilter(new PatternColumnFilter<>());
+            DCUSBIRTHDAYT.setColumnFilter(new DateColumnFilter<>());
+            COUNTRY_NAME.setColumnFilter(new PatternColumnFilter<>());
+            ID_DOC_TP.setColumnFilter(new PatternColumnFilter<>());
+            DOC_SER.setColumnFilter(new PatternColumnFilter<>());
+            DOC_NUM.setColumnFilter(new PatternColumnFilter<>());
+            DOC_DATE.setColumnFilter(new DateColumnFilter<>());
+            DOC_PERIOD.setColumnFilter(new DateColumnFilter<>());
+            DOC_SUBDIV.setColumnFilter(new PatternColumnFilter<>());
+            COUNTRY.setColumnFilter(new PatternColumnFilter<>());
+            AREA.setColumnFilter(new PatternColumnFilter<>());
+            // CITY.setColumnFilter(new PatternColumnFilter<>());
+            NAS_PUNCT.setColumnFilter(new PatternColumnFilter<>());
+            INFR_NAME.setColumnFilter(new PatternColumnFilter<>());
+            DOM.setColumnFilter(new PatternColumnFilter<>());
+            KV.setColumnFilter(new PatternColumnFilter<>());
+            // _______________
 
-			/*
-			 * DT1.getEditor().textProperty().addListener(new ChangeListener<String>() {
-			 * 
-			 * @Override public void changed(ObservableValue<? extends String> observable,
-			 * String oldValue, String newValue) { if (newValue.length() == 2) {
-			 * System.out.println(newValue); newValue = newValue+"."; } newValue =
-			 * newValue+"."; } });
-			 */
+            // DateAutoComma(DT1);
+            // DateAutoComma(DT2);
+            /**
+             * Для создания многопоточности
+             */
+            exec = Executors.newCachedThreadPool((runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
 
-			// DT1.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			// System.out.println(DT1.getEditor().getText());
-			/*
-			 * if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB ||
-			 * event.getCode() == KeyCode.DOWN) { DT2.requestFocus(); event.consume(); } if
-			 * (event.getCode() == KeyCode.UP) { // do something event.consume(); }
-			 */
-			// });
+            /**
+             * Только буквы в фильтре
+             */
+            // OnlyAlpha(CCUSLAST_NAME);
+            // OnlyAlpha(CCUSFIRST_NAME);
+            // OnlyAlpha(CCUSMIDDLE_NAME);
+            new ConvConst().OnlyAlpha(CCUSLAST_NAME);
+            new ConvConst().OnlyAlpha(CCUSFIRST_NAME);
+            new ConvConst().OnlyAlpha(CCUSMIDDLE_NAME);
 
-			new ConvConst().FormatDatePiker(DT1);
-			new ConvConst().FormatDatePiker(DT2);
+            /*
+             * DT1.getEditor().textProperty().addListener(new ChangeListener<String>() {
+             *
+             * @Override public void changed(ObservableValue<? extends String> observable,
+             * String oldValue, String newValue) { if (newValue.length() == 2) {
+             * System.out.println(newValue); newValue = newValue+"."; } newValue =
+             * newValue+"."; } });
+             */
 
-			/**
-			 * Двойной щелчок по строке
-			 */
-			CUSLIST.setRowFactory(tv -> {
-				TableRow<VCUS> row = new TableRow<>();
-				row.setOnMouseClicked(event -> {
-					if (event.getClickCount() == 2 && (!row.isEmpty())) {
-						if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
-							Msg.Message("Выберите документ!");
-						} else {
-							Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
-									(Stage) CUSLIST.getScene().getWindow(),""/* , conn */);
-						}
-					}
-				});
-				return row;
-			});
+            // DT1.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            // System.out.println(DT1.getEditor().getText());
+            /*
+             * if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB ||
+             * event.getCode() == KeyCode.DOWN) { DT2.requestFocus(); event.consume(); } if
+             * (event.getCode() == KeyCode.UP) { // do something event.consume(); }
+             */
+            // });
 
-			/**
-			 * Создать сессию
-			 */
-			//dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
-			/**
-			 * Инициализация столбцов таблицы
-			 */
-			{
-				new ConvConst().TableColumnDate(CR_DATE);
+            new ConvConst().FormatDatePiker(DT1);
+            new ConvConst().FormatDatePiker(DT2);
 
-				CCUSIDOPEN.setCellValueFactory(cellData -> cellData.getValue().CCUSIDOPENProperty());
+            /**
+             * Двойной щелчок по строке
+             */
+            CUSLIST.setRowFactory(tv -> {
+                TableRow<VCUS> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                        if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
+                            Msg.Message("Выберите документ!");
+                        } else {
+                            Edit(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM(),
+                                    (Stage) CUSLIST.getScene().getWindow(), ""/* , conn */);
+                        }
+                    }
+                });
+                return row;
+            });
 
-				CR_DATE.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).CR_DATEProperty());
-				CR_TIME.setCellValueFactory(cellData -> cellData.getValue().CR_TIMEProperty());
+            /**
+             * Создать сессию
+             */
+            //dbConnect();
+            //DbUtil.Run_Process(conn,getClass().getName());
+            /**
+             * Инициализация столбцов таблицы
+             */
+            {
+                new ConvConst().TableColumnDate(CR_DATE);
 
-				ICUSNUM.setCellValueFactory(cellData -> cellData.getValue().ICUSNUMProperty().asObject());
-				CCUSLAST_NAMET.setCellValueFactory(cellData -> cellData.getValue().CCUSLAST_NAMEProperty());
-				CCUSFIRST_NAMET.setCellValueFactory(cellData -> cellData.getValue().CCUSFIRST_NAMEProperty());
-				CCUSMIDDLE_NAMET.setCellValueFactory(cellData -> cellData.getValue().CCUSMIDDLE_NAMEProperty());
-				DCUSBIRTHDAYT.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).DCUSBIRTHDAYProperty());
-				ID_DOC_TP.setCellValueFactory(cellData -> cellData.getValue().ID_DOC_TPProperty());
-				CCUSSEX.setCellValueFactory(cellData -> cellData.getValue().CCUSSEXProperty());
-				DOC_SER.setCellValueFactory(cellData -> cellData.getValue().DOC_SERProperty());
-				DOC_NUM.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMProperty());
-				DOC_DATE.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).DOC_DATEProperty());
-				DOC_PERIOD.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).DOC_PERIODProperty());
-				DOC_SUBDIV.setCellValueFactory(cellData -> cellData.getValue().DOC_SUBDIVProperty());
-				COUNTRY.setCellValueFactory(cellData -> cellData.getValue().COUNTRYProperty());
-				AREA.setCellValueFactory(cellData -> cellData.getValue().AREAProperty());
-				NAS_PUNCT.setCellValueFactory(cellData -> cellData.getValue().PUNCT_NAMEProperty());
-				INFR_NAME.setCellValueFactory(cellData -> cellData.getValue().INFR_NAMEProperty());
-				DOM.setCellValueFactory(cellData -> cellData.getValue().DOMProperty());
-				KV.setCellValueFactory(cellData -> cellData.getValue().KVProperty());
-				COUNTRY_NAME.setCellValueFactory(cellData -> cellData.getValue().COUNTRY_NAMEProperty());
-				NAME.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
-			}
+                CCUSIDOPEN.setCellValueFactory(cellData -> cellData.getValue().CCUSIDOPENProperty());
 
-			/**
-			 * Фильтр поля в верхнем регистре
-			 */
-			{
-				new ConvConst().UpperCase(CCUSLAST_NAME);
-				new ConvConst().UpperCase(CCUSFIRST_NAME);
-				new ConvConst().UpperCase(CCUSMIDDLE_NAME);
-				// UpperCase(CCUSLAST_NAME);
-				// UpperCase(CCUSFIRST_NAME);
-				// UpperCase(CCUSMIDDLE_NAME);
-			}
-			/**
-			 * Форматирование Столбца "Дата рождения"
-			 */
-			{
-				new ConvConst().TableColumnDate(DCUSBIRTHDAYT);
-				new ConvConst().TableColumnDate(DOC_DATE);
-				new ConvConst().TableColumnDate(DOC_PERIOD);
-				// TableColumnLocalDate(DCUSBIRTHDAYT);
-				// TableColumnLocalDate(DOC_DATE);
-				// TableColumnLocalDate(DOC_PERIOD);
-			}
+                CR_DATE.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).CR_DATEProperty());
+                CR_TIME.setCellValueFactory(cellData -> cellData.getValue().CR_TIMEProperty());
 
-			ICUSNUM.setOnEditCommit(new EventHandler<CellEditEvent<VCUS, Long>>() {
-				@Override
-				public void handle(CellEditEvent<VCUS, Long> t) {
-					((VCUS) t.getTableView().getItems().get(t.getTablePosition().getRow())).setICUSNUM(t.getNewValue());
-				}
-			});
+                ICUSNUM.setCellValueFactory(cellData -> cellData.getValue().ICUSNUMProperty().asObject());
+                CCUSLAST_NAMET.setCellValueFactory(cellData -> cellData.getValue().CCUSLAST_NAMEProperty());
+                CCUSFIRST_NAMET.setCellValueFactory(cellData -> cellData.getValue().CCUSFIRST_NAMEProperty());
+                CCUSMIDDLE_NAMET.setCellValueFactory(cellData -> cellData.getValue().CCUSMIDDLE_NAMEProperty());
+                DCUSBIRTHDAYT.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).DCUSBIRTHDAYProperty());
+                ID_DOC_TP.setCellValueFactory(cellData -> cellData.getValue().ID_DOC_TPProperty());
+                CCUSSEX.setCellValueFactory(cellData -> cellData.getValue().CCUSSEXProperty());
+                DOC_SER.setCellValueFactory(cellData -> cellData.getValue().DOC_SERProperty());
+                DOC_NUM.setCellValueFactory(cellData -> cellData.getValue().DOC_NUMProperty());
+                DOC_DATE.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).DOC_DATEProperty());
+                DOC_PERIOD.setCellValueFactory(cellData -> ((VCUS) cellData.getValue()).DOC_PERIODProperty());
+                DOC_SUBDIV.setCellValueFactory(cellData -> cellData.getValue().DOC_SUBDIVProperty());
+                COUNTRY.setCellValueFactory(cellData -> cellData.getValue().COUNTRYProperty());
+                AREA.setCellValueFactory(cellData -> cellData.getValue().AREAProperty());
+                NAS_PUNCT.setCellValueFactory(cellData -> cellData.getValue().PUNCT_NAMEProperty());
+                INFR_NAME.setCellValueFactory(cellData -> cellData.getValue().INFR_NAMEProperty());
+                DOM.setCellValueFactory(cellData -> cellData.getValue().DOMProperty());
+                KV.setCellValueFactory(cellData -> cellData.getValue().KVProperty());
+                COUNTRY_NAME.setCellValueFactory(cellData -> cellData.getValue().COUNTRY_NAMEProperty());
+                NAME.setCellValueFactory(cellData -> cellData.getValue().NAMEProperty());
+            }
 
-			/**
-			 * Listener при нажатии на строку клиентов
-			 */
-			CUSLIST.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-				if (newSelection != null) {
+            /**
+             * Фильтр поля в верхнем регистре
+             */
+            {
+                new ConvConst().UpperCase(CCUSLAST_NAME);
+                new ConvConst().UpperCase(CCUSFIRST_NAME);
+                new ConvConst().UpperCase(CCUSMIDDLE_NAME);
+                // UpperCase(CCUSLAST_NAME);
+                // UpperCase(CCUSFIRST_NAME);
+                // UpperCase(CCUSMIDDLE_NAME);
+            }
+            /**
+             * Форматирование Столбца "Дата рождения"
+             */
+            {
+                new ConvConst().TableColumnDate(DCUSBIRTHDAYT);
+                new ConvConst().TableColumnDate(DOC_DATE);
+                new ConvConst().TableColumnDate(DOC_PERIOD);
+                // TableColumnLocalDate(DCUSBIRTHDAYT);
+                // TableColumnLocalDate(DOC_DATE);
+                // TableColumnLocalDate(DOC_PERIOD);
+            }
 
-				}
-			});
+            ICUSNUM.setOnEditCommit(new EventHandler<CellEditEvent<VCUS, Long>>() {
+                @Override
+                public void handle(CellEditEvent<VCUS, Long> t) {
+                    ((VCUS) t.getTableView().getItems().get(t.getTablePosition().getRow())).setICUSNUM(t.getNewValue());
+                }
+            });
 
-			/**
-			 * Поиск при вводе
-			 */
-			{
-				CCUSLAST_NAME.textProperty().addListener(new ChangeListener<String>() {
-					@Override
-					public void changed(ObservableValue<? extends String> observable, String oldValue,
-							String newValue) {
-						if (newValue.length() > 0) {
-							Progress(newValue, CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
-									DT2.getValue());
-						} else {
-							Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(),
-									DT1.getValue(), DT2.getValue());
-						}
-					}
-				});
+            /**
+             * Listener при нажатии на строку клиентов
+             */
+            CUSLIST.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
 
-				CCUSFIRST_NAME.textProperty().addListener(new ChangeListener<String>() {
-					@Override
-					public void changed(ObservableValue<? extends String> observable, String oldValue,
-							String newValue) {
-						if (newValue.length() > 0) {
-							Progress(CCUSLAST_NAME.getText(), newValue, CCUSMIDDLE_NAME.getText(), DT1.getValue(),
-									DT2.getValue());
-						} else {
-							Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(),
-									DT1.getValue(), DT2.getValue());
-						}
-					}
-				});
-				CCUSMIDDLE_NAME.textProperty().addListener(new ChangeListener<String>() {
-					@Override
-					public void changed(ObservableValue<? extends String> observable, String oldValue,
-							String newValue) {
-						if (newValue.length() > 0) {
-							Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), newValue, DT1.getValue(),
-									DT2.getValue());
-						} else {
-							Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(),
-									DT1.getValue(), DT2.getValue());
-						}
-					}
-				});
+                }
+            });
 
-			}
-			/**
-			 * Заполнение данными таблицу
-			 */
-			InitVCus(null, null, null, null, null, "null", null);
-			
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+            /**
+             * Поиск при вводе
+             */
+            {
+                CCUSLAST_NAME.textProperty().addListener(new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                        String newValue) {
+                        if (newValue.length() > 0) {
+                            Progress(newValue, CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(), DT1.getValue(),
+                                    DT2.getValue());
+                        } else {
+                            Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(),
+                                    DT1.getValue(), DT2.getValue());
+                        }
+                    }
+                });
 
-	/**
-	 * Все документы связанные с гражданином
-	 */
-	@FXML
-	private void ViewAllDocs() {
-		try {
-			if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
-				Msg.Message("Выберите клиента!");
-			} else {
-				Main.logger = Logger.getLogger(getClass());
-				Stage stage = new Stage();
-				Stage stage_ = (Stage) CUSLIST.getScene().getWindow();
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/DocsList.fxml"));
+                CCUSFIRST_NAME.textProperty().addListener(new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                        String newValue) {
+                        if (newValue.length() > 0) {
+                            Progress(CCUSLAST_NAME.getText(), newValue, CCUSMIDDLE_NAME.getText(), DT1.getValue(),
+                                    DT2.getValue());
+                        } else {
+                            Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(),
+                                    DT1.getValue(), DT2.getValue());
+                        }
+                    }
+                });
+                CCUSMIDDLE_NAME.textProperty().addListener(new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                        String newValue) {
+                        if (newValue.length() > 0) {
+                            Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), newValue, DT1.getValue(),
+                                    DT2.getValue());
+                        } else {
+                            Progress(CCUSLAST_NAME.getText(), CCUSFIRST_NAME.getText(), CCUSMIDDLE_NAME.getText(),
+                                    DT1.getValue(), DT2.getValue());
+                        }
+                    }
+                });
 
-				DocList controller = new DocList();
-				controller.setId(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
-				loader.setController(controller);
+            }
+            /**
+             * Заполнение данными таблицу
+             */
+            InitVCus(null, null, null, null, null, "null", null);
 
-				Parent root = loader.load();
-				stage.setScene(new Scene(root));
-				stage.getIcons().add(new Image("/icon.png"));
-				stage.setTitle("Список документов");
-				stage.initOwner(stage_);
-				stage.setResizable(false);
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
 
-				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-					@Override
-					public void handle(WindowEvent paramT) {
+    /**
+     * Все документы связанные с гражданином
+     */
+    @FXML
+    private void ViewAllDocs() {
+        try {
+            if (CUSLIST.getSelectionModel().getSelectedItem() == null) {
+                Msg.Message("Выберите клиента!");
+            } else {
+                Main.logger = Logger.getLogger(getClass());
+                Stage stage = new Stage();
+                Stage stage_ = (Stage) CUSLIST.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/ru/psv/mj/zags/doc/cus/DocsList.fxml"));
 
-					}
-				});
-				stage.show();
-			}
-		} catch (Exception e) {
-			DbUtil.Log_Error(e);
-		}
-	}
+                DocList controller = new DocList();
+                controller.setId(CUSLIST.getSelectionModel().getSelectedItem().getICUSNUM());
+                loader.setController(controller);
+
+                Parent root = loader.load();
+                stage.setScene(new Scene(root));
+                stage.getIcons().add(new Image("/icon.png"));
+                stage.setTitle("Список документов");
+                stage.initOwner(stage_);
+                stage.setResizable(false);
+
+                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent paramT) {
+
+                    }
+                });
+                stage.show();
+            }
+        } catch (Exception e) {
+            DbUtil.Log_Error(e);
+        }
+    }
 }

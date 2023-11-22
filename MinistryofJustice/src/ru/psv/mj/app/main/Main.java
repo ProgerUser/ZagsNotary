@@ -1,17 +1,8 @@
 package ru.psv.mj.app.main;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
-
 import com.jyloo.syntheticafx.DesktopPane;
 import com.jyloo.syntheticafx.RootPane;
 import com.jyloo.syntheticafx.SyntheticaFX;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -19,15 +10,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 import ru.psv.mj.access.action.OdbActions;
 import ru.psv.mj.access.grp.GrpController;
 import ru.psv.mj.access.menu.OdbMNU;
@@ -54,13 +47,6 @@ import ru.psv.mj.sprav.notary.NotaryList;
 import ru.psv.mj.sprav.otd.OtdList;
 import ru.psv.mj.sprav.zags.ZagsList;
 import ru.psv.mj.utils.DbUtil;
-import ru.psv.mj.www.mulya.petrovich.Case;
-import ru.psv.mj.www.mulya.petrovich.Gender;
-import ru.psv.mj.www.mulya.petrovich.NamePart;
-import ru.psv.mj.www.mulya.petrovich.PetrovichDeclinationMaker;
-import ru.psv.mj.www.plushaze.traynotification.Notification;
-import ru.psv.mj.www.plushaze.traynotification.Notifications;
-import ru.psv.mj.www.plushaze.traynotification.TrayNotification;
 import ru.psv.mj.zags.doc.adoptoin.AdoptList;
 import ru.psv.mj.zags.doc.birthact.BirthList;
 import ru.psv.mj.zags.doc.cus.CusList;
@@ -71,6 +57,11 @@ import ru.psv.mj.zags.doc.patern.PaternList;
 import ru.psv.mj.zags.doc.updabhname.UpdAbhNameList;
 import ru.psv.mj.zags.doc.updatenat.UpdNatList;
 import ru.psv.mj.zags.doc.updname.UpdNameList;
+
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * Главная точка входа и перехода по меню
@@ -186,7 +177,7 @@ public class Main extends Application {
 //	Fast enter
 //
 
-			Connect.connectionURL = "localhost:1522/orcl";
+			Connect.connectionURL = "localhost:89/orcl";
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DbUtil.Db_Connect();
