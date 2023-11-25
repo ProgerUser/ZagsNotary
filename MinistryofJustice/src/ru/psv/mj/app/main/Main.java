@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import jdk.jfr.events.ExceptionThrownEvent;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import ru.psv.mj.access.action.OdbActions;
@@ -59,6 +60,9 @@ import ru.psv.mj.zags.doc.updatenat.UpdNatList;
 import ru.psv.mj.zags.doc.updname.UpdNameList;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -163,6 +167,15 @@ public class Main extends Application {
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
 
+			try {
+				CertificateFactory fac = CertificateFactory.getInstance("X509");
+				FileInputStream is = new FileInputStream(System.getenv("MJ_PATH")+"stunnel/config/test01.crt");
+				X509Certificate cert = (X509Certificate) fac.generateCertificate(is);
+				System.out.println("From: " + cert.getNotBefore());
+				System.out.println("Until: " + cert.getNotAfter());
+			} catch (Exception e){
+				System.out.println();
+			}
 //
 //			Def Enter
 //
