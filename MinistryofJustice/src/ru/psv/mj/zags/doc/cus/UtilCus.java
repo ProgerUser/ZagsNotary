@@ -788,14 +788,6 @@ public class UtilCus {
 //			DieFio.setPrefWidth(120);
 //			DC_DD.setPrefWidth(120);
 
-			TableFilter<DEATH_CERT> CUSFilter = TableFilter.forTableView(cusllists).apply();
-			CUSFilter.setSearchStrategy((input, target) -> {
-				try {
-					return target.toLowerCase().contains(input.toLowerCase());
-				} catch (Exception e) {
-					return false;
-				}
-			});
 			Update.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
 					if (cusllists.getSelectionModel().getSelectedItem() == null) {
@@ -1003,14 +995,6 @@ public class UtilCus {
 //			HeFio.setPrefWidth(120);
 //			DIVC_DATE.setPrefWidth(120);
 
-			TableFilter<DIVORCE_CERT> CUSFilter = TableFilter.forTableView(cusllists).apply();
-			CUSFilter.setSearchStrategy((input, target) -> {
-				try {
-					return target.toLowerCase().contains(input.toLowerCase());
-				} catch (Exception e) {
-					return false;
-				}
-			});
 			Update.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
 					if (cusllists.getSelectionModel().getSelectedItem() == null) {
