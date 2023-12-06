@@ -35,6 +35,7 @@ import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -90,7 +91,7 @@ public class UpdAbhNameList {
 
 	@FXML
 	private XTableColumn<UPDATE_ABH_NAME, String> DOC_NUMBER;
-	
+
 	@FXML
 	private XTableColumn<UPDATE_ABH_NAME, String> NEW_FIRSTNAME;
 
@@ -153,7 +154,7 @@ public class UpdAbhNameList {
 				@Override
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
-						Refresh();
+						InitThread();
 					}
 					controller.dbDisconnect();
 				}
@@ -216,7 +217,7 @@ public class UpdAbhNameList {
 							delete.setLong(1, cl.getID());
 							delete.executeUpdate();
 							delete.close();
-							Refresh();
+							InitThread();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
@@ -300,7 +301,8 @@ public class UpdAbhNameList {
 	Integer from = null;
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.from = 1;
 		this.conn.setAutoCommit(false);
 	}
@@ -321,7 +323,7 @@ public class UpdAbhNameList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DbUtil.Lock_Row(docid, "UPDATE_ABH_NAME",conn);
+						String lock = DbUtil.Lock_Row(docid, "UPDATE_ABH_NAME", conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -354,10 +356,10 @@ public class UpdAbhNameList {
 									if (controller.getStatus()) {
 										conn.commit();
 										if (from == null) {
-											Refresh();
+											InitThread();
 										}
 										// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -408,7 +410,7 @@ public class UpdAbhNameList {
 												}
 												newWindow_yn.close();
 												// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-												String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME", conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -427,7 +429,7 @@ public class UpdAbhNameList {
 										conn.rollback();
 										isopen = false;
 										// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"
-										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_ABH_NAME", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -602,7 +604,87 @@ public class UpdAbhNameList {
 		PB.setVisible(false);
 	}
 
-	void Refresh() {
+	/**
+	 * ƒÓ·‡‚ÎÂÌËÂ ÒÚÓÍ ‰ËÌ‡ÏË˜ÂÒÍË
+	 */
+	void InitThread() {
+		try {
+			Task<Object> task = new Task<Object>() {
+				@Override
+				public Object call() throws Exception {
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
+					String selectStmt = "select * from VUPDATE_ABH_NAME t\r\n"
+							+ ((getWhere() != null) ? getWhere() : "");
+
+					PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+					ResultSet rs = prepStmt.executeQuery();
+
+					while (rs.next()) {
+						UPDATE_ABH_NAME list = new UPDATE_ABH_NAME();
+
+						list.setCR_DATE((rs.getDate("CR_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter) : null);
+						list.setNEW_MIDDLNAME(rs.getString("NEW_MIDDLNAME"));
+						list.setOLD_MIDDLNAME(rs.getString("OLD_MIDDLNAME"));
+						list.setOLD_FIRSTNAME(rs.getString("OLD_FIRSTNAME"));
+						list.setCR_TIME(rs.getString("CR_TIME"));
+						list.setBRN_ACT_ID(rs.getLong("BRN_ACT_ID"));
+						list.setNEW_LASTNAME(rs.getString("NEW_LASTNAME"));
+						list.setTM$DOC_DATE((rs.getDate("TM$DOC_DATE") != null) ? LocalDateTime.parse(
+								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")),
+								formatterwt) : null);
+						list.setCUSID(rs.getLong("CUSID"));
+						list.setZAGS_ID(rs.getLong("ZAGS_ID"));
+						list.setFIO(rs.getString("FIO"));
+						list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
+						list.setOPER(rs.getString("OPER"));
+						list.setSVID_SERIA(rs.getString("SVID_SERIA"));
+						list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
+						list.setID(rs.getLong("ID"));
+						list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
+						list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+						list.setOLD_LASTNAME_AB(rs.getString("OLD_LASTNAME_AB"));
+						list.setOLD_FIRSTNAME_AB(rs.getString("OLD_FIRSTNAME_AB"));
+						list.setOLD_MIDDLNAME_AB(rs.getString("OLD_MIDDLNAME_AB"));
+						list.setNEW_LASTNAME_AB(rs.getString("NEW_LASTNAME_AB"));
+						list.setNEW_FIRSTNAME_AB(rs.getString("NEW_FIRSTNAME_AB"));
+						list.setNEW_MIDDLNAME_AB(rs.getString("NEW_MIDDLNAME_AB"));
+						UPDATE_NAME.getItems().add(list);
+					}
+					prepStmt.close();
+					rs.close();
+
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							TableFilter<UPDATE_ABH_NAME> tableFilter = TableFilter.forTableView(UPDATE_NAME).apply();
+							tableFilter.setSearchStrategy((input, target) -> {
+								try {
+									return target.toLowerCase().contains(input.toLowerCase());
+								} catch (Exception e) {
+									return false;
+								}
+							});
+						}
+					});
+					
+					return null;
+				}
+			};
+			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+			// task.setOnSucceeded(e -> BlockMain());
+			exec.execute(task);
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	@Deprecated
+	void Refresh_() {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
@@ -665,7 +747,7 @@ public class UpdAbhNameList {
 
 	@FXML
 	void CmRefresh(ActionEvent event) {
-		Refresh();
+		InitThread();
 	}
 
 	@FXML
@@ -687,8 +769,8 @@ public class UpdAbhNameList {
 	void CmPrint(ActionEvent event) {
 		Print();
 	}
-	
-	public void manipulatePdf(String src, String dest) throws Exception{
+
+	public void manipulatePdf(String src, String dest) throws Exception {
 		if (UPDATE_NAME.getSelectionModel().getSelectedItem() == null) {
 			Msg.Message("¬˚·ÂËÚÂ ÒÚÓÍÛ!");
 		} else {
@@ -701,7 +783,7 @@ public class UpdAbhNameList {
 //				System.out.println(pair.getKey());
 //				it.remove(); // avoids a ConcurrentModificationException
 //			}
-			
+
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_UPDATE_ABH_NAME where ID = ?");
 			prp.setLong(1, UPDATE_NAME.getSelectionModel().getSelectedItem().getID());
 			ResultSet rs = prp.executeQuery();
@@ -746,7 +828,7 @@ public class UpdAbhNameList {
 			}
 			prp.close();
 			rs.close();
-			
+
 			stamper.close();
 			reader.close();
 		}
@@ -881,12 +963,12 @@ public class UpdAbhNameList {
 		return p;
 	}
 
-    @FXML
-    private VBox VB;
+	@FXML
+	private VBox VB;
 
-    @FXML
-    private TitledPane FILTER;
-    
+	@FXML
+	private TitledPane FILTER;
+
 	/**
 	 * »ÌËˆË‡ÎËÁ‡ˆËˇ
 	 */
@@ -894,9 +976,9 @@ public class UpdAbhNameList {
 	@FXML
 	private void initialize() {
 		try {
-			
+
 			VB.getChildren().remove(FILTER);
-			
+
 			exec = Executors.newCachedThreadPool((runnable) -> {
 				Thread t = new Thread(runnable);
 				t.setDaemon(true);
@@ -919,10 +1001,10 @@ public class UpdAbhNameList {
 			OLD_FIRSTNAME.setColumnFilter(new PatternColumnFilter<>());
 			OLD_MIDDLNAME.setColumnFilter(new PatternColumnFilter<>());
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
-			
+
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
-			Refresh();
+			// DbUtil.Run_Process(conn,getClass().getName());
+			InitThread();
 			/**
 			 * —ÚÓÎ·ˆ˚ Ú‡·ÎËˆ˚
 			 */

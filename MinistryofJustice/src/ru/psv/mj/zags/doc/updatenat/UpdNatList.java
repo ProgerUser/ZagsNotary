@@ -76,12 +76,12 @@ import ru.psv.mj.www.pl.jsolve.Variables;
 
 public class UpdNatList {
 
-    @FXML
-    private VBox VB;
+	@FXML
+	private VBox VB;
 
-    @FXML
-    private TitledPane FILTER;
-    
+	@FXML
+	private TitledPane FILTER;
+
 	@FXML
 	private Button AddBtn;
 
@@ -102,7 +102,7 @@ public class UpdNatList {
 
 	@FXML
 	private XTableColumn<VUPD_NAT, String> DOC_NUMBER;
-	
+
 	@FXML
 	private XTableView<VUPD_NAT> UPD_NAT;
 
@@ -158,7 +158,7 @@ public class UpdNatList {
 				@Override
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
-						Refresh();
+						InitThread();
 					}
 					controller.dbDisconnect();
 				}
@@ -221,8 +221,8 @@ public class UpdNatList {
 							delete.setLong(1, cl.getID());
 							delete.executeUpdate();
 							delete.close();
-							
-							Refresh();
+
+							InitThread();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
@@ -252,7 +252,8 @@ public class UpdNatList {
 	Integer from = null;
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.from = 1;
 		this.conn.setAutoCommit(false);
 	}
@@ -267,17 +268,16 @@ public class UpdNatList {
 				}
 
 				PreparedStatement selforupd = conn
-						.prepareStatement(
-								"select * from UPD_NAT where  ID = ? for update nowait");
+						.prepareStatement("select * from UPD_NAT where  ID = ? for update nowait");
 				UPD_NAT cl = Initialize2(docid);
 				selforupd.setLong(1, cl.getID());
-				//selforupd.setLong(2, cl.getCUSID());
+				// selforupd.setLong(2, cl.getCUSID());
 				try {
 					selforupd.executeQuery();
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DbUtil.Lock_Row(docid, "UPD_NAT",conn);
+						String lock = DbUtil.Lock_Row(docid, "UPD_NAT", conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -310,10 +310,10 @@ public class UpdNatList {
 									if (controller.getStatus()) {
 										conn.commit();
 										if (from == null) {
-											Refresh();
+											InitThread();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPD_NAT", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -365,7 +365,7 @@ public class UpdNatList {
 												newWindow_yn.close();
 
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DbUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "UPD_NAT", conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -384,7 +384,7 @@ public class UpdNatList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
-										String lock = DbUtil.Lock_Row_Delete(docid, "UPD_NAT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPD_NAT", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -510,19 +510,19 @@ public class UpdNatList {
 						 * if (Desktop.isDesktopSupported()) { Desktop.getDesktop().open(new
 						 * File(filename)); }
 						 */
-						//ByteArrayOutputStream out = new ByteArrayOutputStream();
+						// ByteArrayOutputStream out = new ByteArrayOutputStream();
 						// ByteArrayOutputStream out2 = new ByteArrayOutputStream();
 
-						//PdfOptions options = PdfOptions.create();
+						// PdfOptions options = PdfOptions.create();
 
-						//PdfConverter.getInstance().convert(docx.getXWPFDocument(), out, options);
+						// PdfConverter.getInstance().convert(docx.getXWPFDocument(), out, options);
 
 						// XHTMLOptions options2 = XHTMLOptions.create();
 						// docx.getXWPFDocument().createStyles();
 						// XHTMLConverter.getInstance().convert(docx.getXWPFDocument(), out2, options2);
 
 						// options2.
-						//byte[] xwpfDocumentBytes = out.toByteArray();
+						// byte[] xwpfDocumentBytes = out.toByteArray();
 
 						// byte[] xwpfDocumentBytes2 = out2.toByteArray();
 						// try (FileOutputStream stream = new FileOutputStream("D:/XWPFDocument.html"))
@@ -590,7 +590,76 @@ public class UpdNatList {
 		PB.setVisible(false);
 	}
 
-	void Refresh() {
+	/**
+	 * Добавление строк динамически
+	 */
+	void InitThread() {
+		try {
+			Task<Object> task = new Task<Object>() {
+				@Override
+				public Object call() throws Exception {
+
+					Main.logger = Logger.getLogger(getClass());
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
+					String selectStmt = "select * from VUPD_NAT t" + ((getWhere() != null) ? getWhere() : "");
+
+					PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+					ResultSet rs = prepStmt.executeQuery();
+					while (rs.next()) {
+						VUPD_NAT list = new VUPD_NAT();
+						list.setCUSID(rs.getLong("CUSID"));
+						list.setOLD_NAT(rs.getString("OLD_NAT"));
+						list.setCR_DATE((rs.getDate("CR_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter) : null);
+						list.setCR_TIME(rs.getString("CR_TIME"));
+						list.setOPER(rs.getString("OPER"));
+						list.setID(rs.getLong("ID"));
+						list.setBRN_ACT_ID(rs.getLong("BRN_ACT_ID"));
+						list.setFIO(rs.getString("FIO"));
+						list.setNEW_NAT(rs.getString("NEW_NAT"));
+						list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
+						list.setZAGS_ID(rs.getLong("ZAGS_ID"));
+						list.setTM$DOC_DATE((rs.getDate("TM$DOC_DATE") != null) ? LocalDateTime.parse(
+								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")),
+								formatterdt) : null);
+						list.setSVID_SERIA(rs.getString("SVID_SERIA"));
+						list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+
+						UPD_NAT.getItems().add(list);
+					}
+					prepStmt.close();
+					rs.close();
+
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							TableFilter<VUPD_NAT> tableFilter = TableFilter.forTableView(UPD_NAT).apply();
+							tableFilter.setSearchStrategy((input, target) -> {
+								try {
+									return target.toLowerCase().contains(input.toLowerCase());
+								} catch (Exception e) {
+									return false;
+								}
+							});
+						}
+					});
+					return null;
+				}
+			};
+			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+			// task.setOnSucceeded(e -> BlockMain());
+			exec.execute(task);
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	@Deprecated
+	void Refresh_() {
 		try {
 			Main.logger = Logger.getLogger(getClass());
 
@@ -687,7 +756,7 @@ public class UpdNatList {
 
 	@FXML
 	void CmRefresh(ActionEvent event) {
-		Refresh();
+		InitThread();
 	}
 
 	@FXML
@@ -738,15 +807,14 @@ public class UpdNatList {
 		Print();
 	}
 
-	public void manipulatePdf(String src, String dest) throws Exception{
+	public void manipulatePdf(String src, String dest) throws Exception {
 		if (UPD_NAT.getSelectionModel().getSelectedItem() == null) {
 			Msg.Message("Выберите строку!");
 		} else {
 			PdfReader reader = new PdfReader(src);
 			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
 			AcroFields fields = stamper.getAcroFields();
-		    //System.out.print(fields.getFields());
-
+			// System.out.print(fields.getFields());
 
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_UPD_NAT where ID = ?");
 			prp.setLong(1, UPD_NAT.getSelectionModel().getSelectedItem().getID());
@@ -760,7 +828,7 @@ public class UpdNatList {
 				fields.setField("Текст6", rs.getString("ABH_MM_BIRTH") + " " + rs.getString("YYYY_BIRTH") + " ш. "
 						+ rs.getString("AB_PLACE_BIRTH"));
 				fields.setField("Текст8", rs.getString("ABH_NEW_NAT"));
-				fields.setField("Текст9","");
+				fields.setField("Текст9", "");
 				fields.setField("Текст10", rs.getString("RU_YYYY"));
 				fields.setField("Текст11", rs.getString("MM"));
 				fields.setField("Текст12", rs.getString("DD"));
@@ -772,7 +840,7 @@ public class UpdNatList {
 				fields.setField("Текст18", rs.getString("RU_LNAME"));
 				fields.setField("Текст19", rs.getString("RU_FMNAME"));
 				fields.setField("Текст20", rs.getString("RU_COUNTRY"));
-				
+
 				fields.setField("Текст21", rs.getString("HE"));
 				fields.setField("Текст22", rs.getString("DD_BIRTH"));
 				fields.setField("Текст23", rs.getString("RU_MM_BIRTH"));
@@ -788,19 +856,19 @@ public class UpdNatList {
 				fields.setField("Текст33", rs.getString("ADDR"));
 				fields.setField("Текст34", rs.getString("NAME_FULL"));
 				fields.setField("Текст36", rs.getString("RU_MM"));
-				
+
 				fields.setField("Текст69", rs.getString("RU_YYYY"));
 				fields.setField("Текст71", rs.getString("ZAGS_RUK_ABH"));
 				fields.setField("Текст72", rs.getString("ZAGS_RUK"));
 			}
 			prp.close();
 			rs.close();
-			
+
 			stamper.close();
 			reader.close();
 		}
 	}
-	
+
 	Connection conn;
 
 	private void dbConnect() {
@@ -810,6 +878,7 @@ public class UpdNatList {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	public void dbDisconnect() {
 		try {
 			if (conn != null && !conn.isClosed()) {
@@ -959,8 +1028,8 @@ public class UpdNatList {
 			FIO.setColumnFilter(new PatternColumnFilter<>());
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
-			Refresh();
+			// DbUtil.Run_Process(conn,getClass().getName());
+			InitThread();
 			/**
 			 * Столбцы таблицы
 			 */

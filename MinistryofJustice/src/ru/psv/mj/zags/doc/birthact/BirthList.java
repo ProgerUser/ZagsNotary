@@ -81,8 +81,8 @@ public class BirthList {
 
 	@FXML
 	private XTableColumn<SELECTBIRTH, String> BIRTH_ACT_LD;
-    @FXML
-    private TitledPane FILTER;
+	@FXML
+	private TitledPane FILTER;
 	@FXML
 	private XTableView<SELECTBIRTH> BIRTH_ACT;
 	@FXML
@@ -121,6 +121,7 @@ public class BirthList {
 	private Button BIRTH_ACT_DELETE;
 	@FXML
 	private Button BIRTH_ACT_EDIT;
+
 	@FXML
 	void BIRTH_ACT_FILTER(ActionEvent event) {
 		try {
@@ -133,18 +134,16 @@ public class BirthList {
 		}
 	}
 
-    @FXML
-    void BtnRefresh(ActionEvent event) {
-    	InitBirths();
-    }
-    
+	@FXML
+	void BtnRefresh(ActionEvent event) {
+		InitThread();
+	}
+
 	@FXML
 	void BIRTH_ACT_PRINT(ActionEvent event) {
 		Print();
 	}
 
-	
-	
 	@FXML
 	void Spravka_25(ActionEvent event) {
 		try {
@@ -184,7 +183,7 @@ public class BirthList {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void Spravka_26(ActionEvent event) {
 		try {
@@ -205,7 +204,7 @@ public class BirthList {
 				variables.addTextVariable(new TextVariable("#{CH_PL_BR}", rs.getString("CH_PL_BR")));
 				variables.addTextVariable(new TextVariable("#{F_FIO}", rs.getString("F_FIO")));
 				variables.addTextVariable(new TextVariable("#{M_FIO}", rs.getString("M_FIO")));
-				
+
 				variables.addTextVariable(new TextVariable("#{F_NAT}", rs.getString("F_NAT")));
 				variables.addTextVariable(new TextVariable("#{M_NAT}", rs.getString("M_NAT")));
 			}
@@ -227,7 +226,7 @@ public class BirthList {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void Spravka_27(ActionEvent event) {
 		try {
@@ -248,7 +247,7 @@ public class BirthList {
 				variables.addTextVariable(new TextVariable("#{CH_PL_BR}", rs.getString("CH_PL_BR")));
 				variables.addTextVariable(new TextVariable("#{F_FIO}", rs.getString("F_FIO")));
 				variables.addTextVariable(new TextVariable("#{M_FIO}", rs.getString("M_FIO")));
-				
+
 				variables.addTextVariable(new TextVariable("#{F_NAT}", rs.getString("F_NAT")));
 				variables.addTextVariable(new TextVariable("#{M_NAT}", rs.getString("M_NAT")));
 			}
@@ -270,6 +269,7 @@ public class BirthList {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	public void Add(Stage stage_) {
 		try {
 			Logger.getLogger(getClass());
@@ -389,17 +389,17 @@ public class BirthList {
 		}
 	}
 
-    @FXML
-    void PrintBlank(ActionEvent event) {
-    	try {
+	@FXML
+	void PrintBlank(ActionEvent event) {
+		try {
 			manipulatePdf(System.getenv("MJ_PATH") + "/Reports/BRN_BIRTH_ACT.pdf",
 					System.getenv("MJ_PATH") + "/OutReports/BRN_BIRTH_ACT.pdf");
 			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/BRN_BIRTH_ACT.pdf"));
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
-    }
-    
+	}
+
 	@FXML
 	void BIRTH_ACT_ADD(ActionEvent event) {
 		Add((Stage) BIRTH_ACT.getScene().getWindow());
@@ -429,7 +429,7 @@ public class BirthList {
 
 	public void Edit(Long docid, Stage stage_) {
 		try {
-			//Проверка доступа к действию
+			// Проверка доступа к действию
 			if (DbUtil.Odb_Action(83l) == 0) {
 				Msg.Message("Нет доступа!");
 				return;
@@ -443,7 +443,7 @@ public class BirthList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DbUtil.Lock_Row(docid, "brn_birth_act",conn);
+						String lock = DbUtil.Lock_Row(docid, "brn_birth_act", conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -480,7 +480,7 @@ public class BirthList {
 										}
 										conn.commit();
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -531,7 +531,7 @@ public class BirthList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act", conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -549,7 +549,7 @@ public class BirthList {
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
-										String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "brn_birth_act", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -647,17 +647,22 @@ public class BirthList {
 		}
 	}
 
-	private void InitBirths() {
+	@SuppressWarnings("unused")
+	@Deprecated
+	private void InitBirths_() {
 		try {
+
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			// SqlMap sql = new SqlMap().load("/BirthSql.xml");
 			// String readRecordSQL = sql.getSql("SelectBirth");
-			PreparedStatement prepStmt = conn
-					.prepareStatement("select * from SelectBirth t " + ((getWhere() != null) ? getWhere() : " order by BRN_AC_ID desc"));
+			PreparedStatement prepStmt = conn.prepareStatement(
+					"select * from SelectBirth t " + ((getWhere() != null) ? getWhere() : " order by BRN_AC_ID desc"));
 			// System.out.println("select * from SelectBirth t " + getWhere());
 			ResultSet rs = prepStmt.executeQuery();
-			ObservableList<SELECTBIRTH> cus_list = FXCollections.observableArrayList();
+
+			// ObservableList<SELECTBIRTH> cus_list = FXCollections.observableArrayList();
+
 			while (rs.next()) {
 				SELECTBIRTH list = new SELECTBIRTH();
 				list.setBRN_AC_ID(rs.getLong("BRN_AC_ID"));
@@ -678,25 +683,28 @@ public class BirthList {
 						new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$_DOC_DATE")), formatterwt)
 						: null);
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
-				cus_list.add(list);
+				// cus_list.add(list);
+
+				BIRTH_ACT.getItems().add(list);
 			}
 			prepStmt.close();
 			rs.close();
-			BIRTH_ACT.setItems(cus_list);
 
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					TableFilter<SELECTBIRTH> tableFilter = TableFilter.forTableView(BIRTH_ACT).apply();
-					tableFilter.setSearchStrategy((input, target) -> {
-						try {
-							return target.toLowerCase().contains(input.toLowerCase());
-						} catch (Exception e) {
-							return false;
-						}
-					});
-				}
-			});
+//			BIRTH_ACT.setItems(cus_list);
+
+//			Platform.runLater(new Runnable() {
+//				@Override
+//				public void run() {
+//					TableFilter<SELECTBIRTH> tableFilter = TableFilter.forTableView(BIRTH_ACT).apply();
+//					tableFilter.setSearchStrategy((input, target) -> {
+//						try {
+//							return target.toLowerCase().contains(input.toLowerCase());
+//						} catch (Exception e) {
+//							return false;
+//						}
+//					});
+//				}
+//			});
 
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
@@ -752,7 +760,7 @@ public class BirthList {
 	@FXML
 	void RefreshBirthList(ActionEvent event) {
 		try {
-			InitBirths();
+			InitThread();
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
@@ -838,7 +846,7 @@ public class BirthList {
 							prst.setLong(1, id.getBRN_AC_ID());
 							prst.executeUpdate();
 							prst.close();
-							InitBirths();
+							InitThread();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
@@ -926,6 +934,70 @@ public class BirthList {
 			};
 			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
 			task.setOnSucceeded(e -> BlockMain());
+			exec.execute(task);
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
+	 * Добавление строк динамически
+	 */
+	void InitThread() {
+		try {
+			Task<Object> task = new Task<Object>() {
+				@Override
+				public Object call() throws Exception {
+
+					DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					PreparedStatement prepStmt = conn.prepareStatement("select * from SelectBirth t "
+							+ ((getWhere() != null) ? getWhere() : " order by BRN_AC_ID desc"));
+					ResultSet rs = prepStmt.executeQuery();
+
+					while (rs.next()) {
+						SELECTBIRTH list = new SELECTBIRTH();
+						list.setBRN_AC_ID(rs.getLong("BRN_AC_ID"));
+						list.setBR_ACT_F(rs.getLong("BR_ACT_F"));
+						list.setBR_ACT_M(rs.getLong("BR_ACT_M"));
+						list.setFFIO(rs.getString("FFIO"));
+						list.setLIVE_DEAD(rs.getString("LIVE_DEAD"));
+						list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
+						list.setBR_ACT_CH(rs.getLong("BR_ACT_CH"));
+						list.setBR_ACT_USER(rs.getString("BR_ACT_USER"));
+						list.setMFIO(rs.getString("MFIO"));
+						list.setCR_TIME(rs.getString("CR_TIME"));
+						list.setCHILDREN_FIO(rs.getString("CHILDREN_FIO"));
+						list.setCR_DATE((rs.getDate("CR_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter) : null);
+						list.setTM$_DOC_DATE((rs.getDate("TM$_DOC_DATE") != null) ? LocalDateTime.parse(
+								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$_DOC_DATE")),
+								formatterwt) : null);
+						list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+						BIRTH_ACT.getItems().add(list);
+					}
+					prepStmt.close();
+					rs.close();
+				
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							TableFilter<SELECTBIRTH> tableFilter = TableFilter.forTableView(BIRTH_ACT).apply();
+							tableFilter.setSearchStrategy((input, target) -> {
+								try {
+									return target.toLowerCase().contains(input.toLowerCase());
+								} catch (Exception e) {
+									return false;
+								}
+							});
+						}
+					});
+					return null;
+				}
+			};
+			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+			//task.setOnSucceeded(e -> BlockMain());
 			exec.execute(task);
 
 		} catch (Exception e) {
@@ -1205,7 +1277,8 @@ public class BirthList {
 	Integer from = null;
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.from = 1;
 		this.conn.setAutoCommit(false);
 	}
@@ -1250,9 +1323,9 @@ public class BirthList {
 	@FXML
 	private DatePicker DT2;
 
-    @FXML
-    private VBox VB;
-    
+	@FXML
+	private VBox VB;
+
 	/**
 	 * Инициализация
 	 */
@@ -1261,9 +1334,9 @@ public class BirthList {
 	private void initialize() {
 		try {
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
+			// DbUtil.Run_Process(conn,getClass().getName());
 			VB.getChildren().remove(FILTER);
-			
+
 			ROOT.setBottom(createOptionPane(BIRTH_ACT));
 
 			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
@@ -1281,7 +1354,7 @@ public class BirthList {
 			FFIO.setColumnFilter(new PatternColumnFilter<>());
 			BR_ACT_USER.setColumnFilter(new PatternColumnFilter<>());
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
-			
+
 			DateAutoComma(DT1);
 			DateAutoComma(DT2);
 
@@ -1290,7 +1363,8 @@ public class BirthList {
 				t.setDaemon(true);
 				return t;
 			});
-			InitBirths();
+			//InitBirths();
+			InitThread();
 			// двойной щелчок
 			BIRTH_ACT.setRowFactory(tv -> {
 				TableRow<SELECTBIRTH> row = new TableRow<>();

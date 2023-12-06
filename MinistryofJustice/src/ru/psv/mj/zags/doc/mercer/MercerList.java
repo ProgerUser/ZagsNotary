@@ -35,6 +35,7 @@ import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -95,7 +96,7 @@ public class MercerList {
 
 	@FXML
 	private XTableColumn<MC_MERCER, String> DOC_NUMBER;
-	
+
 	@FXML
 	private XTableColumn<MC_MERCER, String> SheFio;
 
@@ -114,7 +115,6 @@ public class MercerList {
 	@FXML
 	private XTableColumn<MC_MERCER, String> CR_TIME;
 
-	
 	@FXML
 	void Spravka_28(ActionEvent event) {
 		try {
@@ -137,7 +137,7 @@ public class MercerList {
 				variables.addTextVariable(new TextVariable("#{SHE_AFT_LNAME}", rs.getString("SHE_AFT_LNAME")));
 				variables.addTextVariable(new TextVariable("#{HE_AFT_LNAME}", rs.getString("HE_AFT_LNAME")));
 				variables.addTextVariable(new TextVariable("#{DOC_DATE}", rs.getString("DOC_DATE")));
-				
+
 			}
 			rs.close();
 			prepStmt.close();
@@ -157,7 +157,7 @@ public class MercerList {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void Spravka_29(ActionEvent event) {
 		try {
@@ -199,7 +199,7 @@ public class MercerList {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	void Add() {
 		try {
 
@@ -227,7 +227,7 @@ public class MercerList {
 				@Override
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
-						Refresh();
+						InitThread();
 					}
 					controller.dbDisconnect();
 				}
@@ -292,7 +292,7 @@ public class MercerList {
 							delete.setLong(1, cl.getMERCER_ID());
 							delete.executeUpdate();
 							delete.close();
-							Refresh();
+							InitThread();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
@@ -322,7 +322,7 @@ public class MercerList {
 	MC_MERCER Initialize2(Long docid) {
 		MC_MERCER list = null;
 		try {
-			
+
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
@@ -395,7 +395,7 @@ public class MercerList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DbUtil.Lock_Row(docid, "MC_MERCER",conn);
+						String lock = DbUtil.Lock_Row(docid, "MC_MERCER", conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -426,10 +426,10 @@ public class MercerList {
 									if (controller.getStatus()) {
 										conn.commit();
 										if (from == null) {
-											Refresh();
+											InitThread();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -480,7 +480,7 @@ public class MercerList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER", conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -494,12 +494,12 @@ public class MercerList {
 										newWindow_yn.setResizable(false);
 										newWindow_yn.getIcons().add(new Image("/icon.png"));
 										newWindow_yn.showAndWait();
-									}// Если нажали "X" или "Cancel" и до этого ничего не меняли
+									} // Если нажали "X" или "Cancel" и до этого ничего не меняли
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "MC_MERCER", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -706,12 +706,94 @@ public class MercerList {
 
 	private Executor exec;
 
-	void Refresh() {
+	/**
+	 * Добавление строк динамически
+	 */
+	void InitThread() {
+		try {
+			Task<Object> task = new Task<Object>() {
+				@Override
+				public Object call() throws Exception {
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+					String selectStmt = "select * from vmc_mercer t\n "
+							+ ((getWhere() != null) ? getWhere() : " order by MERCER_ID desc");
+
+					PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+					ResultSet rs = prepStmt.executeQuery();
+					while (rs.next()) {
+						MC_MERCER list = new MC_MERCER();
+						list.setTM$MERCER_DATE((rs.getDate("TM$MERCER_DATE") != null) ? LocalDateTime.parse(
+								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$MERCER_DATE")),
+								formatterwt) : null);
+						list.setMERCER_DIESHE(rs.getLong("MERCER_DIESHE"));
+						list.setMERCER_DIVSHE(rs.getLong("MERCER_DIVSHE"));
+						list.setMERCER_DIEHE(rs.getLong("MERCER_DIEHE"));
+						list.setMERCER_USR(rs.getString("MERCER_USR"));
+						list.setMERCER_HEAGE(rs.getLong("MERCER_HEAGE"));
+						list.setMERCER_HE(rs.getLong("MERCER_HE"));
+						list.setMERCER_NUM(rs.getString("MERCER_NUM"));
+						list.setCR_TIME(rs.getString("CR_TIME"));
+						list.setMERCER_SHE_LNBEF(rs.getString("MERCER_SHE_LNBEF"));
+						list.setMERCER_DIVHE(rs.getLong("MERCER_DIVHE"));
+						list.setMERCER_DSPMT_SHE(rs.getString("MERCER_DSPMT_SHE"));
+						list.setCR_DATE((rs.getDate("CR_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter) : null);
+						list.setMERCER_DSPMT_HE(rs.getString("MERCER_DSPMT_HE"));
+						list.setMERCER_SERIA(rs.getString("MERCER_SERIA"));
+						list.setMERCER_OTHER(rs.getString("MERCER_OTHER"));
+						list.setMERCER_SHE_LNBAFT(rs.getString("MERCER_SHE_LNBAFT"));
+						list.setMERCER_ID(rs.getLong("MERCER_ID"));
+						list.setHEFIO(rs.getString("HEFIO"));
+						list.setMERCER_SHEAGE(rs.getLong("MERCER_SHEAGE"));
+						list.setSHEFIO(rs.getString("SHEFIO"));
+						list.setMERCER_SHE(rs.getLong("MERCER_SHE"));
+						list.setMERCER_HE_LNBEF(rs.getString("MERCER_HE_LNBEF"));
+						list.setMERCER_ZAGS(rs.getLong("MERCER_ZAGS"));
+						list.setMERCER_HE_LNAFT(rs.getString("MERCER_HE_LNAFT"));
+						list.setMC_DATE((rs.getDate("MC_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MC_DATE")), formatter) : null);
+						list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+
+						MC_MERCER.getItems().add(list);
+					}
+					prepStmt.close();
+					rs.close();
+
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							TableFilter<MC_MERCER> tableFilter = TableFilter.forTableView(MC_MERCER).apply();
+							tableFilter.setSearchStrategy((input, target) -> {
+								try {
+									return target.toLowerCase().contains(input.toLowerCase());
+								} catch (Exception e) {
+									return false;
+								}
+							});
+						}
+					});
+					return null;
+				}
+			};
+			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+			// task.setOnSucceeded(e -> BlockMain());
+			exec.execute(task);
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	@Deprecated
+	void Refresh_() {
 		try {
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			String selectStmt = "select * from vmc_mercer t\n " + ((getWhere() != null) ? getWhere() : " order by MERCER_ID desc");
+			String selectStmt = "select * from vmc_mercer t\n "
+					+ ((getWhere() != null) ? getWhere() : " order by MERCER_ID desc");
 
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
@@ -773,7 +855,7 @@ public class MercerList {
 
 	@FXML
 	void CmRefresh(ActionEvent event) {
-		Refresh();
+		InitThread();
 	}
 
 	@FXML
@@ -820,7 +902,7 @@ public class MercerList {
 	void BtDelete(ActionEvent event) {
 		Delete();
 	}
-	
+
 	public void manipulatePdf(String src, String dest) throws Exception {
 		if (MC_MERCER.getSelectionModel().getSelectedItem() == null) {
 			Msg.Message("Выберите строку!");
@@ -906,7 +988,7 @@ public class MercerList {
 			reader.close();
 		}
 	}
-	
+
 	@FXML
 	void BtPrintBlank(ActionEvent event) {
 		try {
@@ -917,7 +999,7 @@ public class MercerList {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void BtPrint(ActionEvent event) {
 		Print();
@@ -1012,19 +1094,19 @@ public class MercerList {
 		return p;
 	}
 
-    @FXML
-    private VBox VB;
-    
-    @FXML
-    private TitledPane FILTER;
-    
+	@FXML
+	private VBox VB;
+
+	@FXML
+	private TitledPane FILTER;
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
 	private void initialize() {
 		try {
-			
+
 			VB.getChildren().remove(FILTER);
-			
+
 			exec = Executors.newCachedThreadPool((runnable) -> {
 				Thread t = new Thread(runnable);
 				t.setDaemon(true);
@@ -1035,20 +1117,20 @@ public class MercerList {
 			ROOT.setBottom(createOptionPane(MC_MERCER));
 
 			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
-			
+
 			MERCER_ID.setColumnFilter(new ComparableColumnFilter(new ComparableFilterModel(rules),
 					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
-			
+
 			OPER.setColumnFilter(new PatternColumnFilter<>());
 			CR_DATE.setColumnFilter(new DateColumnFilter<>());
 			CR_TIME.setColumnFilter(new PatternColumnFilter<>());
 			SheFio.setColumnFilter(new PatternColumnFilter<>());
 			HeFio.setColumnFilter(new PatternColumnFilter<>());
-			
+
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
-			
+
 			dbConnect();
-			Refresh();
+			InitThread();
 			/**
 			 * Столбцы таблицы
 			 */
@@ -1172,7 +1254,8 @@ public class MercerList {
 	Integer from = null;
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.from = 1;
 		this.conn.setAutoCommit(false);
 	}

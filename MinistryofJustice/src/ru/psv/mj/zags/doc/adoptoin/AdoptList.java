@@ -113,7 +113,7 @@ public class AdoptList {
 	private VBox VB;
 	@FXML
 	private TitledPane FILTER;
-	
+
 	@FXML
 	void Spravka_31(ActionEvent event) {
 		try {
@@ -156,8 +156,8 @@ public class AdoptList {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
-	public void manipulatePdf(String src, String dest) throws Exception{
+
+	public void manipulatePdf(String src, String dest) throws Exception {
 		if (ADOPTOIN.getSelectionModel().getSelectedItem() == null) {
 			Msg.Message("Выберите строку!");
 		} else {
@@ -170,7 +170,7 @@ public class AdoptList {
 //				System.out.println(pair.getKey());
 //				it.remove(); // avoids a ConcurrentModificationException
 //			}
-			
+
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_ADOPTOIN where ID = ?");
 			prp.setLong(1, ADOPTOIN.getSelectionModel().getSelectedItem().getID());
 			ResultSet rs = prp.executeQuery();
@@ -232,24 +232,25 @@ public class AdoptList {
 				fields.setField("Текст88", rs.getString("F88"));
 				fields.setField("Текст89", rs.getString("F89"));
 				fields.setField("Текст90", rs.getString("F90"));
-				fields.setField("Текст91",rs.getString("F91") );
-				fields.setField("Текст92",rs.getString("F92") );
-				fields.setField("Текст93",rs.getString("F93") );
-				fields.setField("Текст94",rs.getString("F94") );
-				fields.setField("Текст95",rs.getString("F30") );
-				fields.setField("Текст96",rs.getString("F96") );
-				fields.setField("Текст97",rs.getString("F97") );
-				fields.setField("Текст98","" );
-				fields.setField("Текст100",rs.getString("F100") );
+				fields.setField("Текст91", rs.getString("F91"));
+				fields.setField("Текст92", rs.getString("F92"));
+				fields.setField("Текст93", rs.getString("F93"));
+				fields.setField("Текст94", rs.getString("F94"));
+				fields.setField("Текст95", rs.getString("F30"));
+				fields.setField("Текст96", rs.getString("F96"));
+				fields.setField("Текст97", rs.getString("F97"));
+				fields.setField("Текст98", "");
+				fields.setField("Текст100", rs.getString("F100"));
 
 			}
 			prp.close();
 			rs.close();
-			
+
 			stamper.close();
 			reader.close();
 		}
 	}
+
 	@FXML
 	void PrintBlank(ActionEvent event) {
 		try {
@@ -260,7 +261,7 @@ public class AdoptList {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	private Pane createOptionPane(XTableView<?> table) {
 		FlowPane pane = new FlowPane(10, 10);
 		pane.setStyle("-fx-padding: 10 4");
@@ -311,7 +312,7 @@ public class AdoptList {
 				@Override
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
-						Refresh();
+						InitThread();
 					}
 					controller.dbDisconnect();
 				}
@@ -368,7 +369,7 @@ public class AdoptList {
 							ADOPTOIN cl = ADOPTOIN.getSelectionModel().getSelectedItem();
 							delete.setLong(1, cl.getID());
 							delete.executeUpdate();
-							Refresh();
+							InitThread();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
@@ -458,20 +459,19 @@ public class AdoptList {
 						: null);
 				list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
-				
+
 				list.setOLD_LASTNAME_AB(rs.getString("OLD_LASTNAME_AB"));
 				list.setOLD_FIRSTNAME_AB(rs.getString("OLD_FIRSTNAME_AB"));
 				list.setOLD_MIDDLNAME_AB(rs.getString("OLD_MIDDLNAME_AB"));
 				list.setNEW_LASTNAME_AB(rs.getString("NEW_LASTNAME_AB"));
 				list.setNEW_FIRSTNAME_AB(rs.getString("NEW_FIRSTNAME_AB"));
 				list.setNEW_MIDDLNAME_AB(rs.getString("NEW_MIDDLNAME_AB"));
-				
+
 				list.setGR_ADOPT(rs.getString("GR_ADOPT"));
 				list.setGR_COURT_DATE((rs.getDate("GR_COURT_DATE") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("GR_COURT_DATE")), formatter) : null);
 				list.setGR_COURT(rs.getLong("GR_COURT"));
 
-				
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -485,7 +485,8 @@ public class AdoptList {
 	Integer from = null;
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.from = 1;
 		this.conn.setAutoCommit(false);
 	}
@@ -502,7 +503,7 @@ public class AdoptList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DbUtil.Lock_Row(docid, "ADOPTOIN",conn);
+						String lock = DbUtil.Lock_Row(docid, "ADOPTOIN", conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -536,10 +537,10 @@ public class AdoptList {
 										conn.commit();
 
 										if (from == null) {
-											Refresh();
+											InitThread();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "ADOPTOIN",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "ADOPTOIN", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -590,7 +591,7 @@ public class AdoptList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DbUtil.Lock_Row_Delete(docid, "ADOPTOIN",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "ADOPTOIN", conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -608,7 +609,7 @@ public class AdoptList {
 									else if (!controller.getStatus() & CompareBeforeClose(docid) == 0) {
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "ADOPTOIN",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "ADOPTOIN", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -824,7 +825,102 @@ public class AdoptList {
 		}
 	}
 
-	void Refresh() {
+	/**
+	 * Добавление строк динамически
+	 */
+	void InitThread() {
+		try {
+			Task<Object> task = new Task<Object>() {
+				@Override
+				public Object call() throws Exception {
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					String selectStmt = "select * from VADOPTOIN t" + ((getWhere() != null) ? getWhere() : "");
+					PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+					ResultSet rs = prepStmt.executeQuery();
+					while (rs.next()) {
+						ADOPTOIN list = new ADOPTOIN();
+
+						list.setOLD_MIDDLNAME(rs.getString("OLD_MIDDLNAME"));
+						list.setZAGS_ID(rs.getLong("ZAGS_ID"));
+						list.setZAP_SOVET_DEP_TRUD(rs.getString("ZAP_SOVET_DEP_TRUD"));
+						list.setNEW_MIDDLNAME(rs.getString("NEW_MIDDLNAME"));
+						list.setADMOTHERFIO(rs.getString("ADMOTHERFIO"));
+						list.setID(rs.getLong("ID"));
+						list.setCUSID_M(rs.getLong("CUSID_M"));
+						list.setBRN_CITY(rs.getString("BRN_CITY"));
+						list.setZAP_ISPOLKOM_RESH(rs.getString("ZAP_ISPOLKOM_RESH"));
+						list.setOLD_BRTH((rs.getDate("OLD_BRTH") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("OLD_BRTH")), formatter) : null);
+						list.setBRN_AREA(rs.getString("BRN_AREA"));
+						list.setCHILDRENFIO(rs.getString("CHILDRENFIO"));
+						list.setZAP_NUMBER(rs.getString("ZAP_NUMBER"));
+						list.setFATHERFIO(rs.getString("FATHERFIO"));
+						list.setCUSID_F_AD(rs.getLong("CUSID_F_AD"));
+						list.setCUSID_F(rs.getLong("CUSID_F"));
+						list.setADFATHERFIO(rs.getString("ADFATHERFIO"));
+						list.setSVID_NOMER(rs.getString("SVID_NOMER"));
+						list.setNEW_LASTNAME(rs.getString("NEW_LASTNAME"));
+						list.setBRNACT(rs.getLong("BRNACT"));
+						list.setCR_TIME(rs.getString("CR_TIME"));
+						list.setCUSID_CH(rs.getLong("CUSID_CH"));
+						list.setOPER(rs.getString("OPER"));
+						list.setOLD_FIRSTNAME(rs.getString("OLD_FIRSTNAME"));
+						list.setADOPT_PARENTS(rs.getString("ADOPT_PARENTS"));
+						list.setZAGS_NAME(rs.getString("ZAGS_NAME"));
+						list.setMOTHERFIO(rs.getString("MOTHERFIO"));
+						list.setDOC_DATE((rs.getDate("DOC_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DOC_DATE")), formatter) : null);
+						list.setBRN_OBL_RESP(rs.getString("BRN_OBL_RESP"));
+						list.setSVID_SERIA(rs.getString("SVID_SERIA"));
+						list.setNEW_BRTH((rs.getDate("NEW_BRTH") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("NEW_BRTH")), formatter) : null);
+						list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
+						list.setCUSID_M_AD(rs.getLong("CUSID_M_AD"));
+						list.setZAP_DATE((rs.getDate("ZAP_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("ZAP_DATE")), formatter) : null);
+						list.setCR_DATE((rs.getDate("CR_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter) : null);
+						list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
+						list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+
+						list.setGR_ADOPT(rs.getString("GR_ADOPT"));
+						list.setGR_COURT_DATE((rs.getDate("GR_COURT_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("GR_COURT_DATE")), formatter)
+								: null);
+						list.setGR_COURT(rs.getLong("GR_COURT"));
+						ADOPTOIN.getItems().add(list);
+					}
+					prepStmt.close();
+					rs.close();
+
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							TableFilter<ADOPTOIN> tableFilter = TableFilter.forTableView(ADOPTOIN).apply();
+							tableFilter.setSearchStrategy((input, target) -> {
+								try {
+									return target.toLowerCase().contains(input.toLowerCase());
+								} catch (Exception e) {
+									return false;
+								}
+							});
+						}
+					});
+					return null;
+				}
+			};
+			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+			// task.setOnSucceeded(e -> BlockMain());
+			exec.execute(task);
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	@Deprecated
+	void Refresh_() {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			// DateTimeFormatter formatterdt = DateTimeFormatter.ofPattern("dd.MM.yyyy
@@ -885,7 +981,7 @@ public class AdoptList {
 						: null);
 				list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
-				
+
 				list.setGR_ADOPT(rs.getString("GR_ADOPT"));
 				list.setGR_COURT_DATE((rs.getDate("GR_COURT_DATE") != null) ? LocalDate.parse(
 						new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("GR_COURT_DATE")), formatter) : null);
@@ -917,7 +1013,7 @@ public class AdoptList {
 
 	@FXML
 	void CmRefresh(ActionEvent event) {
-		Refresh();
+		InitThread();
 	}
 
 	@FXML
@@ -1044,7 +1140,7 @@ public class AdoptList {
 	private void initialize() {
 		try {
 			VB.getChildren().remove(FILTER);
-			
+
 			ROOT.setBottom(createOptionPane(ADOPTOIN));
 
 			exec = Executors.newCachedThreadPool((runnable) -> {
@@ -1069,8 +1165,9 @@ public class AdoptList {
 					TextFormatterFactory.LONG_TEXTFORMATTER_FACTORY));
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
-			Refresh();
+			// DbUtil.Run_Process(conn,getClass().getName());
+			//Refresh();
+			InitThread();
 			/**
 			 * Столбцы таблицы
 			 */

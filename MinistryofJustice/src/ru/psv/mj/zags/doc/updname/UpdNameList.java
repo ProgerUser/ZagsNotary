@@ -52,6 +52,7 @@ import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -110,7 +111,7 @@ public class UpdNameList {
 
 	@FXML
 	private XTableColumn<UPDATE_NAME, String> DOC_NUMBER;
-	
+
 	@FXML
 	private XTableColumn<UPDATE_NAME, String> OLD_LASTNAME;
 
@@ -226,7 +227,7 @@ public class UpdNameList {
 				@Override
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
-						Refresh();
+						InitThread();
 					}
 					controller.dbDisconnect();
 				}
@@ -290,7 +291,7 @@ public class UpdNameList {
 							delete.setLong(1, cl.getID());
 							delete.executeUpdate();
 							delete.close();
-							Refresh();
+							InitThread();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
@@ -370,7 +371,8 @@ public class UpdNameList {
 	Integer from = null;
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.from = 1;
 		this.conn.setAutoCommit(false);
 	}
@@ -393,7 +395,7 @@ public class UpdNameList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DbUtil.Lock_Row(docid, "UPDATE_NAME",conn);
+						String lock = DbUtil.Lock_Row(docid, "UPDATE_NAME", conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -426,10 +428,10 @@ public class UpdNameList {
 									if (controller.getStatus()) {
 										conn.commit();
 										if (from == null) {
-											Refresh();
+											InitThread();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_NAME",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_NAME", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -480,7 +482,7 @@ public class UpdNameList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_NAME",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_NAME", conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -499,7 +501,7 @@ public class UpdNameList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"
-										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_NAME",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "UPDATE_NAME", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -823,9 +825,87 @@ public class UpdNameList {
 	DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-	void Refresh() {
+	/**
+	 * Добавление строк динамически
+	 */
+	void InitThread() {
 		try {
-			String selectStmt = "select * from VUPDATE_NAME t\r\n" + ((getWhere() != null) ? getWhere() : " order by ID desc");
+			Task<Object> task = new Task<Object>() {
+				@Override
+				public Object call() throws Exception {
+
+					String selectStmt = "select * from VUPDATE_NAME t\r\n"
+							+ ((getWhere() != null) ? getWhere() : " order by ID desc");
+
+					PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+					ResultSet rs = prepStmt.executeQuery();
+					while (rs.next()) {
+						UPDATE_NAME list = new UPDATE_NAME();
+
+						list.setID(rs.getLong("ID"));
+						list.setOPER(rs.getString("OPER"));
+						list.setBRN_ACT_ID(rs.getLong("BRN_ACT_ID"));
+						list.setNEW_LASTNAME(rs.getString("NEW_LASTNAME"));
+						list.setSVID_NUMBER(rs.getString("SVID_NUMBER"));
+						list.setCUSID(rs.getLong("CUSID"));
+						list.setCR_TIME(rs.getString("CR_TIME"));
+						list.setFIO(rs.getString("FIO"));
+						list.setCR_DATE((rs.getDate("CR_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter) : null);
+						list.setNEW_FIRSTNAME(rs.getString("NEW_FIRSTNAME"));
+						list.setOLD_LASTNAME(rs.getString("OLD_LASTNAME"));
+						list.setOLD_FIRSTNAME(rs.getString("OLD_FIRSTNAME"));
+						list.setZAGS_ID(rs.getLong("ZAGS_ID"));
+						list.setOLD_MIDDLNAME(rs.getString("OLD_MIDDLNAME"));
+						list.setNEW_MIDDLNAME(rs.getString("NEW_MIDDLNAME"));
+						list.setSVID_SERIA(rs.getString("SVID_SERIA"));
+						list.setTM$DOC_DATE((rs.getDate("TM$DOC_DATE") != null) ? LocalDateTime.parse(
+								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DOC_DATE")),
+								formatterwt) : null);
+						list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+						list.setOLD_LASTNAME_AB(rs.getString("OLD_LASTNAME_AB"));
+						list.setOLD_FIRSTNAME_AB(rs.getString("OLD_FIRSTNAME_AB"));
+						list.setOLD_MIDDLNAME_AB(rs.getString("OLD_MIDDLNAME_AB"));
+						list.setNEW_LASTNAME_AB(rs.getString("NEW_LASTNAME_AB"));
+						list.setNEW_FIRSTNAME_AB(rs.getString("NEW_FIRSTNAME_AB"));
+						list.setNEW_MIDDLNAME_AB(rs.getString("NEW_MIDDLNAME_AB"));
+
+						UPDATE_NAME.getItems().add(list);
+					}
+					prepStmt.close();
+					rs.close();
+
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							TableFilter<UPDATE_NAME> tableFilter = TableFilter.forTableView(UPDATE_NAME).apply();
+							tableFilter.setSearchStrategy((input, target) -> {
+								try {
+									return target.toLowerCase().contains(input.toLowerCase());
+								} catch (Exception e) {
+									return false;
+								}
+							});
+						}
+					});
+					
+					return null;
+				}
+			};
+			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+			// task.setOnSucceeded(e -> BlockMain());
+			exec.execute(task);
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	@Deprecated
+	void Refresh_() {
+		try {
+			String selectStmt = "select * from VUPDATE_NAME t\r\n"
+					+ ((getWhere() != null) ? getWhere() : " order by ID desc");
 
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
@@ -883,7 +963,7 @@ public class UpdNameList {
 
 	@FXML
 	void CmRefresh(ActionEvent event) {
-		Refresh();
+		InitThread();
 	}
 
 	@FXML
@@ -928,7 +1008,7 @@ public class UpdNameList {
 	void BtDelete(ActionEvent event) {
 		Delete();
 	}
-	
+
 	@FXML
 	void BtPrintBlank(ActionEvent event) {
 		try {
@@ -939,7 +1019,7 @@ public class UpdNameList {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	@FXML
 	void BtPrint(ActionEvent event) {
 		Print();
@@ -1042,12 +1122,12 @@ public class UpdNameList {
 		p.setStyle("-fx-border-insets: 10 0 0 0");
 		return p;
 	}
-	
-    @FXML
-    private VBox VB;
 
-    @FXML
-    private TitledPane FILTER;
+	@FXML
+	private VBox VB;
+
+	@FXML
+	private TitledPane FILTER;
 
 	public void manipulatePdf(String src, String dest) throws DocumentException, IOException, SQLException {
 		if (UPDATE_NAME.getSelectionModel().getSelectedItem() == null) {
@@ -1060,7 +1140,7 @@ public class UpdNameList {
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_UPDATE_NAME where ID = ?");
 			prp.setLong(1, UPDATE_NAME.getSelectionModel().getSelectedItem().getID());
 			ResultSet rs = prp.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				fields.setField("Текст20", rs.getString("RU_LNAME"));
 				fields.setField("Текст21", rs.getString("RU_FMNAME"));
 				fields.setField("Текст40", rs.getString("YYYY_BIRTH"));
@@ -1109,7 +1189,7 @@ public class UpdNameList {
 			reader.close();
 		}
 	}
-    
+
 	/**
 	 * Инициализация
 	 */
@@ -1125,7 +1205,7 @@ public class UpdNameList {
 			});
 
 			VB.getChildren().remove(FILTER);
-			
+
 			SyntheticaFX.init("com.jyloo.syntheticafx.SyntheticaFXModena");
 			ROOT.setBottom(createOptionPane(UPDATE_NAME));
 			ObservableList rules = FXCollections.observableArrayList(ComparisonType.values());
@@ -1142,10 +1222,10 @@ public class UpdNameList {
 			OLD_FIRSTNAME.setColumnFilter(new PatternColumnFilter<>());
 			OLD_MIDDLNAME.setColumnFilter(new PatternColumnFilter<>());
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
-			
+
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
-			Refresh();
+			// DbUtil.Run_Process(conn,getClass().getName());
+			InitThread();
 			/**
 			 * Столбцы таблицы
 			 */

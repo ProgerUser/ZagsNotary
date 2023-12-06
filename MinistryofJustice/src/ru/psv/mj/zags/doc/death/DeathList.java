@@ -35,6 +35,7 @@ import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -203,7 +204,7 @@ public class DeathList {
 				@Override
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
-						Refresh();
+						InitThread();
 					}
 					controller.dbDisconnect();
 				}
@@ -269,7 +270,7 @@ public class DeathList {
 							delete.executeUpdate();
 							delete.close();
 
-							Refresh();
+							InitThread();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
@@ -383,7 +384,7 @@ public class DeathList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DbUtil.Lock_Row(docid, "DEATH_CERT",conn);
+						String lock = DbUtil.Lock_Row(docid, "DEATH_CERT", conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -416,10 +417,10 @@ public class DeathList {
 									if (controller.getStatus()) {
 										conn.commit();
 										if (from == null) {
-											Refresh();
+											InitThread();
 										}
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "DEATH_CERT", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -470,7 +471,7 @@ public class DeathList {
 												}
 												newWindow_yn.close();
 												// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-												String lock = DbUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "DEATH_CERT", conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -490,7 +491,7 @@ public class DeathList {
 										conn.rollback();
 										isopen = false;
 										// УДАЛИТЬ ЗАПИСЬ О "ЛОЧКЕ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "DEATH_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "DEATH_CERT", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -662,9 +663,93 @@ public class DeathList {
 	private Executor exec;
 
 	/**
+	 * Добавление строк динамически
+	 */
+	void InitThread() {
+		try {
+			Task<Object> task = new Task<Object>() {
+				@Override
+				public Object call() throws Exception {
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+					String selectStmt = "select * from vdeath_cert t " + ((getWhere() != null) ? getWhere() : "");
+					PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+					ResultSet rs = prepStmt.executeQuery();
+
+					while (rs.next()) {
+						DEATH_CERT list = new DEATH_CERT();
+
+						list.setDBDATE((rs.getDate("DBDATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DBDATE")), formatter) : null);
+						list.setDC_FADORG_NAME(rs.getString("DC_FADORG_NAME"));
+						list.setDC_FTYPE(rs.getString("DC_FTYPE"));
+						list.setDC_USR(rs.getString("DC_USR"));
+						list.setDC_LLOC(rs.getString("DC_LLOC"));
+						list.setCR_DATE((rs.getDate("CR_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter) : null);
+						list.setDC_NUMBER(rs.getString("DC_NUMBER"));
+						list.setDC_FNUM(rs.getString("DC_FNUM"));
+						list.setDC_ZTP(rs.getString("DC_ZTP"));
+						list.setDC_DPL(rs.getString("DC_DPL"));
+						list.setDFIO(rs.getString("DFIO"));
+						list.setDC_FADLAST_NAME(rs.getString("DC_FADLAST_NAME"));
+						list.setDC_FMON(rs.getString("DC_FMON"));
+						list.setDC_FADREG_ADR(rs.getString("DC_FADREG_ADR"));
+						list.setTM$DC_OPEN((rs.getDate("TM$DC_OPEN") != null) ? LocalDateTime.parse(
+								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DC_OPEN")),
+								formatterwt) : null);
+						list.setDC_FD((rs.getDate("DC_FD") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DC_FD")), formatter) : null);
+						list.setDC_NRNAME(rs.getString("DC_NRNAME"));
+						list.setDC_FADMIDDLE_NAME(rs.getString("DC_FADMIDDLE_NAME"));
+						list.setDC_RCNAME(rs.getLong("DC_RCNAME"));
+						list.setDC_FADFIRST_NAME(rs.getString("DC_FADFIRST_NAME"));
+						list.setDC_FADLOCATION(rs.getString("DC_FADLOCATION"));
+						list.setDC_ID(rs.getLong("DC_ID"));
+						list.setDC_CUS(rs.getLong("DC_CUS"));
+						list.setDC_CD(rs.getString("DC_CD"));
+						list.setDC_ZAGS(rs.getLong("DC_ZAGS"));
+						list.setDC_DD((rs.getDate("DC_DD") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DC_DD")), formatter) : null);
+						list.setDC_SERIA(rs.getString("DC_SERIA"));
+						list.setCR_TIME(rs.getString("CR_TIME"));
+						list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+						DEATH_CERT.getItems().add(list);
+					}
+					prepStmt.close();
+					rs.close();
+
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							TableFilter<DEATH_CERT> tableFilter = TableFilter.forTableView(DEATH_CERT).apply();
+							tableFilter.setSearchStrategy((input, target) -> {
+								try {
+									return target.toLowerCase().contains(input.toLowerCase());
+								} catch (Exception e) {
+									return false;
+								}
+							});
+						}
+					});
+					return null;
+				}
+			};
+			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+			// task.setOnSucceeded(e -> BlockMain());
+			exec.execute(task);
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
 	 * Обновить таблицу
 	 */
-	void Refresh() {
+	@Deprecated
+	void Refresh_() {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
@@ -741,7 +826,7 @@ public class DeathList {
 	 */
 	@FXML
 	void CmRefresh(ActionEvent event) {
-		Refresh();
+		InitThread();
 	}
 
 	@FXML
@@ -1099,8 +1184,8 @@ public class DeathList {
 			DC_DD.setColumnFilter(new DateColumnFilter<>());
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
-			Refresh();
+			// DbUtil.Run_Process(conn,getClass().getName());
+			InitThread();
 			/**
 			 * Столбцы таблицы
 			 */
@@ -1229,7 +1314,8 @@ public class DeathList {
 	Integer from = null;
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.from = 1;
 		this.conn.setAutoCommit(false);
 	}

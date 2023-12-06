@@ -35,6 +35,7 @@ import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -82,13 +83,12 @@ import ru.psv.mj.www.pl.jsolve.Variables;
  */
 public class PaternList {
 
+	@FXML
+	private VBox VB;
 
-    @FXML
-    private VBox VB;
+	@FXML
+	private TitledPane FILTER;
 
-    @FXML
-    private TitledPane FILTER;
-    
 	@FXML
 	private XTableColumn<PATERN_CERT, Long> PC_ID;
 
@@ -107,10 +107,9 @@ public class PaternList {
 	@FXML
 	private XTableColumn<PATERN_CERT, LocalDate> MotherBirthDate;
 
-	
 	@FXML
 	private XTableColumn<PATERN_CERT, String> DOC_NUMBER;
-	
+
 	@FXML
 	private DatePicker DT1;
 
@@ -145,7 +144,6 @@ public class PaternList {
 
 	}
 
-	
 	@FXML
 	void Spravka_32(ActionEvent event) {
 		try {
@@ -184,7 +182,7 @@ public class PaternList {
 			DbUtil.Log_Error(e);
 		}
 	}
-	
+
 	/**
 	 * ‰Ó·‡‚ËÚ¸
 	 */
@@ -214,7 +212,7 @@ public class PaternList {
 				@Override
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
-						Refresh();
+						InitThread();
 					}
 					controller.dbDisconnect();
 				}
@@ -225,21 +223,21 @@ public class PaternList {
 		}
 	}
 
-	public void manipulatePdf(String src, String dest) throws Exception{
+	public void manipulatePdf(String src, String dest) throws Exception {
 		if (PATERN_CERT.getSelectionModel().getSelectedItem() == null) {
 			Msg.Message("¬˚·ÂËÚÂ ÒÚÓÍÛ!");
 		} else {
 			PdfReader reader = new PdfReader(src);
 			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
 			AcroFields fields = stamper.getAcroFields();
-			
+
 //			Iterator it = fields.getFields().entrySet().iterator();
 //			while (it.hasNext()) {
 //				Map.Entry pair = (Map.Entry) it.next();
 //				System.out.println(pair.getKey());
 //				it.remove(); // avoids a ConcurrentModificationException
 //			}
-			
+
 			PreparedStatement prp = conn.prepareStatement("select * from BLANK_PATERN_CERT where PC_ID = ?");
 			prp.setLong(1, PATERN_CERT.getSelectionModel().getSelectedItem().getPC_ID());
 			ResultSet rs = prp.executeQuery();
@@ -271,7 +269,7 @@ public class PaternList {
 				fields.setField("“ÂÍÒÚ25", rs.getString("f25"));
 				fields.setField("“ÂÍÒÚ26", rs.getString("f26"));
 				fields.setField("“ÂÍÒÚ27", rs.getString("f27"));
-				fields.setField("“ÂÍÒÚ28", rs.getString("f28"));	
+				fields.setField("“ÂÍÒÚ28", rs.getString("f28"));
 				fields.setField("“ÂÍÒÚ29", rs.getString("f29"));
 				fields.setField("“ÂÍÒÚ30", rs.getString("f30"));
 				fields.setField("“ÂÍÒÚ31", rs.getString("f31"));
@@ -320,13 +318,14 @@ public class PaternList {
 			}
 			prp.close();
 			rs.close();
-			
+
 			stamper.close();
 			reader.close();
 		}
 	}
-    @FXML
-    void BtPrintBlank(ActionEvent event) {
+
+	@FXML
+	void BtPrintBlank(ActionEvent event) {
 		try {
 			manipulatePdf(System.getenv("MJ_PATH") + "/Reports/PATERN_CERT.pdf",
 					System.getenv("MJ_PATH") + "/OutReports/PATERN_CERT.pdf");
@@ -334,8 +333,8 @@ public class PaternList {
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
-    }
-    
+	}
+
 	/**
 	 * Û‰‡ÎËÚ¸
 	 */
@@ -391,8 +390,8 @@ public class PaternList {
 							delete.setLong(1, cl.getPC_ID());
 							delete.executeUpdate();
 							delete.close();
-							
-							Refresh();
+
+							InitThread();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
@@ -444,7 +443,7 @@ public class PaternList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DbUtil.Lock_Row(docid, "PATERN_CERT",conn);
+						String lock = DbUtil.Lock_Row(docid, "PATERN_CERT", conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -477,10 +476,10 @@ public class PaternList {
 									if (controller.getStatus()) {
 										conn.commit();
 										if (from == null) {
-											Refresh();
+											InitThread();
 										}
 										// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -531,7 +530,7 @@ public class PaternList {
 												}
 												newWindow_yn.close();
 												// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-												String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT", conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -550,7 +549,7 @@ public class PaternList {
 										conn.rollback();
 										isopen = false;
 										// ”ƒ¿À»“‹ «¿œ»—‹ Œ "ÀŒ◊ ≈"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "PATERN_CERT", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -758,14 +757,113 @@ public class PaternList {
 	}
 
 	/**
+	 * ƒÓ·‡‚ÎÂÌËÂ ÒÚÓÍ ‰ËÌ‡ÏË˜ÂÒÍË
+	 */
+	void InitThread() {
+		try {
+			Task<Object> task = new Task<Object>() {
+				@Override
+				public Object call() throws Exception {
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+					String selectStmt = "select * from v_patern_cert "
+							+ ((getWhere() != null) ? getWhere() : " order by PC_ID desc");
+					PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+					ResultSet rs = prepStmt.executeQuery();
+					while (rs.next()) {
+						PATERN_CERT list = new PATERN_CERT();
+
+						list.setP—_FZ((rs.getDate("P—_FZ") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("P—_FZ")), formatter) : null);
+						list.setMOTHERBIRTHDATE((rs.getDate("MOTHERBIRTHDATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("MOTHERBIRTHDATE")), formatter)
+								: null);
+						list.setCHILDRENBIRTH((rs.getDate("CHILDRENBIRTH") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CHILDRENBIRTH")), formatter)
+								: null);
+						list.setFATHERFIO(rs.getString("FATHERFIO"));
+						list.setPC_ACT_ID(rs.getLong("PC_ACT_ID"));
+						list.setP—_CH(rs.getLong("P—_CH"));
+						list.setP—_SERIA(rs.getString("P—_SERIA"));
+						list.setP—_NUMBER(rs.getString("P—_NUMBER"));
+						list.setTM$P—_DATE((rs.getDate("TM$P—_DATE") != null) ? LocalDateTime.parse(
+								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$P—_DATE")),
+								formatterwt) : null);
+						list.setPC_ZLNAME(rs.getString("PC_ZLNAME"));
+						list.setMOTHERFIO(rs.getString("MOTHERFIO"));
+						list.setPC_ZPLACE(rs.getString("PC_ZPLACE"));
+						list.setCR_DATE((rs.getDate("CR_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter) : null);
+						list.setCR_TIME(rs.getString("CR_TIME"));
+						list.setFATHERBIRTHDATE((rs.getDate("FATHERBIRTHDATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("FATHERBIRTHDATE")), formatter)
+								: null);
+						list.setP—_F(rs.getLong("P—_F"));
+						list.setP—_CRDATE((rs.getDate("P—_CRDATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("P—_CRDATE")), formatter) : null);
+						list.setP—_TRZ((rs.getDate("P—_TRZ") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("P—_TRZ")), formatter) : null);
+						list.setPC_ZMNAME(rs.getString("PC_ZMNAME"));
+						list.setP—_AFT_LNAME(rs.getString("P—_AFT_LNAME"));
+						list.setPC_ZFNAME(rs.getString("PC_ZFNAME"));
+						list.setCHILDFIO(rs.getString("CHILDFIO"));
+						list.setP—_CRNAME(rs.getString("P—_CRNAME"));
+						list.setP—_M(rs.getLong("P—_M"));
+						list.setP—_AFT_MNAME(rs.getString("P—_AFT_MNAME"));
+						list.setP—_ZAGS(rs.getLong("P—_ZAGS"));
+						list.setPC_ID(rs.getLong("PC_ID"));
+						list.setP—_TYPE(rs.getString("P—_TYPE"));
+						list.setP—_AFT_FNAME(rs.getString("P—_AFT_FNAME"));
+						list.setP—_USER(rs.getString("P—_USER"));
+
+						list.setBEF_LNAME(rs.getString("BEF_LNAME"));
+						list.setBEF_FNAME(rs.getString("BEF_FNAME"));
+						list.setBEF_MNAME(rs.getString("BEF_MNAME"));
+						list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+
+						PATERN_CERT.getItems().add(list);
+					}
+					prepStmt.close();
+					rs.close();
+					
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							TableFilter<PATERN_CERT> tableFilter = TableFilter.forTableView(PATERN_CERT).apply();
+							tableFilter.setSearchStrategy((input, target) -> {
+								try {
+									return target.toLowerCase().contains(input.toLowerCase());
+								} catch (Exception e) {
+									return false;
+								}
+							});
+						}
+					});
+
+					return null;
+				}
+			};
+			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+			// task.setOnSucceeded(e -> BlockMain());
+			exec.execute(task);
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	/**
 	 * Œ·ÌÓ‚ËÚ¸ Ú‡·ÎËˆÛ
 	 */
-	void Refresh() {
+	@Deprecated
+	void Refresh_() {
 		try {
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			String selectStmt = "select * from v_patern_cert " + ((getWhere() != null) ? getWhere() : " order by PC_ID desc");
+			String selectStmt = "select * from v_patern_cert "
+					+ ((getWhere() != null) ? getWhere() : " order by PC_ID desc");
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			ObservableList<PATERN_CERT> dlist = FXCollections.observableArrayList();
@@ -815,7 +913,7 @@ public class PaternList {
 				list.setP—_TYPE(rs.getString("P—_TYPE"));
 				list.setP—_AFT_FNAME(rs.getString("P—_AFT_FNAME"));
 				list.setP—_USER(rs.getString("P—_USER"));
-				
+
 				list.setBEF_LNAME(rs.getString("BEF_LNAME"));
 				list.setBEF_FNAME(rs.getString("BEF_FNAME"));
 				list.setBEF_MNAME(rs.getString("BEF_MNAME"));
@@ -848,7 +946,7 @@ public class PaternList {
 	 */
 	@FXML
 	void CmRefresh(ActionEvent event) {
-		Refresh();
+		InitThread();
 	}
 
 	/**
@@ -1023,7 +1121,8 @@ public class PaternList {
 	Integer from = null;
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.from = 1;
 		this.conn.setAutoCommit(false);
 	}
@@ -1091,8 +1190,8 @@ public class PaternList {
 			MotherBirthDate.setColumnFilter(new DateColumnFilter<>());
 
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
-			Refresh();
+			// DbUtil.Run_Process(conn,getClass().getName());
+			InitThread();
 			/**
 			 * —ÚÓÎ·ˆ˚ Ú‡·ÎËˆ˚
 			 */
@@ -1206,7 +1305,7 @@ public class PaternList {
 				list.setBEF_FNAME(rs.getString("BEF_FNAME"));
 				list.setBEF_MNAME(rs.getString("BEF_MNAME"));
 				list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
-				
+
 				dlist.add(list);
 			}
 			prepStmt.close();
@@ -1285,7 +1384,7 @@ public class PaternList {
 				r1.read(char_xmls);
 				// strings
 				RetXml = new String(char_xmls);
-				//System.out.println(RetXml);
+				// System.out.println(RetXml);
 			} else {
 				Msg.Message(callStmt.getString(2));
 				Main.logger.error(callStmt.getString(2) + "~" + Thread.currentThread().getName());

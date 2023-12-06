@@ -36,6 +36,7 @@ import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -82,12 +83,12 @@ public class DivorceList {
 	// @FXML
 	// private TableColumn<DIVORCE_CERT, LocalDateTime> DIVC_DATE;
 
-    @FXML
-    private VBox VB;
+	@FXML
+	private VBox VB;
 
-    @FXML
-    private TitledPane FILTER;
-    
+	@FXML
+	private TitledPane FILTER;
+
 	@FXML
 	private ProgressIndicator PB;
 
@@ -97,10 +98,9 @@ public class DivorceList {
 	@FXML
 	private BorderPane ROOT;
 
-	
 	@FXML
 	private XTableColumn<DIVORCE_CERT, String> DOC_NUMBER;
-	
+
 	@FXML
 	private XTableView<DIVORCE_CERT> DIVORCE_CERT;
 
@@ -132,7 +132,7 @@ public class DivorceList {
 			PdfReader reader = new PdfReader(src);
 			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
 			AcroFields fields = stamper.getAcroFields();
-			
+
 //			Iterator it = fields.getFields().entrySet().iterator();
 //			while (it.hasNext()) {
 //				Map.Entry pair = (Map.Entry) it.next();
@@ -161,7 +161,7 @@ public class DivorceList {
 				fields.setField("Òåêñò15", rs.getString("F15"));
 				fields.setField("Òåêñò16", rs.getString("F16"));
 				fields.setField("Òåêñò17", rs.getString("F17"));
-				fields.setField("Òåêñò18", rs.getString("F18")+" øû??ñàçû");
+				fields.setField("Òåêñò18", rs.getString("F18") + " øû??ñàçû");
 				fields.setField("Òåêñò19", "-");
 				fields.setField("Òåêñò20", rs.getString("F20"));
 				fields.setField("Òåêñò21", "-");
@@ -224,9 +224,7 @@ public class DivorceList {
 			reader.close();
 		}
 	}
-	
-	
-	
+
 	@FXML
 	void Spravka_30(ActionEvent event) {
 		try {
@@ -265,18 +263,18 @@ public class DivorceList {
 			DbUtil.Log_Error(e);
 		}
 	}
-    
-    @FXML
-    void BtPrintBlank(ActionEvent event) {
-    	try {
+
+	@FXML
+	void BtPrintBlank(ActionEvent event) {
+		try {
 			manipulatePdf(System.getenv("MJ_PATH") + "/Reports/DIVORCE_CERT.pdf",
 					System.getenv("MJ_PATH") + "/OutReports/DIVORCE_CERT.pdf");
 			Desktop.getDesktop().open(new File(System.getenv("MJ_PATH") + "/OutReports/DIVORCE_CERT.pdf"));
 		} catch (Exception e) {
 			DbUtil.Log_Error(e);
 		}
-    }
-    
+	}
+
 	void Add() {
 		try {
 			if (DbUtil.Odb_Action(98l) == 0) {
@@ -303,7 +301,7 @@ public class DivorceList {
 				@Override
 				public void handle(WindowEvent paramT) {
 					if (controller.getStatus()) {
-						Refresh();
+						InitThread();
 					}
 					controller.dbDisconnect();
 				}
@@ -368,13 +366,14 @@ public class DivorceList {
 							delete.setLong(1, cl.getDIVC_ID());
 							delete.executeUpdate();
 							delete.close();
-							Refresh();
+							InitThread();
 						} catch (SQLException e) {
 							try {
 								conn.rollback();
 							} catch (SQLException e1) {
 								Msg.Message(ExceptionUtils.getStackTrace(e1));
-								Main.logger.error(ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
+								Main.logger.error(
+										ExceptionUtils.getStackTrace(e1) + "~" + Thread.currentThread().getName());
 							}
 							DbUtil.Log_Error(e);
 						}
@@ -416,7 +415,7 @@ public class DivorceList {
 					selforupd.close();
 					{
 						// add lock row
-						String lock = DbUtil.Lock_Row(docid, "DIVORCE_CERT",conn);
+						String lock = DbUtil.Lock_Row(docid, "DIVORCE_CERT", conn);
 						if (lock != null) {// if error add row
 							Msg.Message(lock);
 							conn.rollback();
@@ -449,10 +448,10 @@ public class DivorceList {
 										conn.commit();
 
 										if (from == null) {
-											Refresh();
+											InitThread();
 										}
 										// ÓÄÀËÈÒÜ ÇÀÏÈÑÜ Î "ËÎ×ÊÅ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -503,7 +502,7 @@ public class DivorceList {
 												}
 												newWindow_yn.close();
 												// ÓÄÀËÈÒÜ ÇÀÏÈÑÜ Î "ËÎ×ÊÅ"=
-												String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
+												String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT", conn);
 												if (lock != null) {// if error add row
 													Msg.Message(lock);
 												}
@@ -522,7 +521,7 @@ public class DivorceList {
 										conn.rollback();
 										isopen = false;
 										// ÓÄÀËÈÒÜ ÇÀÏÈÑÜ Î "ËÎ×ÊÅ"=
-										String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT",conn);
+										String lock = DbUtil.Lock_Row_Delete(docid, "DIVORCE_CERT", conn);
 										if (lock != null) {// if error add row
 											Msg.Message(lock);
 										}
@@ -738,12 +737,108 @@ public class DivorceList {
 
 	private Executor exec;
 
-	void Refresh() {
+	/**
+	 * Äîáàâëåíèå ñòðîê äèíàìè÷åñêè
+	 */
+	void InitThread() {
+		try {
+			Task<Object> task = new Task<Object>() {
+				@Override
+				public Object call() throws Exception {
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+					DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
+					String selectStmt = "select * from VDIVORCE_CERT t "
+							+ ((getWhere() != null) ? getWhere() : " ORDER BY DIVC_ID DESC");
+
+					PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
+					ResultSet rs = prepStmt.executeQuery();
+					while (rs.next()) {
+						DIVORCE_CERT list = new DIVORCE_CERT();
+
+						list.setDIVC_SHE_LNBEF(rs.getString("DIVC_SHE_LNBEF"));
+						list.setDIVC_ZMNAME(rs.getString("DIVC_ZMNAME"));
+						list.setDIVC_ZOSCN2(rs.getLong("DIVC_ZOSCN2"));
+						list.setDIVC_NUM(rs.getString("DIVC_NUM"));
+						list.setSHEFIO(rs.getString("SHEFIO"));
+						list.setDIVC_ZOSPRISON(rs.getLong("DIVC_ZOSPRISON"));
+						list.setDIVC_ZÀNAME(rs.getString("DIVC_ZÀNAME"));
+						list.setCR_DATE((rs.getDate("CR_DATE") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("CR_DATE")), formatter) : null);
+						list.setCR_TIME(rs.getString("CR_TIME"));
+						list.setDIVC_SERIA(rs.getString("DIVC_SERIA"));
+						list.setDIVC_ZLNAME(rs.getString("DIVC_ZLNAME"));
+						list.setDIVC_ID(rs.getLong("DIVC_ID"));
+						list.setDIVC_USR(rs.getString("DIVC_USR"));
+						list.setDIVC_CAN(rs.getLong("DIVC_CAN"));
+						list.setDIVC_MC_MERCER(rs.getLong("DIVC_MC_MERCER"));
+						list.setDIVC_HE_LNBEF(rs.getString("DIVC_HE_LNBEF"));
+						list.setDIVC_SHE_LNAFT(rs.getString("DIVC_SHE_LNAFT"));
+						list.setDIVC_ZOSCD2((rs.getDate("DIVC_ZOSCD2") != null) ? LocalDate
+								.parse(new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD2")), formatter)
+								: null);
+						list.setDIVC_CAD((rs.getDate("DIVC_CAD") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_CAD")), formatter) : null);
+						list.setDIVC_ZOSFIO(rs.getString("DIVC_ZOSFIO"));
+						list.setDIVC_DT((rs.getDate("DIVC_DT") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_DT")), formatter) : null);
+						list.setDIVC_ZOSCN(rs.getLong("DIVC_ZOSCN"));
+						list.setDIVC_TYPE(rs.getString("DIVC_TYPE"));
+						list.setDIVC_ZOSFIO2(rs.getString("DIVC_ZOSFIO2"));
+						list.setDIVC_ZPLACE(rs.getString("DIVC_ZPLACE"));
+						list.setDIVC_HE(rs.getLong("DIVC_HE"));
+						list.setTM$DIVC_DATE((rs.getDate("TM$DIVC_DATE") != null) ? LocalDateTime.parse(
+								new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(rs.getDate("TM$DIVC_DATE")),
+								formatterwt) : null);
+						list.setDIVC_TCHNUM(rs.getString("DIVC_TCHNUM"));
+						list.setDIVC_TCHD((rs.getDate("DIVC_TCHD") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_TCHD")), formatter) : null);
+						list.setDIVC_SHE(rs.getLong("DIVC_SHE"));
+						list.setDIVC_HE_LNAFT(rs.getString("DIVC_HE_LNAFT"));
+						list.setDIVC_ZAGS(rs.getLong("DIVC_ZAGS"));
+						list.setDIVC_ZOSCD((rs.getDate("DIVC_ZOSCD") != null) ? LocalDate.parse(
+								new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate("DIVC_ZOSCD")), formatter) : null);
+						list.setHEFIO(rs.getString("HEFIO"));
+						list.setDOC_NUMBER(rs.getString("DOC_NUMBER"));
+						DIVORCE_CERT.getItems().add(list);
+					}
+					prepStmt.close();
+					rs.close();
+
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							TableFilter<DIVORCE_CERT> tableFilter = TableFilter.forTableView(DIVORCE_CERT).apply();
+							tableFilter.setSearchStrategy((input, target) -> {
+								try {
+									return target.toLowerCase().contains(input.toLowerCase());
+								} catch (Exception e) {
+									return false;
+								}
+							});
+						}
+					});
+					return null;
+				}
+			};
+			task.setOnFailed(e -> Msg.Message(task.getException().getMessage()));
+			// task.setOnSucceeded(e -> BlockMain());
+			exec.execute(task);
+
+		} catch (Exception e) {
+			DbUtil.Log_Error(e);
+		}
+	}
+
+	@Deprecated
+	void Refresh_() {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			DateTimeFormatter formatterwt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
-			String selectStmt = "select * from VDIVORCE_CERT t " + ((getWhere() != null) ? getWhere() : " ORDER BY DIVC_ID DESC");
+			String selectStmt = "select * from VDIVORCE_CERT t "
+					+ ((getWhere() != null) ? getWhere() : " ORDER BY DIVC_ID DESC");
 
 			PreparedStatement prepStmt = conn.prepareStatement(selectStmt);
 			ResultSet rs = prepStmt.executeQuery();
@@ -820,7 +915,7 @@ public class DivorceList {
 
 	@FXML
 	void CmRefresh(ActionEvent event) {
-		Refresh();
+		InitThread();
 	}
 
 	@FXML
@@ -883,6 +978,7 @@ public class DivorceList {
 			DbUtil.Log_Error(e);
 		}
 	}
+
 	DIVORCE_CERT Initialize2(Long docid) {
 		DIVORCE_CERT list = null;
 		try {
@@ -1061,10 +1157,10 @@ public class DivorceList {
 			HeFio.setColumnFilter(new PatternColumnFilter<>());
 			DIVC_DT.setColumnFilter(new DateColumnFilter<>());
 			DOC_NUMBER.setColumnFilter(new PatternColumnFilter<>());
-			
+
 			dbConnect();
-			//DbUtil.Run_Process(conn,getClass().getName());
-			Refresh();
+			// DbUtil.Run_Process(conn,getClass().getName());
+			InitThread();
 
 			// Ñòîëáöû òàáëèöû
 			DIVC_ID.setCellValueFactory(cellData -> cellData.getValue().DIVC_IDProperty().asObject());
@@ -1184,7 +1280,8 @@ public class DivorceList {
 	Integer from = null;
 
 	public void setConn(Connection conn) throws SQLException {
-		this.conn = conn;this.conn.setAutoCommit(false);
+		this.conn = conn;
+		this.conn.setAutoCommit(false);
 		this.from = 1;
 		this.conn.setAutoCommit(false);
 	}

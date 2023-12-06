@@ -167,16 +167,16 @@ public class Main extends Application {
 			primaryStage.getIcons().add(new Image("/icon.png"));
 			Main.primaryStage.setTitle("Министерство юстиции");
 
-			try {
-				CertificateFactory fac = CertificateFactory.getInstance("X509");
-				FileInputStream is = new FileInputStream(System.getenv("MJ_PATH")+"stunnel/config/test01.crt");
-				X509Certificate cert = (X509Certificate) fac.generateCertificate(is);
-				System.out.println("From: " + cert.getNotBefore());
-				System.out.println("Until: " + cert.getNotAfter());
-			} catch (Exception e){
-				System.out.println();
-			}
-//
+//			try {
+//				CertificateFactory fac = CertificateFactory.getInstance("X509");
+//				FileInputStream is = new FileInputStream(System.getenv("MJ_PATH")+"stunnel/config/ca.crt");
+//				X509Certificate cert = (X509Certificate) fac.generateCertificate(is);
+//				System.out.println("From: " + cert.getNotBefore());
+//				System.out.println("Until: " + cert.getNotAfter());
+//			} catch (Exception e){
+//				System.out.println();
+//			}
+
 //			Def Enter
 //
 
@@ -190,7 +190,7 @@ public class Main extends Application {
 //	Fast enter
 //
 
-			Connect.connectionURL = "localhost:89/orcl";
+			Connect.connectionURL = "localhost:1522/orcl";
 			Connect.userID = "xxi";
 			Connect.userPassword = "mj_pass_123";
 			DbUtil.Db_Connect();
